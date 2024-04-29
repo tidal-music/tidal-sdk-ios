@@ -65,7 +65,7 @@ final class PlayerItemTests: XCTestCase {
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
 
 		let mediaProduct = MediaProduct.mock()
-		let playerItem = PlayerItem.mock(
+		_ = PlayerItem.mock(
 			startReason: .EXPLICIT,
 			mediaProduct: mediaProduct,
 			networkType: .MOBILE,
@@ -99,7 +99,7 @@ final class PlayerItemTests: XCTestCase {
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
 		let mediaProduct = MediaProduct.mock()
-		let playerItem = PlayerItem.mock(
+		_ = PlayerItem.mock(
 			startReason: .EXPLICIT,
 			mediaProduct: mediaProduct,
 			networkType: .MOBILE,
@@ -245,7 +245,7 @@ final class PlayerItemTests: XCTestCase {
 
 		let mediaProduct = MediaProduct.mock()
 		let startReason: StartReason = .EXPLICIT
-		var playerItem: PlayerItem? = PlayerItem.mock(
+		let playerItem: PlayerItem? = PlayerItem.mock(
 			startReason: startReason,
 			mediaProduct: mediaProduct,
 			networkType: .MOBILE,
