@@ -1,0 +1,25 @@
+name: Create release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+    - name: Generate Release Draft
+      id: generate-release
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ inputs.version }}  
+        allowUpdates: true
+        draft: true
+        body: "This is a release draft for version ${{ inputs.version }}"
+

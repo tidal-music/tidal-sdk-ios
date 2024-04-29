@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "FF9863B0-C1D5-476F-B31B-5DEC03EC6717",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "PlayerTests",
+        "name" : "PlayerTests"
+      }
+    }
+  ],
+  "version" : 1
+}

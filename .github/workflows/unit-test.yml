@@ -1,0 +1,50 @@
+name: Run Unit Tests
+
+on:
+  workflow_call:
+
+  pull_request:
+    branches: '*'
+
+  merge_group:
+    types: [checks_requested]
+
+jobs:
+  run-swift-tests:
+    name: Run Swift Unit Tests
+    runs-on: macos-14
+    steps:
+    - uses: actions/checkout@v4
+    - name: Run tests
+      run: |-
+        swift test --skip PlayerTests | xcbeautify --renderer github-actions
+
+  run-xcodebuild-tests:
+    name: Run xcodebuild Unit Tests
+    runs-on: macos-14
+    steps:
+    - uses: actions/checkout@v4
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.2.0'
+
+    - name: Run Player tests (xcodebuild)
+      run: |-
+        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' test -skipPackagePluginValidation | xcbeautify --renderer github-actions
+
+  build-test-apps:
+    name: Build Test Apps
+    runs-on: macos-14
+    steps:
+    - uses: actions/checkout@v4
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.2.0'
+
+    - name: Build Player test app
+      run: |-
+        set -o pipefail && xcodebuild -project TestApps/Player/PlayerTestApp.xcodeproj -scheme PlayerTestApp -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' build -skipPackagePluginValidation | xcbeautify --renderer github-actions
+
+    - name: Build Auth test app
+      run: |-
+        set -o pipefail && xcodebuild -project TestApps/Auth/AuthTestApp.xcodeproj -scheme AuthTestApp -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' build -skipPackagePluginValidation | xcbeautify --renderer github-actions
