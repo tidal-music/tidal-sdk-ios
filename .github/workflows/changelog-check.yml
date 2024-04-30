@@ -1,14 +1,15 @@
 name: Check CHANGELOG.md update
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
-      - '/version.txt'
+      - 'version.txt'
   push:
     branches:
-      - main
+      - improvement/TIP-352-introduce-GH-workflow-for-changelog-sync-check
     paths:
-      - '/version.txt'
+      - 'version.txt'
 
 jobs:
   changelog-update-check:
@@ -17,23 +18,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check if both specific files are modified
+      - name: Read Version from version.txt
+        id: read_version
         run: |
-          #!/bin/bash
+          echo 'VERSION=$(cat version.txt)' >> $GITHUB_OUTPUT
+          
+      - name: debug print  # Using for debug purposes and in case that we want to extract the value manually
+        run: |
+          echo ${{ steps.read_version.outputs.VERSION }}
 
-          # Define your files
-          FILE_A="/version.txt"
-          FILE_B="/CHANGELOG.md"
-
-          # Check if FILE_A is modified
-          if  git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "$FILE_A"; then
-            echo "$FILE_A is modified."
-
-            # Check if FILE_B is also modified
-            if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "$FILE_B"; then
-              echo "Both $FILE_A and $FILE_B are synced."
-            else
-              echo "::error::$FILE_B has not been updated. Please update $FILE_B as well with relevant info."
-              exit 1
-            fi
+      - name: Check if Version Exists in CHANGELOG.md
+        id: check_version_existence
+        run: |
+          version=$(cat CHANGELOG.md | grep -Eo '##\d+\.\d+\.\d+')
+          if [ -z "$version" ]; then
+            echo "Version not found in second file"
+            exit 1
           fi
+
+      - name: Notify If Version Missing
+        if: ${{ failure() }}
+        run: |
+          echo "Version mentioned in the first file does not have an entry in the second file"
