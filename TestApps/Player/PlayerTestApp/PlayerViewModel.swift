@@ -81,18 +81,10 @@ final class PlayerViewModel: ObservableObject, PlayerListener {
 
 	func mediaTransitioned(to mediaProduct: MediaProduct, with playbackContext: PlaybackContext) {}
 
-	func streamingPrivilegesLost(to device: String?) {}
-
 	func failed(with error: PlayerError) {
 		self.error = CustomError.playerError(code: error.errorCode)
 		showAlert = true
 	}
-
-	func djSessionStarted(_ metadata: DJSessionMetadata) {}
-
-	func djSessionEnded(with reason: DJSessionEndReason) {}
-
-	func djSessionTransitioned(to transition: DJSessionTransition) {}
 }
 
 // MARK: - CustomError

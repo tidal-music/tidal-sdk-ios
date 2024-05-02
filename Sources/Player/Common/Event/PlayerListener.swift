@@ -17,3 +17,11 @@ public protocol PlayerListener: AnyObject {
 
 	func djSessionTransitioned(to transition: DJSessionTransition)
 }
+
+// Optional methods
+public extension PlayerListener {
+	func streamingPrivilegesLost(to device: String?) { }
+	func djSessionStarted(_ metadata: DJSessionMetadata) { }
+	func djSessionEnded(with reason: DJSessionEndReason) { }
+	func djSessionTransitioned(to transition: DJSessionTransition) { }
+}
