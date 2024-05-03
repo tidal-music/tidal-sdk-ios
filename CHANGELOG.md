@@ -5,8 +5,249 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-##[0.0.0]
+## [0.3.15] - 2024-04-26
 ### Added
-- List added features here..
+- Initial support for Uploaded Content
+- Create package documentation catalogues
+### Fixed
+- Player bootstrap to include shouldUseEventProducer (Player)
+- Linter improvements and fixes
+### Changed
+- Update internal dependencies
+- Refactored EventProducer Environment usage (EventProducer)
+- Adjust auth documentation (code samples, texts)
+- Emit events in didSet of current and next items in PlayerEngine instead of deinit of PlayerItem (Player)
+### Removed
+- Disable streaming privileges when entering offline mode
+
+## [0.3.14] - 2024-04-12
+### Added
+- Unit tests (Player)
+- Initial setup for a test app
+### Changed
+- Move feature flags from develop to production
+
+## [0.3.13] - 2024-04-10
+### Fixed
+- Bug-fixing the withRemovedQuery method
+
+## [0.3.12] - 2024-04-10
+### Fixed
+- Semver comparison
+### Changed
+- Unit tests preparation
+
+## [0.3.11] - 2024-04-10
+### Added
+- Workflow to run FOSSA scans on PRs to main branch
+### Fixed
+- An attempt to fix the versioning
+### Changed
+- Increase the timeout of the optimizedWait method due to flaky tests
+
+## [0.3.10] - 2024-04-05
+### Added
+- Use EventProducer in Player (Player)
+- Inject EventSender in PlayerEventSender (Player)
+- Missing public in EventSenderMock (EventProducer)
+### Changed
+- Make EventSender testable
+
+## [0.3.9] - 2024-04-04
+### Added
+- Auth sub-status error handling
+
+## [0.3.8] - 2024-04-02
+### Fixed
+- Compiler warnings due to deprecated api usage
+- Crash when playing video in PIP and skipping to the next item (Player)
+### Changed
+- Internal package update
+- Increase timeout to address flaky tests in CI
+### Removed
+- Remove pause call in PlayerEngine reset method (Player)
+
+## [0.3.7] - 2024-03-28
+### Added
+- Enabling the Event Producer for watchOS & to support Auth Module integration (Auth)
+### Changed
+- Move FileManagerClient to PlayerWorldClient
+- Align Auth Feature flag
+- Make auth config non-throwable (Auth)
+- Increase timeout to address flaky tests in CI
+
+## [0.3.6] - 2024-03-26
+### Added
+- Unit tests
+- Generate DocC documentation
+### Changed
+- Use xcodebuild for Player tests
+### Fixed
+- Logout not working
+
+## [0.3.5] - 2024-03-12
+### Fixed
+- Volume normalisation
+
+## [0.3.4] - 2024-03-06
+### Removed
+- "Demo app" & adding Auth Test App as a replacement
+### Fixed
+- Token usage bug
+
+## [0.3.3] - 2024-02-26
+### Added
+- Player test app
+- Streaming privileges with async await
+- Allow custom redirect URI
+### Changed
+- Make clientName nullable
+
+## [0.3.2] - 2024-02-19
+### Changed
+- Align Auth with specification, pt3 (Auth)
+
+## [0.3.1] - 2024-02-19
+### Added
+- Co-ownership for the PACE team to code owned by BITS
+### Changed
+- Align Auth with specification, pt2 (Auth)
+
+## [0.3.0] - 2024-02-13
+### Added
+- Player library to target for demo app (Player)
+- Mp3 AudioCodec (Player)
+- Tests to AuthProvider+Player
+- Linter plugin in PlayerTests and address violations
+### Changed 
+- Align Auth with specification (rename Credentials to Tokens) (Auth)
+- Change shouldUseAuthModule to true
+- Update tests dependencies
+- Rename blacklisted(category) to blocked (EventProducer)
+- Package.swift maintenance
+### Fixed
+- Bearer Auth Token
+- Fix slow tests on Auth module
+
+## [0.2.9] - 2024-02-13
+### Added
+- Streaming privileges preparation (Player)
+- Support new reactions value in DJSessionMetadata (Player)
+- Support playback of DRM-free tracks using AVPlayer (Player)
+### Changed 
+- Improve Xcode test settings for Player module (Player)
+- Add playbackSessionId to Offlineplay (Player)
+### Fixed
+- Retry attempts take more than 5 minutes (Auth)
+- Make Renovate less noisy
+
+## [0.2.8] - 2024-02-08
+### Fixed
+- Retry attempts take more than 5 minutes (Auth)
+
+## [0.2.7] - 2024-02-05
+### Fixed
+- Increase timeout (Player)
+- Regression crash on DRM handling (Player)
+
+## [0.2.6] - 2024-02-02
+### Fixed
+- Loudness normalization values
+### Added
+- Auth in FairPlayLicenseFetcher and PlaybackInfoFetcher
+- Auth in DJProducer
+
+## [0.2.5-drm-crash-fix] - 2024-02-05
+### Fixed
+- Regression on AVPlayer DRM handling when switching tracks quickly (Player)
+
+## [0.2.5] - 2024-01-30
+### Added
+- Preparation for tests
+- LoginResponse - made properties public
+- Code ownership to mobile platform team
+- Extended AuthProvider protocol
+### Changed
+- Replace enum AuthResult with Swift.Result
+- Improve mock classes
+
+## [0.2.4] - 2024-01-25
+### Added
+- Add new flag shouldStallWhenTransitionFromEndedToBuffering in GenericMediaPlayer (Player)
+- Preparation of Integration of Auth module into Player (Player)
+- Codeowners
+### Changed
+- Updated playbackinfo endpoint to Streaming API V5 (Player)
+- Move all used methods to AuthProvider protocol
+- Replace enum AuthResult with Swift.Result
+- LoginResponse - made properties public
+
+## [0.2.3] - 2024-01-10
+### Added
+- New Player module based on BoomBox 0.0.70
+### Fixed
+Fix to loudness normalization during streaming (Player)
+
+## [0.2.2] - 2023-12-19
+### Added
+- Set credentials functionality that allows to set existing credentials from the outside (useful for migration purposes) (Auth)
+- Simplify integration and tests on clients
+
+### Fixed
+- Proper URL formatting for refresh token (EventProducer)
+
+## [0.2.1] - 2023-12-12
+### Fixed
+- UserID Handling from the server (Auth)
+- Unify returning errors for Auth (Auth)
+- Send monitoring info only if it is not empty (EventProducer)
+
+## [0.2.0] - 2023-12-08
+### Fixed
+- Make TIDAL Error non-optional
+
+## [0.1.9] - 2023-11-30
+### Changed
+- Improve refreshToken() error handling and testing (EventProducer)
+- Evaluate upgrade if clientId doesn't match with the stored one
+- Update GRDB to 6.22.0
+
+## [0.1.8] - 2023-11-21
+### Changed
+- Clear-up monitoring data when sending the Monitoring event to server (EventProducer)
+
+## [0.1.7] - 2023-11-17
+### Added
+- Enable tvOS and watchOS as targets
+
+## [0.1.6] - 2023-11-08
+### Changed
+- Rollback swiftLint version to align with the main project usage.
+
+## [0.1.5] - 2023-11-08
+### Added
+- Token refresh feature (EventProducer)
+- SwiftLint integration (EventProducer)
+
+## [0.1.4] - 2023-11-03
+### Fixed
+- Legacy Event parsing (EventProducer)
+### Added
+- Authorisation (EventProducer)
+
+## [0.1.3] - 2023-10-25
+### Fixed
+- Background processing issues (EventProducer)
+- Formatting for ClientID and Token parameters (EventProducer)
+
+## [0.1.2] - 2023-10-16
+### Added
+- Logic to include device information for sent events (EventProducer)
+
+## [0.1.1] - 2023-10-11
+### Changed
+- API endpoint update (EventProducer)
+
+## [0.1.0] - 2023-10-11
+### Added
+- Initial EventProducer module release for iOS.
