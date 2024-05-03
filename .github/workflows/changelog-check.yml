@@ -18,25 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Read Version from version.txt
-        id: read_version
+      - name: Check version in changelog
+        id: check_version
         run: |
-          echo 'VERSION=$(cat version.txt)' >> $GITHUB_OUTPUT
-          
-      - name: debug print  # Using for debug purposes and in case that we want to extract the value manually
-        run: |
-          echo ${{ steps.read_version.outputs.VERSION }}
-
-      - name: Check if Version Exists in CHANGELOG.md
-        id: check_version_existence
-        run: |
-          version=$(cat CHANGELOG.md | grep -Eo '##\d+\.\d+\.\d+')
-          if [ -z "$version" ]; then
-            echo "Version not found in second file"
-            exit 1
-          fi
-
-      - name: Notify If Version Missing
-        if: ${{ failure() }}
-        run: |
-          echo "Version mentioned in the first file does not have an entry in the second file"
+          Scripts/checkVersionSync.sh
