@@ -9,7 +9,7 @@ final class TokensStoreTests: XCTestCase {
 	}
 
 	func testDefaultTokensStore() throws {
-		var store = DefaultTokensStore(credentialsKey: "test")
+		var store = DefaultTokensStore(credentialsKey: "test", credentialsAccessGroup: nil)
 		XCTAssertNil(try store.getLatestTokens())
 
 		let credentials = try Tokens(
@@ -26,12 +26,12 @@ final class TokensStoreTests: XCTestCase {
 		)
 		try store.saveTokens(tokens: credentials)
 		XCTAssertEqual(try store.getLatestTokens(), credentials)
-		store = DefaultTokensStore(credentialsKey: "test2")
+		store = DefaultTokensStore(credentialsKey: "test2", credentialsAccessGroup: nil)
 		XCTAssertNil(try store.getLatestTokens())
 	}
 
 	func testLatestTokensAreNilAfterErasing() throws {
-		var store = DefaultTokensStore(credentialsKey: "test")
+		var store = DefaultTokensStore(credentialsKey: "test", credentialsAccessGroup: nil)
 		let credentials = try Tokens(
 			credentials: Credentials(
 				clientId: "TIDAL",

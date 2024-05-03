@@ -9,10 +9,14 @@ final class DefaultTokensStore: TokensStore {
 
 	private var latestTokens: Tokens?
 
-	init(credentialsKey: String) {
+	init(credentialsKey: String, credentialsAccessGroup: String?) {
 		storageKey = "\(credentialsKey)_\(PREFS_FILE_NAME)"
 		self.credentialsKey = credentialsKey
-		encryptedStorage = Keychain(service: storageKey)
+		encryptedStorage = if let credentialsAccessGroup {
+			Keychain(service: storageKey, accessGroup: credentialsAccessGroup)
+		} else {
+			Keychain(service: storageKey)
+		}
 	}
 
 	func getLatestTokens() throws -> Tokens? {
