@@ -83,7 +83,7 @@ final class JsonEncodedResponseURLProtocol: URLProtocol {
 			return
 		}
 
-		var httpResponse: HTTPURLResponse = if let customHTTPStatus = response.httpStatus {
+		let httpResponse: HTTPURLResponse = if let customHTTPStatus = response.httpStatus {
 			HTTPURLResponse(url: request.url!, statusCode: customHTTPStatus, httpVersion: nil, headerFields: nil)!
 		} else {
 			HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!

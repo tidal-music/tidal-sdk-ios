@@ -60,12 +60,49 @@ final class PlayerItemTests: XCTestCase {
 
 	// MARK: - init
 
-	func test_init_withoutMetrics_sendsOnlyStreamingSessionStart_legacy() {
+	func test_init_sendsOnlyStreamingSessionStart_legacy() {
 		// GIVEN
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
 
 		let mediaProduct = MediaProduct.mock()
 		let playerItem = PlayerItem.mock(
+			startReason: .EXPLICIT,
+			mediaProduct: mediaProduct,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			isPreload: false
+		)
+
+		// Needed to silence warning and keep playerItem in memory.
+		withExtendedLifetime(playerItem) {}
+
+		let streamingSessionStart = StreamingSessionStart.mock(
+			streamingSessionId: Constants.uuid,
+			startReason: .EXPLICIT,
+			timestamp: timestamp,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			sessionProductType: mediaProduct.productType,
+			sessionProductId: mediaProduct.productId,
+			sessionTags: nil
+		)
+
+		// When the item has not been played, in deinit, we only send StreamingSessionStart.
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+	}
+
+	func test_init_sendsOnlyStreamingSessionStart() {
+		// GIVEN
+		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+
+		let mediaProduct = MediaProduct.mock()
+		_ = PlayerItem.mock(
 			startReason: .EXPLICIT,
 			mediaProduct: mediaProduct,
 			networkType: .MOBILE,
@@ -94,12 +131,12 @@ final class PlayerItemTests: XCTestCase {
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
 	}
 
-	func test_init_withoutMetrics_sendsOnlyStreamingSessionStart() {
+	func test_init_and_deinit_withoutMetrics_sendsOnlyStreamingSessionStart_and_StreamingSessionEnd_legacy() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
 
 		let mediaProduct = MediaProduct.mock()
-		let playerItem = PlayerItem.mock(
+		var playerItem: PlayerItem? = PlayerItem.mock(
 			startReason: .EXPLICIT,
 			mediaProduct: mediaProduct,
 			networkType: .MOBILE,
@@ -123,9 +160,68 @@ final class PlayerItemTests: XCTestCase {
 			sessionTags: nil
 		)
 
-		// When the item has not been played, in deinit, we only send StreamingSessionStart.
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
+		let streamingSessionEnd = StreamingSessionEnd.mock(
+			streamingSessionId: Constants.uuid,
+			timestamp: timestamp
+		)
+
+		// Needed to silence warning about object not read
+		withExtendedLifetime(playerItem) {}
+
+		// This is needed in order to release the reference and cause deinit to be called so we can proceed with assertions.
+		playerItem = nil
+
+		// THEN
+		let expectation = expectation(description: "Expect to receive events after PlayerItem deinit")
+		_ = XCTWaiter.wait(for: [expectation], timeout: 0.1)
+
+		// When the item has not been played, in deinit, we only send StreamingSessionStart and StreamingSessionEnd.
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.last as? StreamingSessionEnd, streamingSessionEnd)
+	}
+
+	func test_init_and_deinit_withoutMetrics_sendsOnlyStreamingSessionStart_and_StreamingSessionEnd() {
+		// GIVEN
+		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+
+		let mediaProduct = MediaProduct.mock()
+		var playerItem: PlayerItem? = PlayerItem.mock(
+			startReason: .EXPLICIT,
+			mediaProduct: mediaProduct,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			isPreload: false
+		)
+
+		let streamingSessionStart = StreamingSessionStart.mock(
+			streamingSessionId: Constants.uuid,
+			startReason: .EXPLICIT,
+			timestamp: timestamp,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			sessionProductType: mediaProduct.productType,
+			sessionProductId: mediaProduct.productId,
+			sessionTags: nil
+		)
+
+		let streamingSessionEnd = StreamingSessionEnd.mock(
+			streamingSessionId: Constants.uuid,
+			timestamp: timestamp
+		)
+
+		playerItem?.emitEvents()
+		playerItem = nil
+
+		// When the item has not been played, in deinit, we only send StreamingSessionStart and StreamingSessionEnd.
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.last as? StreamingSessionEnd, streamingSessionEnd)
 	}
 
 	func test_usualStreamingPlayFlow_legacy() {
@@ -245,7 +341,7 @@ final class PlayerItemTests: XCTestCase {
 
 		let mediaProduct = MediaProduct.mock()
 		let startReason: StartReason = .EXPLICIT
-		var playerItem: PlayerItem? = PlayerItem.mock(
+		let playerItem: PlayerItem? = PlayerItem.mock(
 			startReason: startReason,
 			mediaProduct: mediaProduct,
 			networkType: .MOBILE,
