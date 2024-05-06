@@ -116,7 +116,7 @@ public extension Player {
 		clientToken: String,
 		clientVersion: String,
 		listener: PlayerListener,
-		listenerQueue: DispatchQueue,
+		listenerQueue: DispatchQueue = .main,
 		featureFlagProvider: FeatureFlagProvider,
 		externalPlayers: [GenericMediaPlayer.Type] = [],
 		credentialsProvider: CredentialsProvider,
