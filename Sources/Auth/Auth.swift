@@ -27,7 +27,7 @@ public class TidalAuth: AuthProvider {
 		config: AuthConfig
 	) {
 		self.config = config
-		let tokensStore = DefaultTokensStore(credentialsKey: config.credentialsKey)
+		let tokensStore = DefaultTokensStore(credentialsKey: config.credentialsKey, credentialsAccessGroup: config.credentialsAccessGroup)
 		loginRepository = provideLoginRepository(config, tokensStore: tokensStore)
 		tokenRepository = provideTokenRepository(config, tokensStore: tokensStore)
 	}
