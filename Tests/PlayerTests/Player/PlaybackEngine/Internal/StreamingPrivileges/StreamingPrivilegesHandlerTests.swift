@@ -179,7 +179,7 @@ extension StreamingPrivilegesHandlerTests {
 		// Opens the web socket with given connect response.
 		XCTAssertEqual(webSocket.responses, [Constants.webSocketConnectResponse])
 
-		// Cancel is not called
+		// Cancel is called with proper cancel code.
 		XCTAssertEqual(task.isCancelled, true)
 		XCTAssertEqual(task.cancelCallCount, 1)
 		XCTAssertEqual(task.cancelCloseCodes, [.normalClosure])
