@@ -6,8 +6,6 @@ on:
     paths:
       - 'version.txt'
   push:
-    branches:
-      - improvement/TIP-352-introduce-GH-workflow-for-changelog-sync-check
     paths:
       - 'version.txt'
 
