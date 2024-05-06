@@ -1,0 +1,22 @@
+name: Check CHANGELOG.md update
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'version.txt'
+  push:
+    paths:
+      - 'version.txt'
+
+jobs:
+  changelog-update-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check version in changelog
+        id: check_version
+        run: |
+          Scripts/checkVersionSync.sh
