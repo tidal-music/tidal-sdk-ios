@@ -50,11 +50,6 @@ final class PlayerViewModel: ObservableObject, PlayerListener {
 			clientToken: CLIENT_ID,
 			clientVersion: "1.0",
 			listener: self,
-			featureFlagProvider: FeatureFlagProvider(
-				isStallWhenTransitionFromEndedToBufferingEnabled: { true },
-				shouldUseAuthModule: { true },
-				shouldUseEventProducer: { true }
-			),
 			credentialsProvider: auth,
 			eventSender: eventSender
 		)
