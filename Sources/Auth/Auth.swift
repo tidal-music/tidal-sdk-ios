@@ -57,7 +57,7 @@ public class TidalAuth: AuthProvider {
 		loginRepository.isLoggedIn
 	}
 
-	public var isDeviceClientLoggedIn: Bool {
+	var isDeviceClientLoggedIn: Bool {
 		loginRepository.isDeviceClientLoggedIn
 	}
 
