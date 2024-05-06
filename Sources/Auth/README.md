@@ -97,7 +97,7 @@ To implement the login redirect flow, follow these steps or refer to our [Demo a
 4. After redirection to your app, follow up with a call to `finalizeLogin`, passing in the returned `redirectURL`.
  ```swift
     try await auth.finalizeLogin(loginResponseUri: redirectURL.absoluteString)
-	let isLoggedIn: Bool = auth.isLoggedIn
+	let isUserLoggedIn: Bool = auth.isUserLoggedIn
  ```
 5. Once logged in, you can use `credentialsProvider.getCredentials` to obtain `Credentials` for activities like API calls
 6. For subsequent logins, when the user returns to your app, simply call `credentialsProvider.getCredentials`. This is sufficient unless the user actively logs out or a token is revoked (e.g., due to a password change).
@@ -125,7 +125,7 @@ For devices with limited input capabilities, such as TVs or Watches, an alternat
 5. Subsequently, call `finalizeDeviceLogin` and pass `deviceCode`, which will continually poll the backend until the user successfully enters the code. Once the operation has completed successfully, you are ready to proceed.
  ```swift
 	try await auth.finalizeDeviceLogin(deviceCode: response.deviceCode)
-	isLoggedIn = auth.isLoggedIn
+	isUserLoggedIn = auth.isUserLoggedIn
 ```
 6. Retrieve a token by calling `credentialsProvider.getCredentials`.
 
