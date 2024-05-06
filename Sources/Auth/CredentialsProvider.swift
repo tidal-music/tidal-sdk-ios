@@ -4,6 +4,7 @@ import Foundation
 
 public protocol CredentialsProvider {
 	func getCredentials(apiErrorSubStatus: String?) async throws -> Credentials
+	var isUserLoggedIn: Bool { get }
 }
 
 public extension CredentialsProvider {

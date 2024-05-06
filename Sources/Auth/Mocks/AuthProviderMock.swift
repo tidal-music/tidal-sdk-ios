@@ -1,7 +1,7 @@
 import Common
 import Foundation
 
-public final class AuthProviderMock: AuthProvider {
+public final class AuthProviderMock: AuthProvider {	
 	public struct CredentialData {
 		public let credentials: Credentials
 		public let refreshToken: String?
@@ -20,7 +20,7 @@ public final class AuthProviderMock: AuthProvider {
 	public var finalizeLoginError: Error?
 	public var logoutError: Error?
 
-	public var isLoggedIn: Bool = true
+	public var isUserLoggedIn: Bool = true
 
 	public private(set) var getCredentialsCallCount = 0
 	public private(set) var logoutCallCount = 0

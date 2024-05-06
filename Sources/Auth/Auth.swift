@@ -5,7 +5,6 @@ public typealias AuthProvider = Auth & CredentialsProvider
 // MARK: - Auth
 
 public protocol Auth {
-	var isLoggedIn: Bool { get }
 	func initializeLogin(redirectUri: String, loginConfig: LoginConfig?) -> URL?
 	func finalizeLogin(loginResponseUri: String) async throws
 	func initializeDeviceLogin() async throws -> DeviceAuthorizationResponse
@@ -52,10 +51,6 @@ public class TidalAuth: AuthProvider {
 			defaultBackoffPolicy: DefaultRetryPolicy(),
 			upgradeBackoffPolicy: DefaultRetryPolicy()
 		)
-	}
-
-	public var isLoggedIn: Bool {
-		isUserLoggedIn || isDeviceClientLoggedIn
 	}
 
 	public var isUserLoggedIn: Bool {
