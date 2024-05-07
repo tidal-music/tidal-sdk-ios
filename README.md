@@ -2,6 +2,13 @@
 
 This is the repository for TIDAL SDK modules for iOS development.
 
+## Available modules
+
+- [auth](./Sources/Auth/README.md)
+- [common](./Sources/Common/README.md)
+- [eventproducer](./Sources/EventProducer/README.md)
+- [player](./Sources/Player/README.md)
+
 ## Getting started
 1. Clone the repository
 2. Run `./local-setup.sh`
