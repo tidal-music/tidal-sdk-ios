@@ -2,6 +2,8 @@ import Common
 import Foundation
 
 public final class CredentialsProviderMock: CredentialsProvider {
+	public var isUserLoggedIn: Bool = true
+
 	public var injectedAuthResult = AuthResult.success(Credentials.mock())
 	public private(set) var getCredentialsCallCount = 0
 

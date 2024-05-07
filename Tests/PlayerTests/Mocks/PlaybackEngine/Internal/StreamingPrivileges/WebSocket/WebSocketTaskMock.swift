@@ -34,6 +34,7 @@ final class WebSocketTaskMock: WebSocketTask {
 	}
 
 	func cancel(with closeCode: URLSessionWebSocketTask.CloseCode) {
+		cancelCallCount += 1
 		cancelCloseCodes.append(closeCode)
 		isCancelled = true
 	}
