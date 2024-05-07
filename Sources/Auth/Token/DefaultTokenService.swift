@@ -26,7 +26,7 @@ struct DefaultTokenService: TokenService, HTTPService {
 		}
 		
 		print("🚧\(request)")
-		print("🚧🚧\(request.httpBody)")
+		print("🚧🚧\(String(data: request.httpBody!, encoding: String.Encoding.utf8) ?? "NIL")")
 
 		return try await executeRequest(request)
 	}
