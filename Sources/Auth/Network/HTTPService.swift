@@ -23,7 +23,7 @@ extension HTTPService {
 		guard let url = urlComponents?.url else {
 			return nil
 		}
-		
+
 		var request = URLRequest(url: url)
 		request.httpMethod = httpMethod.rawValue
 		request.setValue(contentType, forHTTPHeaderField: "Content-Type")
