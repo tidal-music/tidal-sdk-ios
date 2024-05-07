@@ -46,7 +46,7 @@ class AuthViewModel: ObservableObject {
 
 	init() {
 		auth.config(config: authConfig)
-		isLoggedIn = auth.isLoggedIn
+		isLoggedIn = auth.isUserLoggedIn
 	}
 
 	func logout() {
@@ -54,7 +54,7 @@ class AuthViewModel: ObservableObject {
 			try auth.logout()
 			userCode = ""
 			errorMessage = ""
-			isLoggedIn = auth.isLoggedIn
+			isLoggedIn = auth.isUserLoggedIn
 		} catch {
 			errorMessage = error.localizedDescription
 		}
@@ -73,7 +73,7 @@ class AuthViewModel: ObservableObject {
 		Task {
 			do {
 				try await auth.finalizeLogin(loginResponseUri: url)
-				isLoggedIn = auth.isLoggedIn
+				isLoggedIn = auth.isUserLoggedIn
 			} catch {
 				errorMessage = error.localizedDescription
 			}
@@ -88,7 +88,7 @@ class AuthViewModel: ObservableObject {
 				userCode = response.userCode
 				expiresAt = Date().addingTimeInterval(TimeInterval(response.expiresIn))
 				try await auth.finalizeDeviceLogin(deviceCode: response.deviceCode)
-				isLoggedIn = auth.isLoggedIn
+				isLoggedIn = auth.isUserLoggedIn
 			} catch let error as TidalError {
 				if let message = error.message {
 					errorMessage = message
