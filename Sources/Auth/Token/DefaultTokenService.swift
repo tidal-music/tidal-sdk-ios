@@ -24,9 +24,6 @@ struct DefaultTokenService: TokenService, HTTPService {
 		guard let request = request(url: authBaseUrl, path: AUTH_PATH, queryItems: queryItems) else {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
-		
-		print("🚧\(request)")
-		print("🚧🚧\(String(data: request.httpBody!, encoding: String.Encoding.utf8) ?? "NIL")")
 
 		return try await executeRequest(request)
 	}
