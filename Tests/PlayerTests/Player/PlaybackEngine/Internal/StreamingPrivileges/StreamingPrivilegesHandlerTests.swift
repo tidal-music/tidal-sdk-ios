@@ -147,9 +147,6 @@ extension StreamingPrivilegesHandlerTests {
 		let task = WebSocketTaskMock()
 		webSocket.taskToReturn = task
 
-		let messageToReceive: URLSessionWebSocketTask.Message = .string(WebSocketTaskMock.Constants.privilegedSessionNotificationIncomingMessageString)
-		var isFirstCallToReceiveFunc = true
-
 		let receiveBlock: (() async throws -> URLSessionWebSocketTask.Message) = {
 			// Simulate a long-running receive that will be cancelled by the test
 			while !task.isCancelled {
