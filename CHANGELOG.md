@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.16] - 2024-05-07
+### Added
+- Support for keychain sharing (Auth)
+- Default listener queue on player bootstrap (Player)
+- Add a new workflow to verify CHANGELOG.md update status
+- Add uts for streaming privileges handler when in offline mode (Player)
+### Fixed
+- Fix for SwiftLint warnings on test targets
+### Changed
+- Made some PlayerListener protocol methods optional (Player)
+- CredentialsProvider: isUserLoggedIn and removed isLoggedIn from Auth
+### Removed
+- Scopes validation (Auth)
+
 ## [0.3.15] - 2024-04-26
 ### Added
 - Initial support for Uploaded Content
