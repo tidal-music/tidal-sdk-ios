@@ -5,8 +5,7 @@ import Foundation
 struct LoginUriBuilder {
 	private let AUTH_PATH = "/authorize"
 	private let CODE_CHALLENGE_METHOD = "S256"
-	private let DEFAULT_LOGIN_URL = "login.tidal.com"
-	private let SCHEME = "https"
+	private var loginBaseUrl: String
 
 	enum QueryKeys {
 		static let CLIENT_ID_KEY = "client_id"
@@ -22,40 +21,39 @@ struct LoginUriBuilder {
 	private let clientId: String
 	private let clientUniqueKey: String?
 
-	init(clientId: String, clientUniqueKey: String?) {
+	init(clientId: String, clientUniqueKey: String?, loginBaseUrl: String) {
 		self.clientId = clientId
 		self.clientUniqueKey = clientUniqueKey
+		self.loginBaseUrl = loginBaseUrl
 	}
 
 	func getLoginUri(redirectUri: String, loginConfig: LoginConfig?, codeChallenge: String) -> String? {
-		var builder = URLComponents()
-		builder.scheme = SCHEME
-		builder.host = DEFAULT_LOGIN_URL
-		builder.path = AUTH_PATH
-		builder.percentEncodedQueryItems = [
+		var builder = URLComponents(string: loginBaseUrl)
+		builder?.path = AUTH_PATH
+		builder?.percentEncodedQueryItems = [
 			URLQueryItem(name: QueryKeys.REDIRECT_URI_KEY, value: redirectUri.urlEncoded),
 			URLQueryItem(name: QueryKeys.RESPONSE_TYPE, value: "code"),
 		]
 
 		for param in buildBaseParameters(clientId: clientId, clientUniqueKey: clientUniqueKey, codeChallenge: codeChallenge) {
-			builder.percentEncodedQueryItems?.append(URLQueryItem(name: param.key, value: param.value))
+			builder?.percentEncodedQueryItems?.append(URLQueryItem(name: param.key, value: param.value))
 		}
 
 		evaluateLoginConfig(builder: &builder, config: loginConfig)
-		return builder.url?.absoluteString
+		return builder?.url?.absoluteString
 	}
 
-	private func evaluateLoginConfig(builder: inout URLComponents, config: LoginConfig?) {
+	private func evaluateLoginConfig(builder: inout URLComponents?, config: LoginConfig?) {
 		if let locale = config?.locale {
-			builder.queryItems?.append(URLQueryItem(name: QueryKeys.LANGUAGE_KEY, value: locale.identifier))
+			builder?.queryItems?.append(URLQueryItem(name: QueryKeys.LANGUAGE_KEY, value: locale.identifier))
 		}
 
 		if let email = config?.email {
-			builder.queryItems?.append(URLQueryItem(name: QueryKeys.EMAIL_KEY, value: email))
+			builder?.queryItems?.append(URLQueryItem(name: QueryKeys.EMAIL_KEY, value: email))
 		}
 
 		config?.customParams.forEach { param in
-			builder.queryItems?.append(URLQueryItem(name: param.key, value: param.value))
+			builder?.queryItems?.append(URLQueryItem(name: param.key, value: param.value))
 		}
 	}
 

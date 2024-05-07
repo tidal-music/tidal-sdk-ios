@@ -12,6 +12,7 @@ final class LoginRepositoryTest: XCTestCase {
 	private var testRetryPolicy: RetryPolicy!
 	private let loginUri = "https://tidal.com/ios/login/auth"
 	private let clientId = "12345"
+	private let loginBaseUri = "https://login.tidal.com"
 	private let clientUniqueKey = "testUniqueKey"
 	private lazy var authConfig = AuthConfig(
 		clientId: clientId,
@@ -49,7 +50,8 @@ final class LoginRepositoryTest: XCTestCase {
 			tokensStore: tokensStore,
 			loginUriBuilder: LoginUriBuilder(
 				clientId: clientId,
-				clientUniqueKey: clientUniqueKey
+				clientUniqueKey: clientUniqueKey,
+				loginBaseUrl: loginBaseUri
 			),
 			loginService: loginService,
 			exponentialBackoffPolicy: retryPolicy

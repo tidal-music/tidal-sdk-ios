@@ -37,9 +37,10 @@ public class TidalAuth: AuthProvider {
 			tokensStore: tokensStore,
 			loginUriBuilder: LoginUriBuilder(
 				clientId: config.clientId,
-				clientUniqueKey: config.clientUniqueKey
+				clientUniqueKey: config.clientUniqueKey,
+				loginBaseUrl: config.tidalLoginServiceBaseUri
 			),
-			loginService: DefaultLoginService()
+			loginService: DefaultLoginService(authBaseUrl: config.tidalAuthServiceBaseUri)
 		)
 	}
 
@@ -47,7 +48,7 @@ public class TidalAuth: AuthProvider {
 		TokenRepository(
 			authConfig: config,
 			tokensStore: tokensStore,
-			tokenService: DefaultTokenService(),
+			tokenService: DefaultTokenService(authBaseUrl: config.tidalAuthServiceBaseUri),
 			defaultBackoffPolicy: DefaultRetryPolicy(),
 			upgradeBackoffPolicy: DefaultRetryPolicy()
 		)

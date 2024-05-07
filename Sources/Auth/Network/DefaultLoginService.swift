@@ -2,10 +2,14 @@ import Common
 import Foundation
 
 struct DefaultLoginService: LoginService, HTTPService {
-	private let AUTH_BASE_URL = "https://auth.tidal.com"
 	private let TOKEN_AUTH_PATH = "/v1/oauth2/token"
 	private let DEVICE_AUTH_PATH = "/v1/oauth2/device_authorization"
-
+	private let authBaseUrl: String
+	
+	init(authBaseUrl: String) {
+		self.authBaseUrl = authBaseUrl
+	}
+	
 	func getTokenWithCodeVerifier(
 		code: String,
 		clientId: String,
@@ -24,7 +28,7 @@ struct DefaultLoginService: LoginService, HTTPService {
 			URLQueryItem(name: "code_verifier", value: codeVerifier),
 			URLQueryItem(name: "client_unique_key", value: clientUniqueKey),
 		]
-		guard let request = request(url: AUTH_BASE_URL, path: TOKEN_AUTH_PATH, queryItems: queryItems) else {
+		guard let request = request(url: authBaseUrl, path: TOKEN_AUTH_PATH, queryItems: queryItems) else {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
 
@@ -39,7 +43,7 @@ struct DefaultLoginService: LoginService, HTTPService {
 			URLQueryItem(name: "scope", value: scope),
 			URLQueryItem(name: "client_id", value: clientId),
 		]
-		guard let request = request(url: AUTH_BASE_URL, path: DEVICE_AUTH_PATH, queryItems: queryItems) else {
+		guard let request = request(url: authBaseUrl, path: DEVICE_AUTH_PATH, queryItems: queryItems) else {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
 
@@ -62,7 +66,7 @@ struct DefaultLoginService: LoginService, HTTPService {
 			URLQueryItem(name: "scope", value: scopes),
 			URLQueryItem(name: "client_unique_key", value: clientUniqueKey),
 		]
-		guard let request = request(url: AUTH_BASE_URL, path: TOKEN_AUTH_PATH, queryItems: queryItems) else {
+		guard let request = request(url: authBaseUrl, path: TOKEN_AUTH_PATH, queryItems: queryItems) else {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
 
