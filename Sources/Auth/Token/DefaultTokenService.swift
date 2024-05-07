@@ -2,8 +2,12 @@ import Common
 import Foundation
 
 struct DefaultTokenService: TokenService, HTTPService {
-	private let AUTH_BASE_URL = "https://auth.tidal.com"
 	private let AUTH_PATH = "/v1/oauth2/token"
+	private let authBaseUrl: String
+    
+	init(authBaseUrl: String) {
+		self.authBaseUrl = authBaseUrl
+	}
 
 	func getTokenFromRefreshToken(
 		clientId: String,
@@ -17,7 +21,7 @@ struct DefaultTokenService: TokenService, HTTPService {
 			URLQueryItem(name: "refresh_token", value: refreshToken),
 			URLQueryItem(name: "scope", value: scope),
 		]
-		guard let request = request(url: AUTH_BASE_URL, path: AUTH_PATH, queryItems: queryItems) else {
+		guard let request = request(url: authBaseUrl, path: AUTH_PATH, queryItems: queryItems) else {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
 
@@ -36,7 +40,7 @@ struct DefaultTokenService: TokenService, HTTPService {
 			URLQueryItem(name: "client_secret", value: clientSecret),
 			URLQueryItem(name: "scope", value: scope),
 		]
-		guard let request = request(url: AUTH_BASE_URL, path: AUTH_PATH, queryItems: queryItems) else {
+		guard let request = request(url: authBaseUrl, path: AUTH_PATH, queryItems: queryItems) else {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
 
@@ -59,7 +63,7 @@ struct DefaultTokenService: TokenService, HTTPService {
 			URLQueryItem(name: "refresh_token", value: refreshToken),
 			URLQueryItem(name: "scope", value: scopes),
 		]
-		guard let request = request(url: AUTH_BASE_URL, path: AUTH_PATH, queryItems: queryItems) else {
+		guard let request = request(url: authBaseUrl, path: AUTH_PATH, queryItems: queryItems) else {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
 

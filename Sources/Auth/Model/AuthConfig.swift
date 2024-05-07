@@ -7,7 +7,10 @@ public struct AuthConfig {
 	public let credentialsKey: String
 	public let credentialsAccessGroup: String?
 	public let scopes: Scopes
+	public let tidalLoginServiceBaseUri: String
+	public let tidalAuthServiceBaseUri: String
 	public let enableCertificatePinning: Bool
+	
 	public init(
 		clientId: String,
 		clientUniqueKey: String? = nil,
@@ -15,6 +18,8 @@ public struct AuthConfig {
 		credentialsKey: String,
 		credentialsAccessGroup: String? = nil,
 		scopes: Scopes = Scopes(),
+		tidalLoginServiceBaseUri: String = "https://login.tidal.com",
+		tidalAuthServiceBaseUri: String = "https://auth.tidal.com",
 		enableCertificatePinning: Bool = true
 	) {
 		self.clientId = clientId
@@ -23,6 +28,8 @@ public struct AuthConfig {
 		self.credentialsKey = credentialsKey
 		self.credentialsAccessGroup = credentialsAccessGroup
 		self.scopes = scopes
+		self.tidalLoginServiceBaseUri = tidalLoginServiceBaseUri
+		self.tidalAuthServiceBaseUri = tidalAuthServiceBaseUri
 		self.enableCertificatePinning = enableCertificatePinning
 	}
 }
