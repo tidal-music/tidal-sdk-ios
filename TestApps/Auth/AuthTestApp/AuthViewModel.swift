@@ -23,7 +23,7 @@ class AuthViewModel: ObservableObject {
 	private var expiresAt: Date = Date()
 
 	private var authConfig: AuthConfig {
-		let scopes = (try? Scopes(scopes: ["r_usr", "w_usr", "w_sub"])) ?? Scopes()
+		let scopes = Scopes(scopes: ["r_usr", "w_usr", "w_sub"])
 		return AuthConfig(
 			clientId: isDeviceLoginEnabled ? CLIENT_ID_DEVICE_LOGIN : CLIENT_ID,
 			clientUniqueKey: CLIENT_UNIQUE_KEY,
