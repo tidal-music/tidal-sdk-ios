@@ -23,6 +23,7 @@ final class StreamingPrivilegesHandlerTests: XCTestCase {
 	private var errorManager: WebSocketErrorManager!
 	private var backoffPolicy: BackoffPolicyMock!
 	private let decoder = JSONDecoder()
+	private var configuration: Configuration!
 
 	override func setUp() {
 		super.setUp()
@@ -51,8 +52,9 @@ final class StreamingPrivilegesHandlerTests: XCTestCase {
 		backoffPolicy = BackoffPolicyMock()
 		errorManager = WebSocketErrorManager(backoffPolicy: backoffPolicy)
 
+		configuration = Configuration.mock()
 		streamingPrivilegesHandler = StreamingPrivilegesHandler(
-			configuration: Configuration.mock(),
+			configuration: configuration,
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			webSocket: webSocket,
@@ -128,6 +130,56 @@ extension StreamingPrivilegesHandlerTests {
 		// PRIVILEGED_SESSION_NOTIFICATION is received from the web socket and the func ``streamingPrivilegesLost(to:)`` of delegate is
 		// called.
 		XCTAssertEqual(streamingPrivilegesHandlerDelegate.streamingPrivilegesLostClientNames, ["web"])
+
+		notifyTask.cancel()
+	}
+
+	func test_when_offlineMode_isChanged_it_disconnects_from_webSocket() async throws {
+		// GIVEN
+
+		// Provide successful user level credentials
+		credentialsProvider.injectSuccessfulUserLevelCredentials()
+
+		// Inject web socket connection response
+		injectConnectResponse()
+
+		// Provide a mock task to be returned by the web socket
+		let task = WebSocketTaskMock()
+		webSocket.taskToReturn = task
+
+		let receiveBlock: (() async throws -> URLSessionWebSocketTask.Message) = {
+			// Simulate a long-running receive that will be cancelled by the test
+			while !task.isCancelled {
+				try await Task.sleep(seconds: Constants.sleepingTime)
+			}
+			throw CancellationError()
+		}
+		task.receiveBlock = receiveBlock
+
+		// WHEN
+		let notifyTask = Task {
+			await self.streamingPrivilegesHandler.notify()
+		}
+
+		try? await Task.sleep(seconds: Constants.sleepingTime)
+
+		configuration.offlineMode = true
+		streamingPrivilegesHandler.updateConfiguration(configuration)
+
+		try? await Task.sleep(seconds: 5)
+
+		// THEN
+
+		// The web socket is opened (one message is sent)
+		XCTAssertEqual(task.sendMessages.count, 1)
+
+		// Opens the web socket with given connect response.
+		XCTAssertEqual(webSocket.responses, [Constants.webSocketConnectResponse])
+
+		// Cancel is called with proper cancel code.
+		XCTAssertEqual(task.isCancelled, true)
+		XCTAssertEqual(task.cancelCallCount, 1)
+		XCTAssertEqual(task.cancelCloseCodes, [.normalClosure])
 
 		notifyTask.cancel()
 	}
