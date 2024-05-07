@@ -12,7 +12,7 @@ final class TokensStoreTests: XCTestCase {
 		var store = DefaultTokensStore(credentialsKey: "test", credentialsAccessGroup: nil)
 		XCTAssertNil(try store.getLatestTokens())
 
-		let credentials = try Tokens(
+		let credentials = Tokens(
 			credentials: Credentials(
 				clientId: "TIDAL",
 				requestedScopes: Scopes(scopes: ["r_klogi"]),
@@ -31,8 +31,8 @@ final class TokensStoreTests: XCTestCase {
 	}
 
 	func testLatestTokensAreNilAfterErasing() throws {
-		var store = DefaultTokensStore(credentialsKey: "test", credentialsAccessGroup: nil)
-		let credentials = try Tokens(
+		let store = DefaultTokensStore(credentialsKey: "test", credentialsAccessGroup: nil)
+		let credentials = Tokens(
 			credentials: Credentials(
 				clientId: "TIDAL",
 				requestedScopes: Scopes(scopes: ["r_klogi"]),
