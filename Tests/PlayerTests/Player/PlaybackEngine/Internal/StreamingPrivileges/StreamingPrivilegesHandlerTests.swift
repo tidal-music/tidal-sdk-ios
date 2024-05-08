@@ -524,7 +524,7 @@ extension StreamingPrivilegesHandlerTests {
 
 // MARK: - Helpers
 
-extension StreamingPrivilegesHandlerTests {
+private extension StreamingPrivilegesHandlerTests {
 	func injectConnectResponse() {
 		let response = Constants.webSocketConnectResponse
 		JsonEncodedResponseURLProtocol.succeed(with: response)
