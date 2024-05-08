@@ -126,8 +126,7 @@ let package = Package(
 				.auth,
 			],
 			resources: [
-				.process("PlayLog/AudioFiles/test_1min.m4a"),
-				.process("PlayLog/AudioFiles/test_5sec.m4a"),
+				.process("Resources"),
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
