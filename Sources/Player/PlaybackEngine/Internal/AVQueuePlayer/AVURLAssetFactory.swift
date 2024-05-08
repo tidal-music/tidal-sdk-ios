@@ -6,19 +6,23 @@ import Foundation
 final class AVURLAssetFactory: NSObject {
 	private static let TTL: Int = 24 * 60 * 60
 
-	private var downloads: [Download]
-	private var session: AVAssetDownloadURLSession!
+	private var downloads: [Download] = [Download]()
+
+	private let queue: OperationQueue
 	private let assetCache: AssetCache
 
-	init(with queue: OperationQueue, assetCache: AssetCache = AssetCache()) {
-		downloads = [Download]()
+	private lazy var session: AVAssetDownloadURLSession = AVAssetDownloadURLSession(
+		configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.player.hls.cache"),
+		assetDownloadDelegate: self,
+		delegateQueue: queue
+	)
+
+	init(
+		with queue: OperationQueue,
+		assetCache: AssetCache = AssetCache()
+	) {
+		self.queue = queue
 		self.assetCache = assetCache
-		super.init()
-		session = AVAssetDownloadURLSession(
-			configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.player.hls.cache"),
-			assetDownloadDelegate: self,
-			delegateQueue: queue
-		)
 	}
 
 	func create(using cacheKey: String, or url: URL) -> AVURLAsset {
@@ -33,6 +37,10 @@ final class AVURLAssetFactory: NSObject {
 
 	func reset() {
 		downloads.forEach { $0.task.cancel() }
+	}
+
+	func clearCache() {
+		// TODO: This can't be implemented until we fully fix caching in a later PR
 	}
 }
 
