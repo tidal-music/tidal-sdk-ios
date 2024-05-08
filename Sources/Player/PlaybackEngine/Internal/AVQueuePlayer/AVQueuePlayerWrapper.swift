@@ -27,6 +27,12 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	private var playerMonitor: AVPlayerMonitor?
 
+	// MARK: - Convenience properties
+
+	private var isContentCachingEnabled: Bool {
+		featureFlagProvider.isContentCachingEnabled()
+	}
+
 	private let supportedCodecs: [PlayerAudioCodec] = [
 		PlayerAudioCodec.AAC,
 		PlayerAudioCodec.AAC_LC,
@@ -40,6 +46,8 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	var shouldVerifyItWasPlayingBeforeInterruption: Bool { false }
 	var shouldSwitchStateOnSkipToNext: Bool { false }
 	// swiftlint:enable identifier_name
+
+	// MARK: Initialization
 
 	init(cachePath: URL, featureFlagProvider: FeatureFlagProvider) {
 		self.featureFlagProvider = featureFlagProvider
@@ -59,6 +67,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		delegates = PlayerMonitoringDelegates()
 
 		preparePlayer()
+		preparePlayerCache()
 	}
 
 	func canPlay(
@@ -84,7 +93,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	) async -> Asset {
 		await withCheckedContinuation { continuation in
 			queue.dispatch {
-				let urlAsset: AVURLAsset = if let cacheKey {
+				let urlAsset: AVURLAsset = if let cacheKey, self.isContentCachingEnabled {
 					self.assetFactory.create(using: cacheKey, or: url)
 				} else {
 					AVURLAsset(url: url, options: [AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL])
@@ -313,6 +322,12 @@ private extension AVQueuePlayerWrapper {
 			onWaitingToPlay: waiting,
 			onPlaybackProgress: playbackProgressed
 		)
+	}
+
+	func preparePlayerCache() {
+		if !isContentCachingEnabled {
+			assetFactory.clearCache()
+		}
 	}
 
 	func unload(playerItem: AVPlayerItem) {

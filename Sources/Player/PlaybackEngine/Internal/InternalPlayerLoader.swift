@@ -12,14 +12,15 @@ final class InternalPlayerLoader: PlayerLoader {
 	private let credentialsProvider: CredentialsProvider
 
 	private let featureFlagProvider: FeatureFlagProvider
-	private var shouldUseAuthModule: Bool {
-		featureFlagProvider.shouldUseAuthModule()
-	}
 
 	let mainPlayer: GenericMediaPlayer
 	var players: [GenericMediaPlayer] = []
 
 	// MARK: - Convenience properties
+
+	private var shouldUseAuthModule: Bool {
+		featureFlagProvider.shouldUseAuthModule()
+	}
 
 	private var loudnessNormalizationMode: LoudnessNormalizationMode {
 		configuration.loudnessNormalizationMode
@@ -178,9 +179,9 @@ private extension InternalPlayerLoader {
 		player: GenericMediaPlayer
 	) async -> Asset {
 		var cacheKey: String? = playbackInfo.contentHash
-		if let audioQuality = playbackInfo.audioQuality, audioQuality == .HI_RES_LOSSLESS {
-			// We are intentionally disabling caching for this audio quality due to large size
-			// and not having the option to limit the maximum cache usage
+		if playbackInfo.audioQuality == .HI_RES_LOSSLESS {
+			// We intentionally disable caching for HiRes LossLess due to its large size
+			// and not having the option yet to limit the maximum cache usage
 			cacheKey = nil
 		}
 
