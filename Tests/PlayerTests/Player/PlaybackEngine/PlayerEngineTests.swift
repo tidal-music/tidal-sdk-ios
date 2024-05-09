@@ -875,7 +875,7 @@ extension PlayerEngineTests {
 			streamingSessionId: trackPlaybackInfo.streamingSessionId,
 			contentHash: trackPlaybackInfo.manifestHash,
 			mediaType: trackPlaybackInfo.manifestMimeType,
-			url: URL(string: "https://www.google.com")!, // from the manifest
+			url: URL(string: "https://www.tidal.com")!, // from the manifest
 			licenseSecurityToken: trackPlaybackInfo.licenseSecurityToken,
 			albumReplayGain: trackPlaybackInfo.albumReplayGain,
 			albumPeakAmplitude: trackPlaybackInfo.albumPeakAmplitude,
