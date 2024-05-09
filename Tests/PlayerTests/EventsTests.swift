@@ -1440,6 +1440,10 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4
+		}
+
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -3413,6 +3417,10 @@ final class EventsTests: XCTestCase {
 		player.stalled()
 
 		player.failed(with: NSError(domain: "Stall", code: 1, userInfo: nil))
+
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
