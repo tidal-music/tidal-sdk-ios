@@ -16,7 +16,7 @@ extension PlaybackInfo {
 		streamingSessionId: String? = "streamingSessionId",
 		contentHash: String = "contentHash",
 		mediaType: String = MediaTypes.EMU,
-		url: URL = URL(string: "https://www.google.com")!,
+		url: URL = URL(string: "https://www.tidal.com")!,
 		licenseSecurityToken: String? = nil,
 		albumReplayGain: Float? = nil,
 		albumPeakAmplitude: Float? = nil,
@@ -68,7 +68,7 @@ extension PlaybackInfo {
 			streamingSessionId: trackPlaybackInfo.streamingSessionId,
 			contentHash: trackPlaybackInfo.manifestHash,
 			mediaType: trackPlaybackInfo.manifestMimeType,
-			url: URL(string: "https://www.google.com")!, // from the manifest
+			url: URL(string: "https://www.tidal.com")!, // from the manifest
 			licenseSecurityToken: nil,
 			albumReplayGain: trackPlaybackInfo.albumReplayGain,
 			albumPeakAmplitude: trackPlaybackInfo.albumPeakAmplitude,

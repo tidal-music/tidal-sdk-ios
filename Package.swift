@@ -125,6 +125,9 @@ let package = Package(
 				.player,
 				.auth,
 			],
+			resources: [
+				.process("Resources"),
+			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
