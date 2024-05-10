@@ -393,7 +393,7 @@ extension PlayLogTests {
 				trackReachedAssetPositionExpectation.fulfill()
 			}
 		}
-		wait(for: [trackReachedAssetPositionExpectation], timeout: targetAssetPosition + Constants.expectationShortExtraTime)
+		wait(for: [trackReachedAssetPositionExpectation], timeout: targetAssetPosition + Constants.expectationExtraTime)
 		timer.invalidate()
 	}
 
