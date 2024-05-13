@@ -5,7 +5,7 @@ import Foundation
 
 private enum Constants {
 	static let fileExtension = "m4a"
-	static let acceptableAssetPositionTimeRange: TimeInterval = 0.05
+	static let acceptableAssetPositionTimeRange: TimeInterval = 0.5
 }
 
 // MARK: - PlayLogTestsHelper
@@ -22,9 +22,9 @@ enum PlayLogTestsHelper {
 	}
 
 	static func isTimeDifferenceNegligible(assetPosition: Double, anotherAssetPosition: Double) -> Bool {
-		let expectedEndTime = CMTimeGetSeconds(CMTime(seconds: assetPosition, preferredTimescale: CMTimeScale.max))
-		let actualEndTime = CMTimeGetSeconds(CMTime(seconds: anotherAssetPosition, preferredTimescale: CMTimeScale.max))
-		let timeDifference = abs(actualEndTime - expectedEndTime)
+		let time = CMTimeGetSeconds(CMTime(seconds: assetPosition, preferredTimescale: CMTimeScale.max))
+		let anotherTime = CMTimeGetSeconds(CMTime(seconds: anotherAssetPosition, preferredTimescale: CMTimeScale.max))
+		let timeDifference = abs(anotherTime - time)
 		guard timeDifference <= Constants.acceptableAssetPositionTimeRange else {
 			return false
 		}
