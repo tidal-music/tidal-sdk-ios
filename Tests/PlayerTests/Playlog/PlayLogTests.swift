@@ -591,6 +591,50 @@ extension PlayLogTests {
 		)
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
 	}
+
+	func test_play_media_and_reset() {
+		// GIVEN
+		let audioFile = shortAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile)
+		credentialsProvider.injectSuccessfulUserLevelCredentials()
+
+		// First we load the media product and then proceed to play it.
+		let mediaProduct = audioFile.mediaProduct
+		playerEngine.load(mediaProduct, timestamp: timestamp)
+
+		// WHEN
+		playerEngine.play(timestamp: timestamp)
+
+		guard let currentItem = playerEngine.currentItem else {
+			XCTFail("Expected for the currentItem to be set up!")
+			return
+		}
+
+		// Wait for the track to reach 1 second
+		let resetAssetPosition: Double = 1
+		wait(for: currentItem, toReach: resetAssetPosition)
+
+		playerEngine.reset()
+
+		// THEN
+		optimizedWait(timeout: audioFile.duration) {
+			playerEventSender.playLogEvents.count == 1
+		}
+
+		let playLogEvent = playerEventSender.playLogEvents[0]
+		let expectedPlayLogEvent = PlayLogEvent.mock(
+			startAssetPosition: 0,
+			requestedProductId: mediaProduct.productId,
+			actualProductId: mediaProduct.productId,
+			actualQuality: AudioQuality.LOSSLESS.rawValue,
+			sourceType: Constants.PlayLogSource.short.sourceType,
+			sourceId: Constants.PlayLogSource.short.sourceId,
+			actions: [],
+			endTimestamp: timestamp,
+			endAssetPosition: resetAssetPosition
+		)
+		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
+	}
 }
 
 // MARK: - Assertion Helpers
