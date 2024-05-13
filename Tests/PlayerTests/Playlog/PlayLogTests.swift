@@ -143,6 +143,45 @@ final class PlayLogTests: XCTestCase {
 	}
 }
 
+// MARK: - Tests
+
+extension PlayLogTests {
+	func test_play_media_till_end() {
+		// GIVEN
+		let audioFile = shortAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile)
+		credentialsProvider.injectSuccessfulUserLevelCredentials()
+
+		// First we load the media product and then proceed to play it.
+		let mediaProduct = audioFile.mediaProduct
+		playerEngine.load(mediaProduct, timestamp: timestamp)
+
+		// WHEN
+		playerEngine.play(timestamp: timestamp)
+
+		// Now we wait the same amount of time of the track plus extra time
+		let expectation = expectation(description: "Expecting audio file to have been played")
+		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
+
+		// THEN
+		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
+
+		let playLogEvent = playerEventSender.playLogEvents[0]
+		let expectedPlayLogEvent = PlayLogEvent.mock(
+			startAssetPosition: 0,
+			requestedProductId: mediaProduct.productId,
+			actualProductId: mediaProduct.productId,
+			actualQuality: AudioQuality.LOSSLESS.rawValue,
+			sourceType: Constants.PlayLogSource.short.sourceType,
+			sourceId: Constants.PlayLogSource.short.sourceId,
+			actions: [],
+			endTimestamp: timestamp,
+			endAssetPosition: audioFile.duration
+		)
+		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
+	}
+}
+
 // MARK: - Assertion Helpers
 
 extension PlayLogTests {
