@@ -340,7 +340,7 @@ private extension PlayerItem {
 
 		let endTimestamp = metrics.endTime ?? now
 
-		let sessionTags = (asset?.isCached() ?? false) ? [PlaybackStatistics.SessionTag.CACHED] : nil
+		let tags = (asset?.isCached() ?? false) ? [PlaybackStatistics.EventTag.CACHED] : nil
 
 		let endInfo = metrics.endInfo
 		playerEventSender.send(PlaybackStatistics(
@@ -357,7 +357,7 @@ private extension PlayerItem {
 			startReason: playbackStartReason,
 			endReason: endInfo.reason.rawValue,
 			endTimestamp: endTimestamp,
-			sessionTags: sessionTags,
+			tags: tags,
 			errorMessage: endInfo.message,
 			errorCode: endInfo.code
 		))

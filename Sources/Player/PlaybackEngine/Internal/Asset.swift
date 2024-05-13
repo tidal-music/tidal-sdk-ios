@@ -10,7 +10,7 @@ open class Asset {
 
 	@Atomic var assetPosition: Double
 	@Atomic var playbackMetadata: AssetPlaybackMetadata?
-	@Atomic var cached: Bool = false
+	@Atomic private var cached: Bool = false
 
 	/// Convenience initializer.
 	/// - Parameters:
