@@ -55,7 +55,7 @@ final class PlayerItem {
 		shouldPlayWhenLoaded = false
 		playbackStartReason = startReason
 
-		let sessionTags = isPreload ? [SessionTag.PRELOADED] : nil
+		let sessionTags = isPreload ? [StreamingSessionStart.SessionTag.PRELOADED] : nil
 
 		playerEventSender.send(StreamingSessionStart(
 			streamingSessionId: id,
@@ -340,7 +340,7 @@ private extension PlayerItem {
 
 		let endTimestamp = metrics.endTime ?? now
 
-		let sessionTags = (asset?.isCached() ?? false) ? [SessionTag.CACHED] : nil
+		let sessionTags = (asset?.isCached() ?? false) ? [PlaybackStatistics.SessionTag.CACHED] : nil
 
 		let endInfo = metrics.endInfo
 		playerEventSender.send(PlaybackStatistics(

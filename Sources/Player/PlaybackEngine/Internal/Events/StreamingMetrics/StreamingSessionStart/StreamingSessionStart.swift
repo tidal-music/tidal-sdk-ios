@@ -1,6 +1,10 @@
 import Foundation
 
 struct StreamingSessionStart: StreamingMetricsEvent {
+	enum SessionTag: String, Codable {
+		case PRELOADED
+	}
+
 	// MARK: - StreamingMetricsEvent
 
 	let streamingSessionId: String

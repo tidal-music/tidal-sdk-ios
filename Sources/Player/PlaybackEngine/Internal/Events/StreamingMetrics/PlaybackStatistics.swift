@@ -3,6 +3,10 @@ import Foundation
 // MARK: - PlaybackStatistics
 
 struct PlaybackStatistics: StreamingMetricsEvent {
+	enum SessionTag: String, Codable {
+		case CACHED
+	}
+
 	// MARK: - StreamingMetricsEvent
 
 	let streamingSessionId: String
