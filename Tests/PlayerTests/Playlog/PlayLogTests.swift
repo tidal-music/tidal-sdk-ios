@@ -460,6 +460,137 @@ extension PlayLogTests {
 		)
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
 	}
+
+	func test_play_and_pause_and_resume_and_pause_and_resume() {
+		// GIVEN
+		let audioFile = shortAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile)
+		credentialsProvider.injectSuccessfulUserLevelCredentials()
+
+		// First we load the media product and then proceed to play it.
+		let mediaProduct = audioFile.mediaProduct
+		playerEngine.load(mediaProduct, timestamp: timestamp)
+
+		// WHEN
+		playerEngine.play(timestamp: timestamp)
+
+		guard let currentItem = playerEngine.currentItem else {
+			XCTFail("Expected for the currentItem to be set up!")
+			return
+		}
+
+		// Wait for the track to reach 2 seconds
+		let pauseAssetPosition: Double = 2
+		wait(for: currentItem, toReach: pauseAssetPosition)
+
+		playerEngine.pause()
+
+		// Wait for the state to be changed to NOT_PLAYING
+		waitForPlayerToPause()
+
+		// Play again
+		playerEngine.play(timestamp: timestamp)
+
+		// Wait for the track to reach 3 seconds
+		let secondPauseAssetPosition: Double = 3
+		wait(for: currentItem, toReach: secondPauseAssetPosition)
+
+		playerEngine.pause()
+
+		// Wait for the state to be changed to NOT_PLAYING
+		waitForPlayerToPause()
+
+		// Play again
+		playerEngine.play(timestamp: timestamp)
+
+		// THEN
+		optimizedWait(timeout: audioFile.duration) {
+			playerEventSender.playLogEvents.count == 1
+		}
+
+		let playLogEvent = playerEventSender.playLogEvents[0]
+		let actions = [
+			Action(actionType: .PLAYBACK_STOP, assetPosition: pauseAssetPosition, timestamp: timestamp),
+			Action(actionType: .PLAYBACK_START, assetPosition: pauseAssetPosition, timestamp: timestamp),
+			Action(actionType: .PLAYBACK_STOP, assetPosition: secondPauseAssetPosition, timestamp: timestamp),
+			Action(actionType: .PLAYBACK_START, assetPosition: secondPauseAssetPosition, timestamp: timestamp),
+		]
+		let expectedPlayLogEvent = PlayLogEvent.mock(
+			startAssetPosition: 0,
+			requestedProductId: mediaProduct.productId,
+			actualProductId: mediaProduct.productId,
+			actualQuality: AudioQuality.LOSSLESS.rawValue,
+			sourceType: Constants.PlayLogSource.short.sourceType,
+			sourceId: Constants.PlayLogSource.short.sourceId,
+			actions: actions,
+			endTimestamp: timestamp,
+			endAssetPosition: audioFile.duration
+		)
+
+		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
+	}
+
+	func test_play_and_seek_forward_and_seek_back_and_resume() {
+		// GIVEN
+		let audioFile = shortAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile)
+		credentialsProvider.injectSuccessfulUserLevelCredentials()
+
+		// First we load the media product and then proceed to play it.
+		let mediaProduct = audioFile.mediaProduct
+		playerEngine.load(mediaProduct, timestamp: timestamp)
+
+		// WHEN
+		playerEngine.play(timestamp: timestamp)
+
+		guard let currentItem = playerEngine.currentItem else {
+			XCTFail("Expected for the currentItem to be set up!")
+			return
+		}
+
+		// Wait for the track to reach 2 seconds
+		let seekAssetPosition: Double = 2
+		wait(for: currentItem, toReach: seekAssetPosition)
+
+		// Seek forward to 3 seconds
+		let seekForwardAssetPosition: Double = 3
+		playerEngine.seek(seekForwardAssetPosition)
+
+		// Wait for the track to reach 3 seconds
+		wait(for: currentItem, toReach: seekForwardAssetPosition)
+
+		// Seek back to 2 seconds
+		let seekBackAssetPosition: Double = 2
+		playerEngine.seek(seekBackAssetPosition)
+
+		// Wait for the track to reach 2 seconds
+		wait(for: currentItem, toReach: seekForwardAssetPosition)
+
+		// THEN
+		optimizedWait(timeout: audioFile.duration) {
+			playerEventSender.playLogEvents.count == 1
+		}
+
+		let playLogEvent = playerEventSender.playLogEvents[0]
+		let actions = [
+			Action(actionType: .PLAYBACK_STOP, assetPosition: seekAssetPosition, timestamp: timestamp),
+			Action(actionType: .PLAYBACK_START, assetPosition: seekForwardAssetPosition, timestamp: timestamp),
+			Action(actionType: .PLAYBACK_STOP, assetPosition: seekForwardAssetPosition, timestamp: timestamp),
+			Action(actionType: .PLAYBACK_START, assetPosition: seekBackAssetPosition, timestamp: timestamp),
+		]
+		let expectedPlayLogEvent = PlayLogEvent.mock(
+			startAssetPosition: 0,
+			requestedProductId: mediaProduct.productId,
+			actualProductId: mediaProduct.productId,
+			actualQuality: AudioQuality.LOSSLESS.rawValue,
+			sourceType: Constants.PlayLogSource.short.sourceType,
+			sourceId: Constants.PlayLogSource.short.sourceId,
+			actions: actions,
+			endTimestamp: timestamp,
+			endAssetPosition: audioFile.duration
+		)
+		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
+	}
 }
 
 // MARK: - Assertion Helpers
