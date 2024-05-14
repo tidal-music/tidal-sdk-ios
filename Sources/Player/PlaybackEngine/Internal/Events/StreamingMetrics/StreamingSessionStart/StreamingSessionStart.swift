@@ -1,7 +1,7 @@
 import Foundation
 
 struct StreamingSessionStart: StreamingMetricsEvent {
-	enum Tag: String, Codable {
+	enum SessionTag: String, Codable {
 		case PRELOADED
 	}
 
@@ -28,7 +28,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 	let sessionType: SessionType
 	let sessionProductType: ProductType
 	let sessionProductId: String
-	let sessionTags: [Tag]?
+	let sessionTags: [SessionTag]?
 
 	private enum CodingKeys: String, CodingKey {
 		case streamingSessionId
@@ -58,7 +58,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		sessionType: SessionType,
 		sessionProductType: ProductType,
 		sessionProductId: String,
-		sessionTags: [Tag]? = nil
+		sessionTags: [SessionTag]? = nil
 	) {
 		self.streamingSessionId = streamingSessionId
 		self.startReason = startReason
@@ -113,6 +113,6 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		sessionType = try container.decode(SessionType.self, forKey: .sessionType)
 		sessionProductType = try container.decode(ProductType.self, forKey: .sessionProductType)
 		sessionProductId = try container.decode(String.self, forKey: .sessionProductId)
-		sessionTags = try container.decodeIfPresent([Tag].self, forKey: .sessionTags)
+		sessionTags = try container.decodeIfPresent([SessionTag].self, forKey: .sessionTags)
 	}
 }

@@ -25,13 +25,12 @@ final class AVURLAssetFactory: NSObject {
 		self.assetCache = assetCache
 	}
 
+	func get(with cacheKey: String) -> AVURLAsset? {
+		getAssetFromLocalStorage(with: cacheKey)
+	}
+
 	func create(using cacheKey: String, or url: URL) -> AVURLAsset {
 		reset()
-
-		if let asset = getAssetFromLocalStorage(with: cacheKey) {
-			return asset
-		}
-
 		return downloadAsset(with: url, and: cacheKey)
 	}
 
@@ -51,7 +50,7 @@ private extension AVURLAssetFactory {
 		}
 
 		let asset = AVURLAsset(url: url)
-		guard asset.isCached else {
+		guard asset.isPlayableOffline else {
 			assetCache.delete(cacheKey)
 			return nil
 		}
@@ -134,12 +133,12 @@ private final class Download {
 	}
 
 	func isComplete() -> Bool {
-		(task as? AVAggregateAssetDownloadTask).map { $0.urlAsset.isCached } ?? false
+		(task as? AVAggregateAssetDownloadTask).map { $0.urlAsset.isPlayableOffline } ?? false
 	}
 }
 
 extension AVURLAsset {
-	var isCached: Bool {
+	var isPlayableOffline: Bool {
 		assetCache?.isPlayableOffline ?? false
 	}
 }

@@ -3,6 +3,10 @@ import Foundation
 // MARK: - PlaybackStatistics
 
 struct PlaybackStatistics: StreamingMetricsEvent {
+	enum EventTag: String, Codable {
+		case CACHED
+	}
+
 	// MARK: - StreamingMetricsEvent
 
 	let streamingSessionId: String
@@ -29,6 +33,8 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 	let startReason: StartReason
 	let endReason: String
 	let endTimestamp: UInt64
+	let tags: [EventTag]?
+
 	/// - Attention: This property is ignored in Equatable conformance.
 	let errorMessage: String?
 	let errorCode: String?
@@ -50,6 +56,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		case startReason
 		case endReason
 		case endTimestamp
+		case sessionTags
 		case errorMessage
 		case errorCode
 	}
@@ -70,6 +77,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		try container.encode(startReason, forKey: .startReason)
 		try container.encode(endReason, forKey: .endReason)
 		try container.encode(endTimestamp, forKey: .endTimestamp)
+		try container.encode(tags, forKey: .sessionTags)
 		try container.encode(errorMessage, forKey: .errorMessage)
 		try container.encode(errorCode, forKey: .errorCode)
 		try container.encode(streamingSessionId, forKey: .streamingSessionId)
@@ -89,6 +97,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		startReason = try container.decode(StartReason.self, forKey: .startReason)
 		endReason = try container.decode(String.self, forKey: .endReason)
 		endTimestamp = try container.decode(UInt64.self, forKey: .endTimestamp)
+		tags = try container.decodeIfPresent([EventTag].self, forKey: .sessionTags)
 		errorMessage = try container.decode(String?.self, forKey: .errorMessage)
 		errorCode = try container.decode(String?.self, forKey: .errorCode)
 		streamingSessionId = try container.decode(String.self, forKey: .streamingSessionId)
@@ -108,6 +117,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		startReason: StartReason,
 		endReason: String,
 		endTimestamp: UInt64,
+		tags: [EventTag]? = nil,
 		errorMessage: String?,
 		errorCode: String?
 	) {
@@ -124,6 +134,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		self.startReason = startReason
 		self.endReason = endReason
 		self.endTimestamp = endTimestamp
+		self.tags = tags
 		self.errorMessage = errorMessage
 		self.errorCode = errorCode
 	}
@@ -157,6 +168,7 @@ extension PlaybackStatistics: Equatable {
 			lhs.startReason == rhs.startReason &&
 			lhs.endReason == rhs.endReason &&
 			lhs.endTimestamp == rhs.endTimestamp &&
+			lhs.tags == rhs.tags &&
 			lhs.errorCode == rhs.errorCode
 	}
 }

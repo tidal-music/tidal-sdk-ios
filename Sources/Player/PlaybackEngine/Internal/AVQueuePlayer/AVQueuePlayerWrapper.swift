@@ -93,10 +93,17 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	) async -> Asset {
 		await withCheckedContinuation { continuation in
 			queue.dispatch {
-				let urlAsset: AVURLAsset = if let cacheKey, self.isContentCachingEnabled {
-					self.assetFactory.create(using: cacheKey, or: url)
+				var isCached: Bool = false
+				let urlAsset: AVURLAsset
+				if let cacheKey, self.isContentCachingEnabled {
+					if let cachedAsset = self.assetFactory.get(with: cacheKey) {
+						isCached = true
+						urlAsset = cachedAsset
+					} else {
+						urlAsset = self.assetFactory.create(using: cacheKey, or: url)
+					}
 				} else {
-					AVURLAsset(url: url, options: [AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL])
+					urlAsset = AVURLAsset(url: url, options: [AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL])
 				}
 
 				let asset = self.load(
@@ -105,6 +112,8 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 					and: licenseLoader as? AVContentKeySessionDelegate,
 					AVPlayerAsset.self
 				)
+
+				asset.setCached(isCached)
 
 				continuation.resume(returning: asset)
 			}

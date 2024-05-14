@@ -10,6 +10,7 @@ open class Asset {
 
 	@Atomic var assetPosition: Double
 	@Atomic var playbackMetadata: AssetPlaybackMetadata?
+	@Atomic private var cached: Bool = false
 
 	/// Convenience initializer.
 	/// - Parameters:
@@ -47,6 +48,18 @@ open class Asset {
 	/// - Parameter playbackMetadata: Playback metadata of the asset.
 	public func setPlaybackMetadata(_ playbackMetadata: AssetPlaybackMetadata?) {
 		self.playbackMetadata = playbackMetadata
+	}
+
+	/// Method to obtain the current caching status
+	/// - Returns: The caching status
+	public func isCached() -> Bool {
+		cached
+	}
+
+	/// Method to set the current caching status
+	/// - Parameter isCached: The new caching status
+	public func setCached(_ isCached: Bool) {
+		cached = isCached
 	}
 
 	/// Method to unload the asset in the player instance.
