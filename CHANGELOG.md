@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New FeatureFlag to control Player catching (Player)
 - New StreamingMetrics Tag to monitor playback of cached items (Player)
+- Unit tests for play log (Player)
 ### Changed
 - Renamed default FeatureFlagProvider from '.live' to '.standard'
 
