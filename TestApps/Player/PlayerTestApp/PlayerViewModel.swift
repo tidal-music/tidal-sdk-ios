@@ -48,7 +48,6 @@ final class PlayerViewModel: ObservableObject, PlayerListener {
 		player = Player.bootstrap(
 			accessTokenProvider: AccessTokenProviderMock(),
 			clientToken: CLIENT_ID,
-			clientVersion: "1.0",
 			listener: self,
 			credentialsProvider: auth,
 			eventSender: eventSender
