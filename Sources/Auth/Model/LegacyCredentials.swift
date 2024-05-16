@@ -8,4 +8,16 @@ struct LegacyCredentials: Codable, Hashable {
 	public let userId: String?
 	public let expires: Date?
 	public let token: String?
+
+	func toCredentials() -> Credentials {
+		.init(
+			clientId: clientId,
+			requestedScopes: requestedScopes.scopes,
+			clientUniqueKey: clientUniqueKey,
+			grantedScopes: grantedScopes.scopes,
+			userId: userId,
+			expires: expires,
+			token: token
+		)
+	}
 }
