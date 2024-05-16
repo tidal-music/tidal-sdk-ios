@@ -36,7 +36,6 @@ This authentication method uses `clientId` and `clientSecret`, e.g. when utilizi
 
 1. Initiate the process by initialising [TIDALAuth](./auth.swift) by providing an [AuthConfig](./Model/AuthConfig.swift) with `clientId` and `clientSecret`.
 ```swift
-    let scopes = (try? Scopes(scopes: ["r_usr", "w_usr", "w_sub"])) ?? Scopes()
     let credentialsKey = "YOUR_CREDENTIALS_KEY"
     let clientId = "YOUR_CLIENT_ID"
     let clientUniqueKey = "YOUR_CLIENT_UNIQUE_KEY"
@@ -47,7 +46,7 @@ This authentication method uses `clientId` and `clientSecret`, e.g. when utilizi
         clientUniqueKey: clientUniqueKey,
         clientSecret: clientSecret,
         credentialsKey: credentialsKey,
-        scopes: scopes
+        scopes: ["r_usr", "w_usr", "w_sub"]
     )
 
     TidalAuth.shared.config(config: authConfig)
