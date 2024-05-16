@@ -29,7 +29,7 @@ struct DeviceLoginPollHelper {
 					clientSecret: authConfig.clientSecret,
 					deviceCode: deviceCode,
 					grantType: grantType,
-					scopes: authConfig.scopes.toString(),
+					scopes: authConfig.scopes.toScopesString(),
 					clientUniqueKey: authConfig.clientUniqueKey
 				)
 			}

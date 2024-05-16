@@ -61,7 +61,7 @@ final class LoginRepository {
 					clientId: authConfig.clientId,
 					grantType: GRANT_TYPE_AUTHORIZATION_CODE,
 					redirectUri: url,
-					scopes: authConfig.scopes.toString(),
+					scopes: authConfig.scopes.toScopesString(),
 					codeVerifier: codeVerifier,
 					clientUniqueKey: authConfig.clientUniqueKey
 				)
@@ -78,12 +78,12 @@ final class LoginRepository {
 	}
 
 	private func saveTokens(response: LoginResponse) throws {
-		let tokens = try Tokens(
+		let tokens = Tokens(
 			credentials: Credentials(
 				clientId: authConfig.clientId,
 				requestedScopes: authConfig.scopes,
 				clientUniqueKey: authConfig.clientUniqueKey,
-				grantedScopes: Scopes.fromString(response.scopesString),
+				grantedScopes: response.scopesString.toScopes(),
 				userId: response.userId.map { "\($0)" },
 				expires: Date()
 					.addingTimeInterval(TimeInterval(response.expiresIn)),
@@ -102,7 +102,7 @@ final class LoginRepository {
 		await retryWithPolicy(exponentialBackoffPolicy) {
 			let response = try await loginService.getDeviceAuthorization(
 				clientId: authConfig.clientId,
-				scope: authConfig.scopes.toString()
+				scope: authConfig.scopes.toScopesString()
 			)
 			deviceLoginPollHelper.prepareForPoll(interval: response.interval, maxDuration: response.expiresIn)
 			return response

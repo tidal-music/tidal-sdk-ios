@@ -88,7 +88,7 @@ struct TokenRepository {
 				clientUniqueKey: clientUniqueKey,
 				clientId: authConfig.clientId,
 				clientSecret: authConfig.clientSecret,
-				scopes: authConfig.scopes.toString(),
+				scopes: authConfig.scopes.toScopesString(),
 				grantType: GRANT_TYPE_UPGRADE
 			)
 		}
@@ -114,7 +114,7 @@ struct TokenRepository {
 	private func logout() -> AuthResult<Credentials> {
 		.success(Credentials(
 			authConfig: authConfig,
-			grantedScopes: Scopes(),
+			grantedScopes: .init(),
 			userId: nil,
 			expiresIn: 0,
 			token: nil
@@ -170,7 +170,7 @@ struct TokenRepository {
 				clientId: authConfig.clientId,
 				refreshToken: refreshToken,
 				grantType: GRANT_TYPE_REFRESH_TOKEN,
-				scope: authConfig.scopes.toString()
+				scope: authConfig.scopes.toScopesString()
 			)
 		}
 	}
@@ -181,7 +181,7 @@ struct TokenRepository {
 				clientId: authConfig.clientId,
 				clientSecret: clientSecret,
 				grantType: GRANT_TYPE_CLIENT_CREDENTIALS,
-				scope: authConfig.scopes.toString()
+				scope: authConfig.scopes.toScopesString()
 			)
 		}
 	}
