@@ -13,4 +13,3 @@ struct LegacyTokens: Codable, Hashable {
 		.init(credentials: credentials.toCredentials(), refreshToken: refreshToken)
 	}
 }
-
