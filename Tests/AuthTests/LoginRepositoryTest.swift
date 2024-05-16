@@ -18,7 +18,7 @@ final class LoginRepositoryTest: XCTestCase {
 		clientId: clientId,
 		clientUniqueKey: clientUniqueKey,
 		credentialsKey: "credentialsKey",
-		scopes: Scopes(),
+		scopes: .init(),
 		enableCertificatePinning: false
 	)
 
