@@ -280,8 +280,6 @@ extension PlayLogTests {
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
 		playerEngine.seek(seekAssetPosition)
-
-		// Wait for the track to reach 3 seconds
 		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
