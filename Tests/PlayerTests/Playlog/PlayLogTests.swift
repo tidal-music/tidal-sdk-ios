@@ -333,6 +333,7 @@ extension PlayLogTests {
 		// Seek back to 2 seconds
 		let seekAssetPosition: Double = 2
 		playerEngine.seek(seekAssetPosition)
+		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
@@ -390,6 +391,7 @@ extension PlayLogTests {
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
 		playerEngine.seek(seekAssetPosition)
+		wait(for: currentItem, toReach: seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
 
@@ -449,6 +451,7 @@ extension PlayLogTests {
 		// Seek back to 2 seconds
 		let seekAssetPosition: Double = 2
 		playerEngine.seek(seekAssetPosition)
+		wait(for: currentItem, toReach: seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
 
