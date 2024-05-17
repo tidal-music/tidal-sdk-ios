@@ -662,13 +662,41 @@ extension PlayLogTests {
 		// or some internal AVPlayer behavior. Because of that, we can't perform a easy comparison here. Therefore, we compare
 		// specific properties which are more relevant and also set a short range for acceptable endAssetPosition (within 50
 		// milliseconds).
-		XCTAssertEqual(actualPlayLogEvent.startAssetPosition, expectedPlayLogEvent.startAssetPosition)
-		XCTAssertEqual(actualPlayLogEvent.requestedProductId, expectedPlayLogEvent.requestedProductId)
-		XCTAssertEqual(actualPlayLogEvent.actualProductId, expectedPlayLogEvent.actualProductId)
-		XCTAssertEqual(actualPlayLogEvent.actualQuality, expectedPlayLogEvent.actualQuality)
-		XCTAssertEqual(actualPlayLogEvent.sourceType, expectedPlayLogEvent.sourceType)
-		XCTAssertEqual(actualPlayLogEvent.sourceId, expectedPlayLogEvent.sourceId)
-		XCTAssertEqual(actualPlayLogEvent.endTimestamp, expectedPlayLogEvent.endTimestamp)
+		XCTAssertEqual(
+			actualPlayLogEvent.startAssetPosition,
+			expectedPlayLogEvent.startAssetPosition,
+			"Expected startAssetPosition to be \(expectedPlayLogEvent.startAssetPosition) but got \(actualPlayLogEvent.startAssetPosition)"
+		)
+		XCTAssertEqual(
+			actualPlayLogEvent.requestedProductId,
+			expectedPlayLogEvent.requestedProductId,
+			"Expected requestedProductId to be \(expectedPlayLogEvent.requestedProductId) but got \(actualPlayLogEvent.requestedProductId)"
+		)
+		XCTAssertEqual(
+			actualPlayLogEvent.actualProductId,
+			expectedPlayLogEvent.actualProductId,
+			"Expected actualProductId to be \(expectedPlayLogEvent.actualProductId) but got \(actualPlayLogEvent.actualProductId)"
+		)
+		XCTAssertEqual(
+			actualPlayLogEvent.actualQuality,
+			expectedPlayLogEvent.actualQuality,
+			"Expected actualQuality to be \(expectedPlayLogEvent.actualQuality) but got \(actualPlayLogEvent.actualQuality)"
+		)
+		XCTAssertEqual(
+			actualPlayLogEvent.sourceType,
+			expectedPlayLogEvent.sourceType,
+			"Expected sourceType to be \(expectedPlayLogEvent.sourceType) but got \(actualPlayLogEvent.sourceType)"
+		)
+		XCTAssertEqual(
+			actualPlayLogEvent.sourceId,
+			expectedPlayLogEvent.sourceId,
+			"Expected sourceId to be \(expectedPlayLogEvent.sourceId) but got \(actualPlayLogEvent.sourceId)"
+		)
+		XCTAssertEqual(
+			actualPlayLogEvent.endTimestamp,
+			expectedPlayLogEvent.endTimestamp,
+			"Expected requestedProductId to be \(expectedPlayLogEvent.endTimestamp) but got \(actualPlayLogEvent.endTimestamp)"
+		)
 
 		XCTAssert(
 			actualPlayLogEvent.actions.isEqual(to: expectedPlayLogEvent.actions),
