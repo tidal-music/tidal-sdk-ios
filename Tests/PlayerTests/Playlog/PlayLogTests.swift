@@ -34,6 +34,7 @@ final class PlayLogTests: XCTestCase {
 	private var playerEventSender: PlayerEventSenderMock!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var timestamp: UInt64 = 1
+	private var uuid = "uuid"
 
 	lazy var shortAudioFile: AudioFile = {
 		let url = PlayLogTestsHelper.url(from: Constants.AudioFileName.short)
@@ -78,7 +79,16 @@ final class PlayLogTests: XCTestCase {
 				self.timestamp
 			}
 		)
-		PlayerWorld = PlayerWorldClient.mock(timeProvider: timeProvider, developmentFeatureFlagProvider: developmentFeatureFlagProvider)
+		let uuidProvider = UUIDProvider(
+			uuidString: {
+				self.uuid
+			}
+		)
+		PlayerWorld = PlayerWorldClient.mock(
+			timeProvider: timeProvider,
+			uuidProvider: uuidProvider,
+			developmentFeatureFlagProvider: developmentFeatureFlagProvider
+		)
 
 		let sessionConfiguration = URLSessionConfiguration.default
 		sessionConfiguration.protocolClasses = [JsonEncodedResponseURLProtocol.self]
@@ -126,8 +136,13 @@ final class PlayLogTests: XCTestCase {
 			externalPlayers: []
 		)
 
+		let operationQueue = OperationQueue()
+		operationQueue.maxConcurrentOperationCount = 1
+		operationQueue.qualityOfService = .userInitiated
+		operationQueue.name = "com.tidal.player.testplayeroperationqueue"
+
 		playerEngine = PlayerEngine.mock(
-			queue: OperationQueueMock(),
+			queue: operationQueue,
 			httpClient: httpClient,
 			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
@@ -140,6 +155,8 @@ final class PlayLogTests: XCTestCase {
 			playerLoader: playerLoader,
 			notificationsHandler: notificationsHandler
 		)
+
+		credentialsProvider.injectSuccessfulUserLevelCredentials()
 	}
 }
 
@@ -150,16 +167,15 @@ extension PlayLogTests {
 		// GIVEN
 		let audioFile = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile)
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
-		// First we load the media product and then proceed to play it.
 		let mediaProduct = audioFile.mediaProduct
-		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		// Now we wait the same amount of time of the track plus extra time
+		// Now we wait the same amount of the duration of the track plus extra time
 		let expectation = expectation(description: "Expecting audio file to have been played")
 		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
 
@@ -185,15 +201,17 @@ extension PlayLogTests {
 		// GIVEN
 		let audioFile = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile)
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
-		// First we load the media product and then proceed to play it.
 		let mediaProduct = audioFile.mediaProduct
-		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
@@ -239,15 +257,17 @@ extension PlayLogTests {
 		// GIVEN
 		let audioFile = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile)
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
-		// First we load the media product and then proceed to play it.
 		let mediaProduct = audioFile.mediaProduct
-		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
@@ -260,9 +280,6 @@ extension PlayLogTests {
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
 		playerEngine.seek(seekAssetPosition)
-
-		// Wait for the track to reach 3 seconds
-		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
@@ -292,15 +309,17 @@ extension PlayLogTests {
 		// GIVEN
 		let audioFile = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile)
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
-		// First we load the media product and then proceed to play it.
 		let mediaProduct = audioFile.mediaProduct
-		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
@@ -313,9 +332,6 @@ extension PlayLogTests {
 		// Seek back to 2 seconds
 		let seekAssetPosition: Double = 2
 		playerEngine.seek(seekAssetPosition)
-
-		// Wait for the track to reach 2 seconds
-		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
@@ -345,15 +361,17 @@ extension PlayLogTests {
 		// GIVEN
 		let audioFile = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile)
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
-		// First we load the media product and then proceed to play it.
 		let mediaProduct = audioFile.mediaProduct
-		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
@@ -371,9 +389,6 @@ extension PlayLogTests {
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
 		playerEngine.seek(seekAssetPosition)
-
-		// Wait for the track to reach 3 seconds
-		wait(for: currentItem, toReach: seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
 
@@ -405,15 +420,17 @@ extension PlayLogTests {
 		// GIVEN
 		let audioFile = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile)
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
-		// First we load the media product and then proceed to play it.
 		let mediaProduct = audioFile.mediaProduct
-		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
@@ -431,9 +448,6 @@ extension PlayLogTests {
 		// Seek back to 2 seconds
 		let seekAssetPosition: Double = 2
 		playerEngine.seek(seekAssetPosition)
-
-		// Wait for the track to reach 2 seconds
-		wait(for: currentItem, toReach: seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
 
@@ -465,15 +479,17 @@ extension PlayLogTests {
 		// GIVEN
 		let audioFile = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile)
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
-		// First we load the media product and then proceed to play it.
 		let mediaProduct = audioFile.mediaProduct
-		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
@@ -534,15 +550,17 @@ extension PlayLogTests {
 		// GIVEN
 		let audioFile = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile)
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
-		// First we load the media product and then proceed to play it.
 		let mediaProduct = audioFile.mediaProduct
-		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
@@ -556,15 +574,9 @@ extension PlayLogTests {
 		let seekForwardAssetPosition: Double = 3
 		playerEngine.seek(seekForwardAssetPosition)
 
-		// Wait for the track to reach 3 seconds
-		wait(for: currentItem, toReach: seekForwardAssetPosition)
-
 		// Seek back to 2 seconds
 		let seekBackAssetPosition: Double = 2
 		playerEngine.seek(seekBackAssetPosition)
-
-		// Wait for the track to reach 2 seconds
-		wait(for: currentItem, toReach: seekForwardAssetPosition)
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
@@ -722,6 +734,7 @@ private extension PlayLogTests {
 			let manifest: String = Data(manifestData).base64EncodedString()
 			let trackPlaybackInfo = TrackPlaybackInfo.mock(
 				trackId: Int(mediaProduct.productId)!,
+				manifestHash: "manifestHash+\(audioFile.id)",
 				manifest: manifest,
 				albumReplayGain: 11,
 				albumPeakAmplitude: 22,
