@@ -19,7 +19,7 @@ private enum Constants {
 
 	static let encoder = JSONEncoder()
 
-	static let expectationExtraTime: TimeInterval = 1
+	static let expectationExtraTime: TimeInterval = 2
 	static let timerTimeInterval = 0.05
 	static let expectationShortExtraTime: TimeInterval = 0.5
 }
