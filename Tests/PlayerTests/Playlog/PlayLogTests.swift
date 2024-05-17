@@ -782,7 +782,7 @@ extension PlayLogTests {
 
 	func test_load_and_setNext_and_play_and_seek_forward_beyond_file_duration_and_reset() {
 		// GIVEN
-		self.uuid = "uuid1"
+		uuid = "uuid1"
 		let audioFile1 = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile1)
 
@@ -801,7 +801,7 @@ extension PlayLogTests {
 		}
 
 		// Afterwards we load the second media product and finally play.
-		self.uuid = "uuid2"
+		uuid = "uuid2"
 		let audioFile2 = longAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile2)
 
@@ -825,7 +825,7 @@ extension PlayLogTests {
 		// Wait until the previously next item is now the current item
 		optimizedWait {
 			playerEngine.nextItem == nil &&
-			playerEngine.currentItem?.id == self.uuid
+				playerEngine.currentItem?.id == self.uuid
 		}
 
 		guard let nextCurrentItem = playerEngine.currentItem else {
@@ -919,7 +919,7 @@ extension PlayLogTests {
 		// Wait until the previously next item is now the current item
 		optimizedWait {
 			playerEngine.nextItem == nil &&
-			playerEngine.currentItem?.id == self.uuid
+				playerEngine.currentItem?.id == self.uuid
 		}
 
 		guard let nextCurrentItem = playerEngine.currentItem else {
