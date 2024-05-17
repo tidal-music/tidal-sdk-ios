@@ -281,6 +281,9 @@ extension PlayLogTests {
 		let seekAssetPosition: Double = 3
 		playerEngine.seek(seekAssetPosition)
 
+		// Wait for the track to reach 3 seconds
+		wait(for: currentItem, toReach: seekAssetPosition)
+
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
 			playerEventSender.playLogEvents.count == 1
@@ -573,10 +576,12 @@ extension PlayLogTests {
 		// Seek forward to 3 seconds
 		let seekForwardAssetPosition: Double = 3
 		playerEngine.seek(seekForwardAssetPosition)
+		wait(for: currentItem, toReach: seekForwardAssetPosition)
 
 		// Seek back to 2 seconds
 		let seekBackAssetPosition: Double = 2
 		playerEngine.seek(seekBackAssetPosition)
+		wait(for: currentItem, toReach: seekBackAssetPosition)
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
