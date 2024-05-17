@@ -608,15 +608,17 @@ extension PlayLogTests {
 		// GIVEN
 		let audioFile = shortAudioFile
 		setAudioFileResponseToURLProtocol(audioFile: audioFile)
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
-		// First we load the media product and then proceed to play it.
 		let mediaProduct = audioFile.mediaProduct
-		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
