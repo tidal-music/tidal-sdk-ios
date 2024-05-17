@@ -655,6 +655,130 @@ extension PlayLogTests {
 		)
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
 	}
+
+	func test_load_and_setNext_and_play() {
+		// GIVEN
+		uuid = "uuid1"
+		let audioFile1 = shortAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile1)
+
+		let mediaProduct1 = audioFile1.mediaProduct
+
+		// WHEN
+		// First we load the first media product.
+		playerEngine.load(mediaProduct1, timestamp: timestamp)
+
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
+
+		// Afterwards we load the second media product with setNext and finally play.
+		uuid = "uuid2"
+		let audioFile2 = longAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile2)
+		let mediaProduct2 = audioFile2.mediaProduct
+
+		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
+		optimizedWait {
+			playerEngine.nextItem != nil
+		}
+
+		playerEngine.play(timestamp: timestamp)
+
+		// Now we wait the same amount of the duration of the track plus extra time
+		let expectation = expectation(description: "Expecting audio file to have been played")
+		_ = XCTWaiter.wait(
+			for: [expectation],
+			timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime
+		)
+
+		// THEN
+		optimizedWait {
+			playerEventSender.playLogEvents.count == 2
+		}
+		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
+
+		let playLogEvent1 = playerEventSender.playLogEvents[0]
+		let expectedPlayLogEvent1 = PlayLogEvent.mock(
+			startAssetPosition: 0,
+			requestedProductId: mediaProduct1.productId,
+			actualProductId: mediaProduct1.productId,
+			actualQuality: AudioQuality.LOSSLESS.rawValue,
+			sourceType: Constants.PlayLogSource.short.sourceType,
+			sourceId: Constants.PlayLogSource.short.sourceId,
+			actions: [],
+			endTimestamp: timestamp,
+			endAssetPosition: audioFile1.duration
+		)
+		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
+
+		let playLogEvent2 = playerEventSender.playLogEvents[1]
+		let expectedPlayLogEvent2 = PlayLogEvent.mock(
+			startAssetPosition: 0,
+			requestedProductId: mediaProduct2.productId,
+			actualProductId: mediaProduct2.productId,
+			actualQuality: AudioQuality.LOSSLESS.rawValue,
+			sourceType: Constants.PlayLogSource.long.sourceType,
+			sourceId: Constants.PlayLogSource.long.sourceId,
+			actions: [],
+			endTimestamp: timestamp,
+			endAssetPosition: audioFile2.duration
+		)
+		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
+	}
+
+	func test_play_and_seek_forward_beyond_file_duration() {
+		// GIVEN
+		let audioFile = shortAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile)
+
+		let mediaProduct = audioFile.mediaProduct
+
+		// WHEN
+		// First we load the media product and then proceed to play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
+		playerEngine.play(timestamp: timestamp)
+
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
+		guard let currentItem = playerEngine.currentItem else {
+			XCTFail("Expected for the currentItem to be set up!")
+			return
+		}
+
+		// Wait for the track to reach 2 seconds
+		let startSeekAssetPosition: Double = 2
+		wait(for: currentItem, toReach: startSeekAssetPosition)
+
+		// Seek forward to 10 seconds
+		let seekAssetPosition: Double = 10
+		playerEngine.seek(seekAssetPosition)
+		wait(for: currentItem, toReach: seekAssetPosition)
+
+		// THEN
+		optimizedWait(timeout: audioFile.duration) {
+			playerEventSender.playLogEvents.count == 1
+		}
+
+		let playLogEvent = playerEventSender.playLogEvents[0]
+		let actions = [
+			Action(actionType: .PLAYBACK_STOP, assetPosition: startSeekAssetPosition, timestamp: timestamp),
+			Action(actionType: .PLAYBACK_START, assetPosition: audioFile.duration, timestamp: timestamp),
+		]
+		let expectedPlayLogEvent = PlayLogEvent.mock(
+			startAssetPosition: 0,
+			requestedProductId: mediaProduct.productId,
+			actualProductId: mediaProduct.productId,
+			actualQuality: AudioQuality.LOSSLESS.rawValue,
+			sourceType: Constants.PlayLogSource.short.sourceType,
+			sourceId: Constants.PlayLogSource.short.sourceId,
+			actions: actions,
+			endTimestamp: timestamp,
+			endAssetPosition: audioFile.duration
+		)
+		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
+	}
 }
 
 // MARK: - Assertion Helpers
