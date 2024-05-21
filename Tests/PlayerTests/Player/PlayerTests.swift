@@ -43,10 +43,6 @@ final class PlayerTests: XCTestCase {
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: .mock
 		)
-		let legacyStreamingPrivilegesHandler = LegacyStreamingPrivilegesHandler(
-			httpClient,
-			and: accessTokenProvider
-		)
 		let streamingPrivilegesHandler = StreamingPrivilegesHandler(
 			configuration: Configuration.mock(),
 			httpClient: httpClient,
@@ -65,7 +61,6 @@ final class PlayerTests: XCTestCase {
 			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			legacyStreamingPrivilegesHandler: legacyStreamingPrivilegesHandler,
 			streamingPrivilegesHandler: streamingPrivilegesHandler,
 			networkMonitor: networkMonitor,
 			notificationsHandler: notificationsHandler,

@@ -30,10 +30,6 @@ final class FairPlayLicenseFetcher {
 	private let featureFlagProvider: FeatureFlagProvider
 	private var certificate: Data?
 
-	private var shouldUseAuthModule: Bool {
-		featureFlagProvider.shouldUseAuthModule()
-	}
-
 	init(
 		with httpClient: HttpClient,
 		_ accessTokenProvider: AccessTokenProvider,
@@ -91,31 +87,17 @@ private extension FairPlayLicenseFetcher {
 		do {
 			var license: Data?
 
-			if shouldUseAuthModule {
-				let token = try await credentialsProvider.getAuthBearerToken()
+			let token = try await credentialsProvider.getAuthBearerToken()
 
-				license = try await httpClient.post(
-					url: FairPlayLicenseFetcher.LICENSE_URL,
-					headers: [
-						"Authorization": token,
-						"Content-Type": "application/octet-stream",
-						"X-Tidal-Streaming-Session-Id": streamingSessionId,
-					],
-					payload: licenseChallenge
-				)
-			} else {
-				license = try await accessTokenProvider.authenticate { accessToken in
-					try await httpClient.post(
-						url: FairPlayLicenseFetcher.LICENSE_URL,
-						headers: [
-							"Authorization": accessToken,
-							"Content-Type": "application/octet-stream",
-							"X-Tidal-Streaming-Session-Id": streamingSessionId,
-						],
-						payload: licenseChallenge
-					)
-				}
-			}
+			license = try await httpClient.post(
+				url: FairPlayLicenseFetcher.LICENSE_URL,
+				headers: [
+					"Authorization": token,
+					"Content-Type": "application/octet-stream",
+					"X-Tidal-Streaming-Session-Id": streamingSessionId,
+				],
+				payload: licenseChallenge
+			)
 
 			guard let license else {
 				throw FairPlayLicenseFetcherError.emptyLicensePayload.error()

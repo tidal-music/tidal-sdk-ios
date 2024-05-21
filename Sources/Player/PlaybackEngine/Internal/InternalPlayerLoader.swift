@@ -18,10 +18,6 @@ final class InternalPlayerLoader: PlayerLoader {
 
 	// MARK: - Convenience properties
 
-	private var shouldUseAuthModule: Bool {
-		featureFlagProvider.shouldUseAuthModule()
-	}
-
 	private var loudnessNormalizationMode: LoudnessNormalizationMode {
 		configuration.loudnessNormalizationMode
 	}
@@ -236,13 +232,7 @@ private extension InternalPlayerLoader {
 				loudnessNormalizer: loudnessNormalizer
 			)
 
-			let token: String = if shouldUseAuthModule {
-				try await credentialsProvider.getAuthBearerToken()
-			} else {
-				try await accessTokenProvider.authenticate { accessToken in
-					accessToken
-				}
-			}
+			let token: String = try await credentialsProvider.getAuthBearerToken()
 
 			let headers: [String: String] = [
 				"Authorization": token,
