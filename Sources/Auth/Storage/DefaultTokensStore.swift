@@ -28,7 +28,23 @@ final class DefaultTokensStore: TokensStore {
 		guard let json = encryptedStorage[credentialsKey], let data = json.data(using: .utf8) else {
 			return nil
 		}
-		return try JSONDecoder().decode(Tokens.self, from: data)
+
+		let decoder = JSONDecoder()
+
+		return try {
+			do {
+				return try decoder.decode(Tokens.self, from: data)
+			} catch {
+				// try to decode legacy tokens, convert them to tokens and save tokens
+				print("Failed to decode tokens. Attempting to decode legacy tokens")
+				if let convertedLegacyTokens = try? decoder.decode(LegacyTokens.self, from: data).toTokens() {
+					try saveTokens(tokens: convertedLegacyTokens)
+					return convertedLegacyTokens
+				} else {
+					throw error
+				}
+			}
+		}()
 	}
 
 	func saveTokens(tokens: Tokens) throws {

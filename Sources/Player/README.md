@@ -47,7 +47,7 @@ let authConfig = AuthConfig(
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
     credentialsKey: "storage",
-    scopes: Scopes(),
+    scopes: .init(),
     enableCertificatePinning: false
 )
 

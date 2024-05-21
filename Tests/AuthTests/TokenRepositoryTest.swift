@@ -55,7 +55,7 @@ final class TokenRepositoryTest: XCTestCase {
 	private func createAuthConfig(
 		clientId: String? = nil,
 		clientUniqueKey: String? = nil,
-		scopes: Scopes = Scopes(),
+		scopes: Set<String> = .init(),
 		secret: String? = nil
 	) {
 		authConfig = AuthConfig(
@@ -71,7 +71,7 @@ final class TokenRepositoryTest: XCTestCase {
 	private func makeCredentials(
 		clientId: String? = nil,
 		clientUniqueKey: String? = nil,
-		scopes: Scopes = Scopes(),
+		scopes: Set<String> = .init(),
 		isExpired: Bool,
 		userId: String? = "userId",
 		token: String = "token"
@@ -82,7 +82,7 @@ final class TokenRepositoryTest: XCTestCase {
 			clientId: clientId ?? testClientId,
 			requestedScopes: scopes,
 			clientUniqueKey: clientUniqueKey ?? testClientUniqueKey,
-			grantedScopes: Scopes(),
+			grantedScopes: .init(),
 			userId: userId,
 			expires: expiry,
 			token: token

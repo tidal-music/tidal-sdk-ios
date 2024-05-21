@@ -3,9 +3,9 @@ import Foundation
 public extension Credentials {
 	static func mock(
 		clientId: String = "clientId",
-		requestedScopes: Scopes = Scopes(),
+		requestedScopes: Set<String> = .init(),
 		clientUniqueKey: String? = nil,
-		grantedScopes: Scopes = Scopes(),
+		grantedScopes: Set<String> = .init(),
 		userId: String? = nil,
 		expires: Date? = nil,
 		token: String? = nil
