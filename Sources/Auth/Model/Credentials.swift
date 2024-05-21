@@ -10,18 +10,18 @@ public struct Credentials: Codable, Hashable {
 	}
 
 	public let clientId: String
-	public let requestedScopes: Scopes
+	public let requestedScopes: Set<String>
 	public let clientUniqueKey: String?
-	public let grantedScopes: Scopes
+	public let grantedScopes: Set<String>
 	public let userId: String?
 	public let expires: Date? // TODO: Verify that Android's Instant == iOS's Date
 	public let token: String?
 
 	public init(
 		clientId: String,
-		requestedScopes: Scopes,
+		requestedScopes: Set<String>,
 		clientUniqueKey: String?,
-		grantedScopes: Scopes,
+		grantedScopes: Set<String>,
 		userId: String?,
 		expires: Date?,
 		token: String?
@@ -40,7 +40,7 @@ public struct Credentials: Codable, Hashable {
 			clientId: authConfig.clientId,
 			requestedScopes: authConfig.scopes,
 			clientUniqueKey: authConfig.clientUniqueKey,
-			grantedScopes: Scopes(),
+			grantedScopes: .init(),
 			userId: nil,
 			expires: nil,
 			token: nil
@@ -51,9 +51,9 @@ public struct Credentials: Codable, Hashable {
 		authConfig: AuthConfig,
 		response: RefreshResponse
 	) throws {
-		try self.init(
+		self.init(
 			authConfig: authConfig,
-			grantedScopes: Scopes.fromString(response.scopesString),
+			grantedScopes: response.scopesString.toScopes(),
 			userId: response.userId.map { "\($0)" },
 			expiresIn: response.expiresIn,
 			token: response.accessToken
@@ -62,7 +62,7 @@ public struct Credentials: Codable, Hashable {
 
 	init(
 		authConfig: AuthConfig,
-		grantedScopes: Scopes? = nil,
+		grantedScopes: Set<String>? = nil,
 		userId: String? = nil,
 		expiresIn: Int? = nil,
 		token: String? = nil
@@ -70,7 +70,7 @@ public struct Credentials: Codable, Hashable {
 		clientId = authConfig.clientId
 		requestedScopes = authConfig.scopes
 		clientUniqueKey = authConfig.clientUniqueKey
-		self.grantedScopes = grantedScopes ?? Scopes()
+		self.grantedScopes = grantedScopes ?? .init()
 		self.userId = userId
 		var expires: Date?
 		if let expiresIn {

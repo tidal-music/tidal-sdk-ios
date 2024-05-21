@@ -6,9 +6,9 @@ final class AuthTokenTests: XCTestCase {
 		// given
 		let credentials = Credentials(
 			clientId: "",
-			requestedScopes: Scopes(),
+			requestedScopes: .init(),
 			clientUniqueKey: "",
-			grantedScopes: Scopes(),
+			grantedScopes: .init(),
 			userId: "userId",
 			expires: nil,
 			token: "token"
@@ -25,9 +25,9 @@ final class AuthTokenTests: XCTestCase {
 		// given
 		let credentials = Credentials(
 			clientId: "",
-			requestedScopes: Scopes(),
+			requestedScopes: .init(),
 			clientUniqueKey: "",
-			grantedScopes: Scopes(),
+			grantedScopes: .init(),
 			userId: nil,
 			expires: nil,
 			token: "token"
@@ -44,9 +44,9 @@ final class AuthTokenTests: XCTestCase {
 		// given
 		let credentials = Credentials(
 			clientId: "",
-			requestedScopes: Scopes(),
+			requestedScopes: .init(),
 			clientUniqueKey: "",
-			grantedScopes: Scopes(),
+			grantedScopes: .init(),
 			userId: nil,
 			expires: nil,
 			token: nil

@@ -37,7 +37,7 @@ final class PlayerViewModel: ObservableObject, PlayerListener {
 			clientId: CLIENT_ID,
 			clientSecret: CLIENT_SECRET,
 			credentialsKey: "storage",
-			scopes: Scopes(),
+			scopes: .init(),
 			enableCertificatePinning: false
 		)
 

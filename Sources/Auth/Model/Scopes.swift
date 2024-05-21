@@ -1,6 +1,7 @@
 import Common
 import Foundation
 
+@available(*, deprecated, message: "Use Set<String> instead")
 public struct Scopes: Codable, Hashable {
 	public let scopes: Set<String>
 

@@ -15,9 +15,9 @@ final class TokensStoreTests: XCTestCase {
 		let credentials = Tokens(
 			credentials: Credentials(
 				clientId: "TIDAL",
-				requestedScopes: Scopes(scopes: ["r_klogi"]),
+				requestedScopes: ["r_klogi"],
 				clientUniqueKey: "42",
-				grantedScopes: Scopes(scopes: ["w_klogi"]),
+				grantedScopes: ["w_klogi"],
 				userId: "279808",
 				expires: nil,
 				token: "abc"
@@ -35,9 +35,9 @@ final class TokensStoreTests: XCTestCase {
 		let credentials = Tokens(
 			credentials: Credentials(
 				clientId: "TIDAL",
-				requestedScopes: Scopes(scopes: ["r_klogi"]),
+				requestedScopes: ["r_klogi"],
 				clientUniqueKey: "42",
-				grantedScopes: Scopes(scopes: ["w_klogi"]),
+				grantedScopes: ["w_klogi"],
 				userId: "279808",
 				expires: nil,
 				token: "abc"
