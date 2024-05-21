@@ -754,7 +754,6 @@ extension PlayLogTests {
 		// Seek forward to 10 seconds
 		let seekAssetPosition: Double = 10
 		playerEngine.seek(seekAssetPosition)
-		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
