@@ -168,7 +168,7 @@ private extension PlayerEventSender {
 
 	func initializeTimer() {
 		let block: (Timer) -> Void = { [weak self] _ in
-			guard let self, configuration.offlineMode == false else {
+			guard let self else {
 				return
 			}
 
