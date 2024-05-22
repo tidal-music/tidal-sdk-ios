@@ -1,7 +1,7 @@
 import Common
 import Foundation
 
-public final class TidalAuthMock: Auth & CredentialsProvider {
+public final class AuthAndCredentialsProviderMock: Auth & CredentialsProvider {
 	public struct CredentialData {
 		public let credentials: Credentials
 		public let refreshToken: String?
