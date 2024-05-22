@@ -610,6 +610,67 @@ extension PlayLogTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
 	}
 
+	func test_seek_forward_and_resume() {
+		// GIVEN
+		let audioFile = shortAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile)
+
+		let mediaProduct = audioFile.mediaProduct
+
+		// WHEN
+		// First we load the media product and then proceed to seek forward and play it.
+		playerEngine.load(mediaProduct, timestamp: timestamp)
+
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
+		guard let currentItem = playerEngine.currentItem else {
+			XCTFail("Expected for the currentItem to be set up!")
+			return
+		}
+
+		optimizedWait {
+			currentItem.asset != nil
+		}
+		guard let asset = currentItem.asset else {
+			XCTFail("Expected for the currentItem's asset to be set up!")
+			return
+		}
+
+		// Seek forward to 2 seconds
+		let seekAssetPosition: Double = 2
+		playerEngine.seek(seekAssetPosition)
+
+		// seek is async so wait a tiny bit to make sure seek has completed before actually playing.
+		optimizedWait(step: 0.05) {
+			PlayLogTestsHelper.isTimeDifferenceNegligible(
+				assetPosition: seekAssetPosition,
+				anotherAssetPosition: asset.assetPosition
+			)
+		}
+		assertAssetPosition(expectedAssetPosition: seekAssetPosition, actualAssetPosition: asset.assetPosition)
+		playerEngine.play(timestamp: timestamp)
+
+		// THEN
+		optimizedWait(timeout: audioFile.duration) {
+			playerEventSender.playLogEvents.count == 1
+		}
+
+		let playLogEvent = playerEventSender.playLogEvents[0]
+		let expectedPlayLogEvent = PlayLogEvent.mock(
+			startAssetPosition: seekAssetPosition,
+			requestedProductId: mediaProduct.productId,
+			actualProductId: mediaProduct.productId,
+			actualQuality: AudioQuality.LOSSLESS.rawValue,
+			sourceType: Constants.PlayLogSource.short.sourceType,
+			sourceId: Constants.PlayLogSource.short.sourceId,
+			actions: [],
+			endTimestamp: timestamp,
+			endAssetPosition: audioFile.duration
+		)
+		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
+	}
+
 	func test_play_media_and_reset() {
 		// GIVEN
 		let audioFile = shortAudioFile
