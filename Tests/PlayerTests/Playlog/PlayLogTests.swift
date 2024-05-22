@@ -74,6 +74,7 @@ final class PlayLogTests: XCTestCase {
 		var developmentFeatureFlagProvider = DevelopmentFeatureFlagProvider.mock
 		developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
+		uuid = "uuid"
 		let timeProvider = TimeProvider.mock(
 			timestamp: {
 				self.timestamp
