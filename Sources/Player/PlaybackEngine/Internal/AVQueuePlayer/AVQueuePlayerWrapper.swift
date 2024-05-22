@@ -76,13 +76,15 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		mediaType: String?,
 		isOfflined: Bool
 	) -> Bool {
-		if productType == .VIDEO || productType == .BROADCAST {
+		switch productType {
+		case .VIDEO, .BROADCAST, .UPLOADED_CONTENT:
 			return true
+		case .TRACK:
+			guard let codec else {
+				return false
+			}
+			return supportedCodecs.contains(codec) || (codec == .FLAC && !isOfflined)
 		}
-		guard let codec else {
-			return false
-		}
-		return supportedCodecs.contains(codec) || (codec == .FLAC && !isOfflined)
 	}
 
 	func load(
