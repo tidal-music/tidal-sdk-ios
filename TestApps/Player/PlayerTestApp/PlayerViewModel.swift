@@ -46,7 +46,6 @@ final class PlayerViewModel: ObservableObject, PlayerListener {
 
 	private func initPlayer() {
 		player = Player.bootstrap(
-			accessTokenProvider: AccessTokenProviderMock(),
 			clientToken: CLIENT_ID,
 			clientVersion: "1.0",
 			listener: self,
@@ -95,15 +94,4 @@ enum CustomError: LocalizedError {
 			"Player Error Code \(code)"
 		}
 	}
-}
-
-// MARK: - AccessTokenProviderMock
-
-/// To be Removed
-class AccessTokenProviderMock: AccessTokenProvider {
-	var accessToken: String? {
-		""
-	}
-
-	func renewAccessToken(status: Int?) async throws {}
 }

@@ -34,7 +34,6 @@ final class EventsTests: XCTestCase {
 	private var errorManager: ErrorManagerMock!
 	private var urlSession: URLSession!
 	private var httpClient: HttpClient!
-	private var accessTokenProvider: AuthTokenProviderMock!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var dataWriter: DataWriterMock!
 	private var playerEventSender: PlayerEventSenderMock!
@@ -87,14 +86,12 @@ final class EventsTests: XCTestCase {
 			timeoutErrorManager: errorManager
 		)
 
-		accessTokenProvider = AuthTokenProviderMock()
 		credentialsProvider = CredentialsProviderMock()
 		dataWriter = DataWriterMock()
 
 		playerEventSender = PlayerEventSenderMock(
 			configuration: configuration,
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			dataWriter: dataWriter,
 			featureFlagProvider: featureFlagProvider
@@ -108,7 +105,6 @@ final class EventsTests: XCTestCase {
 
 		djProducer = DJProducer(
 			httpClient: httpClient,
-			with: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: featureFlagProvider
 		)
@@ -116,7 +112,6 @@ final class EventsTests: XCTestCase {
 		playbackInfoFetcher = PlaybackInfoFetcher(
 			with: configuration,
 			httpClient,
-			accessTokenProvider,
 			credentialsProvider,
 			networkMonitor,
 			and: playerEventSender,
@@ -125,7 +120,6 @@ final class EventsTests: XCTestCase {
 
 		fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: httpClient,
-			accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			and: playerEventSender,
 			featureFlagProvider: featureFlagProvider
@@ -135,7 +129,6 @@ final class EventsTests: XCTestCase {
 		playerEngine = PlayerEngine.mock(
 			queue: OperationQueueMock(),
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,

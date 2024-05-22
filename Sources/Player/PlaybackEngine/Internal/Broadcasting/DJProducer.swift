@@ -10,7 +10,6 @@ final class DJProducer {
 
 	private let queue: OperationQueue
 	private let httpClient: HttpClient
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 	private let featureFlagProvider: FeatureFlagProvider
 
@@ -19,12 +18,10 @@ final class DJProducer {
 
 	init(
 		httpClient: HttpClient,
-		with accessTokenProvider: AccessTokenProvider,
 		credentialsProvider: CredentialsProvider,
 		featureFlagProvider: FeatureFlagProvider
 	) {
 		self.httpClient = httpClient
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
 

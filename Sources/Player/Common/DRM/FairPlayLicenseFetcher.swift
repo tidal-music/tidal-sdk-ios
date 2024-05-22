@@ -24,7 +24,6 @@ final class FairPlayLicenseFetcher {
 	private static let LICENSE_URL = URL(string: "https://fp.fa.tidal.com/license")!
 
 	private let httpClient: HttpClient
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 	private let playerEventSender: PlayerEventSender
 	private let featureFlagProvider: FeatureFlagProvider
@@ -32,13 +31,11 @@ final class FairPlayLicenseFetcher {
 
 	init(
 		with httpClient: HttpClient,
-		_ accessTokenProvider: AccessTokenProvider,
 		credentialsProvider: CredentialsProvider,
 		and playerEventSender: PlayerEventSender,
 		featureFlagProvider: FeatureFlagProvider
 	) {
 		self.httpClient = httpClient
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.playerEventSender = playerEventSender
 		self.featureFlagProvider = featureFlagProvider
@@ -117,7 +114,6 @@ private extension FairPlayLicenseFetcher {
 
 		} catch {
 			// TODO: Should we update this to handle proper conversion from TidalError, otherwise they will always be EUnexpected
-			let error = FairPlayLicenseFetcher.convert(error)
 			let playerError = PlayerInternalError.from(error)
 
 			let endTimestamp = PlayerWorld.timeProvider.timestamp()
@@ -132,13 +128,5 @@ private extension FairPlayLicenseFetcher {
 
 			throw error
 		}
-	}
-
-	static func convert(_ error: Error) -> Error {
-		if error is TokenRenewalFailed {
-			return FairPlayLicenseFetcherError.unableToRenewAccessToken.error()
-		}
-
-		return error
 	}
 }

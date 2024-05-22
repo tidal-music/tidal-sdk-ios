@@ -12,7 +12,6 @@ private let OFFLINE_PLAYS_URL: URL = URL(string: "https://api.tidal.com/v1/repor
 class PlayerEventSender {
 	private let configuration: Configuration
 	private let httpClient: HttpClient
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 	private let dataWriter: DataWriterProtocol
 	private let featureFlagProvider: FeatureFlagProvider
@@ -30,7 +29,6 @@ class PlayerEventSender {
 	init(
 		configuration: Configuration,
 		httpClient: HttpClient,
-		accessTokenProvider: AccessTokenProvider,
 		credentialsProvider: CredentialsProvider,
 		dataWriter: DataWriterProtocol,
 		featureFlagProvider: FeatureFlagProvider,
@@ -38,7 +36,6 @@ class PlayerEventSender {
 	) {
 		self.configuration = configuration
 		self.httpClient = httpClient
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.dataWriter = dataWriter
 		self.featureFlagProvider = featureFlagProvider

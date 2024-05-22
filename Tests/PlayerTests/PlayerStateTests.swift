@@ -12,7 +12,6 @@ final class PlayerStateTests: XCTestCase {
 	private var playerEventSender: PlayerEventSenderMock!
 	private var listener: PlayerListenerMock!
 	private var listenerQueue: DispatchQueue!
-	private var accessTokenProvider: AuthTokenProviderMock!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var featureFlagProvider: FeatureFlagProvider!
 	private var djProducer: DJProducer!
@@ -49,20 +48,17 @@ final class PlayerStateTests: XCTestCase {
 		listenerQueue = DispatchQueue(label: "com.tidal.queue.for.testing")
 		notificationsHandler = NotificationsHandler(listener: listener, queue: listenerQueue)
 
-		accessTokenProvider = AuthTokenProviderMock()
 		credentialsProvider = CredentialsProviderMock()
 		featureFlagProvider = FeatureFlagProvider.mock
 
 		djProducer = DJProducer(
 			httpClient: httpClient,
-			with: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: featureFlagProvider
 		)
 
 		fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: HttpClient(using: urlSession),
-			accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			and: playerEventSender,
 			featureFlagProvider: featureFlagProvider
@@ -79,7 +75,6 @@ final class PlayerStateTests: XCTestCase {
 		playbackInfoFetcher = PlaybackInfoFetcher(
 			with: configuration,
 			httpClient,
-			accessTokenProvider,
 			credentialsProvider,
 			networkMonitor,
 			and: playerEventSender,
@@ -97,7 +92,6 @@ final class PlayerStateTests: XCTestCase {
 	func testInitialStateIsIdle() {
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
 			playerEventSender: playerEventSender,
@@ -116,7 +110,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
 			playerLoader: playerLoader,
@@ -136,7 +129,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
@@ -172,7 +164,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
@@ -215,7 +206,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
@@ -261,7 +251,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
@@ -306,7 +295,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
@@ -356,7 +344,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
@@ -407,7 +394,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
@@ -447,7 +433,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
@@ -493,7 +478,6 @@ final class PlayerStateTests: XCTestCase {
 
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,

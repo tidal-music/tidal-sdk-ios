@@ -8,7 +8,6 @@ final class InternalPlayerLoader: PlayerLoader {
 	private let configuration: Configuration
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
 
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 
 	private let featureFlagProvider: FeatureFlagProvider
@@ -28,14 +27,12 @@ final class InternalPlayerLoader: PlayerLoader {
 		with configuration: Configuration,
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
-		accessTokenProvider: AccessTokenProvider,
 		credentialsProvider: CredentialsProvider,
 		mainPlayer: GenericMediaPlayer.Type,
 		externalPlayers: [GenericMediaPlayer.Type]
 	) {
 		self.configuration = configuration
 		fairPlayLicenseFetcher = fairplayLicenseFetcher
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
 

@@ -26,7 +26,6 @@ final class PlayerEventSenderTests: XCTestCase {
 	private var configuration: Configuration!
 	private var errorManager: ErrorManagerMock!
 	private var httpClient: HttpClient!
-	private var accessTokenProvider: AuthTokenProviderMock!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var dataWriter: DataWriterMock!
 	private var playerEventSender: PlayerEventSender!
@@ -83,7 +82,6 @@ final class PlayerEventSenderTests: XCTestCase {
 			timeoutErrorManager: errorManager
 		)
 
-		accessTokenProvider = AuthTokenProviderMock()
 		credentialsProvider = CredentialsProviderMock()
 		dataWriter = DataWriterMock()
 
@@ -95,7 +93,6 @@ final class PlayerEventSenderTests: XCTestCase {
 		playerEventSender = PlayerEventSender(
 			configuration: configuration,
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			dataWriter: dataWriter,
 			featureFlagProvider: featureFlagProvider,

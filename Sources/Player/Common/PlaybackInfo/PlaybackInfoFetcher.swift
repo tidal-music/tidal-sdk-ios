@@ -6,7 +6,6 @@ import Foundation
 final class PlaybackInfoFetcher {
 	private let configuration: Configuration
 	private let httpClient: HttpClient
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 	private let networkMonitor: NetworkMonitor
 	private let playerEventSender: PlayerEventSender
@@ -15,7 +14,6 @@ final class PlaybackInfoFetcher {
 	init(
 		with configuration: Configuration,
 		_ httpClient: HttpClient,
-		_ accessTokenProvider: AccessTokenProvider,
 		_ credentialsProvider: CredentialsProvider,
 		_ networkMonitor: NetworkMonitor,
 		and playerEventSender: PlayerEventSender,
@@ -23,7 +21,6 @@ final class PlaybackInfoFetcher {
 	) {
 		self.configuration = configuration
 		self.httpClient = httpClient
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.networkMonitor = networkMonitor
 		self.playerEventSender = playerEventSender

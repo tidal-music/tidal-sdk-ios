@@ -43,7 +43,6 @@ public final class Player {
 	}
 
 	private var storage: Storage
-	private var accessTokenProvider: AccessTokenProvider
 	private var djProducer: DJProducer
 	private var playerEventSender: PlayerEventSender
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher
@@ -61,7 +60,6 @@ public final class Player {
 		urlSession: URLSession,
 		configuration: Configuration,
 		storage: Storage,
-		accessTokenProvider: AccessTokenProvider,
 		djProducer: DJProducer,
 		playerEventSender: PlayerEventSender,
 		fairplayLicenseFetcher: FairPlayLicenseFetcher,
@@ -78,7 +76,6 @@ public final class Player {
 		playerURLSession = urlSession
 		self.configuration = configuration
 		self.storage = storage
-		self.accessTokenProvider = accessTokenProvider
 		self.djProducer = djProducer
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
 		self.streamingPrivilegesHandler = streamingPrivilegesHandler
@@ -98,7 +95,6 @@ public extension Player {
 	/// - Important: It must be called only once when initializing it so it is caller responsibility to keep the reference to it,
 	/// otherwise it will return nil.
 	/// - Parameters:
-	///   - accessTokenProvider: Provider of access token used as Authorization header in all requests.
 	///   - clientToken: The client token that was used to create the access token.
 	///   - clientVersion: App version.
 	///   - listener: Listener for relevant changes of Player instance.
@@ -109,7 +105,6 @@ public extension Player {
 	///   - eventSender: Event sender to which events are sent.
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
 	static func bootstrap(
-		accessTokenProvider: AccessTokenProvider,
 		clientToken: String,
 		clientVersion: String,
 		listener: PlayerListener,
@@ -136,7 +131,6 @@ public extension Player {
 
 		let djProducer = DJProducer(
 			httpClient: djProducerHTTPClient,
-			with: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: featureFlagProvider
 		)
@@ -147,7 +141,6 @@ public extension Player {
 				with: timeoutPolicy,
 				serviceType: .background
 			)),
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			dataWriter: DataWriter(),
 			featureFlagProvider: featureFlagProvider,
@@ -155,7 +148,6 @@ public extension Player {
 		)
 		let fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: HttpClient(using: sharedPlayerURLSession),
-			accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			and: playerEventSender,
 			featureFlagProvider: featureFlagProvider
@@ -174,7 +166,6 @@ public extension Player {
 			sharedPlayerURLSession,
 			configuration,
 			storage,
-			accessTokenProvider,
 			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
@@ -191,7 +182,6 @@ public extension Player {
 			let playbackInfoFetcher = PlaybackInfoFetcher(
 				with: configuration,
 				offlinerHttpClient,
-				accessTokenProvider,
 				credentialsProvider,
 				networkMonitor,
 				and: playerEventSender,
@@ -211,7 +201,6 @@ public extension Player {
 			urlSession: sharedPlayerURLSession,
 			configuration: configuration,
 			storage: storage,
-			accessTokenProvider: accessTokenProvider,
 			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
@@ -250,7 +239,6 @@ public extension Player {
 				self.playerURLSession,
 				self.configuration,
 				self.storage,
-				self.accessTokenProvider,
 				self.djProducer,
 				self.fairplayLicenseFetcher,
 				self.networkMonitor,
@@ -276,7 +264,6 @@ public extension Player {
 			with: configuration,
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			mainPlayer: AVQueuePlayerWrapper.self,
 			externalPlayers: registeredPlayers
@@ -285,7 +272,6 @@ public extension Player {
 		let player = PlayerEngine(
 			with: OperationQueue.new(),
 			HttpClient(using: playerURLSession),
-			accessTokenProvider,
 			credentialsProvider,
 			fairplayLicenseFetcher,
 			djProducer,
@@ -411,7 +397,6 @@ private extension Player {
 		_ urlSession: URLSession,
 		_ configuration: Configuration,
 		_ storage: Storage,
-		_ accessTokenProvider: AccessTokenProvider,
 		_ djProducer: DJProducer,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		_ networkMonitor: NetworkMonitor,
@@ -425,7 +410,6 @@ private extension Player {
 			with: configuration,
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			mainPlayer: AVQueuePlayerWrapper.self,
 			externalPlayers: externalPlayers
@@ -434,7 +418,6 @@ private extension Player {
 		let playerInstance = PlayerEngine(
 			with: OperationQueue.new(),
 			HttpClient(using: urlSession),
-			accessTokenProvider,
 			credentialsProvider,
 			fairplayLicenseFetcher,
 			djProducer,

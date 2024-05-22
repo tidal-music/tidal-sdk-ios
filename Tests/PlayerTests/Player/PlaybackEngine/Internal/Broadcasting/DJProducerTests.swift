@@ -20,7 +20,6 @@ private enum Constants {
 
 final class DJProducerTests: XCTestCase {
 	private var httpClient: HttpClient!
-	private var accessTokenProvider: AccessTokenProvider!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var djProducerListener: DJProducerListenerMock!
 	private var djProducer: DJProducer!
@@ -34,12 +33,10 @@ final class DJProducerTests: XCTestCase {
 		sessionConfiguration.protocolClasses = [JsonEncodedResponseURLProtocol.self]
 		let urlSession = URLSession(configuration: sessionConfiguration)
 		httpClient = HttpClient.mock(urlSession: urlSession)
-		accessTokenProvider = AuthTokenProviderMock()
 		credentialsProvider = CredentialsProviderMock()
 
 		djProducer = DJProducer(
 			httpClient: httpClient,
-			with: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: .mock
 		)

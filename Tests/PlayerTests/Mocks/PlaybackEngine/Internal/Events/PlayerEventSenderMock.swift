@@ -14,7 +14,6 @@ final class PlayerEventSenderMock: PlayerEventSender {
 	override init(
 		configuration: Configuration = Configuration.mock(),
 		httpClient: HttpClient = HttpClient.mock(),
-		accessTokenProvider: AccessTokenProvider = AuthTokenProviderMock(),
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		dataWriter: DataWriterProtocol = DataWriterMock(),
 		featureFlagProvider: FeatureFlagProvider = .mock,
@@ -23,7 +22,6 @@ final class PlayerEventSenderMock: PlayerEventSender {
 		super.init(
 			configuration: configuration,
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			dataWriter: dataWriter,
 			featureFlagProvider: featureFlagProvider,

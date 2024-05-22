@@ -6,12 +6,10 @@ extension PlayerEngine {
 	static func mock(
 		queue: OperationQueue = OperationQueueMock(),
 		httpClient: HttpClient = HttpClient(),
-		accessTokenProvider: AccessTokenProvider,
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		fairplayLicenseFetcher: FairPlayLicenseFetcher = FairPlayLicenseFetcher.mock(),
 		djProducer: DJProducer = DJProducer(
 			httpClient: HttpClient(),
-			with: AuthTokenProviderMock(),
 			credentialsProvider: CredentialsProviderMock(),
 			featureFlagProvider: .mock
 		),
@@ -29,7 +27,6 @@ extension PlayerEngine {
 		PlayerEngine(
 			with: queue,
 			httpClient,
-			accessTokenProvider,
 			credentialsProvider,
 			fairplayLicenseFetcher,
 			djProducer,

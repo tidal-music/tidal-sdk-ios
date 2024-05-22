@@ -13,7 +13,6 @@ final class FeatureFlagProviderTests: XCTestCase {
 		PlayerWorld.developmentFeatureFlagProvider.isOffliningEnabled = false
 
 		let playerInstance = Player.bootstrap(
-			accessTokenProvider: AuthTokenProviderMock(),
 			clientToken: "",
 			clientVersion: "",
 			listener: PlayerListenerMock(),
@@ -32,7 +31,6 @@ final class FeatureFlagProviderTests: XCTestCase {
 		PlayerWorld.developmentFeatureFlagProvider.isOffliningEnabled = true
 
 		let playerInstance = Player.bootstrap(
-			accessTokenProvider: AuthTokenProviderMock(),
 			clientToken: "",
 			clientVersion: "",
 			listener: PlayerListenerMock(),

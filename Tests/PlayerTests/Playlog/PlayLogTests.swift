@@ -101,14 +101,12 @@ final class PlayLogTests: XCTestCase {
 			timeoutErrorManager: errorManager
 		)
 
-		let accessTokenProvider = AuthTokenProviderMock()
 		credentialsProvider = CredentialsProviderMock()
 		let dataWriter = DataWriterMock()
 		let configuration = Configuration.mock()
 		playerEventSender = PlayerEventSenderMock(
 			configuration: configuration,
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			dataWriter: dataWriter
 		)
 
@@ -118,7 +116,6 @@ final class PlayLogTests: XCTestCase {
 
 		let djProducer = DJProducer(
 			httpClient: httpClient,
-			with: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: .mock
 		)
@@ -130,7 +127,6 @@ final class PlayLogTests: XCTestCase {
 			with: configuration,
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			mainPlayer: AVQueuePlayerWrapper.self,
 			externalPlayers: []
@@ -144,7 +140,6 @@ final class PlayLogTests: XCTestCase {
 		playerEngine = PlayerEngine.mock(
 			queue: operationQueue,
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,
