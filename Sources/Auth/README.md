@@ -51,7 +51,7 @@ This authentication method uses `clientId` and `clientSecret`, e.g. when utilizi
 
     TidalAuth.shared.config(config: authConfig)
 ```
-2. `TidalAuth` conforms to `AuthProvider`, a typealias for composition of the protocols `Auth` and `CredentialsProvider`. `CredentialsProvider` is responsible for getting [Credentials](./Model/Credentials.swift) and `Auth` is responsible for different authorization operations. 
+2. `TidalAuth` conforms to the protocols `Auth` and `CredentialsProvider`. `CredentialsProvider` is responsible for getting [Credentials](./Model/Credentials.swift) and `Auth` is responsible for different authorization operations. 
 ```swift
     let credentialsProvider: CredentialsProvider = TidalAuth.shared
 	let auth: Auth = TidalAuth.shared
@@ -74,7 +74,6 @@ To implement the login redirect flow, follow these steps or refer to our [Demo a
 1. Initiate the process by initialising [TIDALAuth](./auth.swift).
 2. For the first login use `initializeLogin` function, which returns the login URL. Open this URL in a webview, `SFSafariViewController` or invoke `ASWebAuthenticationSession`. By loading this URL, the user will be able to log in by either using their username/password or selecting one of the social logins.
 ```swift
-    let auth: AuthProvider = TidalAuth.shared
 	let loginConfig = LoginConfig()
 	let redirectUri = "YOUR_REDIRECT_URI"
 
@@ -96,7 +95,6 @@ To implement the login redirect flow, follow these steps or refer to our [Demo a
 4. After redirection to your app, follow up with a call to `finalizeLogin`, passing in the returned `redirectURL`.
  ```swift
     try await auth.finalizeLogin(loginResponseUri: redirectURL.absoluteString)
-	let isUserLoggedIn: Bool = auth.isUserLoggedIn
  ```
 5. Once logged in, you can use `credentialsProvider.getCredentials` to obtain `Credentials` for activities like API calls
 6. For subsequent logins, when the user returns to your app, simply call `credentialsProvider.getCredentials`. This is sufficient unless the user actively logs out or a token is revoked (e.g., due to a password change).
@@ -124,7 +122,6 @@ For devices with limited input capabilities, such as TVs or Watches, an alternat
 5. Subsequently, call `finalizeDeviceLogin` and pass `deviceCode`, which will continually poll the backend until the user successfully enters the code. Once the operation has completed successfully, you are ready to proceed.
  ```swift
 	try await auth.finalizeDeviceLogin(deviceCode: response.deviceCode)
-	isUserLoggedIn = auth.isUserLoggedIn
 ```
 6. Retrieve a token by calling `credentialsProvider.getCredentials`.
 
