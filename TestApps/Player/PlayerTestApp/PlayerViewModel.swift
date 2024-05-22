@@ -49,7 +49,7 @@ final class PlayerViewModel: ObservableObject, PlayerListener {
 			clientToken: CLIENT_ID,
 			clientVersion: "1.0",
 			listener: self,
-			credentialsProvider: auth,
+			credentialsProvider: TidalAuth.shared,
 			eventSender: eventSender
 		)
 	}
