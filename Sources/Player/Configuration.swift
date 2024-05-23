@@ -1,3 +1,4 @@
+import Common
 import Foundation
 
 // MARK: - UserConfiguration
@@ -56,7 +57,7 @@ public struct Configuration {
 
 	public var allowOfflineOverCellular: Bool = false
 
-	init(clientToken: String, clientVersion: String) {
+	init(clientToken: String, clientVersion: String = Bundle.main.appVersion) {
 		self.clientToken = clientToken
 		self.clientVersion = clientVersion
 	}

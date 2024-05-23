@@ -114,7 +114,6 @@ public extension Player {
 	static func bootstrap(
 		accessTokenProvider: AccessTokenProvider,
 		clientToken: String,
-		clientVersion: String,
 		listener: PlayerListener,
 		listenerQueue: DispatchQueue = .main,
 		featureFlagProvider: FeatureFlagProvider = .standard,
@@ -130,7 +129,7 @@ public extension Player {
 
 		let timeoutPolicy = TimeoutPolicy.standard
 		let sharedPlayerURLSession = URLSession.new(with: timeoutPolicy, name: "Player Player", serviceType: .responsiveAV)
-		let configuration = Configuration(clientToken: clientToken, clientVersion: clientVersion)
+		let configuration = Configuration(clientToken: clientToken)
 		let storage = Storage()
 
 		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived

@@ -63,7 +63,6 @@ do {
 var player = Player.bootstrap(
     accessTokenProvider: DefaultAccessTokenProvider(),
     clientToken: CLIENT_ID,
-    clientVersion: "1.0",
     listener: self,
     listenerQueue: DispatchQueue.main,
     featureFlagProvider: FeatureFlagProvider(isStallWhenTransitionFromEndedToBufferingEnabled: { return true }),

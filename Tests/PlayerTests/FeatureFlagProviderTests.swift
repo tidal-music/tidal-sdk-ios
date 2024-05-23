@@ -15,7 +15,6 @@ final class FeatureFlagProviderTests: XCTestCase {
 		let playerInstance = Player.bootstrap(
 			accessTokenProvider: AuthTokenProviderMock(),
 			clientToken: "",
-			clientVersion: "",
 			listener: PlayerListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),
 			featureFlagProvider: .mock,
@@ -34,7 +33,6 @@ final class FeatureFlagProviderTests: XCTestCase {
 		let playerInstance = Player.bootstrap(
 			accessTokenProvider: AuthTokenProviderMock(),
 			clientToken: "",
-			clientVersion: "",
 			listener: PlayerListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),
 			featureFlagProvider: .mock,
