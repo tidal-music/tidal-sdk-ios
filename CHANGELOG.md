@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace Scopes with Set<String> + migrate stored Credentials
 - Spec conformance - interface segregation
 - Don't check offlineMode when sending PlayerEvents
+- Removed 'clientVersion' parameter from Player bootstrap (Player)
 
 ## [0.3.18] - 2024-05-14
 ### Added
