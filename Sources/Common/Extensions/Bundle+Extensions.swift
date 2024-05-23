@@ -12,10 +12,10 @@ public extension Bundle {
 
 private extension Bundle {
 	var versionNumber: String {
-		infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A"
+		infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
 	}
 
 	var buildNumber: String {
-		infoDictionary?["CFBundleVersion"] as? String ?? "N/A"
+		infoDictionary?["CFBundleVersion"] as? String ?? "1"
 	}
 }
