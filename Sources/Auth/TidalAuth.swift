@@ -25,7 +25,8 @@ public class TidalAuth: Auth & CredentialsProvider {
 			loginUriBuilder: LoginUriBuilder(
 				clientId: config.clientId,
 				clientUniqueKey: config.clientUniqueKey,
-				loginBaseUrl: config.tidalLoginServiceBaseUri
+				loginBaseUrl: config.tidalLoginServiceBaseUri,
+				scopes: config.scopes
 			),
 			loginService: DefaultLoginService(authBaseUrl: config.tidalAuthServiceBaseUri)
 		)

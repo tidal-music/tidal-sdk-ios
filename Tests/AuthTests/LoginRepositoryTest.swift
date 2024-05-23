@@ -51,7 +51,8 @@ final class LoginRepositoryTest: XCTestCase {
 			loginUriBuilder: LoginUriBuilder(
 				clientId: clientId,
 				clientUniqueKey: clientUniqueKey,
-				loginBaseUrl: loginBaseUri
+				loginBaseUrl: loginBaseUri,
+				scopes: authConfig.scopes
 			),
 			loginService: loginService,
 			exponentialBackoffPolicy: retryPolicy
