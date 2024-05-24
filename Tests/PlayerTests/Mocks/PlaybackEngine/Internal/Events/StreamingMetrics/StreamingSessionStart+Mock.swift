@@ -19,7 +19,7 @@ extension StreamingSessionStart {
 			networkType: networkType,
 			outputDevice: outputDevice,
 			sessionType: sessionType,
-			sessionProductType: sessionProductType,
+			sessionProductType: sessionProductType.rawValue,
 			sessionProductId: sessionProductId,
 			sessionTags: sessionTags
 		)
