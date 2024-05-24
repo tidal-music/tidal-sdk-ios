@@ -12,7 +12,6 @@ private let OFFLINE_PLAYS_URL: URL = URL(string: "https://api.tidal.com/v1/repor
 class PlayerEventSender {
 	private let configuration: Configuration
 	private let httpClient: HttpClient
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 	private let dataWriter: DataWriterProtocol
 	private let featureFlagProvider: FeatureFlagProvider
@@ -27,14 +26,9 @@ class PlayerEventSender {
 
 	private let fileManager = PlayerWorld.fileManagerClient
 
-	private var shouldUseAuthModule: Bool {
-		featureFlagProvider.shouldUseAuthModule()
-	}
-
 	init(
 		configuration: Configuration,
 		httpClient: HttpClient,
-		accessTokenProvider: AccessTokenProvider,
 		credentialsProvider: CredentialsProvider,
 		dataWriter: DataWriterProtocol,
 		featureFlagProvider: FeatureFlagProvider,
@@ -42,7 +36,6 @@ class PlayerEventSender {
 	) {
 		self.configuration = configuration
 		self.httpClient = httpClient
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.dataWriter = dataWriter
 		self.featureFlagProvider = featureFlagProvider
@@ -200,25 +193,21 @@ private extension PlayerEventSender {
 				return
 			}
 
-			var token: String?
+			let token: String?
 
-			if shouldUseAuthModule {
-				do {
-					let authToken = try await credentialsProvider.getCredentials()
-					token = authToken.toBearerToken()
+			do {
+				let authToken = try await credentialsProvider.getCredentials()
+				token = authToken.toBearerToken()
 
-					guard authToken.isAuthorized else {
-						// TODO: Should we log this error?
-						print("EventSender succeeded to get credentials but user is not authorized.")
-						return
-					}
-				} catch {
+				guard authToken.isAuthorized else {
 					// TODO: Should we log this error?
-					print("StreamingPrivilegesHandler failed to get credentials")
+					print("EventSender succeeded to get credentials but user is not authorized.")
 					return
 				}
-			} else {
-				token = accessTokenProvider.accessToken
+			} catch {
+				// TODO: Should we log this error?
+				print("StreamingPrivilegesHandler failed to get credentials")
+				return
 			}
 
 			let user = User(
@@ -302,19 +291,15 @@ private extension PlayerEventSender {
 	func send(contentOfAll urls: [URL], to url: URL, serialize: @escaping ([URL]) throws -> Data?) {
 		SafeTask {
 			do {
-				var token: String?
+				let token: String?
 
-				if shouldUseAuthModule {
-					let authToken = try await self.credentialsProvider.getCredentials()
-					token = authToken.toBearerToken()
+				let authToken = try await self.credentialsProvider.getCredentials()
+				token = authToken.toBearerToken()
 
-					guard authToken.isAuthorized else {
-						// TODO: Should we log this error?
-						print("EventSender succeeded to get credentials but user is not authorized.")
-						return
-					}
-				} else {
-					token = self.accessTokenProvider.accessToken
+				guard authToken.isAuthorized else {
+					// TODO: Should we log this error?
+					print("EventSender succeeded to get credentials but user is not authorized.")
+					return
 				}
 
 				guard let token, let data = try serialize(urls) else {

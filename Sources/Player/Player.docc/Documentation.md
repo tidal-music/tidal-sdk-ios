@@ -61,12 +61,11 @@ do {
 2. Create the Player and start playing.
 ```swift
 var player = Player.bootstrap(
-    accessTokenProvider: DefaultAccessTokenProvider(),
     clientToken: CLIENT_ID,
     listener: self,
     listenerQueue: DispatchQueue.main,
     featureFlagProvider: FeatureFlagProvider(isStallWhenTransitionFromEndedToBufferingEnabled: { return true }),
-    authProvider: auth
+	credentialsProvider: TidalAuth.shared
 )
 
 var mediaProduct = MediaProduct(ProductType.TRACK, "PRODUCT_ID")

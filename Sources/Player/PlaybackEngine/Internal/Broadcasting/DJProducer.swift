@@ -10,25 +10,18 @@ final class DJProducer {
 
 	private let queue: OperationQueue
 	private let httpClient: HttpClient
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 	private let featureFlagProvider: FeatureFlagProvider
 
 	private var stopOnNextCommand: Bool
 	@Atomic private var curationUrl: URL?
 
-	private var shouldUseAuthModule: Bool {
-		featureFlagProvider.shouldUseAuthModule()
-	}
-
 	init(
 		httpClient: HttpClient,
-		with accessTokenProvider: AccessTokenProvider,
 		credentialsProvider: CredentialsProvider,
 		featureFlagProvider: FeatureFlagProvider
 	) {
 		self.httpClient = httpClient
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
 
@@ -47,26 +40,12 @@ final class DJProducer {
 			do {
 				let response: CreateBroadcastResponse
 
-				if self.shouldUseAuthModule {
-					let token = try await self.credentialsProvider.getAuthBearerToken()
-					response = try await self.httpClient.postJson(
-						url: DJProducer.CREATE_BROADCAST_URL,
-						headers: ["Authorization": token, "Content-type": "text/plain"],
-						payload: title.data(using: .utf8)
-					)
-				} else {
-					guard let accessToken = self.accessTokenProvider.accessToken else {
-						try await self.accessTokenProvider.renewAccessToken(status: nil)
-						self.start(title, with: mediaProduct, at: position)
-						return
-					}
-
-					response = try await self.httpClient.postJson(
-						url: DJProducer.CREATE_BROADCAST_URL,
-						headers: ["Authorization": accessToken, "Content-type": "text/plain"],
-						payload: title.data(using: .utf8)
-					)
-				}
+				let token = try await self.credentialsProvider.getAuthBearerToken()
+				response = try await self.httpClient.postJson(
+					url: DJProducer.CREATE_BROADCAST_URL,
+					headers: ["Authorization": token, "Content-type": "text/plain"],
+					payload: title.data(using: .utf8)
+				)
 
 				let sessionData = DJSessionMetadata(
 					sessionId: response.broadcastId,

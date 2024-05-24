@@ -38,17 +38,15 @@ public final class Player {
 		// immediately.
 		didSet {
 			playerEngine.updateConfiguration(configuration)
-			streamingPrivilegesHandler?.updateConfiguration(configuration)
+			streamingPrivilegesHandler.updateConfiguration(configuration)
 		}
 	}
 
 	private var storage: Storage
-	private var accessTokenProvider: AccessTokenProvider
 	private var djProducer: DJProducer
 	private var playerEventSender: PlayerEventSender
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher
-	private var legacyStreamingPrivilegesHandler: LegacyStreamingPrivilegesHandler?
-	private var streamingPrivilegesHandler: StreamingPrivilegesHandler?
+	private var streamingPrivilegesHandler: StreamingPrivilegesHandler
 	private var networkMonitor: NetworkMonitor
 	private var notificationsHandler: NotificationsHandler
 	private let featureFlagProvider: FeatureFlagProvider
@@ -62,12 +60,10 @@ public final class Player {
 		urlSession: URLSession,
 		configuration: Configuration,
 		storage: Storage,
-		accessTokenProvider: AccessTokenProvider,
 		djProducer: DJProducer,
 		playerEventSender: PlayerEventSender,
 		fairplayLicenseFetcher: FairPlayLicenseFetcher,
-		legacyStreamingPrivilegesHandler: LegacyStreamingPrivilegesHandler?,
-		streamingPrivilegesHandler: StreamingPrivilegesHandler?,
+		streamingPrivilegesHandler: StreamingPrivilegesHandler,
 		networkMonitor: NetworkMonitor,
 		notificationsHandler: NotificationsHandler,
 		playerEngine: PlayerEngine,
@@ -80,10 +76,8 @@ public final class Player {
 		playerURLSession = urlSession
 		self.configuration = configuration
 		self.storage = storage
-		self.accessTokenProvider = accessTokenProvider
 		self.djProducer = djProducer
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
-		self.legacyStreamingPrivilegesHandler = legacyStreamingPrivilegesHandler
 		self.streamingPrivilegesHandler = streamingPrivilegesHandler
 		self.networkMonitor = networkMonitor
 		self.playerEventSender = playerEventSender
@@ -101,7 +95,6 @@ public extension Player {
 	/// - Important: It must be called only once when initializing it so it is caller responsibility to keep the reference to it,
 	/// otherwise it will return nil.
 	/// - Parameters:
-	///   - accessTokenProvider: Provider of access token used as Authorization header in all requests.
 	///   - clientToken: The client token that was used to create the access token.
 	///   - clientVersion: App version.
 	///   - listener: Listener for relevant changes of Player instance.
@@ -112,7 +105,6 @@ public extension Player {
 	///   - eventSender: Event sender to which events are sent.
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
 	static func bootstrap(
-		accessTokenProvider: AccessTokenProvider,
 		clientToken: String,
 		listener: PlayerListener,
 		listenerQueue: DispatchQueue = .main,
@@ -138,7 +130,6 @@ public extension Player {
 
 		let djProducer = DJProducer(
 			httpClient: djProducerHTTPClient,
-			with: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: featureFlagProvider
 		)
@@ -149,7 +140,6 @@ public extension Player {
 				with: timeoutPolicy,
 				serviceType: .background
 			)),
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			dataWriter: DataWriter(),
 			featureFlagProvider: featureFlagProvider,
@@ -157,28 +147,16 @@ public extension Player {
 		)
 		let fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: HttpClient(using: sharedPlayerURLSession),
-			accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			and: playerEventSender,
 			featureFlagProvider: featureFlagProvider
 		)
 
-		let legacyStreamingPrivilegesHandler: LegacyStreamingPrivilegesHandler?
-		let streamingPrivilegesHandler: StreamingPrivilegesHandler?
-		if featureFlagProvider.shouldUseAuthModule() {
-			legacyStreamingPrivilegesHandler = nil
-			streamingPrivilegesHandler = StreamingPrivilegesHandler(
-				configuration: configuration,
-				httpClient: HttpClient(using: URLSession.new(with: timeoutPolicy, serviceType: .default)),
-				credentialsProvider: credentialsProvider
-			)
-		} else {
-			legacyStreamingPrivilegesHandler = LegacyStreamingPrivilegesHandler(
-				HttpClient(using: URLSession.new(with: timeoutPolicy, serviceType: .default)),
-				and: accessTokenProvider
-			)
-			streamingPrivilegesHandler = nil
-		}
+		let streamingPrivilegesHandler = StreamingPrivilegesHandler(
+			configuration: configuration,
+			httpClient: HttpClient(using: URLSession.new(with: timeoutPolicy, serviceType: .default)),
+			credentialsProvider: credentialsProvider
+		)
 
 		let networkMonitor = NetworkMonitor()
 		let notificationsHandler = NotificationsHandler(listener: listener, queue: listenerQueue)
@@ -187,7 +165,6 @@ public extension Player {
 			sharedPlayerURLSession,
 			configuration,
 			storage,
-			accessTokenProvider,
 			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
@@ -204,7 +181,6 @@ public extension Player {
 			let playbackInfoFetcher = PlaybackInfoFetcher(
 				with: configuration,
 				offlinerHttpClient,
-				accessTokenProvider,
 				credentialsProvider,
 				networkMonitor,
 				and: playerEventSender,
@@ -224,11 +200,9 @@ public extension Player {
 			urlSession: sharedPlayerURLSession,
 			configuration: configuration,
 			storage: storage,
-			accessTokenProvider: accessTokenProvider,
 			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			legacyStreamingPrivilegesHandler: legacyStreamingPrivilegesHandler,
 			streamingPrivilegesHandler: streamingPrivilegesHandler,
 			networkMonitor: networkMonitor,
 			notificationsHandler: notificationsHandler,
@@ -246,8 +220,7 @@ public extension Player {
 		queue.dispatch {
 			self.userConfiguration = userConfiguration
 			self.playerEventSender.updateUserConfiguration(userConfiguration: userConfiguration)
-			self.legacyStreamingPrivilegesHandler?.reset()
-			self.streamingPrivilegesHandler?.disconnect()
+			self.streamingPrivilegesHandler.disconnect()
 		}
 	}
 
@@ -265,7 +238,6 @@ public extension Player {
 				self.playerURLSession,
 				self.configuration,
 				self.storage,
-				self.accessTokenProvider,
 				self.djProducer,
 				self.fairplayLicenseFetcher,
 				self.networkMonitor,
@@ -278,8 +250,7 @@ public extension Player {
 
 			self.djProducer.delegate = self.playerEngine
 
-			self.streamingPrivilegesHandler?.delegate = self.playerEngine
-			self.legacyStreamingPrivilegesHandler?.delegate = self.playerEngine
+			self.streamingPrivilegesHandler.delegate = self.playerEngine
 
 			self.playerEngine.load(mediaProduct, timestamp: time, isPreload: false)
 		}
@@ -292,7 +263,6 @@ public extension Player {
 			with: configuration,
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			mainPlayer: AVQueuePlayerWrapper.self,
 			externalPlayers: registeredPlayers
@@ -301,7 +271,6 @@ public extension Player {
 		let player = PlayerEngine(
 			with: OperationQueue.new(),
 			HttpClient(using: playerURLSession),
-			accessTokenProvider,
 			credentialsProvider,
 			fairplayLicenseFetcher,
 			djProducer,
@@ -344,10 +313,9 @@ public extension Player {
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
 			self.playerEngine.play(timestamp: time)
-			self.legacyStreamingPrivilegesHandler?.notify()
 
 			SafeTask {
-				await self.streamingPrivilegesHandler?.notify()
+				await self.streamingPrivilegesHandler.notify()
 			}
 		}
 	}
@@ -361,14 +329,12 @@ public extension Player {
 			self.playerEngine = handle.player
 			self.playerEngine.notificationsHandler = self.notificationsHandler
 			self.djProducer.delegate = self.playerEngine
-			self.legacyStreamingPrivilegesHandler?.delegate = self.playerEngine
-			self.streamingPrivilegesHandler?.delegate = self.playerEngine
+			self.streamingPrivilegesHandler.delegate = self.playerEngine
 
 			self.playerEngine.play(timestamp: time)
-			self.legacyStreamingPrivilegesHandler?.notify()
 
 			SafeTask {
-				await self.streamingPrivilegesHandler?.notify()
+				await self.streamingPrivilegesHandler.notify()
 			}
 		}
 	}
@@ -430,7 +396,6 @@ private extension Player {
 		_ urlSession: URLSession,
 		_ configuration: Configuration,
 		_ storage: Storage,
-		_ accessTokenProvider: AccessTokenProvider,
 		_ djProducer: DJProducer,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		_ networkMonitor: NetworkMonitor,
@@ -444,7 +409,6 @@ private extension Player {
 			with: configuration,
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			mainPlayer: AVQueuePlayerWrapper.self,
 			externalPlayers: externalPlayers
@@ -453,7 +417,6 @@ private extension Player {
 		let playerInstance = PlayerEngine(
 			with: OperationQueue.new(),
 			HttpClient(using: urlSession),
-			accessTokenProvider,
 			credentialsProvider,
 			fairplayLicenseFetcher,
 			djProducer,

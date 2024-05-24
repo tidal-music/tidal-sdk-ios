@@ -15,7 +15,6 @@ final class PlayerLoaderMock: PlayerLoader {
 		with configuration: Configuration,
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider = .mock,
-		accessTokenProvider: AccessTokenProvider = AuthTokenProviderMock(),
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		mainPlayer: GenericMediaPlayer.Type = PlayerMock.self,
 		externalPlayers: [GenericMediaPlayer.Type] = []

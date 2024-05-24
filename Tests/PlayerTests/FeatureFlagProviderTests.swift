@@ -13,7 +13,6 @@ final class FeatureFlagProviderTests: XCTestCase {
 		PlayerWorld.developmentFeatureFlagProvider.isOffliningEnabled = false
 
 		let playerInstance = Player.bootstrap(
-			accessTokenProvider: AuthTokenProviderMock(),
 			clientToken: "",
 			listener: PlayerListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),
@@ -31,7 +30,6 @@ final class FeatureFlagProviderTests: XCTestCase {
 		PlayerWorld.developmentFeatureFlagProvider.isOffliningEnabled = true
 
 		let playerInstance = Player.bootstrap(
-			accessTokenProvider: AuthTokenProviderMock(),
 			clientToken: "",
 			listener: PlayerListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),

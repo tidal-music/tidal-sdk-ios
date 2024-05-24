@@ -99,7 +99,6 @@ final class PlayerEngine {
 	init(
 		with queue: OperationQueue,
 		_ httpClient: HttpClient,
-		_ accessTokenProvider: AccessTokenProvider,
 		_ credentialsProvider: CredentialsProvider,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		_ djProducer: DJProducer,
@@ -115,7 +114,6 @@ final class PlayerEngine {
 		playbackInfoFetcher = PlaybackInfoFetcher(
 			with: configuration,
 			httpClient,
-			accessTokenProvider,
 			credentialsProvider,
 			networkMonitor,
 			and: playerEventSender,

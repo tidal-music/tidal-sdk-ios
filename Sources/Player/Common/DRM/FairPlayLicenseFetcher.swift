@@ -24,25 +24,18 @@ final class FairPlayLicenseFetcher {
 	private static let LICENSE_URL = URL(string: "https://fp.fa.tidal.com/license")!
 
 	private let httpClient: HttpClient
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 	private let playerEventSender: PlayerEventSender
 	private let featureFlagProvider: FeatureFlagProvider
 	private var certificate: Data?
 
-	private var shouldUseAuthModule: Bool {
-		featureFlagProvider.shouldUseAuthModule()
-	}
-
 	init(
 		with httpClient: HttpClient,
-		_ accessTokenProvider: AccessTokenProvider,
 		credentialsProvider: CredentialsProvider,
 		and playerEventSender: PlayerEventSender,
 		featureFlagProvider: FeatureFlagProvider
 	) {
 		self.httpClient = httpClient
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.playerEventSender = playerEventSender
 		self.featureFlagProvider = featureFlagProvider
@@ -91,31 +84,17 @@ private extension FairPlayLicenseFetcher {
 		do {
 			var license: Data?
 
-			if shouldUseAuthModule {
-				let token = try await credentialsProvider.getAuthBearerToken()
+			let token = try await credentialsProvider.getAuthBearerToken()
 
-				license = try await httpClient.post(
-					url: FairPlayLicenseFetcher.LICENSE_URL,
-					headers: [
-						"Authorization": token,
-						"Content-Type": "application/octet-stream",
-						"X-Tidal-Streaming-Session-Id": streamingSessionId,
-					],
-					payload: licenseChallenge
-				)
-			} else {
-				license = try await accessTokenProvider.authenticate { accessToken in
-					try await httpClient.post(
-						url: FairPlayLicenseFetcher.LICENSE_URL,
-						headers: [
-							"Authorization": accessToken,
-							"Content-Type": "application/octet-stream",
-							"X-Tidal-Streaming-Session-Id": streamingSessionId,
-						],
-						payload: licenseChallenge
-					)
-				}
-			}
+			license = try await httpClient.post(
+				url: FairPlayLicenseFetcher.LICENSE_URL,
+				headers: [
+					"Authorization": token,
+					"Content-Type": "application/octet-stream",
+					"X-Tidal-Streaming-Session-Id": streamingSessionId,
+				],
+				payload: licenseChallenge
+			)
 
 			guard let license else {
 				throw FairPlayLicenseFetcherError.emptyLicensePayload.error()
@@ -135,7 +114,6 @@ private extension FairPlayLicenseFetcher {
 
 		} catch {
 			// TODO: Should we update this to handle proper conversion from TidalError, otherwise they will always be EUnexpected
-			let error = FairPlayLicenseFetcher.convert(error)
 			let playerError = PlayerInternalError.from(error)
 
 			let endTimestamp = PlayerWorld.timeProvider.timestamp()
@@ -150,13 +128,5 @@ private extension FairPlayLicenseFetcher {
 
 			throw error
 		}
-	}
-
-	static func convert(_ error: Error) -> Error {
-		if error is TokenRenewalFailed {
-			return FairPlayLicenseFetcherError.unableToRenewAccessToken.error()
-		}
-
-		return error
 	}
 }

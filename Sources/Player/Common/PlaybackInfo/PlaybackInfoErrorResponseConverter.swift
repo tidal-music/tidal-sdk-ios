@@ -4,10 +4,6 @@ import Foundation
 
 enum PlaybackInfoErrorResponseConverter {
 	static func convert(_ error: Error) -> Error {
-		if error is TokenRenewalFailed {
-			return PlaybackInfoFetcherError.unableToRenewAccessToken.error(.PERetryable)
-		}
-
 		guard let httpError = error as? HttpError else {
 			return error
 		}

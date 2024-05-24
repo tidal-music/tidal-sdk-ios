@@ -8,7 +8,6 @@ final class InternalPlayerLoader: PlayerLoader {
 	private let configuration: Configuration
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
 
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 
 	private let featureFlagProvider: FeatureFlagProvider
@@ -17,10 +16,6 @@ final class InternalPlayerLoader: PlayerLoader {
 	var players: [GenericMediaPlayer] = []
 
 	// MARK: - Convenience properties
-
-	private var shouldUseAuthModule: Bool {
-		featureFlagProvider.shouldUseAuthModule()
-	}
 
 	private var loudnessNormalizationMode: LoudnessNormalizationMode {
 		configuration.loudnessNormalizationMode
@@ -32,14 +27,12 @@ final class InternalPlayerLoader: PlayerLoader {
 		with configuration: Configuration,
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
-		accessTokenProvider: AccessTokenProvider,
 		credentialsProvider: CredentialsProvider,
 		mainPlayer: GenericMediaPlayer.Type,
 		externalPlayers: [GenericMediaPlayer.Type]
 	) {
 		self.configuration = configuration
 		fairPlayLicenseFetcher = fairplayLicenseFetcher
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
 
@@ -236,13 +229,7 @@ private extension InternalPlayerLoader {
 				loudnessNormalizer: loudnessNormalizer
 			)
 
-			let token: String = if shouldUseAuthModule {
-				try await credentialsProvider.getAuthBearerToken()
-			} else {
-				try await accessTokenProvider.authenticate { accessToken in
-					accessToken
-				}
-			}
+			let token: String = try await credentialsProvider.getAuthBearerToken()
 
 			let headers: [String: String] = [
 				"Authorization": token,

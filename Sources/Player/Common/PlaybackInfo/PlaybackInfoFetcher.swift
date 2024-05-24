@@ -6,20 +6,14 @@ import Foundation
 final class PlaybackInfoFetcher {
 	private let configuration: Configuration
 	private let httpClient: HttpClient
-	private let accessTokenProvider: AccessTokenProvider
 	private let credentialsProvider: CredentialsProvider
 	private let networkMonitor: NetworkMonitor
 	private let playerEventSender: PlayerEventSender
 	private let featureFlagProvider: FeatureFlagProvider
 
-	private var shouldUseAuthModule: Bool {
-		featureFlagProvider.shouldUseAuthModule()
-	}
-
 	init(
 		with configuration: Configuration,
 		_ httpClient: HttpClient,
-		_ accessTokenProvider: AccessTokenProvider,
 		_ credentialsProvider: CredentialsProvider,
 		_ networkMonitor: NetworkMonitor,
 		and playerEventSender: PlayerEventSender,
@@ -27,7 +21,6 @@ final class PlaybackInfoFetcher {
 	) {
 		self.configuration = configuration
 		self.httpClient = httpClient
-		self.accessTokenProvider = accessTokenProvider
 		self.credentialsProvider = credentialsProvider
 		self.networkMonitor = networkMonitor
 		self.playerEventSender = playerEventSender
@@ -283,29 +276,16 @@ private extension PlaybackInfoFetcher {
 	func getPlaybackInfo<T: Decodable>(url: URL, streamingSessionId: String, playlistUUID: String?) async throws -> T {
 		let start = PlayerWorld.timeProvider.timestamp()
 		do {
-			var playbackInfo: T
-			if shouldUseAuthModule {
-				let token = try await credentialsProvider.getAuthBearerToken()
-				playbackInfo = try await httpClient.getJson(
-					url: url,
-					headers: [
-						"Authorization": token,
-						"x-tidal-streamingsessionid": streamingSessionId,
-						"x-tidal-playlistuuid": playlistUUID,
-					].compactMapValues { $0 }
-				)
-			} else {
-				playbackInfo = try await accessTokenProvider.authenticate { accessToken in
-					try await httpClient.getJson(
-						url: url,
-						headers: [
-							"Authorization": accessToken,
-							"x-tidal-streamingsessionid": streamingSessionId,
-							"x-tidal-playlistuuid": playlistUUID,
-						].compactMapValues { $0 }
-					)
-				}
-			}
+			let playbackInfo: T
+			let token = try await credentialsProvider.getAuthBearerToken()
+			playbackInfo = try await httpClient.getJson(
+				url: url,
+				headers: [
+					"Authorization": token,
+					"x-tidal-streamingsessionid": streamingSessionId,
+					"x-tidal-playlistuuid": playlistUUID,
+				].compactMapValues { $0 }
+			)
 
 			let endTimestamp = PlayerWorld.timeProvider.timestamp()
 			playerEventSender.send(

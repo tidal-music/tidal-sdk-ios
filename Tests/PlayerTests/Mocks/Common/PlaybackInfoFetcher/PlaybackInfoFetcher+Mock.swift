@@ -5,7 +5,6 @@ extension PlaybackInfoFetcher {
 	static func mock(
 		configuration: Configuration = Configuration.mock(),
 		httpClient: HttpClient = HttpClient.mock(),
-		accessTokenProvider: AccessTokenProvider = AuthTokenProviderMock(),
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		networkMonitor: NetworkMonitor = NetworkMonitorMock(),
 		playerEventSender: PlayerEventSender = PlayerEventSenderMock(),
@@ -14,7 +13,6 @@ extension PlaybackInfoFetcher {
 		PlaybackInfoFetcher(
 			with: configuration,
 			httpClient,
-			accessTokenProvider,
 			credentialsProvider,
 			networkMonitor,
 			and: playerEventSender,

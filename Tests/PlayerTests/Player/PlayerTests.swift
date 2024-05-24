@@ -22,14 +22,12 @@ final class PlayerTests: XCTestCase {
 			timeoutErrorManager: errorManager
 		)
 
-		let accessTokenProvider = AuthTokenProviderMock()
 		let credentialsProvider = CredentialsProviderMock()
 		let dataWriter = DataWriterMock()
 		let configuration = Configuration.mock()
 		playerEventSender = PlayerEventSenderMock(
 			configuration: configuration,
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			dataWriter: dataWriter
 		)
 
@@ -39,13 +37,8 @@ final class PlayerTests: XCTestCase {
 
 		let djProducer = DJProducer(
 			httpClient: httpClient,
-			with: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: .mock
-		)
-		let legacyStreamingPrivilegesHandler = LegacyStreamingPrivilegesHandler(
-			httpClient,
-			and: accessTokenProvider
 		)
 		let streamingPrivilegesHandler = StreamingPrivilegesHandler(
 			configuration: Configuration.mock(),
@@ -54,18 +47,16 @@ final class PlayerTests: XCTestCase {
 		)
 
 		let notificationsHandler = NotificationsHandler.mock()
-		let playerEngine = PlayerEngine.mock(httpClient: httpClient, accessTokenProvider: accessTokenProvider)
+		let playerEngine = PlayerEngine.mock(httpClient: httpClient)
 
 		player = Player(
 			queue: OperationQueueMock(),
 			urlSession: urlSession,
 			configuration: configuration,
 			storage: storage,
-			accessTokenProvider: accessTokenProvider,
 			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			legacyStreamingPrivilegesHandler: legacyStreamingPrivilegesHandler,
 			streamingPrivilegesHandler: streamingPrivilegesHandler,
 			networkMonitor: networkMonitor,
 			notificationsHandler: notificationsHandler,

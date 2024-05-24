@@ -26,7 +26,6 @@ final class PlayerEngineTests: XCTestCase {
 	private var listener: PlayerListenerMock!
 	private var listenerQueue: DispatchQueue!
 	private var notificationsHandler: NotificationsHandler!
-	private var accessTokenProvider: AuthTokenProviderMock!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var featureFlagProvider: FeatureFlagProvider!
 	private var storage: Storage!
@@ -73,19 +72,16 @@ final class PlayerEngineTests: XCTestCase {
 		listener = PlayerListenerMock()
 		listenerQueue = DispatchQueue(label: "com.tidal.queue.for.testing")
 		notificationsHandler = NotificationsHandler(listener: listener, queue: listenerQueue)
-		accessTokenProvider = AuthTokenProviderMock()
 		credentialsProvider = CredentialsProviderMock()
 		featureFlagProvider = FeatureFlagProvider.mock
 
 		djProducer = DJProducer(
 			httpClient: httpClient,
-			with: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: featureFlagProvider
 		)
 		fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: HttpClient(using: urlSession),
-			accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			and: playerEventSender,
 			featureFlagProvider: featureFlagProvider
@@ -95,7 +91,6 @@ final class PlayerEngineTests: XCTestCase {
 		playbackInfoFetcher = PlaybackInfoFetcher(
 			with: Configuration.mock(),
 			httpClient,
-			accessTokenProvider,
 			credentialsProvider,
 			networkMonitor,
 			and: playerEventSender,
@@ -108,7 +103,6 @@ final class PlayerEngineTests: XCTestCase {
 		playerEngine = PlayerEngine.mock(
 			queue: operationQueue,
 			httpClient: httpClient,
-			accessTokenProvider: accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			djProducer: djProducer,

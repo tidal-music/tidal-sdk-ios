@@ -13,7 +13,6 @@ private enum Constants {
 
 final class FairPlayLicenseFetcherTests: XCTestCase {
 	private var httpClient: HttpClient!
-	private var accessTokenProvider: AccessTokenProvider!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var playerEventSender: PlayerEventSender!
 	private var fetcher: FairPlayLicenseFetcher!
@@ -27,12 +26,10 @@ final class FairPlayLicenseFetcherTests: XCTestCase {
 		sessionConfiguration.protocolClasses = [JsonEncodedResponseURLProtocol.self]
 		let urlSession = URLSession(configuration: sessionConfiguration)
 		httpClient = HttpClient.mock(urlSession: urlSession)
-		accessTokenProvider = AuthTokenProviderMock()
 		credentialsProvider = CredentialsProviderMock()
 		playerEventSender = PlayerEventSenderMock()
 		fetcher = FairPlayLicenseFetcher(
 			with: httpClient,
-			accessTokenProvider,
 			credentialsProvider: credentialsProvider,
 			and: playerEventSender,
 			featureFlagProvider: .mock

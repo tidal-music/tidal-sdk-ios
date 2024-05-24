@@ -28,7 +28,6 @@ final class InternalPlayerLoaderTests: XCTestCase {
 			with: Configuration.mock(),
 			and: fairPlayLicenseFetcher,
 			featureFlagProvider: FeatureFlagProvider.mock,
-			accessTokenProvider: AuthTokenProviderMock(),
 			credentialsProvider: CredentialsProviderMock(),
 			mainPlayer: PlayerMock.self,
 			externalPlayers: []
