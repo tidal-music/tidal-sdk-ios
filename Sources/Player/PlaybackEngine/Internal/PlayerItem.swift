@@ -64,7 +64,7 @@ final class PlayerItem {
 			networkType: networkType,
 			outputDevice: outputDevice,
 			sessionType: sessionType,
-			sessionProductType: mediaProduct.productType,
+			sessionProductType: mediaProduct.productType.rawValue,
 			sessionProductId: mediaProduct.productId,
 			sessionTags: sessionTags
 		))

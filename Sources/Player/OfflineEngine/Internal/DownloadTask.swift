@@ -51,7 +51,7 @@ final class DownloadTask {
 			networkType: networkType,
 			outputDevice: outputDevice,
 			sessionType: sessionType,
-			sessionProductType: mediaProduct.productType,
+			sessionProductType: mediaProduct.productType.rawValue,
 			sessionProductId: mediaProduct.productId
 		))
 	}

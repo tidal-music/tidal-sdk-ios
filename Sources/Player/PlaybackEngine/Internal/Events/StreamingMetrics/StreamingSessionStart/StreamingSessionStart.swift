@@ -26,7 +26,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 	let screenHeight: Int
 	let outputDevice: String?
 	let sessionType: SessionType
-	let sessionProductType: ProductType
+	let sessionProductType: String
 	let sessionProductId: String
 	let sessionTags: [SessionTag]?
 
@@ -56,7 +56,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		networkType: NetworkType,
 		outputDevice: String?,
 		sessionType: SessionType,
-		sessionProductType: ProductType,
+		sessionProductType: String,
 		sessionProductId: String,
 		sessionTags: [SessionTag]? = nil
 	) {
@@ -111,7 +111,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		screenHeight = try container.decode(Int.self, forKey: .screenHeight)
 		outputDevice = try container.decode(String?.self, forKey: .outputDevice)
 		sessionType = try container.decode(SessionType.self, forKey: .sessionType)
-		sessionProductType = try container.decode(ProductType.self, forKey: .sessionProductType)
+		sessionProductType = try container.decode(String.self, forKey: .sessionProductType)
 		sessionProductId = try container.decode(String.self, forKey: .sessionProductId)
 		sessionTags = try container.decodeIfPresent([SessionTag].self, forKey: .sessionTags)
 	}
