@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add playlog tests - 8 (Player)
 ### Changed
 - Delete all code related to old auth and remove new Auth FF (Player)
+### Fixed
+- Fixed encoding of sessionProductType as a String in StreamingSessionStart (Player)
 
 ## [0.3.19] - 2024-05-23
 ### Added
