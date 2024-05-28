@@ -1,0 +1,36 @@
+name: Generate documentation
+
+on:
+  push:
+    branches: [main, alberto/BITS-2827/create-package-documentation-catalogues]
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    runs-on: macos-14
+    name: Build documentation
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set env
+        run: echo "INCLUDE_DOCC_PLUGIN=true" >> $GITHUB_ENV
+      - name: Build Docs
+        run: |
+          Scripts/combineDocumentation.sh Player Auth EventProducer
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+  deploy-docs:
+    needs: build-docs
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    name: Deploy documentation
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

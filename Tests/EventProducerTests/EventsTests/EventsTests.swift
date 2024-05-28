@@ -1,0 +1,263 @@
+import Common
+@testable import EventProducer
+@testable import Auth
+import XCTest
+
+final class EventsTests: XCTestCase {
+	private struct MockCredentialsProvider: CredentialsProvider {
+		let testToken: String?
+		func getCredentials(apiErrorSubStatus: String?) async throws -> Credentials {
+			return Credentials(
+				clientId: "",
+				requestedScopes: .init(),
+				clientUniqueKey: "",
+				grantedScopes: .init(),
+				userId: "testUserId",
+				expires: nil,
+				token: testToken
+			)
+		}
+		var isUserLoggedIn: Bool
+	}
+	
+	private var eventSender = TidalEventSender.shared
+	private let testAccessToken = "testAccessToken"
+	private let queue = EventQueue.shared
+	private var headerHelper: HeaderHelper!
+	private let maxDiskUsageBytes = 20480
+
+	override func setUp() async throws {
+		try await super.setUp()
+		headerHelper = HeaderHelper(credentialsProvider: mockCredentialsProvider(withToken: testAccessToken))
+		eventSender.config(
+			EventConfig(
+			credentialsProvider: mockCredentialsProvider(withToken: testAccessToken),
+			maxDiskUsageBytes: maxDiskUsageBytes
+		))
+		try await queue.deleteAllEvents()
+	}
+
+	private func mockCredentialsProvider(withToken token: String) -> CredentialsProvider {
+		MockCredentialsProvider(testToken: token, isUserLoggedIn: true)
+	}
+	
+	func testSendEvent() async throws {
+		try await eventSender.sendEvent(
+			name: "testEvent",
+			consentCategory: .necessary,
+			payload: "testPayload"
+		)
+
+		let credentials = try? await eventSender.config?.credentialsProvider.getCredentials()
+		let token = credentials?.token ?? "MISSING TOKEN"
+		
+		XCTAssertEqual(token, "testAccessToken")
+	}
+
+	func testSendEventFailsWhenConfigurationNotCalled() async {
+		do {
+			try await eventSender.sendEvent(
+				name: "testEvent",
+				consentCategory: .necessary,
+				payload: "testPayload"
+			)
+		} catch {
+			XCTAssertNotNil(error)
+			guard let error = error as? EventProducerError else {
+				XCTFail("Wrong exception type")
+				return
+			}
+
+			guard case let .genericError(message) = error else {
+				return
+			}
+			XCTAssertEqual(message, "EventSenderConfig not setup, you must call setupConfiguration() before calling sendEvent")
+		}
+	}
+
+	func testEventSenderConfig() async {
+		let initialMockClientProvider = mockCredentialsProvider(withToken: "tokenInitial")
+				
+		eventSender.config(
+			EventConfig(
+				credentialsProvider: initialMockClientProvider,
+				maxDiskUsageBytes: 1024,
+				consumerUri: "initialConsumerUri"
+			)
+		)
+		
+		var credentials = try? await eventSender.config?.credentialsProvider.getCredentials()
+		let tokenInitial = credentials?.token ?? "MISSING TOKEN"
+		
+		XCTAssertEqual(tokenInitial, "tokenInitial")
+		XCTAssertEqual(eventSender.config?.consumerUri, "initialConsumerUri")
+		XCTAssertEqual(eventSender.config?.maxDiskUsageBytes, 1024)
+		
+		let updatedMockAuthProvider = MockCredentialsProvider(testToken: "tokenUpdated", isUserLoggedIn: true)
+		eventSender.updateConfiguration(EventConfig(credentialsProvider: updatedMockAuthProvider,
+																								maxDiskUsageBytes: 5000,
+																								consumerUri: "updatedConsumerUri"))
+		
+		credentials = try? await eventSender.config?.credentialsProvider.getCredentials()
+		let tokenUpdated = credentials?.token ?? "MISSING TOKEN"
+		
+		XCTAssertEqual(tokenUpdated, "tokenUpdated")
+		XCTAssertEqual(eventSender.config?.consumerUri, "updatedConsumerUri")
+		XCTAssertEqual(eventSender.config?.maxDiskUsageBytes, 5000)
+	}
+
+	func testEventsPersisted() async throws {
+		let event1 = Event(
+			name: "testEvent#1",
+			payload: "firstPayload"
+		)
+
+		let event2 = Event(
+			name: "testEvent#2",
+			payload: "secondPayload"
+		)
+
+		try await queue.addEvent(event: event1, consentCategory: .performance)
+		try await queue.addEvent(event: event2, consentCategory: .necessary)
+		let fetchedEvents = try await queue.getAllEvents()
+
+		XCTAssertTrue(fetchedEvents.contains(where: { $0.name == "testEvent#1" }))
+		XCTAssertTrue(fetchedEvents.contains(where: { $0.name == "testEvent#2" }))
+		XCTAssertFalse(fetchedEvents.contains(where: { $0.name == "fakeEvent" }))
+	}
+
+	func testSendEventThroughScheduler() async throws {
+		guard let consumerUri = eventSender.config?.consumerUri else {
+			XCTFail("Default consumerUri should be set")
+			return
+		}
+		let eventScheduler = EventScheduler(consumerUri: consumerUri)
+		let event = Event(
+			name: "testEvent",
+			payload: "payload"
+		)
+
+		try await queue.addEvent(event: event, consentCategory: .necessary)
+		do {
+			try await eventScheduler.sendAllEvents(headerHelper: headerHelper)
+			XCTFail("Auth token is invalid - it *should* fail")
+		} catch {
+			let leftoverEvents = try await queue.getAllEvents().count
+			XCTAssertEqual(leftoverEvents, 1)
+		}
+
+		let anonymousAuthProvider = MockCredentialsProvider(testToken: nil, isUserLoggedIn: false)
+		headerHelper = HeaderHelper(credentialsProvider: anonymousAuthProvider)
+		eventSender.updateConfiguration(
+			.init(
+				credentialsProvider: anonymousAuthProvider,
+				maxDiskUsageBytes: maxDiskUsageBytes
+			)
+		)
+		try await eventScheduler.sendAllEvents(headerHelper: headerHelper)
+		let leftoverEvents = try await queue.getAllEvents().count
+		XCTAssertEqual(leftoverEvents, 0)
+	}
+
+	func testSendEventTwoBatchesThroughScheduler() async throws {
+		guard let consumerUri = eventSender.config?.consumerUri else {
+			XCTFail("Default consumerUri should be set")
+			return
+		}
+		let eventScheduler = EventScheduler(consumerUri: consumerUri)
+		let anonymousAuthProvider = MockCredentialsProvider(testToken: nil, isUserLoggedIn: false)
+		headerHelper = HeaderHelper(credentialsProvider: anonymousAuthProvider)
+
+		eventSender.updateConfiguration(
+			.init(
+				credentialsProvider: anonymousAuthProvider,
+				maxDiskUsageBytes: maxDiskUsageBytes
+			)
+		)
+
+		for index in 0 ... 15 {
+			let event = Event(
+				name: "testEvent#\(index)",
+				payload: "payload#\(index)"
+			)
+			try await queue.addEvent(event: event, consentCategory: .necessary)
+		}
+
+		try await eventScheduler.sendAllEvents(headerHelper: headerHelper)
+		let leftoverEvents = try await queue.getAllEvents().count
+
+		XCTAssertEqual(leftoverEvents, 0)
+	}
+
+	func testBlockedConsentCategoriesEventsDropped() async throws {
+		eventSender.setBlockedConsentCategories([ConsentCategory.targeting, ConsentCategory.performance])
+
+		try await eventSender.sendEvent(
+			name: "PerformanceEvent",
+			consentCategory: ConsentCategory.performance,
+			payload: "firstPayload"
+		)
+
+		try await eventSender.sendEvent(
+			name: "NecessaryEvent",
+			consentCategory: ConsentCategory.necessary,
+			headers: ["test": "test"],
+			payload: "secondPayload"
+		)
+
+		try await eventSender.sendEvent(
+			name: "TargetingEvent",
+			consentCategory: ConsentCategory.targeting,
+			payload: "firstPayload"
+		)
+		
+		let fetchedEvents = try await queue.getAllEvents()
+		XCTAssertEqual(fetchedEvents.count, 1)
+		XCTAssertFalse(fetchedEvents.contains(where: { $0.name == "PerformanceEvent" }))
+		XCTAssertTrue(fetchedEvents.contains(where: { $0.name == "NecessaryEvent" }))
+		XCTAssertFalse(fetchedEvents.contains(where: { $0.name == "TargetingEvent" }))
+		XCTAssertFalse(fetchedEvents.contains(where: { $0.name == "fakeEvent" }))
+	}
+
+	func testCorrectCategoryStored() async throws {
+		eventSender.setBlockedConsentCategories([])
+
+		try await eventSender.sendEvent(
+			name: "PerformanceEvent",
+			consentCategory: .performance,
+			headers: [HTTPHeaderKeys.consentCategory.rawValue: ConsentCategory.performance.rawValue],
+			payload: "firstPayload"
+		)
+
+		try await eventSender.sendEvent(
+			name: "NecessaryEvent",
+			consentCategory: .necessary,
+			headers: ["test": "test", HTTPHeaderKeys.consentCategory.rawValue: ConsentCategory.necessary.rawValue],
+			payload: "secondPayload"
+		)
+
+		try await eventSender.sendEvent(
+			name: "TargetingEvent",
+			consentCategory: .targeting,
+			headers: [HTTPHeaderKeys.consentCategory.rawValue: ConsentCategory.targeting.rawValue],
+			payload: "firstPayload"
+		)
+
+		let fetchedEvents = try await queue.getAllEvents()
+
+		XCTAssertEqual(fetchedEvents.count, 3)
+		XCTAssertEqual(
+			fetchedEvents.filter { $0.headers[HTTPHeaderKeys.consentCategory.rawValue] == ConsentCategory.performance.rawValue }
+				.count,
+			1
+		)
+		XCTAssertEqual(
+			fetchedEvents.filter { $0.headers[HTTPHeaderKeys.consentCategory.rawValue] == ConsentCategory.necessary.rawValue }.count,
+			1
+		)
+		XCTAssertEqual(
+			fetchedEvents.filter { $0.headers[HTTPHeaderKeys.consentCategory.rawValue] == ConsentCategory.targeting.rawValue }.count,
+			1
+		)
+	}
+}

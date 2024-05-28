@@ -1,0 +1,35 @@
+---
+
+disabled_rules:
+  - cyclomatic_complexity
+  - file_length
+  - large_tuple
+  - opening_brace  # Swiftformat conflicts with this one
+  - todo
+  - trailing_comma  # Swiftformat takes care of this
+  - trailing_whitespace  # Swiftformat takes care of this
+  - type_body_length
+
+# Customizations
+function_body_length: 300
+function_parameter_count: 16
+
+line_length:
+  warning: 300
+  error: 350
+
+identifier_name:
+  allowed_symbols: "_"
+  min_length:
+    error: 1
+    warning: 1
+  excluded: [N]
+
+nesting:
+  type_level:
+    warning: 2
+    error: 3
+
+excluded:
+  - '**/.build'
+  - bin

@@ -1,0 +1,17 @@
+*    @tidal-music/tidal-eng-ios
+
+# Teams
+
+## BITS
+Sources/Player/ @tidal-music/bits-ios @tidal-music/pace-ios
+Tests/PlayerTests/ @tidal-music/bits-ios @tidal-music/pace-ios
+
+## Platform
+Sources/Auth/ @tidal-music/platform-ios
+Sources/Common/ @tidal-music/platform-ios
+Sources/EventProducer/ @tidal-music/platform-ios
+Sources/Template/ @tidal-music/platform-ios
+Tests/AuthTests/ @tidal-music/platform-ios
+Tests/CommonTests/ @tidal-music/platform-ios
+Tests/EventProducerTests/ @tidal-music/platform-ios
+Tests/TemplateTests/ @tidal-music/platform-ios

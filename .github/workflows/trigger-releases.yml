@@ -1,0 +1,57 @@
+name: Trigger Releases
+on:
+  push:
+    branches: 'main'
+
+jobs: 
+  check-bump:
+    runs-on: ubuntu-latest
+    name: Check For Version Bump
+    outputs:
+      version: ${{ steps.check-version-bump.outputs.version }}
+      bump-detected: ${{ steps.check-version-bump.outputs.bump_detected }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Check if version was bumped
+        id: check-version-bump
+        run: |
+          set +e
+          result="false"
+          version="$(cat version.txt)"
+          ./bin/check-version-bump.sh
+          
+          # check-version-bump exits with 0 if it detects a bump, otherwise with 1
+          if [ $? != "1" ]; then
+            result="true"
+          fi
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "bump_detected=$result" >> $GITHUB_OUTPUT
+          
+  trigger-lint:
+    name: Run Lint Checks
+    needs: [ check-bump ]
+    if: ${{ needs.check-bump.outputs.bump-detected == 'true' }}
+    uses: ./.github/workflows/lint.yml
+    permissions: 
+      pull-requests: write
+      contents: read
+      
+  trigger-unit-tests:
+    name: Run Unit Tests
+    needs: [ check-bump ]
+    if: ${{ needs.check-bump.outputs.bump-detected == 'true' }}
+    uses: ./.github/workflows/unit-test.yml
+
+  trigger-release:
+    name: Trigger release
+    needs: [ check-bump, trigger-lint, trigger-unit-tests ]
+    if: ${{ needs.check-bump.outputs.bump-detected == 'true' }}
+    permissions: write-all
+    uses: ./.github/workflows/create-release.yml
+    with: 
+        version: ${{ needs.check-bump.outputs.version }}
+    secrets: inherit
+
+

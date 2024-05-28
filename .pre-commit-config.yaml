@@ -1,0 +1,23 @@
+---
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/nicklockwood/SwiftFormat.git
+    rev: 0.53.1
+    hooks:
+      - id: swiftformat
+        alias: format
+        entry: swiftformat --config ./.swiftformat
+        stages: [pre-commit]
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.28.0
+    hooks:
+      # Specifically checks Github Action action.yml files against Github Action schema
+      - id: check-github-actions
+        alias: format
+      # Specifically checks Github Action workflow.yml files against Github Action schema
+      - id: check-github-workflows
+        alias: format
+
+# Which hooks should be installed when running pre-commit install
+default_install_hook_types: [pre-commit]

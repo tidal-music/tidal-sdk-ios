@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# start templated
+INSTALL_PYTHON=/opt/homebrew/opt/pre-commit/libexec/bin/python3.12
+ARGS=(hook-impl --config=.pre-commit-config.yaml --hook-type=pre-commit)
+# end templated
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+ARGS+=(--hook-dir "$HERE" -- "$@")
+
+if [ -x "$INSTALL_PYTHON" ]; then
+    exec "$INSTALL_PYTHON" -mpre_commit "${ARGS[@]}"
+elif command -v pre-commit > /dev/null; then
+    exec pre-commit "${ARGS[@]}"
+else
+    echo '`pre-commit` not found.  Did you forget to activate your virtualenv?' 1>&2
+    exit 1
+fi
+
+STAGED_SWIFT_FILES=($(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "\.swift"))
+readonly STAGED_SWIFT_FILES
+
+if [ -z "$STAGED_SWIFT_FILES" ]; then
+    echo "No Swift files staged."
+    exit 0
+fi
+
+files_argument=""
+for i in "${STAGED_SWIFT_FILES[@]}"; do
+    files_argument="$files_argument $i"
+done
+
+echo "arg: $files_argument"
+
+./bin/swiftlint/run-swiftlint.sh -i "$files_argument"
+swiftlint_result=$?
+
+if [ $swiftlint_result != 0 ]; then
+    echo
+    echo "Lint check failed"
+    echo "SwiftLint exit code: $swiftlint_result"
+    exit 1
+fi
