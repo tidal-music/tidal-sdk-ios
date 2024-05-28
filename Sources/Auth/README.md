@@ -54,7 +54,7 @@ This authentication method uses `clientId` and `clientSecret`, e.g. when utilizi
 2. `TidalAuth` conforms to the protocols `Auth` and `CredentialsProvider`. `CredentialsProvider` is responsible for getting [Credentials](./Model/Credentials.swift) and `Auth` is responsible for different authorization operations. 
 ```swift
     let credentialsProvider: CredentialsProvider = TidalAuth.shared
-	let auth: Auth = TidalAuth.shared
+    let auth: Auth = TidalAuth.shared
 ```  
    
 3. Obtain credentials by calling `credentialsProvider.getCredentials`, which when successfully executed, returns credentials containing a `token`, `expires` and other properties.
