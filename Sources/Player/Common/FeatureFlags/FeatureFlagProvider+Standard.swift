@@ -4,6 +4,7 @@ public extension FeatureFlagProvider {
 	static let standard = FeatureFlagProvider(
 		isStallWhenTransitionFromEndedToBufferingEnabled: { true },
 		shouldUseEventProducer: { false },
-		isContentCachingEnabled: { true }
+		isContentCachingEnabled: { true },
+		shouldSendEventsInDeinit: { true }
 	)
 }

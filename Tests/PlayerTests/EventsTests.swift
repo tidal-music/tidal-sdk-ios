@@ -29,7 +29,8 @@ private enum Constants {
 final class EventsTests: XCTestCase {
 	private var timestamp: UInt64 = 1
 	private var uuid = "uuid"
-
+	private var shouldSendEventsInDeinit: Bool = true
+	
 	private var configuration: Configuration!
 	private var errorManager: ErrorManagerMock!
 	private var urlSession: URLSession!
@@ -88,6 +89,9 @@ final class EventsTests: XCTestCase {
 		featureFlagProvider.isContentCachingEnabled = {
 			self.isContentCachingEnabled
 		}
+		featureFlagProvider.shouldSendEventsInDeinit = {
+			self.shouldSendEventsInDeinit
+		}
 
 		// Set up EventSender
 		configuration = Configuration.mock()
@@ -141,7 +145,11 @@ final class EventsTests: XCTestCase {
 			and: playerEventSender,
 			featureFlagProvider: featureFlagProvider
 		)
-		playerLoader = PlayerLoaderMock(with: configuration, and: fairplayLicenseFetcher)
+		playerLoader = PlayerLoaderMock(
+			with: configuration,
+			and: fairplayLicenseFetcher,
+			featureFlagProvider: featureFlagProvider
+		)
 
 		playerEngine = PlayerEngine.mock(
 			queue: OperationQueueMock(),
@@ -168,7 +176,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -210,7 +218,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -268,7 +276,7 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -328,7 +336,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssCpbiAndCsseSentAfterFailedLoad() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.fail()
 
@@ -368,7 +376,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssCpbiAndCsseSentAfterFailedLoad_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.fail()
 
@@ -424,7 +432,7 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssCpbiAndCsseSentAfterFailedLoad_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.fail()
 
@@ -480,7 +488,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterSkipToNext() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -581,7 +589,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterSkipToNext_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -698,7 +706,7 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -819,7 +827,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -857,7 +865,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -907,7 +915,7 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -953,7 +961,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterNextIsReplaced() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -1007,7 +1015,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterNextIsReplaced_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -1060,7 +1068,7 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssAndCpbiSentAfterNextIsReplaced_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -1122,7 +1130,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterFailedLoadOfNext() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -1161,7 +1169,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterFailedLoadOfNext_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -1212,7 +1220,7 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssAndCpbiSentAfterFailedLoadOfNext_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -1259,7 +1267,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentSucceeds() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1342,7 +1350,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentSucceeds_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1437,7 +1445,7 @@ final class EventsTests: XCTestCase {
 
 	func assertPlayCurrentSucceeds_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1529,7 +1537,7 @@ final class EventsTests: XCTestCase {
 	func testPlayCurrentSucceeds_withCachingDisabled() async {
 		shouldUseEventProducer = true
 		isContentCachingEnabled = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1613,7 +1621,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentSucceeds_withPreload() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1697,7 +1705,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentSucceeds_withPreload_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1793,7 +1801,7 @@ final class EventsTests: XCTestCase {
 
 	func assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1885,7 +1893,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentFails() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1969,7 +1977,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentFails_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2065,7 +2073,7 @@ final class EventsTests: XCTestCase {
 
 	func assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2157,7 +2165,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentReset() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2244,7 +2252,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentReset_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2343,7 +2351,7 @@ final class EventsTests: XCTestCase {
 
 	func assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2438,7 +2446,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentAndNextSuccess() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2577,7 +2585,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentAndNextSuccess_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2732,7 +2740,7 @@ final class EventsTests: XCTestCase {
 
 	func assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2887,7 +2895,7 @@ final class EventsTests: XCTestCase {
 
 	func testLoadFailsInPlayer() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2940,7 +2948,7 @@ final class EventsTests: XCTestCase {
 
 	func testLoadFailsInPlayer_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3005,7 +3013,7 @@ final class EventsTests: XCTestCase {
 
 	func assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3066,7 +3074,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3171,7 +3179,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3275,7 +3283,7 @@ final class EventsTests: XCTestCase {
 
 	func assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3388,7 +3396,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndPausing() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3474,7 +3482,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndPausing_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3572,7 +3580,7 @@ final class EventsTests: XCTestCase {
 
 	func assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3666,7 +3674,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndStalling() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3769,7 +3777,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndStalling_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3879,7 +3887,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndStalling_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		self.shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3981,7 +3989,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndSeeking() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4073,7 +4081,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndSeeking_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4177,7 +4185,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndSeeking_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		self.shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4273,7 +4281,7 @@ final class EventsTests: XCTestCase {
 
 	func testStallsDueToSeek() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4374,7 +4382,7 @@ final class EventsTests: XCTestCase {
 
 	func testStallsDueToSeek_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4487,7 +4495,7 @@ final class EventsTests: XCTestCase {
 
 	func assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: Bool) async  {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4596,7 +4604,7 @@ final class EventsTests: XCTestCase {
 
 	func testStallAndAbortedSeeks() async {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4708,7 +4716,7 @@ final class EventsTests: XCTestCase {
 
 	func testStallAndAbortedSeeks_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4827,7 +4835,7 @@ final class EventsTests: XCTestCase {
 
 	func assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: Bool) async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)

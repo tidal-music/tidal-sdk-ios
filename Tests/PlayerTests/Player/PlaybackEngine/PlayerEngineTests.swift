@@ -890,7 +890,8 @@ extension PlayerEngineTests {
 			mediaProduct: mediaProduct,
 			playerItemMonitor: playerEngine,
 			playerEventSender: playerEventSender,
-			timestamp: 2
+			timestamp: 2,
+			featureFlagProvider: featureFlagProvider
 		)
 
 		if shouldSetMetadataAndAsset {

@@ -17,6 +17,7 @@ final class PlayerItemTests: XCTestCase {
 	private var monitor: PlayerItemMonitorMock!
 	private var dataWriter: DataWriterMock!
 	private var playerEventSender: PlayerEventSenderMock!
+	private var featureFlagProvider: FeatureFlagProvider!
 	private var player: PlayerMock!
 
 	private let configuration: Configuration = .mock()
@@ -30,7 +31,8 @@ final class PlayerItemTests: XCTestCase {
 	}
 
 	private var timestamp: UInt64 = 1
-
+	private var shouldSendEventsInDeinit: Bool = true
+	
 	override func setUp() {
 		// Set up time and uuid provider
 		let timeProvider = TimeProvider.mock(
@@ -48,6 +50,12 @@ final class PlayerItemTests: XCTestCase {
 		monitor = PlayerItemMonitorMock()
 		dataWriter = DataWriterMock()
 		playerEventSender = PlayerEventSenderMock(dataWriter: dataWriter)
+		
+		featureFlagProvider = FeatureFlagProvider.mock
+		featureFlagProvider.shouldSendEventsInDeinit = {
+			self.shouldSendEventsInDeinit
+		}
+
 		player = PlayerMock()
 
 		let userConfiguration = UserConfiguration.mock()
@@ -62,7 +70,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_init_sendsOnlyStreamingSessionStart_legacy() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let mediaProduct = MediaProduct.mock()
 		let playerItem = PlayerItem.mock(
@@ -74,6 +82,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -99,7 +108,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_init_sendsOnlyStreamingSessionStart() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let mediaProduct = MediaProduct.mock()
 		_ = PlayerItem.mock(
@@ -111,6 +120,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -133,7 +143,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_init_preload() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let mediaProduct = MediaProduct.mock()
 		_ = PlayerItem.mock(
@@ -145,6 +155,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: true
 		)
 
@@ -167,7 +178,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_init_cachingDisabled() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		var featureFlagProvider = FeatureFlagProvider.mock
 		featureFlagProvider.isContentCachingEnabled = { false }
@@ -205,7 +216,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_init_and_deinit_withoutMetrics_sendsOnlyStreamingSessionStart_and_StreamingSessionEnd_legacy() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let mediaProduct = MediaProduct.mock()
 		var playerItem: PlayerItem? = PlayerItem.mock(
@@ -217,6 +228,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -255,7 +267,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_init_and_deinit_withoutMetrics_sendsOnlyStreamingSessionStart_and_StreamingSessionEnd() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let mediaProduct = MediaProduct.mock()
 		var playerItem: PlayerItem? = PlayerItem.mock(
@@ -267,6 +279,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -299,7 +312,7 @@ final class PlayerItemTests: XCTestCase {
 	func test_usualStreamingPlayFlow_legacy() {
 		// GIVEN
 		let initialTimestamp = timestamp
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let mediaProduct = MediaProduct.mock()
 		let startReason: StartReason = .EXPLICIT
@@ -312,6 +325,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -409,7 +423,7 @@ final class PlayerItemTests: XCTestCase {
 	func test_usualStreamingPlayFlow() {
 		// GIVEN
 		let initialTimestamp = timestamp
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let mediaProduct = MediaProduct.mock()
 		let startReason: StartReason = .EXPLICIT
@@ -422,6 +436,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -520,7 +535,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_unload_legacy() async throws {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -531,6 +546,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -553,7 +569,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_unload() async throws {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -564,6 +580,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -588,7 +605,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_unloadFromPlayer_legacy() async throws {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -599,6 +616,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -623,7 +641,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_unloadFromPlayer() async throws {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -634,6 +652,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -660,7 +679,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_play_legacy() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -671,6 +690,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -691,7 +711,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_play() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -702,6 +722,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -724,7 +745,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_pause_legacy() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -735,6 +756,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -755,7 +777,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_pause() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -766,6 +788,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -788,7 +811,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_seek_legacy() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -799,6 +822,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 
@@ -819,7 +843,7 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_seek() {
 		// GIVEN
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playerItem = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -830,6 +854,7 @@ final class PlayerItemTests: XCTestCase {
 			playerItemMonitor: monitor,
 			playerEventSender: playerEventSender,
 			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
 			isPreload: false
 		)
 

@@ -90,7 +90,7 @@ final class PlayerEngine {
 
 	/// Flag whether we should emit events on the deinit of the current and next items.
 	private var shouldSendEventsInDeinit: Bool {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit
+		featureFlagProvider.shouldSendEventsInDeinit()
 	}
 
 	#if !os(macOS)
