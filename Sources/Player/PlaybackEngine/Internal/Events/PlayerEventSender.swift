@@ -26,6 +26,8 @@ class PlayerEventSender {
 
 	private let fileManager = PlayerWorld.fileManagerClient
 
+	private let asyncSchedulerFactory: AsyncSchedulerFactory
+
 	init(
 		configuration: Configuration,
 		httpClient: HttpClient,
@@ -40,6 +42,7 @@ class PlayerEventSender {
 		self.dataWriter = dataWriter
 		self.featureFlagProvider = featureFlagProvider
 		self.eventSender = eventSender
+		self.asyncSchedulerFactory = PlayerWorld.asyncSchedulerFactoryProvider.newFactory()
 
 		encoder = JSONEncoder()
 
@@ -77,10 +80,9 @@ class PlayerEventSender {
 	}
 
 	func send(_ offlinePlay: OfflinePlay) {
-		SafeTask { [weak self] in
-			guard let self else {
-				return
-			}
+		asyncSchedulerFactory.create { @MainActor [weak self] in
+			guard let self else { return }
+
 			do {
 				let data = try encoder.encode(offlinePlay)
 				let uuid = PlayerWorld.uuidProvider.uuidString()
@@ -188,10 +190,8 @@ private extension PlayerEventSender {
 
 	func write<T: Codable & Equatable>(group: EventGroup, name: String, payload: T) {
 		let now = PlayerWorld.timeProvider.timestamp()
-		SafeTask { [weak self] in
-			guard let self else {
-				return
-			}
+		asyncSchedulerFactory.create { @MainActor [weak self] in
+			guard let self else { return }
 
 			let token: String?
 
@@ -295,7 +295,9 @@ private extension PlayerEventSender {
 	}
 
 	func send(contentOfAll urls: [URL], to url: URL, serialize: @escaping ([URL]) throws -> Data?) {
-		SafeTask {
+		asyncSchedulerFactory.create { @MainActor [weak self] in
+			guard let self else { return }
+
 			do {
 				let token: String?
 
@@ -318,7 +320,7 @@ private extension PlayerEventSender {
 					payload: data
 				)
 
-				urls.forEach { try? fileManager.removeItem(at: $0) }
+				urls.forEach { try? self.fileManager.removeItem(at: $0) }
 
 			} catch {
 				// TODO: This error should be centrally logged
