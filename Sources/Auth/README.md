@@ -45,8 +45,7 @@ This authentication method uses `clientId` and `clientSecret`, e.g. when utilizi
         clientId: clientId,
         clientUniqueKey: clientUniqueKey,
         clientSecret: clientSecret,
-        credentialsKey: credentialsKey,
-        scopes: ["r_usr", "w_usr", "w_sub"]
+        credentialsKey: credentialsKey
     )
 
     TidalAuth.shared.config(config: authConfig)

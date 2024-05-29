@@ -6,7 +6,7 @@ import XCTest
 final class ScopesTests: XCTestCase {
 	func testToString() throws {
 		// given
-		let scopeSet = Set(["r_usr", "w_usr", "w_sub", "r_k"])
+		let scopeSet = Set(["abc", "def", "ghi", "jkl"])
 		let scopes = Scopes(scopes: scopeSet)
 
 		// when
@@ -16,12 +16,12 @@ final class ScopesTests: XCTestCase {
 			.joined(separator: " ")
 
 		// then
-		XCTAssertEqual(convertedString, "r_k r_usr w_sub w_usr")
+		XCTAssertEqual(convertedString, "abc def ghi jkl")
 	}
 
 	func testScopesFromString() throws {
 		// given
-		let scopesString = "r_usr w_usr w_sub"
+		let scopesString = "abc def ghi"
 
 		// when
 		let scopes = try Scopes.fromString(scopesString)
