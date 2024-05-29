@@ -36,32 +36,31 @@ This authentication method uses `clientId` and `clientSecret`, e.g. when utilizi
 
 1. Initiate the process by initialising [TIDALAuth](./auth.swift) by providing an [AuthConfig](./Model/AuthConfig.swift) with `clientId` and `clientSecret`.
 ```swift
-    let credentialsKey = "YOUR_CREDENTIALS_KEY"
-    let clientId = "YOUR_CLIENT_ID"
-    let clientUniqueKey = "YOUR_CLIENT_UNIQUE_KEY"
-    let clientSecret = "YOUR_CLIENT_SECRET"
+let credentialsKey = "YOUR_CREDENTIALS_KEY"
+let clientId = "YOUR_CLIENT_ID"
+let clientUniqueKey = "YOUR_CLIENT_UNIQUE_KEY"
+let clientSecret = "YOUR_CLIENT_SECRET"
 
-    let authConfig = AuthConfig(
-        clientId: clientId,
-        clientUniqueKey: clientUniqueKey,
-        clientSecret: clientSecret,
-        credentialsKey: credentialsKey,
-        scopes: ["r_usr", "w_usr", "w_sub"]
-    )
+let authConfig = AuthConfig(
+	clientId: clientId,
+	clientUniqueKey: clientUniqueKey,
+	clientSecret: clientSecret,
+	credentialsKey: credentialsKey
+)
 
-    TidalAuth.shared.config(config: authConfig)
+TidalAuth.shared.config(config: authConfig)
 ```
 2. `TidalAuth` conforms to the protocols `Auth` and `CredentialsProvider`. `CredentialsProvider` is responsible for getting [Credentials](./Model/Credentials.swift) and `Auth` is responsible for different authorization operations. 
 ```swift
-    let credentialsProvider: CredentialsProvider = TidalAuth.shared
-    let auth: Auth = TidalAuth.shared
+let credentialsProvider: CredentialsProvider = TidalAuth.shared
+let auth: Auth = TidalAuth.shared
 ```  
    
 3. Obtain credentials by calling `credentialsProvider.getCredentials`, which when successfully executed, returns credentials containing a `token`, `expires` and other properties.
 ```swift
-    let credentials = try await credentialsProvider.getCredentials()
-    let token: String? = credentials.token
-    let expires: Date? = credentials.expires
+let credentials = try await credentialsProvider.getCredentials()
+let token: String? = credentials.token
+let expires: Date? = credentials.expires
 ```  
   
 4. Make API calls to your desired endpoint and include `Authentication: Bearer YOUR_TOKEN` as a header.
@@ -74,27 +73,27 @@ To implement the login redirect flow, follow these steps or refer to our [Demo a
 1. Initiate the process by initialising [TIDALAuth](./auth.swift).
 2. For the first login use `initializeLogin` function, which returns the login URL. Open this URL in a webview, `SFSafariViewController` or invoke `ASWebAuthenticationSession`. By loading this URL, the user will be able to log in by either using their username/password or selecting one of the social logins.
 ```swift
-	let loginConfig = LoginConfig()
-	let redirectUri = "YOUR_REDIRECT_URI"
+let loginConfig = LoginConfig()
+let redirectUri = "YOUR_REDIRECT_URI"
 
-	guard let loginURL = auth.initializeLogin(redirectUri: redirectUri, loginConfig: loginConfig) else {
-		print("Something is wrong")
-		return
-	}
-	
-	let safariViewController = SFSafariViewController(url: loginURL)
+guard let loginURL = auth.initializeLogin(redirectUri: redirectUri, loginConfig: loginConfig) else {
+	print("Something is wrong")
+	return
+}
+
+let safariViewController = SFSafariViewController(url: loginURL)
 ```
 3. Successful login will redirect to an URL which you need to intercept. Here is the example for `SFSafariViewController`:
 ```swift
-    func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
-        if URL.absoluteString.starts(with: redirectUri) {
-            self.redirectURL = URL
-        }
-    }
+func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
+	if URL.absoluteString.starts(with: redirectUri) {
+		self.redirectURL = URL
+	}
+}
 ```
 4. After redirection to your app, follow up with a call to `finalizeLogin`, passing in the returned `redirectURL`.
  ```swift
-    try await auth.finalizeLogin(loginResponseUri: redirectURL.absoluteString)
+try await auth.finalizeLogin(loginResponseUri: redirectURL.absoluteString)
  ```
 5. Once logged in, you can use `credentialsProvider.getCredentials` to obtain `Credentials` for activities like API calls
 6. For subsequent logins, when the user returns to your app, simply call `credentialsProvider.getCredentials`. This is sufficient unless the user actively logs out or a token is revoked (e.g., due to a password change).
@@ -111,17 +110,17 @@ For devices with limited input capabilities, such as TVs or Watches, an alternat
 2. Use `initializeDeviceLogin` and await the response.
 
  ```swift
-	let response = try await auth.initializeDeviceLogin()
+let response = try await auth.initializeDeviceLogin()
 ```
 
 3. The response will contain a `userCode`; display it to the user.
  ```swift
-	let userCode: String = response.userCode
+let userCode: String = response.userCode
 ```
 4. Instruct the user to visit `link.tidal.com`, log in, and enter the displayed code.
 5. Subsequently, call `finalizeDeviceLogin` and pass `deviceCode`, which will continually poll the backend until the user successfully enters the code. Once the operation has completed successfully, you are ready to proceed.
  ```swift
-	try await auth.finalizeDeviceLogin(deviceCode: response.deviceCode)
+try await auth.finalizeDeviceLogin(deviceCode: response.deviceCode)
 ```
 6. Retrieve a token by calling `credentialsProvider.getCredentials`.
 

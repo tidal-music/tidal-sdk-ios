@@ -25,8 +25,7 @@ class AuthViewModel: ObservableObject {
 		AuthConfig(
 			clientId: isDeviceLoginEnabled ? CLIENT_ID_DEVICE_LOGIN : CLIENT_ID,
 			clientUniqueKey: CLIENT_UNIQUE_KEY,
-			credentialsKey: "storage",
-			scopes: ["r_usr", "w_usr", "w_sub"]
+			credentialsKey: "storage"
 		)
 	}
 
