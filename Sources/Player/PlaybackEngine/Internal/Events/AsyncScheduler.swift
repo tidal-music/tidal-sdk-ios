@@ -9,13 +9,13 @@ protocol AsyncSchedulerFactory {
 
 extension Task: AsyncScheduler {
   static func schedule(code: @escaping () async -> Void) -> AsyncScheduler {
-	Task<Void, Never> {
+	SafeTask {
 	  await code()
 	}
   }
 }
 
-class TaskAsyncSchedulerFactory: AsyncSchedulerFactory {
+final class TaskAsyncSchedulerFactory: AsyncSchedulerFactory {
   @discardableResult
   func create(code: @escaping () async -> Void) -> AsyncScheduler {
 	Task<Void, Never>.schedule(code: code)

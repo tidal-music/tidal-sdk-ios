@@ -1,7 +1,7 @@
 import Foundation
 @testable import Player
 
-class AsyncSchedulerSpy: AsyncScheduler {
+final class AsyncSchedulerSpy: AsyncScheduler {
 	var code: (() async -> Void)?
 	
 	init(code: @escaping () async -> Void) {
@@ -17,7 +17,7 @@ class AsyncSchedulerSpy: AsyncScheduler {
 	}
 }
 
-class AsyncSchedulerFactorySpy: AsyncSchedulerFactory {
+final class AsyncSchedulerFactorySpy: AsyncSchedulerFactory {
 	var scheduleList: [AsyncSchedulerSpy] = []
 	
 	@discardableResult
