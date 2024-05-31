@@ -110,7 +110,9 @@ extension StreamingPrivilegesHandlerTests {
 			await self.streamingPrivilegesHandler.notify()
 		}
 
-		try? await Task.sleep(seconds: Constants.sleepingTime)
+		await asyncOptimizedWait {
+			task.sendMessages.count == 1
+		}
 
 		// THEN
 
@@ -161,12 +163,17 @@ extension StreamingPrivilegesHandlerTests {
 			await self.streamingPrivilegesHandler.notify()
 		}
 
-		try? await Task.sleep(seconds: Constants.sleepingTime)
+		await asyncOptimizedWait {
+			task.sendMessages.count == 1
+		}
 
 		configuration.offlineMode = true
 		streamingPrivilegesHandler.updateConfiguration(configuration)
 
-		try? await Task.sleep(seconds: 5)
+		await asyncOptimizedWait {
+			task.sendMessages.count == 1 &&
+			self.webSocket.responses.count == 1
+		}
 
 		// THEN
 
@@ -222,8 +229,10 @@ extension StreamingPrivilegesHandlerTests {
 			await self.streamingPrivilegesHandler.notify()
 		}
 
-		try? await Task.sleep(seconds: Constants.sleepingTime)
-
+		await asyncOptimizedWait {
+			task.sendMessages.count == 1
+		}
+		
 		// THEN
 
 		// The web socket is opened (one message is sent)
@@ -302,7 +311,9 @@ extension StreamingPrivilegesHandlerTests {
 			await self.streamingPrivilegesHandler.notify()
 		}
 
-		try? await Task.sleep(seconds: Constants.sleepingTimeForErrors)
+		await asyncOptimizedWait {
+			task.sendMessages.count == 1
+		}
 
 		// THEN
 
@@ -384,7 +395,9 @@ extension StreamingPrivilegesHandlerTests {
 			await self.streamingPrivilegesHandler.notify()
 		}
 
-		try? await Task.sleep(seconds: Constants.sleepingTimeForErrors)
+		await asyncOptimizedWait {
+			task.sendMessages.count == 1
+		}
 
 		// THEN
 
@@ -470,7 +483,9 @@ extension StreamingPrivilegesHandlerTests {
 			await self.streamingPrivilegesHandler.notify()
 		}
 
-		try? await Task.sleep(seconds: Constants.sleepingTimeForErrors)
+		await asyncOptimizedWait {
+			task.sendMessages.count == 1
+		}
 
 		// THEN
 
