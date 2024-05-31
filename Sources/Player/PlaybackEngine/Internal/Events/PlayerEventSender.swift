@@ -80,7 +80,7 @@ class PlayerEventSender {
 	}
 
 	func send(_ offlinePlay: OfflinePlay) {
-		asyncSchedulerFactory.create { @MainActor [weak self] in
+		asyncSchedulerFactory.create { [weak self] in
 			guard let self else { return }
 
 			do {
@@ -190,7 +190,7 @@ private extension PlayerEventSender {
 
 	func write<T: Codable & Equatable>(group: EventGroup, name: String, payload: T) {
 		let now = PlayerWorld.timeProvider.timestamp()
-		asyncSchedulerFactory.create { @MainActor [weak self] in
+		asyncSchedulerFactory.create { [weak self] in
 			guard let self else { return }
 
 			let token: String?
@@ -295,7 +295,7 @@ private extension PlayerEventSender {
 	}
 
 	func send(contentOfAll urls: [URL], to url: URL, serialize: @escaping ([URL]) throws -> Data?) {
-		asyncSchedulerFactory.create { @MainActor [weak self] in
+		asyncSchedulerFactory.create { [weak self] in
 			guard let self else { return }
 
 			do {
