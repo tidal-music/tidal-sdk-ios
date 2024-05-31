@@ -32,10 +32,12 @@ private enum Constants {
 final class PlayLogTests: XCTestCase {
 	private var playerEngine: PlayerEngine!
 	private var playerEventSender: PlayerEventSenderMock!
+	private var featureFlagProvider: FeatureFlagProvider!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var timestamp: UInt64 = 1
 	private var uuid = "uuid"
-
+	private var shouldSendEventsInDeinit: Bool = true
+	
 	lazy var shortAudioFile: AudioFile = {
 		let url = PlayLogTestsHelper.url(from: Constants.AudioFileName.short)
 		return AudioFile(
@@ -71,10 +73,11 @@ final class PlayLogTests: XCTestCase {
 	}()
 
 	override func setUp() {
-		var developmentFeatureFlagProvider = DevelopmentFeatureFlagProvider.mock
-		developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		featureFlagProvider = FeatureFlagProvider.mock
+		featureFlagProvider.shouldSendEventsInDeinit = {
+			self.shouldSendEventsInDeinit
+		}
 
-		uuid = "uuid"
 		let timeProvider = TimeProvider.mock(
 			timestamp: {
 				self.timestamp
@@ -87,8 +90,7 @@ final class PlayLogTests: XCTestCase {
 		)
 		PlayerWorld = PlayerWorldClient.mock(
 			timeProvider: timeProvider,
-			uuidProvider: uuidProvider,
-			developmentFeatureFlagProvider: developmentFeatureFlagProvider
+			uuidProvider: uuidProvider
 		)
 
 		let sessionConfiguration = URLSessionConfiguration.default
@@ -108,7 +110,8 @@ final class PlayLogTests: XCTestCase {
 		playerEventSender = PlayerEventSenderMock(
 			configuration: configuration,
 			httpClient: httpClient,
-			dataWriter: dataWriter
+			dataWriter: dataWriter,
+			featureFlagProvider: featureFlagProvider
 		)
 
 		let storage = Storage()
@@ -122,8 +125,6 @@ final class PlayLogTests: XCTestCase {
 		)
 
 		let notificationsHandler = NotificationsHandler.mock()
-		let featureFlagProvider = FeatureFlagProvider.mock
-
 		let playerLoader = InternalPlayerLoader(
 			with: configuration,
 			and: fairplayLicenseFetcher,
@@ -149,6 +150,7 @@ final class PlayLogTests: XCTestCase {
 			networkMonitor: networkMonitor,
 			storage: storage,
 			playerLoader: playerLoader,
+			featureFlagProvider: featureFlagProvider,
 			notificationsHandler: notificationsHandler
 		)
 

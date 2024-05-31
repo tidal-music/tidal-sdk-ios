@@ -410,7 +410,6 @@ extension PlayerEventSenderTests {
 
 	func test_updateUserConfiguration_legacy() async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
 		var streamingSessionStart = StreamingSessionStart.mock()
 		var expectedDecodedEvent = LegacyEvent<StreamingSessionStart>(

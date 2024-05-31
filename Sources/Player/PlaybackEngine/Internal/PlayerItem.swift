@@ -25,6 +25,7 @@ final class PlayerItem {
 
 	private weak var playerItemMonitor: PlayerItemMonitor?
 	private let playerEventSender: PlayerEventSender
+	private let featureFlagProvider: FeatureFlagProvider
 	private var playbackStartReason: StartReason
 
 	@Atomic private var metrics: Metrics?
@@ -51,6 +52,7 @@ final class PlayerItem {
 		self.mediaProduct = mediaProduct
 		self.playerItemMonitor = playerItemMonitor
 		self.playerEventSender = playerEventSender
+		self.featureFlagProvider = featureFlagProvider
 
 		isDownloaded = false
 		shouldPlayWhenLoaded = false
@@ -78,7 +80,7 @@ final class PlayerItem {
 	}
 
 	deinit {
-		if PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit {
+		if featureFlagProvider.shouldSendEventsInDeinit() {
 			emitEvents()
 		}
 	}
