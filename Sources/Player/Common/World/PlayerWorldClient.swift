@@ -12,6 +12,7 @@ struct PlayerWorldClient {
 	var uuidProvider: UUIDProvider
 	var developmentFeatureFlagProvider: DevelopmentFeatureFlagProvider
 	var fileManagerClient: FileManagerClient
+	var asyncSchedulerFactoryProvider: AsyncSchedulerFactoryProvider
 }
 
 extension PlayerWorldClient {
@@ -21,6 +22,7 @@ extension PlayerWorldClient {
 		timeProvider: .live,
 		uuidProvider: .live,
 		developmentFeatureFlagProvider: .live,
-		fileManagerClient: .live
+		fileManagerClient: .live,
+		asyncSchedulerFactoryProvider: .live
 	)
 }

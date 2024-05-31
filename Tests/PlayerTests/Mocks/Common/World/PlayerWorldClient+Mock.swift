@@ -7,7 +7,8 @@ extension PlayerWorldClient {
 		timeProvider: .mock,
 		uuidProvider: .mock,
 		developmentFeatureFlagProvider: .mock,
-		fileManagerClient: .mock
+		fileManagerClient: .mock,
+		asyncSchedulerFactoryProvider: .spy
 	)
 
 	static func mock(
@@ -16,7 +17,8 @@ extension PlayerWorldClient {
 		timeProvider: TimeProvider = .mock,
 		uuidProvider: UUIDProvider = .mock,
 		developmentFeatureFlagProvider: DevelopmentFeatureFlagProvider = .mock,
-		fileManagerClient: FileManagerClient = .mock
+		fileManagerClient: FileManagerClient = .mock,
+		asyncSchedulerFactoryProvider: AsyncSchedulerFactoryProvider = .spy
 	) -> Self {
 		PlayerWorldClient(
 			audioInfoProvider: audioInfoProvider,
@@ -24,7 +26,8 @@ extension PlayerWorldClient {
 			timeProvider: timeProvider,
 			uuidProvider: uuidProvider,
 			developmentFeatureFlagProvider: developmentFeatureFlagProvider,
-			fileManagerClient: fileManagerClient
+			fileManagerClient: fileManagerClient,
+			asyncSchedulerFactoryProvider: asyncSchedulerFactoryProvider
 		)
 	}
 }
