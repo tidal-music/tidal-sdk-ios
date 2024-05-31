@@ -19,15 +19,17 @@ struct DefaultLoginService: LoginService, HTTPService {
 		codeVerifier: String,
 		clientUniqueKey: String?
 	) async throws -> LoginResponse {
-		let queryItems = [
+		var queryItems = [
 			URLQueryItem(name: "code", value: code),
 			URLQueryItem(name: "client_id", value: clientId),
 			URLQueryItem(name: "grant_type", value: grantType),
 			URLQueryItem(name: "redirect_uri", value: redirectUri),
 			URLQueryItem(name: "scope", value: scopes),
-			URLQueryItem(name: "code_verifier", value: codeVerifier),
-			URLQueryItem(name: "client_unique_key", value: clientUniqueKey),
+			URLQueryItem(name: "code_verifier", value: codeVerifier)
 		]
+		if let clientUniqueKey, !clientUniqueKey.isEmpty {
+			queryItems.append(URLQueryItem(name: "client_unique_key", value: clientUniqueKey))
+		}
 		guard let request = request(url: authBaseUrl, path: TOKEN_AUTH_PATH, queryItems: queryItems) else {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
