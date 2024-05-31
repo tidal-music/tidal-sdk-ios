@@ -53,8 +53,6 @@ final class EventsTests: XCTestCase {
 	private var featureFlagProvider: FeatureFlagProvider!
 	private var isContentCachingEnabled: Bool = true
 
-	private var asyncSchedulerFactory: AsyncSchedulerFactorySpy = AsyncSchedulerFactorySpy()
-
 	override func setUp() {
 		let timeProvider = TimeProvider.mock(
 			timestamp: {
@@ -66,19 +64,13 @@ final class EventsTests: XCTestCase {
 				self.uuid
 			}
 		)
-		let asyncSchedulerFactoryProvider = AsyncSchedulerFactoryProvider(
-			newFactory: {
-				self.asyncSchedulerFactory
-			}
-		)
 
 		networkMonitor = NetworkMonitorMock()
 		networkMonitor.networkType = Constants.networkType
 
 		PlayerWorld = PlayerWorldClient.mock(
 			timeProvider: timeProvider,
-			uuidProvider: uuidProvider,
-			asyncSchedulerFactoryProvider: asyncSchedulerFactoryProvider
+			uuidProvider: uuidProvider
 		)
 
 		featureFlagProvider = FeatureFlagProvider.mock
@@ -166,13 +158,11 @@ final class EventsTests: XCTestCase {
 		player.reset()
 	}
 
-	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset() async {
+	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset() {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
-
-		await self.asyncSchedulerFactory.executeAll()
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -184,8 +174,6 @@ final class EventsTests: XCTestCase {
 
 		player.loaded()
 		playerEngine.reset()
-
-		await self.asyncSchedulerFactory.executeAll()
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -258,15 +246,15 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent, expectedEvent: expectedStreamingSessionEndEvent)
 	}
 
-	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy2() async {
-		await assertCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy(shouldSendEventsInDeinit: true)
+	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy2() {
+		assertCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy3() async {
-		await assertCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy(shouldSendEventsInDeinit: false)
+	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy3() {
+		assertCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -278,8 +266,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 0 &&
 				playerEventSender.progressEvents.count == 0
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
@@ -301,8 +287,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 0 &&
 				playerEventSender.progressEvents.count == 0
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
@@ -326,13 +310,11 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent, expectedEvent: expectedStreamingSessionEndEvent)
 	}
 
-	func testCsssCpbiAndCsseSentAfterFailedLoad() async {
+	func testCsssCpbiAndCsseSentAfterFailedLoad() {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.fail()
-
-		await self.asyncSchedulerFactory.executeAll()
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -340,8 +322,6 @@ final class EventsTests: XCTestCase {
 
 		let initialTimestamp: UInt64 = 1
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
-
-		await self.asyncSchedulerFactory.executeAll()
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -414,15 +394,15 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent, expectedEvent: expectedStreamingSessionEndEvent)
 	}
 
-	func testCsssCpbiAndCsseSentAfterFailedLoad_legacy2() async {
-		await assertCsssCpbiAndCsseSentAfterFailedLoad_legacy(shouldSendEventsInDeinit: true)
+	func testCsssCpbiAndCsseSentAfterFailedLoad_legacy2() {
+		assertCsssCpbiAndCsseSentAfterFailedLoad_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testCsssCpbiAndCsseSentAfterFailedLoad_legacy3() async {
-		await assertCsssCpbiAndCsseSentAfterFailedLoad_legacy(shouldSendEventsInDeinit: false)
+	func testCsssCpbiAndCsseSentAfterFailedLoad_legacy3() {
+		assertCsssCpbiAndCsseSentAfterFailedLoad_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertCsssCpbiAndCsseSentAfterFailedLoad_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertCsssCpbiAndCsseSentAfterFailedLoad_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -434,8 +414,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 0 &&
 				playerEventSender.progressEvents.count == 0
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
@@ -451,8 +429,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 0 &&
 				playerEventSender.progressEvents.count == 0
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
@@ -478,7 +454,7 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent, expectedEvent: expectedStreamingSessionEndEvent)
 	}
 
-	func testCsssAndCpbiSentAfterSkipToNext() async {
+	func testCsssAndCpbiSentAfterSkipToNext() {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -506,8 +482,6 @@ final class EventsTests: XCTestCase {
 		let playTimestamp: UInt64 = 3
 		playerEngine.play(timestamp: playTimestamp)
 		player.playing()
-
-		await self.asyncSchedulerFactory.executeAll()
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -534,8 +508,6 @@ final class EventsTests: XCTestCase {
 		let skipToNextTimestamp: UInt64 = 4
 		timestamp = skipToNextTimestamp
 		playerEngine.skipToNext(timestamp: skipToNextTimestamp)
-
-		await self.asyncSchedulerFactory.executeAll()
 		
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -551,8 +523,6 @@ final class EventsTests: XCTestCase {
 		player.playing()
 		player.completed()
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		// Events of the second item
 		let actualStreamingSessionEndEvent = playerEventSender.streamingMetricsEvents[3] as! StreamingSessionEnd
 		let expectedStreamingSessionEndEvent = StreamingSessionEnd.mock(
@@ -688,15 +658,15 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent2, expectedEvent: expectedStreamingSessionEndEvent2)
 	}
 
-	func testCsssAndCpbiSentAfterSkipToNext_legacy2() async {
-		await assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: true)
+	func testCsssAndCpbiSentAfterSkipToNext_legacy2() {
+		assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testCsssAndCpbiSentAfterSkipToNext_legacy3() async {
-		await assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: false)
+	func testCsssAndCpbiSentAfterSkipToNext_legacy3()  {
+		assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -731,8 +701,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 0 &&
 				playerEventSender.progressEvents.count == 0
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
@@ -765,8 +733,6 @@ final class EventsTests: XCTestCase {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 4
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
@@ -787,8 +753,6 @@ final class EventsTests: XCTestCase {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 6
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		// Events of the second item
@@ -817,7 +781,7 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent2, expectedEvent: expectedStreamingSessionEndEvent2)
 	}
 
-	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext() async {
+	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext() {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -835,8 +799,6 @@ final class EventsTests: XCTestCase {
 		timestamp = nextTimestamp
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 		player.loaded()
-
-		await self.asyncSchedulerFactory.executeAll()
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -897,15 +859,15 @@ final class EventsTests: XCTestCase {
 		validatePlaybackInfoFetch(event: actualPlaybackInfoFetch, expectedEvent: expectedPlaybackInfoFetch)
 	}
 
-	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy2() async {
-		await assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: true)
+	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy2() {
+		assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy3() async {
-		await assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: false)
+	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy3()  {
+		assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -930,8 +892,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 0 &&
 				playerEventSender.progressEvents.count == 0
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
@@ -951,7 +911,7 @@ final class EventsTests: XCTestCase {
 		validatePlaybackInfoFetch(event: actualPlaybackInfoFetch, expectedEvent: expectedPlaybackInfoFetch)
 	}
 
-	func testCsssAndCpbiSentAfterNextIsReplaced() async {
+	func testCsssAndCpbiSentAfterNextIsReplaced() {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -979,8 +939,6 @@ final class EventsTests: XCTestCase {
 		uuid = mediaProduct3.productId
 		playerEngine.setNext(mediaProduct3, timestamp: nextTimestamp)
 		player.loaded()
-
-		await self.asyncSchedulerFactory.executeAll()
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 7)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -1050,15 +1008,15 @@ final class EventsTests: XCTestCase {
 		validatePlaybackInfoFetch(event: actualPlaybackInfoFetch, expectedEvent: expectedPlaybackInfoFetch)
 	}
 
-	func testCsssAndCpbiSentAfterNextIsReplaced_legacy2() async {
-		await assertCsssAndCpbiSentAfterNextIsReplaced_legacy(shouldSendEventsInDeinit: true)
+	func testCsssAndCpbiSentAfterNextIsReplaced_legacy2() {
+		assertCsssAndCpbiSentAfterNextIsReplaced_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testCsssAndCpbiSentAfterNextIsReplaced_legacy3() async {
-		await assertCsssAndCpbiSentAfterNextIsReplaced_legacy(shouldSendEventsInDeinit: false)
+	func testCsssAndCpbiSentAfterNextIsReplaced_legacy3() {
+		assertCsssAndCpbiSentAfterNextIsReplaced_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertCsssAndCpbiSentAfterNextIsReplaced_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertCsssAndCpbiSentAfterNextIsReplaced_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -1093,8 +1051,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 0 &&
 				playerEventSender.progressEvents.count == 0
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 7)
@@ -1120,7 +1076,7 @@ final class EventsTests: XCTestCase {
 		validatePlaybackInfoFetch(event: actualPlaybackInfoFetch, expectedEvent: expectedPlaybackInfoFetch)
 	}
 
-	func testCsssAndCpbiSentAfterFailedLoadOfNext() async {
+	func testCsssAndCpbiSentAfterFailedLoadOfNext() {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -1137,8 +1093,6 @@ final class EventsTests: XCTestCase {
 		let nextTimestamp: UInt64 = 2
 		timestamp = nextTimestamp
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
-
-		await self.asyncSchedulerFactory.executeAll()
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -1202,15 +1156,15 @@ final class EventsTests: XCTestCase {
 		validatePlaybackInfoFetch(event: actualPlaybackInfoFetch, expectedEvent: expectedPlaybackInfoFetch)
 	}
 
-	func testCsssAndCpbiSentAfterFailedLoadOfNext_legacy2() async {
-		await assertCsssAndCpbiSentAfterFailedLoadOfNext_legacy(shouldSendEventsInDeinit: true)
+	func testCsssAndCpbiSentAfterFailedLoadOfNext_legacy2() {
+		assertCsssAndCpbiSentAfterFailedLoadOfNext_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testCsssAndCpbiSentAfterFailedLoadOfNext_legacy3() async {
-		await assertCsssAndCpbiSentAfterFailedLoadOfNext_legacy(shouldSendEventsInDeinit: false)
+	func testCsssAndCpbiSentAfterFailedLoadOfNext_legacy3() {
+		assertCsssAndCpbiSentAfterFailedLoadOfNext_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertCsssAndCpbiSentAfterFailedLoadOfNext_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertCsssAndCpbiSentAfterFailedLoadOfNext_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -1234,8 +1188,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 0 &&
 				playerEventSender.progressEvents.count == 0
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
@@ -1257,7 +1209,7 @@ final class EventsTests: XCTestCase {
 		validatePlaybackInfoFetch(event: actualPlaybackInfoFetch, expectedEvent: expectedPlaybackInfoFetch)
 	}
 
-	func testPlayCurrentSucceeds() async {
+	func testPlayCurrentSucceeds()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -1281,8 +1233,6 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -1427,15 +1377,15 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentSucceeds_legacy2() async {
-		await assertPlayCurrentSucceeds_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentSucceeds_legacy2() {
+		assertPlayCurrentSucceeds_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentSucceeds_legacy3() async {
-		await assertPlayCurrentSucceeds_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentSucceeds_legacy3() {
+		assertPlayCurrentSucceeds_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentSucceeds_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertPlayCurrentSucceeds_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -1465,8 +1415,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -1526,7 +1474,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentSucceeds_withCachingDisabled() async {
+	func testPlayCurrentSucceeds_withCachingDisabled() {
 		shouldUseEventProducer = true
 		isContentCachingEnabled = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
@@ -1551,8 +1499,6 @@ final class EventsTests: XCTestCase {
 		timestamp = endTimestamp
 		player.assetPosition = endAssetPosition
 		player.completed()
-
-		await self.asyncSchedulerFactory.executeAll()
 		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
@@ -1611,7 +1557,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentSucceeds_withPreload() async {
+	func testPlayCurrentSucceeds_withPreload()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -1636,8 +1582,6 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -1783,15 +1727,15 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentSucceeds_withPreload_legacy2() async {
-		await assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentSucceeds_withPreload_legacy2()  {
+		 assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentSucceeds_withPreload_legacy3() async {
-		await assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentSucceeds_withPreload_legacy3()  {
+		 assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -1822,8 +1766,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		let events = playerEventSender.streamingMetricsEvents
@@ -1883,7 +1825,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentFails() async {
+	func testPlayCurrentFails()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -1905,8 +1847,6 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.failed(with: Constants.error)
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -2055,15 +1995,15 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentFails_legacy2() async {
-		await assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentFails_legacy2()  {
+		 assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentFails_legacy3() async {
-		await assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentFails_legacy3()  {
+		 assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -2091,8 +2031,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		let events = playerEventSender.streamingMetricsEvents
@@ -2155,7 +2093,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentReset() async {
+	func testPlayCurrentReset()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -2182,8 +2120,6 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -2333,15 +2269,15 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentReset_legacy2() async {
-		await assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentReset_legacy2()  {
+		 assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentReset_legacy3() async {
-		await assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentReset_legacy3()  {
+		 assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -2374,8 +2310,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		let events = playerEventSender.streamingMetricsEvents
@@ -2436,7 +2370,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentAndNextSuccess() async {
+	func testPlayCurrentAndNextSuccess()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -2467,8 +2401,6 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 6)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -2523,8 +2455,6 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition2
 		player.completed()
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 2)
@@ -2722,15 +2652,15 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent2, expectedEvent: expectedProgressEvent2)
 	}
 
-	func testPlayCurrentAndNextSuccess_legacy2() async {
-		await assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentAndNextSuccess_legacy2()  {
+		 assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentAndNextSuccess_legacy3() async {
-		await assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentAndNextSuccess_legacy3()  {
+		 assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -2767,8 +2697,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 6)
@@ -2831,8 +2759,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 2 &&
 				playerEventSender.progressEvents.count == 2
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
@@ -2885,7 +2811,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent2, expectedEvent: expectedProgressEvent2)
 	}
 
-	func testLoadFailsInPlayer() async {
+	func testLoadFailsInPlayer()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -2901,8 +2827,6 @@ final class EventsTests: XCTestCase {
 		timestamp = endTimestamp
 		player.failed(with: Constants.error)
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -2995,15 +2919,15 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent, expectedEvent: expectedStreamingSessionEndEvent)
 	}
 
-	func testLoadFailsInPlayer_legacy2() async {
-		await assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: true)
+	func testLoadFailsInPlayer_legacy2()  {
+		 assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testLoadFailsInPlayer_legacy3() async {
-		await assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: false)
+	func testLoadFailsInPlayer_legacy3()  {
+		 assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -3025,8 +2949,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 0 &&
 				playerEventSender.progressEvents.count == 0
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
@@ -3064,7 +2986,7 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent, expectedEvent: expectedStreamingSessionEndEvent)
 	}
 
-	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete() async {
+	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -3097,8 +3019,6 @@ final class EventsTests: XCTestCase {
 		let endTimestamp: UInt64 = 10
 		timestamp = endTimestamp
 		player.completed()
-		
-		await self.asyncSchedulerFactory.executeAll()
 		
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
@@ -3265,15 +3185,15 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy2() async {
-		await assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy2()  {
+		 assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy3() async {
-		await assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy3()  {
+		 assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -3313,8 +3233,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
@@ -3386,7 +3304,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayingAndPausing() async {
+	func testPlayingAndPausing()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -3424,8 +3342,6 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -3562,15 +3478,15 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayingAndPausing_legacy2() async {
-		await assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: true)
+	func testPlayingAndPausing_legacy2()  {
+		 assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayingAndPausing_legacy3() async {
-		await assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: false)
+	func testPlayingAndPausing_legacy3()  {
+		 assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -3614,8 +3530,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3664,7 +3578,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayingAndStalling() async {
+	func testPlayingAndStalling()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -3716,8 +3630,6 @@ final class EventsTests: XCTestCase {
 
 		player.failed(with: NSError(domain: "Stall", code: 1, userInfo: nil))
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -3979,7 +3891,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayingAndSeeking() async {
+	func testPlayingAndSeeking()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -4023,8 +3935,6 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -4271,7 +4181,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testStallsDueToSeek() async {
+	func testStallsDueToSeek()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -4324,8 +4234,6 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -4477,15 +4385,15 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testStallsDueToSeek_legacy2() async {
-		await assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: true)
+	func testStallsDueToSeek_legacy2()  {
+		 assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testStallsDueToSeek_legacy3() async {
-		await assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: false)
+	func testStallsDueToSeek_legacy3()  {
+		 assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: Bool) async  {
+	func assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: Bool)   {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -4544,8 +4452,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -4594,7 +4500,7 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testStallAndAbortedSeeks() async {
+	func testStallAndAbortedSeeks()  {
 		shouldUseEventProducer = true
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
@@ -4654,8 +4560,6 @@ final class EventsTests: XCTestCase {
 
 		listenerQueue.sync {}
 
-		await self.asyncSchedulerFactory.executeAll()
-		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -4817,15 +4721,15 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testStallAndAbortedSeeks_legacy2() async {
-		await assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: true)
+	func testStallAndAbortedSeeks_legacy2()  {
+		 assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testStallAndAbortedSeeks_legacy3() async {
-		await assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: false)
+	func testStallAndAbortedSeeks_legacy3()  {
+		 assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: Bool) async {
+	func assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
 		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
@@ -4886,8 +4790,6 @@ final class EventsTests: XCTestCase {
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
 			}
-		} else {
-			await self.asyncSchedulerFactory.executeAll()
 		}
 		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
