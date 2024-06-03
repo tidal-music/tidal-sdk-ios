@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.22] - 2024-06-03 
+### Changed
+- Use absolute URLs in documentation links
+- Update Common module README.md
+- Move PlayLog tests to a separate GH Action
+- Migrate `shouldSendEventsInDeinit` dev flag to production
+### Fixed
+- Steps for ClientCredentials flow (Auth)
+- Test flakiness in PlayerEventSender (Player)
+- Append `client_unique_key` only if present (Auth)
+
 ## [0.3.21] - 2024-05-27 
 ### Added
 - Add `.CACHING_DISABLED` tag to Player metrics (Player)
