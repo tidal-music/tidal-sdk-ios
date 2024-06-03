@@ -1,0 +1,20 @@
+name: Run PlayLog Unit Tests
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "5 3 * * *"
+
+jobs:
+  run-xcodebuild-tests:
+    name: Run xcodebuild PlayLog Unit Tests
+    runs-on: macos-14
+    steps:
+    - uses: actions/checkout@v4
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.2.0'
+
+    - name: Run Player PlayLog tests (xcodebuild)
+      run: |-
+        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' test -only-testing:PlayerTests/PlayLogTests -skipPackagePluginValidation | xcbeautify --renderer github-actions

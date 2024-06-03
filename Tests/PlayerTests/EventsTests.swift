@@ -29,7 +29,8 @@ private enum Constants {
 final class EventsTests: XCTestCase {
 	private var timestamp: UInt64 = 1
 	private var uuid = "uuid"
-
+	private var shouldSendEventsInDeinit: Bool = true
+	
 	private var configuration: Configuration!
 	private var errorManager: ErrorManagerMock!
 	private var urlSession: URLSession!
@@ -64,10 +65,14 @@ final class EventsTests: XCTestCase {
 				self.uuid
 			}
 		)
+
 		networkMonitor = NetworkMonitorMock()
 		networkMonitor.networkType = Constants.networkType
 
-		PlayerWorld = PlayerWorldClient.mock(timeProvider: timeProvider, uuidProvider: uuidProvider)
+		PlayerWorld = PlayerWorldClient.mock(
+			timeProvider: timeProvider,
+			uuidProvider: uuidProvider
+		)
 
 		featureFlagProvider = FeatureFlagProvider.mock
 		featureFlagProvider.shouldUseEventProducer = {
@@ -75,6 +80,9 @@ final class EventsTests: XCTestCase {
 		}
 		featureFlagProvider.isContentCachingEnabled = {
 			self.isContentCachingEnabled
+		}
+		featureFlagProvider.shouldSendEventsInDeinit = {
+			self.shouldSendEventsInDeinit
 		}
 
 		// Set up EventSender
@@ -129,7 +137,11 @@ final class EventsTests: XCTestCase {
 			and: playerEventSender,
 			featureFlagProvider: featureFlagProvider
 		)
-		playerLoader = PlayerLoaderMock(with: configuration, and: fairplayLicenseFetcher)
+		playerLoader = PlayerLoaderMock(
+			with: configuration,
+			and: fairplayLicenseFetcher,
+			featureFlagProvider: featureFlagProvider
+		)
 
 		playerEngine = PlayerEngine.mock(
 			queue: OperationQueueMock(),
@@ -156,7 +168,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -194,9 +206,15 @@ final class EventsTests: XCTestCase {
 
 	func testCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
+
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 0 &&
+			playerEventSender.playLogEvents.count == 0 &&
+			playerEventSender.progressEvents.count == 0
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -209,6 +227,12 @@ final class EventsTests: XCTestCase {
 		player.loaded()
 		playerEngine.reset()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 3 &&
+			playerEventSender.playLogEvents.count == 0 &&
+			playerEventSender.progressEvents.count == 0
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -240,9 +264,17 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssCpbiAndCsseSentAfterSuccessfulLoadAndReset_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
+
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 0 &&
+				playerEventSender.playLogEvents.count == 0 &&
+				playerEventSender.progressEvents.count == 0
+			}
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -257,6 +289,14 @@ final class EventsTests: XCTestCase {
 		player.loaded()
 		playerEngine.reset()
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 3 &&
+				playerEventSender.playLogEvents.count == 0 &&
+				playerEventSender.progressEvents.count == 0
+			}
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -280,17 +320,17 @@ final class EventsTests: XCTestCase {
 
 	func testCsssCpbiAndCsseSentAfterFailedLoad() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.fail()
-
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let initialTimestamp: UInt64 = 1
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
-
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -316,9 +356,15 @@ final class EventsTests: XCTestCase {
 
 	func testCsssCpbiAndCsseSentAfterFailedLoad_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.fail()
+
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 0 &&
+			playerEventSender.playLogEvents.count == 0 &&
+			playerEventSender.progressEvents.count == 0
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -327,6 +373,12 @@ final class EventsTests: XCTestCase {
 		let initialTimestamp: UInt64 = 1
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 3 &&
+			playerEventSender.playLogEvents.count == 0 &&
+			playerEventSender.progressEvents.count == 0
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -360,10 +412,18 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssCpbiAndCsseSentAfterFailedLoad_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.fail()
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 0 &&
+				playerEventSender.playLogEvents.count == 0 &&
+				playerEventSender.progressEvents.count == 0
+			}
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -371,6 +431,14 @@ final class EventsTests: XCTestCase {
 		let initialTimestamp: UInt64 = 1
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 3 &&
+				playerEventSender.playLogEvents.count == 0 &&
+				playerEventSender.progressEvents.count == 0
+			}
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -396,7 +464,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterSkipToNext() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -422,7 +490,7 @@ final class EventsTests: XCTestCase {
 		let playTimestamp: UInt64 = 3
 		playerEngine.play(timestamp: playTimestamp)
 		player.playing()
-
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -448,7 +516,7 @@ final class EventsTests: XCTestCase {
 		let skipToNextTimestamp: UInt64 = 4
 		timestamp = skipToNextTimestamp
 		playerEngine.skipToNext(timestamp: skipToNextTimestamp)
-
+		
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
 			streamingSessionId: mediaProduct1.productId,
@@ -491,7 +559,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterSkipToNext_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -518,6 +586,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.play(timestamp: playTimestamp)
 		player.playing()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 2 &&
+			playerEventSender.playLogEvents.count == 0 &&
+			playerEventSender.progressEvents.count == 0
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -544,6 +618,10 @@ final class EventsTests: XCTestCase {
 		timestamp = skipToNextTimestamp
 		playerEngine.skipToNext(timestamp: skipToNextTimestamp)
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4
+		}
+		
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
 			streamingSessionId: mediaProduct1.productId,
@@ -558,6 +636,10 @@ final class EventsTests: XCTestCase {
 		player.playing()
 		player.completed()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 6
+		}
+		
 		// Events of the second item
 		let actualStreamingSessionEndEvent = playerEventSender.streamingMetricsEvents[3] as! StreamingSessionEnd
 		let expectedStreamingSessionEndEvent = StreamingSessionEnd.mock(
@@ -588,13 +670,13 @@ final class EventsTests: XCTestCase {
 		assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testCsssAndCpbiSentAfterSkipToNext_legacy3() {
+	func testCsssAndCpbiSentAfterSkipToNext_legacy3()  {
 		assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: false)
 	}
 
 	func assertCsssAndCpbiSentAfterSkipToNext_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -620,6 +702,14 @@ final class EventsTests: XCTestCase {
 		let playTimestamp: UInt64 = 3
 		playerEngine.play(timestamp: playTimestamp)
 		player.playing()
+
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 2 &&
+				playerEventSender.playLogEvents.count == 0 &&
+				playerEventSender.progressEvents.count == 0
+			}
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -647,6 +737,12 @@ final class EventsTests: XCTestCase {
 		timestamp = skipToNextTimestamp
 		playerEngine.skipToNext(timestamp: skipToNextTimestamp)
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 4
+			}
+		}
+		
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
 			streamingSessionId: mediaProduct1.productId,
@@ -661,6 +757,12 @@ final class EventsTests: XCTestCase {
 		player.playing()
 		player.completed()
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 6
+			}
+		}
+		
 		// Events of the second item
 		let actualStreamingSessionEndEvent = playerEventSender.streamingMetricsEvents[3] as! StreamingSessionEnd
 		let expectedStreamingSessionEndEvent = StreamingSessionEnd.mock(
@@ -689,7 +791,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -725,7 +827,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -742,6 +844,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 		player.loaded()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 2 &&
+			playerEventSender.playLogEvents.count == 0 &&
+			playerEventSender.progressEvents.count == 0
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -763,13 +871,13 @@ final class EventsTests: XCTestCase {
 		assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy3() {
+	func testCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy3()  {
 		assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: false)
 	}
 
 	func assertCsssAndCpbiSentAfterSuccessfulLoadOfNext_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -785,6 +893,14 @@ final class EventsTests: XCTestCase {
 		timestamp = nextTimestamp
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 		player.loaded()
+
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 2 &&
+				playerEventSender.playLogEvents.count == 0 &&
+				playerEventSender.progressEvents.count == 0
+			}
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -805,7 +921,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterNextIsReplaced() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -831,7 +947,7 @@ final class EventsTests: XCTestCase {
 		uuid = mediaProduct3.productId
 		playerEngine.setNext(mediaProduct3, timestamp: nextTimestamp)
 		player.loaded()
-
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 7)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -857,7 +973,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterNextIsReplaced_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -877,6 +993,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 		player.loaded()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 7 &&
+			playerEventSender.playLogEvents.count == 0 &&
+			playerEventSender.progressEvents.count == 0
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 7)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -904,7 +1026,7 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssAndCpbiSentAfterNextIsReplaced_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -931,6 +1053,14 @@ final class EventsTests: XCTestCase {
 		playerEngine.setNext(mediaProduct3, timestamp: nextTimestamp)
 		player.loaded()
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 7 &&
+				playerEventSender.playLogEvents.count == 0 &&
+				playerEventSender.progressEvents.count == 0
+			}
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 7)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -956,7 +1086,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterFailedLoadOfNext() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -993,7 +1123,7 @@ final class EventsTests: XCTestCase {
 
 	func testCsssAndCpbiSentAfterFailedLoadOfNext_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -1009,6 +1139,12 @@ final class EventsTests: XCTestCase {
 		timestamp = nextTimestamp
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 2 &&
+			playerEventSender.playLogEvents.count == 0 &&
+			playerEventSender.progressEvents.count == 0
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -1038,7 +1174,7 @@ final class EventsTests: XCTestCase {
 
 	func assertCsssAndCpbiSentAfterFailedLoadOfNext_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
@@ -1054,6 +1190,14 @@ final class EventsTests: XCTestCase {
 		timestamp = nextTimestamp
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 2 &&
+				playerEventSender.playLogEvents.count == 0 &&
+				playerEventSender.progressEvents.count == 0
+			}
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
@@ -1073,9 +1217,9 @@ final class EventsTests: XCTestCase {
 		validatePlaybackInfoFetch(event: actualPlaybackInfoFetch, expectedEvent: expectedPlaybackInfoFetch)
 	}
 
-	func testPlayCurrentSucceeds() {
+	func testPlayCurrentSucceeds()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1156,7 +1300,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentSucceeds_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1178,6 +1322,12 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
+		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -1245,7 +1395,7 @@ final class EventsTests: XCTestCase {
 
 	func assertPlayCurrentSucceeds_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1267,11 +1417,13 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		optimizedWait(until: {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 4 &&
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
-		})
+			}
+		}
 
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
@@ -1333,7 +1485,7 @@ final class EventsTests: XCTestCase {
 	func testPlayCurrentSucceeds_withCachingDisabled() {
 		shouldUseEventProducer = true
 		isContentCachingEnabled = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1355,7 +1507,7 @@ final class EventsTests: XCTestCase {
 		timestamp = endTimestamp
 		player.assetPosition = endAssetPosition
 		player.completed()
-
+		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -1413,9 +1565,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentSucceeds_withPreload() {
+	func testPlayCurrentSucceeds_withPreload()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1497,7 +1649,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentSucceeds_withPreload_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1521,7 +1673,9 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -1581,17 +1735,17 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentSucceeds_withPreload_legacy2() {
-		assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentSucceeds_withPreload_legacy2()  {
+		 assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentSucceeds_withPreload_legacy3() {
-		assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentSucceeds_withPreload_legacy3()  {
+		 assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: Bool) {
+	func assertPlayCurrentSucceeds_withPreload_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1614,6 +1768,14 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 4 &&
+				playerEventSender.playLogEvents.count == 1 &&
+				playerEventSender.progressEvents.count == 1
+			}
+		}
+		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -1671,9 +1833,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentFails() {
+	func testPlayCurrentFails()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1755,7 +1917,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentFails_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1775,6 +1937,12 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.failed(with: Constants.error)
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
+		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -1835,17 +2003,17 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentFails_legacy2() {
-		assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentFails_legacy2()  {
+		 assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentFails_legacy3() {
-		assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentFails_legacy3()  {
+		 assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: Bool) {
+	func assertPlayCurrentFails_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -1865,6 +2033,14 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.failed(with: Constants.error)
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 4 &&
+				playerEventSender.playLogEvents.count == 1 &&
+				playerEventSender.progressEvents.count == 1
+			}
+		}
+		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -1925,9 +2101,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentReset() {
+	func testPlayCurrentReset()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2012,7 +2188,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentReset_legacy() {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2037,6 +2213,12 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
+		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -2095,17 +2277,17 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentReset_legacy2() {
-		assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentReset_legacy2()  {
+		 assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentReset_legacy3() {
-		assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentReset_legacy3()  {
+		 assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: Bool) {
+	func assertPlayCurrentReset_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2130,6 +2312,14 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 4 &&
+				playerEventSender.playLogEvents.count == 1 &&
+				playerEventSender.progressEvents.count == 1
+			}
+		}
+		
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -2188,9 +2378,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentAndNextSuccess() {
+	func testPlayCurrentAndNextSuccess()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2325,7 +2515,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentAndNextSuccess_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2356,8 +2546,8 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait(until: {
 			playerEventSender.streamingMetricsEvents.count == 6 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
 		})
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 6)
@@ -2416,8 +2606,8 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait(until: {
 			playerEventSender.streamingMetricsEvents.count == 8 &&
-				playerEventSender.playLogEvents.count == 2 &&
-				playerEventSender.progressEvents.count == 2
+			playerEventSender.playLogEvents.count == 2 &&
+			playerEventSender.progressEvents.count == 2
 		})
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
@@ -2470,17 +2660,17 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent2, expectedEvent: expectedProgressEvent2)
 	}
 
-	func testPlayCurrentAndNextSuccess_legacy2() {
-		assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentAndNextSuccess_legacy2()  {
+		 assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentAndNextSuccess_legacy3() {
-		assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentAndNextSuccess_legacy3()  {
+		 assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: Bool) {
+	func assertPlayCurrentAndNextSuccess_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2509,11 +2699,13 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		optimizedWait(until: {
-			playerEventSender.streamingMetricsEvents.count == 6 &&
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 6 &&
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
-		})
+			}
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 6)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -2569,11 +2761,13 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition2
 		player.completed()
 
-		optimizedWait(until: {
-			playerEventSender.streamingMetricsEvents.count == 8 &&
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 8 &&
 				playerEventSender.playLogEvents.count == 2 &&
 				playerEventSender.progressEvents.count == 2
-		})
+			}
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
@@ -2625,9 +2819,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent2, expectedEvent: expectedProgressEvent2)
 	}
 
-	func testLoadFailsInPlayer() {
+	func testLoadFailsInPlayer()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2678,7 +2872,7 @@ final class EventsTests: XCTestCase {
 
 	func testLoadFailsInPlayer_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2692,6 +2886,12 @@ final class EventsTests: XCTestCase {
 		timestamp = endTimestamp
 		player.failed(with: Constants.error)
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 0 &&
+			playerEventSender.progressEvents.count == 0
+		}
+		
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -2727,17 +2927,17 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent, expectedEvent: expectedStreamingSessionEndEvent)
 	}
 
-	func testLoadFailsInPlayer_legacy2() {
-		assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: true)
+	func testLoadFailsInPlayer_legacy2()  {
+		 assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testLoadFailsInPlayer_legacy3() {
-		assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: false)
+	func testLoadFailsInPlayer_legacy3()  {
+		 assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: Bool) {
+	func assertLoadFailsInPlayer_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2751,6 +2951,14 @@ final class EventsTests: XCTestCase {
 		timestamp = endTimestamp
 		player.failed(with: Constants.error)
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 4 &&
+				playerEventSender.playLogEvents.count == 0 &&
+				playerEventSender.progressEvents.count == 0
+			}
+		}
+		
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
@@ -2786,9 +2994,9 @@ final class EventsTests: XCTestCase {
 		validateStreamingSessionEnd(event: actualStreamingSessionEndEvent, expectedEvent: expectedStreamingSessionEndEvent)
 	}
 
-	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete() {
+	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2819,7 +3027,7 @@ final class EventsTests: XCTestCase {
 		let endTimestamp: UInt64 = 10
 		timestamp = endTimestamp
 		player.completed()
-
+		
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -2891,7 +3099,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -2919,6 +3127,12 @@ final class EventsTests: XCTestCase {
 		timestamp = endTimestamp
 		player.completed()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 8 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
+		
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -2979,17 +3193,17 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy2() {
-		assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: true)
+	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy2()  {
+		 assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy3() {
-		assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: false)
+	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy3()  {
+		 assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: Bool) {
+	func assertPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3021,6 +3235,14 @@ final class EventsTests: XCTestCase {
 		timestamp = endTimestamp
 		player.completed()
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 8 &&
+				playerEventSender.playLogEvents.count == 1 &&
+				playerEventSender.progressEvents.count == 1
+			}
+		}
+		
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -3090,9 +3312,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayingAndPausing() {
+	func testPlayingAndPausing()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3176,7 +3398,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndPausing_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3212,6 +3434,12 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -3258,17 +3486,17 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayingAndPausing_legacy2() {
-		assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: true)
+	func testPlayingAndPausing_legacy2()  {
+		 assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testPlayingAndPausing_legacy3() {
-		assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: false)
+	func testPlayingAndPausing_legacy3()  {
+		 assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: Bool) {
+	func assertPlayingAndPausing_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3304,6 +3532,14 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 4 &&
+				playerEventSender.playLogEvents.count == 1 &&
+				playerEventSender.progressEvents.count == 1
+			}
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -3350,9 +3586,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayingAndStalling() {
+	func testPlayingAndStalling()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3453,7 +3689,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndStalling_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3499,7 +3735,9 @@ final class EventsTests: XCTestCase {
 		player.failed(with: NSError(domain: "Stall", code: 1, userInfo: nil))
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3561,7 +3799,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndStalling_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		self.shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3606,6 +3844,12 @@ final class EventsTests: XCTestCase {
 
 		player.failed(with: NSError(domain: "Stall", code: 1, userInfo: nil))
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -3655,9 +3899,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testPlayingAndSeeking() {
+	func testPlayingAndSeeking()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3747,7 +3991,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndSeeking_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3789,6 +4033,12 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -3845,7 +4095,7 @@ final class EventsTests: XCTestCase {
 
 	func testPlayingAndSeeking_legacy(shouldSendEventsInDeinit: Bool) {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		self.shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -3887,6 +4137,12 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -3933,9 +4189,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testStallsDueToSeek() {
+	func testStallsDueToSeek()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4034,7 +4290,7 @@ final class EventsTests: XCTestCase {
 
 	func testStallsDueToSeek_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4085,11 +4341,11 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		optimizedWait(until: {
+		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
-		})
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -4137,17 +4393,17 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testStallsDueToSeek_legacy2() {
-		assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: true)
+	func testStallsDueToSeek_legacy2()  {
+		 assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testStallsDueToSeek_legacy3() {
-		assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: false)
+	func testStallsDueToSeek_legacy3()  {
+		 assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: Bool) {
+	func assertStallsDueToSeek_legacy(shouldSendEventsInDeinit: Bool)   {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4198,11 +4454,13 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		optimizedWait(until: {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 4 &&
 				playerEventSender.playLogEvents.count == 1 &&
 				playerEventSender.progressEvents.count == 1
-		})
+			}
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -4250,9 +4508,9 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testStallAndAbortedSeeks() {
+	func testStallAndAbortedSeeks()  {
 		shouldUseEventProducer = true
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
+		shouldSendEventsInDeinit = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4362,7 +4620,7 @@ final class EventsTests: XCTestCase {
 
 	func testStallAndAbortedSeeks_legacy() {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
+		shouldSendEventsInDeinit = true
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4415,6 +4673,12 @@ final class EventsTests: XCTestCase {
 
 		listenerQueue.sync {}
 
+		optimizedWait {
+			playerEventSender.streamingMetricsEvents.count == 4 &&
+			playerEventSender.playLogEvents.count == 1 &&
+			playerEventSender.progressEvents.count == 1
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
@@ -4465,17 +4729,17 @@ final class EventsTests: XCTestCase {
 		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
-	func testStallAndAbortedSeeks_legacy2() {
-		assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: true)
+	func testStallAndAbortedSeeks_legacy2()  {
+		 assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: true)
 	}
 
-	func testStallAndAbortedSeeks_legacy3() {
-		assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: false)
+	func testStallAndAbortedSeeks_legacy3()  {
+		 assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: false)
 	}
 
-	func assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: Bool) {
+	func assertStallAndAbortedSeeks_legacy(shouldSendEventsInDeinit: Bool)  {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = shouldSendEventsInDeinit
+		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -4528,6 +4792,14 @@ final class EventsTests: XCTestCase {
 
 		listenerQueue.sync {}
 
+		if shouldSendEventsInDeinit {
+			optimizedWait {
+				playerEventSender.streamingMetricsEvents.count == 4 &&
+				playerEventSender.playLogEvents.count == 1 &&
+				playerEventSender.progressEvents.count == 1
+			}
+		}
+		
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 		XCTAssertEqual(playerEventSender.progressEvents.count, 1)

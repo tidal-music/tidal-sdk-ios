@@ -33,6 +33,8 @@ final class PlayerEventSenderTests: XCTestCase {
 	private var featureFlagProvider: FeatureFlagProvider!
 	private var eventSender: EventSenderMock!
 
+	private var asyncSchedulerFactory: AsyncSchedulerFactorySpy = AsyncSchedulerFactorySpy()
+
 	private var user: User!
 	private var client: Client {
 		Client(
@@ -57,6 +59,11 @@ final class PlayerEventSenderTests: XCTestCase {
 				self.uuid
 			}
 		)
+		let asyncSchedulerFactoryProvider = AsyncSchedulerFactoryProvider(
+			newFactory: {
+				self.asyncSchedulerFactory
+			}
+		)
 
 		var deviceInfoProvider = DeviceInfoProvider.mock
 		deviceInfoProvider.deviceType = { _ in
@@ -66,7 +73,8 @@ final class PlayerEventSenderTests: XCTestCase {
 		PlayerWorld = PlayerWorldClient.mock(
 			deviceInfoProvider: deviceInfoProvider,
 			timeProvider: timeProvider,
-			uuidProvider: uuidProvider
+			uuidProvider: uuidProvider,
+			asyncSchedulerFactoryProvider: asyncSchedulerFactoryProvider
 		)
 
 		// Set up EventSender
@@ -116,41 +124,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: StreamingSessionStart
 
-	func test_send_StreamingMetricsEvent_with_StreamingSessionStart() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
-
-		let streamingSessionStart = StreamingSessionStart.mock()
-		playerEventSender.send(streamingSessionStart)
-
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
-		assertStreamingMetricsEvent(
-			name: StreamingMetricNames.streamingSessionStart,
-			group: EventGroup.streamingMetrics,
-			payload: streamingSessionStart
-		)
-	}
-
-	func test_send_StreamingMetricsEvent_with_StreamingSessionStart_legacy() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
-
-		let streamingSessionStart = StreamingSessionStart.mock()
-		playerEventSender.send(streamingSessionStart)
-
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
-		assertStreamingMetricsEvent(
-			name: StreamingMetricNames.streamingSessionStart,
-			group: EventGroup.streamingMetrics,
-			payload: streamingSessionStart
-		)
-	}
-
-	func test_send_StreamingMetricsEvent_with_StreamingSessionStart_legacy2() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
-
+	func test_send_StreamingMetricsEvent_with_StreamingSessionStart_legacy() async {
 		shouldUseEventProducer = false
 
 		let streamingSessionStart = StreamingSessionStart.mock()
@@ -163,30 +137,27 @@ extension PlayerEventSenderTests {
 			client: client,
 			payload: streamingSessionStart
 		)
-		assertLegacyStreamingMetricsEvent(event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
+		await assertLegacyStreamingMetricsEvent(event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
-	func test_send_StreamingMetricsEvent_with_StreamingSessionStart_legacy3() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
-
-		shouldUseEventProducer = false
-
+	func test_send_StreamingMetricsEvent_with_StreamingSessionStart() async {
+		shouldUseEventProducer = true
+		
 		let streamingSessionStart = StreamingSessionStart.mock()
-		let expectedDecodedEvent = LegacyEvent<StreamingSessionStart>(
-			group: EventGroup.streamingMetrics.rawValue,
+		playerEventSender.send(streamingSessionStart)
+
+		await self.asyncSchedulerFactory.executeAll()
+
+		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.streamingSessionStart,
-			version: EventGroup.streamingMetrics.version,
-			ts: timestamp,
-			user: user,
-			client: client,
+			group: EventGroup.streamingMetrics,
 			payload: streamingSessionStart
 		)
-		assertLegacyStreamingMetricsEvent(event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
 	// MARK: StreamingSessionEnd
 
-	func test_send_StreamingMetricsEvent_with_StreamingSessionEnd_legacy() {
+	func test_send_StreamingMetricsEvent_with_StreamingSessionEnd_legacy() async {
 		shouldUseEventProducer = false
 
 		let streamingSessionEnd = StreamingSessionEnd.mock()
@@ -199,16 +170,17 @@ extension PlayerEventSenderTests {
 			client: client,
 			payload: streamingSessionEnd
 		)
-		assertLegacyStreamingMetricsEvent(event: streamingSessionEnd, expectedDecodedEvent: expectedDecodedEvent)
+		await assertLegacyStreamingMetricsEvent(event: streamingSessionEnd, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
-	func test_send_StreamingMetricsEvent_with_StreamingSessionEnd() {
+	func test_send_StreamingMetricsEvent_with_StreamingSessionEnd() async {
+		shouldUseEventProducer = true
+		
 		let streamingSessionEnd = StreamingSessionEnd.mock()
 		playerEventSender.send(streamingSessionEnd)
 
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
+		await self.asyncSchedulerFactory.executeAll()
+
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.streamingSessionEnd,
 			group: EventGroup.streamingMetrics,
@@ -218,41 +190,8 @@ extension PlayerEventSenderTests {
 
 	// MARK: DownloadStatistics
 
-	func test_send_StreamingMetricsEvent_with_DownloadStatistics() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
-
-		let downloadStatistics = DownloadStatistics.mock()
-		playerEventSender.send(downloadStatistics)
-
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
-		assertStreamingMetricsEvent(
-			name: StreamingMetricNames.downloadStatistics,
-			group: EventGroup.streamingMetrics,
-			payload: downloadStatistics
-		)
-	}
-
-	func test_send_StreamingMetricsEvent_with_DownloadStatistics_legacy() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
-
-		let downloadStatistics = DownloadStatistics.mock()
-		playerEventSender.send(downloadStatistics)
-
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
-		assertStreamingMetricsEvent(
-			name: StreamingMetricNames.downloadStatistics,
-			group: EventGroup.streamingMetrics,
-			payload: downloadStatistics
-		)
-	}
-
-	func test_send_StreamingMetricsEvent_with_DownloadStatistics_legacy2() {
+	func test_send_StreamingMetricsEvent_with_DownloadStatistics_legacy() async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
 
 		let downloadStatistics = DownloadStatistics.mock()
 		let expectedDecodedEvent = LegacyEvent<DownloadStatistics>(
@@ -264,29 +203,27 @@ extension PlayerEventSenderTests {
 			client: client,
 			payload: downloadStatistics
 		)
-		assertLegacyStreamingMetricsEvent(event: downloadStatistics, expectedDecodedEvent: expectedDecodedEvent)
+		await assertLegacyStreamingMetricsEvent(event: downloadStatistics, expectedDecodedEvent: expectedDecodedEvent)
 	}
-
-	func test_send_StreamingMetricsEvent_with_DownloadStatistics_legacy3() {
-		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
-
+	
+	func test_send_StreamingMetricsEvent_with_DownloadStatistics() async {
+		shouldUseEventProducer = true
+		
 		let downloadStatistics = DownloadStatistics.mock()
-		let expectedDecodedEvent = LegacyEvent<DownloadStatistics>(
-			group: EventGroup.streamingMetrics.rawValue,
+		playerEventSender.send(downloadStatistics)
+
+		await self.asyncSchedulerFactory.executeAll()
+
+		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.downloadStatistics,
-			version: EventGroup.streamingMetrics.version,
-			ts: timestamp,
-			user: user,
-			client: client,
+			group: EventGroup.streamingMetrics,
 			payload: downloadStatistics
 		)
-		assertLegacyStreamingMetricsEvent(event: downloadStatistics, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
 	// MARK: DrmLicenseFetch
 
-	func test_send_StreamingMetricsEvent_with_DrmLicenseFetch_legacy() {
+	func test_send_StreamingMetricsEvent_with_DrmLicenseFetch_legacy() async {
 		shouldUseEventProducer = false
 
 		let drmLicenseFetch = DrmLicenseFetch.mock()
@@ -299,16 +236,17 @@ extension PlayerEventSenderTests {
 			client: client,
 			payload: drmLicenseFetch
 		)
-		assertLegacyStreamingMetricsEvent(event: drmLicenseFetch, expectedDecodedEvent: expectedDecodedEvent)
+		await assertLegacyStreamingMetricsEvent(event: drmLicenseFetch, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
-	func test_send_StreamingMetricsEvent_with_DrmLicenseFetch() {
+	func test_send_StreamingMetricsEvent_with_DrmLicenseFetch() async {
+		shouldUseEventProducer = true
+		
 		let drmLicenseFetch = DrmLicenseFetch.mock()
 		playerEventSender.send(drmLicenseFetch)
 
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
+		await self.asyncSchedulerFactory.executeAll()
+
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.drmLicenseFetch,
 			group: EventGroup.streamingMetrics,
@@ -318,7 +256,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: PlaybackInfoFetch
 
-	func test_send_StreamingMetricsEvent_with_PlaybackInfoFetch_legacy() {
+	func test_send_StreamingMetricsEvent_with_PlaybackInfoFetch_legacy() async {
 		shouldUseEventProducer = false
 
 		let playbackInfoFetch = PlaybackInfoFetch.mock()
@@ -331,16 +269,17 @@ extension PlayerEventSenderTests {
 			client: client,
 			payload: playbackInfoFetch
 		)
-		assertLegacyStreamingMetricsEvent(event: playbackInfoFetch, expectedDecodedEvent: expectedDecodedEvent)
+		await assertLegacyStreamingMetricsEvent(event: playbackInfoFetch, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
-	func test_send_StreamingMetricsEvent_with_PlaybackInfoFetch() {
+	func test_send_StreamingMetricsEvent_with_PlaybackInfoFetch() async {
+		shouldUseEventProducer = true
+		
 		let playbackInfoFetch = PlaybackInfoFetch.mock()
 		playerEventSender.send(playbackInfoFetch)
 
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
+		await self.asyncSchedulerFactory.executeAll()
+		
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.playbackInfoFetch,
 			group: EventGroup.streamingMetrics,
@@ -350,7 +289,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: PlaybackStatistics
 
-	func test_send_StreamingMetricsEvent_with_PlaybackStatistics_legacy() {
+	func test_send_StreamingMetricsEvent_with_PlaybackStatistics_legacy() async {
 		shouldUseEventProducer = false
 
 		let playbackStatistics = PlaybackStatistics.mock()
@@ -363,16 +302,17 @@ extension PlayerEventSenderTests {
 			client: client,
 			payload: playbackStatistics
 		)
-		assertLegacyStreamingMetricsEvent(event: playbackStatistics, expectedDecodedEvent: expectedDecodedEvent)
+		await assertLegacyStreamingMetricsEvent(event: playbackStatistics, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
-	func test_send_StreamingMetricsEvent_with_PlaybackStatistics() {
+	func test_send_StreamingMetricsEvent_with_PlaybackStatistics() async {
+		shouldUseEventProducer = true
+		
 		let playbackStatistics = PlaybackStatistics.mock()
 		playerEventSender.send(playbackStatistics)
-
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
+		
+		await self.asyncSchedulerFactory.executeAll()
+		
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.playbackStatistics,
 			group: EventGroup.streamingMetrics,
@@ -382,67 +322,49 @@ extension PlayerEventSenderTests {
 
 	// MARK: - PlayLogEvent
 
-	func test_send_PlayLogEvent() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
-		assertPlayLogEvent()
-	}
-
-	func test_send_PlayLogEvent_legacy() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
-		assertPlayLogEvent()
-	}
-
-	func test_send_PlayLogEvent_legacy2() {
+	func test_send_PlayLogEvent_legacy() async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
-
-		assertLegacyPlayLogEvent()
+		await assertLegacyPlayLogEvent()
+	}
+	
+	func test_send_PlayLogEvent() async {
+		shouldUseEventProducer = true
+		await assertPlayLogEvent()
 	}
 
-	func test_send_PlayLogEvent_legacy3() {
-		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
-
-		assertLegacyPlayLogEvent()
-	}
-
-	func test_send_PlayLogEvent_with_tablet_deviceType_legacy() {
+	func test_send_PlayLogEvent_with_tablet_deviceType_legacy() async {
 		deviceType = DeviceInfoProvider.Constants.deviceTypeTablet
 		shouldUseEventProducer = false
-
-		assertLegacyPlayLogEvent()
+		await assertLegacyPlayLogEvent()
 	}
 
-	func test_send_PlayLogEvent_with_tablet_deviceType() {
+	func test_send_PlayLogEvent_with_tablet_deviceType() async {
 		deviceType = DeviceInfoProvider.Constants.deviceTypeTablet
-
-		assertPlayLogEvent()
+		shouldUseEventProducer = true
+		await assertPlayLogEvent()
 	}
 
-	func test_send_PlayLogEvent_with_embedded_deviceType_legacy() {
+	func test_send_PlayLogEvent_with_embedded_deviceType_legacy() async {
 		deviceType = DeviceInfoProvider.Constants.deviceTypeEmbedded
 		shouldUseEventProducer = false
-
-		assertLegacyPlayLogEvent()
+		await assertLegacyPlayLogEvent()
 	}
 
-	func test_send_PlayLogEvent_with_embedded_deviceType() {
+	func test_send_PlayLogEvent_with_embedded_deviceType() async {
 		deviceType = DeviceInfoProvider.Constants.deviceTypeEmbedded
-
-		assertPlayLogEvent()
+		shouldUseEventProducer = true
+		await assertPlayLogEvent()
 	}
 
 	// MARK: - ProgressEvent
 
-	func test_send_ProgressEvent_legacy() {
+	func test_send_ProgressEvent_legacy() async {
 		shouldUseEventProducer = false
 
 		let progressEvent = ProgressEvent.mock()
 		playerEventSender.send(progressEvent)
 
-		optimizedWait(until: {
-			!dataWriter.dataList.isEmpty
-		})
+		await self.asyncSchedulerFactory.executeAll()
 
 		let eventData = dataWriter.dataList[0]
 		let expectedDecodedEvent = LegacyEvent<ProgressEvent>(
@@ -457,13 +379,13 @@ extension PlayerEventSenderTests {
 		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
 	}
 
-	func test_send_ProgressEvent() {
+	func test_send_ProgressEvent() async {
+		shouldUseEventProducer = true
+		
 		let progressEvent = ProgressEvent.mock()
 		playerEventSender.send(progressEvent)
 
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
+		await self.asyncSchedulerFactory.executeAll()
 
 		let name = EventNames.progress
 		let group = EventGroup.playback
@@ -473,55 +395,24 @@ extension PlayerEventSenderTests {
 
 	// MARK: - OfflinePlay
 
-	func test_send_OfflinePlay() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
-
+	func test_send_OfflinePlay() async {
 		let offlinePlay = OfflinePlay.mock()
 		playerEventSender.send(offlinePlay)
 
-		optimizedWait(until: {
-			!dataWriter.dataList.isEmpty
-		})
+		await self.asyncSchedulerFactory.executeAll()
 
 		let eventData = dataWriter.dataList[0]
 		let expectedDecodedEvent = offlinePlay
-
-		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
-	}
-
-	func test_send_OfflinePlay_legacy() {
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = true
-
-		let offlinePlay = OfflinePlay.mock()
-		playerEventSender.send(offlinePlay)
-
-		optimizedWait(until: {
-			!dataWriter.dataList.isEmpty
-		})
-
-		let eventData = dataWriter.dataList[0]
-		let expectedDecodedEvent = offlinePlay
-
 		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
 	}
 
 	// MARK: - updateUserConfiguration()
 
-	func test_updateUserConfiguration_legacy() {
+	func test_updateUserConfiguration_legacy() async {
 		shouldUseEventProducer = false
-		PlayerWorld.developmentFeatureFlagProvider.shouldSendEventsInDeinit = false
 
-		// Test with any event since all should take into consideration the user configuration change.
-		test_send_StreamingMetricsEvent_with_StreamingSessionStart_legacy3()
-
-		// Change user configuration
-		let userConfiguration = UserConfiguration.mock(userId: 100, userClientId: 200)
-		updateUser(with: userConfiguration)
-		playerEventSender.updateUserConfiguration(userConfiguration: userConfiguration)
-
-		// The only difference now is the user (with updated user configuration)
-		let streamingSessionStart = StreamingSessionStart.mock()
-		let expectedDecodedEvent = LegacyEvent<StreamingSessionStart>(
+		var streamingSessionStart = StreamingSessionStart.mock()
+		var expectedDecodedEvent = LegacyEvent<StreamingSessionStart>(
 			group: EventGroup.streamingMetrics.rawValue,
 			name: StreamingMetricNames.streamingSessionStart,
 			version: EventGroup.streamingMetrics.version,
@@ -530,29 +421,47 @@ extension PlayerEventSenderTests {
 			client: client,
 			payload: streamingSessionStart
 		)
-		assertLegacyStreamingMetricsEvent(index: 1, event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
+		await assertLegacyStreamingMetricsEvent(event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
+
+		// Change user configuration
+		let userConfiguration = UserConfiguration.mock(userId: 100, userClientId: 200)
+		updateUser(with: userConfiguration)
+		playerEventSender.updateUserConfiguration(userConfiguration: userConfiguration)
+
+		// The only difference now is the user (with updated user configuration)
+		streamingSessionStart = StreamingSessionStart.mock()
+		expectedDecodedEvent = LegacyEvent<StreamingSessionStart>(
+			group: EventGroup.streamingMetrics.rawValue,
+			name: StreamingMetricNames.streamingSessionStart,
+			version: EventGroup.streamingMetrics.version,
+			ts: timestamp,
+			user: user,
+			client: client,
+			payload: streamingSessionStart
+		)
+		await assertLegacyStreamingMetricsEvent(index: 1, event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
 	// MARK: Credentials testing
 
-	func test_send_event_whenUserIsNotAuthenticated_legacy() {
+	func test_send_event_whenUserIsNotAuthenticated_legacy() async {
 		shouldUseEventProducer = false
 
 		// User is not authenticated (one is missing: access token or user id)
 		credentialsProvider.injectedAuthResult = Constants.successfulAuthResultNoUserId
 
 		let streamingSessionStart = StreamingSessionStart.mock()
-		assertLegacyStreamingMetricsEventWasNotSent(event: streamingSessionStart)
+		await assertLegacyStreamingMetricsEventWasNotSent(event: streamingSessionStart)
 	}
 
-	func test_send_event_whenUserIsNotLoggedIn_legacy() {
+	func test_send_event_whenUserIsNotLoggedIn_legacy() async {
 		shouldUseEventProducer = false
 
 		// User is not authenticated (getting credentials failed)
 		credentialsProvider.injectedAuthResult = Constants.failedAuthResult
 
 		let streamingSessionStart = StreamingSessionStart.mock()
-		assertLegacyStreamingMetricsEventWasNotSent(event: streamingSessionStart)
+		await assertLegacyStreamingMetricsEventWasNotSent(event: streamingSessionStart)
 	}
 }
 
@@ -575,12 +484,10 @@ private extension PlayerEventSenderTests {
 		index: Int = 0,
 		event: any StreamingMetricsEvent,
 		expectedDecodedEvent: T
-	) {
+	) async {
 		playerEventSender.send(event)
-
-		optimizedWait(until: {
-			dataWriter.dataList.count >= (index + 1)
-		})
+		
+		await self.asyncSchedulerFactory.executeAll()
 
 		let eventData = dataWriter.dataList[index]
 		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
@@ -594,26 +501,19 @@ private extension PlayerEventSenderTests {
 		assertEvent(name: name, group: group, consentCategory: .performance, playerEvent: payload)
 	}
 
-	func assertLegacyStreamingMetricsEventWasNotSent(event: any StreamingMetricsEvent) {
+	func assertLegacyStreamingMetricsEventWasNotSent(event: any StreamingMetricsEvent) async {
 		playerEventSender.send(event)
 
-		optimizedWait(until: {
-			dataWriter.dataList.isEmpty
-		})
-
-		let expectation = expectation(description: "\(event.self) should have been sent to DataWriter")
-		_ = XCTWaiter.wait(for: [expectation], timeout: 0.1)
+		await self.asyncSchedulerFactory.executeAll()
 
 		XCTAssertTrue(dataWriter.dataList.isEmpty)
 	}
 
-	func assertLegacyPlayLogEvent() {
+	func assertLegacyPlayLogEvent() async {
 		let playLogEvent = PlayLogEvent.mock()
 		playerEventSender.send(playLogEvent)
 
-		optimizedWait(until: {
-			!dataWriter.dataList.isEmpty
-		})
+		await self.asyncSchedulerFactory.executeAll()
 
 		let eventData = dataWriter.dataList[0]
 		let expectedDecodedEvent = LegacyEvent<PlayLogEvent>(
@@ -628,13 +528,11 @@ private extension PlayerEventSenderTests {
 		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
 	}
 
-	func assertPlayLogEvent() {
+	func assertPlayLogEvent() async {
 		let playLogEvent = PlayLogEvent.mock()
 		playerEventSender.send(playLogEvent)
 
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
+		await self.asyncSchedulerFactory.executeAll()
 
 		let name = EventNames.playbackSession
 		let group = EventGroup.playlog
@@ -648,10 +546,6 @@ private extension PlayerEventSenderTests {
 		consentCategory: ConsentCategory,
 		playerEvent: T
 	) {
-		optimizedWait {
-			!eventSender.sentEvents.isEmpty
-		}
-
 		let expectedEvent = PlayerEvent(
 			group: group.rawValue,
 			version: group.version,
