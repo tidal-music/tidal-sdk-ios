@@ -32,7 +32,7 @@ final class PlayerItemTests: XCTestCase {
 
 	private var timestamp: UInt64 = 1
 	private var shouldSendEventsInDeinit: Bool = true
-	
+
 	override func setUp() {
 		// Set up time and uuid provider
 		let timeProvider = TimeProvider.mock(
@@ -50,7 +50,7 @@ final class PlayerItemTests: XCTestCase {
 		monitor = PlayerItemMonitorMock()
 		dataWriter = DataWriterMock()
 		playerEventSender = PlayerEventSenderMock(dataWriter: dataWriter)
-		
+
 		featureFlagProvider = FeatureFlagProvider.mock
 		featureFlagProvider.shouldSendEventsInDeinit = {
 			self.shouldSendEventsInDeinit
@@ -180,7 +180,6 @@ final class PlayerItemTests: XCTestCase {
 		// GIVEN
 		shouldSendEventsInDeinit = false
 
-		var featureFlagProvider = FeatureFlagProvider.mock
 		featureFlagProvider.isContentCachingEnabled = { false }
 
 		let mediaProduct = MediaProduct.mock()
