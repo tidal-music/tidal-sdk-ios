@@ -15,6 +15,7 @@ private enum Constants {
 // MARK: - StreamingPrivilegesHandlerTests
 
 final class StreamingPrivilegesHandlerTests: XCTestCase {
+	private let date = Date(timeIntervalSince1970: 1)
 	private var httpClient: HttpClient!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var streamingPrivilegesHandler: StreamingPrivilegesHandler!
@@ -29,7 +30,9 @@ final class StreamingPrivilegesHandlerTests: XCTestCase {
 		super.setUp()
 
 		let timeProvider = TimeProvider.mock(
-			date: { Date() }
+			date: {
+				self.date
+			}
 		)
 		PlayerWorld = PlayerWorldClient.mock(timeProvider: timeProvider)
 
@@ -172,7 +175,7 @@ extension StreamingPrivilegesHandlerTests {
 
 		await asyncOptimizedWait {
 			task.sendMessages.count == 1 &&
-			self.webSocket.responses.count == 1
+				self.webSocket.responses.count == 1
 		}
 
 		// THEN
@@ -232,7 +235,7 @@ extension StreamingPrivilegesHandlerTests {
 		await asyncOptimizedWait {
 			task.sendMessages.count == 1
 		}
-		
+
 		// THEN
 
 		// The web socket is opened (one message is sent)
