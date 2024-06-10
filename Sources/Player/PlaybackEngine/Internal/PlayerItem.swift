@@ -65,6 +65,9 @@ final class PlayerItem {
 		if !featureFlagProvider.isContentCachingEnabled() {
 			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_DISABLED)
 		}
+		if featureFlagProvider.shouldUseImprovedCaching() {
+			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_V2)
+		}
 
 		playerEventSender.send(StreamingSessionStart(
 			streamingSessionId: id,

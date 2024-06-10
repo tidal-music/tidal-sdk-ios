@@ -32,6 +32,8 @@ final class PlayerItemTests: XCTestCase {
 
 	private var timestamp: UInt64 = 1
 	private var shouldSendEventsInDeinit: Bool = true
+	private var isContentCachingEnabled: Bool = true
+	private var shouldUseCachingV2: Bool = false
 
 	override func setUp() {
 		// Set up time and uuid provider
@@ -47,14 +49,14 @@ final class PlayerItemTests: XCTestCase {
 		)
 		PlayerWorld = PlayerWorldClient.mock(timeProvider: timeProvider, uuidProvider: uuidProvider)
 
+		featureFlagProvider = FeatureFlagProvider.mock
+		featureFlagProvider.shouldSendEventsInDeinit = { self.shouldSendEventsInDeinit }
+		featureFlagProvider.isContentCachingEnabled = { self.isContentCachingEnabled }
+		featureFlagProvider.shouldUseImprovedCaching = { self.shouldUseCachingV2 }
+
 		monitor = PlayerItemMonitorMock()
 		dataWriter = DataWriterMock()
 		playerEventSender = PlayerEventSenderMock(dataWriter: dataWriter)
-
-		featureFlagProvider = FeatureFlagProvider.mock
-		featureFlagProvider.shouldSendEventsInDeinit = {
-			self.shouldSendEventsInDeinit
-		}
 
 		player = PlayerMock()
 
@@ -171,7 +173,6 @@ final class PlayerItemTests: XCTestCase {
 			sessionTags: [StreamingSessionStart.SessionTag.PRELOADED]
 		)
 
-		// When the item has not been played, in deinit, we only send StreamingSessionStart.
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
 	}
@@ -179,8 +180,7 @@ final class PlayerItemTests: XCTestCase {
 	func test_init_cachingDisabled() {
 		// GIVEN
 		shouldSendEventsInDeinit = false
-
-		featureFlagProvider.isContentCachingEnabled = { false }
+		isContentCachingEnabled = false
 
 		let mediaProduct = MediaProduct.mock()
 		_ = PlayerItem.mock(
@@ -208,7 +208,41 @@ final class PlayerItemTests: XCTestCase {
 			sessionTags: [StreamingSessionStart.SessionTag.CACHING_DISABLED]
 		)
 
-		// When the item has not been played, in deinit, we only send StreamingSessionStart.
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+	}
+
+	func test_init_cachingV2() {
+		// GIVEN
+		shouldSendEventsInDeinit = false
+		shouldUseCachingV2 = true
+
+		let mediaProduct = MediaProduct.mock()
+		_ = PlayerItem.mock(
+			startReason: .EXPLICIT,
+			mediaProduct: mediaProduct,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
+			isPreload: false
+		)
+
+		let streamingSessionStart = StreamingSessionStart.mock(
+			streamingSessionId: Constants.uuid,
+			startReason: .EXPLICIT,
+			timestamp: timestamp,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			sessionProductType: mediaProduct.productType,
+			sessionProductId: mediaProduct.productId,
+			sessionTags: [StreamingSessionStart.SessionTag.CACHING_V2]
+		)
+
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
 	}

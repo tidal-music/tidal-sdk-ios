@@ -10,19 +10,19 @@ private enum Constants {
 	static let defaultVolume: Float = 1
 }
 
-// MARK: - AVQueuePlayerWrapper
+// MARK: - AVQueuePlayerWrapperLegacy
 
-final class AVQueuePlayerWrapper: GenericMediaPlayer {
+final class AVQueuePlayerWrapperLegacy: GenericMediaPlayer {
 	private let featureFlagProvider: FeatureFlagProvider
 	private let queue: OperationQueue
 	private let contentKeyDelegateQueue: DispatchQueue
 	private let playbackTimeProgressQueue: DispatchQueue
 
-	private let assetFactory: AVURLAssetFactory
+	private let assetFactory: AVURLAssetFactoryLegacy
 	@Atomic private var player: AVQueuePlayer
 
 	private var playerItemMonitors: [AVPlayerItem: AVPlayerItemMonitor]
-	private var playerItemAssets: [AVPlayerItem: AVPlayerAsset]
+	private var playerItemAssets: [AVPlayerItem: AVPlayerAssetLegacy]
 	private var delegates: PlayerMonitoringDelegates
 
 	private var playerMonitor: AVPlayerMonitor?
@@ -59,11 +59,11 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		contentKeyDelegateQueue = DispatchQueue(label: "com.tidal.player.contentkeydelegate.queue")
 		playbackTimeProgressQueue = DispatchQueue(label: "com.tidal.player.playbacktimeprogress.queue")
 
-		assetFactory = AVURLAssetFactory(with: queue)
-		player = AVQueuePlayerWrapper.createPlayer()
+		assetFactory = AVURLAssetFactoryLegacy(with: queue)
+		player = AVQueuePlayerWrapperLegacy.createPlayer()
 
 		playerItemMonitors = [AVPlayerItem: AVPlayerItemMonitor]()
-		playerItemAssets = [AVPlayerItem: AVPlayerAsset]()
+		playerItemAssets = [AVPlayerItem: AVPlayerAssetLegacy]()
 		delegates = PlayerMonitoringDelegates()
 
 		preparePlayer()
@@ -112,7 +112,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 					and: licenseLoader as? AVContentKeySessionDelegate,
-					AVPlayerAsset.self
+					AVPlayerAssetLegacy.self
 				)
 
 				asset.setCached(isCached)
@@ -140,7 +140,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 					and: licenseLoader as? AVContentKeySessionDelegate,
-					LiveAVPlayerAsset.self
+					LiveAVPlayerAssetLegacy.self
 				)
 
 				continuation.resume(returning: asset)
@@ -173,7 +173,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 					and: nil,
-					AVPlayerAsset.self
+					AVPlayerAssetLegacy.self
 				)
 
 				continuation.resume(returning: asset)
@@ -230,7 +230,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 			self.playerItemAssets.removeAll()
 			self.playerMonitor = nil
 			self.delegates.removeAll()
-			self.player = AVQueuePlayerWrapper.createPlayer()
+			self.player = AVQueuePlayerWrapperLegacy.createPlayer()
 
 			self.preparePlayer()
 
@@ -251,7 +251,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	}
 }
 
-extension AVQueuePlayerWrapper {
+extension AVQueuePlayerWrapperLegacy {
 	func renderVideo(in view: AVPlayerLayer) {
 		queue.dispatch {
 			guard self.player.currentItem != nil else {
@@ -265,7 +265,7 @@ extension AVQueuePlayerWrapper {
 	}
 }
 
-private extension AVQueuePlayerWrapper {
+private extension AVQueuePlayerWrapperLegacy {
 	static func createPlayer() -> AVQueuePlayer {
 		let player = AVQueuePlayer()
 		player.automaticallyWaitsToMinimizeStalling = true
@@ -285,8 +285,8 @@ private extension AVQueuePlayerWrapper {
 		_ urlAsset: AVURLAsset,
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		and contentKeySessionDelegate: AVContentKeySessionDelegate?,
-		_ type: AVPlayerAsset.Type
-	) -> AVPlayerAsset {
+		_ type: AVPlayerAssetLegacy.Type
+	) -> AVPlayerAssetLegacy {
 		let contentKeySession = contentKeySessionDelegate.map { delegate -> AVContentKeySession in
 			let session = AVContentKeySession(keySystem: .fairPlayStreaming)
 			session.setDelegate(delegate, queue: contentKeyDelegateQueue)
@@ -302,7 +302,7 @@ private extension AVQueuePlayerWrapper {
 			and: contentKeySessionDelegate
 		)
 
-		let playerItem = AVQueuePlayerWrapper.createPlayerItem(urlAsset)
+		let playerItem = AVQueuePlayerWrapperLegacy.createPlayerItem(urlAsset)
 		monitor(playerItem)
 
 		player.insert(playerItem, after: nil)
@@ -375,7 +375,7 @@ private extension AVQueuePlayerWrapper {
 	}
 }
 
-private extension AVQueuePlayerWrapper {
+private extension AVQueuePlayerWrapperLegacy {
 	func loaded(playerItem: AVPlayerItem) {
 		queue.dispatch {
 			guard let asset = self.playerItemAssets[playerItem] else {
@@ -432,7 +432,7 @@ private extension AVQueuePlayerWrapper {
 				return
 			}
 
-			self.delegates.failed(asset: asset, with: AVQueuePlayerWrapper.convertError(error: error, playerItem: playerItem))
+			self.delegates.failed(asset: asset, with: AVQueuePlayerWrapperLegacy.convertError(error: error, playerItem: playerItem))
 		}
 	}
 
@@ -504,7 +504,7 @@ private extension AVQueuePlayerWrapper {
 	}
 }
 
-private extension AVQueuePlayerWrapper {
+private extension AVQueuePlayerWrapperLegacy {
 	static func convertError(error: Error?, playerItem: AVPlayerItem) -> PlayerInternalError {
 		guard let error else {
 			return PlayerInternalError(
@@ -587,20 +587,6 @@ private extension AVQueuePlayerWrapper {
 		}
 
 		return logString as String
-	}
-}
-
-extension AVPlayer {
-	func seek(to position: Double) async -> Bool {
-		await withCheckedContinuation { continuation in
-			guard let currentItem else {
-				return
-			}
-
-			seek(to: CMTime(seconds: min(position, currentItem.duration.seconds), preferredTimescale: 1000)) { finished in
-				continuation.resume(returning: finished)
-			}
-		}
 	}
 }
 

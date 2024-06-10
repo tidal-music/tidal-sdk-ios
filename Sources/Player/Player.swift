@@ -256,28 +256,18 @@ public extension Player {
 	func preload(_ mediaProduct: MediaProduct) -> PlayerLoaderHandle {
 		let time = PlayerWorld.timeProvider.timestamp()
 
-		let internalPlayerLoader = InternalPlayerLoader(
-			with: configuration,
-			and: fairplayLicenseFetcher,
-			featureFlagProvider: featureFlagProvider,
-			credentialsProvider: credentialsProvider,
-			mainPlayer: AVQueuePlayerWrapper.self,
-			externalPlayers: registeredPlayers
-		)
-
-		let player = PlayerEngine(
-			with: OperationQueue.new(),
-			HttpClient(using: playerURLSession),
-			credentialsProvider,
-			fairplayLicenseFetcher,
-			djProducer,
+		let player = Player.newPlayerEngine(
+			playerURLSession,
 			configuration,
-			playerEventSender,
-			networkMonitor,
 			storage,
-			internalPlayerLoader,
+			djProducer,
+			fairplayLicenseFetcher,
+			networkMonitor,
+			playerEventSender,
+			nil, // We don't want to notify the client about this player yet
 			featureFlagProvider,
-			nil // We don't want to notify the client about this player yet
+			registeredPlayers,
+			credentialsProvider
 		)
 
 		player.load(mediaProduct, timestamp: time, isPreload: true)
@@ -407,7 +397,7 @@ private extension Player {
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
-			mainPlayer: AVQueuePlayerWrapper.self,
+			mainPlayer: Player.mainPlayerType(featureFlagProvider),
 			externalPlayers: externalPlayers
 		)
 

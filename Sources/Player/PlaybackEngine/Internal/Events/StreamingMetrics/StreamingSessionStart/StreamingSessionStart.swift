@@ -4,6 +4,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 	enum SessionTag: String, Codable {
 		case PRELOADED
 		case CACHING_DISABLED
+		case CACHING_V2
 	}
 
 	// MARK: - StreamingMetricsEvent

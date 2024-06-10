@@ -153,10 +153,20 @@ final class InternalPlayerLoader: PlayerLoader {
 	}
 
 	func renderVideo(in view: AVPlayerLayer) {
-		guard let videoPlayer = mainPlayer as? AVQueuePlayerWrapper else {
-			return
+		// TODO: Split video capabilities to a different protocol to clean this
+		if featureFlagProvider.shouldUseImprovedCaching() {
+			guard let videoPlayer = mainPlayer as? AVQueuePlayerWrapperLegacy else {
+				return
+			}
+
+			videoPlayer.renderVideo(in: view)
+		} else {
+			guard let videoPlayer = mainPlayer as? AVQueuePlayerWrapperLegacy else {
+				return
+			}
+
+			videoPlayer.renderVideo(in: view)
 		}
-		videoPlayer.renderVideo(in: view)
 	}
 }
 

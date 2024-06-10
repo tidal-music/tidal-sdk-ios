@@ -1,14 +1,14 @@
 import AVFoundation
 import Foundation
 
-// MARK: - AVPlayerAsset
+// MARK: - AVPlayerAssetLegacy
 
-class AVPlayerAsset: Asset {
+class AVPlayerAssetLegacy: Asset {
 	private let contentKeySession: AVContentKeySession?
 	private let contentKeySessionDelegate: AVContentKeySessionDelegate?
 
 	required init(
-		with player: AVQueuePlayerWrapper,
+		with player: AVQueuePlayerWrapperLegacy,
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		_ contentKeySession: AVContentKeySession?,
 		and contentKeySessionDelegate: AVContentKeySessionDelegate?
@@ -23,11 +23,11 @@ class AVPlayerAsset: Asset {
 	}
 }
 
-// MARK: - LiveAVPlayerAsset
+// MARK: - LiveAVPlayerAssetLegacy
 
-final class LiveAVPlayerAsset: AVPlayerAsset {
+final class LiveAVPlayerAssetLegacy: AVPlayerAssetLegacy {
 	required init(
-		with player: AVQueuePlayerWrapper,
+		with player: AVQueuePlayerWrapperLegacy,
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		_ contentKeySession: AVContentKeySession?,
 		and contentKeySessionDelegate: AVContentKeySessionDelegate?
