@@ -181,13 +181,12 @@ final class PlayerEngine {
 
 	func skipToNext(timestamp: UInt64) {
 		queue.dispatch {
-			let playerItem = self.nextItem
-			self.currentItem?.unloadFromPlayer()
-
-			guard let playerItem else {
+			guard let playerItem = self.nextItem else {
 				self.reset(to: .IDLE)
 				return
 			}
+
+			self.currentItem?.unloadFromPlayer()
 
 			// The order is important due to logic for emitting events in didSet of the items.
 			self.currentItem = playerItem
@@ -228,6 +227,10 @@ final class PlayerEngine {
 				return
 			}
 
+			guard self.nextItem?.mediaProduct != mediaProduct else {
+				return
+			}
+
 			self.nextItem?.unload()
 			self.nextItem = nil
 
@@ -251,6 +254,26 @@ final class PlayerEngine {
 				await self.load(self.nextItem!)
 			}
 		}
+	}
+
+	func resetOrUnload() {
+		if featureFlagProvider.shouldUseImprovedCaching() {
+			unload()
+		} else {
+			reset()
+		}
+	}
+
+	func unload() {
+		cancellAllNetworkRequests()
+		queue.cancelAllOperations()
+
+		currentItem = nil
+		nextItem = nil
+		nextError = nil
+
+		playerItemLoader.unload()
+		state = .IDLE
 	}
 
 	func reset() {

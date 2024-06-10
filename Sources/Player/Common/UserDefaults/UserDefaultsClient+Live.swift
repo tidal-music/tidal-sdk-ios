@@ -1,6 +1,6 @@
 import Foundation
 
-extension UserDefaultsClient {
+public extension UserDefaultsClient {
 	static func live(userDefaults: UserDefaults = UserDefaults.standard) -> Self {
 		Self(
 			dataForKey: userDefaults.data(forKey:),

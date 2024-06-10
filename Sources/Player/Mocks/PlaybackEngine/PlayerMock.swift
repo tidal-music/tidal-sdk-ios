@@ -136,6 +136,10 @@ public final class PlayerMock: GenericMediaPlayer {
 		delegates.add(delegate: monitoringDelegate)
 	}
 
+	public func unload() {
+		reset()
+	}
+
 	public func reset() {
 		assetPosition = 0
 		assets.removeAll()

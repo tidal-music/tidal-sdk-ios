@@ -352,7 +352,11 @@ private extension PlayerItem {
 
 		let endTimestamp = metrics.endTime ?? now
 
-		let tags = (asset?.isCached() ?? false) ? [PlaybackStatistics.EventTag.CACHED] : nil
+		let tags: [PlaybackStatistics.EventTag]? = if case .cached = asset?.getCacheState()?.status {
+			[PlaybackStatistics.EventTag.CACHED]
+		} else {
+			nil
+		}
 
 		let endInfo = metrics.endInfo
 		playerEventSender.send(PlaybackStatistics(

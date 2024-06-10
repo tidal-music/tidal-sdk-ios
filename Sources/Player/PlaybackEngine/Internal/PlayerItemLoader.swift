@@ -21,6 +21,10 @@ final class PlayerItemLoader {
 		playerItem.set(asset)
 	}
 
+	func unload() {
+		playerLoader.unload()
+	}
+
 	func reset() {
 		playerLoader.reset()
 	}
