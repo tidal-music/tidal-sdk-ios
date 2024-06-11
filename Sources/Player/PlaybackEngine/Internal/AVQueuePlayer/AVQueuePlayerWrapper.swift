@@ -89,25 +89,23 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 			queue.dispatch {
 				let key = self.isContentCachingEnabled ? cacheKey : nil
 
-				let options = [
-					AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL,
-				]
-
 				var urlAsset: AVURLAsset
 				var cacheState = self.assetFactory.get(with: key)
 				switch cacheState {
 				case .none:
-					urlAsset = AVURLAsset(url: url, options: options)
+					urlAsset = AVURLAsset(url: url, options: [
+						AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL,
+					])
 				case let .some(state):
 					switch state.status {
 					case .notCached:
-						urlAsset = AVURLAsset(url: url, options: options)
+						urlAsset = AVURLAsset(url: url)
 					case let .cached(cachedURL):
 						urlAsset = AVURLAsset(url: cachedURL)
 						if !urlAsset.isPlayableOffline {
 							self.assetFactory.delete(state.key)
 							cacheState = AssetCacheState(key: state.key, status: .notCached)
-							urlAsset = AVURLAsset(url: url, options: options)
+							urlAsset = AVURLAsset(url: url)
 						}
 					}
 				}
@@ -159,8 +157,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	) async -> Asset {
 		await withCheckedContinuation { continuation in
 			queue.dispatch {
-				var options = [
-					AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL,
+				var options: [String: Any] = [
 					"AVURLAssetHTTPHeaderFieldsKey": headers,
 				]
 
