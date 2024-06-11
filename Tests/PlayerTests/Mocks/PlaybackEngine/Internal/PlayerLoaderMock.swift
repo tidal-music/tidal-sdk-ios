@@ -47,10 +47,12 @@ final class PlayerLoaderMock: PlayerLoader {
 
 	func unload() {
 		unloadCallCount += 1
+		player.unload()
 	}
 
 	func reset() {
 		resetCallCount += 1
+		player.reset()
 	}
 
 	func renderVideo(in view: AVPlayerLayer) {}
