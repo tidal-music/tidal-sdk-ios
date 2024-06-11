@@ -94,7 +94,8 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 				playbackInfoURL(
 					trackId: mediaProduct.productId,
 					audioQuality: configuration.streamingCellularAudioQuality,
-					playbackMode: playbackMode
+					playbackMode: playbackMode,
+					immersiveAudio: configuration.isImmersiveAudio
 				)
 			)
 		} catch {
@@ -141,7 +142,8 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 				playbackInfoURL(
 					trackId: mediaProduct.productId,
 					audioQuality: configuration.offlineAudioQuality,
-					playbackMode: playbackMode
+					playbackMode: playbackMode,
+					immersiveAudio: configuration.isImmersiveAudio
 				)
 			)
 		} catch {
@@ -640,9 +642,9 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 }
 
 extension PlaybackInfoFetcherTests {
-	func playbackInfoURL(trackId: String, audioQuality: AudioQuality, playbackMode: PlaybackMode) -> String {
+	func playbackInfoURL(trackId: String, audioQuality: AudioQuality, playbackMode: PlaybackMode, immersiveAudio: Bool) -> String {
 		let path = "https://api.tidal.com/v1/tracks/\(trackId)/playbackinfo"
-		let parameters = "audioquality=\(audioQuality.rawValue)&assetpresentation=FULL&playbackmode=\(playbackMode.rawValue)"
+		let parameters = "audioquality=\(audioQuality.rawValue)&assetpresentation=FULL&playbackmode=\(playbackMode.rawValue)&immersiveaudio=\(immersiveAudio)"
 		let url = "\(path)?\(parameters)"
 		return url
 	}

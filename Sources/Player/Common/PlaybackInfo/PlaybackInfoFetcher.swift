@@ -114,9 +114,10 @@ private extension PlaybackInfoFetcher {
 
 	func getTrackPlaybackInfoUrl(trackId: String, playbackMode: PlaybackMode) throws -> URL {
 		let audioQuality = getAudioQuality(given: playbackMode)
+		let immersiveAudio = configuration.isImmersiveAudio
 
 		let path = "https://api.tidal.com/v1/tracks/\(trackId)/playbackinfo"
-		let parameters = "audioquality=\(audioQuality)&assetpresentation=FULL&playbackmode=\(playbackMode)"
+		let parameters = "audioquality=\(audioQuality)&assetpresentation=FULL&playbackmode=\(playbackMode)&immersiveaudio=\(immersiveAudio)"
 
 		return try PlaybackInfoFetcher.createUrl(from: "\(path)?\(parameters)")
 	}
