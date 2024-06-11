@@ -128,7 +128,7 @@ extension AVURLAssetFactory: AVAssetDownloadDelegate {
 					for: download.identifier
 				)
 			} else {
-				assetCache.deletefile(at: url)
+				assetCache.deleteFile(at: url)
 			}
 		}
 	}

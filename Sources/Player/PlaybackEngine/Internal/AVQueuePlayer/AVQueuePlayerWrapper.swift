@@ -536,7 +536,7 @@ private extension AVQueuePlayerWrapper {
 			self.playerItemMonitors.removeValue(forKey: oldPlayerItem)
 			let asset = self.playerItemAssets.removeValue(forKey: oldPlayerItem)
 
-			// AVPlayer has moved to the next item in it's queue
+			// AVPlayer has moved to the next item in its queue
 			if let currentPlayerItem = self.player.currentItem {
 				self.delegates.completed(asset: asset)
 

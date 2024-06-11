@@ -27,15 +27,15 @@ public final class AssetCache {
 	}
 
 	public func get(_ key: String) -> AssetCacheState {
-		var bookmarkIsStale = false
+		var isBookmarkStale = false
 		let url = userDefaults.dataForKey(key)
-			.flatMap { try? URL(resolvingBookmarkData: $0, bookmarkDataIsStale: &bookmarkIsStale) }
+			.flatMap { try? URL(resolvingBookmarkData: $0, bookmarkDataIsStale: &isBookmarkStale) }
 
 		guard let url else {
 			return AssetCacheState(key: key, status: .notCached)
 		}
 
-		if bookmarkIsStale {
+		if isBookmarkStale {
 			set(url, with: key)
 		}
 
@@ -52,13 +52,13 @@ public final class AssetCache {
 		let state = get(key)
 		userDefaults.removeObjectForKey(key)
 		if case let .cached(url) = state.status {
-			deletefile(at: url)
+			deleteFile(at: url)
 		}
 	}
 }
 
 extension AssetCache {
-	func deletefile(at url: URL) {
+	func deleteFile(at url: URL) {
 		let fileManager = PlayerWorld.fileManagerClient
 		try? fileManager.removeItem(at: url)
 	}
