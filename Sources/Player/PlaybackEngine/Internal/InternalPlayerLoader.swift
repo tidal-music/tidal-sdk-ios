@@ -148,6 +148,10 @@ final class InternalPlayerLoader: PlayerLoader {
 		}
 	}
 
+	func unload() {
+		players.forEach { $0.unload() }
+	}
+
 	func reset() {
 		players.forEach { $0.reset() }
 	}
@@ -155,7 +159,7 @@ final class InternalPlayerLoader: PlayerLoader {
 	func renderVideo(in view: AVPlayerLayer) {
 		// TODO: Split video capabilities to a different protocol to clean this
 		if featureFlagProvider.shouldUseImprovedCaching() {
-			guard let videoPlayer = mainPlayer as? AVQueuePlayerWrapperLegacy else {
+			guard let videoPlayer = mainPlayer as? AVQueuePlayerWrapper else {
 				return
 			}
 

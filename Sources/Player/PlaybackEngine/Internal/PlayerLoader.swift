@@ -34,6 +34,8 @@ protocol PlayerLoader: AnyObject {
 
 	func load(_ playbackInfo: PlaybackInfo, streamingSessionId: String) async throws -> Asset
 
+	func unload()
+
 	func reset()
 
 	func renderVideo(in view: AVPlayerLayer)

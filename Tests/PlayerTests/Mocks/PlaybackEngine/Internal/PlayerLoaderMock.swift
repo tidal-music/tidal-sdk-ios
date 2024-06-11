@@ -9,6 +9,7 @@ final class PlayerLoaderMock: PlayerLoader {
 	private(set) var loadPlayableStorageItems = [PlayableStorageItem]()
 	private(set) var loadStoredMediaProducts = [StoredMediaProduct]()
 	private(set) var loadPlaybackInfos = [PlaybackInfo]()
+	private(set) var unloadCallCount = 0
 	private(set) var resetCallCount = 0
 
 	required init(
@@ -44,8 +45,14 @@ final class PlayerLoaderMock: PlayerLoader {
 		return player.load()
 	}
 
+	func unload() {
+		unloadCallCount += 1
+		player.unload()
+	}
+
 	func reset() {
 		resetCallCount += 1
+		player.reset()
 	}
 
 	func renderVideo(in view: AVPlayerLayer) {}

@@ -229,7 +229,7 @@ public extension Player {
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
 			self.playerEngine.notificationsHandler = nil
-			self.playerEngine.reset()
+			self.playerEngine.resetOrUnload()
 
 			self.playerEngine = Player.newPlayerEngine(
 				self.playerURLSession,
@@ -311,7 +311,7 @@ public extension Player {
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
 			self.playerEngine.notificationsHandler = nil
-			self.playerEngine.reset()
+			self.playerEngine.resetOrUnload()
 
 			self.playerEngine = handle.player
 			self.playerEngine.notificationsHandler = self.notificationsHandler

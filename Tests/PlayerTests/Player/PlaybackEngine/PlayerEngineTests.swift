@@ -812,11 +812,53 @@ extension PlayerEngineTests {
 		playerEngine.reset()
 
 		// THEN
-		// Play and pause call counts remain the same, state becomes IDLE, player loader calls reset and items are removed and
+		// Play and pause call counts are kept the same, state becomes IDLE, player loader calls reset and items are removed and
 		// nullified.
 		assertGenericPlayer(assets: [], playCount: 1, pauseCount: 0)
 		XCTAssertEqual(playerEngine.getState(), .IDLE)
 		XCTAssertEqual(playerLoader.resetCallCount, 1)
+		XCTAssertEqual(playerEngine.currentItem, nil)
+		XCTAssertEqual(playerEngine.nextItem, nil)
+	}
+
+	// MARK: - unload
+
+	func test_unload() {
+		// GIVEN
+		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
+
+		let mediaProduct1 = Constants.mediaProduct1
+		playerEngine.load(mediaProduct1, timestamp: 1, isPreload: false)
+
+		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
+
+		// Play it
+		playerEngine.play(timestamp: 1)
+		genericPlayer.playing()
+
+		let expectedPlayerItem = playerItem(
+			mediaProduct: mediaProduct1,
+			trackPlaybackInfo: trackPlaybackInfo1,
+			shouldSetMetadataAndAsset: true
+		)
+		assertItem(item: playerEngine.currentItem, expectedItem: expectedPlayerItem, shouldBeLoaded: true)
+		assertItem(item: playerEngine.nextItem, expectedItem: nil, shouldBeLoaded: nil)
+
+		XCTAssertEqual(playerEngine.getState(), .PLAYING)
+		assertGenericPlayer(assets: [asset], playCount: 1, pauseCount: 0)
+		assertPlayerLoader(trackPlaybackInfos: [trackPlaybackInfo1])
+
+		// WHEN
+		playerEngine.unload()
+
+		// THEN
+		// Play and pause call counts are kept the same, state becomes IDLE, player loader calls unload and items are removed and
+		// nullified.
+		assertGenericPlayer(assets: [], playCount: 1, pauseCount: 0)
+		XCTAssertEqual(playerEngine.getState(), .IDLE)
+		XCTAssertEqual(playerLoader.unloadCallCount, 1)
+		XCTAssertEqual(playerLoader.resetCallCount, 0)
 		XCTAssertEqual(playerEngine.currentItem, nil)
 		XCTAssertEqual(playerEngine.nextItem, nil)
 	}

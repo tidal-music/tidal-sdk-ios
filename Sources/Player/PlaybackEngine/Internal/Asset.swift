@@ -8,9 +8,9 @@ open class Asset {
 	let player: GenericMediaPlayer
 	private var loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration
 
-	@Atomic var assetPosition: Double
+	@Atomic var assetPosition: Double = 0
 	@Atomic var playbackMetadata: AssetPlaybackMetadata?
-	@Atomic private var cached: Bool = false
+	@Atomic var cacheState: AssetCacheState?
 
 	/// Convenience initializer.
 	/// - Parameters:
@@ -23,7 +23,6 @@ open class Asset {
 	) {
 		self.player = player
 		self.loudnessNormalizationConfiguration = loudnessNormalizationConfiguration
-		assetPosition = 0
 	}
 
 	/// Method to obtain the current asset position
@@ -50,16 +49,16 @@ open class Asset {
 		self.playbackMetadata = playbackMetadata
 	}
 
-	/// Method to obtain the current caching status
-	/// - Returns: The caching status
-	public func isCached() -> Bool {
-		cached
+	/// Method to get the current caching state
+	/// - Returns: The asset cache state
+	public func getCacheState() -> AssetCacheState? {
+		cacheState
 	}
 
-	/// Method to set the current caching status
-	/// - Parameter isCached: The new caching status
-	public func setCached(_ isCached: Bool) {
-		cached = isCached
+	/// Method to set the current caching state
+	/// - Parameter state: The new caching state
+	public func setCacheState(_ state: AssetCacheState?) {
+		cacheState = state
 	}
 
 	/// Method to unload the asset in the player instance.

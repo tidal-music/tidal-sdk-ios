@@ -33,8 +33,6 @@ public protocol GenericMediaPlayer: AnyObject {
 		headers: [String: String]
 	) async -> Asset
 
-	func unload(asset: Asset)
-
 	func play()
 	func pause()
 	func seek(to time: Double)
@@ -42,6 +40,9 @@ public protocol GenericMediaPlayer: AnyObject {
 	func updateVolume(loudnessNormalizer: LoudnessNormalizer?)
 
 	func addMonitoringDelegate(monitoringDelegate: PlayerMonitoringDelegate)
+
+	func unload(asset: Asset)
+	func unload()
 
 	func reset()
 }
