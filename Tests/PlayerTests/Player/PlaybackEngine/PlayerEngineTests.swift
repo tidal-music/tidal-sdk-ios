@@ -812,9 +812,9 @@ extension PlayerEngineTests {
 		playerEngine.reset()
 
 		// THEN
-		// Play and pause call counts are resetted, state becomes IDLE, player loader calls reset and items are removed and
+		// Play and pause call counts are kept the same, state becomes IDLE, player loader calls reset and items are removed and
 		// nullified.
-		assertGenericPlayer(assets: [], playCount: 0, pauseCount: 0)
+		assertGenericPlayer(assets: [], playCount: 1, pauseCount: 0)
 		XCTAssertEqual(playerEngine.getState(), .IDLE)
 		XCTAssertEqual(playerLoader.resetCallCount, 1)
 		XCTAssertEqual(playerEngine.currentItem, nil)
@@ -853,9 +853,9 @@ extension PlayerEngineTests {
 		playerEngine.unload()
 
 		// THEN
-		// Play and pause call counts are resetted, state becomes IDLE, player loader calls unload and items are removed and
+		// Play and pause call counts are kept the same, state becomes IDLE, player loader calls unload and items are removed and
 		// nullified.
-		assertGenericPlayer(assets: [], playCount: 0, pauseCount: 0)
+		assertGenericPlayer(assets: [], playCount: 1, pauseCount: 0)
 		XCTAssertEqual(playerEngine.getState(), .IDLE)
 		XCTAssertEqual(playerLoader.unloadCallCount, 1)
 		XCTAssertEqual(playerLoader.resetCallCount, 0)

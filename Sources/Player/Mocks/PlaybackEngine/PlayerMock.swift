@@ -137,17 +137,13 @@ public final class PlayerMock: GenericMediaPlayer {
 	}
 
 	public func unload() {
-		reset()
+		assetPosition = 0
+		assets.removeAll()
 	}
 
 	public func reset() {
 		assetPosition = 0
 		assets.removeAll()
-
-		playCallCount = 0
-		pauseCallCount = 0
-		seekCallCount = 0
-		updateVolumeCallCount = 0
 	}
 }
 
