@@ -16,7 +16,7 @@ final class AVURLAssetFactory: NSObject {
 	private let assetCache: AssetCache
 
 	private var downloads: [Download] = [Download]()
-	private let uuid: String = String.random(length: 8)
+	private lazy var uuid: String = PlayerWorld.uuidProvider.uuidString()
 
 	weak var delegate: AssetFactoryDelegate?
 
