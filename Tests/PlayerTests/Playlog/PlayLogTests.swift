@@ -37,7 +37,7 @@ final class PlayLogTests: XCTestCase {
 	private var timestamp: UInt64 = 1
 	private var uuid = "uuid"
 	private var shouldSendEventsInDeinit: Bool = true
-	
+
 	lazy var shortAudioFile: AudioFile = {
 		let url = PlayLogTestsHelper.url(from: Constants.AudioFileName.short)
 		return AudioFile(
@@ -130,7 +130,7 @@ final class PlayLogTests: XCTestCase {
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
-			mainPlayer: AVQueuePlayerWrapper.self,
+			mainPlayer: Player.mainPlayerType(featureFlagProvider),
 			externalPlayers: []
 		)
 

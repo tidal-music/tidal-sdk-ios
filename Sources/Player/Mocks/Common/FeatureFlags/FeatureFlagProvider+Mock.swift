@@ -5,6 +5,7 @@ public extension FeatureFlagProvider {
 		isStallWhenTransitionFromEndedToBufferingEnabled: { true },
 		shouldUseEventProducer: { true },
 		isContentCachingEnabled: { true },
-		shouldSendEventsInDeinit: { true }
+		shouldSendEventsInDeinit: { true },
+		shouldUseImprovedCaching: { false }
 	)
 }

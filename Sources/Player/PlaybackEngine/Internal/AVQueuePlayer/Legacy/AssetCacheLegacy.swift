@@ -1,8 +1,8 @@
 import Foundation
 
-// MARK: - AssetCache
+// MARK: - AssetCacheLegacy
 
-final class AssetCache {
+final class AssetCacheLegacy {
 	private var userDefaults: UserDefaultsClient
 
 	init(userDefaults: UserDefaultsClient = UserDefaultsClient.live()) {
@@ -32,7 +32,7 @@ final class AssetCache {
 	}
 }
 
-private extension AssetCache {
+private extension AssetCacheLegacy {
 	func delete(_ url: URL?, and key: String) {
 		guard let url else {
 			return

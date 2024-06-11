@@ -1,15 +1,15 @@
 import AVFoundation
 import Foundation
 
-// MARK: - AVURLAssetFactory
+// MARK: - AVURLAssetFactoryLegacy
 
-final class AVURLAssetFactory: NSObject {
+final class AVURLAssetFactoryLegacy: NSObject {
 	private static let TTL: Int = 24 * 60 * 60
 
 	private var downloads: [Download] = [Download]()
 
 	private let queue: OperationQueue
-	private let assetCache: AssetCache
+	private let assetCache: AssetCacheLegacy
 
 	private lazy var session: AVAssetDownloadURLSession = AVAssetDownloadURLSession(
 		configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.player.hls.cache"),
@@ -19,7 +19,7 @@ final class AVURLAssetFactory: NSObject {
 
 	init(
 		with queue: OperationQueue,
-		assetCache: AssetCache = AssetCache()
+		assetCache: AssetCacheLegacy = AssetCacheLegacy()
 	) {
 		self.queue = queue
 		self.assetCache = assetCache
@@ -43,7 +43,7 @@ final class AVURLAssetFactory: NSObject {
 	}
 }
 
-private extension AVURLAssetFactory {
+private extension AVURLAssetFactoryLegacy {
 	func getAssetFromLocalStorage(with cacheKey: String) -> AVURLAsset? {
 		guard let url = assetCache.get(cacheKey) else {
 			return nil
@@ -86,14 +86,14 @@ private extension AVURLAssetFactory {
 
 		let newPolicy = AVMutableAssetDownloadStorageManagementPolicy()
 		newPolicy.priority = .default
-		newPolicy.expirationDate = Date(timeIntervalSinceNow: Double(AVURLAssetFactory.TTL))
+		newPolicy.expirationDate = Date(timeIntervalSinceNow: Double(AVURLAssetFactoryLegacy.TTL))
 		AVAssetDownloadStorageManager.shared().setStorageManagementPolicy(newPolicy, for: url)
 	}
 }
 
 // MARK: AVAssetDownloadDelegate
 
-extension AVURLAssetFactory: AVAssetDownloadDelegate {
+extension AVURLAssetFactoryLegacy: AVAssetDownloadDelegate {
 	func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
 		guard let download = downloads.first(where: { $0.task == task }) else {
 			return
@@ -134,11 +134,5 @@ private final class Download {
 
 	func isComplete() -> Bool {
 		(task as? AVAggregateAssetDownloadTask).map { $0.urlAsset.isPlayableOffline } ?? false
-	}
-}
-
-extension AVURLAsset {
-	var isPlayableOffline: Bool {
-		assetCache?.isPlayableOffline ?? false
 	}
 }
