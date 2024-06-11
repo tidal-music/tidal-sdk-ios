@@ -181,12 +181,13 @@ final class PlayerEngine {
 
 	func skipToNext(timestamp: UInt64) {
 		queue.dispatch {
-			guard let playerItem = self.nextItem else {
+			let playerItem = self.nextItem
+			self.currentItem?.unloadFromPlayer()
+
+			guard let playerItem else {
 				self.reset(to: .IDLE)
 				return
 			}
-
-			self.currentItem?.unloadFromPlayer()
 
 			// The order is important due to logic for emitting events in didSet of the items.
 			self.currentItem = playerItem
