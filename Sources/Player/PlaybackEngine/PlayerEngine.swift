@@ -265,6 +265,9 @@ final class PlayerEngine {
 		}
 	}
 
+	/// The Player SDK creates new PlayerEngine instances when starting a new explicit playback.
+	/// This means it discards the previous isntance, which won't be reused.
+	/// Which allows us to optimize how we clean up as it won't be reused (no need to queue up the clean operation)
 	func unload() {
 		cancellAllNetworkRequests()
 		queue.cancelAllOperations()
@@ -277,6 +280,10 @@ final class PlayerEngine {
 		state = .IDLE
 	}
 
+	/// The Player SDK creates new PlayerEngine instances when starting a new explicit playback.
+	/// In theory, this should allows us to never need to reuse an instance.
+	/// But that requires a bit more changes, so until then, when the client calls reset,
+	/// we still need to call reset to the active instance. which cleans up syncronously to avoid thread issues.
 	func reset() {
 		// Unload and nullify the current item so that it immediately stops playing.
 		currentItem?.unloadFromPlayer()
