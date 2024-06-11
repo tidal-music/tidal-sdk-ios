@@ -228,8 +228,10 @@ final class PlayerEngine {
 				return
 			}
 
-			guard self.nextItem?.mediaProduct != mediaProduct else {
-				return
+			if self.featureFlagProvider.shouldUseImprovedCaching() {
+				guard self.nextItem?.mediaProduct != mediaProduct else {
+					return
+				}
 			}
 
 			self.nextItem?.unload()
