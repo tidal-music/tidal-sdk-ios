@@ -162,24 +162,10 @@ final class PlayerItem {
 			return nil
 		}
 
-		// We will be using the backend data for now, same as the other platforms
-		var sampleRate: Int? = metadata.audioSampleRate
-		var bitDepth: Int? = metadata.audioBitDepth
-
-		if let metadataSampleRate = metadata.audioSampleRate,
-		   let metadataBitDepth = metadata.audioBitDepth,
-		   let playBackMetadata = asset?.playbackMetadata
-		{
-			// We have the data from both places to compare so we can assert on DEBUG to verify it's always the same.
-			// With this info we can decide in the future if we should switch to the real data.
-			assert(metadataSampleRate == playBackMetadata.sampleRate, "Sample rate does not match!")
-			assert(metadataBitDepth == playBackMetadata.bitDepth, "Bit-depth does not match!")
-		} else if let playBackMetadata = asset?.playbackMetadata {
-			// This could happen in the cases were we are playing an offlined track without the metadata stored
-			// or if the backend has not yet backfilled the data
-			sampleRate = playBackMetadata.sampleRate
-			bitDepth = playBackMetadata.bitDepth
-		}
+		let (bitDepth, sampleRate) = obtainPlaybackContextBitDepthAndSampleRate(
+			pbiMetadata: metadata,
+			playbackMetadata: asset?.playbackMetadata
+		)
 
 		let codec = metadata.audioCodec ?? AudioCodec(from: metadata.audioQuality, mode: metadata.audioMode)
 
@@ -339,6 +325,36 @@ extension PlayerItem: CustomStringConvertible {
 }
 
 private extension PlayerItem {
+	func obtainPlaybackContextBitDepthAndSampleRate(
+		pbiMetadata: Metadata,
+		playbackMetadata: AssetPlaybackMetadata?
+	) -> (Int?, Int?) {
+		// We will be using the backend data for now, same as the other platforms
+		var bitDepth: Int? = pbiMetadata.audioBitDepth
+		var sampleRate: Int? = pbiMetadata.audioSampleRate
+
+		guard PlayerWorld.developmentFeatureFlagProvider.shouldReadAndVerifyPlaybackMetadata else {
+			return (bitDepth, sampleRate)
+		}
+
+		if let metadataSampleRate = pbiMetadata.audioSampleRate,
+		   let metadataBitDepth = pbiMetadata.audioBitDepth,
+		   let playbackMetadata
+		{
+			// We have the data from both places to compare so we can assert on DEBUG to verify it's always the same.
+			// With this info we can decide in the future if we should switch to the real data.
+			assert(metadataBitDepth == playbackMetadata.bitDepth, "Bit-depth does not match!")
+			assert(metadataSampleRate == playbackMetadata.sampleRate, "Sample rate does not match!")
+		} else if let playbackMetadata {
+			// This could happen in the cases were we are playing an offlined track without the metadata stored
+			// or if the backend has not yet backfilled the data
+			bitDepth = playbackMetadata.bitDepth
+			sampleRate = playbackMetadata.sampleRate
+		}
+
+		return (bitDepth, sampleRate)
+	}
+
 	func emitStreamingMetrics() {
 		let now = PlayerWorld.timeProvider.timestamp()
 
