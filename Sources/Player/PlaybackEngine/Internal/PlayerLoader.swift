@@ -24,7 +24,7 @@ protocol PlayerLoader: AnyObject {
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
 		credentialsProvider: CredentialsProvider,
-		mainPlayer: GenericMediaPlayer.Type,
+		mainPlayer: (GenericMediaPlayer & LiveMediaPlayer & UCMediaPlayer & VideoPlayer).Type,
 		externalPlayers: [GenericMediaPlayer.Type]
 	)
 

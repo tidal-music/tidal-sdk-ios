@@ -77,35 +77,6 @@ public final class PlayerMock: GenericMediaPlayer {
 		return asset
 	}
 
-	public func loadLive(_ url: URL, with licenseLoader: LicenseLoader?) async -> Asset {
-		loadLiveCallCount += 1
-		licenseLoaders.append(licenseLoader)
-		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-			loudnessNormalizationMode: loudnessNormalizationMode,
-			loudnessNormalizer: loudnessNormalizer
-		)
-		let asset = AssetMock(with: self, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
-
-		assets.append(asset)
-		return asset
-	}
-
-	public func loadUC(
-		_ url: URL,
-		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
-		headers: [String: String]
-	) async -> Asset {
-		loadUploadedCallCount += 1
-		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-			loudnessNormalizationMode: loudnessNormalizationMode,
-			loudnessNormalizer: loudnessNormalizer
-		)
-		let asset = AssetMock(with: self, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
-
-		assets.append(asset)
-		return asset
-	}
-
 	public func unload(asset: Asset) {
 		unloadCallCount += 1
 		unloadedAssets.append(asset)
@@ -125,8 +96,6 @@ public final class PlayerMock: GenericMediaPlayer {
 		seekCallCount += 1
 	}
 
-	func renderVideo(in view: AVPlayerLayer) {}
-
 	public func updateVolume(loudnessNormalizer: LoudnessNormalizer?) {
 		loudnessNormalizers.append(loudnessNormalizer)
 		updateVolumeCallCount += 1
@@ -145,6 +114,49 @@ public final class PlayerMock: GenericMediaPlayer {
 		assetPosition = 0
 		assets.removeAll()
 	}
+}
+
+// MARK: LiveMediaPlayer
+
+extension PlayerMock: LiveMediaPlayer {
+	public func loadLive(_ url: URL, with licenseLoader: LicenseLoader?) async -> Asset {
+		loadLiveCallCount += 1
+		licenseLoaders.append(licenseLoader)
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
+			loudnessNormalizationMode: loudnessNormalizationMode,
+			loudnessNormalizer: loudnessNormalizer
+		)
+		let asset = AssetMock(with: self, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
+
+		assets.append(asset)
+		return asset
+	}
+}
+
+// MARK: UCMediaPlayer
+
+extension PlayerMock: UCMediaPlayer {
+	public func loadUC(
+		_ url: URL,
+		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
+		headers: [String: String]
+	) async -> Asset {
+		loadUploadedCallCount += 1
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
+			loudnessNormalizationMode: loudnessNormalizationMode,
+			loudnessNormalizer: loudnessNormalizer
+		)
+		let asset = AssetMock(with: self, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
+
+		assets.append(asset)
+		return asset
+	}
+}
+
+// MARK: VideoPlayer
+
+extension PlayerMock: VideoPlayer {
+	func renderVideo(in view: AVPlayerLayer) {}
 }
 
 extension PlayerMock {

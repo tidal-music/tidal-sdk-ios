@@ -124,65 +124,6 @@ final class AVQueuePlayerWrapperLegacy: GenericMediaPlayer {
 		}
 	}
 
-	func loadLive(
-		_ url: URL,
-		with licenseLoader: LicenseLoader?
-	) async -> Asset {
-		await withCheckedContinuation { continuation in
-			queue.dispatch {
-				let urlAsset = AVURLAsset(url: url)
-
-				// In Live, there's no loudness normalization.
-				let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-					loudnessNormalizationMode: .NONE,
-					loudnessNormalizer: nil
-				)
-
-				let asset = self.load(
-					urlAsset,
-					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-					and: licenseLoader as? AVContentKeySessionDelegate,
-					LiveAVPlayerAssetLegacy.self
-				)
-
-				continuation.resume(returning: asset)
-			}
-		}
-	}
-
-	func loadUC(
-		_ url: URL,
-		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
-		headers: [String: String]
-	) async -> Asset {
-		await withCheckedContinuation { continuation in
-			queue.dispatch {
-				var options = [
-					AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL,
-					"AVURLAssetHTTPHeaderFieldsKey": headers,
-				]
-
-				if #available(iOS 17.0, macOS 14.0, *) {
-					options[AVURLAssetOverrideMIMETypeKey] = "application/vnd.apple.mpegurl"
-				}
-
-				let urlAsset = AVURLAsset(
-					url: url,
-					options: options
-				)
-
-				let asset = self.load(
-					urlAsset,
-					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-					and: nil,
-					AVPlayerAssetLegacy.self
-				)
-
-				continuation.resume(returning: asset)
-			}
-		}
-	}
-
 	func unload(asset: Asset) {
 		queue.dispatch {
 			guard let playerItem = self.playerItemAssets.first(where: { _, a in a === asset })?.key else {
@@ -267,7 +208,76 @@ final class AVQueuePlayerWrapperLegacy: GenericMediaPlayer {
 	}
 }
 
-extension AVQueuePlayerWrapperLegacy {
+// MARK: LiveMediaPlayer
+
+extension AVQueuePlayerWrapperLegacy: LiveMediaPlayer {
+	func loadLive(
+		_ url: URL,
+		with licenseLoader: LicenseLoader?
+	) async -> Asset {
+		await withCheckedContinuation { continuation in
+			queue.dispatch {
+				let urlAsset = AVURLAsset(url: url)
+
+				// In Live, there's no loudness normalization.
+				let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
+					loudnessNormalizationMode: .NONE,
+					loudnessNormalizer: nil
+				)
+
+				let asset = self.load(
+					urlAsset,
+					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+					and: licenseLoader as? AVContentKeySessionDelegate,
+					LiveAVPlayerAssetLegacy.self
+				)
+
+				continuation.resume(returning: asset)
+			}
+		}
+	}
+}
+
+// MARK: UCMediaPlayer
+
+extension AVQueuePlayerWrapperLegacy: UCMediaPlayer {
+	func loadUC(
+		_ url: URL,
+		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
+		headers: [String: String]
+	) async -> Asset {
+		await withCheckedContinuation { continuation in
+			queue.dispatch {
+				var options = [
+					AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL,
+					"AVURLAssetHTTPHeaderFieldsKey": headers,
+				]
+
+				if #available(iOS 17.0, macOS 14.0, *) {
+					options[AVURLAssetOverrideMIMETypeKey] = "application/vnd.apple.mpegurl"
+				}
+
+				let urlAsset = AVURLAsset(
+					url: url,
+					options: options
+				)
+
+				let asset = self.load(
+					urlAsset,
+					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+					and: nil,
+					AVPlayerAssetLegacy.self
+				)
+
+				continuation.resume(returning: asset)
+			}
+		}
+	}
+}
+
+// MARK: VideoPlayer
+
+extension AVQueuePlayerWrapperLegacy: VideoPlayer {
 	func renderVideo(in view: AVPlayerLayer) {
 		queue.dispatch {
 			guard self.player.currentItem != nil else {

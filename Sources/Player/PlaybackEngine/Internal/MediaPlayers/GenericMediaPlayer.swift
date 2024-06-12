@@ -22,17 +22,6 @@ public protocol GenericMediaPlayer: AnyObject {
 		and licenseLoader: LicenseLoader?
 	) async -> Asset
 
-	func loadLive(
-		_ url: URL,
-		with licenseLoader: LicenseLoader?
-	) async -> Asset
-
-	func loadUC(
-		_ url: URL,
-		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
-		headers: [String: String]
-	) async -> Asset
-
 	func play()
 	func pause()
 	func seek(to time: Double)
