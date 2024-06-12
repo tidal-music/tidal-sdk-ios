@@ -219,6 +219,12 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	func play() {
 		queue.dispatch {
+			if self.player.items().isEmpty {
+				guard let (playerItem, _) = self.playerItemAssets.first else {
+					return
+				}
+				self.player.insert(playerItem, after: nil)
+			}
 			self.player.play()
 		}
 	}
