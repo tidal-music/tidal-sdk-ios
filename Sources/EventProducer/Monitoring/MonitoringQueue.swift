@@ -11,7 +11,7 @@ public final class MonitoringQueue {
 	}
 
 	private func setup() throws {
-		guard let databaseURL = FileManagerHelper.shared.eventQueueDatabaseURL else {
+		guard let databaseURL = FileManagerHelper.shared.monitoringQueueDatabaseURL else {
 			throw EventProducerError.monitoringQueueDatabaseURLFailure
 		}
 
