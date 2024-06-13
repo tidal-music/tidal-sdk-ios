@@ -4,7 +4,6 @@ import SWXMLHash
 
 final class EventQueue {
 	static let databaseName = "EventQueueDatabase.sqlite"
-
 	static let shared = EventQueue()
 	var dbQueue: DatabaseQueue!
 
@@ -16,9 +15,12 @@ final class EventQueue {
 		guard let databaseURL = FileManagerHelper.shared.eventQueueDatabaseURL else {
 			throw EventProducerError.eventQueueDatabaseURLFailure
 		}
+		
+		var configuration = Configuration()
+		configuration.qos = .background
 
 		do {
-			dbQueue = try DatabaseQueue(path: databaseURL.path)
+			dbQueue = try DatabaseQueue(path: databaseURL.path, configuration: configuration)
 			try dbQueue.write { db in
 				try db.create(table: EventPersistentObject.databaseTableName, ifNotExists: true) { table in
 					table.column(EventPersistentObject.columnID, .text).notNull()

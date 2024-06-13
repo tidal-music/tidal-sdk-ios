@@ -14,9 +14,12 @@ public final class MonitoringQueue {
 		guard let databaseURL = FileManagerHelper.shared.eventQueueDatabaseURL else {
 			throw EventProducerError.monitoringQueueDatabaseURLFailure
 		}
+		
+		var configuration = Configuration()
+		configuration.qos = .background
 
 		do {
-			databaseQueue = try DatabaseQueue(path: databaseURL.path)
+			databaseQueue = try DatabaseQueue(path: databaseURL.path, configuration: configuration)
 			try databaseQueue.write { database in
 				try database.create(table: MonitoringInfoPersistentObject.databaseTableName, ifNotExists: true) { table in
 					table.column(MonitoringInfoPersistentObject.columnId, .text).notNull()
