@@ -582,22 +582,24 @@ private extension AVQueuePlayerWrapper {
 
 extension AVQueuePlayerWrapper: AssetFactoryDelegate {
 	func assetFinishedDownloading(_ urlAsset: AVURLAsset, to location: URL, for cacheKey: String) {
-		guard
-			let (oldPlayerItem, asset) = playerItemAssets.first(where: { $0.value.cacheState?.key == cacheKey }),
-			!player.items().contains(oldPlayerItem)
-		else {
-			return
+		queue.dispatch {
+			guard
+				let (oldPlayerItem, asset) = self.playerItemAssets.first(where: { $0.value.cacheState?.key == cacheKey }),
+				!self.player.items().contains(oldPlayerItem)
+			else {
+				return
+			}
+
+			self.unload(playerItem: oldPlayerItem)
+
+			let cacheState = AssetCacheState(key: cacheKey, status: .cached(cachedURL: location))
+			asset.setCacheState(cacheState)
+
+			let cachedPlayerItem = AVQueuePlayerWrapper.createPlayerItem(urlAsset)
+			self.register(playerItem: cachedPlayerItem, for: asset)
+
+			self.player.insert(cachedPlayerItem, after: nil)
 		}
-
-		unload(playerItem: oldPlayerItem)
-
-		let cacheState = AssetCacheState(key: cacheKey, status: .cached(cachedURL: location))
-		asset.setCacheState(cacheState)
-
-		let cachedPlayerItem = AVQueuePlayerWrapper.createPlayerItem(urlAsset)
-		register(playerItem: cachedPlayerItem, for: asset)
-
-		player.insert(cachedPlayerItem, after: nil)
 	}
 }
 
