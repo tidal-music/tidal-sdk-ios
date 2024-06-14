@@ -437,6 +437,7 @@ private extension AVQueuePlayerWrapper {
 
 		assetFactory.reset()
 
+		player.pause()
 		player.removeAllItems()
 
 		player = AVQueuePlayerWrapper.createPlayer()
