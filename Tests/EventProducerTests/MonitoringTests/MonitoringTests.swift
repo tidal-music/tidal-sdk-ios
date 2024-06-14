@@ -22,7 +22,7 @@ final class MonitoringTests: XCTestCase {
 	private let sut: Monitoring = .shared
 	private let monitoringQueue: MonitoringQueue = .shared
 	private var headerHelper: HeaderHelper!
-	private let maxDiskUsageBytes = 20480
+	private let maxDiskUsageBytes = 204800
 	
 	private var mockCredentialsProvider: CredentialsProvider {
 		MockCredentialsProvider(isUserLoggedIn: true)

@@ -3,7 +3,7 @@ import XCTest
 
 final class FileManagerHelperTests: XCTestCase {
 	private let sut: FileManagerHelper = .shared
-	private let maxDiskUsageBytes = 20480
+	private let maxDiskUsageBytes = 204800
 
 	func testExceedsMaximumSize() {
 		let data = Data(count: 10480)

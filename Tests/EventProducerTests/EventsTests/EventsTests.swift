@@ -24,7 +24,7 @@ final class EventsTests: XCTestCase {
 	private let testAccessToken = "testAccessToken"
 	private let queue = EventQueue.shared
 	private var headerHelper: HeaderHelper!
-	private let maxDiskUsageBytes = 20480
+	private let maxDiskUsageBytes = 204800
 
 	override func setUp() async throws {
 		try await super.setUp()

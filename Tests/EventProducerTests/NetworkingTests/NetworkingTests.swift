@@ -12,7 +12,7 @@ final class NetworkingTests: XCTestCase {
 		}
 	}
 	
-	private let maxDiskUsageBytes = 20480
+	private let maxDiskUsageBytes = 204800
 	
 	private var mockAuthProvider: AuthProvider {
 		MockAuthProvider(token: "testAccessToken", clientID: "testURL")

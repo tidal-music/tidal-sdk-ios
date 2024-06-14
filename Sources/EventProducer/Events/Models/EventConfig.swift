@@ -2,7 +2,7 @@ import Foundation
 import protocol Auth.CredentialsProvider
 
 public struct EventConfig: EventProducer {
-	static let defaultMaxDiskUsageBytes = 20480
+	static let defaultMaxDiskUsageBytes = 204800
 	
 	/// An access token provider, used by the EventProducer to get access token.
 	public var credentialsProvider: CredentialsProvider
