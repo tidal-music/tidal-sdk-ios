@@ -4,6 +4,10 @@ import Foundation
 
 // MARK: - InternalPlayerLoader
 
+typealias MainPlayerType = GenericMediaPlayer & LiveMediaPlayer & UCMediaPlayer & VideoPlayer
+
+// MARK: - InternalPlayerLoader
+
 final class InternalPlayerLoader: PlayerLoader {
 	private let configuration: Configuration
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
@@ -12,7 +16,7 @@ final class InternalPlayerLoader: PlayerLoader {
 
 	private let featureFlagProvider: FeatureFlagProvider
 
-	let mainPlayer: GenericMediaPlayer
+	let mainPlayer: MainPlayerType
 	var players: [GenericMediaPlayer] = []
 
 	// MARK: - Convenience properties
@@ -28,7 +32,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
 		credentialsProvider: CredentialsProvider,
-		mainPlayer: GenericMediaPlayer.Type,
+		mainPlayer: MainPlayerType.Type,
 		externalPlayers: [GenericMediaPlayer.Type]
 	) {
 		self.configuration = configuration
@@ -115,14 +119,6 @@ final class InternalPlayerLoader: PlayerLoader {
 			preAmp: configuration.currentPreAmpValue
 		)
 
-		let player = try getPlayer(
-			for: playbackInfo.audioMode,
-			and: playbackInfo.audioQuality,
-			with: playbackInfo.mediaType,
-			audioCodec: playbackInfo.audioCodec,
-			type: playbackInfo.productType
-		)
-
 		var licenseLoader: StreamingLicenseLoader?
 		if playbackInfo.licenseSecurityToken != nil {
 			licenseLoader = StreamingLicenseLoader(
@@ -133,17 +129,24 @@ final class InternalPlayerLoader: PlayerLoader {
 
 		switch playbackInfo.productType {
 		case .TRACK:
+			let player = try getPlayer(
+				for: playbackInfo.audioMode,
+				and: playbackInfo.audioQuality,
+				with: playbackInfo.mediaType,
+				audioCodec: playbackInfo.audioCodec,
+				type: playbackInfo.productType
+			)
 			return await loadTrack(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: player)
 		case .VIDEO:
-			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: player)
+			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: mainPlayer)
 		case .BROADCAST:
-			return await loadBroadcast(using: playbackInfo, and: licenseLoader, player: player)
+			return await loadBroadcast(using: playbackInfo, and: licenseLoader, player: mainPlayer)
 		case .UC:
 			return try await loadUC(
 				using: playbackInfo,
 				with: streamingSessionId,
 				and: loudnessNormalizer,
-				player: player
+				player: mainPlayer
 			)
 		}
 	}
@@ -157,20 +160,7 @@ final class InternalPlayerLoader: PlayerLoader {
 	}
 
 	func renderVideo(in view: AVPlayerLayer) {
-		// TODO: Split video capabilities to a different protocol to clean this
-		if featureFlagProvider.shouldUseImprovedCaching() {
-			guard let videoPlayer = mainPlayer as? AVQueuePlayerWrapper else {
-				return
-			}
-
-			videoPlayer.renderVideo(in: view)
-		} else {
-			guard let videoPlayer = mainPlayer as? AVQueuePlayerWrapperLegacy else {
-				return
-			}
-
-			videoPlayer.renderVideo(in: view)
-		}
+		mainPlayer.renderVideo(in: view)
 	}
 }
 
@@ -208,7 +198,7 @@ private extension InternalPlayerLoader {
 	func loadBroadcast(
 		using playbackInfo: PlaybackInfo,
 		and licenseLoader: LicenseLoader?,
-		player: GenericMediaPlayer
+		player: LiveMediaPlayer
 	) async -> Asset {
 		await player.loadLive(playbackInfo.url, with: licenseLoader)
 	}
@@ -235,7 +225,7 @@ private extension InternalPlayerLoader {
 		using playbackInfo: PlaybackInfo,
 		with streamingSessionId: String,
 		and loudnessNormalizer: LoudnessNormalizer?,
-		player: GenericMediaPlayer
+		player: UCMediaPlayer
 	) async throws -> Asset {
 		do {
 			let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
