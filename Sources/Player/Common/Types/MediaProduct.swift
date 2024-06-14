@@ -34,11 +34,30 @@ public class MediaProduct: Codable {
 	}
 }
 
+// MARK: SubType check
+
+public extension MediaProduct {
+	static func areSameSubtype(lhs: MediaProduct, rhs: MediaProduct) -> Bool {
+		if type(of: lhs) == MediaProduct.self, type(of: rhs) == MediaProduct.self {
+			return true
+		}
+		switch (lhs, rhs) {
+		case (is StoredMediaProduct, is StoredMediaProduct):
+			return true
+		case (is Interruption, is Interruption):
+			return true
+		default:
+			return false
+		}
+	}
+}
+
 // MARK: Equatable
 
 extension MediaProduct: Equatable {
 	public static func == (lhs: MediaProduct, rhs: MediaProduct) -> Bool {
-		lhs.productId == rhs.productId &&
+		areSameSubtype(lhs: lhs, rhs: rhs) &&
+			lhs.productId == rhs.productId &&
 			lhs.productType == rhs.productType &&
 			lhs.referenceId == rhs.referenceId &&
 			lhs.playLogSource == rhs.playLogSource &&

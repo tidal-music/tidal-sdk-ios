@@ -112,7 +112,7 @@ final class InternalPlayerLoaderTests: XCTestCase {
 
 	func test_load_StoredMediaProduct() async throws {
 		// GIVEN
-		let storedMediaProduct = StoredMediaProduct.mock(albumReplayGain: 4, albumPeakAmplitude: 1)
+		let storedMediaProduct = StoredMediaProduct.storedMock(albumReplayGain: 4, albumPeakAmplitude: 1)
 
 		let loudnessNormalizer = LoudnessNormalizer.mock(
 			preAmp: Constants.defaultPreAmp,
