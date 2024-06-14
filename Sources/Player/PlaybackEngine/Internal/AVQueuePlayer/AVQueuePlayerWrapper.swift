@@ -413,6 +413,25 @@ private extension AVQueuePlayerWrapper {
 		playerItemAssets[playerItem] = asset
 	}
 
+	func readPlaybackMetadata(playerItem: AVPlayerItem) {
+		guard PlayerWorld.developmentFeatureFlagProvider.shouldReadAndVerifyPlaybackMetadata else {
+			return
+		}
+
+		// In a separate context to not block player operation
+		SafeTask {
+			if let metadata = await self.readPlaybackMetadata(playerItem) {
+				queue.dispatch {
+					guard let asset = self.playerItemAssets[playerItem] else {
+						return
+					}
+					asset.playbackMetadata = metadata
+					self.delegates.playbackMetadataLoaded(asset: asset)
+				}
+			}
+		}
+	}
+
 	func readPlaybackMetadata(_ playerItem: AVPlayerItem) async -> AssetPlaybackMetadata? {
 		do {
 			var formatDescriptions = [CMFormatDescription]()
@@ -464,20 +483,9 @@ private extension AVQueuePlayerWrapper {
 				return
 			}
 
-			self.delegates.loaded(asset: asset, with: CMTimeGetSeconds(playerItem.duration))
-		}
+			self.readPlaybackMetadata(playerItem: playerItem)
 
-		// In a separate context to not block player operation
-		SafeTask {
-			if let metadata = await self.readPlaybackMetadata(playerItem) {
-				queue.dispatch {
-					guard let asset = self.playerItemAssets[playerItem] else {
-						return
-					}
-					asset.playbackMetadata = metadata
-					self.delegates.playbackMetadataLoaded(asset: asset)
-				}
-			}
+			self.delegates.loaded(asset: asset, with: CMTimeGetSeconds(playerItem.duration))
 		}
 	}
 
