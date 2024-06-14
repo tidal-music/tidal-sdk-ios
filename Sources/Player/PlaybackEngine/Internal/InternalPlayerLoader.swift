@@ -4,6 +4,10 @@ import Foundation
 
 // MARK: - InternalPlayerLoader
 
+typealias MainPlayerType = GenericMediaPlayer & LiveMediaPlayer & UCMediaPlayer & VideoPlayer
+
+// MARK: - InternalPlayerLoader
+
 final class InternalPlayerLoader: PlayerLoader {
 	private let configuration: Configuration
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
@@ -12,7 +16,7 @@ final class InternalPlayerLoader: PlayerLoader {
 
 	private let featureFlagProvider: FeatureFlagProvider
 
-	let mainPlayer: GenericMediaPlayer & LiveMediaPlayer & UCMediaPlayer & VideoPlayer
+	let mainPlayer: MainPlayerType
 	var players: [GenericMediaPlayer] = []
 
 	// MARK: - Convenience properties
@@ -28,7 +32,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
 		credentialsProvider: CredentialsProvider,
-		mainPlayer: (GenericMediaPlayer & LiveMediaPlayer & UCMediaPlayer & VideoPlayer).Type,
+		mainPlayer: MainPlayerType.Type,
 		externalPlayers: [GenericMediaPlayer.Type]
 	) {
 		self.configuration = configuration
