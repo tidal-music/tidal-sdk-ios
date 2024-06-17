@@ -9,11 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed SQLITE_LOCKED errors (EventProducer)
 - Enforced Player cache delegate calls in the same queue as playback (Player)
-- Playback was not stopping inmediately on reset (Player)
+- Playback was not stopping immediately on reset (Player)
 - Fix for long buffering due to caching in some situations (Player)
 
 ### Changed
-- Splitted GenericMediaPlayer responsabilities (Player)
+- Split GenericMediaPlayer responsibilities (Player)
 
 ## [0.3.23] - 2024-06-11 
 ### Changed
