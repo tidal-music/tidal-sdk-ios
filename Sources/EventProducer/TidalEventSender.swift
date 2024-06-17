@@ -70,7 +70,7 @@ public final class TidalEventSender: EventSender {
 		}
 
 		guard !fileManager.exceedsMaximumSize(object: eventData,
-																					maximumSize: config?.maxDiskUsageBytes ?? EventConfig.defaultMaxDiskUsageBytes) else {
+																					maximumSize: EventConfig.singleEventMaxDiskUsageBytes) else {
 			try await monitoring.updateMonitoringEvent(monitoringEventType: .failedStorage, eventName: event.name)
 			startOutage(eventName: event.name)
 			return
