@@ -14,11 +14,21 @@ public final class TidalEventSender: EventSender {
 	public var config: EventConfig?
 	
 	// MARK: - Private properties
-
-	private let outageSubject = PassthroughSubject<OutageState, Never>()
+	
+	var isOutage: Bool {
+		guard let outageState = monitoring.outageSubject?.value else {
+			return false
+		}
+		switch outageState {
+			case .outageStart:
+					return true
+			case .outageEnd:
+					return false
+			}
+	}
 	private var scheduler: EventScheduler
 	private let eventSubmitter: EventSubmitter
-	private let monitoring: Monitoring
+	private var monitoring: Monitoring
 	private var monitoringScheduler: MonitoringScheduler
 	private let fileManager: FileManagerHelper
 	
@@ -104,11 +114,11 @@ public final class TidalEventSender: EventSender {
 		monitoringScheduler.runScheduling(with: headerHelper)
 	}
 
-	private func startOutage(eventName: String) {
-		outageSubject.send(.outage(error: .init(code: "100", message: "Start outage error for \(eventName)")))
+	private func startOutage(eventName event: String) {
+		monitoring.startOutage(eventName: event)
 	}
 
-	private func endOutage(eventName: String) {
-		outageSubject.send(.noOutage(message: .init(message: "No outage for \(eventName)")))
+	private func endOutage(eventName event: String) {
+		monitoring.endOutage(eventName: event)
 	}
 }
