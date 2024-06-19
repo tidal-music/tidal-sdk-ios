@@ -196,7 +196,7 @@ final class MonitoringTests: XCTestCase {
 		
 		sut.startOutage(eventName: "test")
 		
-		guard let outageState = sut.outageSubject?.value else {
+		guard sut.outageSubject != nil else {
 			XCTFail("outageSubject not accessible")
 			return
 		}
