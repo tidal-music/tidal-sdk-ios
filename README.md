@@ -15,7 +15,7 @@ This is the repository for TIDAL SDK modules for iOS development.
 3. All done!
 
 ## How to create a new module
-Run the `generate-module.sh` script. It will prompt you to enter a module name using [PascalCase](https://pl.wikipedia.org/wiki/PascalCase).
+Run the `generate-module.sh` script. It will prompt you to enter a module name using [PascalCase](https://wikipedia.org/wiki/PascalCase).
 After confirming the name, a new directory will be created with the basic module setup. Open this in your IDE and start working.
 
 ## SPM Installation
