@@ -52,15 +52,15 @@ let package = Package(
 			]
 		),
 		.target(
-			name: "Catalog",
+			name: "Catalogue",
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
-			name: "CatalogTests",
+			name: "CatalogueTests",
 			dependencies: [
-				.catalog,
+				.catalogue,
 			]
 		),
 		.target(
@@ -146,7 +146,7 @@ extension Target.Dependency {
 	/// Local
 	static let template = byName(name: "Template")
 	static let eventProducer = byName(name: "EventProducer")
-	static let catalog = byName(name: "Catalog")
+	static let catalogue = byName(name: "Catalogue")
 	static let common = byName(name: "Common")
 	static let auth = byName(name: "Auth")
 	static let player = byName(name: "Player")

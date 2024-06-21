@@ -1,4 +1,4 @@
-# Catalog
+# Catalogue
 Add here one or two sentences what this library is.
 
 ---
