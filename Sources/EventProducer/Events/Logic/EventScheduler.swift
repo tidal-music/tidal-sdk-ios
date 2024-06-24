@@ -12,8 +12,10 @@ final class EventScheduler {
 	private var timer: Timer?
 
 	private let consumerUri: String?
+	private let maxDiskUsageBytes: Int?
 	private let eventQueue: EventQueue
 	private let networkService: NetworkingService
+	private var monitoring: Monitoring
 
 	private var schedulingTime: TimeInterval {
 		switch BuildEnvironment.system {
@@ -24,11 +26,14 @@ final class EventScheduler {
 
 	init(
 		consumerUri: String?,
+		maxDiskUsageBytes: Int? = EventConfig.defaultQueueMaxDiskUsageBytes,
 		eventQueue: EventQueue = .shared
 	) {
 		self.consumerUri = consumerUri
+		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.eventQueue = eventQueue
 		self.networkService = NetworkingService(consumerUri: consumerUri)
+		self.monitoring = Monitoring.shared
 	}
 
 	/// The Scheduler applies a best-effort approach to sending events to the TL Consumer, meaning that it continuously tries to send
@@ -72,6 +77,10 @@ final class EventScheduler {
 		let batches = allEvents.chunkedBy(Constants.batchSize)
 
 		for batch in batches {
+			let allowedBatchSize = getAllowedBatch(batch)
+			guard !allowedBatchSize.isEmpty else {
+				throw EventProducerError.eventSendBatchRequestFailure("Limit Exceeded")
+			}
 			try await batchAndSend(batch, headerHelper: headerHelper)
 		}
 	}
@@ -205,5 +214,28 @@ private extension EventScheduler {
 		case headers = "Headers"
 		case value = "Value.StringValue"
 		case valueDatatype = "Value.DataType"
+	}
+}
+
+// MARK: Queue byte size checks
+
+extension EventScheduler {
+	func getAllowedBatch(_ batch: [Event]) -> [Event] {
+		var allowedBatch = batch
+		
+		while isExceedsMaxSize(for: allowedBatch) {
+			if allowedBatch.isEmpty {
+				return []
+			}
+			if let droppedEvent = allowedBatch.popLast() {
+				monitoring.startOutage(eventName: droppedEvent.name)
+			}
+		}
+		return allowedBatch
+	}
+	
+	private func isExceedsMaxSize(for batch: [Event]) -> Bool {
+		guard let data = try? JSONEncoder().encode(batch) else { return false }
+		return FileManagerHelper.shared.exceedsMaximumSize(object: data, maximumSize: maxDiskUsageBytes ?? EventConfig.defaultQueueMaxDiskUsageBytes)
 	}
 }

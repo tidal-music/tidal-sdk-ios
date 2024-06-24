@@ -24,7 +24,7 @@ final class EventsTests: XCTestCase {
 	private let testAccessToken = "testAccessToken"
 	private let queue = EventQueue.shared
 	private var headerHelper: HeaderHelper!
-	private let maxDiskUsageBytes = 20480
+	private let maxDiskUsageBytes = 204800
 
 	override func setUp() async throws {
 		try await super.setUp()
@@ -259,5 +259,37 @@ final class EventsTests: XCTestCase {
 			fetchedEvents.filter { $0.headers[HTTPHeaderKeys.consentCategory.rawValue] == ConsentCategory.targeting.rawValue }.count,
 			1
 		)
+	}
+	
+	func testSchedulerBatchExceedsSize() async throws {
+		
+		guard let consumerUri = eventSender.config?.consumerUri else {
+			XCTFail("Default consumerUri should be set")
+			return
+		}
+		
+		let eventQueue = [
+			Event(
+				name: "testEvent#1",
+				payload: "firstPayload"),
+			Event(
+				name: "testEvent#2",
+				payload: "secondPayload"),
+			Event(
+				name: "testEvent#3",
+				payload: "thirdPayload")
+		]
+		
+		var eventScheduler = EventScheduler(consumerUri: consumerUri, maxDiskUsageBytes: 500)
+		
+		/// Check that the events are allowed based on the scheduler's allowed queue size limit
+		XCTAssertFalse(eventScheduler.getAllowedBatch(eventQueue).isEmpty)
+		
+		/// Reduce the maxDiskUsageBytes in order to drop the events
+		eventScheduler = EventScheduler(consumerUri: consumerUri, maxDiskUsageBytes: 50)
+		
+		/// Events that exceed the size will be dropped
+		XCTAssertTrue(eventScheduler.getAllowedBatch(eventQueue).isEmpty)
+		
 	}
 }

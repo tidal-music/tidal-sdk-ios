@@ -19,10 +19,10 @@ final class MonitoringTests: XCTestCase {
 		var isUserLoggedIn: Bool
 	}
 
-	private let sut: Monitoring = .shared
+	private var sut: Monitoring = .shared
 	private let monitoringQueue: MonitoringQueue = .shared
 	private var headerHelper: HeaderHelper!
-	private let maxDiskUsageBytes = 20480
+	private let maxDiskUsageBytes = 204800
 	
 	private var mockCredentialsProvider: CredentialsProvider {
 		MockCredentialsProvider(isUserLoggedIn: true)
@@ -190,5 +190,27 @@ final class MonitoringTests: XCTestCase {
 
 		let monitoringInfoAfterDeletion = await sut.getMonitoringInfo()
 		XCTAssertEqual(sut.emptyMonitoringInfo, monitoringInfoAfterDeletion)
+	}
+	
+	func testisOutageGetsTriggeredOnMonitoringUpdate() async throws {
+		
+		sut.startOutage(eventName: "test")
+		
+		guard sut.outageSubject != nil else {
+			XCTFail("outageSubject not accessible")
+			return
+		}
+		/// start outage
+		var isOutage: Bool = if case .outageStart? = sut.outageSubject?.value { true } else { false }
+		
+		/// Verify that the outage is active
+		XCTAssertTrue(isOutage)
+		
+		/// end outage
+		sut.endOutage(eventName: "test")
+		isOutage = if case .outageStart? = sut.outageSubject?.value { true } else { false }
+		
+		/// Verify that the outage is not active
+		XCTAssertFalse(isOutage)
 	}
 }
