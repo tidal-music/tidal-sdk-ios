@@ -1,4 +1,4 @@
-public struct Catalog {
+public struct Catalogue {
 	public let text = "Hello, World!"
 
 	public init() {}

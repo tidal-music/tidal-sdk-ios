@@ -1,12 +1,12 @@
-@testable import Catalog
+@testable import Catalogue
 import XCTest
 
-final class CatalogTests: XCTestCase {
-	func testCatalog() throws {
+final class CatalogueTests: XCTestCase {
+	func testCatalogue() throws {
 		// This is an example of a functional test case.
 		// Use XCTAssert and related functions to verify your tests produce the correct
 		// results.
-		let template = Catalog()
+		let template = Catalogue()
 
 		XCTAssertEqual(template.sayHello(), "Hello, World!")
 	}
