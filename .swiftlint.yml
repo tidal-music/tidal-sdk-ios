@@ -32,4 +32,5 @@ nesting:
 
 excluded:
   - '**/.build'
+  - '**/Generated/**'
   - bin
