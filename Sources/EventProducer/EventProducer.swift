@@ -10,11 +10,14 @@ public protocol EventProducer {
 	var blockedConsentCategories: Set<ConsentCategory>? { get set }
 	/// consumerUri: URI identifying the TL Consumer ingest endpoint.
 	var consumerUri: String? { get set }
+	/// Closure to react to errors. For example, you can use this to log errors.
+	var errorHandling: ((EventProducerError) -> Void)? { get set }
 	
 	init(
 		credentialsProvider: Auth.CredentialsProvider,
 		maxDiskUsageBytes: Int,
 		blockedConsentCategories: Set<ConsentCategory>?,
-		consumerUri: String?
+		consumerUri: String?,
+		errorHandling: ((EventProducerError) -> Void)?
 	)
 }

@@ -1,7 +1,7 @@
 import Foundation
 import protocol Auth.CredentialsProvider
 
-public struct EventConfig: EventProducer {
+public struct EventConfig: EventProducer {	
 	static let defaultQueueMaxDiskUsageBytes = 204800
 	static let singleEventMaxDiskUsageBytes = 20480
 	
@@ -14,15 +14,19 @@ public struct EventConfig: EventProducer {
 	/// consumerUri: URI identifying the TL Consumer ingest endpoint.
 	public var consumerUri: String?
 	
+	public var errorHandling: ((EventProducerError) -> Void)?
+	
 	public init(
 		credentialsProvider: Auth.CredentialsProvider,
 		maxDiskUsageBytes: Int,
 		blockedConsentCategories: Set<ConsentCategory>? = nil,
-		consumerUri: String? = "https://ec.tidal.com"
+		consumerUri: String? = "https://ec.tidal.com",
+		errorHandling: ((EventProducerError) -> Void)? = nil
 	) {
 		self.credentialsProvider = credentialsProvider
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.blockedConsentCategories = blockedConsentCategories
+		self.errorHandling = errorHandling
 		if let consumerUri {
 			self.consumerUri = consumerUri
 		}
