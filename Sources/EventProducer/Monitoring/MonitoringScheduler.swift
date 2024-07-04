@@ -19,13 +19,28 @@ final class MonitoringScheduler: Scheduler {
 
 	init(
 		consumerUri: String?,
-		monitoringQueue: Monitoring = .shared,
+		monitoring: Monitoring,
+		eventQueue: EventQueue,
 		errorHandling: EventProducer.ErrorHandling?
 	) {
 		self.consumerUri = consumerUri
-		self.monitoring = monitoringQueue
-		self.eventScheduler = EventScheduler(consumerUri: consumerUri, errorHandling: errorHandling)
+		self.monitoring = monitoring
+		self.eventScheduler = EventScheduler(
+			consumerUri: consumerUri,
+			eventQueue: eventQueue,
+			monitoring: monitoring, 
+			errorHandling: errorHandling
+		)
 		self.networkService = NetworkingService(consumerUri: consumerUri)
+	}
+	
+	convenience init(config: EventConfig?, eventQueue: EventQueue, monitoring: Monitoring) {
+		self.init(
+			consumerUri: config?.consumerUri,
+			monitoring: monitoring,
+			eventQueue: eventQueue,
+			errorHandling: config?.errorHandling
+		)
 	}
 
 	func timerTriggered(headerHelper: HeaderHelper) async throws {

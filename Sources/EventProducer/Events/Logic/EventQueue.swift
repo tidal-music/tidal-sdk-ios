@@ -5,10 +5,10 @@ import SWXMLHash
 final class EventQueue {
 	static let databaseName = "EventQueueDatabase.sqlite"
 
-	static let shared = EventQueue()
-	var dbQueue: DatabaseQueue!
+	private var dbQueue: DatabaseQueue!
+	var errorHandling: EventProducer.ErrorHandling?
 
-	private init() {
+	init() {
 		try? setup()
 	}
 

@@ -1,15 +1,13 @@
 import Foundation
 
 final class EventSubmitter {
-	public static let shared = EventSubmitter()
-
 	private let eventsQueue: EventQueue
 	private let monitoring: Monitoring
 	private let fileManager: FileManagerHelper
 
-	private init(
-		eventsQueue: EventQueue = .shared,
-		monitoring: Monitoring = .shared,
+	init(
+		eventsQueue: EventQueue,
+		monitoring: Monitoring,
 		fileManager: FileManagerHelper = .shared
 	) {
 		self.eventsQueue = eventsQueue

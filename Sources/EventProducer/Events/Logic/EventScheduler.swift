@@ -28,15 +28,26 @@ final class EventScheduler: Scheduler {
 	init(
 		consumerUri: String?,
 		maxDiskUsageBytes: Int? = EventConfig.defaultQueueMaxDiskUsageBytes,
-		eventQueue: EventQueue = .shared,
+		eventQueue: EventQueue,
+		monitoring: Monitoring,
 		errorHandling: EventProducer.ErrorHandling?
 	) {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.eventQueue = eventQueue
 		self.networkService = NetworkingService(consumerUri: consumerUri)
-		self.monitoring = Monitoring.shared
+		self.monitoring = monitoring
 		self.errorHandling = errorHandling
+	}
+	
+	convenience init(config: EventConfig?, eventQueue: EventQueue, monitoring: Monitoring) {
+		self.init(
+			consumerUri: config?.consumerUri,
+			maxDiskUsageBytes: config?.maxDiskUsageBytes,
+			eventQueue: eventQueue,
+			monitoring: monitoring,
+			errorHandling: config?.errorHandling
+		)
 	}
 
 	func timerTriggered(headerHelper: HeaderHelper) async throws {

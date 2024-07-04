@@ -29,29 +29,36 @@ public final class TidalEventSender: EventSender {
 	private var scheduler: EventScheduler
 	private let eventSubmitter: EventSubmitter
 	private var monitoring: Monitoring
+	private let eventQueue: EventQueue
+	private let monitoringQueue: MonitoringQueue
 	private var monitoringScheduler: MonitoringScheduler
 	private let fileManager: FileManagerHelper
 	
 	// MARK: - Init
 	public init() {
-		self.eventSubmitter = EventSubmitter.shared
-		self.monitoring = Monitoring.shared
-		self.scheduler = EventScheduler(consumerUri: config?.consumerUri, errorHandling: config?.errorHandling)
-		self.monitoringScheduler = MonitoringScheduler(consumerUri: config?.consumerUri, errorHandling: config?.errorHandling)
+		self.eventQueue = EventQueue()
+		self.monitoringQueue = MonitoringQueue()
+		self.monitoring = Monitoring(monitoringQueue: monitoringQueue)
+		self.eventSubmitter = EventSubmitter(eventsQueue: eventQueue, monitoring: monitoring)
+		
 		self.fileManager = FileManagerHelper.shared
+		
+		self.scheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
+		self.monitoringScheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
 	}
 
 	public func config(_ config: EventConfig) {
 		self.config = config
-		self.scheduler = EventScheduler(consumerUri: config.consumerUri, maxDiskUsageBytes: config.maxDiskUsageBytes, errorHandling: config.errorHandling)
-		self.monitoringScheduler = MonitoringScheduler(consumerUri: config.consumerUri, errorHandling: config.errorHandling)
+		self.scheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
+		self.monitoringScheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
+
 		self.start()
 	}
 	
 	public func updateConfiguration(_ config: EventConfig) {
 		self.config = config
-		self.scheduler = EventScheduler(consumerUri: config.consumerUri, maxDiskUsageBytes: config.maxDiskUsageBytes, errorHandling: config.errorHandling)
-		self.monitoringScheduler = MonitoringScheduler(consumerUri: config.consumerUri, errorHandling: config.errorHandling)
+		self.scheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
+		self.monitoringScheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
 	}
 
 	/// Used to set blockedConsentCategories. Any new entry would clear previous entry, ie overwrite it.
@@ -99,7 +106,7 @@ public final class TidalEventSender: EventSender {
 
 		event.headers = enrichedHeaders
 
-		try await EventSubmitter.shared.sendEvent(
+		try await eventSubmitter.sendEvent(
 			name: name,
 			consentCategory: consentCategory,
 			headers: event.headers,

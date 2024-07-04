@@ -3,10 +3,9 @@ import GRDB
 
 public final class MonitoringQueue {
 	static let databaseName = "MonitoringDatabase.sqlite"
-	public static let shared = MonitoringQueue()
 	private var databaseQueue: DatabaseQueue!
 
-	private init() {
+	init() {
 		try? setup()
 	}
 
