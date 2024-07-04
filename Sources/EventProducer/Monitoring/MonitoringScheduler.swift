@@ -21,7 +21,7 @@ final class MonitoringScheduler: Scheduler {
 		consumerUri: String?,
 		monitoring: Monitoring,
 		eventQueue: EventQueue,
-		errorHandling: EventProducer.ErrorHandling?
+		errorHandling: EventProducer.ErrorHandling? = nil
 	) {
 		self.consumerUri = consumerUri
 		self.monitoring = monitoring

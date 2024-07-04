@@ -19,8 +19,8 @@ final class MonitoringTests: XCTestCase {
 		var isUserLoggedIn: Bool
 	}
 
-	private var sut: Monitoring = .shared
-	private let monitoringQueue: MonitoringQueue = .shared
+	private lazy var sut: Monitoring = .init(monitoringQueue: monitoringQueue)
+	private let monitoringQueue: MonitoringQueue = .init()
 	private var headerHelper: HeaderHelper!
 	private let maxDiskUsageBytes = 204800
 	
@@ -29,7 +29,7 @@ final class MonitoringTests: XCTestCase {
 	}
 	
 	private var mockMonitoringScheduler: MonitoringScheduler {
-		MonitoringScheduler(consumerUri: "https://consumer.uri")
+		MonitoringScheduler(consumerUri: "https://consumer.uri", monitoring: sut, eventQueue: .init())
 	}
 
 	override func setUp() {

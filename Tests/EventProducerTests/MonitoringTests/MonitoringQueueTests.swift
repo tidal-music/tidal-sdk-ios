@@ -2,7 +2,7 @@
 import XCTest
 
 final class MonitoringQueueTests: XCTestCase {
-	private let sut: MonitoringQueue = .shared
+	private let sut: MonitoringQueue = .init()
 
 	override func setUp() async throws {
 		try await super.setUp()

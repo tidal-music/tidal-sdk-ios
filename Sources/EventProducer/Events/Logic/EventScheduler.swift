@@ -30,7 +30,7 @@ final class EventScheduler: Scheduler {
 		maxDiskUsageBytes: Int? = EventConfig.defaultQueueMaxDiskUsageBytes,
 		eventQueue: EventQueue,
 		monitoring: Monitoring,
-		errorHandling: EventProducer.ErrorHandling?
+		errorHandling: EventProducer.ErrorHandling? = nil
 	) {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
