@@ -36,22 +36,22 @@ public final class TidalEventSender: EventSender {
 	public init() {
 		self.eventSubmitter = EventSubmitter.shared
 		self.monitoring = Monitoring.shared
-		self.scheduler = EventScheduler(consumerUri: config?.consumerUri)
-		self.monitoringScheduler = MonitoringScheduler(consumerUri: config?.consumerUri)
+		self.scheduler = EventScheduler(consumerUri: config?.consumerUri, errorHandling: config?.errorHandling)
+		self.monitoringScheduler = MonitoringScheduler(consumerUri: config?.consumerUri, errorHandling: config?.errorHandling)
 		self.fileManager = FileManagerHelper.shared
 	}
 
 	public func config(_ config: EventConfig) {
 		self.config = config
-		self.scheduler = EventScheduler(consumerUri: config.consumerUri, maxDiskUsageBytes: config.maxDiskUsageBytes)
-		self.monitoringScheduler = MonitoringScheduler(consumerUri: config.consumerUri)
+		self.scheduler = EventScheduler(consumerUri: config.consumerUri, maxDiskUsageBytes: config.maxDiskUsageBytes, errorHandling: config.errorHandling)
+		self.monitoringScheduler = MonitoringScheduler(consumerUri: config.consumerUri, errorHandling: config.errorHandling)
 		self.start()
 	}
 	
 	public func updateConfiguration(_ config: EventConfig) {
 		self.config = config
-		self.scheduler = EventScheduler(consumerUri: config.consumerUri, maxDiskUsageBytes: config.maxDiskUsageBytes)
-		self.monitoringScheduler = MonitoringScheduler(consumerUri: config.consumerUri)
+		self.scheduler = EventScheduler(consumerUri: config.consumerUri, maxDiskUsageBytes: config.maxDiskUsageBytes, errorHandling: config.errorHandling)
+		self.monitoringScheduler = MonitoringScheduler(consumerUri: config.consumerUri, errorHandling: config.errorHandling)
 	}
 
 	/// Used to set blockedConsentCategories. Any new entry would clear previous entry, ie overwrite it.

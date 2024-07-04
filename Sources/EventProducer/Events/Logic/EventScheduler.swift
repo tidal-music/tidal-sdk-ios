@@ -16,6 +16,7 @@ final class EventScheduler: Scheduler {
 	private let eventQueue: EventQueue
 	private let networkService: NetworkingService
 	private var monitoring: Monitoring
+	private let errorHandling: EventProducer.ErrorHandling?
 
 	var schedulingTime: TimeInterval {
 		switch BuildEnvironment.system {
@@ -27,13 +28,15 @@ final class EventScheduler: Scheduler {
 	init(
 		consumerUri: String?,
 		maxDiskUsageBytes: Int? = EventConfig.defaultQueueMaxDiskUsageBytes,
-		eventQueue: EventQueue = .shared
+		eventQueue: EventQueue = .shared,
+		errorHandling: EventProducer.ErrorHandling?
 	) {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.eventQueue = eventQueue
 		self.networkService = NetworkingService(consumerUri: consumerUri)
 		self.monitoring = Monitoring.shared
+		self.errorHandling = errorHandling
 	}
 
 	func timerTriggered(headerHelper: HeaderHelper) async throws {

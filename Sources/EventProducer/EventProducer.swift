@@ -1,6 +1,7 @@
 import protocol Auth.CredentialsProvider
 
 public protocol EventProducer {
+	typealias ErrorHandling = (EventProducerError) -> Void
 	/// An access token provider, used by the EventProducer to get access token.
 	var credentialsProvider: Auth.CredentialsProvider { get set }
 	/// The maximum amount of disk the EventProducer is allowed to use for temporarily storing events before they are sent to TL
@@ -11,13 +12,13 @@ public protocol EventProducer {
 	/// consumerUri: URI identifying the TL Consumer ingest endpoint.
 	var consumerUri: String? { get set }
 	/// Closure to react to errors. For example, you can use this to log errors.
-	var errorHandling: ((EventProducerError) -> Void)? { get set }
+	var errorHandling: ErrorHandling? { get set }
 	
 	init(
 		credentialsProvider: Auth.CredentialsProvider,
 		maxDiskUsageBytes: Int,
 		blockedConsentCategories: Set<ConsentCategory>?,
 		consumerUri: String?,
-		errorHandling: ((EventProducerError) -> Void)?
+		errorHandling: ErrorHandling?
 	)
 }

@@ -19,11 +19,12 @@ final class MonitoringScheduler: Scheduler {
 
 	init(
 		consumerUri: String?,
-		monitoringQueue: Monitoring = .shared
+		monitoringQueue: Monitoring = .shared,
+		errorHandling: EventProducer.ErrorHandling?
 	) {
 		self.consumerUri = consumerUri
 		self.monitoring = monitoringQueue
-		self.eventScheduler = EventScheduler(consumerUri: consumerUri)
+		self.eventScheduler = EventScheduler(consumerUri: consumerUri, errorHandling: errorHandling)
 		self.networkService = NetworkingService(consumerUri: consumerUri)
 	}
 

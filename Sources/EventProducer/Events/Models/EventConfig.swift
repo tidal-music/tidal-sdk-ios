@@ -14,14 +14,14 @@ public struct EventConfig: EventProducer {
 	/// consumerUri: URI identifying the TL Consumer ingest endpoint.
 	public var consumerUri: String?
 	
-	public var errorHandling: ((EventProducerError) -> Void)?
+	public var errorHandling: EventProducer.ErrorHandling?
 	
 	public init(
 		credentialsProvider: Auth.CredentialsProvider,
 		maxDiskUsageBytes: Int,
 		blockedConsentCategories: Set<ConsentCategory>? = nil,
 		consumerUri: String? = "https://ec.tidal.com",
-		errorHandling: ((EventProducerError) -> Void)? = nil
+		errorHandling: EventProducer.ErrorHandling? = nil
 	) {
 		self.credentialsProvider = credentialsProvider
 		self.maxDiskUsageBytes = maxDiskUsageBytes
