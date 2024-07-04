@@ -43,7 +43,7 @@ public final class TidalEventSender: EventSender {
 
 	public func config(_ config: EventConfig) {
 		self.config = config
-		self.scheduler = EventScheduler(consumerUri: config.consumerUri)
+		self.scheduler = EventScheduler(consumerUri: config.consumerUri, maxDiskUsageBytes: config.maxDiskUsageBytes)
 		self.monitoringScheduler = MonitoringScheduler(consumerUri: config.consumerUri)
 		self.start()
 	}
