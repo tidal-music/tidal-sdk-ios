@@ -6,7 +6,6 @@ final class EventQueue {
 	static let databaseName = "EventQueueDatabase.sqlite"
 	
 	private var dbQueue: DatabaseQueue?
-	var errorHandling: EventProducer.ErrorHandling?
 
 	private func getDatabaseQueue() throws -> DatabaseQueue {
 		// if dbQueue is not nil, we have already set up the database

@@ -13,20 +13,16 @@ public struct EventConfig: EventProducer {
 	public var blockedConsentCategories: Set<ConsentCategory>?
 	/// consumerUri: URI identifying the TL Consumer ingest endpoint.
 	public var consumerUri: String?
-	
-	public var errorHandling: EventProducer.ErrorHandling?
-	
+		
 	public init(
 		credentialsProvider: Auth.CredentialsProvider,
 		maxDiskUsageBytes: Int,
 		blockedConsentCategories: Set<ConsentCategory>? = nil,
-		consumerUri: String? = "https://ec.tidal.com",
-		errorHandling: EventProducer.ErrorHandling? = nil
+		consumerUri: String? = "https://ec.tidal.com"
 	) {
 		self.credentialsProvider = credentialsProvider
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.blockedConsentCategories = blockedConsentCategories
-		self.errorHandling = errorHandling
 		if let consumerUri {
 			self.consumerUri = consumerUri
 		}

@@ -20,16 +20,14 @@ final class MonitoringScheduler: Scheduler {
 	init(
 		consumerUri: String?,
 		monitoring: Monitoring,
-		eventQueue: EventQueue,
-		errorHandling: EventProducer.ErrorHandling? = nil
+		eventQueue: EventQueue
 	) {
 		self.consumerUri = consumerUri
 		self.monitoring = monitoring
 		self.eventScheduler = EventScheduler(
 			consumerUri: consumerUri,
 			eventQueue: eventQueue,
-			monitoring: monitoring, 
-			errorHandling: errorHandling
+			monitoring: monitoring
 		)
 		self.networkService = NetworkingService(consumerUri: consumerUri)
 	}
@@ -38,8 +36,7 @@ final class MonitoringScheduler: Scheduler {
 		self.init(
 			consumerUri: config?.consumerUri,
 			monitoring: monitoring,
-			eventQueue: eventQueue,
-			errorHandling: config?.errorHandling
+			eventQueue: eventQueue
 		)
 	}
 

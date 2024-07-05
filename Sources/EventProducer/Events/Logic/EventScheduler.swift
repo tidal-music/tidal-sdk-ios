@@ -16,7 +16,6 @@ final class EventScheduler: Scheduler {
 	private let eventQueue: EventQueue
 	private let networkService: NetworkingService
 	private var monitoring: Monitoring
-	private let errorHandling: EventProducer.ErrorHandling?
 
 	var schedulingTime: TimeInterval {
 		switch BuildEnvironment.system {
@@ -29,15 +28,13 @@ final class EventScheduler: Scheduler {
 		consumerUri: String?,
 		maxDiskUsageBytes: Int? = EventConfig.defaultQueueMaxDiskUsageBytes,
 		eventQueue: EventQueue,
-		monitoring: Monitoring,
-		errorHandling: EventProducer.ErrorHandling? = nil
+		monitoring: Monitoring
 	) {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.eventQueue = eventQueue
 		self.networkService = NetworkingService(consumerUri: consumerUri)
 		self.monitoring = monitoring
-		self.errorHandling = errorHandling
 	}
 	
 	convenience init(config: EventConfig?, eventQueue: EventQueue, monitoring: Monitoring) {
@@ -45,8 +42,7 @@ final class EventScheduler: Scheduler {
 			consumerUri: config?.consumerUri,
 			maxDiskUsageBytes: config?.maxDiskUsageBytes,
 			eventQueue: eventQueue,
-			monitoring: monitoring,
-			errorHandling: config?.errorHandling
+			monitoring: monitoring
 		)
 	}
 
