@@ -1,6 +1,6 @@
 import Foundation
 
-public enum EventProducerError: Error {
+enum EventProducerError: Error {
 	/// event Errors
 	case eventQueueDatabaseURLFailure
 	case eventDatabaseCreateFailure(_ description: String)
