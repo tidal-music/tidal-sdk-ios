@@ -4,22 +4,23 @@ import SWXMLHash
 
 final class EventQueue {
 	static let databaseName = "EventQueueDatabase.sqlite"
-
-	private var dbQueue: DatabaseQueue!
+	
+	private var dbQueue: DatabaseQueue?
 	var errorHandling: EventProducer.ErrorHandling?
 
-	init() {
-		try? setup()
-	}
+	private func getDatabaseQueue() throws -> DatabaseQueue {
+		// if dbQueue is not nil, we have already set up the database
+		if let dbQueue {
+			return dbQueue
+		}
 
-	private func setup() throws {
 		guard let databaseURL = FileManagerHelper.shared.eventQueueDatabaseURL else {
 			throw EventProducerError.eventQueueDatabaseURLFailure
 		}
 
 		do {
-			dbQueue = try DatabaseQueue(path: databaseURL.path)
-			try dbQueue.write { db in
+			let databaseQueue = try DatabaseQueue(path: databaseURL.path)
+			try databaseQueue.write { db in
 				try db.create(table: EventPersistentObject.databaseTableName, ifNotExists: true) { table in
 					table.column(EventPersistentObject.columnID, .text).notNull()
 					table.column(EventPersistentObject.columnName, .text).notNull()
@@ -28,7 +29,8 @@ final class EventQueue {
 					table.column(EventPersistentObject.columnPayload, .text)
 				}
 			}
-
+			self.dbQueue = databaseQueue
+			return databaseQueue
 		} catch {
 			throw EventProducerError.eventDatabaseCreateFailure(error.localizedDescription)
 		}
@@ -41,6 +43,7 @@ final class EventQueue {
 	///   - throws: Any error that can occur that causes the event not to be added to the queue, e.g. configured max disk size is
 	/// exceeded, disk is full or similar.
 	func addEvent(event: Event, consentCategory: ConsentCategory) async throws {
+		let dbQueue = try getDatabaseQueue()
 		do {
 			try await dbQueue.write { db in
 				let persistentObject = event.toEventPersistentObject(consentCategory: consentCategory)
@@ -54,7 +57,8 @@ final class EventQueue {
 	/// Fetch events from local storage, usually just before being sent to the backend
 	/// - Returns: Array of events
 	func getAllEvents() async throws -> [Event] {
-		try await dbQueue.read { db in
+		let dbQueue = try getDatabaseQueue()
+		return try await dbQueue.read { db in
 			try EventPersistentObject.fetchAll(db).map { $0.toEvent() }
 		}
 	}
@@ -64,6 +68,8 @@ final class EventQueue {
 	///   - sent: Batch that was sent to the backend
 	///   - delivered: Batch that was received from the backend after successful delivery
 	func handleCleanup(sent: [Event], delivered: [XMLIndexer]) async throws {
+		let dbQueue = try getDatabaseQueue()
+
 		var deliveredIDs: Set<String> = Set()
 		// Extract all the IDs from the delivered array
 		for item in delivered {
@@ -84,12 +90,14 @@ final class EventQueue {
 	}
 
 	func deleteAllEvents() async throws {
+		let dbQueue = try getDatabaseQueue()
 		_ = try await dbQueue.write { db in
 			try EventPersistentObject.deleteAll(db)
 		}
 	}
 
 	func deleteDB() async throws {
+		let dbQueue = try getDatabaseQueue()
 		try await dbQueue.erase()
 	}
 }
