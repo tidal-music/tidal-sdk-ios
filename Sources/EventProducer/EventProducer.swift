@@ -10,7 +10,6 @@ public protocol EventProducer {
 	var blockedConsentCategories: Set<ConsentCategory>? { get set }
 	/// consumerUri: URI identifying the TL Consumer ingest endpoint.
 	var consumerUri: String? { get set }
-	/// Closure to react to errors. For example, you can use this to log errors.
 	
 	init(
 		credentialsProvider: Auth.CredentialsProvider,
