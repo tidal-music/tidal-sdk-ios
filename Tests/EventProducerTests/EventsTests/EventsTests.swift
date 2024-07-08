@@ -22,7 +22,8 @@ final class EventsTests: XCTestCase {
 	
 	private var eventSender = TidalEventSender.shared
 	private let testAccessToken = "testAccessToken"
-	private let queue = EventQueue.shared
+	private let queue = EventQueue()
+	private let monitoring = Monitoring(monitoringQueue: .init())
 	private var headerHelper: HeaderHelper!
 	private let maxDiskUsageBytes = 204800
 
@@ -131,7 +132,7 @@ final class EventsTests: XCTestCase {
 			XCTFail("Default consumerUri should be set")
 			return
 		}
-		let eventScheduler = EventScheduler(consumerUri: consumerUri)
+		let eventScheduler = EventScheduler(consumerUri: consumerUri, eventQueue: queue, monitoring: monitoring)
 		let event = Event(
 			name: "testEvent",
 			payload: "payload"
@@ -164,7 +165,7 @@ final class EventsTests: XCTestCase {
 			XCTFail("Default consumerUri should be set")
 			return
 		}
-		let eventScheduler = EventScheduler(consumerUri: consumerUri)
+		let eventScheduler = EventScheduler(consumerUri: consumerUri, eventQueue: queue, monitoring: monitoring)
 		let anonymousAuthProvider = MockCredentialsProvider(testToken: nil, isUserLoggedIn: false)
 		headerHelper = HeaderHelper(credentialsProvider: anonymousAuthProvider)
 
@@ -280,13 +281,13 @@ final class EventsTests: XCTestCase {
 				payload: "thirdPayload")
 		]
 		
-		var eventScheduler = EventScheduler(consumerUri: consumerUri, maxDiskUsageBytes: 500)
+		var eventScheduler = EventScheduler(consumerUri: consumerUri, maxDiskUsageBytes: 500, eventQueue: queue, monitoring: monitoring)
 		
 		/// Check that the events are allowed based on the scheduler's allowed queue size limit
 		XCTAssertFalse(eventScheduler.getAllowedBatch(eventQueue).isEmpty)
 		
 		/// Reduce the maxDiskUsageBytes in order to drop the events
-		eventScheduler = EventScheduler(consumerUri: consumerUri, maxDiskUsageBytes: 50)
+		eventScheduler = EventScheduler(consumerUri: consumerUri, maxDiskUsageBytes: 50, eventQueue: queue, monitoring: monitoring)
 		
 		/// Events that exceed the size will be dropped
 		XCTAssertTrue(eventScheduler.getAllowedBatch(eventQueue).isEmpty)

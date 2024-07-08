@@ -3,30 +3,33 @@ import GRDB
 
 public final class MonitoringQueue {
 	static let databaseName = "MonitoringDatabase.sqlite"
-	public static let shared = MonitoringQueue()
-	private var databaseQueue: DatabaseQueue!
-
-	private init() {
-		try? setup()
-	}
-
-	private func setup() throws {
-		guard let databaseURL = FileManagerHelper.shared.monitoringQueueDatabaseURL else {
-			throw EventProducerError.monitoringQueueDatabaseURLFailure
-		}
-
-		do {
-			databaseQueue = try DatabaseQueue(path: databaseURL.path)
-			try databaseQueue.write { database in
-				try database.create(table: MonitoringInfoPersistentObject.databaseTableName, ifNotExists: true) { table in
-					table.column(MonitoringInfoPersistentObject.columnId, .text).notNull()
-					table.column(MonitoringInfoPersistentObject.columnStoringFailedEvents, .any).notNull()
-					table.column(MonitoringInfoPersistentObject.columnConsentFilteredEvents, .any).notNull()
-					table.column(MonitoringInfoPersistentObject.columnValidationFailedEvents, .any).notNull()
-				}
+	private var _databaseQueue: DatabaseQueue?
+	
+	private var databaseQueue: DatabaseQueue {
+		get throws {
+			if let _databaseQueue {
+				return _databaseQueue
 			}
-		} catch {
-			throw EventProducerError.monitoringDatabaseCreateFailure(error.localizedDescription)
+			
+			guard let databaseURL = FileManagerHelper.shared.monitoringQueueDatabaseURL else {
+				throw EventProducerError.monitoringQueueDatabaseURLFailure
+			}
+
+			do {
+				let databaseQueue = try DatabaseQueue(path: databaseURL.path)
+				try databaseQueue.write { database in
+					try database.create(table: MonitoringInfoPersistentObject.databaseTableName, ifNotExists: true) { table in
+						table.column(MonitoringInfoPersistentObject.columnId, .text).notNull()
+						table.column(MonitoringInfoPersistentObject.columnStoringFailedEvents, .any).notNull()
+						table.column(MonitoringInfoPersistentObject.columnConsentFilteredEvents, .any).notNull()
+						table.column(MonitoringInfoPersistentObject.columnValidationFailedEvents, .any).notNull()
+					}
+				}
+				self._databaseQueue = databaseQueue
+				return databaseQueue
+			} catch {
+				throw EventProducerError.monitoringDatabaseCreateFailure(error.localizedDescription)
+			}
 		}
 	}
 

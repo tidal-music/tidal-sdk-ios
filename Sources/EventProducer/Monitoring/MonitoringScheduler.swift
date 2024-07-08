@@ -1,16 +1,16 @@
 import Common
 import Foundation
 
-final class MonitoringScheduler {
+final class MonitoringScheduler: Scheduler {
 	private let monitoringSchedulerTime: TimeInterval = 60
-	private var timer: Timer?
+	var schedulerTask: Task<Void, any Error>?
 	
 	private let consumerUri: String?
 	private let monitoring: Monitoring
 	private let eventScheduler: EventScheduler
 	private let networkService: NetworkingService
 
-	private var schedulingTime: TimeInterval {
+	var schedulingTime: TimeInterval {
 		switch BuildEnvironment.system {
 		case .development: 5
 		case .production: monitoringSchedulerTime
@@ -19,37 +19,29 @@ final class MonitoringScheduler {
 
 	init(
 		consumerUri: String?,
-		monitoringQueue: Monitoring = .shared
+		monitoring: Monitoring,
+		eventQueue: EventQueue
 	) {
 		self.consumerUri = consumerUri
-		self.monitoring = monitoringQueue
-		self.eventScheduler = EventScheduler(consumerUri: consumerUri)
+		self.monitoring = monitoring
+		self.eventScheduler = EventScheduler(
+			consumerUri: consumerUri,
+			eventQueue: eventQueue,
+			monitoring: monitoring
+		)
 		self.networkService = NetworkingService(consumerUri: consumerUri)
 	}
-
-	func runScheduling(with headerHelper: HeaderHelper) {
-		guard timer == nil else {
-			return
-		}
-
-		timer = Timer.scheduledTimer(withTimeInterval: schedulingTime, repeats: true) { [weak self] _ in
-			guard let self else {
-				return
-			}
-
-			Task {
-				await self.sendMonitoringEvent(headerHelper: headerHelper)
-			}
-		}
-		guard let timer else {
-			return
-		}
-		RunLoop.current.add(timer, forMode: .common)
+	
+	convenience init(config: EventConfig?, eventQueue: EventQueue, monitoring: Monitoring) {
+		self.init(
+			consumerUri: config?.consumerUri,
+			monitoring: monitoring,
+			eventQueue: eventQueue
+		)
 	}
 
-	func invalidateTimer() {
-		timer?.invalidate()
-		timer = nil
+	func timerTriggered(headerHelper: HeaderHelper) async throws {
+		await sendMonitoringEvent(headerHelper: headerHelper)
 	}
 
 	func sendMonitoringEvent(headerHelper: HeaderHelper) async {

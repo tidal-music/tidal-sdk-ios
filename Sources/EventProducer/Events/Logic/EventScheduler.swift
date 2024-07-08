@@ -6,10 +6,10 @@ import SWXMLHash
 
 /// The Scheduler periodically gets events from the Queue, batches them according to the TL Consumer API,
 /// sends them to the TL Consumer, and removes events confirmed received by the TL Consumer from the Queue.
-final class EventScheduler {
+final class EventScheduler: Scheduler {
 	private let batchSize: Int = 10
 	private let eventSchedulerTime: TimeInterval = 30
-	private var timer: Timer?
+	var schedulerTask: Task<Void, any Error>?
 
 	private let consumerUri: String?
 	private let maxDiskUsageBytes: Int?
@@ -17,7 +17,7 @@ final class EventScheduler {
 	private let networkService: NetworkingService
 	private var monitoring: Monitoring
 
-	private var schedulingTime: TimeInterval {
+	var schedulingTime: TimeInterval {
 		switch BuildEnvironment.system {
 		case .development: 5
 		case .production: Constants.eventSchedulerTime
@@ -27,48 +27,33 @@ final class EventScheduler {
 	init(
 		consumerUri: String?,
 		maxDiskUsageBytes: Int? = EventConfig.defaultQueueMaxDiskUsageBytes,
-		eventQueue: EventQueue = .shared
+		eventQueue: EventQueue,
+		monitoring: Monitoring
 	) {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.eventQueue = eventQueue
 		self.networkService = NetworkingService(consumerUri: consumerUri)
-		self.monitoring = Monitoring.shared
+		self.monitoring = monitoring
+	}
+	
+	convenience init(config: EventConfig?, eventQueue: EventQueue, monitoring: Monitoring) {
+		self.init(
+			consumerUri: config?.consumerUri,
+			maxDiskUsageBytes: config?.maxDiskUsageBytes,
+			eventQueue: eventQueue,
+			monitoring: monitoring
+		)
 	}
 
-	/// The Scheduler applies a best-effort approach to sending events to the TL Consumer, meaning that it continuously tries to send
-	/// events while the app is executing,
-	/// regardless of current internet conditions or if the app considers itself to be online or not. As long as the app is
-	/// executing, the Scheduler shall be running
-	func runScheduling(with headerHelper: HeaderHelper) {
-		guard timer == nil else {
-			return
+	func timerTriggered(headerHelper: HeaderHelper) async throws {
+		do {
+			try await sendAllEvents(headerHelper: headerHelper)
+		} catch let EventProducerError.unauthorized(code) {
+			_ = try await headerHelper.credentialsProvider?.getCredentials(apiErrorSubStatus: code.description)
+		} catch {
+			throw error
 		}
-
-		timer = Timer.scheduledTimer(withTimeInterval: schedulingTime, repeats: true) { [weak self] _ in
-			guard let self else {
-				return
-			}
-
-			Task {
-				do {
-					try await self.sendAllEvents(headerHelper: headerHelper)
-				} catch let EventProducerError.unauthorized(code) {
-					_ = try await headerHelper.credentialsProvider?.getCredentials(apiErrorSubStatus: code.description)
-				} catch {
-					throw error
-				}
-			}
-		}
-		guard let timer else {
-			return
-		}
-		RunLoop.current.add(timer, forMode: .common)
-	}
-
-	func invalidateTimer() {
-		timer?.invalidate()
-		timer = nil
 	}
 
 	/// Fetches all events from the local storage, and sends them to the backend in batches.

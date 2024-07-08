@@ -4,33 +4,35 @@ import SWXMLHash
 
 final class EventQueue {
 	static let databaseName = "EventQueueDatabase.sqlite"
-
-	static let shared = EventQueue()
-	var dbQueue: DatabaseQueue!
-
-	private init() {
-		try? setup()
-	}
-
-	private func setup() throws {
-		guard let databaseURL = FileManagerHelper.shared.eventQueueDatabaseURL else {
-			throw EventProducerError.eventQueueDatabaseURLFailure
-		}
-
-		do {
-			dbQueue = try DatabaseQueue(path: databaseURL.path)
-			try dbQueue.write { db in
-				try db.create(table: EventPersistentObject.databaseTableName, ifNotExists: true) { table in
-					table.column(EventPersistentObject.columnID, .text).notNull()
-					table.column(EventPersistentObject.columnName, .text).notNull()
-					table.column(EventPersistentObject.columnConsentCategory, .text)
-					table.column(EventPersistentObject.columnHeaders, .text)
-					table.column(EventPersistentObject.columnPayload, .text)
-				}
+	
+	private var _dbQueue: DatabaseQueue?
+	
+	private var dbQueue: DatabaseQueue {
+		get throws {
+			if let _dbQueue {
+				return _dbQueue
+			}
+			
+			guard let databaseURL = FileManagerHelper.shared.eventQueueDatabaseURL else {
+				throw EventProducerError.eventQueueDatabaseURLFailure
 			}
 
-		} catch {
-			throw EventProducerError.eventDatabaseCreateFailure(error.localizedDescription)
+			do {
+				let databaseQueue = try DatabaseQueue(path: databaseURL.path)
+				try databaseQueue.write { db in
+					try db.create(table: EventPersistentObject.databaseTableName, ifNotExists: true) { table in
+						table.column(EventPersistentObject.columnID, .text).notNull()
+						table.column(EventPersistentObject.columnName, .text).notNull()
+						table.column(EventPersistentObject.columnConsentCategory, .text)
+						table.column(EventPersistentObject.columnHeaders, .text)
+						table.column(EventPersistentObject.columnPayload, .text)
+					}
+				}
+				self._dbQueue = databaseQueue
+				return databaseQueue
+			} catch {
+				throw EventProducerError.eventDatabaseCreateFailure(error.localizedDescription)
+			}
 		}
 	}
 

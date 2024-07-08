@@ -1,7 +1,7 @@
 import Foundation
 import protocol Auth.CredentialsProvider
 
-public struct EventConfig: EventProducer {
+public struct EventConfig: EventProducer {	
 	static let defaultQueueMaxDiskUsageBytes = 204800
 	static let singleEventMaxDiskUsageBytes = 20480
 	
@@ -13,7 +13,7 @@ public struct EventConfig: EventProducer {
 	public var blockedConsentCategories: Set<ConsentCategory>?
 	/// consumerUri: URI identifying the TL Consumer ingest endpoint.
 	public var consumerUri: String?
-	
+		
 	public init(
 		credentialsProvider: Auth.CredentialsProvider,
 		maxDiskUsageBytes: Int,

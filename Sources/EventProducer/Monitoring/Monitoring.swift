@@ -3,14 +3,13 @@ import Combine
 
 struct Monitoring {
 	static let eventName = "tep-tl-monitoring"
-	static let shared = Monitoring()
 
 	var outageSubject: CurrentValueSubject<OutageState, Never>?
 	private var cancellable: AnyCancellable?
 	
 	private let monitoringQueue: MonitoringQueue
 
-	private init(monitoringQueue: MonitoringQueue = .shared) {
+	init(monitoringQueue: MonitoringQueue) {
 		self.monitoringQueue = monitoringQueue
 	}
 
