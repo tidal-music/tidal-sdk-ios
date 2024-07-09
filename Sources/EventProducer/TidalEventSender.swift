@@ -55,6 +55,7 @@ public final class TidalEventSender: EventSender {
 		self.start()
 	}
 	
+	@available(*, deprecated)
 	public func updateConfiguration(_ config: EventConfig) {
 		self.config = config
 		self.scheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
