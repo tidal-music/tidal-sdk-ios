@@ -1,3 +1,4 @@
+import Common
 import Foundation
 
 protocol Scheduler: AnyObject {
@@ -22,9 +23,7 @@ extension Scheduler {
 					return
 				}
 				
-				let schedulingTimeInNanoseconds = UInt64(schedulingTime) * NSEC_PER_SEC
-				
-				try await Task.sleep(nanoseconds: schedulingTimeInNanoseconds)
+				try await Task.sleep(seconds: schedulingTime)
 				try await self.timerTriggered(headerHelper: headerHelper)
 			} while !Task.isCancelled
 		}
