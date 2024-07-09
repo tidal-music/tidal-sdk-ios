@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### New
 - Added new empty catalogue module
 - Check Queue Size (EventProducer)
+- Added step to update chagelog in readme when releasing a new version
 
 ## [0.3.24] - 2024-06-17 
 ### Fixed
