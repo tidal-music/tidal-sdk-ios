@@ -10,6 +10,9 @@ enum EventProducerError: Error {
 	case eventSendDataEncodingFailure
 	case clientIdMissingFailure
 	case authTokenMissingFailure(_ description: String)
+	
+	/// configuration errors
+	case notConfigured
 
 	/// networking errors
 	case unauthorized(_ code: Int)

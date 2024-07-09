@@ -26,12 +26,13 @@ public final class TidalEventSender: EventSender {
 					return false
 			}
 	}
-	private var scheduler: EventScheduler
+	private var scheduler: EventScheduler?
+	private var monitoringScheduler: MonitoringScheduler?
+
 	private let eventSubmitter: EventSubmitter
 	private var monitoring: Monitoring
 	private let eventQueue: EventQueue
 	private let monitoringQueue: MonitoringQueue
-	private var monitoringScheduler: MonitoringScheduler
 	private let fileManager: FileManagerHelper
 	
 	// MARK: - Init
@@ -42,13 +43,15 @@ public final class TidalEventSender: EventSender {
 		self.eventSubmitter = EventSubmitter(eventsQueue: eventQueue, monitoring: monitoring)
 		
 		self.fileManager = FileManagerHelper.shared
-		
-		self.scheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
-		self.monitoringScheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
 	}
 
 	public func config(_ config: EventConfig) {
 		self.config = config
+		
+		// In case of reentrancy we invalidate schedulers before creating new ones
+		self.scheduler?.invalidateTimer()
+		self.monitoringScheduler?.invalidateTimer()
+
 		self.scheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
 		self.monitoringScheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
 
@@ -81,6 +84,10 @@ public final class TidalEventSender: EventSender {
 		headers: [String: String] = [:],
 		payload: String
 	) async throws {
+		guard scheduler != nil, monitoringScheduler != nil else {
+			throw EventProducerError.notConfigured
+		}
+		
 		var event = Event(name: name, headers: headers, payload: payload)
 
 		guard let eventData = try? JSONEncoder().encode(event) else {
@@ -116,10 +123,10 @@ public final class TidalEventSender: EventSender {
 		endOutage(eventName: event.name)
 	}
 
-	public func start() {
+	private func start() {
 		let headerHelper = HeaderHelper(credentialsProvider: config?.credentialsProvider)
-		scheduler.runScheduling(with: headerHelper)
-		monitoringScheduler.runScheduling(with: headerHelper)
+		scheduler?.runScheduling(with: headerHelper)
+		monitoringScheduler?.runScheduling(with: headerHelper)
 	}
 
 	private func startOutage(eventName event: String) {
