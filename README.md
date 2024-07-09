@@ -43,10 +43,12 @@ swift package --disable-sandbox preview-documentation --target Module
 ### Creating a module release
 1. Bump the version stored in `version.txt` in the repo root directory to the desired value. Follow [Semantic Versioning](https://semver.org/). Also, you cannot downgrade - the CI/CD pipeline will refuse to work with downgrades.
 
-2. Open a Pull Request with your version bump, get it approved and merge it. A release draft will be created for the module you changed.
+2. Update `CHANGELOG.md` with the new version and the changes made.
 
-3. Find your draft in the [releases list](https://github.com/tidal-music/tidal-sdk-ios/releases) and add some meaningful sentences about the release, changelog style (Note: This paragraph is temporary, as we will automate and regulate changelog creation, but for now, you are free to just type)
+3. Open a Pull Request with your version bump, get it approved and merge it. A release draft will be created for the module you changed.
 
-4. Check in with your teammates, lead, the module's owner etc. to make sure the release is ready to go.
+4. Find your draft in the [releases list](https://github.com/tidal-music/tidal-sdk-ios/releases) and add some meaningful sentences about the release, changelog style (Note: This paragraph is temporary, as we will automate and regulate changelog creation, but for now, you are free to just type)
 
-5. Click `Publish` at the bottom of your draft release. This will trigger a workflow to tag the release commit.
+5. Check in with your teammates, lead, the module's owner etc. to make sure the release is ready to go.
+
+6. Click `Publish` at the bottom of your draft release. This will trigger a workflow to tag the release commit.
