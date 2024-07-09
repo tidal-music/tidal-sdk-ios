@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.25] - 2024-07-09 
+### Fixed
+- Readme had Polish language link instead of English
+- Attempt to fix crashes + better logging (EventProducer)
+
+### New
+- Added new empty catalogue module
+- Check Queue Size (EventProducer)
+
 ## [0.3.24] - 2024-06-17 
 ### Fixed
 - Fixed SQLITE_LOCKED errors (EventProducer)
