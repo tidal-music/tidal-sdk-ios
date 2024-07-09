@@ -56,23 +56,24 @@ final class EventsTests: XCTestCase {
 	}
 
 	func testSendEventFailsWhenConfigurationNotCalled() async {
+		let notConfiguredEventSender = TidalEventSender()
+		var caughtError: Error?
+		
 		do {
-			try await eventSender.sendEvent(
+			try await notConfiguredEventSender.sendEvent(
 				name: "testEvent",
 				consentCategory: .necessary,
 				payload: "testPayload"
 			)
 		} catch {
-			XCTAssertNotNil(error)
-			guard let error = error as? EventProducerError else {
-				XCTFail("Wrong exception type")
-				return
-			}
-
-			guard case let .genericError(message) = error else {
-				return
-			}
-			XCTAssertEqual(message, "EventSenderConfig not setup, you must call setupConfiguration() before calling sendEvent")
+			caughtError = error
+		}
+		
+		switch caughtError as? EventProducerError {
+			case .notConfigured:
+				break
+			default:
+				XCTFail("Error is not thrown or has a wrong type")
 		}
 	}
 
