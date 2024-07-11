@@ -96,7 +96,7 @@ struct TokenRepository {
 		if let successData = response.successData {
 			let credentials = Credentials(
 				authConfig: authConfig,
-				userId: successData.userId.map { "\($0)" },
+				userId: successData.userId.map { "\($0)" } ?? storedTokens.credentials.userId,
 				expiresIn: successData.expiresIn,
 				token: successData.accessToken
 			)
