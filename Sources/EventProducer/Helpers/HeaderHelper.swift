@@ -76,7 +76,7 @@ struct HeaderHelper {
 		if !isMonitoringEvent,
 		   let token = try? await getCredentialsProviderToken()
 		{
-			headers[.authorization] = token
+			headers[.authorization] = "Bearer \(token)"//token
 		}
 		return Dictionary(uniqueKeysWithValues: headers.mapValues { $0 }.map { ($0.rawValue, $1) })
 	}
