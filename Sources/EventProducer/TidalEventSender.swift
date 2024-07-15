@@ -57,13 +57,6 @@ public final class TidalEventSender: EventSender {
 
 		self.start()
 	}
-	
-	@available(*, deprecated)
-	public func updateConfiguration(_ config: EventConfig) {
-		self.config = config
-		self.scheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
-		self.monitoringScheduler = .init(config: config, eventQueue: eventQueue, monitoring: monitoring)
-	}
 
 	/// Used to set blockedConsentCategories. Any new entry would clear previous entry, ie overwrite it.
 	/// - Parameters:

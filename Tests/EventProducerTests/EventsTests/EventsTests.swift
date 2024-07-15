@@ -78,34 +78,26 @@ final class EventsTests: XCTestCase {
 	}
 
 	func testEventSenderConfig() async {
-		let initialMockClientProvider = mockCredentialsProvider(withToken: "tokenInitial")
+		let accessToken = "accessToken"
+		let consumerUri = "consumerUri"
+		let maxDiskUsageBytes = 1024
+		
+		let mockCredentialsProvider = mockCredentialsProvider(withToken: accessToken)
 				
 		eventSender.config(
 			EventConfig(
-				credentialsProvider: initialMockClientProvider,
-				maxDiskUsageBytes: 1024,
-				consumerUri: "initialConsumerUri"
+				credentialsProvider: mockCredentialsProvider,
+				maxDiskUsageBytes: maxDiskUsageBytes,
+				consumerUri: consumerUri
 			)
 		)
 		
-		var credentials = try? await eventSender.config?.credentialsProvider.getCredentials()
-		let tokenInitial = credentials?.token ?? "MISSING TOKEN"
+		let credentials = try? await eventSender.config?.credentialsProvider.getCredentials()
+		let token = credentials?.token
 		
-		XCTAssertEqual(tokenInitial, "tokenInitial")
-		XCTAssertEqual(eventSender.config?.consumerUri, "initialConsumerUri")
-		XCTAssertEqual(eventSender.config?.maxDiskUsageBytes, 1024)
-		
-		let updatedMockAuthProvider = MockCredentialsProvider(testToken: "tokenUpdated", isUserLoggedIn: true)
-		eventSender.updateConfiguration(EventConfig(credentialsProvider: updatedMockAuthProvider,
-																								maxDiskUsageBytes: 5000,
-																								consumerUri: "updatedConsumerUri"))
-		
-		credentials = try? await eventSender.config?.credentialsProvider.getCredentials()
-		let tokenUpdated = credentials?.token ?? "MISSING TOKEN"
-		
-		XCTAssertEqual(tokenUpdated, "tokenUpdated")
-		XCTAssertEqual(eventSender.config?.consumerUri, "updatedConsumerUri")
-		XCTAssertEqual(eventSender.config?.maxDiskUsageBytes, 5000)
+		XCTAssertEqual(token, accessToken)
+		XCTAssertEqual(eventSender.config?.consumerUri, consumerUri)
+		XCTAssertEqual(eventSender.config?.maxDiskUsageBytes, maxDiskUsageBytes)
 	}
 
 	func testEventsPersisted() async throws {
@@ -150,7 +142,7 @@ final class EventsTests: XCTestCase {
 
 		let anonymousAuthProvider = MockCredentialsProvider(testToken: nil, isUserLoggedIn: false)
 		headerHelper = HeaderHelper(credentialsProvider: anonymousAuthProvider)
-		eventSender.updateConfiguration(
+		eventSender.config(
 			.init(
 				credentialsProvider: anonymousAuthProvider,
 				maxDiskUsageBytes: maxDiskUsageBytes
@@ -170,7 +162,7 @@ final class EventsTests: XCTestCase {
 		let anonymousAuthProvider = MockCredentialsProvider(testToken: nil, isUserLoggedIn: false)
 		headerHelper = HeaderHelper(credentialsProvider: anonymousAuthProvider)
 
-		eventSender.updateConfiguration(
+		eventSender.config(
 			.init(
 				credentialsProvider: anonymousAuthProvider,
 				maxDiskUsageBytes: maxDiskUsageBytes
