@@ -1,7 +1,7 @@
 import Foundation
 import GRDB
 
-public final class MonitoringQueue {
+actor MonitoringQueue {
 	static let databaseName = "MonitoringDatabase.sqlite"
 	private var _databaseQueue: DatabaseQueue?
 	
