@@ -2,7 +2,7 @@ import Foundation
 import GRDB
 import SWXMLHash
 
-final class EventQueue {
+actor EventQueue {
 	static let databaseName = "EventQueueDatabase.sqlite"
 	
 	private var _dbQueue: DatabaseQueue?
