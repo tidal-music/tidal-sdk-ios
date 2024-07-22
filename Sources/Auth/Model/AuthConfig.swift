@@ -1,3 +1,4 @@
+import Common
 import Foundation
 
 public struct AuthConfig {
@@ -10,6 +11,7 @@ public struct AuthConfig {
 	public let tidalLoginServiceBaseUri: String
 	public let tidalAuthServiceBaseUri: String
 	public let enableCertificatePinning: Bool
+	public let logger: Logger?
 	
 	public init(
 		clientId: String,
@@ -20,7 +22,8 @@ public struct AuthConfig {
 		scopes: Set<String> = [],
 		tidalLoginServiceBaseUri: String = "https://login.tidal.com",
 		tidalAuthServiceBaseUri: String = "https://auth.tidal.com",
-		enableCertificatePinning: Bool = true
+		enableCertificatePinning: Bool = true,
+		logger: Logger? = nil
 	) {
 		self.clientId = clientId
 		self.clientUniqueKey = clientUniqueKey
@@ -31,5 +34,6 @@ public struct AuthConfig {
 		self.tidalLoginServiceBaseUri = tidalLoginServiceBaseUri
 		self.tidalAuthServiceBaseUri = tidalAuthServiceBaseUri
 		self.enableCertificatePinning = enableCertificatePinning
+		self.logger = logger
 	}
 }
