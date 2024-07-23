@@ -2,7 +2,7 @@ import Foundation
 
 public protocol Loggable {
 	var message: String { get }
-	var level: LogLevel { get }
+	var logLevel: LogLevel { get }
 }
 
 public extension Loggable {
@@ -10,7 +10,7 @@ public extension Loggable {
 		return "Loggable message: \(self)"
 	}
 	
-	var level: LogLevel {
+	var logLevel: LogLevel {
 		return .info
 	}
 }
