@@ -101,14 +101,14 @@ final class LoginRepository {
 	func initializeDeviceLogin() async throws -> AuthResult<DeviceAuthorizationResponse> {
 		await retryWithPolicy(exponentialBackoffPolicy, logError: { [logger = authConfig.logger] error in
 			logger?.log(AuthLoggable.initializeDeviceLoginBackendError(error: error))
-		}) {
+		}, block: {
 			let response = try await loginService.getDeviceAuthorization(
 				clientId: authConfig.clientId,
 				scope: authConfig.scopes.toScopesString()
 			)
 			deviceLoginPollHelper.prepareForPoll(interval: response.interval, maxDuration: response.expiresIn)
 			return response
-		}
+		})
 	}
 
 	func pollForDeviceLoginResponse(deviceCode: String) async throws -> AuthResult<LoginResponse> {
