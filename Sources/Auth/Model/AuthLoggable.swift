@@ -29,11 +29,7 @@ public enum AuthLoggable: Loggable {
 				.getCredentialsUpgradeTokenBackendError(let error),
 				.getCredentialsRefreshTokenBackendError(let error),
 				.getCredentialsRefreshTokenWithClientCredentialsBackendError(let error):
-			if let tidalError = error as? TidalError {
-				return "\(tidalError.localizedDescription), code: \(tidalError.code), substatus: \(tidalError.subStatus?.description ?? "nil"), message: \(tidalError.message ?? "nil")"
-			} else {
-				return  error.localizedDescription
-			}
+			return error.localizedDescription
 		default:
 			return nil
 		}
