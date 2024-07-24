@@ -5,11 +5,9 @@ struct DefaultLoginService: LoginService, HTTPService {
 	private let TOKEN_AUTH_PATH = "/v1/oauth2/token"
 	private let DEVICE_AUTH_PATH = "/v1/oauth2/device_authorization"
 	private let authBaseUrl: String
-	private let logger: Logger?
 	
 	init(authBaseUrl: String, logger: Logger? = nil) {
 		self.authBaseUrl = authBaseUrl
-		self.logger = logger
 	}
 	
 	func getTokenWithCodeVerifier(
@@ -51,9 +49,7 @@ struct DefaultLoginService: LoginService, HTTPService {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
 
-		return try await executeRequest(request) { [logger] error in
-			logger?.log(AuthLoggable.initializeDeviceLoginBackendError(error: error))
-		}
+		return try await executeRequest(request)
 	}
 
 	func getTokenFromDeviceCode(
