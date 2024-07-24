@@ -2,6 +2,7 @@ import Common
 import Foundation
 
 public enum AuthLoggable: Loggable {
+	// swiftlint:disable identifier_name
 	case initializeDeviceLoginBackendError(error: Error)
 	case finalizeLoginBackendError(error: Error)
 	case finalizeDeviceLoginBackendError(error: Error)
@@ -13,4 +14,28 @@ public enum AuthLoggable: Loggable {
 	case getCredentialsRefreshTokenBackendError(error: Error)
 	case getCredentialsRefreshTokenWithClientCredentialsBackendError(error: Error)
 	case getCredentialsUserCredentialsDowngradedToClientCredentials
+	// swiftlint:enable identifier_name
+	
+	public var message: String {
+		let errorDescription: String = associatedErrorDescription.map {", error: \($0)" } ?? ""
+		return "\(self)\(errorDescription)"
+	}
+	
+	private var associatedErrorDescription: String? {
+		switch self {
+		case .initializeDeviceLoginBackendError(let error),
+				.finalizeLoginBackendError(let error),
+				.finalizeDeviceLoginBackendError(let error),
+				.getCredentialsUpgradeTokenBackendError(let error),
+				.getCredentialsRefreshTokenBackendError(let error),
+				.getCredentialsRefreshTokenWithClientCredentialsBackendError(let error):
+			if let tidalError = error as? TidalError {
+				return "\(tidalError.localizedDescription), code: \(tidalError.code), substatus: \(tidalError.subStatus?.description ?? "nil"), message: \(tidalError.message ?? "nil")"
+			} else {
+				return  error.localizedDescription
+			}
+		default:
+			return nil
+		}
+	}
 }
