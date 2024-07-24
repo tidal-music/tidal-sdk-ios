@@ -1,4 +1,3 @@
-import Common
 import Foundation
 
 // MARK: - HTTPService
@@ -31,7 +30,7 @@ extension HTTPService {
 		
 		return request
 	}
-
+	
 	func executeRequest<T: Decodable>(_ request: URLRequest, logServerError: ((Error) -> Void)?) async throws -> T {
 		// Send the request asynchronously
 		let (data, response) = try await URLSession.shared.data(for: request)
@@ -40,10 +39,7 @@ extension HTTPService {
 		guard let httpResponse = response as? HTTPURLResponse, (200 ... 299).contains(httpResponse.statusCode) else {
 			let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data)
 			let statusCode = errorResponse?.status ?? (response as? HTTPURLResponse)?.statusCode ?? 1
-			let errorMessage = "Error response: \(String(describing: errorResponse)), status code: \(statusCode), request: \(request)"
-			let error = NetworkError(code: "\(statusCode)", subStatus: errorResponse?.subStatus, message: errorMessage)
-			logServerError?(error)
-			throw error
+			throw NetworkError(code: "\(statusCode)", subStatus: errorResponse?.subStatus)
 		}
 
 		return try JSONDecoder().decode(T.self, from: data)
