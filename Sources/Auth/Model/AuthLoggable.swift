@@ -2,7 +2,6 @@ import Common
 import Foundation
 
 public enum AuthLoggable: Loggable {
-	case initializeLoginBackendError(error: Error)
 	case initializeDeviceLoginBackendError(error: Error)
 	case finalizeLoginBackendError(error: Error)
 	case finalizeDeviceLoginBackendError(error: Error)
@@ -13,5 +12,5 @@ public enum AuthLoggable: Loggable {
 	case getCredentialsUpgradeTokenNoTokenInResponse
 	case getCredentialsRefreshTokenBackendError(error: Error)
 	case getCredentialsRefreshTokenWithClientCredentialsBackendError(error: Error)
-	case getCredentialsUserCredentialsDowngradedToClientCredentials	
+	case getCredentialsUserCredentialsDowngradedToClientCredentials
 }
