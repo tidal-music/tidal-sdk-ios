@@ -132,12 +132,8 @@ struct TokenRepository {
 		let result = await apiCall()
 		switch result {
 		case let .success(data):
-			do {
-				let credentials = try Credentials(authConfig: authConfig, response: data)
-				return .success(credentials)
-			} catch {
-				return .failure(error.toTidalError)
-			}
+			let credentials = Credentials(authConfig: authConfig, response: data)
+			return .success(credentials)
 		case let .failure(message):
 			var refreshResult: AuthResult<Credentials> = .failure(message)
 			if let errorCode = (message as? UnexpectedError)?.code, let code = Int(errorCode) {
