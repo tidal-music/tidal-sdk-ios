@@ -105,7 +105,12 @@ struct TokenRepository {
 			)
 		}
 		
-		if case let .failure(error) = result {
+		switch result {
+		case .success(let tokens):
+			if tokens.credentials.token == nil {
+				authConfig.logger?.log(AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse)
+			}
+		case .failure(let error):
 			authConfig.logger?.log(AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error))
 		}
 		
