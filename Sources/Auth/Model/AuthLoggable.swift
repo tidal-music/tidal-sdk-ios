@@ -3,16 +3,16 @@ import Foundation
 
 public enum AuthLoggable: Loggable {
 	// swiftlint:disable identifier_name
-	case initializeDeviceLoginBackendError(error: Error)
-	case finalizeLoginBackendError(error: Error)
-	case finalizeDeviceLoginBackendError(error: Error)
+	case initializeDeviceLoginNetworkError(error: Error)
+	case finalizeLoginNetworkError(error: Error)
+	case finalizeDeviceLoginNetworkError(error: Error)
 	case finalizeDevicePollingLimitReached
-	case getCredentialsUpgradeTokenBackendError(error: Error)
+	case getCredentialsUpgradeTokenNetworkError(error: Error)
 	case getCredentialsScopeIsNotGranted
 	case getCredentialsClientUniqueKeyIsDifferent
 	case getCredentialsUpgradeTokenNoTokenInResponse
-	case getCredentialsRefreshTokenBackendError(error: Error)
-	case getCredentialsRefreshTokenWithClientCredentialsBackendError(error: Error)
+	case getCredentialsRefreshTokenNetworkError(error: Error)
+	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error)
 	case getCredentialsUserCredentialsDowngradedToClientCredentials
 	// swiftlint:enable identifier_name
 	
@@ -23,12 +23,12 @@ public enum AuthLoggable: Loggable {
 	
 	private var associatedErrorDescription: String? {
 		switch self {
-		case .initializeDeviceLoginBackendError(let error),
-				.finalizeLoginBackendError(let error),
-				.finalizeDeviceLoginBackendError(let error),
-				.getCredentialsUpgradeTokenBackendError(let error),
-				.getCredentialsRefreshTokenBackendError(let error),
-				.getCredentialsRefreshTokenWithClientCredentialsBackendError(let error):
+		case .initializeDeviceLoginNetworkError(let error),
+				.finalizeLoginNetworkError(let error),
+				.finalizeDeviceLoginNetworkError(let error),
+				.getCredentialsUpgradeTokenNetworkError(let error),
+				.getCredentialsRefreshTokenNetworkError(let error),
+				.getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error):
 			return error.localizedDescription
 		default:
 			return nil

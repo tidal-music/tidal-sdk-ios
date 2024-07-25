@@ -107,7 +107,7 @@ final class LoginRepository {
 			deviceLoginPollHelper.prepareForPoll(interval: response.interval, maxDuration: response.expiresIn)
 			return response
 		}, logError: { [logger = authConfig.logger] error in
-			logger?.log(AuthLoggable.initializeDeviceLoginBackendError(error: error))
+			logger?.log(AuthLoggable.initializeDeviceLoginNetworkError(error: error))
 		})
 	}
 
