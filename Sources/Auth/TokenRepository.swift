@@ -38,7 +38,7 @@ struct TokenRepository {
 	mutating func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
 		var upgradedRefreshToken: String?
 		let tokens = try loadTokensFromStore()
-
+		
 		let result: AuthResult<Credentials>
 		if let tokens, needsCredentialsUpgrade {
 			let upgradeCredentials = try await upgradeToken(storedTokens: tokens)
@@ -72,6 +72,7 @@ struct TokenRepository {
 			return await refreshCredentials { await getClientAccessToken(clientSecret: clientSecret) }
 		}
 
+		authConfig.logger?.log(AuthLoggable.authLogout(reason: "no refresh token or client secret available"))
 		return logout()
 	}
 

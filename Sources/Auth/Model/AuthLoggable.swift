@@ -14,14 +14,15 @@ public enum AuthLoggable: Loggable {
 	case getCredentialsRefreshTokenNetworkError(error: Error)
 	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error)
 	case getCredentialsUserCredentialsDowngradedToClientCredentials
+	case authLogout(reason: String)
 	// swiftlint:enable identifier_name
 	
 	public var message: String {
-		let errorDescription: String = associatedErrorDescription.map {", error: \($0)" } ?? ""
-		return "\(self)\(errorDescription)"
+		let associatedValuesDescription = self.associatedValuesDescription ?? ""
+		return "\(self)\(associatedValuesDescription)"
 	}
 	
-	private var associatedErrorDescription: String? {
+	private var associatedValuesDescription: String? {
 		switch self {
 		case .initializeDeviceLoginNetworkError(let error),
 				.finalizeLoginNetworkError(let error),
@@ -29,7 +30,9 @@ public enum AuthLoggable: Loggable {
 				.getCredentialsUpgradeTokenNetworkError(let error),
 				.getCredentialsRefreshTokenNetworkError(let error),
 				.getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error):
-			return error.localizedDescription
+			return ", error: \(error.localizedDescription)"
+		case .authLogout(let reason):
+			return ", reason: \(reason)"
 		default:
 			return nil
 		}
