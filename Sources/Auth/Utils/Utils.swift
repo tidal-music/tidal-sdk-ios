@@ -16,8 +16,8 @@ private let HTTP_STATUS_END = 600
 func retryWithPolicy<T>(
 	_ retryPolicy: RetryPolicy,
 	authErrorPolicy: AuthErrorPolicy? = nil,
-	logError: ((Error) -> Void)? = nil,
-	block: () async throws -> T
+	block: () async throws -> T,
+	logError: ((Error) -> Void)? = nil
 ) async -> AuthResult<T> {
 	var currentDelay = retryPolicy.delayMillis
 	var attempts = 0
