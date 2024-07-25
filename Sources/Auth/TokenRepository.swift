@@ -76,7 +76,7 @@ struct TokenRepository {
 	}
 
 	private func upgradeToken(storedTokens: Tokens) async throws -> AuthResult<Tokens> {
-		let response = await retryWithPolicy(upgradeBackoffPolicy) {
+		let result = await retryWithPolicy(upgradeBackoffPolicy) {
 			guard let refreshToken = storedTokens.refreshToken,
 			      let clientUniqueKey = authConfig.clientUniqueKey
 			else {
@@ -91,24 +91,25 @@ struct TokenRepository {
 				scopes: authConfig.scopes.toScopesString(),
 				grantType: GRANT_TYPE_UPGRADE
 			)
-		}
-
-		if let successData = response.successData {
+		}.map { successData in
 			let credentials = Credentials(
 				authConfig: authConfig,
 				userId: successData.userId.map { "\($0)" },
 				expiresIn: successData.expiresIn,
 				token: successData.accessToken
 			)
-
-			let result: AuthResult<Tokens> = .success(Tokens(
+			
+			return Tokens(
 				credentials: credentials,
 				refreshToken: successData.refreshToken
-			))
-			return result
+			)
 		}
-
-		return .failure(RetryableError(code: "1"))
+		
+		if case let .failure(error) = result {
+			authConfig.logger?.log(AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error))
+		}
+		
+		return result
 	}
 
 	private func logout() -> AuthResult<Credentials> {
