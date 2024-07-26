@@ -62,17 +62,38 @@ struct TokenRepository {
 			return .success(credentials)
 		}
 
+		var refreshCredentialsBlock: (() async -> AuthResult<RefreshResponse>)?
+		var networkErrorLoggableBlock: ((Error) -> AuthLoggable)?
+		
 		// if a refreshToken is available, we'll use it
 		if let refreshToken = storedTokens?.refreshToken {
-			return await refreshCredentials { await refreshUserAccessToken(refreshToken: refreshToken) }
+			refreshCredentialsBlock = { await refreshUserAccessToken(refreshToken: refreshToken) }
+			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenNetworkError(error: $0) }
+		} else if let clientSecret = authConfig.clientSecret {
+			// if nothing is stored, we will try and refresh using a client secret
+			refreshCredentialsBlock = { await getClientAccessToken(clientSecret: clientSecret) }
+			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: $0) }
+		}
+		
+		if let refreshCredentialsBlock {
+			let authResult = await refreshCredentialsBlock()
+				.map { Credentials(authConfig: authConfig, response: $0) }
+			
+			switch (authResult, networkErrorLoggableBlock) {
+			case (.failure(let error), _) where shouldLogoutWithLowerLevelTokenAfterUpdate(error: error):
+				authConfig.logger?.log(AuthLoggable.authLogout(reason: "User credentials were downgraded to client credentials after updating token", error: error))
+				return .success(.init(authConfig: authConfig))
+
+			case (.failure(let error), .some(let networkErrorLoggableBlock)):
+				authConfig.logger?.log(networkErrorLoggableBlock(error))
+				
+			default: break
+			}
+			
+			return authResult
 		}
 
-		// if nothing is stored, we will try and refresh using a client secret
-		if let clientSecret = authConfig.clientSecret {
-			return await refreshCredentials { await getClientAccessToken(clientSecret: clientSecret) }
-		}
-
-		authConfig.logger?.log(AuthLoggable.authLogout(reason: "no refresh token or client secret available"))
+		authConfig.logger?.log(AuthLoggable.authLogout(reason: "No refresh token or client secret available"))
 		return logout()
 	}
 
@@ -129,24 +150,16 @@ struct TokenRepository {
 			token: nil
 		))
 	}
-
-	private func refreshCredentials(apiCall: () async -> AuthResult<RefreshResponse>) async -> AuthResult<Credentials> {
-		let result = await apiCall()
-		switch result {
-		case let .success(data):
-			let credentials = Credentials(authConfig: authConfig, response: data)
-			return .success(credentials)
-		case let .failure(message):
-			var refreshResult: AuthResult<Credentials> = .failure(message)
-			if let errorCode = (message as? UnexpectedError)?.code, let code = Int(errorCode) {
-				if code <= HTTP_UNAUTHORIZED {
-					// if code 400, 401, the user is effectively logged out
-					// and we return a lower level token
-					refreshResult = .success(Credentials(authConfig: authConfig))
-				}
-			}
-
-			return refreshResult
+	
+	private func shouldLogoutWithLowerLevelTokenAfterUpdate(error: TidalError) -> Bool {
+		if let errorCode = (error as? UnexpectedError)?.code,
+		   let code = Int(errorCode),
+		   code <= HTTP_UNAUTHORIZED {
+			// if code 400, 401, the user is effectively logged out
+			// and we return a lower level token
+			return true
+		} else {
+			return false
 		}
 	}
 
