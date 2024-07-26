@@ -104,6 +104,8 @@ struct TokenRepository {
 				credentials: credentials,
 				refreshToken: successData.refreshToken
 			)
+		}.mapError { error in
+			return RetryableError(code: "1", throwable: error) as TidalError
 		}
 		
 		switch result {
