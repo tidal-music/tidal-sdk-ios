@@ -6,7 +6,7 @@ struct DefaultLoginService: LoginService, HTTPService {
 	private let DEVICE_AUTH_PATH = "/v1/oauth2/device_authorization"
 	private let authBaseUrl: String
 	
-	init(authBaseUrl: String, logger: Logger? = nil) {
+	init(authBaseUrl: String) {
 		self.authBaseUrl = authBaseUrl
 	}
 	
