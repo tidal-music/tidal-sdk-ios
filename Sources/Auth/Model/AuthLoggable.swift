@@ -13,28 +13,29 @@ public enum AuthLoggable: Loggable {
 	case getCredentialsUpgradeTokenNoTokenInResponse
 	case getCredentialsRefreshTokenNetworkError(error: Error)
 	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error)
-	case getCredentialsUserCredentialsDowngradedToClientCredentials
-	case authLogout(reason: String)
+	case authLogout(reason: String, error: Error? = nil)
 	// swiftlint:enable identifier_name
 	
 	public var message: String {
-		let associatedValuesDescription = self.associatedValuesDescription ?? ""
-		return "\(self)\(associatedValuesDescription)"
-	}
-	
-	private var associatedValuesDescription: String? {
-		switch self {
+		let associatedValuesPart = switch self {
 		case .initializeDeviceLoginNetworkError(let error),
 				.finalizeLoginNetworkError(let error),
 				.finalizeDeviceLoginNetworkError(let error),
 				.getCredentialsUpgradeTokenNetworkError(let error),
 				.getCredentialsRefreshTokenNetworkError(let error),
 				.getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error):
-			return ", error: \(error.localizedDescription)"
-		case .authLogout(let reason):
-			return ", reason: \(reason)"
+			errorMessagePart(error: error)
+		case .authLogout(let reason, let error):
+			", reason: \(reason)\(errorMessagePart(error: error))"
 		default:
-			return nil
+			""
 		}
+		
+		return "\(self)\(associatedValuesPart)"
+	}
+	
+	private func errorMessagePart(error: Error?) -> String {
+		guard let error = error else { return "" }
+		return ", error: \(error.localizedDescription)"
 	}
 }
