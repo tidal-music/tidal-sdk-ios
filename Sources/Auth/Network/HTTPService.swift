@@ -3,7 +3,7 @@ import Foundation
 // MARK: - HTTPService
 
 protocol HTTPService {
-	func executeRequest<T: Decodable>(_ request: URLRequest, logServerError: ((Error) -> Void)?) async throws -> T
+	func executeRequest<T: Decodable>(_ request: URLRequest) async throws -> T
 	func request(url: String, path: String, httpMethod: HTTPMethod, contentType: String, queryItems: [URLQueryItem])
 		-> URLRequest?
 }
@@ -31,7 +31,7 @@ extension HTTPService {
 		return request
 	}
 	
-	func executeRequest<T: Decodable>(_ request: URLRequest, logServerError: ((Error) -> Void)?) async throws -> T {
+	func executeRequest<T: Decodable>(_ request: URLRequest) async throws -> T {
 		// Send the request asynchronously
 		let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -43,9 +43,5 @@ extension HTTPService {
 		}
 
 		return try JSONDecoder().decode(T.self, from: data)
-	}
-	
-	func executeRequest<T: Decodable>(_ request: URLRequest) async throws -> T {
-		try await executeRequest(request, logServerError: nil)
 	}
 }
