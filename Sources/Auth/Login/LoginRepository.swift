@@ -102,14 +102,14 @@ final class LoginRepository {
 	}
 
 	func initializeDeviceLogin() async throws -> AuthResult<DeviceAuthorizationResponse> {
-		let result = await retryWithPolicy(exponentialBackoffPolicy, block: {
+		let result = await retryWithPolicy(exponentialBackoffPolicy) {
 			let response = try await loginService.getDeviceAuthorization(
 				clientId: authConfig.clientId,
 				scope: authConfig.scopes.toScopesString()
 			)
 			deviceLoginPollHelper.prepareForPoll(interval: response.interval, maxDuration: response.expiresIn)
 			return response
-		})
+		}
 		
 		if case .failure(let error) = result {
 			authConfig.logger?.log(AuthLoggable.initializeDeviceLoginNetworkError(error: error))
@@ -127,9 +127,9 @@ final class LoginRepository {
 		)
 		
 		switch response {
-			case .success(let successData):
-				try saveTokens(response: successData)
-			case .failure(let error):
+		case .success(let successData):
+			try saveTokens(response: successData)
+		case .failure(let error):
 			let loggable = error.subStatus?.description.isSubStatus(status: .expiredAccessToken) == true ? AuthLoggable.finalizeDevicePollingLimitReached : AuthLoggable.finalizeDeviceLoginNetworkError(error: error)
 			
 			authConfig.logger?.log(loggable)

@@ -70,7 +70,7 @@ struct TokenRepository {
 			refreshCredentialsBlock = { await refreshUserAccessToken(refreshToken: refreshToken) }
 			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenNetworkError(error: $0) }
 		} else if let clientSecret = authConfig.clientSecret {
-			//TODO: Log this as well
+			// TODO: Log this as well
 			// if nothing is stored, we will try and refresh using a client secret
 			refreshCredentialsBlock = { await getClientAccessToken(clientSecret: clientSecret) }
 			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: $0) }
