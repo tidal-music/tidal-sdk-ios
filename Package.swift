@@ -101,6 +101,7 @@ let package = Package(
 			dependencies: [
 				.common,
 				.KeychainAccess,
+				.Logging
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
@@ -156,4 +157,5 @@ extension Target.Dependency {
 	static let SWXMLHash = product(name: "SWXMLHash", package: "SWXMLHash")
 	static let KeychainAccess = product(name: "KeychainAccess", package: "KeychainAccess")
 	static let Kronos = product(name: "Kronos", package: "Kronos")
+	static let Logging = product(name: "Logging", package: "swift-log")
 }
