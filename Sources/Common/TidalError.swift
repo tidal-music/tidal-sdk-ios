@@ -19,6 +19,6 @@ open class TidalError: LocalizedError {
 	}
 	
 	public var errorDescription: String? {
-		"\(self), code: \(code), substatus: \(subStatus?.description ?? "nil"), message: \(message ?? "nil"), throwable: \(throwable?.localizedDescription ?? "nil")"
+		"\(self), code: \(code), substatus: \(subStatus?.description ?? "nil"), message: \(message ?? "nil"), throwable: \(throwable.map { "\($0)" } ?? "nil"), throwable description: \(throwable?.localizedDescription ?? "nil")"
 	}
 }
