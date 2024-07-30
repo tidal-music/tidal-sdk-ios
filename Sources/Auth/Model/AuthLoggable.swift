@@ -47,15 +47,15 @@ extension AuthLoggable {
 	
 	var loggingMessage: Logging.Logger.Message {
 		return switch self {
-		case .initializeDeviceLoginNetworkError(let error):
+		case .initializeDeviceLoginNetworkError:
 			"InitializeDeviceLoginNetworkError"
-		case .finalizeLoginNetworkError(let error):
+		case .finalizeLoginNetworkError:
 			"FinalizeLoginNetworkError"
-		case .finalizeDeviceLoginNetworkError(let error):
+		case .finalizeDeviceLoginNetworkError:
 			"FinalizeDeviceLoginNetworkError"
 		case .finalizeDevicePollingLimitReached:
 			"FinalizeDevicePollingLimitReached"
-		case .getCredentialsUpgradeTokenNetworkError(let error):
+		case .getCredentialsUpgradeTokenNetworkError:
 			"GetCredentialsUpgradeTokenNetworkError"
 		case .getCredentialsScopeIsNotGranted:
 			"GetCredentialsScopeIsNotGranted"
@@ -63,11 +63,11 @@ extension AuthLoggable {
 			"GetCredentialsClientUniqueKeyIsDifferent"
 		case .getCredentialsUpgradeTokenNoTokenInResponse:
 			"GetCredentialsUpgradeTokenNoTokenIn"
-		case .getCredentialsRefreshTokenNetworkError(let error):
+		case .getCredentialsRefreshTokenNetworkError:
 			"GetCredentialsRefreshTokenNetworkError"
-		case .getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error):
+		case .getCredentialsRefreshTokenWithClientCredentialsNetworkError:
 			"GetCredentialsRefreshTokenWithClientCredentialsNetworkError"
-		case .authLogout(let reason, let error):
+		case .authLogout:
 			"AuthLogout"
 		}
 	}
