@@ -37,6 +37,7 @@ let package = Package(
 		.package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
 		.package(url: "https://github.com/MobileNativeFoundation/Kronos.git", exact: "4.2.2"),
 		.package(url: "https://github.com/lukepistrol/SwiftLintPlugin", from: "0.54.0"),
+		.package(url: "https://github.com/Flight-School/AnyCodable", from: "0.6.0"),
 	] + (shouldIncludeDocCPlugin ? [.package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")] : []),
 	targets: [
 		.target(
@@ -53,6 +54,9 @@ let package = Package(
 		),
 		.target(
 			name: "Catalogue",
+			dependencies: [
+				.AnyCodable,
+			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
@@ -155,4 +159,5 @@ extension Target.Dependency {
 	static let SWXMLHash = product(name: "SWXMLHash", package: "SWXMLHash")
 	static let KeychainAccess = product(name: "KeychainAccess", package: "KeychainAccess")
 	static let Kronos = product(name: "Kronos", package: "Kronos")
+	static let AnyCodable = product(name: "AnyCodable", package: "AnyCodable")
 }
