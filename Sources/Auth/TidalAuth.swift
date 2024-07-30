@@ -22,15 +22,6 @@ public class TidalAuth: Auth & CredentialsProvider {
 		// if logger is not provided, use logger that does nothing
 		let logHandlerFactory = config.logHandlerFactory ?? { _ in SwiftLogNoOpLogHandler() }
 		LoggingSystem.bootstrap(logHandlerFactory)
-		
-		//TODO: remove
-		let throwable = NSError(domain: "test", code: 1, userInfo: ["abc": "def"])
-		
-		let error = RetryableError(code: "123", subStatus: 1002, message: "Something went wrong", throwable: throwable)
-		
-		let authLoggable = AuthLoggable.finalizeLoginNetworkError(error: error)
-		
-		authLoggable.log()
 	}
 	
 	private func provideLoginRepository(_ config: AuthConfig, tokensStore: TokensStore) -> LoginRepository {
