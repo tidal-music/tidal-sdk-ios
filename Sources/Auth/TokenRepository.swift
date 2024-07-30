@@ -82,11 +82,11 @@ struct TokenRepository {
 			
 			switch (authResult, networkErrorLoggableBlock) {
 			case (.failure(let error), _) where shouldLogoutWithLowerLevelTokenAfterUpdate(error: error):
-				authConfig.logger?.log(AuthLoggable.authLogout(reason: "User credentials were downgraded to client credentials after updating token", error: error))
+				AuthLoggable.authLogout(reason: "User credentials were downgraded to client credentials after updating token", error: error).log()
 				return .success(.init(authConfig: authConfig))
 
 			case (.failure(let error), .some(let networkErrorLoggableBlock)):
-				authConfig.logger?.log(networkErrorLoggableBlock(error))
+				networkErrorLoggableBlock(error).log()
 				
 			default: break
 			}
@@ -94,7 +94,7 @@ struct TokenRepository {
 			return authResult
 		}
 
-		authConfig.logger?.log(AuthLoggable.authLogout(reason: "No refresh token or client secret available"))
+		AuthLoggable.authLogout(reason: "No refresh token or client secret available").log()
 		return logout()
 	}
 
@@ -133,10 +133,10 @@ struct TokenRepository {
 		switch result {
 		case .success(let tokens):
 			if tokens.credentials.token == nil {
-				authConfig.logger?.log(AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse)
+				AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse.log()
 			}
 		case .failure(let error):
-			authConfig.logger?.log(AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error))
+			AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error).log()
 		}
 		
 		return result
