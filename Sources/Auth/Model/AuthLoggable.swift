@@ -46,7 +46,30 @@ extension AuthLoggable {
 	private static let metadataReasonKey = "reason"
 	
 	var loggingMessage: Logging.Logger.Message {
-		"\(self)"
+		return switch self {
+		case .initializeDeviceLoginNetworkError(let error):
+			"InitializeDeviceLoginNetworkError"
+		case .finalizeLoginNetworkError(let error):
+			"FinalizeLoginNetworkError"
+		case .finalizeDeviceLoginNetworkError(let error):
+			"FinalizeDeviceLoginNetworkError"
+		case .finalizeDevicePollingLimitReached:
+			"FinalizeDevicePollingLimitReached"
+		case .getCredentialsUpgradeTokenNetworkError(let error):
+			"GetCredentialsUpgradeTokenNetworkError"
+		case .getCredentialsScopeIsNotGranted:
+			"GetCredentialsScopeIsNotGranted"
+		case .getCredentialsClientUniqueKeyIsDifferent:
+			"GetCredentialsClientUniqueKeyIsDifferent"
+		case .getCredentialsUpgradeTokenNoTokenInResponse:
+			"GetCredentialsUpgradeTokenNoTokenIn"
+		case .getCredentialsRefreshTokenNetworkError(let error):
+			"GetCredentialsRefreshTokenNetworkError"
+		case .getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error):
+			"GetCredentialsRefreshTokenWithClientCredentialsNetworkError"
+		case .authLogout(let reason, let error):
+			"AuthLogout"
+		}
 	}
 	
 	var loggingMetadata: Logging.Logger.Metadata {
