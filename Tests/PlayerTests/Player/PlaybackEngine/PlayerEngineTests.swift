@@ -496,7 +496,7 @@ extension PlayerEngineTests {
 
 		// THEN
 		// Make sure it's idle, and items remain nil
-		XCTAssertEqual(playerEngine.getState(), .IDLE)
+		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEngine.currentItem, nil)
 		XCTAssertEqual(playerEngine.nextItem, nil)
 
@@ -618,17 +618,17 @@ extension PlayerEngineTests {
 		assertGenericPlayer(assets: [asset], playCount: 2, pauseCount: 0)
 
 		// WHEN
-		// skipToNext() should unload the current one, set the previously next as current, and nextItem should become nil.
+		// skipToNext() should not do anything when next item is not set up.
+		// If still playing, it will continue till it ends.
 		playerEngine.skipToNext(timestamp: timestamp)
 
-		// Since setNext was not called, meaning there's no nextItem set up, then both currentItem and nextItem are nil, reset is
-		// called, and set to IDLE state.
-		assertItem(item: playerEngine.currentItem, expectedItem: nil, shouldBeLoaded: nil)
+		// Since setNext was not called and skipToNext didn't do anything, everything remains.
+		assertItem(item: playerEngine.currentItem, expectedItem: expectedPlayerItem1, shouldBeLoaded: true)
 		assertItem(item: playerEngine.nextItem, expectedItem: nil, shouldBeLoaded: nil)
-		XCTAssertEqual(playerEngine.getState(), .IDLE)
+		XCTAssertEqual(playerEngine.getState(), .PLAYING)
 
 		// Same as above
-		assertGenericPlayer(assets: [], playCount: 2, pauseCount: 0)
+		assertGenericPlayer(assets: [asset], playCount: 2, pauseCount: 0)
 		assertPlayerLoader(trackPlaybackInfos: [trackPlaybackInfo1])
 	}
 
