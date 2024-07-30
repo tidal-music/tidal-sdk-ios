@@ -34,9 +34,18 @@ final class PlayLogTests: XCTestCase {
 	private var playerEventSender: PlayerEventSenderMock!
 	private var featureFlagProvider: FeatureFlagProvider!
 	private var credentialsProvider: CredentialsProviderMock!
+	private var httpClient: HttpClient!
+	private var fairplayLicenseFetcher: FairPlayLicenseFetcher!
+	private var djProducer: DJProducer!
+	private var playerLoader: InternalPlayerLoader!
+	private var storage: Storage!
+	private var networkMonitor: NetworkMonitorMock!
+	private var configuration: Configuration!
+	private var notificationsHandler: NotificationsHandler!
+
 	private var timestamp: UInt64 = 1
 	private var uuid = "uuid"
-	private var shouldSendEventsInDeinit: Bool = true
+	private var shouldSendEventsInDeinit: Bool = false
 
 	lazy var shortAudioFile: AudioFile = {
 		let url = PlayLogTestsHelper.url(from: Constants.AudioFileName.short)
@@ -93,20 +102,21 @@ final class PlayLogTests: XCTestCase {
 			uuidProvider: uuidProvider
 		)
 
+		credentialsProvider = CredentialsProviderMock()
+
 		let sessionConfiguration = URLSessionConfiguration.default
 		sessionConfiguration.protocolClasses = [JsonEncodedResponseURLProtocol.self]
 		let urlSession = URLSession(configuration: sessionConfiguration)
 		let errorManager = ErrorManagerMock()
-		let httpClient = HttpClient.mock(
+		httpClient = HttpClient.mock(
 			urlSession: urlSession,
 			responseErrorManager: errorManager,
 			networkErrorManager: errorManager,
 			timeoutErrorManager: errorManager
 		)
 
-		credentialsProvider = CredentialsProviderMock()
 		let dataWriter = DataWriterMock()
-		let configuration = Configuration.mock()
+		configuration = Configuration.mock()
 		playerEventSender = PlayerEventSenderMock(
 			configuration: configuration,
 			httpClient: httpClient,
@@ -114,18 +124,22 @@ final class PlayLogTests: XCTestCase {
 			featureFlagProvider: featureFlagProvider
 		)
 
-		let storage = Storage()
-		let fairplayLicenseFetcher = FairPlayLicenseFetcher.mock()
-		let networkMonitor = NetworkMonitorMock()
+		storage = Storage()
+		fairplayLicenseFetcher = FairPlayLicenseFetcher.mock()
+		networkMonitor = NetworkMonitorMock()
 
-		let djProducer = DJProducer(
-			httpClient: httpClient,
+		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
+		let djProducerSession = URLSession.new(with: djProducerTimeoutPolicy, name: "Player DJ Session")
+		let djProducerHTTPClient = HttpClient(using: djProducerSession)
+
+		djProducer = DJProducer(
+			httpClient: HttpClient.mock(),
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: .mock
 		)
 
-		let notificationsHandler = NotificationsHandler.mock()
-		let playerLoader = InternalPlayerLoader(
+		notificationsHandler = NotificationsHandler.mock()
+		playerLoader = InternalPlayerLoader(
 			with: configuration,
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
@@ -134,25 +148,7 @@ final class PlayLogTests: XCTestCase {
 			externalPlayers: []
 		)
 
-		let operationQueue = OperationQueue()
-		operationQueue.maxConcurrentOperationCount = 1
-		operationQueue.qualityOfService = .userInitiated
-		operationQueue.name = "com.tidal.player.testplayeroperationqueue"
-
-		playerEngine = PlayerEngine.mock(
-			queue: operationQueue,
-			httpClient: httpClient,
-			credentialsProvider: credentialsProvider,
-			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
-			configuration: configuration,
-			playerEventSender: playerEventSender,
-			networkMonitor: networkMonitor,
-			storage: storage,
-			playerLoader: playerLoader,
-			featureFlagProvider: featureFlagProvider,
-			notificationsHandler: notificationsHandler
-		)
+		setUpPlayerEngine()
 
 		credentialsProvider.injectSuccessfulUserLevelCredentials()
 	}
@@ -227,10 +223,11 @@ extension PlayLogTests {
 		// Play again
 		playerEngine.play(timestamp: timestamp)
 
+		let expectation = expectation(description: "Expecting audio file to have been played")
+		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
+
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
-		}
+		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
 		let actions = [
@@ -272,8 +269,8 @@ extension PlayLogTests {
 		}
 
 		// Wait for the track to reach 2 seconds
-		let pauseAssetPosition: Double = 2
-		wait(for: currentItem, toReach: pauseAssetPosition)
+		let seekTo3AssetPosition: Double = 2
+		wait(for: currentItem, toReach: seekTo3AssetPosition)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -287,7 +284,7 @@ extension PlayLogTests {
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
 		let actions = [
-			Action(actionType: .PLAYBACK_STOP, assetPosition: pauseAssetPosition, timestamp: timestamp),
+			Action(actionType: .PLAYBACK_STOP, assetPosition: seekTo3AssetPosition, timestamp: timestamp),
 			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition, timestamp: timestamp),
 		]
 		let expectedPlayLogEvent = PlayLogEvent.mock(
@@ -1083,7 +1080,6 @@ extension PlayLogTests {
 
 		// Wait until the previously next item is now the current item
 		optimizedWait {
-			//			playerEngine.currentItem?.mediaProduct.productId == mediaProduct2.productId &&
 			playerEngine.currentItem?.id == self.uuid &&
 				playerEngine.nextItem == nil
 		}
@@ -1222,7 +1218,7 @@ extension PlayLogTests {
 
 	func wait(for playerItem: PlayerItem, toReach targetAssetPosition: Double) {
 		let trackReachedAssetPositionExpectation =
-			XCTestExpectation(description: "Expected for the track to reach \(targetAssetPosition) seconds")
+			XCTestExpectation(description: "Expected for the track to reach \(targetAssetPosition) second(s)")
 		let timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { _ in
 			if playerItem.assetPosition >= targetAssetPosition {
 				trackReachedAssetPositionExpectation.fulfill()
@@ -1248,6 +1244,28 @@ extension PlayLogTests {
 // MARK: - Setup Helpers
 
 private extension PlayLogTests {
+	func setUpPlayerEngine() {
+		let operationQueue = OperationQueue()
+		operationQueue.maxConcurrentOperationCount = 1
+		operationQueue.qualityOfService = .userInitiated
+		operationQueue.name = "com.tidal.player.testplayeroperationqueue"
+
+		playerEngine = PlayerEngine.mock(
+			queue: operationQueue,
+			httpClient: httpClient,
+			credentialsProvider: credentialsProvider,
+			fairplayLicenseFetcher: fairplayLicenseFetcher,
+			djProducer: djProducer,
+			configuration: configuration,
+			playerEventSender: playerEventSender,
+			networkMonitor: networkMonitor,
+			storage: storage,
+			playerLoader: playerLoader,
+			featureFlagProvider: featureFlagProvider,
+			notificationsHandler: notificationsHandler
+		)
+	}
+
 	func setAudioFileResponseToURLProtocol(audioFile: AudioFile) {
 		let mediaProduct = audioFile.mediaProduct
 
