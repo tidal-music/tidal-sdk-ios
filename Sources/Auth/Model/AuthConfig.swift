@@ -1,4 +1,3 @@
-import Common
 import Foundation
 import protocol Logging.LogHandler
 
@@ -14,7 +13,6 @@ public struct AuthConfig {
 	public let tidalLoginServiceBaseUri: String
 	public let tidalAuthServiceBaseUri: String
 	public let enableCertificatePinning: Bool
-	public let logger: Logger?
 	public let logHandlerFactory: LogHandlerFactory?
 	
 	public init(
@@ -27,7 +25,6 @@ public struct AuthConfig {
 		tidalLoginServiceBaseUri: String = "https://login.tidal.com",
 		tidalAuthServiceBaseUri: String = "https://auth.tidal.com",
 		enableCertificatePinning: Bool = true,
-		logger: Logger? = nil,
 		logHandlerFactory: LogHandlerFactory? = nil
 	) {
 		self.clientId = clientId
@@ -39,7 +36,6 @@ public struct AuthConfig {
 		self.tidalLoginServiceBaseUri = tidalLoginServiceBaseUri
 		self.tidalAuthServiceBaseUri = tidalAuthServiceBaseUri
 		self.enableCertificatePinning = enableCertificatePinning
-		self.logger = logger
-		self.logHandlerFactory = logHandlerFactory		
+		self.logHandlerFactory = logHandlerFactory
 	}
 }

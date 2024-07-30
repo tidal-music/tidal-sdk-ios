@@ -1,8 +1,7 @@
-import Common
 import Logging
 import Foundation
 
-public enum AuthLoggable: Loggable {
+public enum AuthLoggable {
 	// swiftlint:disable identifier_name
 	case initializeDeviceLoginNetworkError(error: Error)
 	case finalizeLoginNetworkError(error: Error)
