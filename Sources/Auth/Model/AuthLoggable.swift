@@ -44,7 +44,7 @@ extension AuthLoggable {
 	private static let metadataErrorKey = "error"
 	private static let metadataReasonKey = "reason"
 	
-	var loggingMessage: Logging.Logger.Message {
+	var loggingMessage: Logger.Message {
 		return switch self {
 		case .initializeDeviceLoginNetworkError:
 			"InitializeDeviceLoginNetworkError"
@@ -71,8 +71,8 @@ extension AuthLoggable {
 		}
 	}
 	
-	var loggingMetadata: Logging.Logger.Metadata {
-		var metadata = [String: Logging.Logger.MetadataValue]()
+	var loggingMetadata: Logger.Metadata {
+		var metadata = [String: Logger.MetadataValue]()
 		
 		switch self {
 		case .initializeDeviceLoginNetworkError(let error),
@@ -96,7 +96,7 @@ extension AuthLoggable {
 	}
 	
 	func log() {
-		var logger = Logging.Logger(label: "auth_logger")
+		var logger = Logger(label: "auth_logger")
 		logger.logLevel = .trace
 		logger.log(level: .error, loggingMessage, metadata: loggingMetadata)
 	}
