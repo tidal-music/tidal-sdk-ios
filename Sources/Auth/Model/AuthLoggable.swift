@@ -14,9 +14,11 @@ enum AuthLoggable {
 	case getCredentialsRefreshTokenNetworkError(error: Error)
 	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error)
 	case authLogout(reason: String, error: Error? = nil)
+	case getCredentialsRefreshTokenIsNotAvailable
 	// swiftlint:enable identifier_name
 }
 
+// MARK: - Logging
 extension AuthLoggable {
 	private static let metadataErrorKey = "error"
 	private static let metadataReasonKey = "reason"
@@ -43,6 +45,8 @@ extension AuthLoggable {
 			"GetCredentialsRefreshTokenNetworkError"
 		case .getCredentialsRefreshTokenWithClientCredentialsNetworkError:
 			"GetCredentialsRefreshTokenWithClientCredentialsNetworkError"
+		case .getCredentialsRefreshTokenIsNotAvailable:
+			"getCredentialsRefreshTokenIsNotAvailable"
 		case .authLogout:
 			"AuthLogout"
 		}
@@ -72,9 +76,19 @@ extension AuthLoggable {
 		return metadata
 	}
 	
+	var logLevel: Logger.Level {
+		switch self {
+		case .getCredentialsRefreshTokenIsNotAvailable, .finalizeDevicePollingLimitReached:
+			return .notice
+		default:
+			return .error
+		}
+	}
+	
 	func log() {
 		var logger = Logger(label: "auth_logger")
+		// IIUC, this is a minimum level for the logger
 		logger.logLevel = .trace
-		logger.log(level: .error, loggingMessage, metadata: loggingMetadata)
+		logger.log(level: logLevel, loggingMessage, metadata: loggingMetadata)
 	}
 }
