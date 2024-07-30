@@ -4,7 +4,8 @@ on:
   workflow_call:
   workflow_dispatch:
   pull_request:
-    branches: '*'
+    branches:
+      - '**'
 
   merge_group:
     types: [checks_requested]
