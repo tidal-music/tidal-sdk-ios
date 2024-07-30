@@ -66,11 +66,14 @@ final class LoginRepository {
 					clientUniqueKey: authConfig.clientUniqueKey
 				)
 			}
-
-			if let successData = response.successData {
+			
+			switch response {
+			case .success(let successData):
 				try saveTokens(response: successData)
+			case .failure(let error):
+				AuthLoggable.finalizeLoginNetworkError(error: error).log()
 			}
-
+			
 			return response
 		}
 
@@ -99,7 +102,7 @@ final class LoginRepository {
 	}
 
 	func initializeDeviceLogin() async throws -> AuthResult<DeviceAuthorizationResponse> {
-		await retryWithPolicy(exponentialBackoffPolicy) {
+		let result = await retryWithPolicy(exponentialBackoffPolicy) {
 			let response = try await loginService.getDeviceAuthorization(
 				clientId: authConfig.clientId,
 				scope: authConfig.scopes.toScopesString()
@@ -107,6 +110,12 @@ final class LoginRepository {
 			deviceLoginPollHelper.prepareForPoll(interval: response.interval, maxDuration: response.expiresIn)
 			return response
 		}
+		
+		if case .failure(let error) = result {
+			AuthLoggable.initializeDeviceLoginNetworkError(error: error).log()
+		}
+		
+		return result
 	}
 
 	func pollForDeviceLoginResponse(deviceCode: String) async throws -> AuthResult<LoginResponse> {
@@ -116,8 +125,14 @@ final class LoginRepository {
 			grantType: GRANT_TYPE_DEVICE_CODE,
 			retryPolicy: exponentialBackoffPolicy
 		)
-		if let data = response.successData {
-			try saveTokens(response: data)
+		
+		switch response {
+		case .success(let successData):
+			try saveTokens(response: successData)
+		case .failure(let error):
+			let loggable = error.subStatus?.description.isSubStatus(status: .expiredAccessToken) == true ? AuthLoggable.finalizeDevicePollingLimitReached : AuthLoggable.finalizeDeviceLoginNetworkError(error: error)
+			
+			loggable.log()
 		}
 
 		return response
