@@ -1,4 +1,6 @@
 import Foundation
+import Logging
+import Common
 
 // MARK: - TidalAuth
 
@@ -16,8 +18,12 @@ public class TidalAuth: Auth & CredentialsProvider {
 		let tokensStore = DefaultTokensStore(credentialsKey: config.credentialsKey, credentialsAccessGroup: config.credentialsAccessGroup)
 		loginRepository = provideLoginRepository(config, tokensStore: tokensStore)
 		tokenRepository = provideTokenRepository(config, tokensStore: tokensStore)
+		
+		// if logger is not provided, use logger that does nothing
+		let logHandlerFactory = config.logHandlerFactory ?? { _ in SwiftLogNoOpLogHandler() }
+		LoggingSystem.bootstrap(logHandlerFactory)
 	}
-
+	
 	private func provideLoginRepository(_ config: AuthConfig, tokensStore: TokensStore) -> LoginRepository {
 		LoginRepository(
 			authConfig: config,
