@@ -933,6 +933,63 @@ extension PlayLogTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
+	func test_setNext_and_load_and_play_and_skipToNext() {
+		// GIVEN
+		uuid = "uuid2"
+		let audioFile2 = longAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile2)
+		let mediaProduct2 = audioFile2.mediaProduct
+
+		// WHEN
+		// setNext called before an initial load doesn't do anything
+		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
+
+		uuid = "uuid1"
+		let audioFile1 = shortAudioFile
+		setAudioFileResponseToURLProtocol(audioFile: audioFile1)
+
+		let mediaProduct1 = audioFile1.mediaProduct
+
+		// Now actually load the first media product.
+		playerEngine.load(mediaProduct1, timestamp: timestamp)
+
+		optimizedWait {
+			playerEngine.currentItem != nil
+		}
+
+		playerEngine.play(timestamp: timestamp)
+
+		// skipToNext doesn't do anything since there's no nextItem
+		playerEngine.skipToNext(timestamp: timestamp)
+
+		// Now we wait the same amount of the duration of the track plus extra time
+		let expectation = expectation(description: "Expecting audio file to have been played")
+		_ = XCTWaiter.wait(
+			for: [expectation],
+			timeout: shortAudioFile.duration + Constants.expectationExtraTime
+		)
+
+		// THEN
+		optimizedWait {
+			playerEventSender.playLogEvents.count == 1
+		}
+		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
+
+		let playLogEvent = playerEventSender.playLogEvents[0]
+		let expectedPlayLogEvent = PlayLogEvent.mock(
+			startAssetPosition: 0,
+			requestedProductId: mediaProduct1.productId,
+			actualProductId: mediaProduct1.productId,
+			actualQuality: AudioQuality.LOSSLESS.rawValue,
+			sourceType: Constants.PlayLogSource.short.sourceType,
+			sourceId: Constants.PlayLogSource.short.sourceId,
+			actions: [],
+			endTimestamp: timestamp,
+			endAssetPosition: audioFile1.duration
+		)
+		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
+	}
+
 	func test_load_and_play_and_setNext_and_skipToNext_and_reset() {
 		// GIVEN
 		uuid = "uuid1"
