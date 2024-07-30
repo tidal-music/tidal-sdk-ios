@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.3.27] - 2024-07-30 
+### New
+- Use [swift-log](https://github.com/apple/swift-log) library for logging different events (Auth)
+
 ### Fixed
 - Fixed crash for the new cache implementation in AVQueuePlayerWrapper (Player)
 
