@@ -1,4 +1,3 @@
-import Common
 import Foundation
 
 // MARK: - HTTPService
@@ -31,7 +30,7 @@ extension HTTPService {
 		
 		return request
 	}
-
+	
 	func executeRequest<T: Decodable>(_ request: URLRequest) async throws -> T {
 		// Send the request asynchronously
 		let (data, response) = try await URLSession.shared.data(for: request)

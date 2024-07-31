@@ -50,7 +50,7 @@ public struct Credentials: Codable, Hashable {
 	init(
 		authConfig: AuthConfig,
 		response: RefreshResponse
-	) throws {
+	) {
 		self.init(
 			authConfig: authConfig,
 			grantedScopes: response.scopesString.toScopes(),

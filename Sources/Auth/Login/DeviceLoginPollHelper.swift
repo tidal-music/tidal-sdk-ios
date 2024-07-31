@@ -64,7 +64,7 @@ struct DeviceLoginPollHelper {
 	private class PollErrorPolicy: AuthErrorPolicy {
 		func handleError<T>(errorResponse: ErrorResponse?, throwable: Error?) -> AuthResult<T> {
 			guard let throwable = throwable as? NetworkError else {
-				return .failure(NetworkError(code: "0", throwable: nil))
+				return .failure(NetworkError(code: "0", throwable: throwable))
 			}
 
 			let subStatus = ApiErrorSubStatus.allCases.first(where: { $0.rawValue == errorResponse?.subStatus.description })
