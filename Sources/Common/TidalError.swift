@@ -1,6 +1,6 @@
 import Foundation
 
-open class TidalError: Error {
+open class TidalError: LocalizedError {
 	public let code: String
 	public let subStatus: Int?
 	public let message: String?
@@ -16,5 +16,9 @@ open class TidalError: Error {
 		self.subStatus = subStatus
 		self.message = message
 		self.throwable = throwable
+	}
+	
+	public var errorDescription: String? {
+		"\(self), code: \(code), substatus: \(subStatus?.description ?? "nil"), message: \(message ?? "nil"), throwable: \(throwable.map { "\($0)" } ?? "nil"), throwable description: \(throwable?.localizedDescription ?? "nil")"
 	}
 }

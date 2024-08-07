@@ -38,7 +38,7 @@ struct TokenRepository {
 	mutating func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
 		var upgradedRefreshToken: String?
 		let tokens = try loadTokensFromStore()
-
+		
 		let result: AuthResult<Credentials>
 		if let tokens, needsCredentialsUpgrade {
 			let upgradeCredentials = try await upgradeToken(storedTokens: tokens)
@@ -62,21 +62,44 @@ struct TokenRepository {
 			return .success(credentials)
 		}
 
+		var refreshCredentialsBlock: (() async -> AuthResult<RefreshResponse>)?
+		var networkErrorLoggableBlock: ((Error) -> AuthLoggable)?
+		
 		// if a refreshToken is available, we'll use it
 		if let refreshToken = storedTokens?.refreshToken {
-			return await refreshCredentials { await refreshUserAccessToken(refreshToken: refreshToken) }
+			refreshCredentialsBlock = { await refreshUserAccessToken(refreshToken: refreshToken) }
+			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenNetworkError(error: $0) }
+		} else if let clientSecret = authConfig.clientSecret {
+			// if nothing is stored, we will try and refresh using a client secret
+			AuthLoggable.getCredentialsRefreshTokenIsNotAvailable.log()
+			refreshCredentialsBlock = { await getClientAccessToken(clientSecret: clientSecret) }
+			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: $0) }
+		}
+		
+		if let refreshCredentialsBlock {
+			let authResult = await refreshCredentialsBlock()
+				.map { Credentials(authConfig: authConfig, response: $0) }
+			
+			switch (authResult, networkErrorLoggableBlock) {
+			case (.failure(let error), _) where shouldLogoutWithLowerLevelTokenAfterUpdate(error: error):
+				AuthLoggable.authLogout(reason: "User credentials were downgraded to client credentials after updating token", error: error).log()
+				return .success(.init(authConfig: authConfig))
+
+			case (.failure(let error), .some(let networkErrorLoggableBlock)):
+				networkErrorLoggableBlock(error).log()
+				
+			default: break
+			}
+			
+			return authResult
 		}
 
-		// if nothing is stored, we will try and refresh using a client secret
-		if let clientSecret = authConfig.clientSecret {
-			return await refreshCredentials { await getClientAccessToken(clientSecret: clientSecret) }
-		}
-
+		AuthLoggable.authLogout(reason: "No refresh token or client secret available").log()
 		return logout()
 	}
 
 	private func upgradeToken(storedTokens: Tokens) async throws -> AuthResult<Tokens> {
-		let response = await retryWithPolicy(upgradeBackoffPolicy) {
+		let result = await retryWithPolicy(upgradeBackoffPolicy) {
 			guard let refreshToken = storedTokens.refreshToken,
 			      let clientUniqueKey = authConfig.clientUniqueKey
 			else {
@@ -91,24 +114,32 @@ struct TokenRepository {
 				scopes: authConfig.scopes.toScopesString(),
 				grantType: GRANT_TYPE_UPGRADE
 			)
-		}
-
-		if let successData = response.successData {
+		}.map { successData in
 			let credentials = Credentials(
 				authConfig: authConfig,
 				userId: successData.userId.map { "\($0)" },
 				expiresIn: successData.expiresIn,
 				token: successData.accessToken
 			)
-
-			let result: AuthResult<Tokens> = .success(Tokens(
+			
+			return Tokens(
 				credentials: credentials,
 				refreshToken: successData.refreshToken
-			))
-			return result
+			)
+		}.mapError { error in
+			return RetryableError(code: "1", throwable: error) as TidalError
 		}
-
-		return .failure(RetryableError(code: "1"))
+		
+		switch result {
+		case .success(let tokens):
+			if tokens.credentials.token == nil {
+				AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse.log()
+			}
+		case .failure(let error):
+			AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error).log()
+		}
+		
+		return result
 	}
 
 	private func logout() -> AuthResult<Credentials> {
@@ -120,28 +151,16 @@ struct TokenRepository {
 			token: nil
 		))
 	}
-
-	private func refreshCredentials(apiCall: () async -> AuthResult<RefreshResponse>) async -> AuthResult<Credentials> {
-		let result = await apiCall()
-		switch result {
-		case let .success(data):
-			do {
-				let credentials = try Credentials(authConfig: authConfig, response: data)
-				return .success(credentials)
-			} catch {
-				return .failure(error.toTidalError)
-			}
-		case let .failure(message):
-			var refreshResult: AuthResult<Credentials> = .failure(message)
-			if let errorCode = (message as? UnexpectedError)?.code, let code = Int(errorCode) {
-				if code <= HTTP_UNAUTHORIZED {
-					// if code 400, 401, the user is effectively logged out
-					// and we return a lower level token
-					refreshResult = .success(Credentials(authConfig: authConfig))
-				}
-			}
-
-			return refreshResult
+	
+	private func shouldLogoutWithLowerLevelTokenAfterUpdate(error: TidalError) -> Bool {
+		if let errorCode = (error as? UnexpectedError)?.code,
+		   let code = Int(errorCode),
+		   code <= HTTP_UNAUTHORIZED {
+			// if code 400, 401, the user is effectively logged out
+			// and we return a lower level token
+			return true
+		} else {
+			return false
 		}
 	}
 
