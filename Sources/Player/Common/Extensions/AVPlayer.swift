@@ -5,6 +5,7 @@ extension AVPlayer {
 	func seek(to position: Double) async -> Bool {
 		await withCheckedContinuation { continuation in
 			guard let currentItem else {
+				continuation.resume(returning: false)
 				return
 			}
 
