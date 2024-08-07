@@ -6,7 +6,6 @@ import XCTest
 private enum Constants {
 	static let prefix = "cachetests"
 	static let timeToLive: Int = 1
-	static let waitTime: TimeInterval = 1
 
 	static let key = "1".data(using: .utf8)!
 	static let data = "data".data(using: .utf8)!
@@ -114,15 +113,13 @@ extension CacheTests {
 		// WHEN
 		cache.delete(key: key)
 
-		let expectation = expectation(description: "Expecting cache to have cleared requested data.")
-		_ = XCTWaiter.wait(for: [expectation], timeout: Constants.waitTime)
+		optimizedWait {
+			cache.cache.cachedResponse(for: request)?.data == nil
+		}
 
 		// THEN
-		let responseAfterDeletion = cache.cache.cachedResponse(for: request)
-		XCTAssertEqual(responseAfterDeletion?.data, nil)
-
-		let responseAfterDeletion2 = cache.get(key: key)
-		XCTAssertEqual(responseAfterDeletion2, nil)
+		let responseAfterDeletion = cache.get(key: key)
+		XCTAssertEqual(responseAfterDeletion, nil)
 	}
 }
 
