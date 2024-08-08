@@ -709,14 +709,20 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	static func errorLog(playerItem: AVPlayerItem) -> String {
-		guard let log = playerItem.errorLog(),
-		      let data = log.extendedLogData(),
-		      let logString = NSString(data: data, encoding: log.extendedLogDataStringEncoding)
-		else {
+		guard let log = playerItem.errorLog() else {
 			return "empty"
 		}
 
-		return logString as String
+		let eventsString: String
+		let events = "Log Events: " + log.events.description
+
+		guard let data = log.extendedLogData(),
+		      let logString = NSString(data: data, encoding: log.extendedLogDataStringEncoding)
+		else {
+			return "empty / \(events)"
+		}
+
+		return "\(logString as String) / \(events)"
 	}
 }
 
