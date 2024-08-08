@@ -10,14 +10,14 @@ public extension AVPlayerItemErrorLogEvent {
 		}
 
 		return """
-			Error Log Event: Date: \(
-				date?
-					.description ?? "N/A"
-		), URI: \(uri ?? "N/A"), Server Address: \(serverAddress ??
-			"N/A"), Playback Session ID: \(playbackSessionID ??
-			"N/A"), Error Status Code: \(errorStatusCode), Error Domain: \(errorDomain), Error Comment: \(errorComment ??
-			"N/A"), HTTP Response Header Fields: \(httpResponseHeaderFields)
-			"""
+		Error Log Event: Date: \(date?.description ?? "N/A"),
+		URI: \(uri ?? "N/A"), Server Address: \(serverAddress ?? "N/A"),
+		Playback Session ID: \(playbackSessionID ?? "N/A"),
+		Error Status Code: \(errorStatusCode),
+		Error Domain: \(errorDomain),
+		Error Comment: \(errorComment ?? "N/A"),
+		HTTP Response Header Fields: \(httpResponseHeaderFields)
+		"""
 	}
 }
 
