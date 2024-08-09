@@ -229,8 +229,16 @@ extension PlayerItem: PlayerMonitoringDelegate {
 		guard let asset, asset === self.asset else {
 			return
 		}
+		// Due to the periodic timer frequency in PlaybackTimeProgressMonitor, it's possible an item starts playing right after the
+		// observer has just executed the on-progress block, meaning we might get an asset position which is not zero when we start
+		// to play an item. In this case, we will force the asset position to be zero just for the metrics collection.
+		let assetPosition = asset.getAssetPosition()
+		if assetPosition > 0, assetPosition < PlaybackTimeProgressMonitorConstants.timeInterval {
+			metrics?.recordProgress(at: 0)
+		} else {
+			metrics?.recordProgress(at: assetPosition)
+		}
 
-		metrics?.recordProgress(at: asset.getAssetPosition())
 		playerItemMonitor?.playing(playerItem: self)
 	}
 
