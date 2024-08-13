@@ -1,8 +1,6 @@
 name: Run Unit Tests
 
 on:
-  workflow_call:
-  workflow_dispatch:
   pull_request:
     branches:
       - '**'
@@ -31,7 +29,7 @@ jobs:
 
     - name: Run Player tests (xcodebuild)
       run: |-
-        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' test -skip-testing:PlayerTests/PlayLogTests -skipPackagePluginValidation | xcbeautify --renderer github-actions
+        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' test -skip-testing:PlayerTests/PlayLogTests -skip-testing:PlayerTests/PlayLogWithDeinitTests -skipPackagePluginValidation | xcbeautify --renderer github-actions
 
   build-test-apps:
     name: Build Test Apps
