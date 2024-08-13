@@ -145,9 +145,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 					self.internalReset()
 					return
 				}
-				if self.player.canInsert(nextPlayerItem, after: nil) {
-					self.player.insert(nextPlayerItem, after: nil)
-				}
+				self.enqueue(playerItem: nextPlayerItem)
 				self.player.advanceToNextItem()
 			} else {
 				if self.player.items().contains(playerItem) {
@@ -166,7 +164,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 				guard let (playerItem, _) = self.playerItemAssets.first else {
 					return
 				}
-				self.player.insert(playerItem, after: nil)
+				self.enqueue(playerItem: playerItem)
 			}
 			self.player.play()
 		}
@@ -359,13 +357,13 @@ private extension AVQueuePlayerWrapper {
 		// Items in the AVPlayer queue are not downloaded in advance
 		// This way the next item in the queue can be downloaded in advance.
 		if cacheState == nil {
-			player.insert(playerItem, after: nil)
+			enqueue(playerItem: playerItem)
 		} else if let state = cacheState {
 			switch state.status {
 			case .notCached:
 				assetFactory.cacheAsset(urlAsset, for: state.key)
 			case .cached:
-				player.insert(playerItem, after: nil)
+				enqueue(playerItem: playerItem)
 			}
 		}
 
@@ -411,6 +409,12 @@ private extension AVQueuePlayerWrapper {
 	func register(playerItem: AVPlayerItem, for asset: AVPlayerAsset) {
 		monitor(playerItem)
 		playerItemAssets[playerItem] = asset
+	}
+
+	func enqueue(playerItem: AVPlayerItem) {
+		if player.canInsert(playerItem, after: nil) {
+			player.insert(playerItem, after: nil)
+		}
 	}
 
 	func readPlaybackMetadata(playerItem: AVPlayerItem) {
@@ -572,7 +576,7 @@ private extension AVQueuePlayerWrapper {
 			} else {
 				// AVPlayer had no other item in the queue (we are still downloading the next one)
 				if let (nextPlayerItem, _) = self.playerItemAssets.first {
-					self.player.insert(nextPlayerItem, after: nil)
+					self.enqueue(playerItem: nextPlayerItem)
 				} else {
 					self.internalReset()
 				}
@@ -623,7 +627,7 @@ extension AVQueuePlayerWrapper: AssetFactoryDelegate {
 			let cachedPlayerItem = AVQueuePlayerWrapper.createPlayerItem(urlAsset)
 			self.register(playerItem: cachedPlayerItem, for: asset)
 
-			self.player.insert(cachedPlayerItem, after: nil)
+			self.enqueue(playerItem: cachedPlayerItem)
 		}
 	}
 }
@@ -705,14 +709,20 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	static func errorLog(playerItem: AVPlayerItem) -> String {
-		guard let log = playerItem.errorLog(),
-		      let data = log.extendedLogData(),
-		      let logString = NSString(data: data, encoding: log.extendedLogDataStringEncoding)
-		else {
+		guard let log = playerItem.errorLog() else {
 			return "empty"
 		}
 
-		return logString as String
+		let eventsString: String
+		let events = "Log Events: " + log.events.description
+
+		guard let data = log.extendedLogData(),
+		      let logString = NSString(data: data, encoding: log.extendedLogDataStringEncoding)
+		else {
+			return "empty / \(events)"
+		}
+
+		return "\(logString as String) / \(events)"
 	}
 }
 
