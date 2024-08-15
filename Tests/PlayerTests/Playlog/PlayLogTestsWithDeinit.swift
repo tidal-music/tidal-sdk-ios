@@ -1236,6 +1236,9 @@ extension PlayLogWithDeinitTests {
 
 		// THEN
 		waitForPlayerToBeInState(.IDLE)
+		optimizedWait {
+			playerEventSender.playLogEvents.count == 2
+		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
