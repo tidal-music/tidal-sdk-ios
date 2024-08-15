@@ -1118,16 +1118,19 @@ extension PlayLogTests {
 			return
 		}
 
+		print("--> playerEngine.getAssetPosition() = \(playerEngine.getAssetPosition()) after currentItem")
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
 		wait(for: currentItem, toReach: pauseAssetPosition)
 		playerEngine.pause()
 		waitForPlayerToPause()
+		print("--> playerEngine.getAssetPosition() = \(playerEngine.getAssetPosition()) after pause")
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
 		playerEngine.seek(seekAssetPosition)
 		wait(for: currentItem, toReach: seekAssetPosition)
+		print("--> playerEngine.getAssetPosition() = \(playerEngine.getAssetPosition()) after seek")
 
 		playerEngine.play(timestamp: timestamp)
 
