@@ -796,6 +796,7 @@ extension PlayLogWithDeinitTests {
 		)
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			playerEventSender.playLogEvents.count == 2
 		}
@@ -955,6 +956,7 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			playerEventSender.playLogEvents.count == 2
 		}
@@ -1115,6 +1117,7 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			playerEventSender.playLogEvents.count == 2
 		}
@@ -1348,9 +1351,9 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait(timeout: shortAudioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 2
+			playerEventSender.playLogEvents.count == 2
 		}
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
@@ -1447,9 +1450,9 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait(timeout: shortAudioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 2
+			playerEventSender.playLogEvents.count == 2
 		}
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]

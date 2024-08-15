@@ -765,9 +765,9 @@ extension PlayLogTests {
 		)
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 2
+			playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
@@ -1062,9 +1062,9 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 2
+			playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
