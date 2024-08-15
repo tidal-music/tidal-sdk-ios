@@ -1111,7 +1111,8 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			playerEngine.currentItem != nil
+			playerEngine.currentItem != nil &&
+				playerEngine.getState() == .PLAYING
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -1125,6 +1126,10 @@ extension PlayLogTests {
 		playerEngine.pause()
 		waitForPlayerToPause()
 		print("--> playerEngine.getAssetPosition() = \(playerEngine.getAssetPosition()) after pause")
+//		waitForPlayerToPause()//FAILS
+		optimizedWait {
+			playerEngine.getState() == .NOT_PLAYING
+		}
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -1147,6 +1152,11 @@ extension PlayLogTests {
 
 		playerEngine.pause()
 		waitForPlayerToPause()
+
+		optimizedWait {
+			playerEngine.getState() == .NOT_PLAYING
+		}
+//		waitForPlayerToPause()
 
 		playerEngine.play(timestamp: timestamp)
 
