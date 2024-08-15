@@ -20,7 +20,7 @@ private enum Constants {
 	static let encoder = JSONEncoder()
 
 	static let expectationExtraTime: TimeInterval = 2
-	static let timerTimeInterval = 0.01
+	static let timerTimeInterval = 0.05
 	static let expectationShortExtraTime: TimeInterval = 0.5
 }
 
@@ -221,7 +221,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
@@ -399,7 +399,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -464,7 +464,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek back to 2 seconds
 		let seekAssetPosition: Double = 2
@@ -529,7 +529,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
@@ -541,7 +541,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
@@ -1149,7 +1149,6 @@ extension PlayLogWithDeinitTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
-	// TODO: Fix issue with start asset time
 	func test_load_and_play_and_pause_and_seek_and_play_and_setNext_and_pause_and_play_and_skipToNext_and_seek_and_reset() {
 		// GIVEN
 		uuid = "uuid1"
@@ -1164,7 +1163,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			playerEngine.currentItem != nil
+			playerEngine.currentItem != nil &&
+				playerEngine.getState() == .PLAYING
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -1177,7 +1177,7 @@ extension PlayLogWithDeinitTests {
 		let pauseAssetPosition: Double = 2
 		wait(for: currentItem!, toReach: pauseAssetPosition)
 		playerEngine.pause()
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -1198,7 +1198,7 @@ extension PlayLogWithDeinitTests {
 		}
 
 		playerEngine.pause()
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		playerEngine.play(timestamp: timestamp)
 
@@ -1222,7 +1222,7 @@ extension PlayLogWithDeinitTests {
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
 		playerEngine.seek(seekAssetPosition2)
-		wait(for: nextCurrentItem!, toReach: seekAssetPosition)
+		wait(for: nextCurrentItem!, toReach: seekAssetPosition2)
 
 		// Wait for the track to reach 59 seconds
 		let resetAssetPosition: Double = 59
@@ -1235,9 +1235,7 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
-		optimizedWait {
-			playerEventSender.playLogEvents.count == 2
-		}
+		waitForPlayerToBeInState(.IDLE)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
@@ -1557,25 +1555,38 @@ extension PlayLogWithDeinitTests {
 	func wait(for playerItem: PlayerItem, toReach targetAssetPosition: Double) {
 		let trackReachedAssetPositionExpectation =
 			XCTestExpectation(description: "Expected for the track to reach \(targetAssetPosition) second(s)")
-		let timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { _ in
-			if playerItem.assetPosition >= targetAssetPosition {
-				trackReachedAssetPositionExpectation.fulfill()
+
+		var timer: Timer?
+		DispatchQueue.main.async {
+			timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { timer in
+				if playerItem.assetPosition >= targetAssetPosition {
+					trackReachedAssetPositionExpectation.fulfill()
+					timer.invalidate()
+				}
 			}
+			RunLoop.main.add(timer!, forMode: .default)
 		}
+
 		wait(for: [trackReachedAssetPositionExpectation], timeout: targetAssetPosition + Constants.expectationExtraTime)
-		timer.invalidate()
+		timer?.invalidate()
 	}
 
-	func waitForPlayerToPause() {
-		// Wait for the state to be changed to NOT_PLAYING
-		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to NOT_PLAYING")
-		let timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { _ in
-			if self.playerEngine.getState() == .NOT_PLAYING {
-				pauseTrackExpectation.fulfill()
+	func waitForPlayerToBeInState(_ state: State) {
+		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
+
+		var timer: Timer?
+		DispatchQueue.main.async {
+			timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { timer in
+				if self.playerEngine.getState() == state {
+					pauseTrackExpectation.fulfill()
+					timer.invalidate()
+				}
 			}
+			RunLoop.main.add(timer!, forMode: .default)
 		}
+
 		wait(for: [pauseTrackExpectation], timeout: Constants.expectationShortExtraTime)
-		timer.invalidate()
+		timer?.invalidate()
 	}
 }
 

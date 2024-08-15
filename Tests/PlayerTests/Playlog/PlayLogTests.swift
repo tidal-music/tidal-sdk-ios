@@ -1167,7 +1167,7 @@ extension PlayLogTests {
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
 		playerEngine.seek(seekAssetPosition2)
-		wait(for: nextCurrentItem, toReach: seekAssetPosition)
+		wait(for: nextCurrentItem, toReach: seekAssetPosition2)
 
 		// Wait for the track to reach 59 seconds
 		let resetAssetPosition: Double = 59
@@ -1499,7 +1499,7 @@ extension PlayLogTests {
 	}
 
 	func waitForPlayerToBeInState(_ state: State) {
-		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to NOT_PLAYING")
+		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
 
 		var timer: Timer?
 		DispatchQueue.main.async {
