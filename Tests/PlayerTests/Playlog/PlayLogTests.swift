@@ -704,7 +704,7 @@ extension PlayLogTests {
 
 		// THEN
 		waitForPlayerToBeInState(.IDLE)
-		optimizedWait(timeout: audioFile.duration) {
+		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -863,7 +863,9 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true &&
+				self.playerEngine.getState() != .IDLE
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -883,6 +885,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let startSeekAssetPosition: Double = 2
