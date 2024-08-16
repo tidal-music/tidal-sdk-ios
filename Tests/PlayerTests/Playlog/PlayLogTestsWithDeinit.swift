@@ -758,7 +758,6 @@ extension PlayLogWithDeinitTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
 	}
 
-	// TODO: Fix issue with start asset time
 	func test_load_and_setNext_and_play() {
 		// GIVEN
 		uuid = "uuid1"
@@ -1315,9 +1314,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.resetOrUnload()
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		setUpPlayerEngine()
 
@@ -1417,9 +1414,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.resetOrUnload()
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		setUpPlayerEngine()
 
@@ -1577,7 +1572,7 @@ extension PlayLogWithDeinitTests {
 		timer?.invalidate()
 	}
 
-	func waitForPlayerToBeInState(_ state: State) {
+	func waitForPlayerToBeInState(_ state: State, timeout: TimeInterval = Constants.expectationExtraTime) {
 		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
 
 		var timer: Timer?
@@ -1591,7 +1586,7 @@ extension PlayLogWithDeinitTests {
 			RunLoop.main.add(timer!, forMode: .default)
 		}
 
-		wait(for: [pauseTrackExpectation], timeout: Constants.expectationShortExtraTime)
+		wait(for: [pauseTrackExpectation], timeout: timeout)
 		timer?.invalidate()
 	}
 }
