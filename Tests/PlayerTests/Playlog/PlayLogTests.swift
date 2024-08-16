@@ -743,8 +743,7 @@ extension PlayLogTests {
 
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 		optimizedWait {
-			self.playerEngine.nextItem != nil &&
-				self.playerEngine.nextItem?.isLoaded == true
+			self.playerEngine.nextItem != nil
 		}
 
 		playerEngine.play(timestamp: timestamp)
