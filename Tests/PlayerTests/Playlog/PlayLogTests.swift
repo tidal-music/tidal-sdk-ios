@@ -1106,7 +1106,6 @@ extension PlayLogTests {
 		optimizedWait {
 			self.playerEngine.currentItem != nil
 		}
-		waitForPlayerToBeInState(.PLAYING, timeout: 10)
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
