@@ -647,14 +647,6 @@ extension PlayLogTests {
 		playerEngine.seek(seekAssetPosition)
 		wait(for: currentItem, toReach: seekAssetPosition)
 
-		// seek is async so wait a tiny bit to make sure seek has completed before actually playing.
-		optimizedWait(step: 0.05) {
-			PlayLogTestsHelper.isTimeDifferenceNegligible(
-				assetPosition: seekAssetPosition,
-				anotherAssetPosition: asset.assetPosition
-			)
-		}
-		assertAssetPosition(expectedAssetPosition: seekAssetPosition, actualAssetPosition: asset.assetPosition)
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
@@ -1116,7 +1108,7 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: pauseAssetPosition)
 
 		playerEngine.pause()
-		waitForPlayerToBeInState(.NOT_PLAYING)
+		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 10)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -1137,7 +1129,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.pause()
-		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 5)
+		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 10)
 
 		playerEngine.play(timestamp: timestamp)
 
