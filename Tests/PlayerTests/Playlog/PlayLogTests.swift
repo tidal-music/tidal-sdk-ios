@@ -1125,7 +1125,7 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: pauseAssetPosition)
 
 		playerEngine.pause()
-		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 10)
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -1133,6 +1133,7 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Afterwards we load the second media product with setNext.
 		uuid = "uuid2"
@@ -1142,21 +1143,20 @@ extension PlayLogTests {
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.nextItem != nil &&
-				self.playerEngine.nextItem?.isLoaded == true
+			self.playerEngine.nextItem != nil
 		}
 
 		playerEngine.pause()
-		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 10)
+		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 5)
 
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING, timeout: 10)
+		waitForPlayerToBeInState(.PLAYING, timeout: 5)
 
 		// Wait for the track to reach 4 seconds
 		let skipToNextAssetPosition: Double = 4
 		wait(for: currentItem, toReach: skipToNextAssetPosition)
 		playerEngine.skipToNext(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING, timeout: 10)
+		waitForPlayerToBeInState(.PLAYING, timeout: 5)
 
 		// Wait until the previously next item is now the current item
 		optimizedWait {
