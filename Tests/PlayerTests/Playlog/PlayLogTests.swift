@@ -1108,18 +1108,17 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
+		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true
+				self.playerEngine.currentItem?.isLoaded == true &&
+				self.playerEngine.getState() != .IDLE
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
-
-		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING, timeout: 5)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
