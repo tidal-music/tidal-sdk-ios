@@ -730,7 +730,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.getState() != .IDLE
 		}
 
 		// Afterwards we load the second media product with setNext and finally play.
@@ -1012,7 +1013,8 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.getState() == .PLAYING
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
