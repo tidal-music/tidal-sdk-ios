@@ -65,9 +65,9 @@ extension DJProducerTests {
 		djProducer.start(Constants.title, with: .mock(), at: 0)
 
 		// Then
-		optimizedWait(until: {
-			djProducerListener.djSessionStartedMetadatas.count == 1
-		})
+		optimizedWait {
+			self.djProducerListener.djSessionStartedMetadatas.count == 1
+		}
 
 		let expectedDJSessionMetadata = DJSessionMetadata(
 			sessionId: Constants.createBroadcastResponse.broadcastId,
@@ -91,9 +91,9 @@ extension DJProducerTests {
 		djProducer.start(Constants.title, with: .mock(), at: 0)
 
 		// Then
-		optimizedWait(until: {
-			djProducerListener.djSessionEndReasons.count == 1
-		})
+		optimizedWait {
+			self.djProducerListener.djSessionEndReasons.count == 1
+		}
 
 		let expectedDJSessionMetadata = DJSessionEndReason.failedToStart(code: "1")
 		XCTAssertEqual(djProducerListener.djSessionEndReasons, [expectedDJSessionMetadata])
