@@ -1165,9 +1165,9 @@ extension PlayLogWithDeinitTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			playerEngine.currentItem != nil &&
-				playerEngine.getState() == .PLAYING
+			playerEngine.currentItem != nil
 		}
+		waitForPlayerToBeInState(.PLAYING)
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
 		guard currentItem != nil else {
