@@ -772,6 +772,7 @@ extension PlayLogWithDeinitTests {
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true &&
 				self.playerEngine.getState() != .IDLE
 		}
 
