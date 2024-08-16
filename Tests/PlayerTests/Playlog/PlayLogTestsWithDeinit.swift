@@ -797,9 +797,9 @@ extension PlayLogWithDeinitTests {
 		)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE)
-		optimizedWait {
-			self.playerEventSender.playLogEvents.count == 2
+		optimizedWait(timeout: shortAudioFile.duration + longAudioFile.duration) {
+			self.playerEventSender.playLogEvents.count == 2 &&
+				self.playerEngine.getState() == .IDLE
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
