@@ -1122,7 +1122,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
+		waitForPlayerToBeInState(.PLAYING, timeout: 5)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
