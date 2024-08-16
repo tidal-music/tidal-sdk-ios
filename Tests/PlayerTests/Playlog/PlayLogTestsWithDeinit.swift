@@ -1360,7 +1360,7 @@ extension PlayLogWithDeinitTests {
 
 		// THEN
 		waitForPlayerToBeInState(.IDLE)
-		optimizedWait(timeout: shortAudioFile.duration) {
+		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
 		}
 
