@@ -1177,7 +1177,9 @@ extension PlayLogTests {
 
 		// THEN
 		waitForPlayerToBeInState(.IDLE)
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
+		optimizedWait {
+			playerEventSender.playLogEvents.count == 2
+		}
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
 		let actions1 = [
