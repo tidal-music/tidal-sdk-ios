@@ -1233,6 +1233,9 @@ extension PlayLogTests {
 		playerEngine.notificationsHandler = nil
 		playerEngine.resetOrUnload()
 
+		let expectation = expectation(description: "Wait for the async work to be done.")
+		_ = XCTWaiter.wait(for: [expectation], timeout: 5)
+
 		// Wait for the player engine state to be IDLE.
 		waitForPlayerToBeInState(.IDLE)
 
@@ -1324,6 +1327,9 @@ extension PlayLogTests {
 		// This is in order to simulate the following scenario: load and play a track, load and play another track.
 		playerEngine.notificationsHandler = nil
 		playerEngine.resetOrUnload()
+
+		let expectation = expectation(description: "Wait for the async work to be done.")
+		_ = XCTWaiter.wait(for: [expectation], timeout: 5)
 
 		// Wait for the player engine state to be IDLE.
 		waitForPlayerToBeInState(.IDLE)
@@ -1478,20 +1484,20 @@ extension PlayLogTests {
 	}
 
 	func waitForPlayerToBeInState(_ state: State, timeout: TimeInterval = Constants.expectationExtraTime) {
-		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
+		let stateExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
 
 		var timer: Timer?
 		DispatchQueue.main.async {
 			timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { timer in
 				if self.playerEngine.getState() == state {
-					pauseTrackExpectation.fulfill()
+					stateExpectation.fulfill()
 					timer.invalidate()
 				}
 			}
 			RunLoop.main.add(timer!, forMode: .default)
 		}
 
-		wait(for: [pauseTrackExpectation], timeout: timeout)
+		wait(for: [stateExpectation], timeout: timeout)
 		timer?.invalidate()
 	}
 }
