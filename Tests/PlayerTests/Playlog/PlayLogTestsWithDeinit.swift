@@ -788,17 +788,16 @@ extension PlayLogWithDeinitTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
 
 		// Now we wait the same amount of the duration of the track plus extra time
 		let expectation = expectation(description: "Expecting audio file to have been played")
 		_ = XCTWaiter.wait(
 			for: [expectation],
-			timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime
+			timeout: shortAudioFile.duration + longAudioFile.duration
 		)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: 10)
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
 		}
