@@ -912,9 +912,9 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE, timeout: 10)
 		optimizedWait {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 2
+			playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
@@ -1496,7 +1496,7 @@ extension PlayLogTests {
 		timer?.invalidate()
 	}
 
-	func waitForPlayerToBeInState(_ state: State) {
+	func waitForPlayerToBeInState(_ state: State, timeout: TimeInterval = Constants.expectationExtraTime) {
 		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
 
 		var timer: Timer?
@@ -1510,7 +1510,7 @@ extension PlayLogTests {
 			RunLoop.main.add(timer!, forMode: .default)
 		}
 
-		wait(for: [pauseTrackExpectation], timeout: Constants.expectationShortExtraTime)
+		wait(for: [pauseTrackExpectation], timeout: timeout)
 		timer?.invalidate()
 	}
 }
