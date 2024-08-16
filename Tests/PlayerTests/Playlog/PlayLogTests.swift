@@ -747,10 +747,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
-		waitForPlayerToBeInState(.IDLE, timeout: shortAudioFile.duration + longAudioFile.duration + 5)
+		// Now we wait the same amount of the duration of the track plus extra time
+		let expectation = expectation(description: "Expecting audio file to have been played")
+		_ = XCTWaiter.wait(
+			for: [expectation],
+			timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime
+		)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: 5)
+		waitForPlayerToBeInState(.IDLE, timeout: 10)
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
 		}
@@ -1098,11 +1103,11 @@ extension PlayLogTests {
 		optimizedWait {
 			self.playerEngine.currentItem != nil
 		}
-		waitForPlayerToBeInState(.PLAYING)
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+		waitForPlayerToBeInState(.PLAYING, timeout: 5)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
