@@ -172,9 +172,7 @@ extension PlayLogTests {
 		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		// THEN
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -230,9 +228,7 @@ extension PlayLogTests {
 		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		// THEN
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -286,9 +282,9 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime)
 		optimizedWait(timeout: audioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 1
+			playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -340,9 +336,9 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime)
 		optimizedWait(timeout: audioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 1
+			playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -401,9 +397,9 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime)
 		optimizedWait(timeout: audioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 1
+			playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -462,9 +458,9 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime)
 		optimizedWait(timeout: audioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 1
+			playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -531,9 +527,9 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration + Constants.expectationExtraTime)
 		optimizedWait(timeout: audioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 1
+			playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -593,9 +589,9 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekBackAssetPosition)
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekBackAssetPosition + Constants.expectationExtraTime)
 		optimizedWait(timeout: audioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 1
+			playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -649,6 +645,7 @@ extension PlayLogTests {
 		// Seek forward to 2 seconds
 		let seekAssetPosition: Double = 2
 		playerEngine.seek(seekAssetPosition)
+		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// seek is async so wait a tiny bit to make sure seek has completed before actually playing.
 		optimizedWait(step: 0.05) {
@@ -661,9 +658,9 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration + Constants.expectationExtraTime)
 		optimizedWait(timeout: audioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 1
+			playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -708,9 +705,9 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait(timeout: audioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 1
+			playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -912,7 +909,7 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: 10)
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			playerEventSender.playLogEvents.count == 2
 		}
@@ -1277,10 +1274,7 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration + Constants.expectationExtraTime) {
-			playerEngine.getState() == .IDLE
-		}
-
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			playerEventSender.playLogEvents.count == 2
 		}
@@ -1368,10 +1362,7 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration + Constants.expectationExtraTime) {
-			playerEngine.getState() == .IDLE
-		}
-
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			playerEventSender.playLogEvents.count == 2
 		}
