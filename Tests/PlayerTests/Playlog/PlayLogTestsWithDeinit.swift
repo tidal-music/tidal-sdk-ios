@@ -1186,6 +1186,7 @@ extension PlayLogWithDeinitTests {
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
 		wait(for: currentItem!, toReach: pauseAssetPosition)
+
 		playerEngine.pause()
 		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 10)
 

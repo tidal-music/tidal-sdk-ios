@@ -759,13 +759,13 @@ extension PlayLogTests {
 		let expectation = expectation(description: "Expecting audio file to have been played")
 		_ = XCTWaiter.wait(
 			for: [expectation],
-			timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime
+			timeout: shortAudioFile.duration + longAudioFile.duration
 		)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: 10)
 		optimizedWait {
-			self.playerEventSender.playLogEvents.count == 2
+			self.playerEventSender.playLogEvents.count == 2 &&
+				self.playerEngine.getState() == .IDLE
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
