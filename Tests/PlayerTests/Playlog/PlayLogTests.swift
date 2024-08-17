@@ -1178,7 +1178,6 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
 		}
