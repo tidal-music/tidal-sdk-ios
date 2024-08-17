@@ -649,8 +649,7 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration + Constants.expectationExtraTime)
-		optimizedWait(timeout: audioFile.duration) {
+		optimizedWait(timeout: audioFile.duration + Constants.expectationExtraTime) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -1338,7 +1337,6 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let loadSecondTimeAssetPosition: Double = 2
@@ -1349,11 +1347,10 @@ extension PlayLogTests {
 		playerEngine.notificationsHandler = nil
 		playerEngine.resetOrUnload()
 
-		let expectation = expectation(description: "Wait for the async work to be done.")
-		_ = XCTWaiter.wait(for: [expectation], timeout: 5)
-
 		// Wait for the player engine state to be IDLE.
-		waitForPlayerToBeInState(.IDLE)
+		optimizedWait(step: Constants.timerTimeInterval) {
+			self.playerEngine.getState() == .IDLE
+		}
 
 		setUpPlayerEngine()
 
@@ -1379,7 +1376,6 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
 		}
