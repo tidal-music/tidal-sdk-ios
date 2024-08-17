@@ -633,18 +633,11 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
-			return
-		}
-
-		optimizedWait {
-			currentItem.asset != nil
-		}
-		guard let asset = currentItem.asset else {
-			XCTFail("Expected for the currentItem's asset to be set up!")
 			return
 		}
 
