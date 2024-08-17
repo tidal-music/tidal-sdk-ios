@@ -1276,6 +1276,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 1 second
 		let resetAssetPosition: Double = 1
