@@ -913,7 +913,7 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE)
+		waitForPlayerToBeInState(.IDLE, timeout: 5)
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
 		}
