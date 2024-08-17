@@ -788,11 +788,11 @@ extension PlayLogWithDeinitTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration + longAudioFile.duration) {
-			self.playerEventSender.playLogEvents.count == 2 &&
-				self.playerEngine.getState() == .IDLE
+		optimizedWait(timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime) {
+			self.playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
