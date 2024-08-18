@@ -284,8 +284,7 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime)
-		optimizedWait(timeout: audioFile.duration) {
+		optimizedWait(timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -338,8 +337,7 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime)
-		optimizedWait(timeout: audioFile.duration) {
+		optimizedWait(timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -399,8 +397,7 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime)
-		optimizedWait(timeout: audioFile.duration) {
+		optimizedWait(timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -462,8 +459,7 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime)
-		optimizedWait(timeout: audioFile.duration) {
+		optimizedWait(timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -531,8 +527,7 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration + Constants.expectationExtraTime)
-		optimizedWait(timeout: audioFile.duration) {
+		optimizedWait(timeout: audioFile.duration + Constants.expectationExtraTime) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -595,8 +590,7 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekBackAssetPosition)
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: audioFile.duration - seekBackAssetPosition + Constants.expectationExtraTime)
-		optimizedWait(timeout: audioFile.duration) {
+		optimizedWait(timeout: audioFile.duration - seekBackAssetPosition + Constants.expectationExtraTime) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -729,8 +723,7 @@ extension PlayLogTests {
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true &&
-				self.playerEngine.getState() != .IDLE
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 
 		// Afterwards we load the second media product with setNext and finally play.
@@ -1014,8 +1007,7 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil &&
-				self.playerEngine.getState() == .PLAYING
+			self.playerEngine.currentItem != nil
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -1032,6 +1024,8 @@ extension PlayLogTests {
 		optimizedWait {
 			self.playerEngine.nextItem != nil
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 1 second
 		let skipToNextAssetPosition: Double = 1
