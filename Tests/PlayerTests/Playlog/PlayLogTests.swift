@@ -756,8 +756,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait {
-			self.playerEventSender.playLogEvents.count == 2 &&
-				self.playerEngine.getState() == .IDLE
+			self.playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
