@@ -1123,6 +1123,7 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING, timeout: 5)
 
 		// Afterwards we load the second media product with setNext.
 		uuid = "uuid2"
@@ -1132,8 +1133,7 @@ extension PlayLogTests {
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.nextItem != nil &&
-				self.playerEngine.nextItem?.isLoaded == true
+			self.playerEngine.nextItem != nil
 		}
 
 		playerEngine.pause()
