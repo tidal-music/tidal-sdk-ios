@@ -1146,7 +1146,6 @@ extension PlayLogTests {
 		let skipToNextAssetPosition: Double = 4
 		wait(for: currentItem, toReach: skipToNextAssetPosition)
 		playerEngine.skipToNext(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING, timeout: 10)
 
 		// Wait until the previously next item is now the current item
 		optimizedWait {
@@ -1157,6 +1156,8 @@ extension PlayLogTests {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING, timeout: 10)
 
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
