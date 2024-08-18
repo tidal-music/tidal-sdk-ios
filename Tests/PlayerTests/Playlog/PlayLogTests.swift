@@ -1222,6 +1222,8 @@ extension PlayLogTests {
 		let mediaProduct1 = shortAudioFile.mediaProduct
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
+		playerEngine.play(timestamp: timestamp)
+
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
@@ -1231,7 +1233,6 @@ extension PlayLogTests {
 			return
 		}
 
-		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING, timeout: 5)
 
 		// Wait for the track to reach 2 seconds
