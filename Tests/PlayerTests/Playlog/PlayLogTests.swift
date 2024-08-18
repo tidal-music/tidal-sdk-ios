@@ -1003,7 +1003,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil
@@ -1012,6 +1011,8 @@ extension PlayLogTests {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		playerEngine.play(timestamp: timestamp)
 
 		// Afterwards we load the second media product with setNext.
 		uuid = "uuid2"
