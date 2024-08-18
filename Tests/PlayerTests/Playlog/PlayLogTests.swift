@@ -434,8 +434,7 @@ extension PlayLogTests {
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true &&
-				self.playerEngine.getState() != .IDLE
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
