@@ -736,7 +736,6 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
 
 		// THEN
 		optimizedWait(timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime) {
