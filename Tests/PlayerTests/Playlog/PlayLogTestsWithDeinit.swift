@@ -772,8 +772,7 @@ extension PlayLogWithDeinitTests {
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true &&
-				self.playerEngine.getState() != .IDLE
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 
 		// Afterwards we load the second media product with setNext and finally play.

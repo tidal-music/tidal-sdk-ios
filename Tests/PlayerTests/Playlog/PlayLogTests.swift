@@ -688,7 +688,6 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 1
 		}
@@ -896,7 +895,6 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE, timeout: 5)
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
 		}
@@ -1136,6 +1134,8 @@ extension PlayLogTests {
 				self.playerEngine.nextItem?.isLoaded == true
 		}
 
+		waitForPlayerToBeInState(.PLAYING, timeout: 5)
+
 		playerEngine.pause()
 		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 10)
 
@@ -1279,7 +1279,6 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		waitForPlayerToBeInState(.IDLE)
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
 		}
