@@ -738,18 +738,10 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
-		// Now we wait the same amount of the duration of the track plus extra time
-		let expectation = expectation(description: "Expecting audio file to have been played")
-		_ = XCTWaiter.wait(
-			for: [expectation],
-			timeout: shortAudioFile.duration + longAudioFile.duration
-		)
-
 		// THEN
-		optimizedWait {
+		optimizedWait(timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime) {
 			self.playerEventSender.playLogEvents.count == 2
 		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
 		let expectedPlayLogEvent1 = PlayLogEvent.mock(
@@ -1003,7 +995,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
