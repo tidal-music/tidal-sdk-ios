@@ -2,7 +2,7 @@ import AVFoundation
 import Foundation
 
 final class PlaybackTimeProgressMonitor {
-	private static let INTERVAL = CMTimeMakeWithSeconds(0.1, preferredTimescale: 1000)
+	private static let INTERVAL = CMTimeMakeWithSeconds(PlaybackTimeProgressMonitorConstants.timeInterval, preferredTimescale: 1000)
 
 	private let player: AVPlayer
 	private let onPlaybackProgress: (AVPlayerItem) -> Void

@@ -125,7 +125,13 @@ final class PlayLogTests: XCTestCase {
 		)
 
 		storage = Storage()
-		fairplayLicenseFetcher = FairPlayLicenseFetcher.mock()
+		fairplayLicenseFetcher = FairPlayLicenseFetcher.mock(
+			httpClient: HttpClient(using: urlSession),
+			credentialsProvider: credentialsProvider,
+			playerEventSender: playerEventSender,
+			featureFlagProvider: featureFlagProvider
+		)
+
 		networkMonitor = NetworkMonitorMock()
 
 		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
@@ -139,14 +145,6 @@ final class PlayLogTests: XCTestCase {
 		)
 
 		notificationsHandler = NotificationsHandler.mock()
-		playerLoader = InternalPlayerLoader(
-			with: configuration,
-			and: fairplayLicenseFetcher,
-			featureFlagProvider: featureFlagProvider,
-			credentialsProvider: credentialsProvider,
-			mainPlayer: Player.mainPlayerType(featureFlagProvider),
-			externalPlayers: []
-		)
 
 		setUpPlayerEngine()
 
@@ -172,6 +170,11 @@ extension PlayLogTests {
 		// Now we wait the same amount of the duration of the track plus extra time
 		let expectation = expectation(description: "Expecting audio file to have been played")
 		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
+
+		// Wait for the player engine state to be IDLE.
+		optimizedWait {
+			playerEngine.getState() == .IDLE
+		}
 
 		// THEN
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -226,6 +229,11 @@ extension PlayLogTests {
 		let expectation = expectation(description: "Expecting audio file to have been played")
 		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
 
+		// Wait for the player engine state to be IDLE.
+		optimizedWait {
+			playerEngine.getState() == .IDLE
+		}
+
 		// THEN
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 
@@ -279,7 +287,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -332,7 +341,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -392,7 +402,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -452,7 +463,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -520,7 +532,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -581,7 +594,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -648,7 +662,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -694,7 +709,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -750,7 +766,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait {
-			playerEventSender.playLogEvents.count == 2
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
@@ -896,7 +913,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait {
-			playerEventSender.playLogEvents.count == 2
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
@@ -1030,10 +1048,8 @@ extension PlayLogTests {
 
 		// Wait until the previously next item is now the current item
 		optimizedWait {
-			playerEngine.nextItem == nil &&
-				playerEngine.currentItem?.id == self.uuid
+			playerEngine.currentItem?.id == self.uuid
 		}
-
 		guard let nextCurrentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
@@ -1047,7 +1063,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait {
-			playerEventSender.playLogEvents.count == 2
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
@@ -1158,7 +1175,8 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait {
-			playerEventSender.playLogEvents.count == 2
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
@@ -1228,6 +1246,12 @@ extension PlayLogTests {
 		// This is in order to simulate the following scenario: load and play a track, load and play another track.
 		playerEngine.notificationsHandler = nil
 		playerEngine.resetOrUnload()
+
+		// Wait for the player engine state to be IDLE.
+		optimizedWait {
+			playerEngine.getState() == .IDLE
+		}
+
 		setUpPlayerEngine()
 
 		// Now we load the second media product and then proceed to play it.
@@ -1254,7 +1278,11 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration) {
+		optimizedWait(timeout: shortAudioFile.duration + Constants.expectationExtraTime) {
+			playerEngine.getState() == .IDLE
+		}
+
+		optimizedWait {
 			playerEventSender.playLogEvents.count == 2
 		}
 
@@ -1314,6 +1342,12 @@ extension PlayLogTests {
 		// This is in order to simulate the following scenario: load and play a track, load and play another track.
 		playerEngine.notificationsHandler = nil
 		playerEngine.resetOrUnload()
+
+		// Wait for the player engine state to be IDLE.
+		optimizedWait {
+			playerEngine.getState() == .IDLE
+		}
+
 		setUpPlayerEngine()
 
 		// Now we load the same media product and then proceed to play it.
@@ -1337,7 +1371,11 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration) {
+		optimizedWait(timeout: shortAudioFile.duration + Constants.expectationExtraTime) {
+			playerEngine.getState() == .IDLE
+		}
+
+		optimizedWait {
 			playerEventSender.playLogEvents.count == 2
 		}
 
@@ -1471,6 +1509,15 @@ extension PlayLogTests {
 
 private extension PlayLogTests {
 	func setUpPlayerEngine() {
+		playerLoader = InternalPlayerLoader(
+			with: configuration,
+			and: fairplayLicenseFetcher,
+			featureFlagProvider: featureFlagProvider,
+			credentialsProvider: credentialsProvider,
+			mainPlayer: Player.mainPlayerType(featureFlagProvider),
+			externalPlayers: []
+		)
+
 		let operationQueue = OperationQueue()
 		operationQueue.maxConcurrentOperationCount = 1
 		operationQueue.qualityOfService = .userInitiated
@@ -1490,6 +1537,8 @@ private extension PlayLogTests {
 			featureFlagProvider: featureFlagProvider,
 			notificationsHandler: notificationsHandler
 		)
+
+		djProducer.delegate = playerEngine
 	}
 
 	func setAudioFileResponseToURLProtocol(audioFile: AudioFile) {

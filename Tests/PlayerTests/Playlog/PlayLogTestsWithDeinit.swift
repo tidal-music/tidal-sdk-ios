@@ -1280,7 +1280,7 @@ extension PlayLogWithDeinitTests {
 	}
 
 	/// test case 23
-	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_track_and_reset() {
+	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
 		// GIVEN
 		// First we load the media product and then proceed to play it.
 		uuid = "uuid1"
@@ -1309,6 +1309,12 @@ extension PlayLogWithDeinitTests {
 		// This is in order to simulate the following scenario: load and play a track, load and play another track.
 		playerEngine.notificationsHandler = nil
 		playerEngine.resetOrUnload()
+
+		// Wait for the player engine state to be IDLE.
+		optimizedWait {
+			playerEngine.getState() == .IDLE
+		}
+
 		setUpPlayerEngine()
 
 		// Now we load the second media product and then proceed to play it.
@@ -1342,7 +1348,8 @@ extension PlayLogWithDeinitTests {
 
 		// THEN
 		optimizedWait(timeout: shortAudioFile.duration) {
-			playerEventSender.playLogEvents.count == 2
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 2
 		}
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
@@ -1404,6 +1411,12 @@ extension PlayLogWithDeinitTests {
 		// This is in order to simulate the following scenario: load and play a track, load and play another track.
 		playerEngine.notificationsHandler = nil
 		playerEngine.resetOrUnload()
+
+		// Wait for the player engine state to be IDLE.
+		optimizedWait {
+			playerEngine.getState() == .IDLE
+		}
+
 		setUpPlayerEngine()
 
 		// Now we load the same media product and then proceed to play it.
@@ -1434,7 +1447,8 @@ extension PlayLogWithDeinitTests {
 
 		// THEN
 		optimizedWait(timeout: shortAudioFile.duration) {
-			playerEventSender.playLogEvents.count == 2
+			playerEngine.getState() == .IDLE &&
+				playerEventSender.playLogEvents.count == 2
 		}
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
