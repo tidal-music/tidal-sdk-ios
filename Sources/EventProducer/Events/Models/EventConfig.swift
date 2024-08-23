@@ -18,7 +18,7 @@ public struct EventConfig: EventProducer {
 		credentialsProvider: Auth.CredentialsProvider,
 		maxDiskUsageBytes: Int,
 		blockedConsentCategories: Set<ConsentCategory>? = nil,
-		consumerUri: String? = "https://ec.tidal.com"
+		consumerUri: String? = "https://event-collector.obelix-staging-use1.tidalhi.fi"
 	) {
 		self.credentialsProvider = credentialsProvider
 		self.maxDiskUsageBytes = maxDiskUsageBytes
