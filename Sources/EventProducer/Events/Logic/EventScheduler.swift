@@ -162,7 +162,7 @@ final class EventScheduler: Scheduler {
 
 			// Format base attributes
 			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.id.rawValue)"] = event.id
-			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.body.rawValue)"] = event.payload.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.body.rawValue)"] = event.payload
 
 			parameters["\(baseAttributePrefix).\(Parameters.nameKey.rawValue)"] = Parameters.nameKey.rawValue
 			parameters["\(baseAttributePrefix).\(Parameters.value.rawValue)"] = event.name
