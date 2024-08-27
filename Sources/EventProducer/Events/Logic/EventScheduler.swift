@@ -161,12 +161,11 @@ final class EventScheduler: Scheduler {
 				"\(Parameters.sendBatch.rawValue).\(index).\(Parameters.attribute.rawValue).\(attributeIndex)"
 
 			// Format base attributes
-			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.id.rawValue)"] = event.id
-			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.body.rawValue)"] = encodedPayload(event.payload)
-
-			parameters["\(baseAttributePrefix).\(Parameters.nameKey.rawValue)"] = Parameters.nameKey.rawValue
-			parameters["\(baseAttributePrefix).\(Parameters.value.rawValue)"] = event.name
-			parameters["\(baseAttributePrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue
+			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.id.rawValue)"] = event.id.encoded()
+			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.body.rawValue)"] = event.payload.encoded()
+			parameters["\(baseAttributePrefix).\(Parameters.nameKey.rawValue)"] = Parameters.nameKey.rawValue.encoded()
+			parameters["\(baseAttributePrefix).\(Parameters.value.rawValue)"] = event.name.encoded()
+			parameters["\(baseAttributePrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue.encoded()
 
 			// Format headers
 			guard let eventHeadersString = event.headers.jsonEncoded else {
@@ -177,20 +176,11 @@ final class EventScheduler: Scheduler {
 			let baseHeaderPrefix =
 				"\(Parameters.sendBatch.rawValue).\(index).\(Parameters.attribute.rawValue).\(headerAttributeIndex)"
 
-			parameters["\(baseHeaderPrefix).\(Parameters.nameKey.rawValue)"] = Parameters.headers.rawValue
-			parameters["\(baseHeaderPrefix).\(Parameters.value.rawValue)"] = eventHeadersString
-			parameters["\(baseHeaderPrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue
+			parameters["\(baseHeaderPrefix).\(Parameters.nameKey.rawValue)"] = Parameters.headers.rawValue.encoded()
+			parameters["\(baseHeaderPrefix).\(Parameters.value.rawValue)"] = eventHeadersString.encoded()
+			parameters["\(baseHeaderPrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue.encoded()
 		}
 		return parameters
-	}
-	
-	func encodedPayload(_ payload: String) -> String {
-		let generalDelimitersToEncode = ":#[]@" // does not include "?" or "/" due to RFC 3986 - Section 3.4
-		let subDelimitersToEncode = "!$&'()*+,;="
-
-		var allowedCharacterSet = CharacterSet.urlQueryAllowed
-		allowedCharacterSet.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
-		return payload.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? ""
 	}
 }
 
