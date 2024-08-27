@@ -119,6 +119,28 @@ final class EventsTests: XCTestCase {
 		XCTAssertTrue(fetchedEvents.contains(where: { $0.name == "testEvent#2" }))
 		XCTAssertFalse(fetchedEvents.contains(where: { $0.name == "fakeEvent" }))
 	}
+	
+	func testEventsEncoded() async throws {
+		guard let consumerUri = eventSender.config?.consumerUri else {
+			XCTFail("Default consumerUri should be set")
+			return
+		}
+		
+		let eventScheduler = EventScheduler(consumerUri: consumerUri, eventQueue: queue, monitoring: monitoring)
+		let event1 = Event(
+			name: "testEvent#1",
+			payload: "firstPayload"
+		)
+		
+		let event2 = Event(
+			name: "testEvent#2",
+			payload: "https://tidal.com/test/ +"
+		)
+		
+		let encodedEvents = eventScheduler.formatEvents([event1, event2])
+		XCTAssertTrue(encodedEvents.contains(where: { $0.value == "firstPayload" }))
+		XCTAssertTrue(encodedEvents.contains(where: { $0.value == "https%3A//tidal.com/test/%20%2B" }))
+	}
 
 	func testSendEventThroughScheduler() async throws {
 		guard let consumerUri = eventSender.config?.consumerUri else {
