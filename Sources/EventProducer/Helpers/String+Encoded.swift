@@ -14,7 +14,6 @@ extension String {
 	///
 	/// - returns: The percent-escaped string.
 	func encoded() -> String {
-		return self
 		// does not include "?" or "/" due to RFC 3986 - Section 3.4
 		let generalDelimitersToEncode = ":#[]@"
 		let subDelimitersToEncode = "!$&'()*+,;="
