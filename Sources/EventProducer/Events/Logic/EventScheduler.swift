@@ -162,7 +162,7 @@ final class EventScheduler: Scheduler {
 
 			// Format base attributes
 			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.id.rawValue)"] = event.id
-			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.body.rawValue)"] = event.payload.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.body.rawValue)"] = encodedPayload(event.payload)
 
 			parameters["\(baseAttributePrefix).\(Parameters.nameKey.rawValue)"] = Parameters.nameKey.rawValue
 			parameters["\(baseAttributePrefix).\(Parameters.value.rawValue)"] = event.name
@@ -182,6 +182,15 @@ final class EventScheduler: Scheduler {
 			parameters["\(baseHeaderPrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue
 		}
 		return parameters
+	}
+	
+	func encodedPayload(_ payload: String) -> String {
+		let generalDelimitersToEncode = ":#[]@" // does not include "?" or "/" due to RFC 3986 - Section 3.4
+		let subDelimitersToEncode = "!$&'()*+,;="
+
+		var allowedCharacterSet = CharacterSet.urlQueryAllowed
+		allowedCharacterSet.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
+		return payload.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? ""
 	}
 }
 
