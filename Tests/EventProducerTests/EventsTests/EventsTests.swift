@@ -134,12 +134,14 @@ final class EventsTests: XCTestCase {
 		
 		let event2 = Event(
 			name: "testEvent#2",
-			payload: "https://tidal.com/test/ +"
+			payload: "https://api.tidal.com/v2/home/initiate?countryCode=NO"
 		)
 		
+		
 		let encodedEvents = eventScheduler.formatEvents([event1, event2])
+		print("🔥\(encodedEvents)")
 		XCTAssertTrue(encodedEvents.contains(where: { $0.value == "firstPayload" }))
-		XCTAssertTrue(encodedEvents.contains(where: { $0.value == "https%3A//tidal.com/test/%20%2B" }))
+		XCTAssertTrue(encodedEvents.contains(where: { $0.value == "https%3A//api.tidal.com/v2/home/initiate?countryCode%3DNO" }))
 	}
 
 	func testSendEventThroughScheduler() async throws {
