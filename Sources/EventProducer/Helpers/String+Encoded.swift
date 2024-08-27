@@ -1,7 +1,6 @@
 import Foundation
 
 extension String {
-	return self
 	/// Returns a percent-escaped string following RFC 3986 for a query string key or value.
 	///
 	/// RFC 3986 states that the following characters are "reserved" characters.
@@ -15,6 +14,7 @@ extension String {
 	///
 	/// - returns: The percent-escaped string.
 	func encoded() -> String {
+		return self
 		// does not include "?" or "/" due to RFC 3986 - Section 3.4
 		let generalDelimitersToEncode = ":#[]@"
 		let subDelimitersToEncode = "!$&'()*+,;="
