@@ -1552,7 +1552,9 @@ extension PlayLogWithDeinitTests {
 
 	func wait(for playerItem: PlayerItem, toReach targetAssetPosition: Double) {
 		let trackReachedAssetPositionExpectation =
-			XCTestExpectation(description: "Expected for the track to reach \(targetAssetPosition) second(s)")
+			XCTestExpectation(
+				description: "Expected for the track to reach \(targetAssetPosition) second(s) starting from \(playerItem.assetPosition)"
+			)
 
 		var timer: Timer?
 		DispatchQueue.main.async {

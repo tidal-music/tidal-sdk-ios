@@ -1063,6 +1063,8 @@ extension PlayLogTests {
 
 		playerEngine.reset()
 
+		waitAsyncWork()
+
 		// THEN
 		optimizedWait(description: "Expecting 2 play log events.") {
 			self.playerEventSender.playLogEvents.count == 2
@@ -1508,7 +1510,9 @@ extension PlayLogTests {
 
 	func wait(for playerItem: PlayerItem, toReach targetAssetPosition: Double) {
 		let trackReachedAssetPositionExpectation =
-			XCTestExpectation(description: "Expected for the track to reach \(targetAssetPosition) second(s)")
+			XCTestExpectation(
+				description: "Expected for the track to reach \(targetAssetPosition) second(s) starting from \(playerItem.assetPosition)"
+			)
 
 		var timer: Timer?
 		DispatchQueue.main.async {
