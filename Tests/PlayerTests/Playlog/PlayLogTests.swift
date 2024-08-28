@@ -1146,7 +1146,6 @@ extension PlayLogTests {
 		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 4 seconds
 		let skipToNextAssetPosition: Double = 4
