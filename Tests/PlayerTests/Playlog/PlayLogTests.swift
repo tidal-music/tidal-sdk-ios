@@ -824,8 +824,10 @@ extension PlayLogTests {
 		let seekAssetPosition: Double = 10
 		playerEngine.seek(seekAssetPosition)
 
+		// Seeking beyond media length goes directly to the next media, which in this case there's none set up.
+
 		// THEN
-		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+		optimizedWait(description: "Expecting 1 play log event.") {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -892,6 +894,8 @@ extension PlayLogTests {
 		// Seek forward to 10 seconds
 		let seekAssetPosition: Double = 10
 		playerEngine.seek(seekAssetPosition)
+
+		// Seeking beyond media length goes directly to the next media.
 
 		// Wait until the previously next item is now the current item
 		optimizedWait(description: "Expecting nextItem to be nil and currentItem to be set.") {

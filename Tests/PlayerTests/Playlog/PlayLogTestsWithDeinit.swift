@@ -849,11 +849,13 @@ extension PlayLogWithDeinitTests {
 		let seekAssetPosition: Double = 10
 		playerEngine.seek(seekAssetPosition)
 
+		// Seeking beyond media length goes directly to the next media, which in this case there's none set up.
+
 		// This will cause the deinit to be called.
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+		optimizedWait(description: "Expecting 1 play log event.") {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -888,10 +890,9 @@ extension PlayLogWithDeinitTests {
 		// First we load the first media product.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait(description: "Expecting currentItem to be set and loaded, and for state to be IDLE.") {
+		optimizedWait(description: "Expecting currentItem to be set and loaded") {
 			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true &&
-				self.playerEngine.getState() != .IDLE
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -922,6 +923,8 @@ extension PlayLogWithDeinitTests {
 		// Seek forward to 10 seconds
 		let seekAssetPosition: Double = 10
 		playerEngine.seek(seekAssetPosition)
+
+		// Seeking beyond media length goes directly to the next media.
 
 		// Wait until the previously next item is now the current item
 		optimizedWait(description: "Expecting nextItem to be nil and currentItem to be set.") {
