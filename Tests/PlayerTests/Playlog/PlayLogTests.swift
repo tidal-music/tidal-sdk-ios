@@ -204,7 +204,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set.") {
 			self.playerEngine.currentItem != nil
 		}
 		guard let currentItem = playerEngine.currentItem else {
@@ -264,7 +264,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loaded, and for state to be IDLE.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true &&
 				self.playerEngine.getState() != .IDLE
@@ -284,7 +284,10 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime) {
+		optimizedWait(
+			timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime,
+			description: "Expecting 1 play log event."
+		) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -319,7 +322,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set.") {
 			self.playerEngine.currentItem != nil
 		}
 		guard let currentItem = playerEngine.currentItem else {
@@ -337,7 +340,10 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime) {
+		optimizedWait(
+			timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime,
+			description: "Expecting 1 play log event."
+		) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -372,7 +378,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set.") {
 			self.playerEngine.currentItem != nil
 		}
 		guard let currentItem = playerEngine.currentItem else {
@@ -397,7 +403,10 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime) {
+		optimizedWait(
+			timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime,
+			description: "Expecting 1 play log event."
+		) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -432,7 +441,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loade.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
 		}
@@ -458,7 +467,10 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime) {
+		optimizedWait(
+			timeout: audioFile.duration - seekAssetPosition + Constants.expectationExtraTime,
+			description: "Expecting 1 play log event."
+		) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -493,7 +505,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set.") {
 			self.playerEngine.currentItem != nil
 		}
 		guard let currentItem = playerEngine.currentItem else {
@@ -526,7 +538,7 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration + Constants.expectationExtraTime) {
+		optimizedWait(timeout: audioFile.duration + Constants.expectationExtraTime, description: "Expecting 1 play log event.") {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -564,7 +576,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loaded, and for state to be IDLE.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true &&
 				self.playerEngine.getState() != .IDLE
@@ -589,7 +601,10 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: seekBackAssetPosition)
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration - seekBackAssetPosition + Constants.expectationExtraTime) {
+		optimizedWait(
+			timeout: audioFile.duration - seekBackAssetPosition + Constants.expectationExtraTime,
+			description: "Expecting 1 play log event."
+		) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -625,7 +640,7 @@ extension PlayLogTests {
 		// First we load the media product and then proceed to seek forward and play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
 		}
@@ -642,7 +657,7 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration + Constants.expectationExtraTime) {
+		optimizedWait(timeout: audioFile.duration + Constants.expectationExtraTime, description: "Expecting 1 play log event.") {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -673,7 +688,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set.") {
 			self.playerEngine.currentItem != nil
 		}
 		guard let currentItem = playerEngine.currentItem else {
@@ -688,7 +703,7 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait {
+		optimizedWait(description: "Expecting 1 play log event.") {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -719,7 +734,7 @@ extension PlayLogTests {
 		// First we load the first media product.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
 		}
@@ -731,14 +746,17 @@ extension PlayLogTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
-		optimizedWait {
+		optimizedWait(description: "Expecting nextItem to be set.") {
 			self.playerEngine.nextItem != nil
 		}
 
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime) {
+		optimizedWait(
+			timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime,
+			description: "Expecting 2 play log events."
+		) {
 			self.playerEventSender.playLogEvents.count == 2
 		}
 
@@ -783,7 +801,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set.") {
 			self.playerEngine.currentItem != nil
 		}
 		guard let currentItem = playerEngine.currentItem else {
@@ -800,7 +818,7 @@ extension PlayLogTests {
 		playerEngine.seek(seekAssetPosition)
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
+		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -835,7 +853,7 @@ extension PlayLogTests {
 		// First we load the first media product.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loaded, and for state to be IDLE.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true &&
 				self.playerEngine.getState() != .IDLE
@@ -853,7 +871,7 @@ extension PlayLogTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting nextItem to be set.") {
 			self.playerEngine.nextItem != nil
 		}
 
@@ -869,7 +887,7 @@ extension PlayLogTests {
 		playerEngine.seek(seekAssetPosition)
 
 		// Wait until the previously next item is now the current item
-		optimizedWait {
+		optimizedWait(description: "Expecting nextItem to be nil and currentItem to be set.") {
 			self.playerEngine.nextItem == nil &&
 				self.playerEngine.currentItem?.id == self.uuid
 		}
@@ -886,10 +904,9 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait {
+		optimizedWait(description: "Expecting 2 play log events.") {
 			self.playerEventSender.playLogEvents.count == 2
 		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
 		let actions1 = [
@@ -944,7 +961,7 @@ extension PlayLogTests {
 		// Now actually load the first media product.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set.") {
 			self.playerEngine.currentItem != nil
 		}
 
@@ -961,10 +978,9 @@ extension PlayLogTests {
 		)
 
 		// THEN
-		optimizedWait {
+		optimizedWait(description: "Expecting 1 play log event.") {
 			self.playerEventSender.playLogEvents.count == 1
 		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
 		let expectedPlayLogEvent = PlayLogEvent.mock(
@@ -993,7 +1009,7 @@ extension PlayLogTests {
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
 		}
@@ -1011,7 +1027,7 @@ extension PlayLogTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting nextItem to be set.") {
 			self.playerEngine.nextItem != nil
 		}
 
@@ -1024,7 +1040,7 @@ extension PlayLogTests {
 		playerEngine.skipToNext(timestamp: timestamp)
 
 		// Wait until the previously next item is now the current item
-		optimizedWait {
+		optimizedWait(description: "Expecting nextItem to be nil and currentItem to be set.") {
 			self.playerEngine.nextItem == nil &&
 				self.playerEngine.currentItem?.id == self.uuid
 		}
@@ -1040,10 +1056,9 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait {
+		optimizedWait(description: "Expecting 2 play log events.") {
 			self.playerEventSender.playLogEvents.count == 2
 		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
 		let expectedPlayLogEvent1 = PlayLogEvent.mock(
@@ -1086,7 +1101,7 @@ extension PlayLogTests {
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
 		}
@@ -1096,7 +1111,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
-		optimizedWait {
+		optimizedWait(description: "Expecting for the state to be PLAYING") {
 			self.playerEngine.getState() == .PLAYING
 		}
 
@@ -1105,14 +1120,16 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: pauseAssetPosition)
 
 		playerEngine.pause()
-		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 5)
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
 		playerEngine.seek(seekAssetPosition)
-		wait(for: currentItem, toReach: seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
+
+		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// Afterwards we load the second media product with setNext.
 		uuid = "uuid2"
@@ -1121,18 +1138,16 @@ extension PlayLogTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting nextItem to be set and loaded.") {
 			self.playerEngine.nextItem != nil &&
 				self.playerEngine.nextItem?.isLoaded == true
 		}
 
-		waitForPlayerToBeInState(.PLAYING, timeout: 5)
-
 		playerEngine.pause()
-		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 10)
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING, timeout: 10)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 4 seconds
 		let skipToNextAssetPosition: Double = 4
@@ -1140,21 +1155,22 @@ extension PlayLogTests {
 		playerEngine.skipToNext(timestamp: timestamp)
 
 		// Wait until the previously next item is now the current item
-		optimizedWait {
+		optimizedWait(description: "Expecting nextItem to be nil and currentItem to be set and loaded.") {
 			self.playerEngine.currentItem?.id == self.uuid &&
-				self.playerEngine.nextItem == nil
+				self.playerEngine.nextItem == nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
 
-		waitForPlayerToBeInState(.PLAYING, timeout: 10)
+		let expectation = expectation(description: "Wait for the async work to be done.")
+		_ = XCTWaiter.wait(for: [expectation], timeout: 0.05)
 
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
 		playerEngine.seek(seekAssetPosition2)
-		wait(for: nextCurrentItem, toReach: seekAssetPosition2)
 
 		// Wait for the track to reach 59 seconds
 		let resetAssetPosition: Double = 59
@@ -1163,7 +1179,7 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait {
+		optimizedWait(description: "Expecting 2 play log events.") {
 			self.playerEventSender.playLogEvents.count == 2
 		}
 
@@ -1217,7 +1233,7 @@ extension PlayLogTests {
 
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
 		}
@@ -1252,7 +1268,7 @@ extension PlayLogTests {
 		let mediaProduct2 = longAudioFile.mediaProduct
 		playerEngine.load(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
 		}
@@ -1271,7 +1287,7 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait {
+		optimizedWait(description: "Expecting 2 play log events.") {
 			self.playerEventSender.playLogEvents.count == 2
 		}
 
@@ -1313,7 +1329,7 @@ extension PlayLogTests {
 		let mediaProduct1 = shortAudioFile.mediaProduct
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set.") {
 			self.playerEngine.currentItem != nil
 		}
 		guard let currentItem = playerEngine.currentItem else {
@@ -1333,7 +1349,7 @@ extension PlayLogTests {
 		playerEngine.resetOrUnload()
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait(step: Constants.timerTimeInterval) {
+		optimizedWait(step: Constants.timerTimeInterval, description: "Expecting for the state to be IDLE") {
 			self.playerEngine.getState() == .IDLE
 		}
 
@@ -1343,7 +1359,7 @@ extension PlayLogTests {
 		let mediaProduct2 = shortAudioFile.mediaProduct
 		playerEngine.load(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
+		optimizedWait(description: "Expecting currentItem to be set.") {
 			self.playerEngine.currentItem != nil
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
@@ -1361,7 +1377,7 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait {
+		optimizedWait(description: "Expecting 2 play log event.") {
 			self.playerEventSender.playLogEvents.count == 2
 		}
 

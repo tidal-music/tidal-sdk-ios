@@ -3,7 +3,7 @@ import Foundation
 import XCTest
 
 extension XCTestCase {
-	func optimizedWait(timeout: Double = 10.0, step: Double = 0.1, until condition: @escaping () -> Bool) {
+	func optimizedWait(timeout: Double = 10.0, step: Double = 0.1, description: String, until condition: @escaping () -> Bool) {
 		let endTime = Date().addingTimeInterval(timeout)
 
 		while Date() < endTime {
@@ -15,12 +15,12 @@ extension XCTestCase {
 			let result = XCTWaiter.wait(for: [expectation], timeout: step)
 
 			if result != .timedOut {
-				XCTFail("Optimized wait: Unexpected result from XCTWaiter")
+				XCTFail("Optimized wait: Unexpected result from XCTWaiter. Failed to fulfill condition: \(description)")
 				return
 			}
 		}
 
-		XCTFail("Optimized wait: Condition was not met")
+		XCTFail("Optimized wait: Condition was not met. Failed to fulfill condition: \(description)")
 	}
 
 	func asyncOptimizedWait(timeout: Double = 10.0, step: Double = 0.1, until condition: @escaping () -> Bool) async {

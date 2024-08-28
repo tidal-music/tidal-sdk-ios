@@ -65,7 +65,7 @@ extension DJProducerTests {
 		djProducer.start(Constants.title, with: .mock(), at: 0)
 
 		// Then
-		optimizedWait {
+		optimizedWait(description: "Expecting djSessionStartedMetadatas to have 1 item.") {
 			self.djProducerListener.djSessionStartedMetadatas.count == 1
 		}
 
@@ -91,7 +91,7 @@ extension DJProducerTests {
 		djProducer.start(Constants.title, with: .mock(), at: 0)
 
 		// Then
-		optimizedWait {
+		optimizedWait(description: "Expecting djSessionEndReasons to have 1 item.") {
 			self.djProducerListener.djSessionEndReasons.count == 1
 		}
 
