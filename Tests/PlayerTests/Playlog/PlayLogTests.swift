@@ -1112,6 +1112,10 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+
+		let expectation = expectation(description: "Wait for the async work to be done.")
+		_ = XCTWaiter.wait(for: [expectation], timeout: 0.05)
+
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -1119,6 +1123,10 @@ extension PlayLogTests {
 		wait(for: currentItem, toReach: pauseAssetPosition)
 
 		playerEngine.pause()
+
+		let expectation = expectation(description: "Wait for the async work to be done.")
+		_ = XCTWaiter.wait(for: [expectation], timeout: 0.05)
+
 		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek forward to 3 seconds
@@ -1126,6 +1134,10 @@ extension PlayLogTests {
 		playerEngine.seek(seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
+
+		let expectation = expectation(description: "Wait for the async work to be done.")
+		_ = XCTWaiter.wait(for: [expectation], timeout: 0.05)
+
 		waitForPlayerToBeInState(.PLAYING)
 
 		wait(for: currentItem, toReach: seekAssetPosition)
@@ -1146,6 +1158,9 @@ extension PlayLogTests {
 		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		playerEngine.play(timestamp: timestamp)
+
+		let expectation = expectation(description: "Wait for the async work to be done.")
+		_ = XCTWaiter.wait(for: [expectation], timeout: 0.05)
 
 		// Wait for the track to reach 4 seconds
 		let skipToNextAssetPosition: Double = 4
