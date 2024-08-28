@@ -1102,6 +1102,8 @@ extension PlayLogTests {
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
+		waitAsyncWork()
+
 		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
