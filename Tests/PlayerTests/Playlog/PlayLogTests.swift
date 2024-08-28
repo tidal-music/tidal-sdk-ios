@@ -205,7 +205,8 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -323,7 +324,8 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -379,7 +381,8 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -506,7 +509,8 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -689,7 +693,8 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -803,7 +808,8 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -963,7 +969,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 
 		playerEngine.play(timestamp: timestamp)
@@ -1345,7 +1352,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -1375,7 +1383,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct2, timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
