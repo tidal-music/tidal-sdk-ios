@@ -780,7 +780,6 @@ extension PlayLogWithDeinitTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
 
 		// THEN
 		optimizedWait(
