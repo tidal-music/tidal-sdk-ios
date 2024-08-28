@@ -1167,9 +1167,7 @@ extension PlayLogWithDeinitTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
-		optimizedWait(description: "Expecting for the state to be PLAYING") {
-			self.playerEngine.getState() == .PLAYING
-		}
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
@@ -1211,7 +1209,8 @@ extension PlayLogWithDeinitTests {
 		// Wait until the previously next item is now the current item
 		optimizedWait(description: "Expecting nextItem to be nil and currentItem to be set.") {
 			self.playerEngine.nextItem == nil &&
-				self.playerEngine.currentItem?.id == self.uuid
+				self.playerEngine.currentItem?.id == self.uuid &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var nextCurrentItem = playerEngine.currentItem
@@ -1219,8 +1218,6 @@ extension PlayLogWithDeinitTests {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
-
-		waitForPlayerToBeInState(.PLAYING, timeout: 10)
 
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
@@ -1291,8 +1288,11 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct1 = shortAudioFile.mediaProduct
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
+		playerEngine.play(timestamp: timestamp)
+
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -1301,7 +1301,7 @@ extension PlayLogWithDeinitTests {
 			return
 		}
 
-		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING, timeout: 5)
 
 		// Wait for the track to reach 2 seconds
 		let loadSecondMediaProductAssetPosition: Double = 2
@@ -1325,7 +1325,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct2, timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set.") {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var nextCurrentItem = playerEngine.currentItem
@@ -1335,6 +1336,7 @@ extension PlayLogWithDeinitTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 1 second
 		let resetAssetPosition: Double = 1

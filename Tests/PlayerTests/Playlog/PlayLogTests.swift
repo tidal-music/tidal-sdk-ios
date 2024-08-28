@@ -1115,8 +1115,6 @@ extension PlayLogTests {
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		waitAsyncWork()
-
 		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
@@ -1127,8 +1125,6 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
-
-		waitAsyncWork()
 
 		waitForPlayerToBeInState(.PLAYING)
 
@@ -1145,14 +1141,11 @@ extension PlayLogTests {
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
 		playerEngine.seek(seekAssetPosition)
+		wait(for: currentItem, toReach: seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
 
-		waitAsyncWork()
-
 		waitForPlayerToBeInState(.PLAYING)
-
-		wait(for: currentItem, toReach: seekAssetPosition)
 
 		// Afterwards we load the second media product with setNext.
 		uuid = "uuid2"
@@ -1171,7 +1164,7 @@ extension PlayLogTests {
 
 		playerEngine.play(timestamp: timestamp)
 
-		waitAsyncWork()
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 4 seconds
 		let skipToNextAssetPosition: Double = 4
@@ -1194,6 +1187,7 @@ extension PlayLogTests {
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
 		playerEngine.seek(seekAssetPosition2)
+		wait(for: nextCurrentItem, toReach: seekAssetPosition2)
 
 		// Wait for the track to reach 59 seconds
 		let resetAssetPosition: Double = 59
@@ -1315,6 +1309,7 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
+		waitForPlayerToBeInState(.IDLE)
 		optimizedWait(description: "Expecting 2 play log events.") {
 			self.playerEventSender.playLogEvents.count == 2
 		}
