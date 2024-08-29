@@ -437,7 +437,7 @@ private extension PlayerItem {
 			actions: metrics.actions,
 			endTimestamp: endTimestamp,
 			endAssetPosition: endAssetPosition
-		))
+		), extras: mediaProduct.extras)
 	}
 
 	func emitProgressEvent() {

@@ -135,18 +135,19 @@ extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: streamingSessionStart
+			payload: streamingSessionStart,
+			extras: nil
 		)
 		await assertLegacyStreamingMetricsEvent(event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
 	func test_send_StreamingMetricsEvent_with_StreamingSessionStart() async {
 		shouldUseEventProducer = true
-		
+
 		let streamingSessionStart = StreamingSessionStart.mock()
 		playerEventSender.send(streamingSessionStart)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.streamingSessionStart,
@@ -168,18 +169,19 @@ extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: streamingSessionEnd
+			payload: streamingSessionEnd,
+			extras: nil
 		)
 		await assertLegacyStreamingMetricsEvent(event: streamingSessionEnd, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
 	func test_send_StreamingMetricsEvent_with_StreamingSessionEnd() async {
 		shouldUseEventProducer = true
-		
+
 		let streamingSessionEnd = StreamingSessionEnd.mock()
 		playerEventSender.send(streamingSessionEnd)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.streamingSessionEnd,
@@ -201,18 +203,19 @@ extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: downloadStatistics
+			payload: downloadStatistics,
+			extras: nil
 		)
 		await assertLegacyStreamingMetricsEvent(event: downloadStatistics, expectedDecodedEvent: expectedDecodedEvent)
 	}
-	
+
 	func test_send_StreamingMetricsEvent_with_DownloadStatistics() async {
 		shouldUseEventProducer = true
-		
+
 		let downloadStatistics = DownloadStatistics.mock()
 		playerEventSender.send(downloadStatistics)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.downloadStatistics,
@@ -234,18 +237,19 @@ extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: drmLicenseFetch
+			payload: drmLicenseFetch,
+			extras: nil
 		)
 		await assertLegacyStreamingMetricsEvent(event: drmLicenseFetch, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
 	func test_send_StreamingMetricsEvent_with_DrmLicenseFetch() async {
 		shouldUseEventProducer = true
-		
+
 		let drmLicenseFetch = DrmLicenseFetch.mock()
 		playerEventSender.send(drmLicenseFetch)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.drmLicenseFetch,
@@ -267,19 +271,20 @@ extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: playbackInfoFetch
+			payload: playbackInfoFetch,
+			extras: nil
 		)
 		await assertLegacyStreamingMetricsEvent(event: playbackInfoFetch, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
 	func test_send_StreamingMetricsEvent_with_PlaybackInfoFetch() async {
 		shouldUseEventProducer = true
-		
+
 		let playbackInfoFetch = PlaybackInfoFetch.mock()
 		playerEventSender.send(playbackInfoFetch)
 
-		await self.asyncSchedulerFactory.executeAll()
-		
+		await asyncSchedulerFactory.executeAll()
+
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.playbackInfoFetch,
 			group: EventGroup.streamingMetrics,
@@ -300,19 +305,20 @@ extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: playbackStatistics
+			payload: playbackStatistics,
+			extras: nil
 		)
 		await assertLegacyStreamingMetricsEvent(event: playbackStatistics, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
 	func test_send_StreamingMetricsEvent_with_PlaybackStatistics() async {
 		shouldUseEventProducer = true
-		
+
 		let playbackStatistics = PlaybackStatistics.mock()
 		playerEventSender.send(playbackStatistics)
-		
-		await self.asyncSchedulerFactory.executeAll()
-		
+
+		await asyncSchedulerFactory.executeAll()
+
 		assertStreamingMetricsEvent(
 			name: StreamingMetricNames.playbackStatistics,
 			group: EventGroup.streamingMetrics,
@@ -326,7 +332,7 @@ extension PlayerEventSenderTests {
 		shouldUseEventProducer = false
 		await assertLegacyPlayLogEvent()
 	}
-	
+
 	func test_send_PlayLogEvent() async {
 		shouldUseEventProducer = true
 		await assertPlayLogEvent()
@@ -364,7 +370,7 @@ extension PlayerEventSenderTests {
 		let progressEvent = ProgressEvent.mock()
 		playerEventSender.send(progressEvent)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		let eventData = dataWriter.dataList[0]
 		let expectedDecodedEvent = LegacyEvent<ProgressEvent>(
@@ -374,23 +380,24 @@ extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: progressEvent
+			payload: progressEvent,
+			extras: nil
 		)
 		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
 	}
 
 	func test_send_ProgressEvent() async {
 		shouldUseEventProducer = true
-		
+
 		let progressEvent = ProgressEvent.mock()
 		playerEventSender.send(progressEvent)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		let name = EventNames.progress
 		let group = EventGroup.playback
 		let consentCategory = ConsentCategory.necessary
-		assertEvent(name: name, group: group, consentCategory: consentCategory, playerEvent: progressEvent)
+		assertEvent(name: name, group: group, consentCategory: consentCategory, playerEvent: progressEvent, extras: nil)
 	}
 
 	// MARK: - OfflinePlay
@@ -399,7 +406,7 @@ extension PlayerEventSenderTests {
 		let offlinePlay = OfflinePlay.mock()
 		playerEventSender.send(offlinePlay)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		let eventData = dataWriter.dataList[0]
 		let expectedDecodedEvent = offlinePlay
@@ -419,7 +426,8 @@ extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: streamingSessionStart
+			payload: streamingSessionStart,
+			extras: nil
 		)
 		await assertLegacyStreamingMetricsEvent(event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
 
@@ -437,7 +445,8 @@ extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: streamingSessionStart
+			payload: streamingSessionStart,
+			extras: nil
 		)
 		await assertLegacyStreamingMetricsEvent(index: 1, event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
 	}
@@ -486,8 +495,8 @@ private extension PlayerEventSenderTests {
 		expectedDecodedEvent: T
 	) async {
 		playerEventSender.send(event)
-		
-		await self.asyncSchedulerFactory.executeAll()
+
+		await asyncSchedulerFactory.executeAll()
 
 		let eventData = dataWriter.dataList[index]
 		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
@@ -498,22 +507,23 @@ private extension PlayerEventSenderTests {
 		group: EventGroup,
 		payload: T
 	) {
-		assertEvent(name: name, group: group, consentCategory: .performance, playerEvent: payload)
+		assertEvent(name: name, group: group, consentCategory: .performance, playerEvent: payload, extras: nil)
 	}
 
 	func assertLegacyStreamingMetricsEventWasNotSent(event: any StreamingMetricsEvent) async {
 		playerEventSender.send(event)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		XCTAssertTrue(dataWriter.dataList.isEmpty)
 	}
 
 	func assertLegacyPlayLogEvent() async {
 		let playLogEvent = PlayLogEvent.mock()
-		playerEventSender.send(playLogEvent)
+		let playLogEventExtras = ["field_1": "1", "field_2": nil]
+		playerEventSender.send(playLogEvent, extras: playLogEventExtras)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		let eventData = dataWriter.dataList[0]
 		let expectedDecodedEvent = LegacyEvent<PlayLogEvent>(
@@ -523,28 +533,31 @@ private extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: playLogEvent
+			payload: playLogEvent,
+			extras: playLogEventExtras
 		)
 		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
 	}
 
 	func assertPlayLogEvent() async {
 		let playLogEvent = PlayLogEvent.mock()
-		playerEventSender.send(playLogEvent)
+		let playLogEventExtras = ["field_1": "1", "field_2": nil]
+		playerEventSender.send(playLogEvent, extras: playLogEventExtras)
 
-		await self.asyncSchedulerFactory.executeAll()
+		await asyncSchedulerFactory.executeAll()
 
 		let name = EventNames.playbackSession
 		let group = EventGroup.playlog
 		let consentCategory = ConsentCategory.necessary
-		assertEvent(name: name, group: group, consentCategory: consentCategory, playerEvent: playLogEvent)
+		assertEvent(name: name, group: group, consentCategory: consentCategory, playerEvent: playLogEvent, extras: playLogEventExtras)
 	}
 
 	func assertEvent<T: Codable & Equatable>(
 		name: String,
 		group: EventGroup,
 		consentCategory: ConsentCategory,
-		playerEvent: T
+		playerEvent: T,
+		extras: [String: String?]?
 	) {
 		let expectedEvent = PlayerEvent(
 			group: group.rawValue,
@@ -552,7 +565,8 @@ private extension PlayerEventSenderTests {
 			ts: timestamp,
 			user: user,
 			client: client,
-			payload: playerEvent
+			payload: playerEvent,
+			extras: extras
 		)
 
 		guard let data = try? encoder.encode(expectedEvent), let payloadString = String(data: data, encoding: .utf8) else {

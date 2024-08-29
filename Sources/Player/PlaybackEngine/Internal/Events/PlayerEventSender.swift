@@ -42,7 +42,7 @@ class PlayerEventSender {
 		self.dataWriter = dataWriter
 		self.featureFlagProvider = featureFlagProvider
 		self.eventSender = eventSender
-		self.asyncSchedulerFactory = PlayerWorld.asyncSchedulerFactoryProvider.newFactory()
+		asyncSchedulerFactory = PlayerWorld.asyncSchedulerFactoryProvider.newFactory()
 
 		encoder = JSONEncoder()
 
@@ -68,20 +68,22 @@ class PlayerEventSender {
 	}
 
 	func send(_ event: any StreamingMetricsEvent) {
-		write(group: .streamingMetrics, name: event.name, payload: event)
+		write(group: .streamingMetrics, name: event.name, payload: event, extras: nil)
 	}
 
-	func send(_ event: PlayLogEvent) {
-		write(group: .playlog, name: EventNames.playbackSession, payload: event)
+	func send(_ event: PlayLogEvent, extras: [String: String?]?) {
+		write(group: .playlog, name: EventNames.playbackSession, payload: event, extras: extras)
 	}
 
 	func send(_ event: ProgressEvent) {
-		write(group: .playback, name: EventNames.progress, payload: event)
+		write(group: .playback, name: EventNames.progress, payload: event, extras: nil)
 	}
 
 	func send(_ offlinePlay: OfflinePlay) {
 		asyncSchedulerFactory.create { [weak self] in
-			guard let self else { return }
+			guard let self else {
+				return
+			}
 
 			do {
 				let data = try encoder.encode(offlinePlay)
@@ -188,10 +190,12 @@ private extension PlayerEventSender {
 		self.timer = timer
 	}
 
-	func write<T: Codable & Equatable>(group: EventGroup, name: String, payload: T) {
+	func write<T: Codable & Equatable>(group: EventGroup, name: String, payload: T, extras: [String: String?]?) {
 		let now = PlayerWorld.timeProvider.timestamp()
 		asyncSchedulerFactory.create { [weak self] in
-			guard let self else { return }
+			guard let self else {
+				return
+			}
 
 			let token: String?
 
@@ -236,7 +240,8 @@ private extension PlayerEventSender {
 					ts: now,
 					user: user,
 					client: client,
-					payload: payload
+					payload: payload,
+					extras: extras
 				)
 				await sendToEventProducer(name: name, event: event, consentCategory: consentCategory)
 			} else {
@@ -247,7 +252,8 @@ private extension PlayerEventSender {
 					ts: now,
 					user: user,
 					client: client,
-					payload: payload
+					payload: payload,
+					extras: extras
 				)
 				writeEvent(event: event)
 			}
@@ -296,12 +302,14 @@ private extension PlayerEventSender {
 
 	func send(contentOfAll urls: [URL], to url: URL, serialize: @escaping ([URL]) throws -> Data?) {
 		asyncSchedulerFactory.create { [weak self] in
-			guard let self else { return }
+			guard let self else {
+				return
+			}
 
 			do {
 				let token: String?
 
-				let authToken = try await self.credentialsProvider.getCredentials()
+				let authToken = try await credentialsProvider.getCredentials()
 				token = authToken.toBearerToken()
 
 				guard authToken.isAuthorized else {
