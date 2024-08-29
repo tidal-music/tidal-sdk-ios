@@ -75,10 +75,6 @@ class PlayerEventSender {
 		write(group: .playlog, name: EventNames.playbackSession, payload: event, extras: extras)
 	}
 
-	func send(_ event: ProgressEvent) {
-		write(group: .playback, name: EventNames.progress, payload: event, extras: nil)
-	}
-
 	func send(_ offlinePlay: OfflinePlay) {
 		asyncSchedulerFactory.create { [weak self] in
 			guard let self else {

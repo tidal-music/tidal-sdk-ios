@@ -60,14 +60,6 @@ extension PlayLogEvent: CustomDebugStringConvertible {
 	}
 }
 
-// MARK: - ProgressEvent + CustomDebugStringConvertible
-
-extension ProgressEvent: CustomDebugStringConvertible {
-	public var debugDescription: String {
-		"ProgressEvent(id: \(playback.id)), assetPosition: \(playback.assetPosition), duration: \(playback.duration), type: \(playback.type), sourceType: \(String(describing: playback.source?.type)), sourceId: \(String(describing: playback.source?.id)))"
-	}
-}
-
 // MARK: - OfflinePlay + CustomDebugStringConvertible
 
 extension OfflinePlay: CustomDebugStringConvertible {

@@ -441,16 +441,6 @@ final class PlayerItemTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		XCTAssertEqual(playerEventSender.playLogEvents, [playLogEvent])
-
-		let progressEvent = ProgressEvent.mock(
-			id: mediaProduct.productId,
-			assetPosition: Int(endAssetPosition * 1000),
-			duration: Int(duration * 1000),
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		XCTAssertEqual(playerEventSender.progressEvents, [progressEvent])
 	}
 
 	func test_usualStreamingPlayFlow() {
@@ -552,16 +542,6 @@ final class PlayerItemTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		XCTAssertEqual(playerEventSender.playLogEvents, [playLogEvent])
-
-		let progressEvent = ProgressEvent.mock(
-			id: mediaProduct.productId,
-			assetPosition: Int(endAssetPosition * 1000),
-			duration: Int(duration * 1000),
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		XCTAssertEqual(playerEventSender.progressEvents, [progressEvent])
 	}
 
 	// MARK: - unload
