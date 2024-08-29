@@ -1163,7 +1163,6 @@ extension PlayLogWithDeinitTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -1176,6 +1175,7 @@ extension PlayLogWithDeinitTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -1207,6 +1207,7 @@ extension PlayLogWithDeinitTests {
 		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 4 seconds
 		let skipToNextAssetPosition: Double = 4
@@ -1216,6 +1217,7 @@ extension PlayLogWithDeinitTests {
 		// Wait until the previously next item is now the current item
 		optimizedWait { [self] in
 			playerEngine.currentItem?.id == uuid &&
+				playerEngine.currentItem?.isLoaded == true &&
 				playerEngine.nextItem == nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
@@ -1562,14 +1564,23 @@ extension PlayLogWithDeinitTests {
 
 	func wait(for playerItem: PlayerItem, toReach targetAssetPosition: Double) {
 		let trackReachedAssetPositionExpectation =
-			XCTestExpectation(description: "Expected for the track to reach \(targetAssetPosition) second(s)")
-		let timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { _ in
-			if playerItem.assetPosition >= targetAssetPosition {
-				trackReachedAssetPositionExpectation.fulfill()
+			XCTestExpectation(
+				description: "Expected for the track to reach \(targetAssetPosition) second(s) starting from \(playerItem.assetPosition)"
+			)
+
+		var timer: Timer?
+		DispatchQueue.main.async {
+			timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { timer in
+				if playerItem.assetPosition >= targetAssetPosition {
+					trackReachedAssetPositionExpectation.fulfill()
+					timer.invalidate()
+				}
 			}
+			RunLoop.main.add(timer!, forMode: .default)
 		}
+
 		wait(for: [trackReachedAssetPositionExpectation], timeout: targetAssetPosition + Constants.expectationExtraTime)
-		timer.invalidate()
+		timer?.invalidate()
 	}
 
 	func waitForPlayerToBeInState(_ state: State, timeout: TimeInterval = Constants.expectationExtraTime) {
