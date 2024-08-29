@@ -96,7 +96,9 @@ extension DJProducerTests {
 		}
 
 		let expectedDJSessionMetadata = DJSessionEndReason.failedToStart(code: "1")
-		XCTAssertEqual(djProducerListener.djSessionEndReasons, [expectedDJSessionMetadata])
+		optimizedWait(description: "DJProducer should call DJProducerListener djSessionEnded() after failed fetching auth token") {
+			self.djProducerListener.djSessionEndReasons == [expectedDJSessionMetadata]
+		}
 	}
 
 	func test_start_whenAuthFails_shouldCall_DJProducerListener_djSessionEnded() {
@@ -109,12 +111,9 @@ extension DJProducerTests {
 		djProducer.start(Constants.title, with: .mock(), at: 0)
 
 		// Then
-		let expectation =
-			expectation(description: "DJProducer should call DJProducerListener djSessionEnded() after failed fetching auth token")
-
 		let expectedDJSessionMetadata = DJSessionEndReason.failedToStart(code: "1")
-
-		_ = XCTWaiter.wait(for: [expectation], timeout: 0.1)
-		XCTAssertEqual(djProducerListener.djSessionEndReasons, [expectedDJSessionMetadata])
+		optimizedWait(description: "DJProducer should call DJProducerListener djSessionEnded() after failed fetching auth token") {
+			self.djProducerListener.djSessionEndReasons == [expectedDJSessionMetadata]
+		}
 	}
 }
