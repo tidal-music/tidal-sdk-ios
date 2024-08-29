@@ -5,7 +5,13 @@ import Foundation
 /// and grow. Ideally this class should not exist.
 public final class Interruption: MediaProduct {
 	public init(productType: ProductType, productId: String) {
-		super.init(productType: productType, productId: productId, progressSource: nil, playLogSource: nil)
+		super.init(
+			productType: productType,
+			productId: productId,
+			referenceId: nil,
+			progressSource: nil,
+			playLogSource: nil
+		)
 	}
 
 	required init(from decoder: Decoder) throws {

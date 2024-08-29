@@ -4,6 +4,7 @@ public extension StoredMediaProduct {
 	static func mock(
 		productType: ProductType = .TRACK,
 		productId: String = "1",
+		referenceId: String? = nil,
 		progressSource: Source? = nil,
 		playLogSource: Source? = nil,
 		assetPresentation: AssetPresentation = .FULL,
@@ -22,6 +23,7 @@ public extension StoredMediaProduct {
 		StoredMediaProduct(
 			productType: productType,
 			productId: productId,
+			referenceId: referenceId,
 			progressSource: progressSource,
 			playLogSource: playLogSource,
 			assetPresentation: assetPresentation,
