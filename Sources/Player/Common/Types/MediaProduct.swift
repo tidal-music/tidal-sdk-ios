@@ -48,8 +48,6 @@ public extension MediaProduct {
 		switch (lhs, rhs) {
 		case (is StoredMediaProduct, is StoredMediaProduct):
 			return true
-		case (is Interruption, is Interruption):
-			return true
 		default:
 			return false
 		}

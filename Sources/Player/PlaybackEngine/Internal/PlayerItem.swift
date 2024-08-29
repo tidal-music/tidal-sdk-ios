@@ -404,10 +404,6 @@ private extension PlayerItem {
 	}
 
 	func emitPlayLog() {
-		if mediaProduct is Interruption {
-			return
-		}
-
 		let now = PlayerWorld.timeProvider.timestamp()
 		guard let metrics,
 		      let playbackContext,
@@ -441,10 +437,6 @@ private extension PlayerItem {
 	}
 
 	func emitProgressEvent() {
-		if mediaProduct is Interruption {
-			return
-		}
-
 		guard let metrics,
 		      let playbackContext,
 		      let asset,
@@ -466,10 +458,6 @@ private extension PlayerItem {
 	}
 
 	func emitOfflinePlay() {
-		if mediaProduct is Interruption {
-			return
-		}
-
 		guard let metrics,
 		      let playbackContext,
 		      let asset,
