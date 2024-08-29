@@ -1110,8 +1110,7 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true
+			self.playerEngine.currentItem != nil
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -1119,6 +1118,11 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+
+		optimizedWait {
+			self.playerEngine.currentItem?.isLoaded == true
+		}
+
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -1143,7 +1147,8 @@ extension PlayLogTests {
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.nextItem != nil
+			self.playerEngine.nextItem != nil &&
+				self.playerEngine.nextItem?.isLoaded == true
 		}
 
 		playerEngine.pause()
@@ -1160,7 +1165,6 @@ extension PlayLogTests {
 		// Wait until the previously next item is now the current item
 		optimizedWait {
 			self.playerEngine.currentItem?.id == self.uuid &&
-				self.playerEngine.currentItem?.isLoaded == true &&
 				self.playerEngine.nextItem == nil
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
