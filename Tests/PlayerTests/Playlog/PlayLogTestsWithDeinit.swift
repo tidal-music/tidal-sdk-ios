@@ -221,7 +221,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
@@ -464,7 +464,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek back to 2 seconds
 		let seekAssetPosition: Double = 2
@@ -529,7 +529,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
@@ -1067,6 +1067,9 @@ extension PlayLogWithDeinitTests {
 		optimizedWait {
 			self.playerEngine.currentItem != nil
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
+
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
 		guard currentItem != nil else {
@@ -1177,7 +1180,7 @@ extension PlayLogWithDeinitTests {
 		let pauseAssetPosition: Double = 2
 		wait(for: currentItem!, toReach: pauseAssetPosition)
 		playerEngine.pause()
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -1198,7 +1201,7 @@ extension PlayLogWithDeinitTests {
 		}
 
 		playerEngine.pause()
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		playerEngine.play(timestamp: timestamp)
 
@@ -1566,16 +1569,22 @@ extension PlayLogWithDeinitTests {
 		timer.invalidate()
 	}
 
-	func waitForPlayerToPause() {
-		// Wait for the state to be changed to NOT_PLAYING
-		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to NOT_PLAYING")
-		let timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { _ in
-			if self.playerEngine.getState() == .NOT_PLAYING {
-				pauseTrackExpectation.fulfill()
+	func waitForPlayerToBeInState(_ state: State, timeout: TimeInterval = Constants.expectationExtraTime) {
+		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
+
+		var timer: Timer?
+		DispatchQueue.main.async {
+			timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { timer in
+				if self.playerEngine.getState() == state {
+					pauseTrackExpectation.fulfill()
+					timer.invalidate()
+				}
 			}
+			RunLoop.main.add(timer!, forMode: .default)
 		}
-		wait(for: [pauseTrackExpectation], timeout: Constants.expectationShortExtraTime)
-		timer.invalidate()
+
+		wait(for: [pauseTrackExpectation], timeout: timeout)
+		timer?.invalidate()
 	}
 }
 
