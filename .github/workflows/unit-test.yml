@@ -11,7 +11,7 @@ on:
 jobs:
   run-swift-tests:
     name: Run Swift Unit Tests
-    runs-on: macos-14
+    runs-on: macos-14-arm64
     steps:
     - uses: actions/checkout@v4
     - name: Run tests
@@ -20,7 +20,7 @@ jobs:
 
   run-xcodebuild-tests:
     name: Run xcodebuild Unit Tests
-    runs-on: macos-14
+    runs-on: macos-14-arm64
     steps:
     - uses: actions/checkout@v4
     - uses: maxim-lobanov/setup-xcode@v1
@@ -33,7 +33,7 @@ jobs:
 
   build-test-apps:
     name: Build Test Apps
-    runs-on: macos-14
+    runs-on: macos-14-arm64
     steps:
     - uses: actions/checkout@v4
     - uses: maxim-lobanov/setup-xcode@v1
