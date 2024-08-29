@@ -399,7 +399,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -541,7 +541,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
