@@ -1115,6 +1115,8 @@ extension PlayLogTests {
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
+		playerEngine.play(timestamp: timestamp)
+
 		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
@@ -1123,8 +1125,6 @@ extension PlayLogTests {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
-
-		playerEngine.play(timestamp: timestamp)
 
 		waitForPlayerToBeInState(.PLAYING)
 
