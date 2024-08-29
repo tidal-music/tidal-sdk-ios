@@ -17,6 +17,7 @@ public final class StoredMediaProduct: MediaProduct {
 	public init(
 		productType: ProductType,
 		productId: String,
+		referenceId: String?,
 		progressSource: Source?,
 		playLogSource: Source?,
 		assetPresentation: AssetPresentation,
@@ -48,6 +49,7 @@ public final class StoredMediaProduct: MediaProduct {
 		super.init(
 			productType: productType,
 			productId: productId,
+			referenceId: referenceId,
 			progressSource: progressSource,
 			playLogSource: playLogSource
 		)
