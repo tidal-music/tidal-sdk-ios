@@ -775,8 +775,9 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
-		optimizedWait(description: "Expecting nextItem to be set.") {
-			self.playerEngine.nextItem != nil
+		optimizedWait(description: "Expecting nextItem to be set and loaded.") {
+			self.playerEngine.nextItem != nil &&
+				self.playerEngine.nextItem?.isLoaded == true
 		}
 
 		playerEngine.play(timestamp: timestamp)
@@ -891,8 +892,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait(description: "Expecting currentItem to be set and loaded") {
-			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
