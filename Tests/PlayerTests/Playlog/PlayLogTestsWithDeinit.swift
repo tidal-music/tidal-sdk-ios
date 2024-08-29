@@ -133,7 +133,7 @@ final class PlayLogWithDeinitTests: XCTestCase {
 		let djProducerHTTPClient = HttpClient(using: djProducerSession)
 
 		djProducer = DJProducer(
-			httpClient: HttpClient.mock(),
+			httpClient: djProducerHTTPClient,
 			credentialsProvider: credentialsProvider,
 			featureFlagProvider: .mock
 		)
@@ -203,8 +203,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
@@ -221,7 +221,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
@@ -266,8 +266,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -289,8 +289,8 @@ extension PlayLogWithDeinitTests {
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -324,8 +324,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -347,8 +347,8 @@ extension PlayLogWithDeinitTests {
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -382,8 +382,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -399,7 +399,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -412,8 +412,8 @@ extension PlayLogWithDeinitTests {
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -447,8 +447,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -464,7 +464,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Seek back to 2 seconds
 		let seekAssetPosition: Double = 2
@@ -477,8 +477,8 @@ extension PlayLogWithDeinitTests {
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -512,8 +512,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -529,7 +529,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
@@ -541,7 +541,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
@@ -550,8 +550,8 @@ extension PlayLogWithDeinitTests {
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -588,8 +588,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -616,8 +616,8 @@ extension PlayLogWithDeinitTests {
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -652,8 +652,8 @@ extension PlayLogWithDeinitTests {
 		// First we load the media product and then proceed to seek forward and play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -662,10 +662,10 @@ extension PlayLogWithDeinitTests {
 			return
 		}
 
-		optimizedWait {
+		optimizedWait(description: "Expecting for the currentItem's asset to be set") {
 			currentItem!.asset != nil
 		}
-		guard let asset = currentItem!.asset else {
+		guard currentItem!.asset != nil else {
 			XCTFail("Expected for the currentItem's asset to be set up!")
 			return
 		}
@@ -673,23 +673,16 @@ extension PlayLogWithDeinitTests {
 		// Seek forward to 2 seconds
 		let seekAssetPosition: Double = 2
 		playerEngine.seek(seekAssetPosition)
+		wait(for: currentItem!, toReach: seekAssetPosition)
 
-		// seek is async so wait a tiny bit to make sure seek has completed before actually playing.
-		optimizedWait(step: 0.05) {
-			PlayLogTestsHelper.isTimeDifferenceNegligible(
-				assetPosition: seekAssetPosition,
-				anotherAssetPosition: asset.assetPosition
-			)
-		}
-		assertAssetPosition(expectedAssetPosition: seekAssetPosition, actualAssetPosition: asset.assetPosition)
 		playerEngine.play(timestamp: timestamp)
 
 		// This will cause the deinit to be called.
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -719,8 +712,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -739,8 +732,8 @@ extension PlayLogWithDeinitTests {
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(timeout: audioFile.duration, description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -758,7 +751,6 @@ extension PlayLogWithDeinitTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
 	}
 
-	// TODO: Fix issue with start asset time
 	func test_load_and_setNext_and_play() {
 		// GIVEN
 		uuid = "uuid1"
@@ -771,8 +763,9 @@ extension PlayLogWithDeinitTests {
 		// First we load the first media product.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 
 		// Afterwards we load the second media product with setNext and finally play.
@@ -782,24 +775,21 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
-		optimizedWait {
-			playerEngine.nextItem != nil
+		optimizedWait(description: "Expecting nextItem to be set and loaded.") {
+			self.playerEngine.nextItem != nil &&
+				self.playerEngine.nextItem?.isLoaded == true
 		}
 
 		playerEngine.play(timestamp: timestamp)
-
-		// Now we wait the same amount of the duration of the track plus extra time
-		let expectation = expectation(description: "Expecting audio file to have been played")
-		_ = XCTWaiter.wait(
-			for: [expectation],
-			timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime
-		)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// THEN
-		optimizedWait {
-			playerEventSender.playLogEvents.count == 2
+		optimizedWait(
+			timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime,
+			description: "Expecting 2 play log events."
+		) {
+			self.playerEventSender.playLogEvents.count == 2
 		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
 		let expectedPlayLogEvent1 = PlayLogEvent.mock(
@@ -842,8 +832,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -860,12 +850,14 @@ extension PlayLogWithDeinitTests {
 		let seekAssetPosition: Double = 10
 		playerEngine.seek(seekAssetPosition)
 
+		// Seeking beyond media length goes directly to the next media, which in this case there's none set up.
+
 		// This will cause the deinit to be called.
 		currentItem = nil
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -899,8 +891,8 @@ extension PlayLogWithDeinitTests {
 		// First we load the first media product.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set and loaded") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -917,11 +909,12 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.nextItem != nil
+		optimizedWait(description: "Expecting nextItem to be set.") {
+			self.playerEngine.nextItem != nil
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let startSeekAssetPosition: Double = 2
@@ -931,10 +924,12 @@ extension PlayLogWithDeinitTests {
 		let seekAssetPosition: Double = 10
 		playerEngine.seek(seekAssetPosition)
 
+		// Seeking beyond media length goes directly to the next media.
+
 		// Wait until the previously next item is now the current item
-		optimizedWait {
-			playerEngine.nextItem == nil &&
-				playerEngine.currentItem?.id == self.uuid
+		optimizedWait(description: "Expecting nextItem to be nil and currentItem to be set.") {
+			self.playerEngine.nextItem == nil &&
+				self.playerEngine.currentItem?.id == self.uuid
 		}
 
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
@@ -955,10 +950,10 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
-		optimizedWait {
-			playerEventSender.playLogEvents.count == 2
+		waitForPlayerToBeInState(.IDLE)
+		optimizedWait(description: "Expecting 2 play log events.") {
+			self.playerEventSender.playLogEvents.count == 2
 		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
 		let actions1 = [
@@ -1014,8 +1009,8 @@ extension PlayLogWithDeinitTests {
 		// Now actually load the first media product.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 
 		playerEngine.play(timestamp: timestamp)
@@ -1031,10 +1026,9 @@ extension PlayLogWithDeinitTests {
 		)
 
 		// THEN
-		optimizedWait {
-			playerEventSender.playLogEvents.count == 1
+		optimizedWait(description: "Expecting 1 play log event.") {
+			self.playerEventSender.playLogEvents.count == 1
 		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
 		let expectedPlayLogEvent1 = PlayLogEvent.mock(
@@ -1064,8 +1058,9 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set, and for state to be PLAYING.") {
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.getState() == .PLAYING
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -1081,8 +1076,8 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.nextItem != nil
+		optimizedWait(description: "Expecting nextItem to be set.") {
+			self.playerEngine.nextItem != nil
 		}
 
 		// Wait for the track to reach 1 second
@@ -1092,9 +1087,9 @@ extension PlayLogWithDeinitTests {
 		playerEngine.skipToNext(timestamp: timestamp)
 
 		// Wait until the previously next item is now the current item
-		optimizedWait {
-			playerEngine.nextItem == nil &&
-				playerEngine.currentItem?.id == self.uuid
+		optimizedWait(description: "Expecting nextItem to be nil and currentItem to be set.") {
+			self.playerEngine.nextItem == nil &&
+				self.playerEngine.currentItem?.id == self.uuid
 		}
 
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
@@ -1115,10 +1110,10 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
-		optimizedWait {
-			playerEventSender.playLogEvents.count == 2
+		waitForPlayerToBeInState(.IDLE)
+		optimizedWait(description: "Expecting 2 play log events.") {
+			self.playerEventSender.playLogEvents.count == 2
 		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
 		let expectedPlayLogEvent1 = PlayLogEvent.mock(
@@ -1149,7 +1144,6 @@ extension PlayLogWithDeinitTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
-	// TODO: Fix issue with start asset time
 	func test_load_and_play_and_pause_and_seek_and_play_and_setNext_and_pause_and_play_and_skipToNext_and_seek_and_reset() {
 		// GIVEN
 		uuid = "uuid1"
@@ -1161,10 +1155,10 @@ extension PlayLogWithDeinitTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -1173,11 +1167,15 @@ extension PlayLogWithDeinitTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
+
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
 		wait(for: currentItem!, toReach: pauseAssetPosition)
+
 		playerEngine.pause()
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 10)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
@@ -1193,14 +1191,16 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.nextItem != nil
+		optimizedWait(description: "Expecting nextItem to be set and loaded.") {
+			self.playerEngine.nextItem != nil &&
+				self.playerEngine.nextItem?.isLoaded == true
 		}
 
 		playerEngine.pause()
-		waitForPlayerToPause()
+		waitForPlayerToBeInState(.NOT_PLAYING, timeout: 10)
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING, timeout: 10)
 
 		// Wait for the track to reach 4 seconds
 		let skipToNextAssetPosition: Double = 4
@@ -1208,9 +1208,10 @@ extension PlayLogWithDeinitTests {
 		playerEngine.skipToNext(timestamp: timestamp)
 
 		// Wait until the previously next item is now the current item
-		optimizedWait {
-			playerEngine.currentItem?.id == self.uuid &&
-				playerEngine.nextItem == nil
+		optimizedWait(description: "Expecting nextItem to be nil and currentItem to be set.") {
+			self.playerEngine.nextItem == nil &&
+				self.playerEngine.currentItem?.id == self.uuid &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var nextCurrentItem = playerEngine.currentItem
@@ -1222,7 +1223,7 @@ extension PlayLogWithDeinitTests {
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
 		playerEngine.seek(seekAssetPosition2)
-		wait(for: nextCurrentItem!, toReach: seekAssetPosition)
+		wait(for: nextCurrentItem!, toReach: seekAssetPosition2)
 
 		// Wait for the track to reach 59 seconds
 		let resetAssetPosition: Double = 59
@@ -1235,10 +1236,9 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
-		optimizedWait {
-			playerEventSender.playLogEvents.count == 2
+		optimizedWait(description: "Expecting 2 play log events.") {
+			self.playerEventSender.playLogEvents.count == 2
 		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
 		let actions1 = [
@@ -1289,8 +1289,11 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct1 = shortAudioFile.mediaProduct
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		playerEngine.play(timestamp: timestamp)
+
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -1299,7 +1302,7 @@ extension PlayLogWithDeinitTests {
 			return
 		}
 
-		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING, timeout: 5)
 
 		// Wait for the track to reach 2 seconds
 		let loadSecondMediaProductAssetPosition: Double = 2
@@ -1311,9 +1314,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.resetOrUnload()
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		setUpPlayerEngine()
 
@@ -1324,8 +1325,9 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct2 = longAudioFile.mediaProduct
 		playerEngine.load(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var nextCurrentItem = playerEngine.currentItem
@@ -1335,6 +1337,7 @@ extension PlayLogWithDeinitTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 1 second
 		let resetAssetPosition: Double = 1
@@ -1347,9 +1350,9 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 2
+		waitForPlayerToBeInState(.IDLE)
+		optimizedWait(description: "Expecting 2 play log events.") {
+			self.playerEventSender.playLogEvents.count == 2
 		}
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
@@ -1391,8 +1394,8 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct1 = shortAudioFile.mediaProduct
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -1413,9 +1416,7 @@ extension PlayLogWithDeinitTests {
 		playerEngine.resetOrUnload()
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		setUpPlayerEngine()
 
@@ -1423,8 +1424,8 @@ extension PlayLogWithDeinitTests {
 		let mediaProduct2 = shortAudioFile.mediaProduct
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
-		optimizedWait {
-			playerEngine.currentItem != nil
+		optimizedWait(description: "Expecting currentItem to be set.") {
+			self.playerEngine.currentItem != nil
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var nextCurrentItem = playerEngine.currentItem
@@ -1446,9 +1447,9 @@ extension PlayLogWithDeinitTests {
 		nextCurrentItem = nil
 
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration) {
-			playerEngine.getState() == .IDLE &&
-				playerEventSender.playLogEvents.count == 2
+		waitForPlayerToBeInState(.IDLE)
+		optimizedWait(timeout: shortAudioFile.duration, description: "Expecting 2 play log events.") {
+			self.playerEventSender.playLogEvents.count == 2
 		}
 
 		let playLogEvent1 = playerEventSender.playLogEvents[0]
@@ -1517,12 +1518,12 @@ extension PlayLogWithDeinitTests {
 		XCTAssertEqual(
 			actualPlayLogEvent.sourceType,
 			expectedPlayLogEvent.sourceType,
-			"Expected sourceType to be \(expectedPlayLogEvent.sourceType) but got \(actualPlayLogEvent.sourceType)"
+			"Expected sourceType to be \(String(describing: expectedPlayLogEvent.sourceType)) but got \(String(describing: actualPlayLogEvent.sourceType))"
 		)
 		XCTAssertEqual(
 			actualPlayLogEvent.sourceId,
 			expectedPlayLogEvent.sourceId,
-			"Expected sourceId to be \(expectedPlayLogEvent.sourceId) but got \(actualPlayLogEvent.sourceId)"
+			"Expected sourceId to be \(String(describing: expectedPlayLogEvent.sourceId)) but got \(String(describing: actualPlayLogEvent.sourceId))"
 		)
 		XCTAssertEqual(
 			actualPlayLogEvent.endTimestamp,
@@ -1556,26 +1557,41 @@ extension PlayLogWithDeinitTests {
 
 	func wait(for playerItem: PlayerItem, toReach targetAssetPosition: Double) {
 		let trackReachedAssetPositionExpectation =
-			XCTestExpectation(description: "Expected for the track to reach \(targetAssetPosition) second(s)")
-		let timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { _ in
-			if playerItem.assetPosition >= targetAssetPosition {
-				trackReachedAssetPositionExpectation.fulfill()
+			XCTestExpectation(
+				description: "Expected for the track to reach \(targetAssetPosition) second(s) starting from \(playerItem.assetPosition)"
+			)
+
+		var timer: Timer?
+		DispatchQueue.main.async {
+			timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { timer in
+				if playerItem.assetPosition >= targetAssetPosition {
+					trackReachedAssetPositionExpectation.fulfill()
+					timer.invalidate()
+				}
 			}
+			RunLoop.main.add(timer!, forMode: .default)
 		}
+
 		wait(for: [trackReachedAssetPositionExpectation], timeout: targetAssetPosition + Constants.expectationExtraTime)
-		timer.invalidate()
+		timer?.invalidate()
 	}
 
-	func waitForPlayerToPause() {
-		// Wait for the state to be changed to NOT_PLAYING
-		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to NOT_PLAYING")
-		let timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { _ in
-			if self.playerEngine.getState() == .NOT_PLAYING {
-				pauseTrackExpectation.fulfill()
+	func waitForPlayerToBeInState(_ state: State, timeout: TimeInterval = Constants.expectationExtraTime) {
+		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
+
+		var timer: Timer?
+		DispatchQueue.main.async {
+			timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { timer in
+				if self.playerEngine.getState() == state {
+					pauseTrackExpectation.fulfill()
+					timer.invalidate()
+				}
 			}
+			RunLoop.main.add(timer!, forMode: .default)
 		}
-		wait(for: [pauseTrackExpectation], timeout: Constants.expectationShortExtraTime)
-		timer.invalidate()
+
+		wait(for: [pauseTrackExpectation], timeout: timeout)
+		timer?.invalidate()
 	}
 }
 

@@ -210,10 +210,10 @@ final class EventsTests: XCTestCase {
 
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.isEmpty &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+		optimizedWait(description: "Expecting streamingMetricsEvents, playLogEvents and progressEvents to be empty.") {
+			self.playerEventSender.streamingMetricsEvents.isEmpty &&
+				self.playerEventSender.playLogEvents.isEmpty &&
+				self.playerEventSender.progressEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
@@ -227,10 +227,12 @@ final class EventsTests: XCTestCase {
 		player.loaded()
 		playerEngine.reset()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 3 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 3 item, and playLogEvents and progressEvents to be empty."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 3 &&
+				self.playerEventSender.playLogEvents.isEmpty &&
+				self.playerEventSender.progressEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
@@ -269,10 +271,10 @@ final class EventsTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.isEmpty &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+			optimizedWait(description: "Expecting streamingMetricsEvents, playLogEvents and progressEvents to be empty.") {
+				self.playerEventSender.streamingMetricsEvents.isEmpty &&
+					self.playerEventSender.playLogEvents.isEmpty &&
+					self.playerEventSender.progressEvents.isEmpty
 			}
 		}
 
@@ -290,10 +292,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.reset()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 3 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 3 items, and playLogEvents and progressEvents to be empty."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 3 &&
+					self.playerEventSender.playLogEvents.isEmpty &&
+					self.playerEventSender.progressEvents.isEmpty
 			}
 		}
 
@@ -360,10 +364,10 @@ final class EventsTests: XCTestCase {
 
 		JsonEncodedResponseURLProtocol.fail()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.isEmpty &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+		optimizedWait(description: "Expecting streamingMetricsEvents, playLogEvents and progressEvents to be empty.") {
+			self.playerEventSender.streamingMetricsEvents.isEmpty &&
+				self.playerEventSender.playLogEvents.isEmpty &&
+				self.playerEventSender.progressEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
@@ -373,10 +377,12 @@ final class EventsTests: XCTestCase {
 		let initialTimestamp: UInt64 = 1
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 3 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 3 items, and playLogEvents and progressEvents to be empty."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 3 &&
+				self.playerEventSender.playLogEvents.isEmpty &&
+				self.playerEventSender.progressEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
@@ -417,10 +423,10 @@ final class EventsTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.isEmpty &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+			optimizedWait(description: "Expecting streamingMetricsEvents, playLogEvents and progressEvents to be empty.") {
+				self.playerEventSender.streamingMetricsEvents.isEmpty &&
+					self.playerEventSender.playLogEvents.isEmpty &&
+					self.playerEventSender.progressEvents.isEmpty
 			}
 		}
 
@@ -432,10 +438,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 3 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 3 items, and playLogEvents and progressEvents to be empty."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 3 &&
+					self.playerEventSender.playLogEvents.isEmpty &&
+					self.playerEventSender.progressEvents.isEmpty
 			}
 		}
 
@@ -586,10 +594,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.play(timestamp: playTimestamp)
 		player.playing()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 2 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 2 items, and playLogEvents and progressEvents to be empty."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 2 &&
+				self.playerEventSender.playLogEvents.isEmpty &&
+				self.playerEventSender.progressEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
@@ -618,8 +628,8 @@ final class EventsTests: XCTestCase {
 		timestamp = skipToNextTimestamp
 		playerEngine.skipToNext(timestamp: skipToNextTimestamp)
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4
+		optimizedWait(description: "Expecting streamingMetricsEvents to have 4 items.") {
+			self.playerEventSender.streamingMetricsEvents.count == 4
 		}
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
@@ -636,8 +646,8 @@ final class EventsTests: XCTestCase {
 		player.playing()
 		player.completed()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 6
+		optimizedWait(description: "Expecting streamingMetricsEvents to have 6 items.") {
+			self.playerEventSender.streamingMetricsEvents.count == 6
 		}
 
 		// Events of the second item
@@ -704,10 +714,12 @@ final class EventsTests: XCTestCase {
 		player.playing()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 2 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 2 items, and playLogEvents and progressEvents to be empty."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 2 &&
+					self.playerEventSender.playLogEvents.isEmpty &&
+					self.playerEventSender.progressEvents.isEmpty
 			}
 		}
 
@@ -738,8 +750,8 @@ final class EventsTests: XCTestCase {
 		playerEngine.skipToNext(timestamp: skipToNextTimestamp)
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4
+			optimizedWait(description: "Expecting streamingMetricsEvents to have 4 items.") {
+				self.playerEventSender.streamingMetricsEvents.count == 4
 			}
 		}
 
@@ -758,8 +770,8 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 6
+			optimizedWait(description: "Expecting streamingMetricsEvents to have 6 items.") {
+				self.playerEventSender.streamingMetricsEvents.count == 6
 			}
 		}
 
@@ -844,10 +856,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 		player.loaded()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 2 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 2 items, and playLogEvents and progressEvents to be empty."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 2 &&
+				self.playerEventSender.playLogEvents.isEmpty &&
+				self.playerEventSender.progressEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
@@ -895,10 +909,12 @@ final class EventsTests: XCTestCase {
 		player.loaded()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 2 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 2 items, and playLogEvents and progressEvents to be empty."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 2 &&
+					self.playerEventSender.playLogEvents.isEmpty &&
+					self.playerEventSender.progressEvents.isEmpty
 			}
 		}
 
@@ -965,10 +981,12 @@ final class EventsTests: XCTestCase {
 		player.loaded()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 7 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 7 items, and playLogEvents and progressEvents to be empty."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 7 &&
+					self.playerEventSender.playLogEvents.isEmpty &&
+					self.playerEventSender.progressEvents.isEmpty
 			}
 		}
 
@@ -1050,10 +1068,12 @@ final class EventsTests: XCTestCase {
 		timestamp = nextTimestamp
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 2 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 2 items, and playLogEvents and progressEvents to be empty."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 2 &&
+				self.playerEventSender.playLogEvents.isEmpty &&
+				self.playerEventSender.progressEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
@@ -1102,10 +1122,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 2 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 2 items, and playLogEvents and progressEvents to be empty."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 2 &&
+					self.playerEventSender.playLogEvents.isEmpty &&
+					self.playerEventSender.progressEvents.isEmpty
 			}
 		}
 
@@ -1233,10 +1255,12 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -1329,10 +1353,12 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1 &&
+					self.playerEventSender.progressEvents.count == 1
 			}
 		}
 
@@ -1583,10 +1609,12 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -1680,10 +1708,12 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1 &&
+					self.playerEventSender.progressEvents.count == 1
 			}
 		}
 
@@ -1848,10 +1878,12 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.failed(with: Constants.error)
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -1945,10 +1977,12 @@ final class EventsTests: XCTestCase {
 		player.failed(with: Constants.error)
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1 &&
+					self.playerEventSender.progressEvents.count == 1
 			}
 		}
 
@@ -2124,10 +2158,12 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -2224,10 +2260,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.reset()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1 &&
+					self.playerEventSender.progressEvents.count == 1
 			}
 		}
 
@@ -2455,11 +2493,13 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		optimizedWait(until: {
-			playerEventSender.streamingMetricsEvents.count == 6 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
-		})
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 6 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 6 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 6)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -2515,11 +2555,13 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition2
 		player.completed()
 
-		optimizedWait(until: {
-			playerEventSender.streamingMetricsEvents.count == 8 &&
-				playerEventSender.playLogEvents.count == 2 &&
-				playerEventSender.progressEvents.count == 2
-		})
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 8 items, and playLogEvents and progressEvents to have 2 items."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 8 &&
+				self.playerEventSender.playLogEvents.count == 2 &&
+				self.playerEventSender.progressEvents.count == 2
+		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
@@ -2611,10 +2653,12 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 6 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 6 items, and playLogEvents and progressEvents to have 1 item."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 6 &&
+					self.playerEventSender.playLogEvents.count == 1 &&
+					self.playerEventSender.progressEvents.count == 1
 			}
 		}
 
@@ -2673,10 +2717,12 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 8 &&
-					playerEventSender.playLogEvents.count == 2 &&
-					playerEventSender.progressEvents.count == 2
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 8 items, and playLogEvents and progressEvents to have 2 items."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 8 &&
+					self.playerEventSender.playLogEvents.count == 2 &&
+					self.playerEventSender.progressEvents.count == 2
 			}
 		}
 
@@ -2797,10 +2843,12 @@ final class EventsTests: XCTestCase {
 		timestamp = endTimestamp
 		player.failed(with: Constants.error)
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to be empty."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.isEmpty &&
+				self.playerEventSender.progressEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
@@ -2863,10 +2911,12 @@ final class EventsTests: XCTestCase {
 		player.failed(with: Constants.error)
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to be empty."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.isEmpty &&
+					self.playerEventSender.progressEvents.isEmpty
 			}
 		}
 
@@ -3038,10 +3088,12 @@ final class EventsTests: XCTestCase {
 		timestamp = endTimestamp
 		player.completed()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 8 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 8 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 8 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
@@ -3147,10 +3199,12 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 8 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 8 items, and playLogEvents and progressEvents to have 1 item."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 8 &&
+					self.playerEventSender.playLogEvents.count == 1 &&
+					self.playerEventSender.progressEvents.count == 1
 			}
 		}
 
@@ -3345,10 +3399,12 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3444,10 +3500,12 @@ final class EventsTests: XCTestCase {
 		playerEngine.reset()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1 &&
+					self.playerEventSender.progressEvents.count == 1
 			}
 		}
 
@@ -3645,10 +3703,12 @@ final class EventsTests: XCTestCase {
 
 		player.failed(with: NSError(domain: "Stall", code: 1, userInfo: nil))
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3755,10 +3815,12 @@ final class EventsTests: XCTestCase {
 
 		player.failed(with: NSError(domain: "Stall", code: 1, userInfo: nil))
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3944,10 +4006,12 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -4048,10 +4112,12 @@ final class EventsTests: XCTestCase {
 
 		playerEngine.reset()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -4252,10 +4318,12 @@ final class EventsTests: XCTestCase {
 		player.assetPosition = endAssetPosition
 		player.completed()
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -4366,10 +4434,12 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1 &&
+					self.playerEventSender.progressEvents.count == 1
 			}
 		}
 
@@ -4584,10 +4654,12 @@ final class EventsTests: XCTestCase {
 
 		listenerQueue.sync {}
 
-		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+		optimizedWait(
+			description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+		) {
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1 &&
+				self.playerEventSender.progressEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -4704,10 +4776,12 @@ final class EventsTests: XCTestCase {
 		listenerQueue.sync {}
 
 		if shouldSendEventsInDeinit {
-			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+			optimizedWait(
+				description: "Expecting streamingMetricsEvents to have 4 items, and playLogEvents and progressEvents to have 1 item."
+			) {
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1 &&
+					self.playerEventSender.progressEvents.count == 1
 			}
 		}
 
