@@ -1129,6 +1129,7 @@ extension PlayLogTests {
 		}
 
 		waitForPlayerToBeInState(.PLAYING)
+		waitAsyncWork()
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
