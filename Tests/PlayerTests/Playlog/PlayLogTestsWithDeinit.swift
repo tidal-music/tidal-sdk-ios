@@ -1152,7 +1152,6 @@ extension PlayLogWithDeinitTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
-	// TODO: Fix issue with start asset time
 	func test_load_and_play_and_pause_and_seek_and_play_and_setNext_and_pause_and_play_and_skipToNext_and_seek_and_reset() {
 		// GIVEN
 		uuid = "uuid1"
@@ -1167,7 +1166,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
@@ -1175,6 +1175,8 @@ extension PlayLogWithDeinitTests {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
@@ -1188,6 +1190,7 @@ extension PlayLogWithDeinitTests {
 		wait(for: currentItem!, toReach: seekAssetPosition)
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Afterwards we load the second media product with setNext.
 		uuid = "uuid2"
@@ -1225,7 +1228,7 @@ extension PlayLogWithDeinitTests {
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
 		playerEngine.seek(seekAssetPosition2)
-		wait(for: nextCurrentItem!, toReach: seekAssetPosition)
+		wait(for: nextCurrentItem!, toReach: seekAssetPosition2)
 
 		// Wait for the track to reach 59 seconds
 		let resetAssetPosition: Double = 59
