@@ -1117,6 +1117,8 @@ extension PlayLogTests {
 
 		playerEngine.play(timestamp: timestamp)
 
+		waitAsyncWork()
+
 		optimizedWait(description: "Expecting currentItem to be set and loaded.") {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
