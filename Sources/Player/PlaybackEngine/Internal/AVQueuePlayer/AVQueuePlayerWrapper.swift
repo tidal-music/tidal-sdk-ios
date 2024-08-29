@@ -713,7 +713,6 @@ private extension AVQueuePlayerWrapper {
 			return "empty"
 		}
 
-		let eventsString: String
 		let events = "Log Events: " + log.events.description
 
 		guard let data = log.extendedLogData(),
