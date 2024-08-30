@@ -91,7 +91,6 @@ final class PlayerItem {
 	func emitEvents() {
 		emitStreamingMetrics()
 		emitPlayLog()
-		emitProgressEvent()
 		emitOfflinePlay()
 	}
 
@@ -404,10 +403,6 @@ private extension PlayerItem {
 	}
 
 	func emitPlayLog() {
-		if mediaProduct is Interruption {
-			return
-		}
-
 		let now = PlayerWorld.timeProvider.timestamp()
 		guard let metrics,
 		      let playbackContext,
@@ -437,39 +432,10 @@ private extension PlayerItem {
 			actions: metrics.actions,
 			endTimestamp: endTimestamp,
 			endAssetPosition: endAssetPosition
-		))
-	}
-
-	func emitProgressEvent() {
-		if mediaProduct is Interruption {
-			return
-		}
-
-		guard let metrics,
-		      let playbackContext,
-		      let asset,
-		      metrics.actualStartTime != nil,
-		      playbackContext.streamType == .ON_DEMAND
-		else {
-			return
-		}
-
-		let endAssetPosition = metrics.endAssetPosition ?? asset.getAssetPosition()
-		playerEventSender.send(ProgressEvent(
-			id: playbackContext.productId,
-			assetPosition: Int(endAssetPosition * 1000),
-			duration: Int(playbackContext.duration * 1000),
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		))
+		), extras: mediaProduct.extras)
 	}
 
 	func emitOfflinePlay() {
-		if mediaProduct is Interruption {
-			return
-		}
-
 		guard let metrics,
 		      let playbackContext,
 		      let asset,

@@ -174,7 +174,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let initialTimestamp: UInt64 = 1
 		timestamp = initialTimestamp
@@ -185,7 +184,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -212,13 +210,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.isEmpty &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+				playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let initialTimestamp: UInt64 = 1
 		timestamp = initialTimestamp
@@ -229,13 +225,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 3 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+				playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -271,14 +265,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.isEmpty &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+					playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let initialTimestamp: UInt64 = 1
 		timestamp = initialTimestamp
@@ -292,14 +284,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 3 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+					playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -326,14 +316,12 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let initialTimestamp: UInt64 = 1
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -362,26 +350,22 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.isEmpty &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+				playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let initialTimestamp: UInt64 = 1
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 3 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+				playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -419,14 +403,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.isEmpty &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+					playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let initialTimestamp: UInt64 = 1
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
@@ -434,14 +416,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 3 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+					playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -493,7 +473,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(
@@ -588,13 +567,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 2 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+				playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(
@@ -706,14 +683,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 2 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+					playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(
@@ -810,7 +785,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .IMPLICIT, timestamp: nextTimestamp)
@@ -846,13 +820,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 2 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+				playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .IMPLICIT, timestamp: nextTimestamp)
@@ -897,14 +869,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 2 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+					playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .IMPLICIT, timestamp: nextTimestamp)
@@ -967,14 +937,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 7 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+					playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 7)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[5] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(
@@ -1015,7 +983,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .IMPLICIT, timestamp: nextTimestamp)
@@ -1052,13 +1019,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 2 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+				playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .IMPLICIT, timestamp: nextTimestamp)
@@ -1104,14 +1069,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 2 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+					playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let actualStreamingSessionStartEvent = playerEventSender.streamingMetricsEvents[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .IMPLICIT, timestamp: nextTimestamp)
@@ -1155,7 +1118,6 @@ final class EventsTests: XCTestCase {
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -1195,18 +1157,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentSucceeds_legacy() {
@@ -1235,14 +1185,12 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -1282,18 +1230,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentSucceeds_legacy2() {
@@ -1331,15 +1267,13 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+					playerEventSender.playLogEvents.count == 1
 			}
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -1379,18 +1313,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentSucceeds_withCachingDisabled() {
@@ -1422,7 +1344,6 @@ final class EventsTests: XCTestCase {
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT, sessionTags: [.CACHING_DISABLED])
@@ -1462,18 +1383,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentSucceeds_withPreload() {
@@ -1504,7 +1413,6 @@ final class EventsTests: XCTestCase {
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT, sessionTags: [.PRELOADED])
@@ -1544,18 +1452,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentSucceeds_withPreload_legacy() {
@@ -1585,14 +1481,12 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT, sessionTags: [.PRELOADED])
@@ -1632,18 +1526,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentSucceeds_withPreload_legacy2() {
@@ -1682,15 +1564,13 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+					playerEventSender.playLogEvents.count == 1
 			}
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT, sessionTags: [.PRELOADED])
@@ -1730,18 +1610,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentFails() {
@@ -1769,7 +1637,6 @@ final class EventsTests: XCTestCase {
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -1812,18 +1679,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentFails_legacy() {
@@ -1850,14 +1705,12 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -1900,18 +1753,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentFails_legacy2() {
@@ -1947,15 +1788,13 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+					playerEventSender.playLogEvents.count == 1
 			}
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -1998,18 +1837,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentReset() {
@@ -2042,7 +1869,6 @@ final class EventsTests: XCTestCase {
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -2083,18 +1909,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentReset_legacy() {
@@ -2126,14 +1940,12 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -2174,18 +1986,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentReset_legacy2() {
@@ -2226,15 +2026,13 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+					playerEventSender.playLogEvents.count == 1
 			}
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
 		XCTAssertEqual(events.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
 		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT)
@@ -2275,18 +2073,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: Double(endTimestamp)
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentAndNextSuccess() {
@@ -2322,7 +2108,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 6)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[4] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -2356,18 +2141,6 @@ final class EventsTests: XCTestCase {
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
 
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct1.productType,
-			sourceType: mediaProduct1.progressSource?.sourceType,
-			sourceId: mediaProduct1.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
-
 		let endTimestamp: UInt64 = 5
 		let endAssetPosition2: Double = 5
 		timestamp = endTimestamp
@@ -2376,7 +2149,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 2)
 
 		let actualPlaybackStatistics2 = playerEventSender.streamingMetricsEvents[6] as! PlaybackStatistics
 		let expectedPlaybackStatistics2 = PlaybackStatistics.mock(
@@ -2410,18 +2182,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition2
 		)
 		validatePlayLog(event: actualPlayLog2, expectedEvent: expectedPlayLog2)
-
-		let assetPosition2 = Int(endAssetPosition2) * 1000
-		let actualProgressEvent2 = playerEventSender.progressEvents[1]
-		let expectedProgressEvent2 = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition2,
-			duration: Constants.duration,
-			type: mediaProduct2.productType,
-			sourceType: mediaProduct2.progressSource?.sourceType,
-			sourceId: mediaProduct2.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent2, expectedEvent: expectedProgressEvent2)
 	}
 
 	func testPlayCurrentAndNextSuccess_legacy() {
@@ -2457,13 +2217,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait(until: {
 			playerEventSender.streamingMetricsEvents.count == 6 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		})
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 6)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[4] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -2497,18 +2255,6 @@ final class EventsTests: XCTestCase {
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
 
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct1.productType,
-			sourceType: mediaProduct1.progressSource?.sourceType,
-			sourceId: mediaProduct1.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
-
 		let endTimestamp: UInt64 = 5
 		let endAssetPosition2: Double = 5
 		timestamp = endTimestamp
@@ -2517,13 +2263,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait(until: {
 			playerEventSender.streamingMetricsEvents.count == 8 &&
-				playerEventSender.playLogEvents.count == 2 &&
-				playerEventSender.progressEvents.count == 2
+				playerEventSender.playLogEvents.count == 2
 		})
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 2)
 
 		let actualPlaybackStatistics2 = playerEventSender.streamingMetricsEvents[6] as! PlaybackStatistics
 		let expectedPlaybackStatistics2 = PlaybackStatistics.mock(
@@ -2557,18 +2301,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition2
 		)
 		validatePlayLog(event: actualPlayLog2, expectedEvent: expectedPlayLog2)
-
-		let assetPosition2 = Int(endAssetPosition2) * 1000
-		let actualProgressEvent2 = playerEventSender.progressEvents[1]
-		let expectedProgressEvent2 = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition2,
-			duration: Constants.duration,
-			type: mediaProduct2.productType,
-			sourceType: mediaProduct2.progressSource?.sourceType,
-			sourceId: mediaProduct2.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent2, expectedEvent: expectedProgressEvent2)
 	}
 
 	func testPlayCurrentAndNextSuccess_legacy2() {
@@ -2613,14 +2345,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 6 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+					playerEventSender.playLogEvents.count == 1
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 6)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[4] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -2654,18 +2384,6 @@ final class EventsTests: XCTestCase {
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
 
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct1.productType,
-			sourceType: mediaProduct1.progressSource?.sourceType,
-			sourceId: mediaProduct1.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
-
 		let endTimestamp: UInt64 = 5
 		let endAssetPosition2: Double = 5
 		timestamp = endTimestamp
@@ -2675,14 +2393,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 8 &&
-					playerEventSender.playLogEvents.count == 2 &&
-					playerEventSender.progressEvents.count == 2
+					playerEventSender.playLogEvents.count == 2
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 2)
 
 		let actualPlaybackStatistics2 = playerEventSender.streamingMetricsEvents[6] as! PlaybackStatistics
 		let expectedPlaybackStatistics2 = PlaybackStatistics.mock(
@@ -2716,18 +2432,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition2
 		)
 		validatePlayLog(event: actualPlayLog2, expectedEvent: expectedPlayLog2)
-
-		let assetPosition2 = Int(endAssetPosition2) * 1000
-		let actualProgressEvent2 = playerEventSender.progressEvents[1]
-		let expectedProgressEvent2 = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition2,
-			duration: Constants.duration,
-			type: mediaProduct2.productType,
-			sourceType: mediaProduct2.progressSource?.sourceType,
-			sourceId: mediaProduct2.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent2, expectedEvent: expectedProgressEvent2)
 	}
 
 	func testLoadFailsInPlayer() {
@@ -2749,7 +2453,6 @@ final class EventsTests: XCTestCase {
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let events = playerEventSender.streamingMetricsEvents
 
@@ -2799,14 +2502,12 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.isEmpty &&
-				playerEventSender.progressEvents.isEmpty
+				playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let events = playerEventSender.streamingMetricsEvents
 
@@ -2865,15 +2566,13 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.isEmpty &&
-					playerEventSender.progressEvents.isEmpty
+					playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 0)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 0)
 
 		let events = playerEventSender.streamingMetricsEvents
 
@@ -2942,7 +2641,6 @@ final class EventsTests: XCTestCase {
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[4] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -2994,18 +2692,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct2.productType,
-			sourceType: mediaProduct2.progressSource?.sourceType,
-			sourceId: mediaProduct2.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy() {
@@ -3040,14 +2726,12 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 8 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[4] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3090,18 +2774,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayCurrentNextFailsBetweenPlaybackInfoAndCurrentComplete_legacy2() {
@@ -3149,15 +2821,13 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 8 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+					playerEventSender.playLogEvents.count == 1
 			}
 		}
 
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[4] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3209,18 +2879,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct2.productType,
-			sourceType: mediaProduct2.progressSource?.sourceType,
-			sourceId: mediaProduct2.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayingAndPausing() {
@@ -3263,7 +2921,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3293,18 +2950,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition2 = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition2,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayingAndPausing_legacy() {
@@ -3347,13 +2992,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3383,18 +3026,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition2 = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition2,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayingAndPausing_legacy2() {
@@ -3446,14 +3077,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+					playerEventSender.playLogEvents.count == 1
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3483,18 +3112,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition2 = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition2,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayingAndStalling() {
@@ -3551,7 +3168,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3584,18 +3200,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition2 = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition2,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayingAndStalling_legacy() {
@@ -3647,13 +3251,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3686,18 +3288,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition2 = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition2,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayingAndStalling_legacy2() {
@@ -3757,13 +3347,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3796,18 +3384,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition2 = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition2,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayingAndSeeking() {
@@ -3856,7 +3432,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3886,18 +3461,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayingAndSeeking_legacy() {
@@ -3946,13 +3509,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -3982,18 +3543,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testPlayingAndSeeking_legacy2() {
@@ -4050,13 +3599,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -4086,18 +3633,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testStallsDueToSeek() {
@@ -4155,7 +3690,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -4185,18 +3719,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testStallsDueToSeek_legacy() {
@@ -4254,13 +3776,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -4290,18 +3810,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testStallsDueToSeek_legacy2() {
@@ -4368,14 +3876,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+					playerEventSender.playLogEvents.count == 1
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
 		let expectedPlaybackStatistics = PlaybackStatistics.mock(
@@ -4405,18 +3911,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testStallAndAbortedSeeks() {
@@ -4481,7 +3975,6 @@ final class EventsTests: XCTestCase {
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		listenerQueue.sync {}
 
@@ -4515,18 +4008,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testStallAndAbortedSeeks_legacy() {
@@ -4586,13 +4067,11 @@ final class EventsTests: XCTestCase {
 
 		optimizedWait {
 			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1 &&
-				playerEventSender.progressEvents.count == 1
+				playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		listenerQueue.sync {}
 
@@ -4626,18 +4105,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 
 	func testStallAndAbortedSeeks_legacy2() {
@@ -4706,14 +4173,12 @@ final class EventsTests: XCTestCase {
 		if shouldSendEventsInDeinit {
 			optimizedWait {
 				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1 &&
-					playerEventSender.progressEvents.count == 1
+					playerEventSender.playLogEvents.count == 1
 			}
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
-		XCTAssertEqual(playerEventSender.progressEvents.count, 1)
 
 		listenerQueue.sync {}
 
@@ -4747,18 +4212,6 @@ final class EventsTests: XCTestCase {
 			endAssetPosition: endAssetPosition
 		)
 		validatePlayLog(event: actualPlayLog, expectedEvent: expectedPlayLog)
-
-		let assetPosition = Int(endAssetPosition * 1000)
-		let actualProgressEvent = playerEventSender.progressEvents[0]
-		let expectedProgressEvent = ProgressEvent.mock(
-			id: "\(playbackInfo.trackId)",
-			assetPosition: assetPosition,
-			duration: Constants.duration,
-			type: mediaProduct.productType,
-			sourceType: mediaProduct.progressSource?.sourceType,
-			sourceId: mediaProduct.progressSource?.sourceId
-		)
-		validateProgressEvent(event: actualProgressEvent, expectedEvent: expectedProgressEvent)
 	}
 }
 
@@ -4782,10 +4235,6 @@ private extension EventsTests {
 	}
 
 	func validatePlayLog(event: PlayLogEvent, expectedEvent: PlayLogEvent) {
-		XCTAssertEqual(event, expectedEvent)
-	}
-
-	func validateProgressEvent(event: ProgressEvent, expectedEvent: ProgressEvent) {
 		XCTAssertEqual(event, expectedEvent)
 	}
 }
