@@ -763,7 +763,7 @@ extension PlayLogTests {
 		let expectation = expectation(description: "Expecting audio file to have been played")
 		_ = XCTWaiter.wait(
 			for: [expectation],
-			timeout: shortAudioFile.duration + longAudioFile.duration + Constants.expectationExtraTime
+			timeout: shortAudioFile.duration + longAudioFile.duration
 		)
 
 		// THEN
