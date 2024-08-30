@@ -10,7 +10,8 @@ public final class Interruption: MediaProduct {
 			productId: productId,
 			referenceId: nil,
 			progressSource: nil,
-			playLogSource: nil
+			playLogSource: nil,
+			extras: nil
 		)
 	}
 

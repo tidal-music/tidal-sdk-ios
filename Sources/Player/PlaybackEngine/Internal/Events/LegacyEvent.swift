@@ -11,8 +11,9 @@ final class LegacyEvent<T: Codable & Equatable>: Codable {
 	let user: User
 	let client: Client
 	let payload: T
+	let extras: [String: String?]?
 
-	init(group: String, name: String, version: Int, ts: UInt64, user: User, client: Client, payload: T) {
+	init(group: String, name: String, version: Int, ts: UInt64, user: User, client: Client, payload: T, extras: [String: String?]?) {
 		self.group = group
 		self.name = name
 		self.version = version
@@ -21,6 +22,7 @@ final class LegacyEvent<T: Codable & Equatable>: Codable {
 		self.user = user
 		self.client = client
 		self.payload = payload
+		self.extras = extras
 	}
 }
 
@@ -35,6 +37,7 @@ extension LegacyEvent: Equatable {
 			lhs.uuid == rhs.uuid &&
 			lhs.user == rhs.user &&
 			lhs.client == rhs.client &&
-			lhs.payload == rhs.payload
+			lhs.payload == rhs.payload &&
+			lhs.extras == rhs.extras
 	}
 }

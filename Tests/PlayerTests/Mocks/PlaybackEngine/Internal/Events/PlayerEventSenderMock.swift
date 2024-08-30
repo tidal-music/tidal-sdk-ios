@@ -40,7 +40,7 @@ final class PlayerEventSenderMock: PlayerEventSender {
 		streamingMetricsEvents.append(event)
 	}
 
-	override func send(_ event: PlayLogEvent) {
+	override func send(_ event: PlayLogEvent, extras: [String: String?]?) {
 		playLogEvents.append(event)
 	}
 

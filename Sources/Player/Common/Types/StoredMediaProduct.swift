@@ -20,6 +20,7 @@ public final class StoredMediaProduct: MediaProduct {
 		referenceId: String?,
 		progressSource: Source?,
 		playLogSource: Source?,
+		extras: [String: String?]?,
 		assetPresentation: AssetPresentation,
 		audioMode: AudioMode?,
 		audioQuality: AudioQuality?,
@@ -51,7 +52,8 @@ public final class StoredMediaProduct: MediaProduct {
 			productId: productId,
 			referenceId: referenceId,
 			progressSource: progressSource,
-			playLogSource: playLogSource
+			playLogSource: playLogSource,
+			extras: extras
 		)
 	}
 
