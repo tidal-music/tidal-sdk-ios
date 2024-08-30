@@ -362,44 +362,6 @@ extension PlayerEventSenderTests {
 		await assertPlayLogEvent()
 	}
 
-	// MARK: - ProgressEvent
-
-	func test_send_ProgressEvent_legacy() async {
-		shouldUseEventProducer = false
-
-		let progressEvent = ProgressEvent.mock()
-		playerEventSender.send(progressEvent)
-
-		await asyncSchedulerFactory.executeAll()
-
-		let eventData = dataWriter.dataList[0]
-		let expectedDecodedEvent = LegacyEvent<ProgressEvent>(
-			group: EventGroup.playback.rawValue,
-			name: EventNames.progress,
-			version: EventGroup.playback.version,
-			ts: timestamp,
-			user: user,
-			client: client,
-			payload: progressEvent,
-			extras: nil
-		)
-		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
-	}
-
-	func test_send_ProgressEvent() async {
-		shouldUseEventProducer = true
-
-		let progressEvent = ProgressEvent.mock()
-		playerEventSender.send(progressEvent)
-
-		await asyncSchedulerFactory.executeAll()
-
-		let name = EventNames.progress
-		let group = EventGroup.playback
-		let consentCategory = ConsentCategory.necessary
-		assertEvent(name: name, group: group, consentCategory: consentCategory, playerEvent: progressEvent, extras: nil)
-	}
-
 	// MARK: - OfflinePlay
 
 	func test_send_OfflinePlay() async {
