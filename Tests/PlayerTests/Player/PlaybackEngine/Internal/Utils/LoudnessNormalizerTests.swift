@@ -98,7 +98,7 @@ final class LoudnessNormalizerTests: XCTestCase {
 	// MARK: - create(from storedMediaProduct: StoredMediaProduct)
 
 	func test_create_from_StoredMediaProduct() {
-		let storedMediaProduct = StoredMediaProduct.storedMock(
+		let storedMediaProduct = StoredMediaProduct.mock(
 			albumReplayGain: Constants.albumReplayGain,
 			albumPeakAmplitude: Constants.albumPeakAmplitude,
 			trackReplayGain: 2,

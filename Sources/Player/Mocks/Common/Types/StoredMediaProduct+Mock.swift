@@ -1,7 +1,7 @@
 import Foundation
 
 public extension StoredMediaProduct {
-	static func storedMock(
+	static func mock(
 		productType: ProductType = .TRACK,
 		productId: String = "1",
 		referenceId: String? = nil,

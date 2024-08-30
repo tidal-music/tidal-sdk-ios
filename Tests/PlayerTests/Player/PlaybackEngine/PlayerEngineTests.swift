@@ -15,8 +15,8 @@ private enum Constants {
 	static let trackPlaybackInfo2 = TrackPlaybackInfo.mock(trackId: 2)
 	static let mediaProduct2 = MediaProduct.mock(productId: "2")
 
-	static let storedMediaProduct1 = StoredMediaProduct.storedMock(productId: "1")
-	static let storedMediaProduct2 = StoredMediaProduct.storedMock(productId: "2")
+	static let storedMediaProduct1 = StoredMediaProduct.mock(productId: "1")
+	static let storedMediaProduct2 = StoredMediaProduct.mock(productId: "2")
 }
 
 // MARK: - PlayerEngineTests
