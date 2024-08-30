@@ -922,6 +922,7 @@ extension PlayLogWithDeinitTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let startSeekAssetPosition: Double = 2
