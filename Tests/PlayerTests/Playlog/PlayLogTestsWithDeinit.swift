@@ -1201,7 +1201,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.nextItem != nil
+			self.playerEngine.nextItem != nil &&
+				self.playerEngine.nextItem?.isLoaded == true
 		}
 
 		playerEngine.pause()
