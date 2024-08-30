@@ -741,7 +741,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 
 		// Afterwards we load the second media product with setNext and finally play.
@@ -756,6 +757,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Now we wait the same amount of the duration of the track plus extra time
 		let expectation = expectation(description: "Expecting audio file to have been played")
@@ -766,8 +768,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 2
+			self.playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
