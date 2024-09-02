@@ -166,15 +166,14 @@ extension PlayLogTests {
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Now we wait the same amount of the duration of the track plus extra time
 		let expectation = expectation(description: "Expecting audio file to have been played")
 		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			self.playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		// THEN
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -207,12 +206,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
@@ -230,9 +232,7 @@ extension PlayLogTests {
 		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			self.playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		// THEN
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
@@ -269,12 +269,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let seekTo3AssetPosition: Double = 2
@@ -323,12 +326,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 3 seconds
 		let pauseAssetPosition: Double = 3
@@ -377,12 +383,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
@@ -438,12 +447,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 3 seconds
 		let pauseAssetPosition: Double = 3
@@ -499,12 +511,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
@@ -517,6 +532,7 @@ extension PlayLogTests {
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 3 seconds
 		let secondPauseAssetPosition: Double = 3
@@ -571,12 +587,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let seekAssetPosition: Double = 2
@@ -631,7 +650,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -649,15 +669,8 @@ extension PlayLogTests {
 		// Seek forward to 2 seconds
 		let seekAssetPosition: Double = 2
 		playerEngine.seek(seekAssetPosition)
+		wait(for: currentItem, toReach: seekAssetPosition)
 
-		// seek is async so wait a tiny bit to make sure seek has completed before actually playing.
-		optimizedWait(step: 0.05) {
-			PlayLogTestsHelper.isTimeDifferenceNegligible(
-				assetPosition: seekAssetPosition,
-				anotherAssetPosition: asset.assetPosition
-			)
-		}
-		assertAssetPosition(expectedAssetPosition: seekAssetPosition, actualAssetPosition: asset.assetPosition)
 		playerEngine.play(timestamp: timestamp)
 
 		// THEN
@@ -694,12 +707,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 1 second
 		let resetAssetPosition: Double = 1
@@ -814,12 +830,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let startSeekAssetPosition: Double = 2
@@ -866,7 +885,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -886,6 +906,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let startSeekAssetPosition: Double = 2
@@ -897,14 +918,18 @@ extension PlayLogTests {
 
 		// Wait until the previously next item is now the current item
 		optimizedWait {
-			self.playerEngine.nextItem == nil &&
-				self.playerEngine.currentItem?.id == self.uuid
+			self.playerEngine.currentItem?.id == self.uuid &&
+				self.playerEngine.currentItem?.isLoaded == true &&
+				self.playerEngine.nextItem == nil
 		}
-
 		guard let nextCurrentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		// Add a short time in order for the seek to complete (since in rare occasions it is too fast in seeking but has not
+		// sent/received the playing observation for a few seconds - this doesn't happen in the real scenario).
+		waitAsyncWork()
 
 		// Wait for the track to reach 1 second
 		let resetAssetPosition: Double = 1
@@ -973,10 +998,12 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// skipToNext doesn't do anything since there's no nextItem
 		playerEngine.skipToNext(timestamp: timestamp)
@@ -1023,12 +1050,15 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
 		}
+
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Afterwards we load the second media product with setNext.
 		uuid = "uuid2"
@@ -1049,12 +1079,18 @@ extension PlayLogTests {
 
 		// Wait until the previously next item is now the current item
 		optimizedWait {
-			self.playerEngine.currentItem?.id == self.uuid
+			self.playerEngine.currentItem?.id == self.uuid &&
+				self.playerEngine.currentItem?.isLoaded == true &&
+				self.playerEngine.nextItem == nil
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
-			XCTFail("Expected for the currentItem to be set up!")
+			XCTFail("Expected for the new currentItem to be set up!")
 			return
 		}
+
+		// Add a short time in order for the seek to complete (since in rare occasions it is too fast in seeking but has not
+		// sent/received the playing observation for a few seconds - this doesn't happen in the real scenario).
+		waitAsyncWork()
 
 		// Wait for the track to reach 1 second
 		let resetAssetPosition: Double = 1
@@ -1109,19 +1145,15 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
+		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
 			return
-		}
-
-		playerEngine.play(timestamp: timestamp)
-
-		optimizedWait {
-			self.playerEngine.currentItem?.isLoaded == true
 		}
 
 		waitForPlayerToBeInState(.PLAYING)
@@ -1166,12 +1198,17 @@ extension PlayLogTests {
 		// Wait until the previously next item is now the current item
 		optimizedWait {
 			self.playerEngine.currentItem?.id == self.uuid &&
+				self.playerEngine.currentItem?.isLoaded == true &&
 				self.playerEngine.nextItem == nil
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
-			XCTFail("Expected for the currentItem to be set up!")
+			XCTFail("Expected for the new currentItem to be set up!")
 			return
 		}
+
+		// Add a short time in order for the seek to complete (since in rare occasions it is too fast in seeking but has not
+		// sent/received the playing observation for a few seconds - this doesn't happen in the real scenario).
+		waitAsyncWork()
 
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
@@ -1260,9 +1297,7 @@ extension PlayLogTests {
 		playerEngine.resetOrUnload()
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			self.playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		setUpPlayerEngine()
 
@@ -1274,7 +1309,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct2, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -1338,7 +1374,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let currentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -1346,6 +1383,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let loadSecondTimeAssetPosition: Double = 2
@@ -1357,9 +1395,7 @@ extension PlayLogTests {
 		playerEngine.resetOrUnload()
 
 		// Wait for the player engine state to be IDLE.
-		optimizedWait {
-			self.playerEngine.getState() == .IDLE
-		}
+		waitForPlayerToBeInState(.IDLE)
 
 		setUpPlayerEngine()
 
@@ -1368,7 +1404,8 @@ extension PlayLogTests {
 		playerEngine.load(mediaProduct2, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
 			XCTFail("Expected for the currentItem to be set up!")
@@ -1376,6 +1413,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 1 second
 		let resetAssetPosition: Double = 1
@@ -1530,6 +1568,11 @@ extension PlayLogTests {
 
 		wait(for: [pauseTrackExpectation], timeout: timeout)
 		timer?.invalidate()
+	}
+
+	func waitAsyncWork() {
+		let expectation = expectation(description: "Wait for the async work to be done.")
+		_ = XCTWaiter.wait(for: [expectation], timeout: 0.05)
 	}
 }
 
