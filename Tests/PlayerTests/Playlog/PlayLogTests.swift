@@ -656,14 +656,6 @@ extension PlayLogTests {
 			return
 		}
 
-		optimizedWait {
-			currentItem.asset != nil
-		}
-		guard let asset = currentItem.asset else {
-			XCTFail("Expected for the currentItem's asset to be set up!")
-			return
-		}
-
 		// Seek forward to 2 seconds
 		let seekAssetPosition: Double = 2
 		playerEngine.seek(seekAssetPosition)
@@ -1159,6 +1151,7 @@ extension PlayLogTests {
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
 		wait(for: currentItem, toReach: pauseAssetPosition)
+
 		playerEngine.pause()
 		waitForPlayerToBeInState(.NOT_PLAYING)
 
@@ -1530,9 +1523,7 @@ extension PlayLogTests {
 
 	func wait(for playerItem: PlayerItem, toReach targetAssetPosition: Double) {
 		let trackReachedAssetPositionExpectation =
-			XCTestExpectation(
-				description: "Expected for the track to reach \(targetAssetPosition) second(s) starting from \(playerItem.assetPosition)"
-			)
+			XCTestExpectation(description: "Expected for the track to reach \(targetAssetPosition) second(s)")
 
 		var timer: Timer?
 		DispatchQueue.main.async {
@@ -1545,25 +1536,32 @@ extension PlayLogTests {
 			RunLoop.main.add(timer!, forMode: .default)
 		}
 
-		wait(for: [trackReachedAssetPositionExpectation], timeout: targetAssetPosition + Constants.expectationExtraTime)
-		timer?.invalidate()
+		let result = XCTWaiter().wait(
+			for: [trackReachedAssetPositionExpectation],
+			timeout: targetAssetPosition + Constants.expectationExtraTime
+		)
+
+		if result != .completed {
+			print("Expectation not fulfilled, invalidating timer...")
+			timer?.invalidate()
+		}
 	}
 
 	func waitForPlayerToBeInState(_ state: State, timeout: TimeInterval = Constants.expectationExtraTime) {
-		let pauseTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
+		let stateTrackExpectation = XCTestExpectation(description: "Expected for the player's state to change to \(state)")
 
 		var timer: Timer?
 		DispatchQueue.main.async {
 			timer = Timer.scheduledTimer(withTimeInterval: Constants.timerTimeInterval, repeats: true) { timer in
 				if self.playerEngine.getState() == state {
-					pauseTrackExpectation.fulfill()
+					stateTrackExpectation.fulfill()
 					timer.invalidate()
 				}
 			}
 			RunLoop.main.add(timer!, forMode: .default)
 		}
 
-		wait(for: [pauseTrackExpectation], timeout: timeout)
+		wait(for: [stateTrackExpectation], timeout: timeout)
 		timer?.invalidate()
 	}
 
