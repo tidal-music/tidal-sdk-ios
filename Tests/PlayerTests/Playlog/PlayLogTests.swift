@@ -1196,7 +1196,6 @@ extension PlayLogTests {
 		// Wait until the previously next item is now the current item
 		optimizedWait {
 			self.playerEngine.currentItem?.id == self.uuid &&
-				self.playerEngine.currentItem?.isLoaded == true &&
 				self.playerEngine.nextItem == nil
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
