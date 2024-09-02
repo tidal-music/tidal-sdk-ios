@@ -64,16 +64,19 @@ struct TokenRepository {
 
 		var refreshCredentialsBlock: (() async -> AuthResult<RefreshResponse>)?
 		var networkErrorLoggableBlock: ((Error) -> AuthLoggable)?
+		var logoutAfterErrorLoggableBlock: ((Error) -> AuthLoggable)?
 		
 		// if a refreshToken is available, we'll use it
 		if let refreshToken = storedTokens?.refreshToken {
 			refreshCredentialsBlock = { await refreshUserAccessToken(refreshToken: refreshToken) }
-			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenNetworkError(error: $0) }
+			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenNetworkError(error: $0, previousSubstatus: apiErrorSubStatus) }
+			logoutAfterErrorLoggableBlock = { AuthLoggable.authLogout(reason: "User credentials were downgraded to client credentials after updating token", error: $0, previousSubstatus: apiErrorSubStatus) }
 		} else if let clientSecret = authConfig.clientSecret {
 			// if nothing is stored, we will try and refresh using a client secret
 			AuthLoggable.getCredentialsRefreshTokenIsNotAvailable.log()
 			refreshCredentialsBlock = { await getClientAccessToken(clientSecret: clientSecret) }
-			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: $0) }
+			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: $0, previousSubstatus: apiErrorSubStatus) }
+			logoutAfterErrorLoggableBlock = { AuthLoggable.authLogout(reason: "Refreshing token with client credentials failed and we should logout", error: $0, previousSubstatus: apiErrorSubStatus) }
 		}
 		
 		if let refreshCredentialsBlock {
@@ -82,7 +85,7 @@ struct TokenRepository {
 			
 			switch (authResult, networkErrorLoggableBlock) {
 			case (.failure(let error), _) where shouldLogoutWithLowerLevelTokenAfterUpdate(error: error):
-				AuthLoggable.authLogout(reason: "User credentials were downgraded to client credentials after updating token", error: error).log()
+				logoutAfterErrorLoggableBlock?(error).log()
 				return .success(.init(authConfig: authConfig))
 
 			case (.failure(let error), .some(let networkErrorLoggableBlock)):
@@ -94,7 +97,7 @@ struct TokenRepository {
 			return authResult
 		}
 
-		AuthLoggable.authLogout(reason: "No refresh token or client secret available").log()
+		AuthLoggable.authLogout(reason: "No refresh token or client secret available", previousSubstatus: apiErrorSubStatus).log()
 		return logout()
 	}
 

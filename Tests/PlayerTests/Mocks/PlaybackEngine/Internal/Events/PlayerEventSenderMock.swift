@@ -6,7 +6,6 @@ import Foundation
 final class PlayerEventSenderMock: PlayerEventSender {
 	var streamingMetricsEvents = [any StreamingMetricsEvent]()
 	var playLogEvents = [PlayLogEvent]()
-	var progressEvents = [ProgressEvent]()
 	var offlinePlays = [OfflinePlay]()
 	var userConfigurations = [UserConfiguration]()
 	var writtenEvents = [AnyObject]()
@@ -32,7 +31,6 @@ final class PlayerEventSenderMock: PlayerEventSender {
 	func reset() {
 		streamingMetricsEvents.removeAll()
 		playLogEvents.removeAll()
-		progressEvents.removeAll()
 		offlinePlays.removeAll()
 	}
 
@@ -40,12 +38,8 @@ final class PlayerEventSenderMock: PlayerEventSender {
 		streamingMetricsEvents.append(event)
 	}
 
-	override func send(_ event: PlayLogEvent) {
+	override func send(_ event: PlayLogEvent, extras: [String: String?]?) {
 		playLogEvents.append(event)
-	}
-
-	override func send(_ event: ProgressEvent) {
-		progressEvents.append(event)
 	}
 
 	override func send(_ offlinePlay: OfflinePlay) {
