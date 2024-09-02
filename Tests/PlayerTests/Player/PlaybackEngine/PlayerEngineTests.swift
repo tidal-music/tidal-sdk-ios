@@ -14,6 +14,9 @@ private enum Constants {
 
 	static let trackPlaybackInfo2 = TrackPlaybackInfo.mock(trackId: 2)
 	static let mediaProduct2 = MediaProduct.mock(productId: "2")
+
+	static let storedMediaProduct1 = StoredMediaProduct.mock(productId: "1")
+	static let storedMediaProduct2 = StoredMediaProduct.mock(productId: "2")
 }
 
 // MARK: - PlayerEngineTests
@@ -37,6 +40,7 @@ final class PlayerEngineTests: XCTestCase {
 
 	private var playerEngine: PlayerEngine!
 	private var timestamp: UInt64 = Constants.initialTime
+	private var shouldUseImprovedCaching: Bool = false
 
 	private var genericPlayer: PlayerMock!
 	private var playerLoader: PlayerLoaderMock!
@@ -74,6 +78,9 @@ final class PlayerEngineTests: XCTestCase {
 		notificationsHandler = NotificationsHandler(listener: listener, queue: listenerQueue)
 		credentialsProvider = CredentialsProviderMock()
 		featureFlagProvider = FeatureFlagProvider.mock
+		featureFlagProvider.shouldUseImprovedCaching = {
+			self.shouldUseImprovedCaching
+		}
 
 		djProducer = DJProducer(
 			httpClient: httpClient,
@@ -110,6 +117,7 @@ final class PlayerEngineTests: XCTestCase {
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
+			featureFlagProvider: featureFlagProvider,
 			notificationsHandler: notificationsHandler
 		)
 
@@ -233,6 +241,91 @@ extension PlayerEngineTests {
 		let expectedPlayerItem2 = playerItem(
 			mediaProduct: mediaProduct2,
 			trackPlaybackInfo: trackPlaybackInfo2,
+			shouldSetMetadataAndAsset: false
+		)
+		assertItem(item: playerEngine.nextItem, expectedItem: expectedPlayerItem2, shouldBeLoaded: false)
+
+		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
+
+		assertGenericPlayer(assets: [asset], playCount: 0, pauseCount: 0)
+		assertPlayerLoader(trackPlaybackInfos: [trackPlaybackInfo1])
+	}
+
+	func test_setNext_repeated_is_ignored() {
+		shouldUseImprovedCaching = true
+
+		// GIVEN
+		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
+
+		let mediaProduct1 = Constants.mediaProduct1
+		playerEngine.load(mediaProduct1, timestamp: 1, isPreload: false)
+
+		let trackPlaybackInfo2 = Constants.trackPlaybackInfo2
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo2)
+
+		let mediaProduct2 = Constants.mediaProduct2
+
+		// WHEN
+		playerEngine.setNext(mediaProduct2, timestamp: 5)
+		let firstNextItem = playerEngine.nextItem
+
+		playerEngine.setNext(mediaProduct2, timestamp: 6)
+		let secondNextItem = playerEngine.nextItem
+
+		// THEN
+		let expectedPlayerItem1 = playerItem(
+			mediaProduct: mediaProduct1,
+			trackPlaybackInfo: trackPlaybackInfo1,
+			shouldSetMetadataAndAsset: true
+		)
+		assertItem(item: playerEngine.currentItem, expectedItem: expectedPlayerItem1, shouldBeLoaded: true)
+
+		let expectedPlayerItem2 = playerItem(
+			mediaProduct: mediaProduct2,
+			trackPlaybackInfo: trackPlaybackInfo2,
+			shouldSetMetadataAndAsset: false
+		)
+		assertItem(item: playerEngine.nextItem, expectedItem: expectedPlayerItem2, shouldBeLoaded: false)
+		XCTAssertTrue(firstNextItem === secondNextItem)
+
+		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
+
+		assertGenericPlayer(assets: [asset], playCount: 0, pauseCount: 0)
+		assertPlayerLoader(trackPlaybackInfos: [trackPlaybackInfo1])
+	}
+
+	func test_setNext_same_product_but_stored() {
+		shouldUseImprovedCaching = true
+
+		// GIVEN
+		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
+
+		let mediaProduct1 = Constants.mediaProduct1
+		playerEngine.load(mediaProduct1, timestamp: 1, isPreload: false)
+
+		let trackPlaybackInfo2 = Constants.trackPlaybackInfo2
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo2)
+
+		let mediaProduct2 = Constants.mediaProduct2
+		let storedMediaProduct2 = Constants.storedMediaProduct2
+
+		// WHEN
+		playerEngine.setNext(mediaProduct2, timestamp: 5)
+		playerEngine.setNext(storedMediaProduct2, timestamp: 6)
+
+		// THEN
+		let expectedPlayerItem1 = playerItem(
+			mediaProduct: mediaProduct1,
+			trackPlaybackInfo: trackPlaybackInfo1,
+			shouldSetMetadataAndAsset: true
+		)
+		assertItem(item: playerEngine.currentItem, expectedItem: expectedPlayerItem1, shouldBeLoaded: true)
+
+		let expectedPlayerItem2 = playerItem(
+			mediaProduct: storedMediaProduct2,
+			trackPlaybackInfo: nil,
 			shouldSetMetadataAndAsset: false
 		)
 		assertItem(item: playerEngine.nextItem, expectedItem: expectedPlayerItem2, shouldBeLoaded: false)
@@ -925,7 +1018,7 @@ extension PlayerEngineTests {
 
 	func playerItem(
 		mediaProduct: MediaProduct,
-		trackPlaybackInfo: TrackPlaybackInfo,
+		trackPlaybackInfo: TrackPlaybackInfo?,
 		shouldSetMetadataAndAsset: Bool
 	) -> PlayerItem {
 		let expectedPlayerItem = PlayerItem.mock(
@@ -937,9 +1030,10 @@ extension PlayerEngineTests {
 		)
 
 		if shouldSetMetadataAndAsset {
+			precondition(trackPlaybackInfo != nil, "If shouldSetMetadataAndAsset == true, trackPlaybackInfo can't be nil")
 			let metadata = Metadata.mockFromTrackPlaybackInfo(
 				productId: mediaProduct.productId,
-				trackPlaybackInfo: trackPlaybackInfo
+				trackPlaybackInfo: trackPlaybackInfo!
 			)
 			expectedPlayerItem.set(metadata)
 			expectedPlayerItem.set(asset)

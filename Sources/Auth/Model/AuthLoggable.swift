@@ -11,9 +11,9 @@ enum AuthLoggable {
 	case getCredentialsScopeIsNotGranted
 	case getCredentialsClientUniqueKeyIsDifferent
 	case getCredentialsUpgradeTokenNoTokenInResponse
-	case getCredentialsRefreshTokenNetworkError(error: Error)
-	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error)
-	case authLogout(reason: String, error: Error? = nil)
+	case getCredentialsRefreshTokenNetworkError(error: Error, previousSubstatus: String? = nil)
+	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error, previousSubstatus: String? = nil)
+	case authLogout(reason: String, error: Error? = nil, previousSubstatus: String? = nil)
 	case getCredentialsRefreshTokenIsNotAvailable
 	// swiftlint:enable identifier_name
 }
@@ -22,6 +22,7 @@ enum AuthLoggable {
 extension AuthLoggable {
 	private static let metadataErrorKey = "error"
 	private static let metadataReasonKey = "reason"
+	private static let metadataPreviousSubstatusKey = "previous_substatus"
 	
 	var loggingMessage: Logger.Message {
 		return switch self {
@@ -59,15 +60,18 @@ extension AuthLoggable {
 		case .initializeDeviceLoginNetworkError(let error),
 			 .finalizeLoginNetworkError(let error),
 			 .finalizeDeviceLoginNetworkError(let error),
-			 .getCredentialsUpgradeTokenNetworkError(let error),
-			 .getCredentialsRefreshTokenNetworkError(let error),
-			 .getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error):
+			 .getCredentialsUpgradeTokenNetworkError(let error):
 			metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
-		case .authLogout(let reason, let error):
+		case .getCredentialsRefreshTokenNetworkError(let error, let previousSubstatus),
+			 .getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error, let previousSubstatus):
+			metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
+			metadata[Self.metadataPreviousSubstatusKey] = .string(previousSubstatus ?? "nil")
+		case .authLogout(let reason, let error, let previousSubstatus):
 			metadata[Self.metadataReasonKey] = .string(reason)
 			if let error = error {
 				metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
 			}
+			metadata[Self.metadataPreviousSubstatusKey] = .string(previousSubstatus ?? "nil")
 			return metadata
 		default:
 			return [:]

@@ -56,8 +56,7 @@ final class PlayLogTests: XCTestCase {
 				productType: .TRACK,
 				productId: "1",
 				progressSource: nil,
-				playLogSource: Constants.PlayLogSource.short,
-				productURL: url
+				playLogSource: Constants.PlayLogSource.short
 			),
 			url: url,
 			duration: 5.055
@@ -73,8 +72,7 @@ final class PlayLogTests: XCTestCase {
 				productType: .TRACK,
 				productId: "2",
 				progressSource: nil,
-				playLogSource: Constants.PlayLogSource.long,
-				productURL: url
+				playLogSource: Constants.PlayLogSource.long
 			),
 			url: url,
 			duration: 60.61

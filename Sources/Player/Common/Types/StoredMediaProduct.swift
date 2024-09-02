@@ -17,8 +17,10 @@ public final class StoredMediaProduct: MediaProduct {
 	public init(
 		productType: ProductType,
 		productId: String,
+		referenceId: String?,
 		progressSource: Source?,
 		playLogSource: Source?,
+		extras: [String: String?]?,
 		assetPresentation: AssetPresentation,
 		audioMode: AudioMode?,
 		audioQuality: AudioQuality?,
@@ -48,8 +50,10 @@ public final class StoredMediaProduct: MediaProduct {
 		super.init(
 			productType: productType,
 			productId: productId,
+			referenceId: referenceId,
 			progressSource: progressSource,
-			playLogSource: playLogSource
+			playLogSource: playLogSource,
+			extras: extras
 		)
 	}
 
