@@ -1170,7 +1170,8 @@ extension PlayLogTests {
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.nextItem != nil
+			self.playerEngine.nextItem != nil &&
+				self.playerEngine.nextItem?.isLoaded == true
 		}
 
 		playerEngine.pause()
@@ -1260,7 +1261,7 @@ extension PlayLogTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
-	func xtest_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
+	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
 		// GIVEN
 		// First we load the media product and then proceed to play it.
 		uuid = "uuid1"
@@ -1320,10 +1321,13 @@ extension PlayLogTests {
 
 		playerEngine.reset()
 
+		waitAsyncWork()
+
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration + Constants.expectationExtraTime) {
-			self.playerEngine.getState() == .IDLE
-		}
+
+		// Now we wait the same amount of the duration of the track plus extra time
+		let expectation = expectation(description: "Expecting audio file to have been played")
+		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
 
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
