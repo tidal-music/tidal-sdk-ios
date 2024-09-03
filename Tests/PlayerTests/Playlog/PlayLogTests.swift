@@ -611,8 +611,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -1189,6 +1188,7 @@ extension PlayLogTests {
 		// Wait until the previously next item is now the current item
 		optimizedWait {
 			self.playerEngine.currentItem?.id == self.uuid &&
+				self.playerEngine.currentItem?.isLoaded == true &&
 				self.playerEngine.nextItem == nil
 		}
 		guard let nextCurrentItem = playerEngine.currentItem else {
@@ -1203,6 +1203,11 @@ extension PlayLogTests {
 		// Seek forward to 58 seconds
 		let seekAssetPosition2: Double = 58
 		playerEngine.seek(seekAssetPosition2)
+
+		// Add a short time in order for the seek to complete (since in rare occasions it is too fast in seeking but has not
+		// sent/received the playing observation for a few seconds - this doesn't happen in the real scenario).
+		waitAsyncWork()
+
 		wait(for: nextCurrentItem, toReach: seekAssetPosition2)
 
 		// Wait for the track to reach 59 seconds

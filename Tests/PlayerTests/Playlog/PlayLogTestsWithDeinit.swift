@@ -772,7 +772,6 @@ extension PlayLogWithDeinitTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
 	}
 
-	// TODO: Fix issue with start asset time
 	func test_load_and_setNext_and_play() {
 		// GIVEN
 		uuid = "uuid1"
@@ -786,7 +785,8 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 
 		// Afterwards we load the second media product with setNext and finally play.
