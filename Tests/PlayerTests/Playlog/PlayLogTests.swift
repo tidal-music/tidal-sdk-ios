@@ -1123,7 +1123,7 @@ extension PlayLogTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
-	func xtest_load_and_play_and_pause_and_seek_and_play_and_setNext_and_pause_and_play_and_skipToNext_and_seek_and_reset() {
+	func test_load_and_play_and_pause_and_seek_and_play_and_setNext_and_pause_and_play_and_skipToNext_and_seek_and_reset() {
 		// GIVEN
 		uuid = "uuid1"
 		let audioFile1 = shortAudioFile
@@ -1260,7 +1260,7 @@ extension PlayLogTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
-	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
+	func xtest_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
 		// GIVEN
 		// First we load the media product and then proceed to play it.
 		uuid = "uuid1"
