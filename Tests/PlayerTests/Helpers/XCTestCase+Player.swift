@@ -23,17 +23,22 @@ extension XCTestCase {
 	}
 
 	func asyncOptimizedWait(timeout: Double = 10.0, step: Double = 0.1, until condition: @escaping () -> Bool) async {
-		var timer: Double = 0
-		while timer < timeout {
-			try? await Task.sleep(seconds: step)
+		let endTime = Date().addingTimeInterval(timeout)
 
+		while Date() < endTime {
 			if condition() {
 				return
 			}
 
-			timer += step
+			// Sleep for the specified step duration
+			try? await Task.sleep(nanoseconds: UInt64(step * 1_000_000_000))
+
+			// Check if the condition is met after the sleep
+			if condition() {
+				return
+			}
 		}
 
-		XCTFail("Optimized wait: Condition was not met")
+		XCTFail("Optimized wait: Condition was not met.")
 	}
 }
