@@ -30,10 +30,8 @@ extension XCTestCase {
 				return
 			}
 
-			// Sleep for the specified step duration
 			try? await Task.sleep(nanoseconds: UInt64(step * 1_000_000_000))
 
-			// Check if the condition is met after the sleep
 			if condition() {
 				return
 			}

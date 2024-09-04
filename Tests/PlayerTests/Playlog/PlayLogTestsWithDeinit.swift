@@ -671,20 +671,13 @@ extension PlayLogWithDeinitTests {
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 
 		optimizedWait {
-			self.playerEngine.currentItem != nil
+			self.playerEngine.currentItem != nil &&
+				self.playerEngine.currentItem?.isLoaded == true
 		}
 		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
 		var currentItem = playerEngine.currentItem
 		guard currentItem != nil else {
 			XCTFail("Expected for the currentItem to be set up!")
-			return
-		}
-
-		optimizedWait {
-			currentItem!.asset != nil
-		}
-		guard let asset = currentItem!.asset else {
-			XCTFail("Expected for the currentItem's asset to be set up!")
 			return
 		}
 
