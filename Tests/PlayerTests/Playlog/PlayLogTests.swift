@@ -1036,7 +1036,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -1047,6 +1046,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Afterwards we load the second media product with setNext.
@@ -1089,8 +1089,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 2
+			self.playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
@@ -1134,7 +1133,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct1, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -1145,6 +1143,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -1293,6 +1292,8 @@ extension PlayLogTests {
 
 		// Wait for the player engine state to be IDLE.
 		waitForPlayerToBeInState(.IDLE)
+
+		waitAsyncWork()
 
 		setUpPlayerEngine()
 
