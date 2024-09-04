@@ -2,16 +2,17 @@
 
 # Teams
 
-## BITS
-Sources/Player/ @tidal-music/bits-ios @tidal-music/pace-ios
-Tests/PlayerTests/ @tidal-music/bits-ios @tidal-music/pace-ios
+## Music Foundations
 
-## Platform
-Sources/Auth/ @tidal-music/platform-ios
-Sources/Common/ @tidal-music/platform-ios
-Sources/EventProducer/ @tidal-music/platform-ios
-Sources/Template/ @tidal-music/platform-ios
-Tests/AuthTests/ @tidal-music/platform-ios
-Tests/CommonTests/ @tidal-music/platform-ios
-Tests/EventProducerTests/ @tidal-music/platform-ios
-Tests/TemplateTests/ @tidal-music/platform-ios
+### Player
+Sources/Player/ @tidal-music/mf-ios
+Tests/PlayerTests/ @tidal-music/mf-ios
+
+Sources/Auth/ @tidal-music/mf-ios
+Tests/AuthTests/ @tidal-music/mf-ios
+Sources/Common/ @tidal-music/mf-ios
+Tests/CommonTests/ @tidal-music/mf-ios
+Sources/EventProducer/ @tidal-music/mf-ios
+Tests/EventProducerTests/ @tidal-music/mf-ios
+Sources/Template/ @tidal-music/mf-ios
+Tests/TemplateTests/ @tidal-music/mf-ios
