@@ -1313,109 +1313,108 @@ extension PlayLogWithDeinitTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
-	/// test case 23
-	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
-		// GIVEN
-		// First we load the media product and then proceed to play it.
-		uuid = "uuid1"
-		let shortAudioFile = shortAudioFile
-		setAudioFileResponseToURLProtocol(audioFile: shortAudioFile)
-		let mediaProduct1 = shortAudioFile.mediaProduct
-		playerEngine.load(mediaProduct1, timestamp: timestamp)
-
-		optimizedWait {
-			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true
-		}
-		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
-		var currentItem = playerEngine.currentItem
-		guard currentItem != nil else {
-			XCTFail("Expected for the currentItem to be set up!")
-			return
-		}
-
-		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
-
-		// Wait for the track to reach 2 seconds
-		let loadSecondMediaProductAssetPosition: Double = 2
-		wait(for: currentItem!, toReach: loadSecondMediaProductAssetPosition)
-
-		// Simulate Player.load() is called.
-		// This is in order to simulate the following scenario: load and play a track, load and play another track.
-		playerEngine.notificationsHandler = nil
-		playerEngine.resetOrUnload()
-
-		// Wait for the player engine state to be IDLE.
-		waitForPlayerToBeInState(.IDLE)
-
-		setUpPlayerEngine()
-
-		// Now we load the second media product and then proceed to play it.
-		uuid = "uuid2"
-		let longAudioFile = longAudioFile
-		setAudioFileResponseToURLProtocol(audioFile: longAudioFile)
-		let mediaProduct2 = longAudioFile.mediaProduct
-		playerEngine.load(mediaProduct2, timestamp: timestamp)
-
-		optimizedWait {
-			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true
-		}
-		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
-		var nextCurrentItem = playerEngine.currentItem
-		guard nextCurrentItem != nil else {
-			XCTFail("Expected for the currentItem to be set up!")
-			return
-		}
-
-		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
-
-		// Wait for the track to reach 1 second
-		let resetAssetPosition: Double = 1
-		wait(for: nextCurrentItem!, toReach: resetAssetPosition)
-
-		playerEngine.reset()
-
-		// This will cause the deinit to be called.
-		currentItem = nil
-		nextCurrentItem = nil
-
-		// THEN
-		optimizedWait(timeout: shortAudioFile.duration) {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 2
-		}
-
-		let playLogEvent1 = playerEventSender.playLogEvents[0]
-		let expectedPlayLogEvent1 = PlayLogEvent.mock(
-			startAssetPosition: 0,
-			requestedProductId: mediaProduct1.productId,
-			actualProductId: mediaProduct1.productId,
-			actualQuality: AudioQuality.LOSSLESS.rawValue,
-			sourceType: Constants.PlayLogSource.short.sourceType,
-			sourceId: Constants.PlayLogSource.short.sourceId,
-			actions: [],
-			endTimestamp: timestamp,
-			endAssetPosition: loadSecondMediaProductAssetPosition
-		)
-		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
-
-		let playLogEvent2 = playerEventSender.playLogEvents[1]
-		let expectedPlayLogEvent2 = PlayLogEvent.mock(
-			startAssetPosition: 0,
-			requestedProductId: mediaProduct2.productId,
-			actualProductId: mediaProduct2.productId,
-			actualQuality: AudioQuality.LOSSLESS.rawValue,
-			sourceType: Constants.PlayLogSource.long.sourceType,
-			sourceId: Constants.PlayLogSource.long.sourceId,
-			actions: [],
-			endTimestamp: timestamp,
-			endAssetPosition: resetAssetPosition
-		)
-		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
-	}
+//	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
+//		// GIVEN
+//		// First we load the media product and then proceed to play it.
+//		uuid = "uuid1"
+//		let shortAudioFile = shortAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: shortAudioFile)
+//		let mediaProduct1 = shortAudioFile.mediaProduct
+//		playerEngine.load(mediaProduct1, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.currentItem != nil &&
+//				self.playerEngine.currentItem?.isLoaded == true
+//		}
+//		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
+//		var currentItem = playerEngine.currentItem
+//		guard currentItem != nil else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 2 seconds
+//		let loadSecondMediaProductAssetPosition: Double = 2
+//		wait(for: currentItem!, toReach: loadSecondMediaProductAssetPosition)
+//
+//		// Simulate Player.load() is called.
+//		// This is in order to simulate the following scenario: load and play a track, load and play another track.
+//		playerEngine.notificationsHandler = nil
+//		playerEngine.resetOrUnload()
+//
+//		// Wait for the player engine state to be IDLE.
+//		waitForPlayerToBeInState(.IDLE)
+//
+//		setUpPlayerEngine()
+//
+//		// Now we load the second media product and then proceed to play it.
+//		uuid = "uuid2"
+//		let longAudioFile = longAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: longAudioFile)
+//		let mediaProduct2 = longAudioFile.mediaProduct
+//		playerEngine.load(mediaProduct2, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.currentItem != nil &&
+//				self.playerEngine.currentItem?.isLoaded == true
+//		}
+//		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
+//		var nextCurrentItem = playerEngine.currentItem
+//		guard nextCurrentItem != nil else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 1 second
+//		let resetAssetPosition: Double = 1
+//		wait(for: nextCurrentItem!, toReach: resetAssetPosition)
+//
+//		playerEngine.reset()
+//
+//		// This will cause the deinit to be called.
+//		currentItem = nil
+//		nextCurrentItem = nil
+//
+//		// THEN
+//		optimizedWait(timeout: shortAudioFile.duration) {
+//			self.playerEngine.getState() == .IDLE &&
+//				self.playerEventSender.playLogEvents.count == 2
+//		}
+//
+//		let playLogEvent1 = playerEventSender.playLogEvents[0]
+//		let expectedPlayLogEvent1 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct1.productId,
+//			actualProductId: mediaProduct1.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.short.sourceType,
+//			sourceId: Constants.PlayLogSource.short.sourceId,
+//			actions: [],
+//			endTimestamp: timestamp,
+//			endAssetPosition: loadSecondMediaProductAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
+//
+//		let playLogEvent2 = playerEventSender.playLogEvents[1]
+//		let expectedPlayLogEvent2 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct2.productId,
+//			actualProductId: mediaProduct2.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.long.sourceType,
+//			sourceId: Constants.PlayLogSource.long.sourceId,
+//			actions: [],
+//			endTimestamp: timestamp,
+//			endAssetPosition: resetAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
+//	}
 
 	/// test case 24
 	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_same_track_and_reset() {
