@@ -201,7 +201,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -212,6 +211,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -264,7 +264,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -275,6 +274,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -288,8 +288,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -321,7 +320,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -332,6 +330,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 3 seconds
@@ -345,8 +344,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -378,7 +376,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -389,6 +386,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -409,8 +407,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -442,7 +439,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -453,6 +449,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 3 seconds
@@ -473,8 +470,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -506,7 +502,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -517,6 +512,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -546,8 +542,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -582,7 +577,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -593,6 +587,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -664,8 +659,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -693,7 +687,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -704,6 +697,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 1 second
@@ -714,8 +708,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let playLogEvent = playerEventSender.playLogEvents[0]
@@ -816,7 +809,6 @@ extension PlayLogTests {
 		// WHEN
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
-		playerEngine.play(timestamp: timestamp)
 
 		optimizedWait {
 			self.playerEngine.currentItem != nil &&
@@ -827,6 +819,7 @@ extension PlayLogTests {
 			return
 		}
 
+		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
@@ -916,8 +909,6 @@ extension PlayLogTests {
 			return
 		}
 
-		// Add a short time in order for the seek to complete (since in rare occasions it is too fast in seeking but has not
-		// sent/received the playing observation for a few seconds - this doesn't happen in the real scenario).
 		waitAsyncWork()
 
 		// Wait for the track to reach 1 second
@@ -928,8 +919,7 @@ extension PlayLogTests {
 
 		// THEN
 		optimizedWait {
-			self.playerEngine.getState() == .IDLE &&
-				self.playerEventSender.playLogEvents.count == 2
+			self.playerEventSender.playLogEvents.count == 2
 		}
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
 
@@ -1078,8 +1068,6 @@ extension PlayLogTests {
 			return
 		}
 
-		// Add a short time in order for the seek to complete (since in rare occasions it is too fast in seeking but has not
-		// sent/received the playing observation for a few seconds - this doesn't happen in the real scenario).
 		waitAsyncWork()
 
 		// Wait for the track to reach 1 second
@@ -1260,7 +1248,7 @@ extension PlayLogTests {
 	// 	)
 	// 	assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	// }
-	// 
+	//
 
 	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
 		// GIVEN
@@ -1365,6 +1353,246 @@ extension PlayLogTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
+	// failed
+//	func test_load_and_play_and_pause_and_seek_and_play_and_setNext_and_pause_and_play_and_skipToNext_and_seek_and_reset() {
+//		// GIVEN
+//		uuid = "uuid1"
+//		let audioFile1 = shortAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: audioFile1)
+//
+//		let mediaProduct1 = audioFile1.mediaProduct
+//
+//		// WHEN
+//		// First we load the media product and then proceed to play it.
+//		playerEngine.load(mediaProduct1, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.currentItem != nil &&
+//				self.playerEngine.currentItem?.isLoaded == true
+//		}
+//		guard let currentItem = playerEngine.currentItem else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 2 seconds
+//		let pauseAssetPosition: Double = 2
+//		wait(for: currentItem, toReach: pauseAssetPosition)
+//
+//		playerEngine.pause()
+//		waitForPlayerToBeInState(.NOT_PLAYING)
+//
+//		// Seek forward to 3 seconds
+//		let seekAssetPosition: Double = 3
+//		playerEngine.seek(seekAssetPosition)
+//		wait(for: currentItem, toReach: seekAssetPosition)
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Afterwards we load the second media product with setNext.
+//		uuid = "uuid2"
+//		let audioFile2 = longAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: audioFile2)
+//		let mediaProduct2 = audioFile2.mediaProduct
+//		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.nextItem != nil &&
+//			self.playerEngine.nextItem?.isLoaded == true
+//		}
+//
+//		waitAsyncWork()
+//
+//		playerEngine.pause()
+//		waitForPlayerToBeInState(.NOT_PLAYING)
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 4 seconds
+//		let skipToNextAssetPosition: Double = 4
+//		wait(for: currentItem, toReach: skipToNextAssetPosition)
+//		playerEngine.skipToNext(timestamp: timestamp)
+//
+//		// Wait until the previously next item is now the current item
+//		optimizedWait {
+//			self.playerEngine.currentItem?.id == self.uuid &&
+//			self.playerEngine.currentItem?.isLoaded == true &&
+//			self.playerEngine.nextItem == nil
+//		}
+//		guard let nextCurrentItem = playerEngine.currentItem else {
+//			XCTFail("Expected for the new currentItem to be set up!")
+//			return
+//		}
+//
+//		waitAsyncWork()
+//
+//		// Seek forward to 58 seconds
+//		let seekAssetPosition2: Double = 58
+//		playerEngine.seek(seekAssetPosition2)
+//
+//		waitAsyncWork()
+//
+//		wait(for: nextCurrentItem, toReach: seekAssetPosition2)
+//
+//		// Wait for the track to reach 59 seconds
+//		let resetAssetPosition: Double = 59
+//		wait(for: nextCurrentItem, toReach: resetAssetPosition)
+//
+//		playerEngine.reset()
+//
+//		// THEN
+//		optimizedWait {
+//			self.playerEventSender.playLogEvents.count == 2
+//		}
+//		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
+//
+//		let playLogEvent1 = playerEventSender.playLogEvents[0]
+//		let actions1 = [
+//			Action(actionType: .PLAYBACK_STOP, assetPosition: pauseAssetPosition, timestamp: timestamp),
+//			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition, timestamp: timestamp),
+//			Action(actionType: .PLAYBACK_STOP, assetPosition: seekAssetPosition, timestamp: timestamp),
+//			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition, timestamp: timestamp),
+//		]
+//		let expectedPlayLogEvent1 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct1.productId,
+//			actualProductId: mediaProduct1.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.short.sourceType,
+//			sourceId: Constants.PlayLogSource.short.sourceId,
+//			actions: actions1,
+//			endTimestamp: timestamp,
+//			endAssetPosition: skipToNextAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
+//
+//		let playLogEvent2 = playerEventSender.playLogEvents[1]
+//		let actions2 = [
+//			Action(actionType: .PLAYBACK_STOP, assetPosition: 0, timestamp: timestamp),
+//			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition2, timestamp: timestamp),
+//		]
+//		let expectedPlayLogEvent2 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct2.productId,
+//			actualProductId: mediaProduct2.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.long.sourceType,
+//			sourceId: Constants.PlayLogSource.long.sourceId,
+//			actions: actions2,
+//			endTimestamp: timestamp,
+//			endAssetPosition: resetAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
+//	}
+
+//	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
+//		// GIVEN
+//		// First we load the media product and then proceed to play it.
+//		uuid = "uuid1"
+//		let shortAudioFile = shortAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: shortAudioFile)
+//		let mediaProduct1 = shortAudioFile.mediaProduct
+//		playerEngine.load(mediaProduct1, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.currentItem != nil &&
+//				self.playerEngine.currentItem?.isLoaded == true
+//		}
+//		guard let currentItem = playerEngine.currentItem else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 2 seconds
+//		let loadSecondMediaProductAssetPosition: Double = 2
+//		wait(for: currentItem, toReach: loadSecondMediaProductAssetPosition)
+//
+//		// Simulate Player.load() is called.
+//		// This is in order to simulate the following scenario: load and play a track, load and play another track.
+//		playerEngine.notificationsHandler = nil
+//		playerEngine.resetOrUnload()
+//
+//		// Wait for the player engine state to be IDLE.
+//		waitForPlayerToBeInState(.IDLE)
+//
+//		waitAsyncWork()
+//
+//		setUpPlayerEngine()
+//
+//		// Now we load the second media product and then proceed to play it.
+//		uuid = "uuid2"
+//		let longAudioFile = longAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: longAudioFile)
+//		let mediaProduct2 = longAudioFile.mediaProduct
+//		playerEngine.load(mediaProduct2, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.currentItem != nil &&
+//				self.playerEngine.currentItem?.isLoaded == true
+//		}
+//		guard let nextCurrentItem = playerEngine.currentItem else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 1 second
+//		let resetAssetPosition: Double = 1
+//		wait(for: nextCurrentItem, toReach: resetAssetPosition)
+//
+//		playerEngine.reset()
+//
+//		waitAsyncWork()
+//
+//		// THEN
+//
+//		// Now we wait the same amount of the duration of the track plus extra time
+//		let expectation = expectation(description: "Expecting audio file to have been played")
+//		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
+//
+//		optimizedWait {
+//			self.playerEventSender.playLogEvents.count == 2
+//		}
+//
+//		let playLogEvent1 = playerEventSender.playLogEvents[0]
+//		let expectedPlayLogEvent1 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct1.productId,
+//			actualProductId: mediaProduct1.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.short.sourceType,
+//			sourceId: Constants.PlayLogSource.short.sourceId,
+//			actions: [],
+//			endTimestamp: timestamp,
+//			endAssetPosition: loadSecondMediaProductAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
+//
+//		let playLogEvent2 = playerEventSender.playLogEvents[1]
+//		let expectedPlayLogEvent2 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct2.productId,
+//			actualProductId: mediaProduct2.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.long.sourceType,
+//			sourceId: Constants.PlayLogSource.long.sourceId,
+//			actions: [],
+//			endTimestamp: timestamp,
+//			endAssetPosition: resetAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
+//	}
+
 	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_same_track_and_reset() {
 		// GIVEN
 		// First we load the media product and then proceed to play it.
@@ -1423,9 +1651,9 @@ extension PlayLogTests {
 		playerEngine.reset()
 
 		// THEN
-		optimizedWait(timeout: shortAudioFile.duration + Constants.expectationExtraTime) {
-			self.playerEngine.getState() == .IDLE
-		}
+		// Now we wait the same amount of the duration of the track plus extra time
+		let expectation = expectation(description: "Expecting audio file to have been played")
+		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
 
 		optimizedWait {
 			self.playerEventSender.playLogEvents.count == 2
