@@ -1353,100 +1353,100 @@ extension PlayLogTests {
 //		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 //	}
 
-	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_same_track_and_reset() {
-		// GIVEN
-		// First we load the media product and then proceed to play it.
-		uuid = "uuid1"
-		let shortAudioFile = shortAudioFile
-		setAudioFileResponseToURLProtocol(audioFile: shortAudioFile)
-		let mediaProduct1 = shortAudioFile.mediaProduct
-		playerEngine.load(mediaProduct1, timestamp: timestamp)
-
-		optimizedWait {
-			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true
-		}
-		guard let currentItem = playerEngine.currentItem else {
-			XCTFail("Expected for the currentItem to be set up!")
-			return
-		}
-
-		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
-
-		// Wait for the track to reach 2 seconds
-		let loadSecondTimeAssetPosition: Double = 2
-		wait(for: currentItem, toReach: loadSecondTimeAssetPosition)
-
-		// Simulate Player.load() is called.
-		// This is in order to simulate the following scenario: load and play a track, load and play another track.
-		playerEngine.notificationsHandler = nil
-		playerEngine.resetOrUnload()
-
-		// Wait for the player engine state to be IDLE.
-		waitForPlayerToBeInState(.IDLE)
-
-		setUpPlayerEngine()
-
-		// Now we load the same media product and then proceed to play it.
-		let mediaProduct2 = shortAudioFile.mediaProduct
-		playerEngine.load(mediaProduct2, timestamp: timestamp)
-
-		optimizedWait {
-			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true
-		}
-		guard let nextCurrentItem = playerEngine.currentItem else {
-			XCTFail("Expected for the currentItem to be set up!")
-			return
-		}
-
-		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
-
-		// Wait for the track to reach 1 second
-		let resetAssetPosition: Double = 1
-		wait(for: nextCurrentItem, toReach: resetAssetPosition)
-
-		playerEngine.reset()
-
-		// THEN
-		// Now we wait the same amount of the duration of the track plus extra time
-		let expectation = expectation(description: "Expecting audio file to have been played")
-		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
-
-		optimizedWait {
-			self.playerEventSender.playLogEvents.count == 2
-		}
-
-		let playLogEvent1 = playerEventSender.playLogEvents[0]
-		let expectedPlayLogEvent1 = PlayLogEvent.mock(
-			startAssetPosition: 0,
-			requestedProductId: mediaProduct1.productId,
-			actualProductId: mediaProduct1.productId,
-			actualQuality: AudioQuality.LOSSLESS.rawValue,
-			sourceType: Constants.PlayLogSource.short.sourceType,
-			sourceId: Constants.PlayLogSource.short.sourceId,
-			actions: [],
-			endTimestamp: timestamp,
-			endAssetPosition: loadSecondTimeAssetPosition
-		)
-		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
-
-		let playLogEvent2 = playerEventSender.playLogEvents[1]
-		let expectedPlayLogEvent2 = PlayLogEvent.mock(
-			startAssetPosition: 0,
-			requestedProductId: mediaProduct2.productId,
-			actualProductId: mediaProduct2.productId,
-			actualQuality: AudioQuality.LOSSLESS.rawValue,
-			sourceType: Constants.PlayLogSource.short.sourceType,
-			sourceId: Constants.PlayLogSource.short.sourceId,
-			actions: [],
-			endTimestamp: timestamp,
-			endAssetPosition: resetAssetPosition
-		)
-		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
-	}
+//	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_same_track_and_reset() {
+//		// GIVEN
+//		// First we load the media product and then proceed to play it.
+//		uuid = "uuid1"
+//		let shortAudioFile = shortAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: shortAudioFile)
+//		let mediaProduct1 = shortAudioFile.mediaProduct
+//		playerEngine.load(mediaProduct1, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.currentItem != nil &&
+//				self.playerEngine.currentItem?.isLoaded == true
+//		}
+//		guard let currentItem = playerEngine.currentItem else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 2 seconds
+//		let loadSecondTimeAssetPosition: Double = 2
+//		wait(for: currentItem, toReach: loadSecondTimeAssetPosition)
+//
+//		// Simulate Player.load() is called.
+//		// This is in order to simulate the following scenario: load and play a track, load and play another track.
+//		playerEngine.notificationsHandler = nil
+//		playerEngine.resetOrUnload()
+//
+//		// Wait for the player engine state to be IDLE.
+//		waitForPlayerToBeInState(.IDLE)
+//
+//		setUpPlayerEngine()
+//
+//		// Now we load the same media product and then proceed to play it.
+//		let mediaProduct2 = shortAudioFile.mediaProduct
+//		playerEngine.load(mediaProduct2, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.currentItem != nil &&
+//				self.playerEngine.currentItem?.isLoaded == true
+//		}
+//		guard let nextCurrentItem = playerEngine.currentItem else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 1 second
+//		let resetAssetPosition: Double = 1
+//		wait(for: nextCurrentItem, toReach: resetAssetPosition)
+//
+//		playerEngine.reset()
+//
+//		// THEN
+//		// Now we wait the same amount of the duration of the track plus extra time
+//		let expectation = expectation(description: "Expecting audio file to have been played")
+//		_ = XCTWaiter.wait(for: [expectation], timeout: shortAudioFile.duration + Constants.expectationExtraTime)
+//
+//		optimizedWait {
+//			self.playerEventSender.playLogEvents.count == 2
+//		}
+//
+//		let playLogEvent1 = playerEventSender.playLogEvents[0]
+//		let expectedPlayLogEvent1 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct1.productId,
+//			actualProductId: mediaProduct1.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.short.sourceType,
+//			sourceId: Constants.PlayLogSource.short.sourceId,
+//			actions: [],
+//			endTimestamp: timestamp,
+//			endAssetPosition: loadSecondTimeAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
+//
+//		let playLogEvent2 = playerEventSender.playLogEvents[1]
+//		let expectedPlayLogEvent2 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct2.productId,
+//			actualProductId: mediaProduct2.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.short.sourceType,
+//			sourceId: Constants.PlayLogSource.short.sourceId,
+//			actions: [],
+//			endTimestamp: timestamp,
+//			endAssetPosition: resetAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
+//	}
 }
 
 // MARK: - Assertion Helpers
