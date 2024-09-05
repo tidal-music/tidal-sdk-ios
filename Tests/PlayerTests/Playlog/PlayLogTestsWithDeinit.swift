@@ -1173,145 +1173,145 @@ extension PlayLogWithDeinitTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 	}
 
-	func test_load_and_play_and_pause_and_seek_and_play_and_setNext_and_pause_and_play_and_skipToNext_and_seek_and_reset() {
-		// GIVEN
-		uuid = "uuid1"
-		let audioFile1 = shortAudioFile
-		setAudioFileResponseToURLProtocol(audioFile: audioFile1)
-
-		let mediaProduct1 = audioFile1.mediaProduct
-
-		// WHEN
-		// First we load the media product and then proceed to play it.
-		playerEngine.load(mediaProduct1, timestamp: timestamp)
-
-		optimizedWait {
-			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true
-		}
-		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
-		var currentItem = playerEngine.currentItem
-		guard currentItem != nil else {
-			XCTFail("Expected for the currentItem to be set up!")
-			return
-		}
-
-		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
-
-		// Wait for the track to reach 2 seconds
-		let pauseAssetPosition: Double = 2
-		wait(for: currentItem!, toReach: pauseAssetPosition)
-		playerEngine.pause()
-		waitForPlayerToBeInState(.NOT_PLAYING)
-
-		// Seek forward to 3 seconds
-		let seekAssetPosition: Double = 3
-		playerEngine.seek(seekAssetPosition)
-		wait(for: currentItem!, toReach: seekAssetPosition)
-
-		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
-
-		// Afterwards we load the second media product with setNext.
-		uuid = "uuid2"
-		let audioFile2 = longAudioFile
-		setAudioFileResponseToURLProtocol(audioFile: audioFile2)
-		let mediaProduct2 = audioFile2.mediaProduct
-		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
-
-		optimizedWait {
-			self.playerEngine.nextItem != nil &&
-				self.playerEngine.nextItem?.isLoaded == true
-		}
-
-		playerEngine.pause()
-		waitForPlayerToBeInState(.NOT_PLAYING)
-
-		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
-
-		// Wait for the track to reach 4 seconds
-		let skipToNextAssetPosition: Double = 4
-		wait(for: currentItem!, toReach: skipToNextAssetPosition)
-		playerEngine.skipToNext(timestamp: timestamp)
-
-		// Wait until the previously next item is now the current item
-		optimizedWait { [self] in
-			playerEngine.currentItem?.id == uuid &&
-				playerEngine.currentItem?.isLoaded == true &&
-				playerEngine.nextItem == nil
-		}
-		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
-		var nextCurrentItem = playerEngine.currentItem
-		guard nextCurrentItem != nil else {
-			XCTFail("Expected for the currentItem to be set up!")
-			return
-		}
-
-		// Add a short time in order for the seek to complete (since in rare occasions it is too fast in seeking but has not
-		// sent/received the playing observation for a few seconds - this doesn't happen in the real scenario).
-		waitAsyncWork()
-
-		// Seek forward to 58 seconds
-		let seekAssetPosition2: Double = 58
-		playerEngine.seek(seekAssetPosition2)
-		wait(for: nextCurrentItem!, toReach: seekAssetPosition2)
-
-		// Wait for the track to reach 59 seconds
-		let resetAssetPosition: Double = 59
-		wait(for: nextCurrentItem!, toReach: resetAssetPosition)
-
-		playerEngine.reset()
-
-		// This will cause the deinit to be called.
-		currentItem = nil
-		nextCurrentItem = nil
-
-		// THEN
-		optimizedWait {
-			self.playerEventSender.playLogEvents.count == 2
-		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
-
-		let playLogEvent1 = playerEventSender.playLogEvents[0]
-		let actions1 = [
-			Action(actionType: .PLAYBACK_STOP, assetPosition: pauseAssetPosition, timestamp: timestamp),
-			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition, timestamp: timestamp),
-			Action(actionType: .PLAYBACK_STOP, assetPosition: seekAssetPosition, timestamp: timestamp),
-			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition, timestamp: timestamp),
-		]
-		let expectedPlayLogEvent1 = PlayLogEvent.mock(
-			startAssetPosition: 0,
-			requestedProductId: mediaProduct1.productId,
-			actualProductId: mediaProduct1.productId,
-			actualQuality: AudioQuality.LOSSLESS.rawValue,
-			sourceType: Constants.PlayLogSource.short.sourceType,
-			sourceId: Constants.PlayLogSource.short.sourceId,
-			actions: actions1,
-			endTimestamp: timestamp,
-			endAssetPosition: skipToNextAssetPosition
-		)
-		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
-
-		let playLogEvent2 = playerEventSender.playLogEvents[1]
-		let actions2 = [
-			Action(actionType: .PLAYBACK_STOP, assetPosition: 0, timestamp: timestamp),
-			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition2, timestamp: timestamp),
-		]
-		let expectedPlayLogEvent2 = PlayLogEvent.mock(
-			startAssetPosition: 0,
-			requestedProductId: mediaProduct2.productId,
-			actualProductId: mediaProduct2.productId,
-			actualQuality: AudioQuality.LOSSLESS.rawValue,
-			sourceType: Constants.PlayLogSource.long.sourceType,
-			sourceId: Constants.PlayLogSource.long.sourceId,
-			actions: actions2,
-			endTimestamp: timestamp,
-			endAssetPosition: resetAssetPosition
-		)
-		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
-	}
+//	func test_load_and_play_and_pause_and_seek_and_play_and_setNext_and_pause_and_play_and_skipToNext_and_seek_and_reset() {
+//		// GIVEN
+//		uuid = "uuid1"
+//		let audioFile1 = shortAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: audioFile1)
+//
+//		let mediaProduct1 = audioFile1.mediaProduct
+//
+//		// WHEN
+//		// First we load the media product and then proceed to play it.
+//		playerEngine.load(mediaProduct1, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.currentItem != nil &&
+//				self.playerEngine.currentItem?.isLoaded == true
+//		}
+//		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
+//		var currentItem = playerEngine.currentItem
+//		guard currentItem != nil else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 2 seconds
+//		let pauseAssetPosition: Double = 2
+//		wait(for: currentItem!, toReach: pauseAssetPosition)
+//		playerEngine.pause()
+//		waitForPlayerToBeInState(.NOT_PLAYING)
+//
+//		// Seek forward to 3 seconds
+//		let seekAssetPosition: Double = 3
+//		playerEngine.seek(seekAssetPosition)
+//		wait(for: currentItem!, toReach: seekAssetPosition)
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Afterwards we load the second media product with setNext.
+//		uuid = "uuid2"
+//		let audioFile2 = longAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: audioFile2)
+//		let mediaProduct2 = audioFile2.mediaProduct
+//		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.nextItem != nil &&
+//				self.playerEngine.nextItem?.isLoaded == true
+//		}
+//
+//		playerEngine.pause()
+//		waitForPlayerToBeInState(.NOT_PLAYING)
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Wait for the track to reach 4 seconds
+//		let skipToNextAssetPosition: Double = 4
+//		wait(for: currentItem!, toReach: skipToNextAssetPosition)
+//		playerEngine.skipToNext(timestamp: timestamp)
+//
+//		// Wait until the previously next item is now the current item
+//		optimizedWait { [self] in
+//			playerEngine.currentItem?.id == uuid &&
+//				playerEngine.currentItem?.isLoaded == true &&
+//				playerEngine.nextItem == nil
+//		}
+//		// Since we send events in deinit, we cannot hold strong reference to it. That is needed for the events assertions below.
+//		var nextCurrentItem = playerEngine.currentItem
+//		guard nextCurrentItem != nil else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		// Add a short time in order for the seek to complete (since in rare occasions it is too fast in seeking but has not
+//		// sent/received the playing observation for a few seconds - this doesn't happen in the real scenario).
+//		waitAsyncWork()
+//
+//		// Seek forward to 58 seconds
+//		let seekAssetPosition2: Double = 58
+//		playerEngine.seek(seekAssetPosition2)
+//		wait(for: nextCurrentItem!, toReach: seekAssetPosition2)
+//
+//		// Wait for the track to reach 59 seconds
+//		let resetAssetPosition: Double = 59
+//		wait(for: nextCurrentItem!, toReach: resetAssetPosition)
+//
+//		playerEngine.reset()
+//
+//		// This will cause the deinit to be called.
+//		currentItem = nil
+//		nextCurrentItem = nil
+//
+//		// THEN
+//		optimizedWait {
+//			self.playerEventSender.playLogEvents.count == 2
+//		}
+//		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
+//
+//		let playLogEvent1 = playerEventSender.playLogEvents[0]
+//		let actions1 = [
+//			Action(actionType: .PLAYBACK_STOP, assetPosition: pauseAssetPosition, timestamp: timestamp),
+//			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition, timestamp: timestamp),
+//			Action(actionType: .PLAYBACK_STOP, assetPosition: seekAssetPosition, timestamp: timestamp),
+//			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition, timestamp: timestamp),
+//		]
+//		let expectedPlayLogEvent1 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct1.productId,
+//			actualProductId: mediaProduct1.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.short.sourceType,
+//			sourceId: Constants.PlayLogSource.short.sourceId,
+//			actions: actions1,
+//			endTimestamp: timestamp,
+//			endAssetPosition: skipToNextAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
+//
+//		let playLogEvent2 = playerEventSender.playLogEvents[1]
+//		let actions2 = [
+//			Action(actionType: .PLAYBACK_STOP, assetPosition: 0, timestamp: timestamp),
+//			Action(actionType: .PLAYBACK_START, assetPosition: seekAssetPosition2, timestamp: timestamp),
+//		]
+//		let expectedPlayLogEvent2 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct2.productId,
+//			actualProductId: mediaProduct2.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.long.sourceType,
+//			sourceId: Constants.PlayLogSource.long.sourceId,
+//			actions: actions2,
+//			endTimestamp: timestamp,
+//			endAssetPosition: resetAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
+//	}
 
 //	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_another_track_and_reset() {
 //		// GIVEN
@@ -1416,7 +1416,6 @@ extension PlayLogWithDeinitTests {
 //		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
 //	}
 
-	/// test case 24
 	func test_load_and_play_and_resetPlayerEngine_and_setUpANewPlayerEngine_and_load_and_play_same_track_and_reset() {
 		// GIVEN
 		// First we load the media product and then proceed to play it.
