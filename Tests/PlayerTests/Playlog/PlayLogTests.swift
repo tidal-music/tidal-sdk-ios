@@ -755,6 +755,7 @@ extension PlayLogTests {
 		}
 
 		playerEngine.play(timestamp: timestamp)
+		waitForPlayerToBeInState(.PLAYING)
 
 		// Now we wait the same amount of the duration of the track plus extra time
 		let expectation = expectation(description: "Expecting audio file to have been played")
@@ -1564,6 +1565,8 @@ extension PlayLogTests {
 		}
 	}
 
+	/// - Important: This func is sometimes needed to help with flakiness since there's a lot of async work happening which can't be
+	/// controlled until we move to a proper structured concurrency.
 	func waitAsyncWork(timeout: TimeInterval = 0.01) {
 		let expectation = expectation(description: "Wait for the async work to be done.")
 		_ = XCTWaiter.wait(for: [expectation], timeout: timeout)
