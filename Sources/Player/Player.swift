@@ -353,6 +353,26 @@ public extension Player {
 		}
 	}
 
+	func offline(mediaProduct: MediaProduct) -> Bool {
+		offlineEngine?.offline(mediaProduct: mediaProduct) ?? false
+	}
+
+	func deleteOffline(mediaProduct: MediaProduct) -> Bool {
+		offlineEngine?.deleteOffline(mediaProduct: mediaProduct) ?? false
+	}
+
+	func deleteAllOffline() -> Bool {
+		offlineEngine?.deleteAllOfflines() ?? false
+	}
+
+	func getOfflineState(mediaProduct: MediaProduct) -> OfflineState {
+		offlineEngine?.getOfflineState(mediaProduct: mediaProduct) ?? .NOT_OFFLINED
+	}
+
+	func setOfflinerDelegate(_ offlinerDelegate: OfflinerDelegate) {
+		offlineEngine?.setOfflinerDelegate(offlinerDelegate)
+	}
+
 	func startDjSession(title: String) {
 		queue.dispatch {
 			let now = PlayerWorld.timeProvider.timestamp()
