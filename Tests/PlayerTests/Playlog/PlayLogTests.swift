@@ -1045,16 +1045,13 @@ extension PlayLogTests {
 		let mediaProduct2 = audioFile2.mediaProduct
 		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
 
-		optimizedWait {
-			self.playerEngine.nextItem != nil &&
-				self.playerEngine.nextItem?.isLoaded == true
-		}
-
 		// Wait for the track to reach 1 second
 		let skipToNextAssetPosition: Double = 1
 		wait(for: currentItem, toReach: skipToNextAssetPosition)
 
 		playerEngine.skipToNext(timestamp: timestamp)
+
+		waitAsyncWork(timeout: 0.05)
 
 		// Wait until the previously next item is now the current item
 		optimizedWait {
@@ -1066,8 +1063,6 @@ extension PlayLogTests {
 			XCTFail("Expected for the new currentItem to be set up!")
 			return
 		}
-
-		waitAsyncWork()
 
 		// Wait for the track to reach 1 second
 		let resetAssetPosition: Double = 1
@@ -1569,9 +1564,9 @@ extension PlayLogTests {
 		}
 	}
 
-	func waitAsyncWork() {
+	func waitAsyncWork(timeout: TimeInterval = 0.01) {
 		let expectation = expectation(description: "Wait for the async work to be done.")
-		_ = XCTWaiter.wait(for: [expectation], timeout: 0.01)
+		_ = XCTWaiter.wait(for: [expectation], timeout: timeout)
 	}
 }
 
