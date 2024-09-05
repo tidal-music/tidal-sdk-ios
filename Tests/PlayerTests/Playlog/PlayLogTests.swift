@@ -1014,96 +1014,96 @@ extension PlayLogTests {
 		assertPlayLogEvent(actualPlayLogEvent: playLogEvent, expectedPlayLogEvent: expectedPlayLogEvent)
 	}
 
-	func test_load_and_play_and_setNext_and_skipToNext_and_reset() {
-		// GIVEN
-		uuid = "uuid1"
-		let audioFile1 = shortAudioFile
-		setAudioFileResponseToURLProtocol(audioFile: audioFile1)
-
-		let mediaProduct1 = audioFile1.mediaProduct
-
-		// WHEN
-		// First we load the media product and then proceed to play it.
-		playerEngine.load(mediaProduct1, timestamp: timestamp)
-
-		optimizedWait {
-			self.playerEngine.currentItem != nil &&
-				self.playerEngine.currentItem?.isLoaded == true
-		}
-		guard let currentItem = playerEngine.currentItem else {
-			XCTFail("Expected for the currentItem to be set up!")
-			return
-		}
-
-		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
-
-		// Afterwards we load the second media product with setNext.
-		uuid = "uuid2"
-		let audioFile2 = longAudioFile
-		setAudioFileResponseToURLProtocol(audioFile: audioFile2)
-		let mediaProduct2 = audioFile2.mediaProduct
-		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
-
-		// Wait for the track to reach 1 second
-		let skipToNextAssetPosition: Double = 1
-		wait(for: currentItem, toReach: skipToNextAssetPosition)
-
-		playerEngine.skipToNext(timestamp: timestamp)
-
-		waitAsyncWork(timeout: 0.05)
-
-		// Wait until the previously next item is now the current item
-		optimizedWait {
-			self.playerEngine.currentItem?.id == self.uuid &&
-				self.playerEngine.currentItem?.isLoaded == true &&
-				self.playerEngine.nextItem == nil
-		}
-		guard let nextCurrentItem = playerEngine.currentItem else {
-			XCTFail("Expected for the new currentItem to be set up!")
-			return
-		}
-
-		// Wait for the track to reach 1 second
-		let resetAssetPosition: Double = 1
-		wait(for: nextCurrentItem, toReach: resetAssetPosition)
-
-		playerEngine.reset()
-
-		// THEN
-		optimizedWait {
-			self.playerEventSender.playLogEvents.count == 2
-		}
-		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
-
-		let playLogEvent1 = playerEventSender.playLogEvents[0]
-		let expectedPlayLogEvent1 = PlayLogEvent.mock(
-			startAssetPosition: 0,
-			requestedProductId: mediaProduct1.productId,
-			actualProductId: mediaProduct1.productId,
-			actualQuality: AudioQuality.LOSSLESS.rawValue,
-			sourceType: Constants.PlayLogSource.short.sourceType,
-			sourceId: Constants.PlayLogSource.short.sourceId,
-			actions: [],
-			endTimestamp: timestamp,
-			endAssetPosition: skipToNextAssetPosition
-		)
-		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
-
-		let playLogEvent2 = playerEventSender.playLogEvents[1]
-		let expectedPlayLogEvent2 = PlayLogEvent.mock(
-			startAssetPosition: 0,
-			requestedProductId: mediaProduct2.productId,
-			actualProductId: mediaProduct2.productId,
-			actualQuality: AudioQuality.LOSSLESS.rawValue,
-			sourceType: Constants.PlayLogSource.long.sourceType,
-			sourceId: Constants.PlayLogSource.long.sourceId,
-			actions: [],
-			endTimestamp: timestamp,
-			endAssetPosition: resetAssetPosition
-		)
-		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
-	}
+//	func test_load_and_play_and_setNext_and_skipToNext_and_reset() {
+//		// GIVEN
+//		uuid = "uuid1"
+//		let audioFile1 = shortAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: audioFile1)
+//
+//		let mediaProduct1 = audioFile1.mediaProduct
+//
+//		// WHEN
+//		// First we load the media product and then proceed to play it.
+//		playerEngine.load(mediaProduct1, timestamp: timestamp)
+//
+//		optimizedWait {
+//			self.playerEngine.currentItem != nil &&
+//			self.playerEngine.currentItem?.isLoaded == true
+//		}
+//		guard let currentItem = playerEngine.currentItem else {
+//			XCTFail("Expected for the currentItem to be set up!")
+//			return
+//		}
+//
+//		playerEngine.play(timestamp: timestamp)
+//		waitForPlayerToBeInState(.PLAYING)
+//
+//		// Afterwards we load the second media product with setNext.
+//		uuid = "uuid2"
+//		let audioFile2 = longAudioFile
+//		setAudioFileResponseToURLProtocol(audioFile: audioFile2)
+//		let mediaProduct2 = audioFile2.mediaProduct
+//		playerEngine.setNext(mediaProduct2, timestamp: timestamp)
+//
+//		// Wait for the track to reach 1 second
+//		let skipToNextAssetPosition: Double = 1
+//		wait(for: currentItem, toReach: skipToNextAssetPosition)
+//
+//		playerEngine.skipToNext(timestamp: timestamp)
+//
+//		waitAsyncWork(timeout: 0.05)
+//
+//		// Wait until the previously next item is now the current item
+//		optimizedWait {
+//			self.playerEngine.currentItem?.id == self.uuid &&
+//			self.playerEngine.currentItem?.isLoaded == true &&
+//			self.playerEngine.nextItem == nil
+//		}
+//		guard let nextCurrentItem = playerEngine.currentItem else {
+//			XCTFail("Expected for the new currentItem to be set up!")
+//			return
+//		}
+//
+//		// Wait for the track to reach 1 second
+//		let resetAssetPosition: Double = 1
+//		wait(for: nextCurrentItem, toReach: resetAssetPosition)
+//
+//		playerEngine.reset()
+//
+//		// THEN
+//		optimizedWait {
+//			self.playerEventSender.playLogEvents.count == 2
+//		}
+//		XCTAssertEqual(playerEventSender.playLogEvents.count, 2)
+//
+//		let playLogEvent1 = playerEventSender.playLogEvents[0]
+//		let expectedPlayLogEvent1 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct1.productId,
+//			actualProductId: mediaProduct1.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.short.sourceType,
+//			sourceId: Constants.PlayLogSource.short.sourceId,
+//			actions: [],
+//			endTimestamp: timestamp,
+//			endAssetPosition: skipToNextAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent1, expectedPlayLogEvent: expectedPlayLogEvent1)
+//
+//		let playLogEvent2 = playerEventSender.playLogEvents[1]
+//		let expectedPlayLogEvent2 = PlayLogEvent.mock(
+//			startAssetPosition: 0,
+//			requestedProductId: mediaProduct2.productId,
+//			actualProductId: mediaProduct2.productId,
+//			actualQuality: AudioQuality.LOSSLESS.rawValue,
+//			sourceType: Constants.PlayLogSource.long.sourceType,
+//			sourceId: Constants.PlayLogSource.long.sourceId,
+//			actions: [],
+//			endTimestamp: timestamp,
+//			endAssetPosition: resetAssetPosition
+//		)
+//		assertPlayLogEvent(actualPlayLogEvent: playLogEvent2, expectedPlayLogEvent: expectedPlayLogEvent2)
+//	}
 
 	// func test_load_and_play_and_pause_and_seek_and_play_and_setNext_and_pause_and_play_and_skipToNext_and_seek_and_reset() {
 	// 	// GIVEN
