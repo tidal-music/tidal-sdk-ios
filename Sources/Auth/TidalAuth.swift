@@ -18,6 +18,7 @@ public class TidalAuth: Auth & CredentialsProvider {
 		loginRepository = provideLoginRepository(config, tokensStore: tokensStore)
 		tokenRepository = provideTokenRepository(config, tokensStore: tokensStore)
 		
+		AuthLoggable.enableLogging = config.enableLogging
 	}
 	
 	private func provideLoginRepository(_ config: AuthConfig, tokensStore: TokensStore) -> LoginRepository {
