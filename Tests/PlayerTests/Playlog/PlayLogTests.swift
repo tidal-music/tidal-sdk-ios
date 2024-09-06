@@ -1,4 +1,5 @@
 import Auth
+import AVFoundation
 import CoreMedia
 @testable import Player
 import XCTest
@@ -512,12 +513,20 @@ extension PlayLogTests {
 			return
 		}
 
+		guard let currentItemAsset = currentItem.asset as? AVPlayerAssetLegacy,
+		      let playerWrapper = currentItemAsset.player as? AVQueuePlayerWrapperLegacy
+		else {
+			XCTFail("Expected for currentItem.asset to be of type AVPlayerAssetLegacy, and for player to be AVQueuePlayerWrapperLegacy.")
+			return
+		}
+		let player = playerWrapper.player
+
 		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
-		wait(for: currentItem, toReach: pauseAssetPosition)
+		wait(for: player, toReach: pauseAssetPosition)
 
 		playerEngine.pause()
 
@@ -530,7 +539,7 @@ extension PlayLogTests {
 
 		// Wait for the track to reach 3 seconds
 		let secondPauseAssetPosition: Double = 3
-		wait(for: currentItem, toReach: secondPauseAssetPosition)
+		wait(for: player, toReach: secondPauseAssetPosition)
 
 		playerEngine.pause()
 
@@ -1539,6 +1548,39 @@ extension PlayLogTests {
 		if result != .completed {
 			print("Expectation not fulfilled, invalidating timer...")
 			timer.cancel()
+		}
+	}
+
+	func wait(for player: AVPlayer, toReach targetAssetPosition: Double) {
+		let trackReachedAssetPositionExpectation =
+			XCTestExpectation(description: "Expected for the track to reach \(targetAssetPosition) second(s)")
+
+		// Add a periodic time observer to the player
+		let timeInterval = CMTime(seconds: 0.05, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+		var timeObserverToken: Any?
+		timeObserverToken = player.addPeriodicTimeObserver(forInterval: timeInterval, queue: .main) { [weak player] time in
+			guard let player else {
+				return
+			}
+			let currentTime = time.seconds
+			if currentTime >= targetAssetPosition {
+				trackReachedAssetPositionExpectation.fulfill()
+				if let token = timeObserverToken {
+					player.removeTimeObserver(token)
+				}
+			}
+		}
+
+		let result = XCTWaiter().wait(
+			for: [trackReachedAssetPositionExpectation],
+			timeout: targetAssetPosition + Constants.expectationExtraTime
+		)
+
+		if result != .completed {
+			print("Expectation not fulfilled, removing time observer...")
+			if let token = timeObserverToken {
+				player.removeTimeObserver(token)
+			}
 		}
 	}
 
