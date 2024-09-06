@@ -4,12 +4,12 @@ import Foundation
 // MARK: - PlayerItemLoader
 
 final class PlayerItemLoader {
-	private let storage: Storage
+	private let offlineStorage: OfflineStorage
 	private let playbackInfoFetcher: PlaybackInfoFetcher
 	private var playerLoader: PlayerLoader
 
-	init(with storage: Storage, _ playbackInfoFetcher: PlaybackInfoFetcher, and playerLoader: PlayerLoader) {
-		self.storage = storage
+	init(with offlineStorage: OfflineStorage, _ playbackInfoFetcher: PlaybackInfoFetcher, and playerLoader: PlayerLoader) {
+		self.offlineStorage = offlineStorage
 		self.playbackInfoFetcher = playbackInfoFetcher
 		self.playerLoader = playerLoader
 	}
@@ -40,8 +40,8 @@ private extension PlayerItemLoader {
 			return try await (metadata(of: storedMediaProduct), playerLoader.load(storedMediaProduct))
 		}
 
-		if let playableStorageItem = PlayableStorageItem(from: storage.get(mediaProduct: mediaProduct)) {
-			return try await (metadata(of: playableStorageItem), playerLoader.load(playableStorageItem))
+		if let offlinedProduct = PlayableOfflinedProduct(from: try? offlineStorage.get(key: mediaProduct.productId)) {
+			return try await (metadata(of: offlinedProduct), playerLoader.load(offlinedProduct))
 		}
 
 		let playbackInfo = try await playbackInfoFetcher.getPlaybackInfo(
@@ -55,7 +55,7 @@ private extension PlayerItemLoader {
 }
 
 private extension PlayerItemLoader {
-	func metadata(of playableStorageItem: PlayableStorageItem) -> Metadata {
+	func metadata(of playableStorageItem: PlayableOfflinedProduct) -> Metadata {
 		Metadata(
 			productId: playableStorageItem.productId,
 			streamType: .ON_DEMAND,

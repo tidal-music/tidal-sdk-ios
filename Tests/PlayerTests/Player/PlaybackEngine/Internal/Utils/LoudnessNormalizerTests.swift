@@ -80,19 +80,14 @@ final class LoudnessNormalizerTests: XCTestCase {
 	// MARK: - create(from playableStorageItem: PlayableStorageItem)
 
 	func test_create_from_PlayableStorageItem() {
-		do {
-			let storageItem = try StorageItem.mock(from: Constants.playbackInfo)
-			guard let playableStorageItem = PlayableStorageItem(from: storageItem) else {
-				XCTFail("Failed to create mock of PlayableStorageItem")
-				return
-			}
-
-			let loudnessNormalizer = LoudnessNormalizer.create(from: playableStorageItem, preAmp: Constants.preAmp)
-
-			XCTAssertEqual(loudnessNormalizer, Constants.expectedLoudnessNormalizer)
-		} catch {
-			XCTFail("Failed to create mock of StorageItem")
+		guard let offlinedProduct = PlayableOfflinedProduct(from: OfflineEntry.mock(from: Constants.playbackInfo)) else {
+			XCTFail("Failed to create mock of PlayableOfflinedProduct")
+			return
 		}
+
+		let loudnessNormalizer = LoudnessNormalizer.create(from: offlinedProduct, preAmp: Constants.preAmp)
+
+		XCTAssertEqual(loudnessNormalizer, Constants.expectedLoudnessNormalizer)
 	}
 
 	// MARK: - create(from storedMediaProduct: StoredMediaProduct)

@@ -2,6 +2,7 @@ import Auth
 import AVFoundation
 import EventProducer
 import Foundation
+import GRDB
 
 // swiftlint:disable file_length
 // swiftlint:disable:next identifier_name
@@ -40,7 +41,7 @@ public final class Player {
 		}
 	}
 
-	private var storage: Storage
+	private var offlineStorage: OfflineStorage
 	private var djProducer: DJProducer
 	private var playerEventSender: PlayerEventSender
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher
@@ -57,7 +58,7 @@ public final class Player {
 		queue: OperationQueue,
 		urlSession: URLSession,
 		configuration: Configuration,
-		storage: Storage,
+		offlineStorage: OfflineStorage,
 		djProducer: DJProducer,
 		playerEventSender: PlayerEventSender,
 		fairplayLicenseFetcher: FairPlayLicenseFetcher,
@@ -73,7 +74,7 @@ public final class Player {
 		self.queue = queue
 		playerURLSession = urlSession
 		self.configuration = configuration
-		self.storage = storage
+		self.offlineStorage = offlineStorage
 		self.djProducer = djProducer
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
 		self.streamingPrivilegesHandler = streamingPrivilegesHandler
@@ -119,7 +120,13 @@ public extension Player {
 		let timeoutPolicy = TimeoutPolicy.standard
 		let sharedPlayerURLSession = URLSession.new(with: timeoutPolicy, name: "Player Player", serviceType: .responsiveAV)
 		let configuration = Configuration()
-		let storage = Storage()
+
+		let databaseURL = PlayerWorldClient.live.fileManagerClient.documentsDirectory().appendingPathComponent("dbPlayer.sqlite")
+		guard let dbQueue = try? DatabaseQueue(path: databaseURL.path) else {
+			return nil
+		}
+
+		let offlineStorage = GRDBOfflineStorage(dbQueue: dbQueue)
 
 		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
 		let djProducerSession = URLSession.new(with: djProducerTimeoutPolicy, name: "Player DJ Session")
@@ -162,7 +169,7 @@ public extension Player {
 		let playerEngine = Player.newPlayerEngine(
 			sharedPlayerURLSession,
 			configuration,
-			storage,
+			offlineStorage,
 			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
@@ -190,14 +197,18 @@ public extension Player {
 				networkMonitor: networkMonitor
 			)
 
-			offlineEngine = OfflineEngine(downloader: downloader, offlineStorage: storage, playerEventSender: playerEventSender)
+			offlineEngine = OfflineEngine(
+				downloader: downloader,
+				offlineStorage: offlineStorage,
+				playerEventSender: playerEventSender
+			)
 		}
 
 		shared = Player(
 			queue: OperationQueue.new(),
 			urlSession: sharedPlayerURLSession,
 			configuration: configuration,
-			storage: storage,
+			offlineStorage: offlineStorage,
 			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
@@ -227,7 +238,7 @@ public extension Player {
 			self.playerEngine = Player.newPlayerEngine(
 				self.playerURLSession,
 				self.configuration,
-				self.storage,
+				self.offlineStorage,
 				self.djProducer,
 				self.fairplayLicenseFetcher,
 				self.networkMonitor,
@@ -252,7 +263,7 @@ public extension Player {
 		let player = Player.newPlayerEngine(
 			playerURLSession,
 			configuration,
-			storage,
+			offlineStorage,
 			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
@@ -415,7 +426,7 @@ private extension Player {
 	static func newPlayerEngine(
 		_ urlSession: URLSession,
 		_ configuration: Configuration,
-		_ storage: Storage,
+		_ offlineStorage: OfflineStorage,
 		_ djProducer: DJProducer,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		_ networkMonitor: NetworkMonitor,
@@ -443,7 +454,7 @@ private extension Player {
 			configuration,
 			playerEventSender,
 			networkMonitor,
-			storage,
+			offlineStorage,
 			internalPlayerLoader,
 			featureFlagProvider,
 			notificationsHandler

@@ -41,7 +41,7 @@ extension LoudnessNormalizer {
 		)
 	}
 
-	static func create(from playableStorageItem: PlayableStorageItem, preAmp: Float) -> LoudnessNormalizer? {
+	static func create(from playableStorageItem: PlayableOfflinedProduct, preAmp: Float) -> LoudnessNormalizer? {
 		LoudnessNormalizer(
 			preAmp: preAmp,
 			replayGain: playableStorageItem.albumReplayGain,

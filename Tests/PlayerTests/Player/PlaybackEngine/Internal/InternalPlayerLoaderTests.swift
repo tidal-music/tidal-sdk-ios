@@ -80,10 +80,10 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		// GIVEN
 		let trackPlaybackInfo = TrackPlaybackInfo.mock(albumReplayGain: 4, albumPeakAmplitude: 1)
 		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(), trackPlaybackInfo: trackPlaybackInfo)
-		let playableStorageItem = try PlayableStorageItem(from: StorageItem.mock(
+		let offlinedProduct = PlayableOfflinedProduct(from: OfflineEntry.mock(
 			from: playbackInfo,
-			assetUrl: URL(string: "www.tidal.com")!,
-			licenseUrl: nil
+			assetURL: URL(string: "www.tidal.com")!,
+			licenseURL: nil
 		))!
 
 		let loudnessNormalizer = LoudnessNormalizer.mock(
@@ -94,7 +94,7 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		mockPlayer.loudnessNormalizer = loudnessNormalizer
 
 		// WHEN
-		let asset = try await internalLoader.load(playableStorageItem)
+		let asset = try await internalLoader.load(offlinedProduct)
 
 		// THEN
 		let expectedLoudnessConfiguration = LoudnessNormalizationConfiguration(
