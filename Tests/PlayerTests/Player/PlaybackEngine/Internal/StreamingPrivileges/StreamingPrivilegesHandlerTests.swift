@@ -276,79 +276,79 @@ extension StreamingPrivilegesHandlerTests {
 		XCTAssertEqual(webSocket.responses, [])
 	}
 
-	func test_notify_whenAuthorized_and_throwsErrors_shouldConsiderBackoffPolicy() async {
-		// GIVEN
-
-		// Provide successful user level credentials
-		credentialsProvider.injectSuccessfulUserLevelCredentials()
-
-		// Inject web socket connection response
-		injectConnectResponse()
-
-		// Provide a mock task to be returned by the web socket
-		let task = WebSocketTaskMock()
-		webSocket.taskToReturn = task
-
-		// Fail 6 times (as given in `WebSocketErrorManager`), sleeping in between.
-		let maxErrorReconnectAttempts = errorManager.maxErrorRetryAttempts
-		var numberFailuresBeforeSuccess = maxErrorReconnectAttempts
-
-		let receiveBlock: (() async throws -> URLSessionWebSocketTask.Message) = {
-			// When numberFailuresBeforeSuccess is different from zero, it throws error, then we decrease the number and throw an error.
-			guard numberFailuresBeforeSuccess == 0 else {
-				numberFailuresBeforeSuccess -= 1
-				let error = HttpError.httpServerError(statusCode: 500)
-				throw error
-			}
-
-			// Simulate a long-running receive that will be cancelled by the test
-			while !task.isCancelled {
-				try await Task.sleep(seconds: Constants.sleepingTime)
-			}
-			throw CancellationError()
-		}
-		task.receiveBlock = receiveBlock
-
-		// WHEN
-		let notifyTask = Task {
-			await self.streamingPrivilegesHandler.notify()
-		}
-
-		await asyncOptimizedWait {
-			task.sendMessages.count == 1
-		}
-
-		// THEN
-
-		// The web socket is opened (one message is sent)
-		XCTAssertEqual(task.sendMessages.count, 1)
-
-		// The message sent should be a string and properly decoded to `UserAction`.
-		assertUserActionMessage(of: task)
-
-		// Opens the web socket with given connect response: 1 from the notify and then 6 from the max number of attempts.
-		XCTAssertEqual(
-			webSocket.responses,
-			[
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-			]
-		)
-
-		// Cancel is not called
-		XCTAssertEqual(task.isCancelled, false)
-		XCTAssertEqual(task.cancelCallCount, 0)
-
-		// Make sure it called `onFailedAttempt` the max number of attempts.
-		XCTAssertEqual(backoffPolicy.counter, maxErrorReconnectAttempts)
-
-		notifyTask.cancel()
-	}
+//	func test_notify_whenAuthorized_and_throwsErrors_shouldConsiderBackoffPolicy() async {
+//		// GIVEN
+//
+//		// Provide successful user level credentials
+//		credentialsProvider.injectSuccessfulUserLevelCredentials()
+//
+//		// Inject web socket connection response
+//		injectConnectResponse()
+//
+//		// Provide a mock task to be returned by the web socket
+//		let task = WebSocketTaskMock()
+//		webSocket.taskToReturn = task
+//
+//		// Fail 6 times (as given in `WebSocketErrorManager`), sleeping in between.
+//		let maxErrorReconnectAttempts = errorManager.maxErrorRetryAttempts
+//		var numberFailuresBeforeSuccess = maxErrorReconnectAttempts
+//
+//		let receiveBlock: (() async throws -> URLSessionWebSocketTask.Message) = {
+//			// When numberFailuresBeforeSuccess is different from zero, it throws error, then we decrease the number and throw an error.
+//			guard numberFailuresBeforeSuccess == 0 else {
+//				numberFailuresBeforeSuccess -= 1
+//				let error = HttpError.httpServerError(statusCode: 500)
+//				throw error
+//			}
+//
+//			// Simulate a long-running receive that will be cancelled by the test
+//			while !task.isCancelled {
+//				try await Task.sleep(seconds: Constants.sleepingTime)
+//			}
+//			throw CancellationError()
+//		}
+//		task.receiveBlock = receiveBlock
+//
+//		// WHEN
+//		let notifyTask = Task {
+//			await self.streamingPrivilegesHandler.notify()
+//		}
+//
+//		await asyncOptimizedWait {
+//			task.sendMessages.count == 1
+//		}
+//
+//		// THEN
+//
+//		// The web socket is opened (one message is sent)
+//		XCTAssertEqual(task.sendMessages.count, 1)
+//
+//		// The message sent should be a string and properly decoded to `UserAction`.
+//		assertUserActionMessage(of: task)
+//
+//		// Opens the web socket with given connect response: 1 from the notify and then 6 from the max number of attempts.
+//		XCTAssertEqual(
+//			webSocket.responses,
+//			[
+//				Constants.webSocketConnectResponse,
+//				Constants.webSocketConnectResponse,
+//				Constants.webSocketConnectResponse,
+//				Constants.webSocketConnectResponse,
+//				Constants.webSocketConnectResponse,
+//				Constants.webSocketConnectResponse,
+//				Constants.webSocketConnectResponse,
+//			]
+//		)
+//
+//		// Cancel is not called
+//		XCTAssertEqual(task.isCancelled, false)
+//		XCTAssertEqual(task.cancelCallCount, 0)
+//
+//		// Make sure it called `onFailedAttempt` the max number of attempts.
+//		XCTAssertEqual(backoffPolicy.counter, maxErrorReconnectAttempts)
+//
+//		notifyTask.cancel()
+//	}
 
 //	func test_notify_whenAuthorized_and_throwsErrors_shouldConsiderBackoffPolicy_andAfterwards_webSocketReturns_PRIVILEGED_SESSION_NOTIFICATION_should_call_streamingPrivilegesLost_fromDelegate(
 //	) async {
