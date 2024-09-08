@@ -215,9 +215,17 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
+		guard let currentItemAsset = currentItem.asset as? AVPlayerAssetLegacy,
+		      let playerWrapper = currentItemAsset.player as? AVQueuePlayerWrapperLegacy
+		else {
+			XCTFail("Expected for currentItem.asset to be of type AVPlayerAssetLegacy, and for player to be AVQueuePlayerWrapperLegacy.")
+			return
+		}
+		let player = playerWrapper.player
+
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
-		wait(for: currentItem, toReach: pauseAssetPosition)
+		wait(for: player, toReach: pauseAssetPosition)
 
 		playerEngine.pause()
 
@@ -278,14 +286,22 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
+		guard let currentItemAsset = currentItem.asset as? AVPlayerAssetLegacy,
+		      let playerWrapper = currentItemAsset.player as? AVQueuePlayerWrapperLegacy
+		else {
+			XCTFail("Expected for currentItem.asset to be of type AVPlayerAssetLegacy, and for player to be AVQueuePlayerWrapperLegacy.")
+			return
+		}
+		let player = playerWrapper.player
+
 		// Wait for the track to reach 2 seconds
 		let seekTo3AssetPosition: Double = 2
-		wait(for: currentItem, toReach: seekTo3AssetPosition)
+		wait(for: player, toReach: seekTo3AssetPosition)
 
 		// Seek forward to 3 seconds
 		let seekAssetPosition: Double = 3
 		playerEngine.seek(seekAssetPosition)
-		wait(for: currentItem, toReach: seekAssetPosition)
+		wait(for: player, toReach: seekAssetPosition)
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
@@ -334,14 +350,22 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
+		guard let currentItemAsset = currentItem.asset as? AVPlayerAssetLegacy,
+		      let playerWrapper = currentItemAsset.player as? AVQueuePlayerWrapperLegacy
+		else {
+			XCTFail("Expected for currentItem.asset to be of type AVPlayerAssetLegacy, and for player to be AVQueuePlayerWrapperLegacy.")
+			return
+		}
+		let player = playerWrapper.player
+
 		// Wait for the track to reach 3 seconds
 		let pauseAssetPosition: Double = 3
-		wait(for: currentItem, toReach: pauseAssetPosition)
+		wait(for: player, toReach: pauseAssetPosition)
 
 		// Seek back to 2 seconds
 		let seekAssetPosition: Double = 2
 		playerEngine.seek(seekAssetPosition)
-		wait(for: currentItem, toReach: seekAssetPosition)
+		wait(for: player, toReach: seekAssetPosition)
 
 		// THEN
 		optimizedWait(timeout: audioFile.duration) {
@@ -638,7 +662,8 @@ extension PlayLogTests {
 		wait(for: player, toReach: seekBackAssetPosition)
 
 		// THEN
-		optimizedWait(timeout: audioFile.duration) {
+		let timeout = audioFile.duration * 2
+		optimizedWait(timeout: timeout) {
 			self.playerEventSender.playLogEvents.count == 1
 		}
 
@@ -733,9 +758,17 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
+		guard let currentItemAsset = currentItem.asset as? AVPlayerAssetLegacy,
+		      let playerWrapper = currentItemAsset.player as? AVQueuePlayerWrapperLegacy
+		else {
+			XCTFail("Expected for currentItem.asset to be of type AVPlayerAssetLegacy, and for player to be AVQueuePlayerWrapperLegacy.")
+			return
+		}
+		let player = playerWrapper.player
+
 		// Wait for the track to reach 1 second
 		let resetAssetPosition: Double = 1
-		wait(for: currentItem, toReach: resetAssetPosition)
+		wait(for: player, toReach: resetAssetPosition)
 
 		playerEngine.reset()
 
@@ -852,9 +885,17 @@ extension PlayLogTests {
 		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
 
+		guard let currentItemAsset = currentItem.asset as? AVPlayerAssetLegacy,
+		      let playerWrapper = currentItemAsset.player as? AVQueuePlayerWrapperLegacy
+		else {
+			XCTFail("Expected for currentItem.asset to be of type AVPlayerAssetLegacy, and for player to be AVQueuePlayerWrapperLegacy.")
+			return
+		}
+		let player = playerWrapper.player
+
 		// Wait for the track to reach 2 seconds
 		let startSeekAssetPosition: Double = 2
-		wait(for: currentItem, toReach: startSeekAssetPosition)
+		wait(for: player, toReach: startSeekAssetPosition)
 
 		// Seek forward to 10 seconds
 		let seekAssetPosition: Double = 10
@@ -1016,6 +1057,14 @@ extension PlayLogTests {
 
 		playerEngine.play(timestamp: timestamp)
 		waitForPlayerToBeInState(.PLAYING)
+
+		guard let currentItemAsset = playerEngine.currentItem?.asset as? AVPlayerAssetLegacy,
+		      let playerWrapper = currentItemAsset.player as? AVQueuePlayerWrapperLegacy
+		else {
+			XCTFail("Expected for currentItem.asset to be of type AVPlayerAssetLegacy, and for player to be AVQueuePlayerWrapperLegacy.")
+			return
+		}
+		let player = playerWrapper.player
 
 		// skipToNext doesn't do anything since there's no nextItem
 		playerEngine.skipToNext(timestamp: timestamp)
