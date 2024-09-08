@@ -17,7 +17,7 @@ extension AVPlayer {
 
 			let timeToSeek = CMTime(seconds: min(position, currentItem.duration.seconds), preferredTimescale: 1000)
 
-			seek(to: timeToSeek, toleranceBefore: .zero, toleranceAfter: .zero) { finished in
+			seek(to: timeToSeek) { finished in
 				// Adding a small delay before checking currentTime()
 				DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
 					let currentTime = self.currentTime()
