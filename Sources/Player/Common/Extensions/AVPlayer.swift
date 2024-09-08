@@ -4,7 +4,7 @@ import MediaPlayer
 // MARK: - Constants
 
 private enum Constants {
-	static let allowedSeekTolerance: Double = 0
+	static let allowedSeekTolerance: Double = 0.1
 }
 
 extension AVPlayer {
