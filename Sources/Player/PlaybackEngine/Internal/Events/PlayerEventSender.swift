@@ -87,7 +87,7 @@ class PlayerEventSender {
 				let url = offlinePlaysDirectory.appendingPathComponent(uuid)
 				try dataWriter.write(data: data, to: url, options: .atomic)
 			} catch {
-				// TODO: This error should be centrally logged
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendEventOfflinePlay(error: error))
 			}
 		}
 	}
@@ -103,7 +103,7 @@ class PlayerEventSender {
 			let url = eventsDirectory.appendingPathComponent(uuid)
 			try dataWriter.write(data: data, to: url, options: .atomic)
 		} catch {
-			// TODO: This error should be centrally logged
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.sendLegacyEvent(error: error))
 		}
 	}
 }
@@ -138,7 +138,7 @@ private extension PlayerEventSender {
 				try fileManager.copyItem(at: sourceURL, to: destURL)
 				try fileManager.removeItem(at: sourceURL)
 			} catch {
-				// TODO: This error should be centrally logged
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.migrateLegacyDirectory(error: error))
 				print("Could not migrate legacy events folder. \(String(describing: error))")
 			}
 		}
@@ -200,12 +200,12 @@ private extension PlayerEventSender {
 				token = authToken.toBearerToken()
 
 				guard authToken.isAuthorized else {
-					// TODO: Should we log this error?
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.writeEventNotAuthorized)
 					print("EventSender succeeded to get credentials but user is not authorized.")
 					return
 				}
 			} catch {
-				// TODO: Should we log this error?
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.writeEvent(error: error))
 				print("StreamingPrivilegesHandler failed to get credentials")
 				return
 			}
@@ -264,7 +264,7 @@ private extension PlayerEventSender {
 		do {
 			let data = try encoder.encode(event)
 			guard let serializedString = String(data: data, encoding: .utf8) else {
-				// TODO: Should we log this error?
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendToEventProducerSerializationFail)
 				print("Unable to encode data from encoded event: \(event)")
 				return
 			}
@@ -276,7 +276,7 @@ private extension PlayerEventSender {
 				payload: serializedString
 			)
 		} catch {
-			// TODO: Should we log this error?
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.sendToEventProducer(error: error))
 			print("Error when encoding event: \(event)")
 		}
 	}
@@ -309,7 +309,7 @@ private extension PlayerEventSender {
 				token = authToken.toBearerToken()
 
 				guard authToken.isAuthorized else {
-					// TODO: Should we log this error?
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.sendEventsNotAuthorized)
 					print("EventSender succeeded to get credentials but user is not authorized.")
 					return
 				}
@@ -327,7 +327,7 @@ private extension PlayerEventSender {
 				urls.forEach { try? self.fileManager.removeItem(at: $0) }
 
 			} catch {
-				// TODO: This error should be centrally logged
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendEvents(error: error))
 				print("Failed to send data to \(url) [\(String(describing: error))")
 			}
 		}

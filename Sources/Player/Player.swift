@@ -5,7 +5,7 @@ import Foundation
 
 // swiftlint:disable file_length
 // swiftlint:disable:next identifier_name
-var PlayerWorld = PlayerWorldClient.live
+var PlayerWorld = PlayerWorldClient.live()
 
 // MARK: - Player
 

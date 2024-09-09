@@ -17,6 +17,7 @@ extension CredentialsProvider {
 		}
 
 		guard let token = credentials.toBearerToken() else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.getAuthBearerToken)
 			// TODO: What error should we throw?
 			throw PlayerInternalError(errorId: .EUnexpected, errorType: .authError, code: 0)
 		}

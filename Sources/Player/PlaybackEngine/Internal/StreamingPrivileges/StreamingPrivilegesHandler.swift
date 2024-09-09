@@ -54,7 +54,7 @@ extension StreamingPrivilegesHandler {
 				return
 			}
 		} catch {
-			// TODO: Should we log this error?
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingNotify(error: error))
 			print("StreamingPrivilegesHandler failed to get credentials")
 			return
 		}
@@ -118,7 +118,7 @@ private extension StreamingPrivilegesHandler {
 			let authToken = try await credentialsProvider.getCredentials()
 			token = authToken.toBearerToken()
 		} catch {
-			// TODO: Should we log this error?
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingConnect(error: error))
 			print("StreamingPrivilegesHandler failed to get credentials")
 		}
 
