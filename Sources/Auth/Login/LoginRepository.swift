@@ -66,14 +66,14 @@ final class LoginRepository {
 					clientUniqueKey: authConfig.clientUniqueKey
 				)
 			}
-			
+
 			switch response {
-			case .success(let successData):
+			case let .success(successData):
 				try saveTokens(response: successData)
-			case .failure(let error):
+			case let .failure(error):
 				AuthLoggable.finalizeLoginNetworkError(error: error).log()
 			}
-			
+
 			return response
 		}
 
@@ -110,11 +110,11 @@ final class LoginRepository {
 			deviceLoginPollHelper.prepareForPoll(interval: response.interval, maxDuration: response.expiresIn)
 			return response
 		}
-		
-		if case .failure(let error) = result {
+
+		if case let .failure(error) = result {
 			AuthLoggable.initializeDeviceLoginNetworkError(error: error).log()
 		}
-		
+
 		return result
 	}
 
@@ -125,13 +125,14 @@ final class LoginRepository {
 			grantType: GRANT_TYPE_DEVICE_CODE,
 			retryPolicy: exponentialBackoffPolicy
 		)
-		
+
 		switch response {
-		case .success(let successData):
+		case let .success(successData):
 			try saveTokens(response: successData)
-		case .failure(let error):
-			let loggable = error.subStatus?.description.isSubStatus(status: .expiredAccessToken) == true ? AuthLoggable.finalizeDevicePollingLimitReached : AuthLoggable.finalizeDeviceLoginNetworkError(error: error)
-			
+		case let .failure(error):
+			let loggable = error.subStatus?.description.isSubStatus(status: .expiredAccessToken) == true ? AuthLoggable
+				.finalizeDevicePollingLimitReached : AuthLoggable.finalizeDeviceLoginNetworkError(error: error)
+
 			loggable.log()
 		}
 

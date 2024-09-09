@@ -42,14 +42,14 @@ final class PlayerViewModel: ObservableObject, PlayerListener {
 
 		auth.config(config: authConfig)
 	}
-    
+
 	private func initEventSender() {
 		let config = EventConfig(
 			credentialsProvider: auth,
-			maxDiskUsageBytes: 1000000,
+			maxDiskUsageBytes: 1_000_000,
 			blockedConsentCategories: []
 		)
-		
+
 		eventSender.config(config)
 	}
 

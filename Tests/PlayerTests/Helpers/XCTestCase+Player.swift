@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import Player
+import XCTest
 
 extension XCTestCase {
 	func optimizedWait(timeout: Double = 10.0, step: Double = 0.1, until condition: () -> Bool) {
@@ -18,7 +18,7 @@ extension XCTestCase {
 
 		XCTFail("Optimized wait: Condition was not met")
 	}
-	
+
 	func asyncOptimizedWait(timeout: Double = 10.0, step: Double = 0.1, until condition: @escaping () -> Bool) async {
 		var timer: Double = 0
 		while timer < timeout {

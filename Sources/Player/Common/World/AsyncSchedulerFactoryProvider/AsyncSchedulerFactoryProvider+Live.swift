@@ -1,5 +1,5 @@
-extension AsyncSchedulerFactoryProvider {
-	public static let live = AsyncSchedulerFactoryProvider(
+public extension AsyncSchedulerFactoryProvider {
+	static let live = AsyncSchedulerFactoryProvider(
 		newFactory: { TaskAsyncSchedulerFactory() }
 	)
 }

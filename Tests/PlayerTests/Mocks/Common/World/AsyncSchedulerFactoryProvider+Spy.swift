@@ -1,8 +1,8 @@
 import Foundation
 @testable import Player
 
-extension AsyncSchedulerFactoryProvider {
-	public static let spy = AsyncSchedulerFactoryProvider(
+public extension AsyncSchedulerFactoryProvider {
+	static let spy = AsyncSchedulerFactoryProvider(
 		newFactory: { AsyncSchedulerFactorySpy() }
 	)
 }

@@ -53,7 +53,7 @@ public struct Configuration {
 	public var offlineVideoQuality: VideoQuality = .MEDIUM
 
 	public var allowOfflineOverCellular: Bool = false
-	
+
 	public var isImmersiveAudio: Bool = true
 
 	init(clientVersion: String = Bundle.main.appVersion) {

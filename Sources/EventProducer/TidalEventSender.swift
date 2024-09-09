@@ -1,31 +1,31 @@
+import protocol Auth.CredentialsProvider
 import Combine
 import Foundation
-import protocol Auth.CredentialsProvider
 
 /// The TidalEventProducer role exposes functionality for sending events and monitoring the status of the transportation layer.
 public final class TidalEventSender: EventSender {
-	
 	// MARK: - Singleton properties
-	
+
 	public static let shared = TidalEventSender()
-	
+
 	// MARK: - Public properties
-	
+
 	public var config: EventConfig?
-	
+
 	// MARK: - Private properties
-	
+
 	var isOutage: Bool {
 		guard let outageState = monitoring.outageSubject?.value else {
 			return false
 		}
 		switch outageState {
-			case .outageStart:
-					return true
-			case .outageEnd:
-					return false
-			}
+		case .outageStart:
+			return true
+		case .outageEnd:
+			return false
+		}
 	}
+
 	private var scheduler: EventScheduler?
 	private var monitoringScheduler: MonitoringScheduler?
 
@@ -34,20 +34,21 @@ public final class TidalEventSender: EventSender {
 	private let eventQueue: EventQueue
 	private let monitoringQueue: MonitoringQueue
 	private let fileManager: FileManagerHelper
-	
+
 	// MARK: - Init
+
 	public init() {
 		self.eventQueue = EventQueue()
 		self.monitoringQueue = MonitoringQueue()
 		self.monitoring = Monitoring(monitoringQueue: monitoringQueue)
 		self.eventSubmitter = EventSubmitter(eventsQueue: eventQueue, monitoring: monitoring)
-		
+
 		self.fileManager = FileManagerHelper.shared
 	}
 
 	public func config(_ config: EventConfig) {
 		self.config = config
-		
+
 		// In case of reentrancy we invalidate schedulers before creating new ones
 		self.scheduler?.invalidateTimer()
 		self.monitoringScheduler?.invalidateTimer()
@@ -80,15 +81,17 @@ public final class TidalEventSender: EventSender {
 		guard scheduler != nil, monitoringScheduler != nil else {
 			throw EventProducerError.notConfigured
 		}
-		
+
 		var event = Event(name: name, headers: headers, payload: payload)
 
 		guard let eventData = try? JSONEncoder().encode(event) else {
 			throw EventProducerError.eventSendDataEncodingFailure
 		}
 
-		guard !fileManager.exceedsMaximumSize(object: eventData,
-																					maximumSize: EventConfig.singleEventMaxDiskUsageBytes) else {
+		guard !fileManager.exceedsMaximumSize(
+			object: eventData,
+			maximumSize: EventConfig.singleEventMaxDiskUsageBytes
+		) else {
 			try await monitoring.updateMonitoringEvent(monitoringEventType: .failedStorage, eventName: event.name)
 			startOutage(eventName: event.name)
 			return

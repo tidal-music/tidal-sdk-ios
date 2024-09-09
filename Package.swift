@@ -105,7 +105,7 @@ let package = Package(
 			dependencies: [
 				.common,
 				.KeychainAccess,
-				.Logging
+				.Logging,
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),

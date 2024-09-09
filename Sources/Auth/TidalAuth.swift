@@ -1,5 +1,5 @@
-import Foundation
 import Common
+import Foundation
 
 // MARK: - TidalAuth
 
@@ -14,13 +14,16 @@ public class TidalAuth: Auth & CredentialsProvider {
 		config: AuthConfig
 	) {
 		self.config = config
-		let tokensStore = DefaultTokensStore(credentialsKey: config.credentialsKey, credentialsAccessGroup: config.credentialsAccessGroup)
+		let tokensStore = DefaultTokensStore(
+			credentialsKey: config.credentialsKey,
+			credentialsAccessGroup: config.credentialsAccessGroup
+		)
 		loginRepository = provideLoginRepository(config, tokensStore: tokensStore)
 		tokenRepository = provideTokenRepository(config, tokensStore: tokensStore)
-		
+
 		AuthLoggable.enableLogging = config.enableLogging
 	}
-	
+
 	private func provideLoginRepository(_ config: AuthConfig, tokensStore: TokensStore) -> LoginRepository {
 		LoginRepository(
 			authConfig: config,

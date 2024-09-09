@@ -4,7 +4,7 @@ import Foundation
 struct DefaultTokenService: TokenService, HTTPService {
 	private let AUTH_PATH = "/v1/oauth2/token"
 	private let authBaseUrl: String
-    
+
 	init(authBaseUrl: String) {
 		self.authBaseUrl = authBaseUrl
 	}

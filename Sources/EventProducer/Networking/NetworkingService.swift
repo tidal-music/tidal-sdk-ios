@@ -1,12 +1,11 @@
 import Foundation
 
 struct NetworkingService {
-	
 	var consumerUri: String?
-	
+
 	func sendEventBatch(endpoint: Endpoint) async throws -> Data {
 		guard let consumerUri,
-					let request = endpoint.request(to: consumerUri)
+		      let request = endpoint.request(to: consumerUri)
 		else {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
