@@ -562,7 +562,7 @@ extension PlayLogTests {
 		let player = playerWrapper.player
 
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
+		wait(for: player, toHave: .playing, timeout: 1)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
@@ -571,11 +571,11 @@ extension PlayLogTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToBeInState(.NOT_PLAYING)
+		wait(for: player, toHave: .paused, timeout: 1)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
-		waitForPlayerToBeInState(.PLAYING)
+		wait(for: player, toHave: .playing, timeout: 1)
 
 		// Wait for the track to reach 3 seconds
 		let secondPauseAssetPosition: Double = 3
@@ -584,7 +584,7 @@ extension PlayLogTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		waitForPlayerToBeInState(.NOT_PLAYING)
+		wait(for: player, toHave: .paused, timeout: 1)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
@@ -1654,6 +1654,31 @@ extension PlayLogTests {
 			if let token = timeObserverToken {
 				player.removeTimeObserver(token)
 			}
+		}
+	}
+
+	func wait(
+		for player: AVPlayer,
+		toHave status: AVPlayer.TimeControlStatus,
+		timeout: TimeInterval = Constants.expectationExtraTime
+	) {
+		let stateTrackExpectation =
+			XCTestExpectation(description: "Expected for the player's time control status to change to \(status)")
+
+		var observation: NSKeyValueObservation?
+
+		observation = player.observe(\.timeControlStatus, options: [.new]) { player, change in
+			if player.timeControlStatus == status {
+				stateTrackExpectation.fulfill()
+				observation?.invalidate()
+			}
+		}
+
+		let result = XCTWaiter().wait(for: [stateTrackExpectation], timeout: timeout)
+
+		if result != .completed {
+			print("Expectation not fulfilled within the timeout period.")
+			observation?.invalidate()
 		}
 	}
 
