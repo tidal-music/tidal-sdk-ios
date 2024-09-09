@@ -20,6 +20,7 @@ enum AuthLoggable {
 
 // MARK: - Logging
 extension AuthLoggable {
+	static var enableLogging: Bool = false
 	private static let metadataErrorKey = "error"
 	private static let metadataReasonKey = "reason"
 	private static let metadataPreviousSubstatusKey = "previous_substatus"
@@ -90,6 +91,9 @@ extension AuthLoggable {
 	}
 	
 	func log() {
+		guard Self.enableLogging else {
+			return
+		}
 		var logger = Logger(label: "auth_logger")
 		// IIUC, this is a minimum level for the logger
 		logger.logLevel = .trace
