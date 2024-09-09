@@ -1,7 +1,7 @@
-import Logging
+import Common
 import Foundation
 
-enum AuthLoggable {
+enum AuthLoggable: TidalLoggable {
 	// swiftlint:disable identifier_name
 	case initializeDeviceLoginNetworkError(error: Error)
 	case finalizeLoginNetworkError(error: Error)
@@ -24,7 +24,7 @@ extension AuthLoggable {
 	private static let metadataReasonKey = "reason"
 	private static let metadataPreviousSubstatusKey = "previous_substatus"
 	
-	var loggingMessage: Logger.Message {
+	var loggingMessage: String {
 		return switch self {
 		case .initializeDeviceLoginNetworkError:
 			"InitializeDeviceLoginNetworkError"
@@ -53,25 +53,25 @@ extension AuthLoggable {
 		}
 	}
 	
-	var loggingMetadata: Logger.Metadata {
-		var metadata = [String: Logger.MetadataValue]()
-		
+	var loggingMetadata: [String: String] {
+		var metadata = [String: String]()
+
 		switch self {
 		case .initializeDeviceLoginNetworkError(let error),
 			 .finalizeLoginNetworkError(let error),
 			 .finalizeDeviceLoginNetworkError(let error),
 			 .getCredentialsUpgradeTokenNetworkError(let error):
-			metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
+			metadata[Self.metadataErrorKey] = error.localizedDescription
 		case .getCredentialsRefreshTokenNetworkError(let error, let previousSubstatus),
 			 .getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error, let previousSubstatus):
-			metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
-			metadata[Self.metadataPreviousSubstatusKey] = .string(previousSubstatus ?? "nil")
+			metadata[Self.metadataErrorKey] = error.localizedDescription
+			metadata[Self.metadataPreviousSubstatusKey] = previousSubstatus ?? "nil"
 		case .authLogout(let reason, let error, let previousSubstatus):
-			metadata[Self.metadataReasonKey] = .string(reason)
+			metadata[Self.metadataReasonKey] = reason
 			if let error = error {
-				metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
+				metadata[Self.metadataErrorKey] = error.localizedDescription
 			}
-			metadata[Self.metadataPreviousSubstatusKey] = .string(previousSubstatus ?? "nil")
+			metadata[Self.metadataPreviousSubstatusKey] = previousSubstatus ?? "nil"
 			return metadata
 		default:
 			return [:]
@@ -80,7 +80,7 @@ extension AuthLoggable {
 		return metadata
 	}
 	
-	var logLevel: Logger.Level {
+	var logLevel: LoggingLevel {
 		switch self {
 		case .getCredentialsRefreshTokenIsNotAvailable, .finalizeDevicePollingLimitReached:
 			return .notice
@@ -88,11 +88,8 @@ extension AuthLoggable {
 			return .error
 		}
 	}
-	
-	func log() {
-		var logger = Logger(label: "auth_logger")
-		// IIUC, this is a minimum level for the logger
-		logger.logLevel = .trace
-		logger.log(level: logLevel, loggingMessage, metadata: loggingMetadata)
+
+	var source: String { 
+		"Auth"
 	}
 }

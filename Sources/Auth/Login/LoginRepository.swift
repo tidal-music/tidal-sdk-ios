@@ -71,7 +71,8 @@ final class LoginRepository {
 			case .success(let successData):
 				try saveTokens(response: successData)
 			case .failure(let error):
-				AuthLoggable.finalizeLoginNetworkError(error: error).log()
+				let authLoggable = AuthLoggable.finalizeLoginNetworkError(error: error)
+				AuthWorld.logger?.log(loggable: authLoggable)
 			}
 			
 			return response
@@ -112,7 +113,8 @@ final class LoginRepository {
 		}
 		
 		if case .failure(let error) = result {
-			AuthLoggable.initializeDeviceLoginNetworkError(error: error).log()
+			let authLoggable = AuthLoggable.initializeDeviceLoginNetworkError(error: error)
+			AuthWorld.logger?.log(loggable: authLoggable)
 		}
 		
 		return result
@@ -131,8 +133,8 @@ final class LoginRepository {
 			try saveTokens(response: successData)
 		case .failure(let error):
 			let loggable = error.subStatus?.description.isSubStatus(status: .expiredAccessToken) == true ? AuthLoggable.finalizeDevicePollingLimitReached : AuthLoggable.finalizeDeviceLoginNetworkError(error: error)
-			
-			loggable.log()
+
+			AuthWorld.logger?.log(loggable: loggable)
 		}
 
 		return response

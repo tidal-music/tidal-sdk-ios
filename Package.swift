@@ -70,6 +70,9 @@ let package = Package(
 		),
 		.target(
 			name: "Common",
+			dependencies: [
+				.Logging
+			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
@@ -105,7 +108,6 @@ let package = Package(
 			dependencies: [
 				.common,
 				.KeychainAccess,
-				.Logging
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),

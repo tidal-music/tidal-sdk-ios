@@ -73,7 +73,7 @@ struct TokenRepository {
 			logoutAfterErrorLoggableBlock = { AuthLoggable.authLogout(reason: "User credentials were downgraded to client credentials after updating token", error: $0, previousSubstatus: apiErrorSubStatus) }
 		} else if let clientSecret = authConfig.clientSecret {
 			// if nothing is stored, we will try and refresh using a client secret
-			AuthLoggable.getCredentialsRefreshTokenIsNotAvailable.log()
+			AuthWorld.logger?.log(loggable: AuthLoggable.getCredentialsRefreshTokenIsNotAvailable)
 			refreshCredentialsBlock = { await getClientAccessToken(clientSecret: clientSecret) }
 			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: $0, previousSubstatus: apiErrorSubStatus) }
 			logoutAfterErrorLoggableBlock = { AuthLoggable.authLogout(reason: "Refreshing token with client credentials failed and we should logout", error: $0, previousSubstatus: apiErrorSubStatus) }
@@ -85,19 +85,22 @@ struct TokenRepository {
 			
 			switch (authResult, networkErrorLoggableBlock) {
 			case (.failure(let error), _) where shouldLogoutWithLowerLevelTokenAfterUpdate(error: error):
-				logoutAfterErrorLoggableBlock?(error).log()
+				if let loggable = logoutAfterErrorLoggableBlock?(error) {
+					AuthWorld.logger?.log(loggable: loggable)
+				}
+
 				return .success(.init(authConfig: authConfig))
 
 			case (.failure(let error), .some(let networkErrorLoggableBlock)):
-				networkErrorLoggableBlock(error).log()
-				
+				AuthWorld.logger?.log(loggable: networkErrorLoggableBlock(error))
+
 			default: break
 			}
 			
 			return authResult
 		}
 
-		AuthLoggable.authLogout(reason: "No refresh token or client secret available", previousSubstatus: apiErrorSubStatus).log()
+		AuthWorld.logger?.log(loggable: AuthLoggable.authLogout(reason: "No refresh token or client secret available", previousSubstatus: apiErrorSubStatus))
 		return logout()
 	}
 
@@ -136,10 +139,10 @@ struct TokenRepository {
 		switch result {
 		case .success(let tokens):
 			if tokens.credentials.token == nil {
-				AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse.log()
+				AuthWorld.logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse)
 			}
 		case .failure(let error):
-			AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error).log()
+			AuthWorld.logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error))
 		}
 		
 		return result
