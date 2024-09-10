@@ -562,7 +562,7 @@ extension PlayLogTests {
 		let player = playerWrapper.player
 
 		playerEngine.play(timestamp: timestamp)
-		wait(for: player, toHave: .playing, timeout: 1)
+		wait(for: player, toHave: .playing)
 
 		// Wait for the track to reach 2 seconds
 		let pauseAssetPosition: Double = 2
@@ -571,11 +571,14 @@ extension PlayLogTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		wait(for: player, toHave: .paused, timeout: 1)
+		wait(for: player, toHave: .paused)
+
+		waitAsyncWork(timeout: 1)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
-		wait(for: player, toHave: .playing, timeout: 1)
+
+		wait(for: player, toHave: .playing)
 
 		// Wait for the track to reach 3 seconds
 		let secondPauseAssetPosition: Double = 3
@@ -584,7 +587,7 @@ extension PlayLogTests {
 		playerEngine.pause()
 
 		// Wait for the state to be changed to NOT_PLAYING
-		wait(for: player, toHave: .paused, timeout: 1)
+		wait(for: player, toHave: .paused)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
