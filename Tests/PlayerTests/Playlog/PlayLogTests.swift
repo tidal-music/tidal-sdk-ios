@@ -544,7 +544,8 @@ extension PlayLogTests {
 		// First we load the media product and then proceed to play it.
 		playerEngine.load(mediaProduct, timestamp: timestamp)
 
-		optimizedWait {
+		let timeout = audioFile.duration * 2
+		optimizedWait(timeout: timeout) {
 			self.playerEngine.currentItem != nil &&
 				self.playerEngine.currentItem?.isLoaded == true
 		}
