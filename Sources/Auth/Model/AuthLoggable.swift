@@ -1,5 +1,6 @@
 import Logging
 import Foundation
+import Common
 
 enum AuthLoggable {
 	// swiftlint:disable identifier_name
@@ -19,8 +20,8 @@ enum AuthLoggable {
 }
 
 // MARK: - Logging
-extension AuthLoggable {
-	static var enableLogging: Bool = false
+
+extension AuthLoggable: TidalLoggable {
 	private static let metadataErrorKey = "error"
 	private static let metadataReasonKey = "reason"
 	private static let metadataPreviousSubstatusKey = "previous_substatus"
@@ -90,13 +91,7 @@ extension AuthLoggable {
 		}
 	}
 	
-	func log() {
-		guard Self.enableLogging else {
-			return
-		}
-		var logger = Logger(label: "auth_logger")
-		// IIUC, this is a minimum level for the logger
-		logger.logLevel = .trace
-		logger.log(level: logLevel, loggingMessage, metadata: loggingMetadata)
+	var source: String {
+		"Auth"
 	}
 }
