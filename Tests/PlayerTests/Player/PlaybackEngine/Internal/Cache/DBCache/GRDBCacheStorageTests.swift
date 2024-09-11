@@ -5,6 +5,8 @@ import XCTest
 // MARK: - Constants
 
 private enum Constants {
+	static let updatedSize = 1234
+
 	static let cacheEntry1 = CacheEntry.mock(
 		key: "key1",
 		type: CacheEntryType.hls,
@@ -57,13 +59,12 @@ final class GRDBCacheStorageTests: XCTestCase {
 		try cacheStorage.save(Constants.cacheEntry1)
 
 		// Update the entry
-		var updatedSize = 1000
 		var updatedEntry = Constants.cacheEntry1
-		updatedEntry.size = updatedSize
+		updatedEntry.size = Constants.updatedSize
 		try cacheStorage.update(updatedEntry)
 
 		let fetchedEntry = try XCTUnwrap(cacheStorage.get(key: Constants.cacheEntry1.key))
-		XCTAssertEqual(fetchedEntry.size, updatedSize)
+		XCTAssertEqual(fetchedEntry.size, updatedEntry.size)
 	}
 
 	func testDeleteCacheEntry() throws {
