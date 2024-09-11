@@ -57,23 +57,23 @@ extension AuthLoggable: TidalLoggable {
 	
 	var loggingMetadata: Logger.Metadata {
 		var metadata = [String: Logger.MetadataValue]()
-		
+
 		switch self {
 		case .initializeDeviceLoginNetworkError(let error),
 			 .finalizeLoginNetworkError(let error),
 			 .finalizeDeviceLoginNetworkError(let error),
 			 .getCredentialsUpgradeTokenNetworkError(let error):
-			metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
+			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
 		case .getCredentialsRefreshTokenNetworkError(let error, let previousSubstatus),
 			 .getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error, let previousSubstatus):
-			metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
-			metadata[Self.metadataPreviousSubstatusKey] = .string(previousSubstatus ?? "nil")
+			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
+			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 		case .authLogout(let reason, let error, let previousSubstatus):
-			metadata[Self.metadataReasonKey] = .string(reason)
+			metadata[Self.metadataReasonKey] = "\(reason)"
 			if let error = error {
-				metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
+				metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
 			}
-			metadata[Self.metadataPreviousSubstatusKey] = .string(previousSubstatus ?? "nil")
+			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 			return metadata
 		default:
 			return [:]
