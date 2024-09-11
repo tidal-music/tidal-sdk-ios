@@ -3,10 +3,9 @@ import GRDB
 @testable import Player
 import XCTest
 
-class DBOfflineStorageTests: XCTestCase {
-	var dbQueue: DatabaseQueue!
-	var offlineStorage: DBOfflineStorage!
+// MARK: - Constants
 
+private enum Constants {
 	static let offlineEntry1 = OfflineEntry.mock(
 		productId: "1",
 		url: URL(
@@ -20,12 +19,19 @@ class DBOfflineStorageTests: XCTestCase {
 			string: "www.example.com/track2"
 		)!
 	)
+}
+
+// MARK: - GRDBOfflineStorageTests
+
+class GRDBOfflineStorageTests: XCTestCase {
+	var dbQueue: DatabaseQueue!
+	var offlineStorage: GRDBOfflineStorage!
 
 	override func setUpWithError() throws {
 		// Create an in-memory database for testing
 		dbQueue = try DatabaseQueue()
 
-		offlineStorage = DBOfflineStorage(dbQueue: dbQueue)
+		offlineStorage = GRDBOfflineStorage(dbQueue: dbQueue)
 	}
 
 	override func tearDownWithError() throws {
@@ -34,18 +40,18 @@ class DBOfflineStorageTests: XCTestCase {
 	}
 
 	func testInsertOfflineEntry() throws {
-		try offlineStorage.save(DBOfflineStorageTests.offlineEntry1)
+		try offlineStorage.save(Constants.offlineEntry1)
 
 		let fetchedEntry = try XCTUnwrap(offlineStorage.get(mediaProduct: MediaProduct.mock(productId: "1")))
 		XCTAssertEqual(fetchedEntry.productId, "1")
 	}
 
 	func testUpdateOfflineEntry() throws {
-		try offlineStorage.save(DBOfflineStorageTests.offlineEntry1)
+		try offlineStorage.save(Constants.offlineEntry1)
 
 		// Update the entry
 		let expectedLicenseUrl = URL(string: "www.example.com/license/track1")
-		var updatedEntry = DBOfflineStorageTests.offlineEntry1
+		var updatedEntry = Constants.offlineEntry1
 		updatedEntry.licenseUrl = expectedLicenseUrl
 		try offlineStorage.update(updatedEntry)
 
@@ -54,7 +60,7 @@ class DBOfflineStorageTests: XCTestCase {
 	}
 
 	func testDeleteOfflineEntry() throws {
-		try offlineStorage.save(DBOfflineStorageTests.offlineEntry1)
+		try offlineStorage.save(Constants.offlineEntry1)
 
 		try offlineStorage.delete(mediaProduct: MediaProduct.mock(productId: "1"))
 
@@ -63,12 +69,12 @@ class DBOfflineStorageTests: XCTestCase {
 	}
 
 	func testGetAllOfflineEntries() throws {
-		try offlineStorage.save(DBOfflineStorageTests.offlineEntry1)
-		try offlineStorage.save(DBOfflineStorageTests.offlineEntry2)
+		try offlineStorage.save(Constants.offlineEntry1)
+		try offlineStorage.save(Constants.offlineEntry2)
 
 		let allEntries = try offlineStorage.getAll()
 		XCTAssertEqual(allEntries.count, 2)
-		XCTAssertEqual(allEntries[0].productId, DBOfflineStorageTests.offlineEntry1.productId)
-		XCTAssertEqual(allEntries[1].productId, DBOfflineStorageTests.offlineEntry2.productId)
+		XCTAssertEqual(allEntries[0].productId, Constants.offlineEntry1.productId)
+		XCTAssertEqual(allEntries[1].productId, Constants.offlineEntry2.productId)
 	}
 }

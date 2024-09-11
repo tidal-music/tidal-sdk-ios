@@ -1,9 +1,9 @@
 import Foundation
 import GRDB
 
-// MARK: - DBOfflineStorage
+// MARK: - GRDBOfflineStorage
 
-class DBOfflineStorage {
+class GRDBOfflineStorage {
 	private let dbQueue: DatabaseQueue
 
 	init(dbQueue: DatabaseQueue) {
@@ -14,66 +14,66 @@ class DBOfflineStorage {
 
 // MARK: OfflineStorage
 
-extension DBOfflineStorage: OfflineStorage {
+extension GRDBOfflineStorage: OfflineStorage {
 	// MARK: - Save OfflineEntry
 
 	func save(_ entry: OfflineEntry) throws {
-		let entryDTO = DBOfflineEntryDTO(from: entry)
+		let entity = GRDBOfflineEntryEntity(from: entry)
 		try dbQueue.write { db in
-			try entryDTO.insert(db)
+			try entity.insert(db)
 		}
 	}
 
 	// MARK: - Get OfflineEntry by MediaProduct
 
 	func get(mediaProduct: MediaProduct) throws -> OfflineEntry? {
-		let entryDTO = try dbQueue.read { db in
-			try DBOfflineEntryDTO.filter(DBOfflineEntryDTO.Columns.productId == mediaProduct.productId).fetchOne(db)
+		let entity = try dbQueue.read { db in
+			try GRDBOfflineEntryEntity.filter(GRDBOfflineEntryEntity.Columns.productId == mediaProduct.productId).fetchOne(db)
 		}
-		return entryDTO?.toOfflineEntry()
+		return entity?.offlineEntry
 	}
 
 	// MARK: - Delete OfflineEntry by MediaProduct
 
 	func delete(mediaProduct: MediaProduct) throws {
 		_ = try dbQueue.write { db in
-			try DBOfflineEntryDTO.filter(DBOfflineEntryDTO.Columns.productId == mediaProduct.productId).deleteAll(db)
+			try GRDBOfflineEntryEntity.filter(GRDBOfflineEntryEntity.Columns.productId == mediaProduct.productId).deleteAll(db)
 		}
 	}
 
 	// MARK: - Update OfflineEntry
 
 	func update(_ entry: OfflineEntry) throws {
-		let entryDTO = DBOfflineEntryDTO(from: entry)
+		let entity = GRDBOfflineEntryEntity(from: entry)
 		try dbQueue.write { db in
-			try entryDTO.update(db)
+			try entity.update(db)
 		}
 	}
 
 	// MARK: - Get All CacheEntries
 
 	func getAll() throws -> [OfflineEntry] {
-		let entriesDTOs = try dbQueue.read { db in
-			try DBOfflineEntryDTO.fetchAll(db)
+		let entities = try dbQueue.read { db in
+			try GRDBOfflineEntryEntity.fetchAll(db)
 		}
-		return entriesDTOs.map { $0.toOfflineEntry() }
+		return entities.map { $0.offlineEntry }
 	}
 
 	// MARK: - clear All OfflineEntries
 
 	func clear() throws {
 		_ = try dbQueue.write { db in
-			try DBOfflineEntryDTO.deleteAll(db)
+			try GRDBOfflineEntryEntity.deleteAll(db)
 		}
 	}
 }
 
-private extension DBOfflineStorage {
+private extension GRDBOfflineStorage {
 	func initializeDatabase() throws {
 		do {
 			try dbQueue.write { db in
-				if try !db.tableExists(DBOfflineEntryDTO.databaseTableName) {
-					try db.create(table: DBOfflineEntryDTO.databaseTableName) { t in
+				if try !db.tableExists(GRDBOfflineEntryEntity.databaseTableName) {
+					try db.create(table: GRDBOfflineEntryEntity.databaseTableName) { t in
 						t.column("productId", .text).primaryKey()
 						t.column("productType", .text).notNull()
 						t.column("assetPresentation", .text).notNull()
@@ -96,7 +96,8 @@ private extension DBOfflineStorage {
 				}
 			}
 		} catch {
-			print("Failed to initialize table \(DBOfflineEntryDTO.databaseTableName): \(error)")
+			// TODO: Log error
+			print("Failed to initialize table \(GRDBOfflineEntryEntity.databaseTableName): \(error)")
 			throw error
 		}
 	}

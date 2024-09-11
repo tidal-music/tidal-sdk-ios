@@ -3,7 +3,7 @@ import GRDB
 
 // MARK: - DBOfflineEntryDTO
 
-struct DBOfflineEntryDTO: Codable, FetchableRecord, PersistableRecord {
+struct GRDBOfflineEntryEntity: Codable, FetchableRecord, PersistableRecord {
 	let productId: String
 	let productType: ProductType
 	let assetPresentation: AssetPresentation
@@ -22,6 +22,54 @@ struct DBOfflineEntryDTO: Codable, FetchableRecord, PersistableRecord {
 	let trackPeakAmplitude: Float?
 	let mediaBookmark: Data?
 	let licenseBookmark: Data?
+
+	var offlineEntry: OfflineEntry {
+		OfflineEntry(
+			productId: productId,
+			productType: productType,
+			assetPresentation: assetPresentation,
+			audioMode: audioMode,
+			audioQuality: audioQuality,
+			audioCodec: audioCodec,
+			audioSampleRate: audioSampleRate,
+			audioBitDepth: audioBitDepth,
+			videoQuality: videoQuality,
+			revalidateAt: revalidateAt,
+			expiry: expiry,
+			mediaType: mediaType,
+			albumReplayGain: albumReplayGain,
+			albumPeakAmplitude: albumPeakAmplitude,
+			trackReplayGain: trackReplayGain,
+			trackPeakAmplitude: trackPeakAmplitude,
+			mediaUrl: mediaUrl,
+			licenseUrl: licenseUrl
+		)
+	}
+
+	private var mediaUrl: URL? {
+		var isStale = false
+		guard
+			let mediaBookmark,
+			let url = try? URL(resolvingBookmarkData: mediaBookmark, bookmarkDataIsStale: &isStale),
+			!isStale
+		else {
+			return nil
+		}
+		return url
+	}
+
+	private var licenseUrl: URL? {
+		var isStale = false
+		guard
+			let licenseBookmark,
+			let url = try? URL(resolvingBookmarkData: licenseBookmark, bookmarkDataIsStale: &isStale),
+			!isStale
+		else {
+			return nil
+		}
+
+		return url
+	}
 
 	static let databaseTableName = "offlineEntries"
 
@@ -50,55 +98,5 @@ struct DBOfflineEntryDTO: Codable, FetchableRecord, PersistableRecord {
 		trackPeakAmplitude = entry.trackPeakAmplitude
 		mediaBookmark = try? entry.mediaUrl?.bookmarkData()
 		licenseBookmark = try? entry.licenseUrl?.bookmarkData()
-	}
-
-	func toOfflineEntry() -> OfflineEntry {
-		OfflineEntry(
-			productId: productId,
-			productType: productType,
-			assetPresentation: assetPresentation,
-			audioMode: audioMode,
-			audioQuality: audioQuality,
-			audioCodec: audioCodec,
-			audioSampleRate: audioSampleRate,
-			audioBitDepth: audioBitDepth,
-			videoQuality: videoQuality,
-			revalidateAt: revalidateAt,
-			expiry: expiry,
-			mediaType: mediaType,
-			albumReplayGain: albumReplayGain,
-			albumPeakAmplitude: albumPeakAmplitude,
-			trackReplayGain: trackReplayGain,
-			trackPeakAmplitude: trackPeakAmplitude,
-			mediaUrl: mediaUrl(),
-			licenseUrl: licenseUrl()
-		)
-	}
-}
-
-private extension DBOfflineEntryDTO {
-	func mediaUrl() -> URL? {
-		var isStale = false
-		guard
-			let mediaBookmark,
-			let url = try? URL(resolvingBookmarkData: mediaBookmark, bookmarkDataIsStale: &isStale),
-			!isStale
-		else {
-			return nil
-		}
-		return url
-	}
-
-	func licenseUrl() -> URL? {
-		var isStale = false
-		guard
-			let licenseBookmark,
-			let url = try? URL(resolvingBookmarkData: licenseBookmark, bookmarkDataIsStale: &isStale),
-			!isStale
-		else {
-			return nil
-		}
-
-		return url
 	}
 }
