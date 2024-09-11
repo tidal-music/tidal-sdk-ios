@@ -18,11 +18,12 @@ struct OfflineEntry: Codable {
 	let albumPeakAmplitude: Float?
 	let trackReplayGain: Float?
 	let trackPeakAmplitude: Float?
+	let size: Int
 	var mediaUrl: URL?
 	var licenseUrl: URL?
 
 	var state: OfflineState {
-		guard let mediaUrl, let licenseUrl else {
+		guard let mediaUrl, licenseUrl != nil else {
 			return .OFFLINED_BUT_NOT_VALID
 		}
 
@@ -58,6 +59,7 @@ struct OfflineEntry: Codable {
 		albumPeakAmplitude: Float?,
 		trackReplayGain: Float?,
 		trackPeakAmplitude: Float?,
+		size: Int,
 		mediaUrl: URL?,
 		licenseUrl: URL?
 	) {
@@ -77,11 +79,17 @@ struct OfflineEntry: Codable {
 		self.albumPeakAmplitude = albumPeakAmplitude
 		self.trackReplayGain = trackReplayGain
 		self.trackPeakAmplitude = trackPeakAmplitude
+		self.size = size
 		self.mediaUrl = mediaUrl
 		self.licenseUrl = licenseUrl
 	}
 
-	init(from playbackInfo: PlaybackInfo, with mediaUrl: URL, and licenseUrl: URL?) throws {
+	init(
+		from playbackInfo: PlaybackInfo,
+		with mediaUrl: URL,
+		and licenseUrl: URL?,
+		size: Int
+	) throws {
 		productType = playbackInfo.productType
 		productId = playbackInfo.productId
 		assetPresentation = playbackInfo.assetPresentation
@@ -98,6 +106,7 @@ struct OfflineEntry: Codable {
 		albumPeakAmplitude = playbackInfo.albumPeakAmplitude
 		trackReplayGain = playbackInfo.trackReplayGain
 		trackPeakAmplitude = playbackInfo.trackPeakAmplitude
+		self.size = size
 		self.mediaUrl = mediaUrl
 		self.licenseUrl = licenseUrl
 	}

@@ -5,6 +5,7 @@ extension OfflineEntry {
 	static func mock(
 		productId: String,
 		productType: ProductType = ProductType.TRACK,
+		size: Int = 0,
 		url: URL
 	) -> OfflineEntry {
 		OfflineEntry(
@@ -24,6 +25,7 @@ extension OfflineEntry {
 			albumPeakAmplitude: nil,
 			trackReplayGain: nil,
 			trackPeakAmplitude: nil,
+			size: size,
 			mediaUrl: url,
 			licenseUrl: nil
 		)

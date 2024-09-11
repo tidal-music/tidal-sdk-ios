@@ -6,4 +6,5 @@ protocol OfflineStorage {
 	func delete(mediaProduct: MediaProduct) throws
 	func getAll() throws -> [OfflineEntry]
 	func clear() throws
+	func totalSize() throws -> Int
 }

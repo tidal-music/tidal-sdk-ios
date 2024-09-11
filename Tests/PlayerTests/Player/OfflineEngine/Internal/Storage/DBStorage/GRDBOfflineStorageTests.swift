@@ -8,6 +8,7 @@ import XCTest
 private enum Constants {
 	static let offlineEntry1 = OfflineEntry.mock(
 		productId: "1",
+		size: 500,
 		url: URL(
 			string: "www.example.com/track1"
 		)!
@@ -15,6 +16,7 @@ private enum Constants {
 
 	static let offlineEntry2 = OfflineEntry.mock(
 		productId: "2",
+		size: 300,
 		url: URL(
 			string: "www.example.com/track2"
 		)!
@@ -76,5 +78,15 @@ class GRDBOfflineStorageTests: XCTestCase {
 		XCTAssertEqual(allEntries.count, 2)
 		XCTAssertEqual(allEntries[0].productId, Constants.offlineEntry1.productId)
 		XCTAssertEqual(allEntries[1].productId, Constants.offlineEntry2.productId)
+	}
+
+	func testCalculateTotalSize() throws {
+		let expectedTotalSize = Constants.offlineEntry1.size + Constants.offlineEntry2.size
+
+		try offlineStorage.save(Constants.offlineEntry1)
+		try offlineStorage.save(Constants.offlineEntry2)
+
+		let totalSize = try offlineStorage.totalSize()
+		XCTAssertEqual(totalSize, expectedTotalSize)
 	}
 }

@@ -59,16 +59,29 @@ extension GRDBOfflineStorage: OfflineStorage {
 		return entities.map { $0.offlineEntry }
 	}
 
-	// MARK: - clear All OfflineEntries
+	// MARK: - Clear All OfflineEntries
 
 	func clear() throws {
 		_ = try dbQueue.write { db in
 			try GRDBOfflineEntryEntity.deleteAll(db)
 		}
 	}
+
+	// MARK: - Total size of all entries
+
+	func totalSize() throws -> Int {
+		try dbQueue.read { db in
+			try calculateTotalSize(db)
+		}
+	}
 }
 
 private extension GRDBOfflineStorage {
+	private func calculateTotalSize(_ db: Database) throws -> Int {
+		let totalSize = try GRDBOfflineEntryEntity.select(sum(GRDBOfflineEntryEntity.Columns.size)).fetchOne(db) ?? 0
+		return totalSize
+	}
+
 	func initializeDatabase() throws {
 		do {
 			try dbQueue.write { db in
@@ -90,6 +103,7 @@ private extension GRDBOfflineStorage {
 						t.column("albumPeakAmplitude", .double)
 						t.column("trackReplayGain", .double)
 						t.column("trackPeakAmplitude", .double)
+						t.column("size", .integer)
 						t.column("mediaBookmark", .blob)
 						t.column("licenseBookmark", .blob)
 					}
