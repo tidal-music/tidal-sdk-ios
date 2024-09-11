@@ -71,12 +71,15 @@ actor EventQueue {
 		for item in delivered {
 			deliveredIDs.insert(item["Id"].element?.text ?? "")
 		}
+		
+		print("📑 Sent: \(sent)")
 
 		let filteredSent = sent.filter { deliveredIDs.contains($0.id) }
 
 		for event in filteredSent {
 			do {
 				_ = try await dbQueue.write { db in
+					print("🔥Deleted: \(event)")
 					try EventPersistentObject.deleteOne(db, key: event.id)
 				}
 			} catch {
