@@ -14,6 +14,7 @@ extension String {
 	///
 	/// - returns: percent-escaped string.
 	public func encoded() -> String {
+		return self
 		let generalDelimitersToEncode = ":#[]@"
 		let subDelimitersToEncode = "!$&'()*+,;="
 		var allowedCharacterSet = CharacterSet.urlQueryAllowed
