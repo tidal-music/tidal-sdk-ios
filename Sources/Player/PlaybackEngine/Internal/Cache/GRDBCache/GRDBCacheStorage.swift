@@ -10,39 +10,9 @@ final class GRDBCacheStorage {
 		self.dbQueue = dbQueue
 		try? initializeDatabase()
 	}
+}
 
-	// MARK: - Calculate Total Size
-
-	func totalSize() throws -> Int {
-		try dbQueue.read { db in
-			try calculateTotalSize(db)
-		}
-	}
-
-	// MARK: - Prune to a Maximum Size
-
-	func pruneToSize(_ maxSize: Int) throws {
-		try dbQueue.write { db in
-			var currentSize = try self.calculateTotalSize(db)
-			guard currentSize > maxSize else {
-				return
-			}
-
-			let entries = try CacheEntryGRDBEntity
-				.order(CacheEntryGRDBEntity.Columns.lastAccessedAt.asc) // Oldest first
-				.fetchAll(db)
-
-			for entry in entries {
-				try entry.delete(db)
-				currentSize -= entry.size
-
-				if currentSize <= maxSize {
-					break
-				}
-			}
-		}
-	}
-
+private extension GRDBCacheStorage {
 	private func calculateTotalSize(_ db: Database) throws -> Int {
 		let totalSize = try CacheEntryGRDBEntity.select(sum(CacheEntryGRDBEntity.Columns.size)).fetchOne(db) ?? 0
 		return totalSize
@@ -94,6 +64,38 @@ extension GRDBCacheStorage: CacheStorage {
 			try CacheEntryGRDBEntity.fetchAll(db)
 		}
 		return entities.map { $0.cacheEntry }
+	}
+
+	// MARK: - Calculate Total Size
+
+	func totalSize() throws -> Int {
+		try dbQueue.read { db in
+			try calculateTotalSize(db)
+		}
+	}
+
+	// MARK: - Prune to a Maximum Size
+
+	func pruneToSize(_ maxSize: Int) throws {
+		try dbQueue.write { db in
+			var currentSize = try self.calculateTotalSize(db)
+			guard currentSize > maxSize else {
+				return
+			}
+
+			let entries = try CacheEntryGRDBEntity
+				.order(CacheEntryGRDBEntity.Columns.lastAccessedAt.asc) // Oldest first
+				.fetchAll(db)
+
+			for entry in entries {
+				try entry.delete(db)
+				currentSize -= entry.size
+
+				if currentSize <= maxSize {
+					break
+				}
+			}
+		}
 	}
 }
 

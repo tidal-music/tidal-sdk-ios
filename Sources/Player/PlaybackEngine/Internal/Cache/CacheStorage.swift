@@ -20,4 +20,12 @@ protocol CacheStorage {
 	// MARK: - Get All CacheEntries
 
 	func getAll() throws -> [CacheEntry]
+
+	// MARK: - Calculate Total Size
+
+	func totalSize() throws -> Int
+
+	// MARK: - Prune to a Maximum Size
+
+	func pruneToSize(_ maxSize: Int) throws
 }
