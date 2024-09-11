@@ -18,7 +18,7 @@ extension GRDBOfflineStorage: OfflineStorage {
 	// MARK: - Save OfflineEntry
 
 	func save(_ entry: OfflineEntry) throws {
-		let entity = GRDBOfflineEntryEntity(from: entry)
+		let entity = OfflineEntryGRDBEntity(from: entry)
 		try dbQueue.write { db in
 			try entity.insert(db)
 		}
@@ -28,7 +28,7 @@ extension GRDBOfflineStorage: OfflineStorage {
 
 	func get(mediaProduct: MediaProduct) throws -> OfflineEntry? {
 		let entity = try dbQueue.read { db in
-			try GRDBOfflineEntryEntity.filter(GRDBOfflineEntryEntity.Columns.productId == mediaProduct.productId).fetchOne(db)
+			try OfflineEntryGRDBEntity.filter(OfflineEntryGRDBEntity.Columns.productId == mediaProduct.productId).fetchOne(db)
 		}
 		return entity?.offlineEntry
 	}
@@ -37,14 +37,14 @@ extension GRDBOfflineStorage: OfflineStorage {
 
 	func delete(mediaProduct: MediaProduct) throws {
 		_ = try dbQueue.write { db in
-			try GRDBOfflineEntryEntity.filter(GRDBOfflineEntryEntity.Columns.productId == mediaProduct.productId).deleteAll(db)
+			try OfflineEntryGRDBEntity.filter(OfflineEntryGRDBEntity.Columns.productId == mediaProduct.productId).deleteAll(db)
 		}
 	}
 
 	// MARK: - Update OfflineEntry
 
 	func update(_ entry: OfflineEntry) throws {
-		let entity = GRDBOfflineEntryEntity(from: entry)
+		let entity = OfflineEntryGRDBEntity(from: entry)
 		try dbQueue.write { db in
 			try entity.update(db)
 		}
@@ -54,7 +54,7 @@ extension GRDBOfflineStorage: OfflineStorage {
 
 	func getAll() throws -> [OfflineEntry] {
 		let entities = try dbQueue.read { db in
-			try GRDBOfflineEntryEntity.fetchAll(db)
+			try OfflineEntryGRDBEntity.fetchAll(db)
 		}
 		return entities.map { $0.offlineEntry }
 	}
@@ -63,7 +63,7 @@ extension GRDBOfflineStorage: OfflineStorage {
 
 	func clear() throws {
 		_ = try dbQueue.write { db in
-			try GRDBOfflineEntryEntity.deleteAll(db)
+			try OfflineEntryGRDBEntity.deleteAll(db)
 		}
 	}
 
@@ -78,15 +78,15 @@ extension GRDBOfflineStorage: OfflineStorage {
 
 private extension GRDBOfflineStorage {
 	private func calculateTotalSize(_ db: Database) throws -> Int {
-		let totalSize = try GRDBOfflineEntryEntity.select(sum(GRDBOfflineEntryEntity.Columns.size)).fetchOne(db) ?? 0
+		let totalSize = try OfflineEntryGRDBEntity.select(sum(OfflineEntryGRDBEntity.Columns.size)).fetchOne(db) ?? 0
 		return totalSize
 	}
 
 	func initializeDatabase() throws {
 		do {
 			try dbQueue.write { db in
-				if try !db.tableExists(GRDBOfflineEntryEntity.databaseTableName) {
-					try db.create(table: GRDBOfflineEntryEntity.databaseTableName) { t in
+				if try !db.tableExists(OfflineEntryGRDBEntity.databaseTableName) {
+					try db.create(table: OfflineEntryGRDBEntity.databaseTableName) { t in
 						t.column("productId", .text).primaryKey()
 						t.column("productType", .text).notNull()
 						t.column("assetPresentation", .text).notNull()
@@ -111,7 +111,7 @@ private extension GRDBOfflineStorage {
 			}
 		} catch {
 			// TODO: Log error
-			print("Failed to initialize table \(GRDBOfflineEntryEntity.databaseTableName): \(error)")
+			print("Failed to initialize table \(OfflineEntryGRDBEntity.databaseTableName): \(error)")
 			throw error
 		}
 	}

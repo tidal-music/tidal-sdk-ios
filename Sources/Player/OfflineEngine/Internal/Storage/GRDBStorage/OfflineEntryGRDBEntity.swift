@@ -1,9 +1,9 @@
 import Foundation
 import GRDB
 
-// MARK: - DBOfflineEntryDTO
+// MARK: - OfflineEntryGRDBEntity
 
-struct GRDBOfflineEntryEntity: Codable, FetchableRecord, PersistableRecord {
+struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 	let productId: String
 	let productType: ProductType
 	let assetPresentation: AssetPresentation
