@@ -5,14 +5,18 @@ import GRDB
 
 extension CacheEntryType: DatabaseValueConvertible {}
 
-// MARK: - DBCacheEntryDTO
+// MARK: - CacheEntryGRDBEntity
 
-struct DBCacheEntryDTO: Codable, FetchableRecord, PersistableRecord {
+struct CacheEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 	var key: String
 	var type: CacheEntryType
 	var url: URL
 	var lastAccessedAt: Date
 	var size: Int
+
+	var cacheEntry: CacheEntry {
+		CacheEntry(key: key, type: type, url: url, lastAccessedAt: lastAccessedAt, size: size)
+	}
 
 	static let databaseTableName = "cacheEntries"
 
@@ -38,9 +42,5 @@ struct DBCacheEntryDTO: Codable, FetchableRecord, PersistableRecord {
 		url = entry.url
 		lastAccessedAt = entry.lastAccessedAt
 		size = entry.size
-	}
-
-	func toCacheEntry() -> CacheEntry {
-		CacheEntry(key: key, type: type, url: url, lastAccessedAt: lastAccessedAt, size: size)
 	}
 }

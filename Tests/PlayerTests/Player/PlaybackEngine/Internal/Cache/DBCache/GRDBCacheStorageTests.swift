@@ -2,10 +2,9 @@ import GRDB
 @testable import Player
 import XCTest
 
-class DBCacheStorageTests: XCTestCase {
-	var dbQueue: DatabaseQueue!
-	var cacheStorage: DBCacheStorage!
+// MARK: - Constants
 
+private enum Constants {
 	static let cacheEntry1 = CacheEntry.mock(
 		key: "key1",
 		type: CacheEntryType.hls,
@@ -27,12 +26,19 @@ class DBCacheStorageTests: XCTestCase {
 		lastAccessedAt: Date(timeIntervalSinceReferenceDate: 1000).addingTimeInterval(-360),
 		size: 800
 	)
+}
+
+// MARK: - GRDBCacheStorageTests
+
+final class GRDBCacheStorageTests: XCTestCase {
+	var dbQueue: DatabaseQueue!
+	var cacheStorage: GRDBCacheStorage!
 
 	override func setUpWithError() throws {
 		// Create an in-memory database for testing
 		dbQueue = try DatabaseQueue()
 
-		cacheStorage = DBCacheStorage(dbQueue: dbQueue)
+		cacheStorage = GRDBCacheStorage(dbQueue: dbQueue)
 	}
 
 	override func tearDownWithError() throws {
@@ -41,64 +47,64 @@ class DBCacheStorageTests: XCTestCase {
 	}
 
 	func testInsertCacheEntry() throws {
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry1)
+		try cacheStorage.save(Constants.cacheEntry1)
 
-		let fetchedEntry = try XCTUnwrap(cacheStorage.get(key: DBCacheStorageTests.cacheEntry1.key))
-		XCTAssertEqual(fetchedEntry, DBCacheStorageTests.cacheEntry1)
+		let fetchedEntry = try XCTUnwrap(cacheStorage.get(key: Constants.cacheEntry1.key))
+		XCTAssertEqual(fetchedEntry, Constants.cacheEntry1)
 	}
 
 	func testUpdateCacheEntry() throws {
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry1)
+		try cacheStorage.save(Constants.cacheEntry1)
 
 		// Update the entry
 		var updatedSize = 1000
-		var updatedEntry = DBCacheStorageTests.cacheEntry1
+		var updatedEntry = Constants.cacheEntry1
 		updatedEntry.size = updatedSize
 		try cacheStorage.update(updatedEntry)
 
-		let fetchedEntry = try XCTUnwrap(cacheStorage.get(key: DBCacheStorageTests.cacheEntry1.key))
+		let fetchedEntry = try XCTUnwrap(cacheStorage.get(key: Constants.cacheEntry1.key))
 		XCTAssertEqual(fetchedEntry.size, updatedSize)
 	}
 
 	func testDeleteCacheEntry() throws {
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry1)
+		try cacheStorage.save(Constants.cacheEntry1)
 
-		try cacheStorage.delete(key: DBCacheStorageTests.cacheEntry1.key)
+		try cacheStorage.delete(key: Constants.cacheEntry1.key)
 
-		let fetchedEntry = try cacheStorage.get(key: DBCacheStorageTests.cacheEntry1.key)
+		let fetchedEntry = try cacheStorage.get(key: Constants.cacheEntry1.key)
 		XCTAssertNil(fetchedEntry)
 	}
 
 	func testGetAllCacheEntries() throws {
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry1)
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry2)
+		try cacheStorage.save(Constants.cacheEntry1)
+		try cacheStorage.save(Constants.cacheEntry2)
 
 		let allEntries = try cacheStorage.getAll()
 		XCTAssertEqual(allEntries.count, 2)
-		XCTAssertEqual(allEntries[0], DBCacheStorageTests.cacheEntry1)
-		XCTAssertEqual(allEntries[1], DBCacheStorageTests.cacheEntry2)
+		XCTAssertEqual(allEntries[0], Constants.cacheEntry1)
+		XCTAssertEqual(allEntries[1], Constants.cacheEntry2)
 	}
 
 	func testCalculateTotalSize() throws {
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry1)
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry2)
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry3)
+		try cacheStorage.save(Constants.cacheEntry1)
+		try cacheStorage.save(Constants.cacheEntry2)
+		try cacheStorage.save(Constants.cacheEntry3)
 
 		let totalSize = try cacheStorage.totalSize()
 		XCTAssertEqual(totalSize, 1600)
 	}
 
 	func testPruneToSize() throws {
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry1)
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry2)
-		try cacheStorage.save(DBCacheStorageTests.cacheEntry3)
+		try cacheStorage.save(Constants.cacheEntry1)
+		try cacheStorage.save(Constants.cacheEntry2)
+		try cacheStorage.save(Constants.cacheEntry3)
 
 		// Prune to keep only 1000 bytes of data
 		try cacheStorage.pruneToSize(1000)
 
 		let allEntries = try cacheStorage.getAll()
 		XCTAssertEqual(allEntries.count, 2)
-		XCTAssertEqual(allEntries[0], DBCacheStorageTests.cacheEntry1)
-		XCTAssertEqual(allEntries[1], DBCacheStorageTests.cacheEntry2)
+		XCTAssertEqual(allEntries[0], Constants.cacheEntry1)
+		XCTAssertEqual(allEntries[1], Constants.cacheEntry2)
 	}
 }

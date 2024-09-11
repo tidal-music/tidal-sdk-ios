@@ -1,14 +1,14 @@
 import Foundation
 import GRDB
 
-// MARK: - DBCacheStorage
+// MARK: - GRDBCacheStorage
 
-class DBCacheStorage {
+final class GRDBCacheStorage {
 	private let dbQueue: DatabaseQueue
 
 	init(dbQueue: DatabaseQueue) {
 		self.dbQueue = dbQueue
-		try? initializedDatabase()
+		try? initializeDatabase()
 	}
 
 	// MARK: - Calculate Total Size
@@ -28,8 +28,8 @@ class DBCacheStorage {
 				return
 			}
 
-			let entries = try DBCacheEntryDTO
-				.order(DBCacheEntryDTO.Columns.lastAccessedAt.asc) // Oldest first
+			let entries = try CacheEntryGRDBEntity
+				.order(CacheEntryGRDBEntity.Columns.lastAccessedAt.asc) // Oldest first
 				.fetchAll(db)
 
 			for entry in entries {
@@ -44,65 +44,65 @@ class DBCacheStorage {
 	}
 
 	private func calculateTotalSize(_ db: Database) throws -> Int {
-		let totalSize = try DBCacheEntryDTO.select(sum(DBCacheEntryDTO.Columns.size)).fetchOne(db) ?? 0
+		let totalSize = try CacheEntryGRDBEntity.select(sum(CacheEntryGRDBEntity.Columns.size)).fetchOne(db) ?? 0
 		return totalSize
 	}
 }
 
 // MARK: CacheStorage
 
-extension DBCacheStorage: CacheStorage {
+extension GRDBCacheStorage: CacheStorage {
 	// MARK: - Save CacheEntry
 
 	func save(_ entry: CacheEntry) throws {
-		let entryDTO = DBCacheEntryDTO(from: entry)
+		let entity = CacheEntryGRDBEntity(from: entry)
 		try dbQueue.write { db in
-			try entryDTO.insert(db)
+			try entity.insert(db)
 		}
 	}
 
 	// MARK: - Get CacheEntry by Key
 
 	func get(key: String) throws -> CacheEntry? {
-		let entryDTO = try dbQueue.read { db in
-			try DBCacheEntryDTO.filter(DBCacheEntryDTO.Columns.key == key).fetchOne(db)
+		let entity = try dbQueue.read { db in
+			try CacheEntryGRDBEntity.filter(CacheEntryGRDBEntity.Columns.key == key).fetchOne(db)
 		}
-		return entryDTO?.toCacheEntry()
+		return entity?.cacheEntry
 	}
 
 	// MARK: - Delete CacheEntry by Key
 
 	func delete(key: String) throws {
 		_ = try dbQueue.write { db in
-			try DBCacheEntryDTO.filter(DBCacheEntryDTO.Columns.key == key).deleteAll(db)
+			try CacheEntryGRDBEntity.filter(CacheEntryGRDBEntity.Columns.key == key).deleteAll(db)
 		}
 	}
 
 	// MARK: - Update CacheEntry
 
 	func update(_ entry: CacheEntry) throws {
-		let entryDTO = DBCacheEntryDTO(from: entry)
+		let entity = CacheEntryGRDBEntity(from: entry)
 		try dbQueue.write { db in
-			try entryDTO.update(db)
+			try entity.update(db)
 		}
 	}
 
 	// MARK: - Get All CacheEntries
 
 	func getAll() throws -> [CacheEntry] {
-		let entriesDTOs = try dbQueue.read { db in
-			try DBCacheEntryDTO.fetchAll(db)
+		let entities = try dbQueue.read { db in
+			try CacheEntryGRDBEntity.fetchAll(db)
 		}
-		return entriesDTOs.map { $0.toCacheEntry() }
+		return entities.map { $0.cacheEntry }
 	}
 }
 
-private extension DBCacheStorage {
-	func initializedDatabase() throws {
+private extension GRDBCacheStorage {
+	func initializeDatabase() throws {
 		do {
 			try dbQueue.write { db in
-				if try !db.tableExists(DBCacheEntryDTO.databaseTableName) {
-					try db.create(table: DBCacheEntryDTO.databaseTableName) { t in
+				if try !db.tableExists(CacheEntryGRDBEntity.databaseTableName) {
+					try db.create(table: CacheEntryGRDBEntity.databaseTableName) { t in
 						t.column("key", .text).primaryKey()
 						t.column("type", .text).notNull()
 						t.column("url", .text).notNull()
@@ -112,7 +112,8 @@ private extension DBCacheStorage {
 				}
 			}
 		} catch {
-			print("Failed to initialize table \(DBCacheEntryDTO.databaseTableName): \(error)")
+			// TODO: Log error
+			print("Failed to initialize table \(CacheEntryGRDBEntity.databaseTableName): \(error)")
 			throw error
 		}
 	}
