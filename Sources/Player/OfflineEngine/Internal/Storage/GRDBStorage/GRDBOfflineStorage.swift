@@ -50,7 +50,7 @@ extension GRDBOfflineStorage: OfflineStorage {
 		}
 	}
 
-	// MARK: - Get All CacheEntries
+	// MARK: - Get All Offline Entries
 
 	func getAll() throws -> [OfflineEntry] {
 		let entities = try dbQueue.read { db in
@@ -59,7 +59,7 @@ extension GRDBOfflineStorage: OfflineStorage {
 		return entities.map { $0.offlineEntry }
 	}
 
-	// MARK: - Clear All OfflineEntries
+	// MARK: - Clear OfflineEntries
 
 	func clear() throws {
 		_ = try dbQueue.write { db in
