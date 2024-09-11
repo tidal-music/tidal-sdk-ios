@@ -396,6 +396,7 @@ private extension AVQueuePlayerWrapperLegacy {
 
 			return AssetPlaybackMetadata(sampleRate: sampleRate, formatFlags: bitdepthFlags)
 		} catch {
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.legacyReadPlaybackMetadataFailed(error: error))
 			return nil
 		}
 	}

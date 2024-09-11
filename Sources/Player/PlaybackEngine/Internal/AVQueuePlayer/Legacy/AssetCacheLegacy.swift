@@ -43,7 +43,7 @@ private extension AssetCacheLegacy {
 			try fileManager.removeItem(at: url)
 			userDefaults.removeObjectForKey(key)
 		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.deleteAssetCache(error: error))
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.deleteAssetCacheFailed(error: error))
 			print("Failed to remove item: \(error)")
 		}
 	}

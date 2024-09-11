@@ -16,7 +16,7 @@ struct CredentialsSuccessDataParser {
 					let credentialsSuccessData = try decoder.decode(CredentialsSuccessData.self, from: jsonCredentialsSuccessData)
 					clientId = credentialsSuccessData.clientId
 				} catch {
-					PlayerWorld.logger?.log(loggable: PlayerLoggable.clientIdFromToken(error: error))
+					PlayerWorld.logger()?.log(loggable: PlayerLoggable.credentialsSuccessParserParsingFailed(error: error))
 					print("Error when trying to get client id from token from successData from credentials: \(error)")
 				}
 			}

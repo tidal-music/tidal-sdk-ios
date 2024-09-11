@@ -95,7 +95,7 @@ private extension OfflineEngine {
 			try fileManager.removeItem(at: licenseUrl)
 			storage.delete(mediaProduct: mediaProduct)
 		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.deleteOfflineItem(error: error))
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.deleteOfflinedItem(error: error))
 			print("Failed to remove item: \(error)")
 		}
 	}

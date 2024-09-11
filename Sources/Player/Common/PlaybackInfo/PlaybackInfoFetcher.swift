@@ -303,7 +303,7 @@ private extension PlaybackInfoFetcher {
 			return playbackInfo
 
 		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.getPlaybackInfo(error: error))
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.getPlaybackInfoFailed(error: error))
 
 			// TODO: Should we update this to handle proper conversion from TidalError, otherwise they will always be EUnexpected
 			let error = PlaybackInfoErrorResponseConverter.convert(error)

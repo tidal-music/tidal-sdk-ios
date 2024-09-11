@@ -165,6 +165,7 @@ private extension HttpClient {
 		do {
 			return try encoder.encode(data)
 		} catch {
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.payloadEncodingFailed(error: error))
 			throw ErrorCode.encodeFailed.toPlayerInternalError(description: String(describing: error))
 		}
 	}
@@ -173,6 +174,7 @@ private extension HttpClient {
 		do {
 			return try decoder.decode(T.self, from: data)
 		} catch {
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.payloadDecodingFailed(error: error))
 			throw ErrorCode.decodeFailed.toPlayerInternalError(description: String(describing: error))
 		}
 	}
@@ -231,6 +233,7 @@ extension URLSession {
 			let (data, response) = try await self.data(for: request)
 			return (response as? HTTPURLResponse, data)
 		} catch {
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.loadDataForRequestFailed(error: error))
 			throw HttpClient.mapURLError(error)
 		}
 	}

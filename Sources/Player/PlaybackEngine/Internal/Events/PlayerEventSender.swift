@@ -87,7 +87,7 @@ class PlayerEventSender {
 				let url = offlinePlaysDirectory.appendingPathComponent(uuid)
 				try dataWriter.write(data: data, to: url, options: .atomic)
 			} catch {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendEventOfflinePlay(error: error))
+				PlayerWorld.logger()?.log(loggable: PlayerLoggable.sendEventOfflinePlayFailed(error: error))
 			}
 		}
 	}
@@ -103,7 +103,7 @@ class PlayerEventSender {
 			let url = eventsDirectory.appendingPathComponent(uuid)
 			try dataWriter.write(data: data, to: url, options: .atomic)
 		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.sendLegacyEvent(error: error))
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.sendLegacyEventFailed(error: error))
 		}
 	}
 }
@@ -122,6 +122,7 @@ private extension PlayerEventSender {
 
 			return url
 		} catch {
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.urlForDirectoryFailed(error: error))
 			return nil
 		}
 	}
@@ -138,7 +139,7 @@ private extension PlayerEventSender {
 				try fileManager.copyItem(at: sourceURL, to: destURL)
 				try fileManager.removeItem(at: sourceURL)
 			} catch {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.migrateLegacyDirectory(error: error))
+				PlayerWorld.logger()?.log(loggable: PlayerLoggable.migrateLegacyDirectoryFailed(error: error))
 				print("Could not migrate legacy events folder. \(String(describing: error))")
 			}
 		}
@@ -155,6 +156,7 @@ private extension PlayerEventSender {
 			}
 			return url
 		} catch {
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.initializeDirectoryFailed(error: error))
 			return nil
 		}
 	}
@@ -200,12 +202,12 @@ private extension PlayerEventSender {
 				token = authToken.toBearerToken()
 
 				guard authToken.isAuthorized else {
-					PlayerWorld.logger?.log(loggable: PlayerLoggable.writeEventNotAuthorized)
+					PlayerWorld.logger()?.log(loggable: PlayerLoggable.writeEventNotAuthorized)
 					print("EventSender succeeded to get credentials but user is not authorized.")
 					return
 				}
 			} catch {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.writeEvent(error: error))
+				PlayerWorld.logger()?.log(loggable: PlayerLoggable.writeEventFailed(error: error))
 				print("StreamingPrivilegesHandler failed to get credentials")
 				return
 			}
@@ -264,7 +266,7 @@ private extension PlayerEventSender {
 		do {
 			let data = try encoder.encode(event)
 			guard let serializedString = String(data: data, encoding: .utf8) else {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendToEventProducerSerializationFail)
+				PlayerWorld.logger()?.log(loggable: PlayerLoggable.sendToEventProducerSerializationFailed)
 				print("Unable to encode data from encoded event: \(event)")
 				return
 			}
@@ -276,7 +278,7 @@ private extension PlayerEventSender {
 				payload: serializedString
 			)
 		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.sendToEventProducer(error: error))
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.sendToEventProducerFailed(error: error))
 			print("Error when encoding event: \(event)")
 		}
 	}
@@ -309,7 +311,7 @@ private extension PlayerEventSender {
 				token = authToken.toBearerToken()
 
 				guard authToken.isAuthorized else {
-					PlayerWorld.logger?.log(loggable: PlayerLoggable.sendEventsNotAuthorized)
+					PlayerWorld.logger()?.log(loggable: PlayerLoggable.sendEventsNotAuthorized)
 					print("EventSender succeeded to get credentials but user is not authorized.")
 					return
 				}
@@ -327,7 +329,7 @@ private extension PlayerEventSender {
 				urls.forEach { try? self.fileManager.removeItem(at: $0) }
 
 			} catch {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendEvents(error: error))
+				PlayerWorld.logger()?.log(loggable: PlayerLoggable.sendEventsFailed(error: error))
 				print("Failed to send data to \(url) [\(String(describing: error))")
 			}
 		}

@@ -94,6 +94,7 @@ extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 			try fileManager.moveFile(location, url)
 			tasks[downloadTask]?.setMediaUrl(url)
 		} catch {
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.downloadFinishedMovingFileFailed(error: error))
 			tasks[downloadTask]?.failed(with: error)
 		}
 	}

@@ -113,8 +113,8 @@ private extension FairPlayLicenseFetcher {
 			return license
 
 		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.getPlaybackInfo(error: error))
-			
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.getLicenseFailed(error: error))
+
 			// TODO: Should we update this to handle proper conversion from TidalError, otherwise they will always be EUnexpected
 			let playerError = PlayerInternalError.from(error)
 

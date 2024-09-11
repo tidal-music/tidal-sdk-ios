@@ -13,16 +13,11 @@ struct PlayerWorldClient {
 	var developmentFeatureFlagProvider: DevelopmentFeatureFlagProvider
 	var fileManagerClient: FileManagerClient
 	var asyncSchedulerFactoryProvider: AsyncSchedulerFactoryProvider
-	/// Optional logger
-	var logger: TidalLogger?
+	var logger: () -> TidalLogger?
 }
 
 extension PlayerWorldClient {
-	/// - Attention: If logging is not desired, use `nil` instead of `.live`, which is the default..
-	/// ```
-	/// PlayerWorldClient.live(logger: nil)
-	/// ```
-	static func live(logger: TidalLogger? = .live) -> PlayerWorldClient {
+	static func live() -> PlayerWorldClient {
 		PlayerWorldClient(
 			audioInfoProvider: .live,
 			deviceInfoProvider: .live,
@@ -31,7 +26,7 @@ extension PlayerWorldClient {
 			developmentFeatureFlagProvider: .live,
 			fileManagerClient: .live,
 			asyncSchedulerFactoryProvider: .live,
-			logger: logger
+			logger: TidalLogger.noop
 		)
 	}
 }

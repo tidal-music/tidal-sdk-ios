@@ -70,7 +70,8 @@ public final class Player {
 		offlineEngine: OfflineEngine?,
 		featureFlagProvider: FeatureFlagProvider,
 		externalPlayers: [GenericMediaPlayer.Type],
-		credentialsProvider: CredentialsProvider
+		credentialsProvider: CredentialsProvider,
+		logger: @escaping () -> TidalLogger?
 	) {
 		self.queue = queue
 		playerURLSession = urlSession
@@ -87,6 +88,8 @@ public final class Player {
 		self.featureFlagProvider = featureFlagProvider
 		registeredPlayers = externalPlayers
 		self.credentialsProvider = credentialsProvider
+
+		PlayerWorld.logger = logger
 	}
 }
 
@@ -99,6 +102,7 @@ public extension Player {
 	///   - listenerQueue: Queue in which the listener post notifications of relevant changes if Player instance.
 	///   - featureFlagProvider: A provider of feature flags.
 	///   - externalPlayers: Array with external players to be used
+	///   - logger: Callback which returns an optional logger. As a default, no logging is done.
 	///   - credentialsProvider: Provider of credentials used to authenticate the user.
 	///   - eventSender: Event sender to which events are sent.
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
@@ -107,6 +111,7 @@ public extension Player {
 		listenerQueue: DispatchQueue = .main,
 		featureFlagProvider: FeatureFlagProvider = .standard,
 		externalPlayers: [GenericMediaPlayer.Type] = [],
+		logger: @escaping () -> TidalLogger? = { nil },
 		credentialsProvider: CredentialsProvider,
 		eventSender: EventSender
 	) -> Player? {
@@ -207,7 +212,8 @@ public extension Player {
 			offlineEngine: offlineEngine,
 			featureFlagProvider: featureFlagProvider,
 			externalPlayers: externalPlayers,
-			credentialsProvider: credentialsProvider
+			credentialsProvider: credentialsProvider, 
+			logger: logger
 		)
 
 		return shared

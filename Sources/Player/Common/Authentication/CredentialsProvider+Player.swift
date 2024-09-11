@@ -13,11 +13,12 @@ extension CredentialsProvider {
 		do {
 			credentials = try await getCredentials()
 		} catch {
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.getAuthBearerTokenCredentialFailed(error: error))
 			throw error
 		}
 
 		guard let token = credentials.toBearerToken() else {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.getAuthBearerToken)
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.getAuthBearerTokenToBearerTokenFailed)
 			// TODO: What error should we throw?
 			throw PlayerInternalError(errorId: .EUnexpected, errorType: .authError, code: 0)
 		}

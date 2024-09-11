@@ -32,6 +32,7 @@ extension StoredLicenseLoader: AVContentKeySessionDelegate {
 				try keyRequest.respondByRequestingPersistableContentKeyRequest()
 			#endif
 		} catch {
+			PlayerWorld.logger()?.log(loggable: PlayerLoggable.licenseLoaderContentKeyRequestFailed(error: error))
 			keyRequest.processContentKeyResponseError(error)
 		}
 	}
@@ -45,6 +46,7 @@ extension StoredLicenseLoader: AVContentKeySessionDelegate {
 				let license = try await getLicense()
 				keyRequest.processContentKeyResponse(AVContentKeyResponse(fairPlayStreamingKeyResponseData: license))
 			} catch {
+				PlayerWorld.logger()?.log(loggable: PlayerLoggable.licenseLoaderProcessContentKeyResponseFailed(error: error))
 				keyRequest.processContentKeyResponseError(error)
 			}
 		}
