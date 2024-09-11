@@ -17,7 +17,7 @@ class PlayerEventSender {
 	private let featureFlagProvider: FeatureFlagProvider
 	private let eventSender: EventSender
 
-	@Atomic private var userConfiguration: UserConfiguration?
+	@Atomic private var userClientIdSupplier: (() -> Int)?
 
 	private let encoder: JSONEncoder
 	private let eventsDirectory: URL
@@ -34,7 +34,8 @@ class PlayerEventSender {
 		credentialsProvider: CredentialsProvider,
 		dataWriter: DataWriterProtocol,
 		featureFlagProvider: FeatureFlagProvider,
-		eventSender: EventSender
+		eventSender: EventSender,
+		userClientIdSupplier: (() -> Int)? = nil
 	) {
 		self.configuration = configuration
 		self.httpClient = httpClient
@@ -42,6 +43,7 @@ class PlayerEventSender {
 		self.dataWriter = dataWriter
 		self.featureFlagProvider = featureFlagProvider
 		self.eventSender = eventSender
+		self.userClientIdSupplier = userClientIdSupplier
 		asyncSchedulerFactory = PlayerWorld.asyncSchedulerFactoryProvider.newFactory()
 
 		encoder = JSONEncoder()
@@ -90,10 +92,6 @@ class PlayerEventSender {
 				// TODO: This error should be centrally logged
 			}
 		}
-	}
-
-	func updateUserConfiguration(userConfiguration: UserConfiguration) {
-		self.userConfiguration = userConfiguration
 	}
 
 	func writeEvent<T: Codable & Equatable>(event: LegacyEvent<T>) {
@@ -194,10 +192,12 @@ private extension PlayerEventSender {
 			}
 
 			let token: String?
+			let userId: String?
 
 			do {
 				let authToken = try await credentialsProvider.getCredentials()
 				token = authToken.toBearerToken()
+				userId = authToken.userId
 
 				guard authToken.isAuthorized else {
 					// TODO: Should we log this error?
@@ -209,11 +209,17 @@ private extension PlayerEventSender {
 				print("StreamingPrivilegesHandler failed to get credentials")
 				return
 			}
-
+			
+			let userClientId: Int? = if let userClientIdSupplier {
+				userClientIdSupplier()
+			} else {
+				nil
+			}
+		
 			let user = User(
-				id: userConfiguration!.userId,
+				id: Int(userId!) ?? -1,
 				accessToken: token ?? "N/A",
-				clientId: userConfiguration!.userClientId
+				clientId: userClientId
 			)
 
 			let clientIdString: String = if let token, let clientId = CredentialsSuccessDataParser().clientIdFromToken(token) {
