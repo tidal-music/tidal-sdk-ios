@@ -20,4 +20,10 @@ extension String {
 		allowedCharacterSet.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
 		return self.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? ""
 	}
+	
+	public func base64WithPadding() -> String {
+		let offset = count % 4
+		guard offset != 0 else { return self }
+		return padding(toLength: count + 4 - offset, withPad: "=", startingAt: 0)
+	}
 }
