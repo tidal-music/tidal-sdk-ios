@@ -210,11 +210,7 @@ private extension PlayerEventSender {
 				return
 			}
 			
-			let userClientId: Int? = if let userClientIdSupplier {
-				userClientIdSupplier()
-			} else {
-				nil
-			}
+			let userClientId = userClientIdSupplier?()
 		
 			let user = User(
 				id: Int(userId!) ?? -1,
