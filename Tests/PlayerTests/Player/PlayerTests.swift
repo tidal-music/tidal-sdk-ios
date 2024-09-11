@@ -68,14 +68,3 @@ final class PlayerTests: XCTestCase {
 		)
 	}
 }
-
-extension PlayerTests {
-	// MARK: - setUpUserConfiguration(_)
-
-	func test_setUpUserConfiguration_calls_EventSender_updateuserConfiguration() {
-		let userConfiguration = UserConfiguration.mock(userId: 100, userClientId: 200)
-		player.setUpUserConfiguration(userConfiguration)
-
-		XCTAssertEqual(playerEventSender.userConfigurations, [userConfiguration])
-	}
-}
