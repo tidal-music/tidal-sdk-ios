@@ -644,7 +644,8 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 extension PlaybackInfoFetcherTests {
 	func playbackInfoURL(trackId: String, audioQuality: AudioQuality, playbackMode: PlaybackMode, immersiveAudio: Bool) -> String {
 		let path = "https://api.tidal.com/v1/tracks/\(trackId)/playbackinfo"
-		let parameters = "audioquality=\(audioQuality.rawValue)&assetpresentation=FULL&playbackmode=\(playbackMode.rawValue)&immersiveaudio=\(immersiveAudio)"
+		let parameters =
+			"audioquality=\(audioQuality.rawValue)&assetpresentation=FULL&playbackmode=\(playbackMode.rawValue)&immersiveaudio=\(immersiveAudio)"
 		let url = "\(path)?\(parameters)"
 		return url
 	}

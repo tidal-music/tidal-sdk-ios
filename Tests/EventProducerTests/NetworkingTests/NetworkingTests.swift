@@ -11,13 +11,13 @@ final class NetworkingTests: XCTestCase {
 			token
 		}
 	}
-	
-	private let maxDiskUsageBytes = 204800
-	
+
+	private let maxDiskUsageBytes = 204_800
+
 	private var mockAuthProvider: AuthProvider {
 		MockAuthProvider(token: "testAccessToken", clientID: "testURL")
 	}
-	
+
 	private var mockNetworkService: NetworkingService {
 		NetworkingService(consumerUri: "https://consumer.uri")
 	}

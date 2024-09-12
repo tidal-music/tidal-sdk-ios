@@ -33,10 +33,10 @@ final class EventScheduler: Scheduler {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.eventQueue = eventQueue
-		self.networkService = NetworkingService(consumerUri: consumerUri)
+		networkService = NetworkingService(consumerUri: consumerUri)
 		self.monitoring = monitoring
 	}
-	
+
 	convenience init(config: EventConfig?, eventQueue: EventQueue, monitoring: Monitoring) {
 		self.init(
 			consumerUri: config?.consumerUri,
@@ -122,12 +122,12 @@ final class EventScheduler: Scheduler {
 			endpoint = .events(
 				requestData,
 				authHeader: authTokenHeader
-			 )
+			)
 		} else if let clientAuth = try await headerHelper.getClientAuthHeader() {
 			endpoint = .publicEvents(
 				requestData,
 				clientAuth: clientAuth
-			 )
+			)
 		} else {
 			throw EventProducerError.clientIdMissingFailure
 		}
@@ -207,7 +207,7 @@ private extension EventScheduler {
 extension EventScheduler {
 	func getAllowedBatch(_ batch: [Event]) -> [Event] {
 		var allowedBatch = batch
-		
+
 		while isExceedsMaxSize(for: allowedBatch) {
 			if allowedBatch.isEmpty {
 				return []
@@ -218,9 +218,14 @@ extension EventScheduler {
 		}
 		return allowedBatch
 	}
-	
+
 	private func isExceedsMaxSize(for batch: [Event]) -> Bool {
-		guard let data = try? JSONEncoder().encode(batch) else { return false }
-		return FileManagerHelper.shared.exceedsMaximumSize(object: data, maximumSize: maxDiskUsageBytes ?? EventConfig.defaultQueueMaxDiskUsageBytes)
+		guard let data = try? JSONEncoder().encode(batch) else {
+			return false
+		}
+		return FileManagerHelper.shared.exceedsMaximumSize(
+			object: data,
+			maximumSize: maxDiskUsageBytes ?? EventConfig.defaultQueueMaxDiskUsageBytes
+		)
 	}
 }

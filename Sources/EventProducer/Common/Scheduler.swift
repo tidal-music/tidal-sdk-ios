@@ -1,6 +1,8 @@
 import Common
 import Foundation
 
+// MARK: - Scheduler
+
 protocol Scheduler: AnyObject {
 	var schedulingTime: TimeInterval { get }
 	func timerTriggered(headerHelper: HeaderHelper) async throws
@@ -16,19 +18,19 @@ extension Scheduler {
 		guard schedulerTask == nil else {
 			return
 		}
-		
+
 		schedulerTask = Task { [weak self, headerHelper] in
 			repeat {
 				guard let self else {
 					return
 				}
-				
+
 				try await Task.sleep(seconds: schedulingTime)
-				try await self.timerTriggered(headerHelper: headerHelper)
+				try await timerTriggered(headerHelper: headerHelper)
 			} while !Task.isCancelled
 		}
 	}
-	
+
 	func invalidateTimer() {
 		schedulerTask?.cancel()
 		schedulerTask = nil
