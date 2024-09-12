@@ -22,7 +22,7 @@ struct OfflineEntry: Codable {
 	var mediaURL: URL?
 	var licenseURL: URL?
 
-	var state: OfflineState {
+	var state: InternalOfflineState {
 		guard let mediaURL, licenseURL != nil else {
 			return .OFFLINED_BUT_NO_LICENSE
 		}
