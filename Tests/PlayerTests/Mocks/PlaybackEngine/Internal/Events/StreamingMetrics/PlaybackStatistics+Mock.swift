@@ -15,6 +15,7 @@ extension PlaybackStatistics {
 		startReason: StartReason = StartReason.EXPLICIT,
 		endReason: String = EndReason.COMPLETE.rawValue,
 		endTimestamp: UInt64 = 1,
+		tags: [PlaybackStatistics.EventTag] = [],
 		errorMessage: String? = nil,
 		errorCode: String? = nil
 	) -> Self {
@@ -32,6 +33,7 @@ extension PlaybackStatistics {
 			startReason: startReason,
 			endReason: endReason,
 			endTimestamp: endTimestamp,
+			tags: tags,
 			errorMessage: errorMessage,
 			errorCode: errorCode
 		)
