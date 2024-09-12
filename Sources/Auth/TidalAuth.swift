@@ -1,5 +1,5 @@
-import Foundation
 import Common
+import Foundation
 
 // MARK: - TidalAuth
 

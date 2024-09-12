@@ -108,7 +108,7 @@ let package = Package(
 			dependencies: [
 				.common,
 				.KeychainAccess,
-				.Logging
+				.Logging,
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
@@ -127,6 +127,7 @@ let package = Package(
 				.Kronos,
 				.auth,
 				.eventProducer,
+				.GRDB,
 			],
 			resources: [
 				.process("README.md"),
@@ -140,6 +141,7 @@ let package = Package(
 			dependencies: [
 				.player,
 				.auth,
+				.GRDB,
 			],
 			resources: [
 				.process("Resources"),

@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - PlayerListener
+
 public protocol PlayerListener: AnyObject {
 	func stateChanged(to state: State)
 
@@ -19,9 +21,10 @@ public protocol PlayerListener: AnyObject {
 }
 
 // MARK: - Optional methods
+
 public extension PlayerListener {
-	func streamingPrivilegesLost(to device: String?) { }
-	func djSessionStarted(_ metadata: DJSessionMetadata) { }
-	func djSessionEnded(with reason: DJSessionEndReason) { }
-	func djSessionTransitioned(to transition: DJSessionTransition) { }
+	func streamingPrivilegesLost(to device: String?) {}
+	func djSessionStarted(_ metadata: DJSessionMetadata) {}
+	func djSessionEnded(with reason: DJSessionEndReason) {}
+	func djSessionTransitioned(to transition: DJSessionTransition) {}
 }

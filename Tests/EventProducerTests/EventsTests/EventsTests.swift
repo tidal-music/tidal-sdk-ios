@@ -1,13 +1,13 @@
+@testable import Auth
 import Common
 @testable import EventProducer
-@testable import Auth
 import XCTest
 
 final class EventsTests: XCTestCase {
 	private struct MockCredentialsProvider: CredentialsProvider {
 		let testToken: String?
 		func getCredentials(apiErrorSubStatus: String?) async throws -> Credentials {
-			return Credentials(
+			Credentials(
 				clientId: "",
 				requestedScopes: .init(),
 				clientUniqueKey: "",
@@ -17,31 +17,33 @@ final class EventsTests: XCTestCase {
 				token: testToken
 			)
 		}
+
 		var isUserLoggedIn: Bool
 	}
-	
+
 	private var eventSender = TidalEventSender.shared
 	private let testAccessToken = "testAccessToken"
 	private let queue = EventQueue()
 	private let monitoring = Monitoring(monitoringQueue: .init())
 	private var headerHelper: HeaderHelper!
-	private let maxDiskUsageBytes = 204800
+	private let maxDiskUsageBytes = 204_800
 
 	override func setUp() async throws {
 		try await super.setUp()
 		headerHelper = HeaderHelper(credentialsProvider: mockCredentialsProvider(withToken: testAccessToken))
 		eventSender.config(
 			EventConfig(
-			credentialsProvider: mockCredentialsProvider(withToken: testAccessToken),
-			maxDiskUsageBytes: maxDiskUsageBytes
-		))
+				credentialsProvider: mockCredentialsProvider(withToken: testAccessToken),
+				maxDiskUsageBytes: maxDiskUsageBytes
+			)
+		)
 		try await queue.deleteAllEvents()
 	}
 
 	private func mockCredentialsProvider(withToken token: String) -> CredentialsProvider {
 		MockCredentialsProvider(testToken: token, isUserLoggedIn: true)
 	}
-	
+
 	func testSendEvent() async throws {
 		try await eventSender.sendEvent(
 			name: "testEvent",
@@ -51,14 +53,14 @@ final class EventsTests: XCTestCase {
 
 		let credentials = try? await eventSender.config?.credentialsProvider.getCredentials()
 		let token = credentials?.token ?? "MISSING TOKEN"
-		
+
 		XCTAssertEqual(token, "testAccessToken")
 	}
 
 	func testSendEventFailsWhenConfigurationNotCalled() async {
 		let notConfiguredEventSender = TidalEventSender()
 		var caughtError: Error?
-		
+
 		do {
 			try await notConfiguredEventSender.sendEvent(
 				name: "testEvent",
@@ -68,12 +70,12 @@ final class EventsTests: XCTestCase {
 		} catch {
 			caughtError = error
 		}
-		
+
 		switch caughtError as? EventProducerError {
-			case .notConfigured:
-				break
-			default:
-				XCTFail("Error is not thrown or has a wrong type")
+		case .notConfigured:
+			break
+		default:
+			XCTFail("Error is not thrown or has a wrong type")
 		}
 	}
 
@@ -81,9 +83,9 @@ final class EventsTests: XCTestCase {
 		let accessToken = "accessToken"
 		let consumerUri = "consumerUri"
 		let maxDiskUsageBytes = 1024
-		
+
 		let mockCredentialsProvider = mockCredentialsProvider(withToken: accessToken)
-				
+
 		eventSender.config(
 			EventConfig(
 				credentialsProvider: mockCredentialsProvider,
@@ -91,10 +93,10 @@ final class EventsTests: XCTestCase {
 				consumerUri: consumerUri
 			)
 		)
-		
+
 		let credentials = try? await eventSender.config?.credentialsProvider.getCredentials()
 		let token = credentials?.token
-		
+
 		XCTAssertEqual(token, accessToken)
 		XCTAssertEqual(eventSender.config?.consumerUri, consumerUri)
 		XCTAssertEqual(eventSender.config?.maxDiskUsageBytes, maxDiskUsageBytes)
@@ -119,25 +121,24 @@ final class EventsTests: XCTestCase {
 		XCTAssertTrue(fetchedEvents.contains(where: { $0.name == "testEvent#2" }))
 		XCTAssertFalse(fetchedEvents.contains(where: { $0.name == "fakeEvent" }))
 	}
-	
+
 	func testEventsEncoded() async throws {
 		guard let consumerUri = eventSender.config?.consumerUri else {
 			XCTFail("Default consumerUri should be set")
 			return
 		}
-		
+
 		let eventScheduler = EventScheduler(consumerUri: consumerUri, eventQueue: queue, monitoring: monitoring)
 		let event1 = Event(
 			name: "testEvent#1",
 			payload: "firstPayload"
 		)
-		
+
 		let event2 = Event(
 			name: "testEvent#2",
 			payload: "https://api.tidal.com/v2/home/initiate?countryCode=NO"
 		)
-		
-		
+
 		let encodedEvents = eventScheduler.formatEvents([event1, event2])
 		print("🔥\(encodedEvents)")
 		XCTAssertTrue(encodedEvents.contains(where: { $0.value == "firstPayload" }))
@@ -228,7 +229,7 @@ final class EventsTests: XCTestCase {
 			consentCategory: ConsentCategory.targeting,
 			payload: "firstPayload"
 		)
-		
+
 		let fetchedEvents = try await queue.getAllEvents()
 		XCTAssertEqual(fetchedEvents.count, 1)
 		XCTAssertFalse(fetchedEvents.contains(where: { $0.name == "PerformanceEvent" }))
@@ -278,36 +279,37 @@ final class EventsTests: XCTestCase {
 			1
 		)
 	}
-	
+
 	func testSchedulerBatchExceedsSize() async throws {
-		
 		guard let consumerUri = eventSender.config?.consumerUri else {
 			XCTFail("Default consumerUri should be set")
 			return
 		}
-		
+
 		let eventQueue = [
 			Event(
 				name: "testEvent#1",
-				payload: "firstPayload"),
+				payload: "firstPayload"
+			),
 			Event(
 				name: "testEvent#2",
-				payload: "secondPayload"),
+				payload: "secondPayload"
+			),
 			Event(
 				name: "testEvent#3",
-				payload: "thirdPayload")
+				payload: "thirdPayload"
+			),
 		]
-		
+
 		var eventScheduler = EventScheduler(consumerUri: consumerUri, maxDiskUsageBytes: 500, eventQueue: queue, monitoring: monitoring)
-		
-		/// Check that the events are allowed based on the scheduler's allowed queue size limit
+
+		// Check that the events are allowed based on the scheduler's allowed queue size limit
 		XCTAssertFalse(eventScheduler.getAllowedBatch(eventQueue).isEmpty)
-		
-		/// Reduce the maxDiskUsageBytes in order to drop the events
+
+		// Reduce the maxDiskUsageBytes in order to drop the events
 		eventScheduler = EventScheduler(consumerUri: consumerUri, maxDiskUsageBytes: 50, eventQueue: queue, monitoring: monitoring)
-		
-		/// Events that exceed the size will be dropped
+
+		// Events that exceed the size will be dropped
 		XCTAssertTrue(eventScheduler.getAllowedBatch(eventQueue).isEmpty)
-		
 	}
 }

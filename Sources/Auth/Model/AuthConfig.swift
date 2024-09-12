@@ -11,7 +11,7 @@ public struct AuthConfig {
 	public let tidalAuthServiceBaseUri: String
 	public let enableCertificatePinning: Bool
 	public let enableLogging: Bool
-	
+
 	public init(
 		clientId: String,
 		clientUniqueKey: String? = nil,

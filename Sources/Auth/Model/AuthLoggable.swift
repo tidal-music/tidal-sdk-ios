@@ -1,6 +1,7 @@
-import Logging
 import Foundation
-import Common
+import Logging
+
+// MARK: - AuthLoggable
 
 enum AuthLoggable {
 	// swiftlint:disable identifier_name
@@ -21,13 +22,14 @@ enum AuthLoggable {
 
 // MARK: - Logging
 
-extension AuthLoggable: TidalLoggable {
+extension AuthLoggable {
+	static var enableLogging: Bool = false
 	private static let metadataErrorKey = "error"
 	private static let metadataReasonKey = "reason"
 	private static let metadataPreviousSubstatusKey = "previous_substatus"
-	
+
 	var loggingMessage: Logger.Message {
-		return switch self {
+		switch self {
 		case .initializeDeviceLoginNetworkError:
 			"InitializeDeviceLoginNetworkError"
 		case .finalizeLoginNetworkError:
@@ -54,21 +56,21 @@ extension AuthLoggable: TidalLoggable {
 			"AuthLogout"
 		}
 	}
-	
+
 	var loggingMetadata: Logger.Metadata {
 		var metadata = [String: Logger.MetadataValue]()
 
 		switch self {
-		case .initializeDeviceLoginNetworkError(let error),
-			 .finalizeLoginNetworkError(let error),
-			 .finalizeDeviceLoginNetworkError(let error),
-			 .getCredentialsUpgradeTokenNetworkError(let error):
+		case let .initializeDeviceLoginNetworkError(error),
+			 let .finalizeLoginNetworkError(error),
+			 let .finalizeDeviceLoginNetworkError(error),
+			 let .getCredentialsUpgradeTokenNetworkError(error):
 			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
-		case .getCredentialsRefreshTokenNetworkError(let error, let previousSubstatus),
-			 .getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error, let previousSubstatus):
+		case let .getCredentialsRefreshTokenNetworkError(error, previousSubstatus),
+			 let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
 			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
-		case .authLogout(let reason, let error, let previousSubstatus):
+		case let .authLogout(reason, error, previousSubstatus):
 			metadata[Self.metadataReasonKey] = "\(reason)"
 			if let error = error {
 				metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
@@ -78,16 +80,16 @@ extension AuthLoggable: TidalLoggable {
 		default:
 			return [:]
 		}
-		
+
 		return metadata
 	}
-	
+
 	var logLevel: Logger.Level {
 		switch self {
 		case .getCredentialsRefreshTokenIsNotAvailable, .finalizeDevicePollingLimitReached:
-			return .notice
+			.notice
 		default:
-			return .error
+			.error
 		}
 	}
 	

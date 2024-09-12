@@ -5,7 +5,7 @@ private let scopesSeparator: Character = " "
 extension String {
 	func toScopes() -> Set<String> {
 		Set(
-			self.split(separator: scopesSeparator)
+			split(separator: scopesSeparator)
 				.map { String($0) }
 		)
 	}
@@ -13,6 +13,6 @@ extension String {
 
 extension Set<String> {
 	func toScopesString() -> String {
-		self.joined(separator: String(scopesSeparator))
+		joined(separator: String(scopesSeparator))
 	}
 }

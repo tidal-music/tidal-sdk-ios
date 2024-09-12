@@ -20,8 +20,6 @@ public final class Player {
 	private(set) var playerEngine: PlayerEngine
 	@Atomic
 	var offlineEngine: OfflineEngine?
-	@Atomic
-	var userConfiguration: UserConfiguration?
 
 	// MARK: - Properties
 
@@ -101,6 +99,7 @@ public extension Player {
 	///   - externalPlayers: Array with external players to be used
 	///   - credentialsProvider: Provider of credentials used to authenticate the user.
 	///   - eventSender: Event sender to which events are sent.
+	///   - userClientIdSupplier: Optional function block to supply user cliend id.
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
 	static func bootstrap(
 		listener: PlayerListener,
@@ -108,7 +107,8 @@ public extension Player {
 		featureFlagProvider: FeatureFlagProvider = .standard,
 		externalPlayers: [GenericMediaPlayer.Type] = [],
 		credentialsProvider: CredentialsProvider,
-		eventSender: EventSender
+		eventSender: EventSender,
+		userClientIdSupplier: (() -> Int)? = nil
 	) -> Player? {
 		if shared != nil {
 			return nil
@@ -140,7 +140,8 @@ public extension Player {
 			credentialsProvider: credentialsProvider,
 			dataWriter: DataWriter(),
 			featureFlagProvider: featureFlagProvider,
-			eventSender: eventSender
+			eventSender: eventSender,
+			userClientIdSupplier: userClientIdSupplier
 		)
 		let fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: HttpClient(using: sharedPlayerURLSession),
@@ -211,14 +212,6 @@ public extension Player {
 		)
 
 		return shared
-	}
-
-	func setUpUserConfiguration(_ userConfiguration: UserConfiguration) {
-		queue.dispatch {
-			self.userConfiguration = userConfiguration
-			self.playerEventSender.updateUserConfiguration(userConfiguration: userConfiguration)
-			self.streamingPrivilegesHandler.disconnect()
-		}
 	}
 
 	func shutdown() {
