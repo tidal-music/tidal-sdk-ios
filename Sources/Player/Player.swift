@@ -353,6 +353,46 @@ public extension Player {
 		}
 	}
 
+	/// Offlines a media product at first convenient time, using configured settings.
+	/// Async and thread safe. If returns true, progress can be tracked via OfflineStartedMessage, OfflineProgressMessage,
+	/// OfflineDoneMessage and OfflineFailedMessage.
+	/// - Parameters:
+	///   - mediaProduct: The media product to offline
+	/// - Returns: True if an offline job is created, false otherwise.
+	func offline(mediaProduct: MediaProduct) -> Bool {
+		offlineEngine?.offline(mediaProduct: mediaProduct) ?? false
+	}
+
+	/// Deletes an offlined media product. No difference is made between queued, executing or done offlines. Everything is removed
+	/// for the media product.
+	/// Async and thread safe. If returns true, progress can be tracked via OfflineDeletedMessage.
+	/// - Parameters:
+	///   - mediaProduct: Media product to delete offline for
+	/// - Returns: True if a delete job is created, False otherwise.
+	func deleteOffline(mediaProduct: MediaProduct) -> Bool {
+		offlineEngine?.deleteOffline(mediaProduct: mediaProduct) ?? false
+	}
+
+	/// All offlined media products will be deleted. All queued, executing and done offlines will be deleted.
+	/// Async and thread safe. If returns true, progress can be tracked via AllOfflinesDeletedMessage.
+	/// - Returns: True if a delete all offlines job is created, False otherwise.
+	func deleteAllOfflines() -> Bool {
+		offlineEngine?.deleteAllOfflines() ?? false
+	}
+
+	/// Returns offline state of a media product.
+	/// Thread safe.
+	/// - Parameters:
+	///   - mediaProduct: Media product to gett offline state for.
+	/// - Returns: The state mediaProduct is in.
+	func getOfflineState(mediaProduct: MediaProduct) -> OfflineState {
+		offlineEngine?.getOfflineState(mediaProduct: mediaProduct) ?? .NOT_OFFLINED
+	}
+
+	func setOfflinerDelegate(_ offlinerDelegate: OfflinerDelegate) {
+		offlineEngine?.setOfflinerDelegate(offlinerDelegate)
+	}
+
 	func startDjSession(title: String) {
 		queue.dispatch {
 			let now = PlayerWorld.timeProvider.timestamp()

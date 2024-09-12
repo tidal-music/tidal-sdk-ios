@@ -18,6 +18,8 @@ class Downloader {
 	private let mediaDownloader: MediaDownloader
 	private let networkMonitor: NetworkMonitor
 
+	private var activeTasks: [String: SafeTask] = [:]
+
 	private weak var observer: DownloadObserver?
 
 	init(
@@ -31,8 +33,13 @@ class Downloader {
 		self.networkMonitor = networkMonitor
 	}
 
-	func download(mediaProduct: MediaProduct, sessionType: SessionType, outputDevice: String? = nil) {
-		SafeTask {
+	func download(
+		mediaProduct: MediaProduct,
+		sessionType: SessionType,
+		outputDevice: String? = nil
+	) {
+		let taskID = mediaProduct.productId
+		let task = SafeTask {
 			await start(DownloadTask(
 				mediaProduct: mediaProduct,
 				networkType: self.networkMonitor.getNetworkType(),
@@ -41,6 +48,15 @@ class Downloader {
 				monitor: self
 			))
 		}
+		activeTasks[taskID] = task
+	}
+
+	func cancellAll() {
+		for (_, task) in activeTasks {
+			task.cancel()
+		}
+		activeTasks.removeAll()
+		mediaDownloader.cancelAll()
 	}
 
 	func setObserver(observer: DownloadObserver) {
@@ -56,9 +72,7 @@ private extension Downloader {
 				mediaProduct: downloadTask.mediaProduct,
 				playbackMode: .OFFLINE
 			)
-
 			downloadMedia(for: downloadTask, using: playbackInfo)
-
 		} catch {
 			failed(downloadTask: downloadTask, with: error)
 		}
