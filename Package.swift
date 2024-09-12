@@ -70,6 +70,9 @@ let package = Package(
 		),
 		.target(
 			name: "Common",
+			dependencies: [
+				.Logging
+			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
