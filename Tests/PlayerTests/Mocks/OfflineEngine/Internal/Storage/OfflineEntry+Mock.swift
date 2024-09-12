@@ -34,7 +34,7 @@ extension OfflineEntry {
 	static func mock(
 		from playbackInfo: PlaybackInfo = .mock(),
 		assetURL: URL? = URL(string: "https://www.tidal.com")!,
-		licenseURL: URL? = nil,
+		licenseURL: URL? = URL(string: "https://www.tidal.com/license")!,
 		size: Int = 0
 	) -> OfflineEntry {
 		OfflineEntry(
