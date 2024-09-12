@@ -113,6 +113,7 @@ final class DownloadTask {
 			try fileManager.removeItem(at: localAssetUrl)
 			try fileManager.removeItem(at: localLicenseUrl)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFailed(error: error))
 			print("Failed to remove item: \(error)")
 		}
 	}
@@ -133,6 +134,7 @@ private extension DownloadTask {
 			monitor?.completed(downloadTask: self, storageItem: storageItem)
 			endTimestamp = PlayerWorld.timeProvider.timestamp()
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFinalizeFailed(error: error))
 			failed(with: error)
 		}
 	}

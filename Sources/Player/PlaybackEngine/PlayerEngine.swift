@@ -520,6 +520,7 @@ private extension PlayerEngine {
 		do {
 			try await playerItemLoader.load(playerItem)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.loadPlayerItemFailed(error: error))
 			handle(error, in: playerItem)
 		}
 	}

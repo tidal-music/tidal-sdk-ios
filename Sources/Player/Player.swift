@@ -100,6 +100,7 @@ public extension Player {
 	///   - credentialsProvider: Provider of credentials used to authenticate the user.
 	///   - eventSender: Event sender to which events are sent.
 	///   - userClientIdSupplier: Optional function block to supply user cliend id.
+	///   - shouldAddLogging: Flag whether we should add logging. Default is false, meaning in places where logger is used, no logging is actually performed.
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
 	static func bootstrap(
 		listener: PlayerListener,
@@ -108,13 +109,19 @@ public extension Player {
 		externalPlayers: [GenericMediaPlayer.Type] = [],
 		credentialsProvider: CredentialsProvider,
 		eventSender: EventSender,
-		userClientIdSupplier: (() -> Int)? = nil
+		userClientIdSupplier: (() -> Int)? = nil,
+		shouldAddLogging: Bool = false
 	) -> Player? {
 		if shared != nil {
 			return nil
 		}
 
 		Time.initialise()
+
+		// When we have logging enabled, we create a logger to be used inside Player module and set it in PlayerWorld.
+		if shouldAddLogging {
+			PlayerWorld.logger = TidalLogger(label: "Player", level: .trace)
+		}
 
 		let timeoutPolicy = TimeoutPolicy.standard
 		let sharedPlayerURLSession = URLSession.new(with: timeoutPolicy, name: "Player Player", serviceType: .responsiveAV)

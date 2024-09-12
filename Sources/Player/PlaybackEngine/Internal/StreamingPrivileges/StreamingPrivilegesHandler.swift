@@ -54,7 +54,7 @@ extension StreamingPrivilegesHandler {
 				return
 			}
 		} catch {
-			// TODO: Should we log this error?
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingNotifyNotAuthorized(error: error))
 			print("StreamingPrivilegesHandler failed to get credentials")
 			return
 		}
@@ -100,6 +100,7 @@ private extension StreamingPrivilegesHandler {
 				await receive()
 			}
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.webSocketSendMessageFailed(error: error))
 			self.webSocketTask = nil
 		}
 	}
@@ -118,7 +119,7 @@ private extension StreamingPrivilegesHandler {
 			let authToken = try await credentialsProvider.getCredentials()
 			token = authToken.toBearerToken()
 		} catch {
-			// TODO: Should we log this error?
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingConnectNotAuthorized(error: error))
 			print("StreamingPrivilegesHandler failed to get credentials")
 		}
 
@@ -146,6 +147,7 @@ private extension StreamingPrivilegesHandler {
 			await handle(message)
 			await receive()
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.webSocketReceiveMessageFailed(error: error))
 			await handleError(error: error)
 		}
 	}
@@ -162,6 +164,7 @@ private extension StreamingPrivilegesHandler {
 				try await Task.sleep(seconds: duration)
 				await reconnectAfterFailures()
 			} catch {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.webSocketHandleErrorSleepAndReconnectionFailed(error: error))
 				print(
 					"Sleep for \(duration)s when reconnecting (attempt count \(reconnectAttemptCount)) got cancelled, stopping. Error: \(error)"
 				)
