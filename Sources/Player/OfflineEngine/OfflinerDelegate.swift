@@ -1,10 +1,10 @@
 import Foundation
 
 public protocol OfflinerDelegate: AnyObject {
-	func offlineStarted(for mediaProduct: MediaProduct)
-	func offlineProgress(for mediaProduct: MediaProduct, is downloadPercentage: Double)
-	func offlineDone(for mediaProduct: MediaProduct)
-	func offlineFailed(for mediaProduct: MediaProduct)
-	func offlineDeleted(for mediaProduct: MediaProduct)
-	func allOfflinesDeleted()
+	func offliningStarted(for mediaProduct: MediaProduct)
+	func offliningProgress(for mediaProduct: MediaProduct, is downloadPercentage: Double)
+	func offliningCompleted(for mediaProduct: MediaProduct)
+	func offliningFailed(for mediaProduct: MediaProduct)
+	func offlinedDeleted(for mediaProduct: MediaProduct)
+	func allOfflinedMediaProductsDeleted()
 }

@@ -18,14 +18,14 @@ public final class OfflineEngine {
 
 	public func offline(mediaProduct: MediaProduct) -> Bool {
 		guard let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId) else {
-			offlinerDelegate?.offlineStarted(for: mediaProduct)
+			offlinerDelegate?.offliningStarted(for: mediaProduct)
 			downloader.download(mediaProduct: mediaProduct, sessionType: .DOWNLOAD)
 			return true
 		}
 
 		guard offlineEntry.state == .OFFLINED_AND_VALID else {
 			delete(offlineEntry: offlineEntry)
-			offlinerDelegate?.offlineStarted(for: mediaProduct)
+			offlinerDelegate?.offliningStarted(for: mediaProduct)
 			downloader.download(mediaProduct: mediaProduct, sessionType: .DOWNLOAD)
 			return true
 		}
@@ -45,7 +45,7 @@ public final class OfflineEngine {
 	public func deleteAllOfflinedMediaProducts() -> Bool {
 		downloader.cancellAll()
 		try? offlineStorage.clear()
-		offlinerDelegate?.allOfflinesDeleted()
+		offlinerDelegate?.allOfflinedMediaProductsDeleted()
 		return true
 	}
 
@@ -69,25 +69,25 @@ extension OfflineEngine: DownloadObserver {
 	}
 
 	func downloadStarted(for mediaProduct: MediaProduct) {
-		offlinerDelegate?.offlineStarted(for: mediaProduct)
+		offlinerDelegate?.offliningStarted(for: mediaProduct)
 	}
 
 	func downloadProgress(for mediaProduct: MediaProduct, is percentage: Double) {
-		offlinerDelegate?.offlineProgress(for: mediaProduct, is: percentage)
+		offlinerDelegate?.offliningProgress(for: mediaProduct, is: percentage)
 	}
 
 	func downloadCompleted(for mediaProduct: MediaProduct, offlineEntry: OfflineEntry) {
 		do {
 			try offlineStorage.save(offlineEntry)
-			offlinerDelegate?.offlineDone(for: mediaProduct)
+			offlinerDelegate?.offliningCompleted(for: mediaProduct)
 		} catch {
 			print("Failed to save item: \(error)")
-			offlinerDelegate?.offlineFailed(for: mediaProduct)
+			offlinerDelegate?.offliningFailed(for: mediaProduct)
 		}
 	}
 
 	func downloadFailed(for mediaProduct: MediaProduct, with error: Error) {
-		offlinerDelegate?.offlineFailed(for: mediaProduct)
+		offlinerDelegate?.offliningFailed(for: mediaProduct)
 	}
 }
 
@@ -109,6 +109,7 @@ private extension OfflineEngine {
 			try fileManager.removeItem(at: mediaUrl)
 			try fileManager.removeItem(at: licenseUrl)
 			try offlineStorage.delete(key: mediaProduct.productId)
+			offlinerDelegate?.offlinedDeleted(for: mediaProduct)
 		} catch {
 			print("Failed to remove item: \(error)")
 		}
