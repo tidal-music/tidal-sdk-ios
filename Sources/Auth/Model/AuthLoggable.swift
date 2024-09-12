@@ -3,7 +3,7 @@ import Logging
 
 // MARK: - AuthLoggable
 
-enum AuthLoggable {
+enum AuthLoggable: TidalLoggable {
 	// swiftlint:disable identifier_name
 	case initializeDeviceLoginNetworkError(error: Error)
 	case finalizeLoginNetworkError(error: Error)
@@ -62,20 +62,20 @@ extension AuthLoggable {
 
 		switch self {
 		case let .initializeDeviceLoginNetworkError(error),
-		     let .finalizeLoginNetworkError(error),
-		     let .finalizeDeviceLoginNetworkError(error),
-		     let .getCredentialsUpgradeTokenNetworkError(error):
-			metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
+			 let .finalizeLoginNetworkError(error),
+			 let .finalizeDeviceLoginNetworkError(error),
+			 let .getCredentialsUpgradeTokenNetworkError(error):
+			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
 		case let .getCredentialsRefreshTokenNetworkError(error, previousSubstatus),
-		     let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
-			metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
-			metadata[Self.metadataPreviousSubstatusKey] = .string(previousSubstatus ?? "nil")
+			 let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
+			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
+			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 		case let .authLogout(reason, error, previousSubstatus):
-			metadata[Self.metadataReasonKey] = .string(reason)
-			if let error {
-				metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
+			metadata[Self.metadataReasonKey] = "\(reason)"
+			if let error = error {
+				metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
 			}
-			metadata[Self.metadataPreviousSubstatusKey] = .string(previousSubstatus ?? "nil")
+			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 			return metadata
 		default:
 			return [:]
@@ -92,14 +92,8 @@ extension AuthLoggable {
 			.error
 		}
 	}
-
-	func log() {
-		guard Self.enableLogging else {
-			return
-		}
-		var logger = Logger(label: "auth_logger")
-		// IIUC, this is a minimum level for the logger
-		logger.logLevel = .trace
-		logger.log(level: logLevel, loggingMessage, metadata: loggingMetadata)
+	
+	var source: String {
+		"Auth"
 	}
 }

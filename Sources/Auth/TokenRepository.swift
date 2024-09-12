@@ -11,19 +11,22 @@ struct TokenRepository {
 	private let tokenService: TokenService
 	private let defaultBackoffPolicy: RetryPolicy
 	private let upgradeBackoffPolicy: RetryPolicy
+	private let logger: TidalLogger?
 
 	init(
 		authConfig: AuthConfig,
 		tokensStore: TokensStore,
 		tokenService: TokenService,
 		defaultBackoffPolicy: RetryPolicy,
-		upgradeBackoffPolicy: RetryPolicy
+		upgradeBackoffPolicy: RetryPolicy,
+		logger: TidalLogger?
 	) {
 		self.authConfig = authConfig
 		self.tokensStore = tokensStore
 		self.tokenService = tokenService
 		self.defaultBackoffPolicy = defaultBackoffPolicy
 		self.upgradeBackoffPolicy = upgradeBackoffPolicy
+		self.logger = logger
 	}
 
 	private var needsCredentialsUpgrade: Bool {
@@ -80,7 +83,8 @@ struct TokenRepository {
 			) }
 		} else if let clientSecret = authConfig.clientSecret {
 			// if nothing is stored, we will try and refresh using a client secret
-			AuthLoggable.getCredentialsRefreshTokenIsNotAvailable.log()
+			self.logger?.log(loggable: AuthLoggable.getCredentialsRefreshTokenIsNotAvailable)
+
 			refreshCredentialsBlock = { await getClientAccessToken(clientSecret: clientSecret) }
 			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(
 				error: $0,
@@ -99,11 +103,13 @@ struct TokenRepository {
 
 			switch (authResult, networkErrorLoggableBlock) {
 			case let (.failure(error), _) where shouldLogoutWithLowerLevelTokenAfterUpdate(error: error):
-				logoutAfterErrorLoggableBlock?(error).log()
+				if let loggable = logoutAfterErrorLoggableBlock?(error) {
+					self.logger?.log(loggable: loggable)
+				}
 				return .success(.init(authConfig: authConfig))
 
 			case let (.failure(error), .some(networkErrorLoggableBlock)):
-				networkErrorLoggableBlock(error).log()
+				self.logger?.log(loggable: networkErrorLoggableBlock(error))
 
 			default: break
 			}
@@ -111,7 +117,7 @@ struct TokenRepository {
 			return authResult
 		}
 
-		AuthLoggable.authLogout(reason: "No refresh token or client secret available", previousSubstatus: apiErrorSubStatus).log()
+		self.logger?.log(loggable: AuthLoggable.authLogout(reason: "No refresh token or client secret available", previousSubstatus: apiErrorSubStatus))
 		return logout()
 	}
 
@@ -150,10 +156,10 @@ struct TokenRepository {
 		switch result {
 		case let .success(tokens):
 			if tokens.credentials.token == nil {
-				AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse.log()
+				self.logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse)
 			}
 		case let .failure(error):
-			AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error).log()
+			self.logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error))
 		}
 
 		return result
