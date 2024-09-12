@@ -6,7 +6,7 @@ final class PlayerLoaderMock: PlayerLoader {
 	/// Change it if you would like to make related assertions
 	var player = PlayerMock()
 
-	private(set) var loadPlayableStorageItems = [PlayableOfflinedProduct]()
+	private(set) var loadPlayableStorageItems = [PlayableOfflinedMediaProduct]()
 	private(set) var loadStoredMediaProducts = [StoredMediaProduct]()
 	private(set) var loadPlaybackInfos = [PlaybackInfo]()
 	private(set) var unloadCallCount = 0
@@ -30,7 +30,7 @@ final class PlayerLoaderMock: PlayerLoader {
 		)
 	}
 
-	func load(_ playbableStorageItem: PlayableOfflinedProduct) async -> Asset {
+	func load(_ playbableStorageItem: PlayableOfflinedMediaProduct) async -> Asset {
 		loadPlayableStorageItems.append(playbableStorageItem)
 		return player.load()
 	}

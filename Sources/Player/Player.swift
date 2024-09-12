@@ -388,7 +388,7 @@ public extension Player {
 	/// Async and thread safe. If returns true, progress can be tracked via AllOfflinesDeletedMessage.
 	/// - Returns: True if a delete all offlines job is created, False otherwise.
 	func deleteAllOfflines() -> Bool {
-		offlineEngine?.deleteAllOfflines() ?? false
+		offlineEngine?.deleteAllOfflinedMediaProducts() ?? false
 	}
 
 	/// Returns offline state of a media product.

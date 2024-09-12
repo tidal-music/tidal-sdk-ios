@@ -40,8 +40,10 @@ private extension PlayerItemLoader {
 			return try await (metadata(of: storedMediaProduct), playerLoader.load(storedMediaProduct))
 		}
 
-		if let offlinedProduct = PlayableOfflinedProduct(from: try? offlineStorage.get(key: mediaProduct.productId)) {
-			return try await (metadata(of: offlinedProduct), playerLoader.load(offlinedProduct))
+		if let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId),
+		   let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: offlineEntry)
+		{
+			return try await (metadata(of: offlinedMediaProduct), playerLoader.load(offlinedMediaProduct))
 		}
 
 		let playbackInfo = try await playbackInfoFetcher.getPlaybackInfo(
@@ -55,17 +57,17 @@ private extension PlayerItemLoader {
 }
 
 private extension PlayerItemLoader {
-	func metadata(of playableStorageItem: PlayableOfflinedProduct) -> Metadata {
+	func metadata(of playableStorageMediaProduct: PlayableOfflinedMediaProduct) -> Metadata {
 		Metadata(
-			productId: playableStorageItem.productId,
+			productId: playableStorageMediaProduct.productId,
 			streamType: .ON_DEMAND,
-			assetPresentation: playableStorageItem.assetPresentation,
-			audioMode: playableStorageItem.audioMode,
-			audioQuality: playableStorageItem.audioQuality,
-			audioCodec: playableStorageItem.audioCodec,
-			audioSampleRate: playableStorageItem.audioSampleRate,
-			audioBitDepth: playableStorageItem.audioBitDepth,
-			videoQuality: playableStorageItem.videoQuality
+			assetPresentation: playableStorageMediaProduct.assetPresentation,
+			audioMode: playableStorageMediaProduct.audioMode,
+			audioQuality: playableStorageMediaProduct.audioQuality,
+			audioCodec: playableStorageMediaProduct.audioCodec,
+			audioSampleRate: playableStorageMediaProduct.audioSampleRate,
+			audioBitDepth: playableStorageMediaProduct.audioBitDepth,
+			videoQuality: playableStorageMediaProduct.videoQuality
 		)
 	}
 

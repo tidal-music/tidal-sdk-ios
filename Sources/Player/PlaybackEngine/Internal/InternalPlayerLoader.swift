@@ -58,7 +58,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		}
 	}
 
-	func load(_ offlinedProduct: PlayableOfflinedProduct) async throws -> Asset {
+	func load(_ offlinedProduct: PlayableOfflinedMediaProduct) async throws -> Asset {
 		let loudnessNormalizer = LoudnessNormalizer.create(
 			from: offlinedProduct,
 			preAmp: configuration.currentPreAmpValue

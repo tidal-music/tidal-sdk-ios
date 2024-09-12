@@ -23,9 +23,10 @@ public final class OfflineEngine {
 			return true
 		}
 
-		if offlineEntry.state != .OFFLINED_AND_VALID {
+		guard offlineEntry.state == .OFFLINED_AND_VALID else {
 			delete(offlineEntry: offlineEntry)
-			downloader.download(mediaProduct: mediaProduct, sessionType: .PLAYBACK)
+			offlinerDelegate?.offlineStarted(for: mediaProduct)
+			downloader.download(mediaProduct: mediaProduct, sessionType: .DOWNLOAD)
 			return true
 		}
 
@@ -41,7 +42,7 @@ public final class OfflineEngine {
 		return true
 	}
 
-	public func deleteAllOfflines() -> Bool {
+	public func deleteAllOfflinedMediaProducts() -> Bool {
 		downloader.cancellAll()
 		try? offlineStorage.clear()
 		offlinerDelegate?.allOfflinesDeleted()
@@ -96,7 +97,7 @@ private extension OfflineEngine {
 			productType: offlineEntry.productType,
 			productId: offlineEntry.productId
 		)
-		guard 
+		guard
 			let mediaUrl = offlineEntry.mediaURL,
 			let licenseUrl = offlineEntry.licenseURL
 		else {

@@ -80,7 +80,7 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		// GIVEN
 		let trackPlaybackInfo = TrackPlaybackInfo.mock(albumReplayGain: 4, albumPeakAmplitude: 1)
 		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(), trackPlaybackInfo: trackPlaybackInfo)
-		let offlinedProduct = PlayableOfflinedProduct(from: OfflineEntry.mock(
+		let offlinedProduct = PlayableOfflinedMediaProduct(from: OfflineEntry.mock(
 			from: playbackInfo,
 			assetURL: URL(string: "www.tidal.com")!,
 			licenseURL: nil

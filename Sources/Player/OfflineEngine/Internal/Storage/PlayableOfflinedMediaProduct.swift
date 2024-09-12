@@ -1,6 +1,6 @@
 import Foundation
 
-struct PlayableOfflinedProduct: Equatable {
+struct PlayableOfflinedMediaProduct: Equatable {
 	let productType: ProductType
 	let productId: String
 	let assetPresentation: AssetPresentation
@@ -17,9 +17,8 @@ struct PlayableOfflinedProduct: Equatable {
 	let trackReplayGain: Float?
 	let trackPeakAmplitude: Float?
 
-	init?(from offlineEntry: OfflineEntry?) {
+	init?(from offlineEntry: OfflineEntry) {
 		guard
-			let offlineEntry,
 			offlineEntry.state == .OFFLINED_AND_VALID,
 			let URL = offlineEntry.mediaURL
 		else {
