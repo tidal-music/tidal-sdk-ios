@@ -114,7 +114,7 @@ final class LoginRepository {
 			return response
 		}
 		
-		if let case .failure(error) = result {
+		if case let .failure(error) = result {
 			self.logger?.log(loggable: AuthLoggable.initializeDeviceLoginNetworkError(error: error))
 		}
 

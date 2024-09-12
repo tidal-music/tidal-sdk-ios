@@ -3,7 +3,7 @@ import Logging
 
 // MARK: - AuthLoggable
 
-enum AuthLoggable {
+enum AuthLoggable: TidalLoggable {
 	// swiftlint:disable identifier_name
 	case initializeDeviceLoginNetworkError(error: Error)
 	case finalizeLoginNetworkError(error: Error)
