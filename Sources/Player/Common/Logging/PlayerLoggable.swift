@@ -93,8 +93,6 @@ enum PlayerLoggable: TidalLoggable {
 
 	// MARK: PlayerEngine
 	case loadPlayerItemFailed(error: Error)
-
-	case testing
 }
 
 // MARK: - Logging
@@ -229,9 +227,6 @@ extension PlayerLoggable {
 		// PlayerEngine
 		case .loadPlayerItemFailed:
 			"PlayerEngine-loadPlayerItemFailed"
-
-		case .testing:
-			"Player-testingLog"
 		}
 	}
 
@@ -283,9 +278,6 @@ extension PlayerLoggable {
 				.sendEventsNotAuthorized,
 				.getAuthBearerTokenToBearerTokenFailed:
 			break
-		case .testing:
-			metadata["testKey"] = "testValue"
-			metadata["testKey2"] = ["asd", "fds", "dsa"]
 		}
 
 		return metadata
@@ -336,8 +328,6 @@ extension PlayerLoggable {
 				.loadUCFailed,
 				.loadPlayerItemFailed:
 			return .error
-		case .testing:
-			return .info
 		}
 	}
 
