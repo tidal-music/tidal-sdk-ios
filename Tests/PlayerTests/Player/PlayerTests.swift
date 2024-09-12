@@ -1,5 +1,6 @@
 import Auth
 @testable import Player
+import GRDB
 import XCTest
 
 // MARK: - PlayerTests
@@ -7,8 +8,9 @@ import XCTest
 final class PlayerTests: XCTestCase {
 	private var player: Player!
 	private var playerEventSender: PlayerEventSenderMock!
-
-	override func setUp() {
+	private var dbQueue: DatabaseQueue!
+	
+	override func setUpWithError() throws {
 		PlayerWorld = PlayerWorldClient.mock(developmentFeatureFlagProvider: DevelopmentFeatureFlagProvider.mock)
 
 		let sessionConfiguration = URLSessionConfiguration.default
@@ -31,7 +33,8 @@ final class PlayerTests: XCTestCase {
 			dataWriter: dataWriter
 		)
 
-		let storage = Storage()
+		dbQueue = try DatabaseQueue()
+		let storage = GRDBOfflineStorage(dbQueue: dbQueue)
 		let fairplayLicenseFetcher = FairPlayLicenseFetcher.mock()
 		let networkMonitor = NetworkMonitorMock()
 
@@ -53,7 +56,7 @@ final class PlayerTests: XCTestCase {
 			queue: OperationQueueMock(),
 			urlSession: urlSession,
 			configuration: configuration,
-			storage: storage,
+			offlineStorage: storage,
 			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,

@@ -110,4 +110,8 @@ struct OfflineEntry: Codable {
 		self.mediaURL = mediaURL
 		self.licenseURL = licenseURL
 	}
+
+	func isPlayable() -> Bool {
+		state == .OFFLINED_AND_VALID
+	}
 }
