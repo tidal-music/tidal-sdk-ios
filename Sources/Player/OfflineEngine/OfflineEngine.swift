@@ -44,6 +44,7 @@ public final class OfflineEngine {
 
 	public func deleteAllOfflines() -> Bool {
 		storage.clear()
+		downloader.cancellAll()
 		offlinerDelegate?.allOfflinesDeleted()
 		return true
 	}
