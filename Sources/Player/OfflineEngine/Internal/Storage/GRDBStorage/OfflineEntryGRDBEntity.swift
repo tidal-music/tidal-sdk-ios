@@ -43,12 +43,12 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 			trackReplayGain: trackReplayGain,
 			trackPeakAmplitude: trackPeakAmplitude,
 			size: size,
-			mediaUrl: mediaUrl,
-			licenseUrl: licenseUrl
+			mediaURL: mediaURL,
+			licenseURL: licenseURL
 		)
 	}
 
-	private var mediaUrl: URL? {
+	private var mediaURL: URL? {
 		var isStale = false
 		guard
 			let mediaBookmark,
@@ -60,7 +60,7 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 		return url
 	}
 
-	private var licenseUrl: URL? {
+	private var licenseURL: URL? {
 		var isStale = false
 		guard
 			let licenseBookmark,
@@ -100,7 +100,7 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 		trackReplayGain = entry.trackReplayGain
 		trackPeakAmplitude = entry.trackPeakAmplitude
 		size = entry.size
-		mediaBookmark = try? entry.mediaUrl?.bookmarkData()
-		licenseBookmark = try? entry.licenseUrl?.bookmarkData()
+		mediaBookmark = try? entry.mediaURL?.bookmarkData()
+		licenseBookmark = try? entry.licenseURL?.bookmarkData()
 	}
 }

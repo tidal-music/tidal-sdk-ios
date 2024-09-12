@@ -19,21 +19,21 @@ struct OfflineEntry: Codable {
 	let trackReplayGain: Float?
 	let trackPeakAmplitude: Float?
 	let size: Int
-	var mediaUrl: URL?
-	var licenseUrl: URL?
+	var mediaURL: URL?
+	var licenseURL: URL?
 
 	var state: OfflineState {
-		guard let mediaUrl, licenseUrl != nil else {
-			return .OFFLINED_BUT_NOT_VALID
+		guard let mediaURL, licenseURL != nil else {
+			return .OFFLINED_BUT_NO_LICENSE
 		}
 
 		let now = PlayerWorld.timeProvider.timestamp()
 		if let expiry, now > expiry * 1000 {
-			return .OFFLINED_BUT_NOT_VALID
+			return .OFFLINED_BUT_EXPIRED
 		}
 
 		if mediaType == MediaTypes.HLS {
-			let asset = AVURLAsset(url: mediaUrl)
+			let asset = AVURLAsset(url: mediaURL)
 			guard let cache = asset.assetCache, cache.isPlayableOffline else {
 				return .OFFLINED_BUT_NOT_VALID
 			}
@@ -60,8 +60,8 @@ struct OfflineEntry: Codable {
 		trackReplayGain: Float?,
 		trackPeakAmplitude: Float?,
 		size: Int,
-		mediaUrl: URL?,
-		licenseUrl: URL?
+		mediaURL: URL?,
+		licenseURL: URL?
 	) {
 		self.productId = productId
 		self.productType = productType
@@ -80,14 +80,14 @@ struct OfflineEntry: Codable {
 		self.trackReplayGain = trackReplayGain
 		self.trackPeakAmplitude = trackPeakAmplitude
 		self.size = size
-		self.mediaUrl = mediaUrl
-		self.licenseUrl = licenseUrl
+		self.mediaURL = mediaURL
+		self.licenseURL = licenseURL
 	}
 
 	init(
 		from playbackInfo: PlaybackInfo,
-		with mediaUrl: URL,
-		and licenseUrl: URL?,
+		with mediaURL: URL,
+		and licenseURL: URL?,
 		size: Int
 	) throws {
 		productType = playbackInfo.productType
@@ -107,7 +107,7 @@ struct OfflineEntry: Codable {
 		trackReplayGain = playbackInfo.trackReplayGain
 		trackPeakAmplitude = playbackInfo.trackPeakAmplitude
 		self.size = size
-		self.mediaUrl = mediaUrl
-		self.licenseUrl = licenseUrl
+		self.mediaURL = mediaURL
+		self.licenseURL = licenseURL
 	}
 }

@@ -26,18 +26,18 @@ extension GRDBOfflineStorage: OfflineStorage {
 
 	// MARK: - Get OfflineEntry by MediaProduct
 
-	func get(mediaProduct: MediaProduct) throws -> OfflineEntry? {
+	func get(key: String) throws -> OfflineEntry? {
 		let entity = try dbQueue.read { db in
-			try OfflineEntryGRDBEntity.filter(OfflineEntryGRDBEntity.Columns.productId == mediaProduct.productId).fetchOne(db)
+			try OfflineEntryGRDBEntity.filter(OfflineEntryGRDBEntity.Columns.productId == key).fetchOne(db)
 		}
 		return entity?.offlineEntry
 	}
 
 	// MARK: - Delete OfflineEntry by MediaProduct
 
-	func delete(mediaProduct: MediaProduct) throws {
+	func delete(key: String) throws {
 		_ = try dbQueue.write { db in
-			try OfflineEntryGRDBEntity.filter(OfflineEntryGRDBEntity.Columns.productId == mediaProduct.productId).deleteAll(db)
+			try OfflineEntryGRDBEntity.filter(OfflineEntryGRDBEntity.Columns.productId == key).deleteAll(db)
 		}
 	}
 

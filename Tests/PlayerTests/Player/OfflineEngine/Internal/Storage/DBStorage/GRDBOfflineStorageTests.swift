@@ -9,7 +9,7 @@ private enum Constants {
 	static let offlineEntry1 = OfflineEntry.mock(
 		productId: "1",
 		size: 500,
-		url: URL(
+		URL: URL(
 			string: "www.example.com/track1"
 		)!
 	)
@@ -17,7 +17,7 @@ private enum Constants {
 	static let offlineEntry2 = OfflineEntry.mock(
 		productId: "2",
 		size: 300,
-		url: URL(
+		URL: URL(
 			string: "www.example.com/track2"
 		)!
 	)
@@ -25,7 +25,7 @@ private enum Constants {
 
 // MARK: - GRDBOfflineStorageTests
 
-class GRDBOfflineStorageTests: XCTestCase {
+final class GRDBOfflineStorageTests: XCTestCase {
 	var dbQueue: DatabaseQueue!
 	var offlineStorage: GRDBOfflineStorage!
 
@@ -42,31 +42,33 @@ class GRDBOfflineStorageTests: XCTestCase {
 	}
 
 	func testInsertOfflineEntry() throws {
+		let offlineEntry = Constants.offlineEntry1
 		try offlineStorage.save(Constants.offlineEntry1)
 
-		let fetchedEntry = try XCTUnwrap(offlineStorage.get(mediaProduct: MediaProduct.mock(productId: "1")))
-		XCTAssertEqual(fetchedEntry.productId, "1")
+		let fetchedEntry = try XCTUnwrap(offlineStorage.get(key: offlineEntry.productId))
+		XCTAssertEqual(fetchedEntry.productId, offlineEntry.productId)
 	}
 
 	func testUpdateOfflineEntry() throws {
-		try offlineStorage.save(Constants.offlineEntry1)
+		var offlineEntry = Constants.offlineEntry1
+		try offlineStorage.save(offlineEntry)
 
 		// Update the entry
-		let expectedLicenseUrl = URL(string: "www.example.com/license/track1")
-		var updatedEntry = Constants.offlineEntry1
-		updatedEntry.licenseUrl = expectedLicenseUrl
-		try offlineStorage.update(updatedEntry)
+		let expectedLicenseURL = URL(string: "www.example.com/license/track1")
+		offlineEntry.licenseURL = expectedLicenseURL
+		try offlineStorage.update(offlineEntry)
 
-		let fetchedEntry = try XCTUnwrap(offlineStorage.get(mediaProduct: MediaProduct.mock(productId: "1")))
-		XCTAssertEqual(fetchedEntry.licenseUrl, expectedLicenseUrl)
+		let fetchedEntry = try XCTUnwrap(offlineStorage.get(key: offlineEntry.productId))
+		XCTAssertEqual(fetchedEntry.licenseURL, expectedLicenseURL)
 	}
 
 	func testDeleteOfflineEntry() throws {
-		try offlineStorage.save(Constants.offlineEntry1)
+		let offlineEntry = Constants.offlineEntry1
+		try offlineStorage.save(offlineEntry)
 
-		try offlineStorage.delete(mediaProduct: MediaProduct.mock(productId: "1"))
+		try offlineStorage.delete(key: offlineEntry.productId)
 
-		let fetchedEntry = try offlineStorage.get(mediaProduct: MediaProduct.mock(productId: "1"))
+		let fetchedEntry = try offlineStorage.get(key: offlineEntry.productId)
 		XCTAssertNil(fetchedEntry)
 	}
 

@@ -6,7 +6,7 @@ extension OfflineEntry {
 		productId: String,
 		productType: ProductType = ProductType.TRACK,
 		size: Int = 0,
-		url: URL
+		URL: URL
 	) -> OfflineEntry {
 		OfflineEntry(
 			productId: productId,
@@ -26,8 +26,8 @@ extension OfflineEntry {
 			trackReplayGain: nil,
 			trackPeakAmplitude: nil,
 			size: size,
-			mediaUrl: url,
-			licenseUrl: nil
+			mediaURL: URL,
+			licenseURL: nil
 		)
 	}
 }
