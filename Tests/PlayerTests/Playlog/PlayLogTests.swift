@@ -574,7 +574,7 @@ extension PlayLogTests {
 		// Wait for the state to be changed to NOT_PLAYING
 		wait(for: player, toHave: .paused)
 
-		waitAsyncWork(timeout: 1)
+		waitAsyncWork(timeout: 0.5)
 
 		// Play again
 		playerEngine.play(timestamp: timestamp)
