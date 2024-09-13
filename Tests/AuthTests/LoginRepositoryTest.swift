@@ -55,7 +55,7 @@ final class LoginRepositoryTest: XCTestCase {
 				scopes: authConfig.scopes
 			),
 			loginService: loginService,
-			exponentialBackoffPolicy: retryPolicy, 
+			exponentialBackoffPolicy: retryPolicy,
 			logger: nil
 		)
 	}

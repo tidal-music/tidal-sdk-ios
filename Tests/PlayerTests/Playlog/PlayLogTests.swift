@@ -38,7 +38,7 @@ final class PlayLogTests: XCTestCase {
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher!
 	private var djProducer: DJProducer!
 	private var playerLoader: InternalPlayerLoader!
-	private var storage: Storage!
+	private var storage: OfflineStorage!
 	private var networkMonitor: NetworkMonitorMock!
 	private var configuration: Configuration!
 	private var notificationsHandler: NotificationsHandler!
@@ -122,7 +122,7 @@ final class PlayLogTests: XCTestCase {
 			featureFlagProvider: featureFlagProvider
 		)
 
-		storage = Storage()
+		storage = OfflineStorageMock()
 		fairplayLicenseFetcher = FairPlayLicenseFetcher.mock(
 			httpClient: HttpClient(using: urlSession),
 			credentialsProvider: credentialsProvider,

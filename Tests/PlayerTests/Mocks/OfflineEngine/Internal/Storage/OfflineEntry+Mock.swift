@@ -30,4 +30,33 @@ extension OfflineEntry {
 			licenseURL: nil
 		)
 	}
+
+	static func mock(
+		from playbackInfo: PlaybackInfo = .mock(),
+		assetURL: URL? = URL(string: "https://www.tidal.com")!,
+		licenseURL: URL? = URL(string: "https://www.tidal.com/license")!,
+		size: Int = 0
+	) -> OfflineEntry {
+		OfflineEntry(
+			productId: playbackInfo.productId,
+			productType: playbackInfo.productType,
+			assetPresentation: playbackInfo.assetPresentation,
+			audioMode: playbackInfo.audioMode,
+			audioQuality: playbackInfo.audioQuality,
+			audioCodec: playbackInfo.audioCodec,
+			audioSampleRate: playbackInfo.audioSampleRate,
+			audioBitDepth: playbackInfo.audioBitDepth,
+			videoQuality: playbackInfo.videoQuality,
+			revalidateAt: playbackInfo.offlineRevalidateAt,
+			expiry: playbackInfo.offlineValidUntil,
+			mediaType: playbackInfo.mediaType,
+			albumReplayGain: playbackInfo.albumReplayGain,
+			albumPeakAmplitude: playbackInfo.albumPeakAmplitude,
+			trackReplayGain: playbackInfo.trackReplayGain,
+			trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
+			size: size,
+			mediaURL: assetURL,
+			licenseURL: licenseURL
+		)
+	}
 }

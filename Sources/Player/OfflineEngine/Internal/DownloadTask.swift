@@ -5,9 +5,10 @@ import Foundation
 
 protocol DownloadTaskMonitor: AnyObject {
 	func emit(event: any StreamingMetricsEvent)
-	func failed(downloadTask: DownloadTask, with error: Error)
+	func started(downloadTask: DownloadTask)
 	func progress(downloadTask: DownloadTask, progress: Double)
-	func completed(downloadTask: DownloadTask, storageItem: StorageItem)
+	func completed(downloadTask: DownloadTask, offlineEntry: OfflineEntry)
+	func failed(downloadTask: DownloadTask, with error: Error)
 }
 
 // MARK: - DownloadTask
@@ -130,8 +131,9 @@ private extension DownloadTask {
 		}
 
 		do {
-			let storageItem = try StorageItem(from: playbackInfo, with: localAssetUrl, and: localLicenseUrl)
-			monitor?.completed(downloadTask: self, storageItem: storageItem)
+			// TODO: Alberto - Calculate real size of download content
+			let offlineEntry = try OfflineEntry(from: playbackInfo, with: localAssetUrl, and: localLicenseUrl, size: 0)
+			monitor?.completed(downloadTask: self, offlineEntry: offlineEntry)
 			endTimestamp = PlayerWorld.timeProvider.timestamp()
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFinalizeFailed(error: error))
