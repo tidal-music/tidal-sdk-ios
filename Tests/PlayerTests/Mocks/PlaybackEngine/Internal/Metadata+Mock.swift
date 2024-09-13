@@ -10,7 +10,8 @@ extension Metadata {
 		audioCodec: AudioCodec? = nil,
 		audioSampleRate: Int? = 44100,
 		audioBitDepth: Int? = 15,
-		videoQuality: VideoQuality? = nil
+		videoQuality: VideoQuality? = nil,
+		playbackSource: PlaybackSource = .INTERNET
 	) -> Self {
 		Metadata(
 			productId: productId,
@@ -21,7 +22,8 @@ extension Metadata {
 			audioCodec: audioCodec,
 			audioSampleRate: audioSampleRate,
 			audioBitDepth: audioBitDepth,
-			videoQuality: videoQuality
+			videoQuality: videoQuality,
+			playbackSource: playbackSource
 		)
 	}
 
