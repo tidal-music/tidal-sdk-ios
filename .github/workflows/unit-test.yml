@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Run tests
       run: |-
-        swift test --skip PlayerTests | xcbeautify --renderer github-actions
+        set -o pipefail && swift test --skip PlayerTests | xcbeautify --renderer github-actions
 
   run-xcodebuild-tests:
     name: Run xcodebuild Unit Tests
