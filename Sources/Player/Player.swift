@@ -2,6 +2,7 @@ import Auth
 import AVFoundation
 import EventProducer
 import Foundation
+import GRDB
 
 // swiftlint:disable file_length
 // swiftlint:disable:next identifier_name
@@ -20,8 +21,6 @@ public final class Player {
 	private(set) var playerEngine: PlayerEngine
 	@Atomic
 	var offlineEngine: OfflineEngine?
-	@Atomic
-	var userConfiguration: UserConfiguration?
 
 	// MARK: - Properties
 
@@ -42,7 +41,7 @@ public final class Player {
 		}
 	}
 
-	private var storage: Storage
+	private var offlineStorage: OfflineStorage
 	private var djProducer: DJProducer
 	private var playerEventSender: PlayerEventSender
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher
@@ -59,7 +58,7 @@ public final class Player {
 		queue: OperationQueue,
 		urlSession: URLSession,
 		configuration: Configuration,
-		storage: Storage,
+		offlineStorage: OfflineStorage,
 		djProducer: DJProducer,
 		playerEventSender: PlayerEventSender,
 		fairplayLicenseFetcher: FairPlayLicenseFetcher,
@@ -75,7 +74,7 @@ public final class Player {
 		self.queue = queue
 		playerURLSession = urlSession
 		self.configuration = configuration
-		self.storage = storage
+		self.offlineStorage = offlineStorage
 		self.djProducer = djProducer
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
 		self.streamingPrivilegesHandler = streamingPrivilegesHandler
@@ -101,6 +100,7 @@ public extension Player {
 	///   - externalPlayers: Array with external players to be used
 	///   - credentialsProvider: Provider of credentials used to authenticate the user.
 	///   - eventSender: Event sender to which events are sent.
+	///   - userClientIdSupplier: Optional function block to supply user cliend id.
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
 	static func bootstrap(
 		listener: PlayerListener,
@@ -108,7 +108,8 @@ public extension Player {
 		featureFlagProvider: FeatureFlagProvider = .standard,
 		externalPlayers: [GenericMediaPlayer.Type] = [],
 		credentialsProvider: CredentialsProvider,
-		eventSender: EventSender
+		eventSender: EventSender,
+		userClientIdSupplier: (() -> Int)? = nil
 	) -> Player? {
 		if shared != nil {
 			return nil
@@ -119,7 +120,13 @@ public extension Player {
 		let timeoutPolicy = TimeoutPolicy.standard
 		let sharedPlayerURLSession = URLSession.new(with: timeoutPolicy, name: "Player Player", serviceType: .responsiveAV)
 		let configuration = Configuration()
-		let storage = Storage()
+
+		let databaseURL = PlayerWorldClient.live.fileManagerClient.documentsDirectory().appendingPathComponent("dbPlayer.sqlite")
+		guard let dbQueue = try? DatabaseQueue(path: databaseURL.path) else {
+			return nil
+		}
+
+		let offlineStorage = GRDBOfflineStorage(dbQueue: dbQueue)
 
 		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
 		let djProducerSession = URLSession.new(with: djProducerTimeoutPolicy, name: "Player DJ Session")
@@ -140,7 +147,8 @@ public extension Player {
 			credentialsProvider: credentialsProvider,
 			dataWriter: DataWriter(),
 			featureFlagProvider: featureFlagProvider,
-			eventSender: eventSender
+			eventSender: eventSender,
+			userClientIdSupplier: userClientIdSupplier
 		)
 		let fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: HttpClient(using: sharedPlayerURLSession),
@@ -161,7 +169,7 @@ public extension Player {
 		let playerEngine = Player.newPlayerEngine(
 			sharedPlayerURLSession,
 			configuration,
-			storage,
+			offlineStorage,
 			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
@@ -189,14 +197,18 @@ public extension Player {
 				networkMonitor: networkMonitor
 			)
 
-			offlineEngine = OfflineEngine(downloader: downloader, offlineStorage: storage, playerEventSender: playerEventSender)
+			offlineEngine = OfflineEngine(
+				downloader: downloader,
+				offlineStorage: offlineStorage,
+				playerEventSender: playerEventSender
+			)
 		}
 
 		shared = Player(
 			queue: OperationQueue.new(),
 			urlSession: sharedPlayerURLSession,
 			configuration: configuration,
-			storage: storage,
+			offlineStorage: offlineStorage,
 			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
@@ -213,14 +225,6 @@ public extension Player {
 		return shared
 	}
 
-	func setUpUserConfiguration(_ userConfiguration: UserConfiguration) {
-		queue.dispatch {
-			self.userConfiguration = userConfiguration
-			self.playerEventSender.updateUserConfiguration(userConfiguration: userConfiguration)
-			self.streamingPrivilegesHandler.disconnect()
-		}
-	}
-
 	func shutdown() {
 		reset()
 	}
@@ -234,7 +238,7 @@ public extension Player {
 			self.playerEngine = Player.newPlayerEngine(
 				self.playerURLSession,
 				self.configuration,
-				self.storage,
+				self.offlineStorage,
 				self.djProducer,
 				self.fairplayLicenseFetcher,
 				self.networkMonitor,
@@ -259,7 +263,7 @@ public extension Player {
 		let player = Player.newPlayerEngine(
 			playerURLSession,
 			configuration,
-			storage,
+			offlineStorage,
 			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
@@ -360,6 +364,46 @@ public extension Player {
 		}
 	}
 
+	/// Offlines a media product at first convenient time, using configured settings.
+	/// Async and thread safe. If returns true, progress can be tracked via OfflineStartedMessage, OfflineProgressMessage,
+	/// OfflineDoneMessage and OfflineFailedMessage.
+	/// - Parameters:
+	///   - mediaProduct: The media product to offline
+	/// - Returns: True if an offline job is created, false otherwise.
+	func offline(mediaProduct: MediaProduct) -> Bool {
+		offlineEngine?.offline(mediaProduct: mediaProduct) ?? false
+	}
+
+	/// Deletes an offlined media product. No difference is made between queued, executing or done offlines. Everything is removed
+	/// for the media product.
+	/// Async and thread safe. If returns true, progress can be tracked via OfflineDeletedMessage.
+	/// - Parameters:
+	///   - mediaProduct: Media product to delete offline for
+	/// - Returns: True if a delete job is created, False otherwise.
+	func deleteOffline(mediaProduct: MediaProduct) -> Bool {
+		offlineEngine?.deleteOffline(mediaProduct: mediaProduct) ?? false
+	}
+
+	/// All offlined media products will be deleted. All queued, executing and done offlines will be deleted.
+	/// Async and thread safe. If returns true, progress can be tracked via AllOfflinesDeletedMessage.
+	/// - Returns: True if a delete all offlines job is created, False otherwise.
+	func deleteAllOfflines() -> Bool {
+		offlineEngine?.deleteAllOfflinedMediaProducts() ?? false
+	}
+
+	/// Returns offline state of a media product.
+	/// Thread safe.
+	/// - Parameters:
+	///   - mediaProduct: Media product to gett offline state for.
+	/// - Returns: The state mediaProduct is in.
+	func getOfflineState(mediaProduct: MediaProduct) -> OfflineState {
+		offlineEngine?.getOfflineState(mediaProduct: mediaProduct) ?? .NOT_OFFLINED
+	}
+
+	func setOfflinerDelegate(_ offlinerDelegate: OfflinerDelegate) {
+		offlineEngine?.setOfflinerDelegate(offlinerDelegate)
+	}
+
 	func startDjSession(title: String) {
 		queue.dispatch {
 			let now = PlayerWorld.timeProvider.timestamp()
@@ -382,7 +426,7 @@ private extension Player {
 	static func newPlayerEngine(
 		_ urlSession: URLSession,
 		_ configuration: Configuration,
-		_ storage: Storage,
+		_ offlineStorage: OfflineStorage,
 		_ djProducer: DJProducer,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		_ networkMonitor: NetworkMonitor,
@@ -410,7 +454,7 @@ private extension Player {
 			configuration,
 			playerEventSender,
 			networkMonitor,
-			storage,
+			offlineStorage,
 			internalPlayerLoader,
 			featureFlagProvider,
 			notificationsHandler

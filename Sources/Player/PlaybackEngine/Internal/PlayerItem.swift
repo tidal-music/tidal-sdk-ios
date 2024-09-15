@@ -375,10 +375,12 @@ private extension PlayerItem {
 
 		let endTimestamp = metrics.endTime ?? now
 
-		let tags: [PlaybackStatistics.EventTag]? = if case .cached = asset?.getCacheState()?.status {
-			[PlaybackStatistics.EventTag.CACHED]
-		} else {
-			nil
+		var tags = [PlaybackStatistics.EventTag]()
+		if case .cached = asset?.getCacheState()?.status {
+			tags.append(PlaybackStatistics.EventTag.CACHED)
+		}
+		if metadata.playbackSource == .LOCAL_STORAGE {
+			tags.append(PlaybackStatistics.EventTag.OFFLINER_V2)
 		}
 
 		let endInfo = metrics.endInfo

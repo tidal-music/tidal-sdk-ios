@@ -40,7 +40,7 @@ struct LoginUriBuilder {
 		builder?.percentEncodedQueryItems = [
 			URLQueryItem(name: QueryKeys.REDIRECT_URI_KEY, value: redirectUri.urlEncoded),
 			URLQueryItem(name: QueryKeys.RESPONSE_TYPE, value: "code"),
-			URLQueryItem(name: QueryKeys.SCOPES_KEY, value: scopes.toScopesString().urlEncoded)
+			URLQueryItem(name: QueryKeys.SCOPES_KEY, value: scopes.toScopesString().urlEncoded),
 		]
 
 		for param in buildBaseParameters(clientId: clientId, clientUniqueKey: clientUniqueKey, codeChallenge: codeChallenge) {

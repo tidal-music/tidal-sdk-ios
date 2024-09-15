@@ -1,6 +1,6 @@
 import Foundation
 
-extension String {
+public extension String {
 	/// Returns a percent-escaped string following RFC 3986 for a query string key or value.
 	///
 	/// RFC 3986 states that the following characters are "reserved" characters.
@@ -13,11 +13,17 @@ extension String {
 	/// should be percent-escaped in the query string.
 	///
 	/// - returns: percent-escaped string.
-	public func encoded() -> String {
+	func encoded() -> String {
 		let generalDelimitersToEncode = ":#[]@"
 		let subDelimitersToEncode = "!$&'()*+,;="
 		var allowedCharacterSet = CharacterSet.urlQueryAllowed
 		allowedCharacterSet.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
-		return self.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? ""
+		return addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? ""
+	}
+	
+	public func base64WithPadding() -> String {
+		let offset = count % 4
+		guard offset != 0 else { return self }
+		return padding(toLength: count + 4 - offset, withPad: "=", startingAt: 0)
 	}
 }

@@ -7,6 +7,9 @@ private enum Constants {
 	static let token = "token"
 	static let deviceType = DeviceInfoProvider.Constants.deviceTypeMobile
 	static let uuid = "uuid"
+	static let userId = 9
+	static let userClientId = 11
+	static let cid = "cid"
 }
 
 // MARK: - PlayerItemTests
@@ -24,7 +27,7 @@ final class PlayerItemTests: XCTestCase {
 	private var user: User!
 	private var client: Client {
 		Client(
-			token: String(user.clientId),
+			token: Constants.cid,
 			version: configuration.clientVersion,
 			deviceType: Constants.deviceType
 		)
@@ -60,11 +63,10 @@ final class PlayerItemTests: XCTestCase {
 
 		player = PlayerMock()
 
-		let userConfiguration = UserConfiguration.mock()
 		user = User(
-			id: userConfiguration.userId,
+			id: Constants.userId,
 			accessToken: "Bearer \(Constants.token)",
-			clientId: userConfiguration.userClientId
+			clientId: Constants.userClientId
 		)
 	}
 

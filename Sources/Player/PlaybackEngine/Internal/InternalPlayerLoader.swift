@@ -58,9 +58,9 @@ final class InternalPlayerLoader: PlayerLoader {
 		}
 	}
 
-	func load(_ storageItem: PlayableStorageItem) async throws -> Asset {
+	func load(_ offlinedProduct: PlayableOfflinedMediaProduct) async throws -> Asset {
 		let loudnessNormalizer = LoudnessNormalizer.create(
-			from: storageItem,
+			from: offlinedProduct,
 			preAmp: configuration.currentPreAmpValue
 		)
 		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
@@ -69,18 +69,18 @@ final class InternalPlayerLoader: PlayerLoader {
 		)
 
 		let player = try getPlayer(
-			for: storageItem.audioMode,
-			and: storageItem.audioQuality,
-			audioCodec: storageItem.audioCodec,
-			type: storageItem.productType
+			for: offlinedProduct.audioMode,
+			and: offlinedProduct.audioQuality,
+			audioCodec: offlinedProduct.audioCodec,
+			type: offlinedProduct.productType
 		)
 
-		let licenseLoader = storageItem.licenseUrl.flatMap {
+		let licenseLoader = offlinedProduct.licenseURL.flatMap {
 			StoredLicenseLoader(localLicenseUrl: $0)
 		}
 
 		return await player.load(
-			storageItem.mediaUrl,
+			offlinedProduct.mediaURL,
 			cacheKey: nil,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			and: licenseLoader

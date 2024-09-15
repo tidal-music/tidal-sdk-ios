@@ -4,13 +4,13 @@ import GRDB
 actor MonitoringQueue {
 	static let databaseName = "MonitoringDatabase.sqlite"
 	private var _databaseQueue: DatabaseQueue?
-	
+
 	private var databaseQueue: DatabaseQueue {
 		get throws {
 			if let _databaseQueue {
 				return _databaseQueue
 			}
-			
+
 			guard let databaseURL = FileManagerHelper.shared.monitoringQueueDatabaseURL else {
 				throw EventProducerError.monitoringQueueDatabaseURLFailure
 			}
@@ -25,7 +25,7 @@ actor MonitoringQueue {
 						table.column(MonitoringInfoPersistentObject.columnValidationFailedEvents, .any).notNull()
 					}
 				}
-				self._databaseQueue = databaseQueue
+				_databaseQueue = databaseQueue
 				return databaseQueue
 			} catch {
 				throw EventProducerError.monitoringDatabaseCreateFailure(error.localizedDescription)

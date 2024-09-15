@@ -29,6 +29,12 @@ extension CredentialsSuccessDataParserTests {
 		let clientId = credentialsSuccessDataParser.clientIdFromToken(token)
 		XCTAssertEqual(clientId, nil)
 	}
+	
+	func test_clientIdFromToken_when_StringRequiresPadding() async throws {
+		let token = "Bearer blabla.eyJjaWQiOjEyMzQ1fQ.blahblah"
+		let clientId = credentialsSuccessDataParser.clientIdFromToken(token)
+		XCTAssertEqual(clientId, 12345)
+	}
 
 	func test_clientIdFromToken_when_StringIsNotEncodedInBase64() async throws {
 		let token = "Bearer yada.abcd.yada"

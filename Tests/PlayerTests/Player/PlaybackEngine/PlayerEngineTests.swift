@@ -31,7 +31,7 @@ final class PlayerEngineTests: XCTestCase {
 	private var notificationsHandler: NotificationsHandler!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var featureFlagProvider: FeatureFlagProvider!
-	private var storage: Storage!
+	private var storage: OfflineStorage!
 	private var djProducer: DJProducer!
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher!
 	private var networkMonitor: NetworkMonitorMock!

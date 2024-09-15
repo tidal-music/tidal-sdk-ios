@@ -10,10 +10,12 @@ import XCTest
 private enum Constants {
 	static let token = "1234"
 	static let tokenEncodedBase64 = "blabla.eyJjaWQiOjEyMzR9.blahblah"
-
-	static let successfulAuthResult: AuthResult = AuthResult.success(Credentials.mock(userId: "userId", token: tokenEncodedBase64))
+	
+	static let userId = 19
+	static let successfulAuthResult: AuthResult = AuthResult.success(Credentials.mock(userId: String(userId), token: tokenEncodedBase64))
 	static let successfulAuthResultNoUserId: AuthResult = AuthResult.success(Credentials.mock(token: tokenEncodedBase64))
 	static let failedAuthResult: AuthResult = AuthResult<Credentials>.failure(TidalErrorMock(code: "81"))
+	static let userClientId = 10
 }
 
 // MARK: - PlayerEventSenderTests
@@ -105,13 +107,17 @@ final class PlayerEventSenderTests: XCTestCase {
 			credentialsProvider: credentialsProvider,
 			dataWriter: dataWriter,
 			featureFlagProvider: featureFlagProvider,
-			eventSender: eventSender
+			eventSender: eventSender,
+			userClientIdSupplier: {
+				Constants.userClientId
+			}
 		)
 
-		let userConfiguration = UserConfiguration.mock()
-		playerEventSender.updateUserConfiguration(userConfiguration: userConfiguration)
-
-		updateUser(with: userConfiguration)
+		user = User(
+			id: Constants.userId,
+			accessToken: "Bearer \(Constants.tokenEncodedBase64)",
+			clientId: Constants.userClientId
+		)
 
 		// Provide successful credentials by default. Where needed, we can give fail.
 		// User is authenticated (access token + user id)
@@ -375,44 +381,6 @@ extension PlayerEventSenderTests {
 		assertLegacyEvent(expectedDecodedEvent: expectedDecodedEvent, from: eventData)
 	}
 
-	// MARK: - updateUserConfiguration()
-
-	func test_updateUserConfiguration_legacy() async {
-		shouldUseEventProducer = false
-
-		var streamingSessionStart = StreamingSessionStart.mock()
-		var expectedDecodedEvent = LegacyEvent<StreamingSessionStart>(
-			group: EventGroup.streamingMetrics.rawValue,
-			name: StreamingMetricNames.streamingSessionStart,
-			version: EventGroup.streamingMetrics.version,
-			ts: timestamp,
-			user: user,
-			client: client,
-			payload: streamingSessionStart,
-			extras: nil
-		)
-		await assertLegacyStreamingMetricsEvent(event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
-
-		// Change user configuration
-		let userConfiguration = UserConfiguration.mock(userId: 100, userClientId: 200)
-		updateUser(with: userConfiguration)
-		playerEventSender.updateUserConfiguration(userConfiguration: userConfiguration)
-
-		// The only difference now is the user (with updated user configuration)
-		streamingSessionStart = StreamingSessionStart.mock()
-		expectedDecodedEvent = LegacyEvent<StreamingSessionStart>(
-			group: EventGroup.streamingMetrics.rawValue,
-			name: StreamingMetricNames.streamingSessionStart,
-			version: EventGroup.streamingMetrics.version,
-			ts: timestamp,
-			user: user,
-			client: client,
-			payload: streamingSessionStart,
-			extras: nil
-		)
-		await assertLegacyStreamingMetricsEvent(index: 1, event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
-	}
-
 	// MARK: Credentials testing
 
 	func test_send_event_whenUserIsNotAuthenticated_legacy() async {
@@ -567,13 +535,5 @@ private extension PlayerEventSenderTests {
 		} catch {
 			XCTFail("Failed to decode PlayerEvent of \(T.self): \(error)")
 		}
-	}
-
-	func updateUser(with userConfiguration: UserConfiguration) {
-		user = User(
-			id: userConfiguration.userId,
-			accessToken: "Bearer \(Constants.tokenEncodedBase64)",
-			clientId: userConfiguration.userClientId
-		)
 	}
 }

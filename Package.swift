@@ -37,7 +37,7 @@ let package = Package(
 		.package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
 		.package(url: "https://github.com/MobileNativeFoundation/Kronos.git", exact: "4.2.2"),
 		.package(url: "https://github.com/lukepistrol/SwiftLintPlugin", from: "0.54.0"),
-		.package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
+		.package(url: "https://github.com/apple/swift-log.git", from: "1.6.1"),
 		.package(url: "https://github.com/Flight-School/AnyCodable", from: "0.6.0"),
 	] + (shouldIncludeDocCPlugin ? [.package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")] : []),
 	targets: [
@@ -70,6 +70,9 @@ let package = Package(
 		),
 		.target(
 			name: "Common",
+			dependencies: [
+				.Logging
+			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
@@ -105,7 +108,7 @@ let package = Package(
 			dependencies: [
 				.common,
 				.KeychainAccess,
-				.Logging
+				.Logging,
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
@@ -124,6 +127,7 @@ let package = Package(
 				.Kronos,
 				.auth,
 				.eventProducer,
+				.GRDB,
 			],
 			resources: [
 				.process("README.md"),
@@ -137,6 +141,7 @@ let package = Package(
 			dependencies: [
 				.player,
 				.auth,
+				.GRDB,
 			],
 			resources: [
 				.process("Resources"),

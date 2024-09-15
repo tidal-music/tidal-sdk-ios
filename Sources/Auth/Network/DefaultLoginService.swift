@@ -5,11 +5,11 @@ struct DefaultLoginService: LoginService, HTTPService {
 	private let TOKEN_AUTH_PATH = "/v1/oauth2/token"
 	private let DEVICE_AUTH_PATH = "/v1/oauth2/device_authorization"
 	private let authBaseUrl: String
-	
+
 	init(authBaseUrl: String) {
 		self.authBaseUrl = authBaseUrl
 	}
-	
+
 	func getTokenWithCodeVerifier(
 		code: String,
 		clientId: String,
@@ -25,7 +25,7 @@ struct DefaultLoginService: LoginService, HTTPService {
 			URLQueryItem(name: "grant_type", value: grantType),
 			URLQueryItem(name: "redirect_uri", value: redirectUri),
 			URLQueryItem(name: "scope", value: scopes),
-			URLQueryItem(name: "code_verifier", value: codeVerifier)
+			URLQueryItem(name: "code_verifier", value: codeVerifier),
 		]
 		if let clientUniqueKey, !clientUniqueKey.isEmpty {
 			queryItems.append(URLQueryItem(name: "client_unique_key", value: clientUniqueKey))

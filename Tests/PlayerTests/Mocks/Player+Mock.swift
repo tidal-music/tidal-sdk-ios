@@ -16,7 +16,7 @@ extension PlayerEngine {
 		configuration: Configuration = Configuration.mock(),
 		playerEventSender: PlayerEventSender = PlayerEventSenderMock(),
 		networkMonitor: NetworkMonitor = NetworkMonitorMock(),
-		storage: Storage = StorageMock(),
+		storage: OfflineStorage = OfflineStorageMock(),
 		playerLoader: PlayerLoader = PlayerLoaderMock(),
 		featureFlagProvider: FeatureFlagProvider = .mock,
 		notificationsHandler: NotificationsHandler? = NotificationsHandler(
