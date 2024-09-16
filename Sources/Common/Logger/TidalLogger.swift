@@ -12,12 +12,12 @@ public struct TidalLogger {
 
 private extension TidalLogger {
 	func log(level: Logger.Level, message: Logger.Message, metadata: Logger.Metadata? = nil, source: String? = nil, file: String, function: String, line: UInt) {
-		self.logger.log(level: level, message, metadata: metadata, source: source, file: file, function: function, line: line)
+		self.logger.log(level: level, message, metadata: metadata, file: file, function: function, line: line)
 	}
 }
 
 public extension TidalLogger {
-	func log(loggable: TidalLoggable, file: String = #file, function: String = #function, line: UInt = #line) {
+	func log(loggable: TidalLoggable, file: String = #fileID, function: String = #function, line: UInt = #line) {
 		self.log(
 			level: loggable.logLevel,
 			message: loggable.loggingMessage,
