@@ -13,6 +13,7 @@ struct PlayerWorldClient {
 	var developmentFeatureFlagProvider: DevelopmentFeatureFlagProvider
 	var fileManagerClient: FileManagerClient
 	var asyncSchedulerFactoryProvider: AsyncSchedulerFactoryProvider
+	var logger: TidalLogger?
 }
 
 extension PlayerWorldClient {
@@ -23,6 +24,7 @@ extension PlayerWorldClient {
 		uuidProvider: .live,
 		developmentFeatureFlagProvider: .live,
 		fileManagerClient: .live,
-		asyncSchedulerFactoryProvider: .live
+		asyncSchedulerFactoryProvider: .live,
+		logger: nil
 	)
 }

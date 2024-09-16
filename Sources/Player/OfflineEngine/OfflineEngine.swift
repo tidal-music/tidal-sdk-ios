@@ -111,6 +111,7 @@ private extension OfflineEngine {
 			try offlineStorage.delete(key: mediaProduct.productId)
 			offlinerDelegate?.offlinedDeleted(for: mediaProduct)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.deleteOfflinedItem(error: error))
 			print("Failed to remove item: \(error)")
 		}
 	}
