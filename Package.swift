@@ -30,10 +30,6 @@ let package = Package(
 			name: "Player",
 			targets: ["Player"]
 		),
-		.library(
-			name: "Common",
-			targets: ["Common"]
-		),
 	],
 	dependencies: [
 		.package(url: "https://github.com/groue/GRDB.swift.git", from: "6.27.0"),
