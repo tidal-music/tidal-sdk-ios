@@ -5,17 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.34] - 2024-09-17
+### Changed
+- Format unformatted code
+- Update unit test action
+- Do not set up logging system in the Auth module (Logging)
+- Update Logging library version to latest version (Logging)
+- Add support to new logging structure in Auth (Auth)
+- Update StreamingMetrics support for new offliner (Player)
+- Integrate new OfflineStorage layer into OfflineEngine and PlaybackEngine (Player)
+
+### Added
+- Add common code for logging (Logging)
+- Add logging support in Player (Player)
+- Add database-backed persistence layer for Asset Cache (Player)
+- Add database-backed persistence layer for Offline (Player)
+- Public interface for OfflineEngine (Player)
+
+### Removed
+- Remove `setupUserConfiguration` from `Player` (Player)
+
+### Fixed
+- Fix parsing error in `clientIdFromToken` in `CredentialsSuccessDataParser` (Player)
+
 ## [0.3.33] - 2024-09-10
 ### Changed
-- Do not set up loggging system in the Auth module (Auth)
+- Do not set up logging system in the Auth module (Auth)
 
 ## [0.3.32] - 2024-09-3
 ### New
-- New `MediaProduct.referenceId` and `MediaProduct.extras` fields as part of the Player spec
+- New `MediaProduct.referenceId` and `MediaProduct.extras` fields as part of the Player spec (Player)
 
 ### Removed
 - `isStallWhenTransitionFromEndedToBufferingEnabled` from `FeatureFlagProvider` (Player)
-- `Interruption` as a subclass of `MediaProduct ` (Player)
+- `Interruption` as a subclass of `MediaProduct` (Player)
 - `ProgressEvents` are no longer reported (Player)
 
 ### Changed
