@@ -56,6 +56,7 @@ final class DJProducer {
 				self.delegate?.djSessionStarted(metadata: sessionData)
 				self.curationUrl = response.curationUrl
 			} catch {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionStartFailed(error: error))
 				self.delegate?.djSessionEnded(reason: .failedToStart(code: DJProducer.errorCode(from: error)))
 			}
 
@@ -134,6 +135,7 @@ private extension DJProducer {
 		do {
 			_ = try await httpClient.putJsonReceiveData(url: url, headers: [:], payload: command)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionSendCommandFailed(error: error))
 			endSession(with: DJProducer.reason(from: error))
 		}
 	}

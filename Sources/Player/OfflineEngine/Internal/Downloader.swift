@@ -75,6 +75,7 @@ private extension Downloader {
 			)
 			downloadMedia(for: downloadTask, using: playbackInfo)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.startDownloadFailed(error: error))
 			failed(downloadTask: downloadTask, with: error)
 		}
 	}

@@ -247,6 +247,7 @@ private extension InternalPlayerLoader {
 			)
 
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.loadUCFailed(error: error))
 			throw error
 		}
 	}
