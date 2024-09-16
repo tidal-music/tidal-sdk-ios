@@ -32,7 +32,7 @@ final class GRDBOfflineStorageTests: XCTestCase {
 	override func setUpWithError() throws {
 		// Create an in-memory database for testing
 		dbQueue = try DatabaseQueue()
-
+		try GRDBOfflineStorage.initializeDatabase(dbQueue: dbQueue)
 		offlineStorage = GRDBOfflineStorage(dbQueue: dbQueue)
 	}
 
