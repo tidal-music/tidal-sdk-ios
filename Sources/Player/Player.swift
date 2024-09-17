@@ -167,8 +167,8 @@ public extension Player {
 		let networkMonitor = NetworkMonitor()
 		let notificationsHandler = NotificationsHandler(listener: listener, queue: listenerQueue)
 
-		// For now, OfflineStorage and OfflineEngine are optional.
-		// Once the functionality is final it should not be, as Player can't work with a working OfflineEngine.
+		// For now, OfflineStorage and OfflineEngine can be optional.
+		// Once the functionality is finalized, Player should not work with a missing OfflineEngine.
 		var offlineStorage: GRDBOfflineStorage?
 		var offlineEngine: OfflineEngine?
 		if PlayerWorld.developmentFeatureFlagProvider.isOffliningEnabled {
