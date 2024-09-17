@@ -118,6 +118,11 @@ public final class TidalEventSender: EventSender {
 		)
 		endOutage(eventName: event.name)
 	}
+	
+	public func sendAllEvents() async throws {
+			let headerHelper = HeaderHelper(credentialsProvider: config?.credentialsProvider)
+			try await scheduler?.sendAllEvents(headerHelper: headerHelper)
+	}
 
 	private func start() {
 		let headerHelper = HeaderHelper(credentialsProvider: config?.credentialsProvider)
