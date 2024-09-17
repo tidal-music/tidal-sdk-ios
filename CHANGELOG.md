@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add support to new logging structure in Auth (Auth)
 - Update StreamingMetrics support for new offliner (Player)
 - Integrate new OfflineStorage layer into OfflineEngine and PlaybackEngine (Player)
+- Make OfflineStorage optional for PlaybackEngine for now (Player)
 
 ### Added
 - Add common code for logging (Logging)
