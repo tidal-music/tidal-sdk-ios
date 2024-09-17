@@ -107,7 +107,7 @@ final class PlayerEngine {
 		_ configuration: Configuration,
 		_ playerEventSender: PlayerEventSender,
 		_ networkMonitor: NetworkMonitor,
-		_ offlineStorage: OfflineStorage,
+		_ offlineStorage: OfflineStorage?,
 		_ playerLoader: PlayerLoader,
 		_ featureFlagProvider: FeatureFlagProvider,
 		_ notificationsHandler: NotificationsHandler?

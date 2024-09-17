@@ -5,6 +5,7 @@ import Foundation
 struct FileManagerClient {
 	var documentsDirectory: () -> URL
 	var cachesDirectory: () -> URL
+	var applicationSupportDirectory: () -> URL
 	var fileExistsIsDirectory: (_ path: String, _ isDirectory: UnsafeMutablePointer<ObjCBool>?) -> Bool
 	var fileExistsAtPath: (_ path: String) -> Bool
 	var copyItemAtURL: (_ source: URL, _ destination: URL) throws -> Void

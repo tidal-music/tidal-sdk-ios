@@ -8,7 +8,47 @@ class GRDBOfflineStorage {
 
 	init(dbQueue: DatabaseQueue) {
 		self.dbQueue = dbQueue
-		try? initializeDatabase()
+	}
+
+	static func initializeDatabase(dbQueue: DatabaseQueue) throws {
+		try dbQueue.write { db in
+			if try !db.tableExists(OfflineEntryGRDBEntity.databaseTableName) {
+				try db.create(table: OfflineEntryGRDBEntity.databaseTableName) { t in
+					t.column("productId", .text).primaryKey()
+					t.column("productType", .text).notNull()
+					t.column("assetPresentation", .text).notNull()
+					t.column("audioMode", .text)
+					t.column("audioQuality", .text)
+					t.column("audioCodec", .text)
+					t.column("audioSampleRate", .integer)
+					t.column("audioBitDepth", .integer)
+					t.column("videoQuality", .text)
+					t.column("revalidateAt", .integer)
+					t.column("expiry", .integer)
+					t.column("mediaType", .text)
+					t.column("albumReplayGain", .double)
+					t.column("albumPeakAmplitude", .double)
+					t.column("trackReplayGain", .double)
+					t.column("trackPeakAmplitude", .double)
+					t.column("size", .integer)
+					t.column("mediaBookmark", .blob)
+					t.column("licenseBookmark", .blob)
+				}
+			}
+		}
+	}
+
+	static func withDefaultDatabase() -> GRDBOfflineStorage? {
+		do {
+			let databaseURL = try GRDBOfflineStorage.databaseURL()
+			let dbQueue = try DatabaseQueue(path: databaseURL.path)
+			try GRDBOfflineStorage.initializeDatabase(dbQueue: dbQueue)
+
+			return GRDBOfflineStorage(dbQueue: dbQueue)
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.withDefaultDatabase(error: error))
+			return nil
+		}
 	}
 }
 
@@ -77,42 +117,15 @@ extension GRDBOfflineStorage: OfflineStorage {
 }
 
 private extension GRDBOfflineStorage {
-	private func calculateTotalSize(_ db: Database) throws -> Int {
-		let totalSize = try OfflineEntryGRDBEntity.select(sum(OfflineEntryGRDBEntity.Columns.size)).fetchOne(db) ?? 0
-		return totalSize
+	static func databaseURL() throws -> URL {
+		let appSupportURL = PlayerWorldClient.live.fileManagerClient.applicationSupportDirectory()
+		let directoryURL = appSupportURL.appendingPathComponent("PlayerOfflineDatabase", isDirectory: true)
+		try PlayerWorldClient.live.fileManagerClient.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+		return directoryURL.appendingPathComponent("db.sqlite")
 	}
 
-	func initializeDatabase() throws {
-		do {
-			try dbQueue.write { db in
-				if try !db.tableExists(OfflineEntryGRDBEntity.databaseTableName) {
-					try db.create(table: OfflineEntryGRDBEntity.databaseTableName) { t in
-						t.column("productId", .text).primaryKey()
-						t.column("productType", .text).notNull()
-						t.column("assetPresentation", .text).notNull()
-						t.column("audioMode", .text)
-						t.column("audioQuality", .text)
-						t.column("audioCodec", .text)
-						t.column("audioSampleRate", .integer)
-						t.column("audioBitDepth", .integer)
-						t.column("videoQuality", .text)
-						t.column("revalidateAt", .integer)
-						t.column("expiry", .integer)
-						t.column("mediaType", .text)
-						t.column("albumReplayGain", .double)
-						t.column("albumPeakAmplitude", .double)
-						t.column("trackReplayGain", .double)
-						t.column("trackPeakAmplitude", .double)
-						t.column("size", .integer)
-						t.column("mediaBookmark", .blob)
-						t.column("licenseBookmark", .blob)
-					}
-				}
-			}
-		} catch {
-			// TODO: Log error
-			print("Failed to initialize table \(OfflineEntryGRDBEntity.databaseTableName): \(error)")
-			throw error
-		}
+	func calculateTotalSize(_ db: Database) throws -> Int {
+		let totalSize = try OfflineEntryGRDBEntity.select(sum(OfflineEntryGRDBEntity.Columns.size)).fetchOne(db) ?? 0
+		return totalSize
 	}
 }

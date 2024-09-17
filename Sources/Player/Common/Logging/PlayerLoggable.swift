@@ -2,13 +2,17 @@ import Common
 import Foundation
 import Logging
 
+// MARK: - Constants
+
 private enum Constants {
 	static let metadataErrorKey = "error"
 }
 
+// MARK: - PlayerLoggable
+
 enum PlayerLoggable: TidalLoggable {
-	
 	// MARK: Event Sender
+
 	case sendEventOfflinePlayFailed(error: Error)
 	case sendLegacyEventFailed(error: Error)
 	case migrateLegacyDirectoryFailed(error: Error)
@@ -22,6 +26,7 @@ enum PlayerLoggable: TidalLoggable {
 	case initializeDirectoryFailed(error: Error)
 
 	// MARK: Streaming Privileges
+
 	case streamingNotifyNotAuthorized(error: Error)
 	case streamingConnectNotAuthorized(error: Error)
 	case webSocketSendMessageFailed(error: Error)
@@ -29,77 +34,101 @@ enum PlayerLoggable: TidalLoggable {
 	case webSocketHandleErrorSleepAndReconnectionFailed(error: Error) // swiftlint:disable:this identifier_name
 
 	// MARK: Playback Info Fetcher
+
 	case getPlaybackInfoFailed(error: Error)
 
 	// MARK: FairPlay License Fetcher
+
 	case getLicenseFailed(error: Error)
 
 	// MARK: Credentials Provider
+
 	case getAuthBearerTokenCredentialFailed(error: Error)
 	case getAuthBearerTokenToBearerTokenFailed
 
 	// MARK: Credentials Success Data Parser
+
 	case credentialsSuccessParserParsingFailed(error: Error)
 
 	// MARK: Download Task
+
 	case downloadFailed(error: Error)
 	case downloadFinalizeFailed(error: Error)
 
+	// MARK: Offline Storage
+
+	case withDefaultDatabase(error: Error)
+
 	// MARK: Offline Engine
+
 	case deleteOfflinedItem(error: Error)
 
 	// MARK: Asset Cache Legacy
+
 	case deleteAssetCacheFailed(error: Error)
 
 	// MARK: StoredLicenseLoader
+
 	case licenseLoaderContentKeyRequestFailed(error: Error)
 	case licenseLoaderProcessContentKeyResponseFailed(error: Error) // swiftlint:disable:this identifier_name
 
 	// MARK: StreamingLicenseLoader
+
 	case streamingGetLicenseFailed(error: Error)
 
 	// MARK: HttpClient
+
 	case payloadEncodingFailed(error: Error)
 	case payloadDecodingFailed(error: Error)
 
 	// MARK: URLSession
+
 	case loadDataForRequestFailed(error: Error)
 
 	// MARK: ResponseHandler
+
 	case backoffHandleResponseFailed(error: Error)
 
 	// MARK: Downloader
+
 	case startDownloadFailed(error: Error)
 
 	// MARK: LicenseDownloader
+
 	case licenseDownloaderContentKeyRequestFailed(error: Error)
 	case licenseDownloaderGetLicenseFailed(error: Error)
 
 	// MARK: MediaDownloader
+
 	case downloadFinishedMovingFileFailed(error: Error)
 
 	// MARK: AVQueuePlayerWrapperLegacy
+
 	case legacyReadPlaybackMetadataFailed(error: Error)
 
 	// MARK: AVQueuePlayerWrapper
+
 	case readPlaybackMetadataFailed(error: Error)
 
 	// MARK: DJProducer
+
 	case djSessionStartFailed(error: Error)
 	case djSessionSendCommandFailed(error: Error)
 
 	// MARK: InternalPlayerLoader
+
 	case loadUCFailed(error: Error)
 
 	// MARK: PlayerEngine
+
 	case loadPlayerItemFailed(error: Error)
 }
 
 // MARK: - Logging
-extension PlayerLoggable {
 
+extension PlayerLoggable {
 	var loggingMessage: Logger.Message {
-		return switch self {
+		switch self {
 		// Event Sender
 		case .sendEventOfflinePlayFailed:
 			"EventSender-sendEventOfflinePlayFailed"
@@ -159,6 +188,10 @@ extension PlayerLoggable {
 			"DownloadTask-downloadFailed"
 		case .downloadFinalizeFailed:
 			"DownloadTask-downloadFinalizeFailed"
+
+		// GRDBOfflineStorage
+		case .withDefaultDatabase:
+			"GRDBOfflineStorage-withDefaultDatabase"
 
 		// Offline Engine
 		case .deleteOfflinedItem:
@@ -234,49 +267,50 @@ extension PlayerLoggable {
 		var metadata = [String: Logger.MetadataValue]()
 
 		switch self {
-		case let .sendEventOfflinePlayFailed(error), 
-			let .sendLegacyEventFailed(error),
-			let .migrateLegacyDirectoryFailed(error),
-			let .writeEventFailed(error), 
-			let .sendToEventProducerFailed(error),
-			let .sendEventsFailed(error),
-			let .urlForDirectoryFailed(error),
-			let .initializeDirectoryFailed(error),
-			let .streamingNotifyNotAuthorized(error),
-			let .streamingConnectNotAuthorized(error),
-			let .webSocketSendMessageFailed(error),
-			let .webSocketReceiveMessageFailed(error),
-			let .webSocketHandleErrorSleepAndReconnectionFailed(error),
-			let .getPlaybackInfoFailed(error),
-			let .getLicenseFailed(error),
-			let .credentialsSuccessParserParsingFailed(error),
-			let .downloadFailed(error),
-			let .downloadFinalizeFailed(error),
-			let .deleteOfflinedItem(error),
-			let .deleteAssetCacheFailed(error),
-			let .getAuthBearerTokenCredentialFailed(error),
-			let .licenseLoaderContentKeyRequestFailed(error),
-			let .licenseLoaderProcessContentKeyResponseFailed(error),
-			let .streamingGetLicenseFailed(error),
-			let .payloadEncodingFailed(error),
-			let .payloadDecodingFailed(error),
-			let .loadDataForRequestFailed(error),
-			let .backoffHandleResponseFailed(error),
-			let .startDownloadFailed(error),
-			let .licenseDownloaderContentKeyRequestFailed(error),
-			let .licenseDownloaderGetLicenseFailed(error),
-			let .downloadFinishedMovingFileFailed(error),
-			let .legacyReadPlaybackMetadataFailed(error),
-			let .readPlaybackMetadataFailed(error),
-			let .djSessionStartFailed(error),
-			let .djSessionSendCommandFailed(error),
-			let .loadUCFailed(error),
-			let .loadPlayerItemFailed(error):
+		case let .sendEventOfflinePlayFailed(error),
+		     let .sendLegacyEventFailed(error),
+		     let .migrateLegacyDirectoryFailed(error),
+		     let .writeEventFailed(error),
+		     let .sendToEventProducerFailed(error),
+		     let .sendEventsFailed(error),
+		     let .urlForDirectoryFailed(error),
+		     let .initializeDirectoryFailed(error),
+		     let .streamingNotifyNotAuthorized(error),
+		     let .streamingConnectNotAuthorized(error),
+		     let .webSocketSendMessageFailed(error),
+		     let .webSocketReceiveMessageFailed(error),
+		     let .webSocketHandleErrorSleepAndReconnectionFailed(error),
+		     let .getPlaybackInfoFailed(error),
+		     let .getLicenseFailed(error),
+		     let .credentialsSuccessParserParsingFailed(error),
+		     let .downloadFailed(error),
+		     let .downloadFinalizeFailed(error),
+		     let .withDefaultDatabase(error),
+		     let .deleteOfflinedItem(error),
+		     let .deleteAssetCacheFailed(error),
+		     let .getAuthBearerTokenCredentialFailed(error),
+		     let .licenseLoaderContentKeyRequestFailed(error),
+		     let .licenseLoaderProcessContentKeyResponseFailed(error),
+		     let .streamingGetLicenseFailed(error),
+		     let .payloadEncodingFailed(error),
+		     let .payloadDecodingFailed(error),
+		     let .loadDataForRequestFailed(error),
+		     let .backoffHandleResponseFailed(error),
+		     let .startDownloadFailed(error),
+		     let .licenseDownloaderContentKeyRequestFailed(error),
+		     let .licenseDownloaderGetLicenseFailed(error),
+		     let .downloadFinishedMovingFileFailed(error),
+		     let .legacyReadPlaybackMetadataFailed(error),
+		     let .readPlaybackMetadataFailed(error),
+		     let .djSessionStartFailed(error),
+		     let .djSessionSendCommandFailed(error),
+		     let .loadUCFailed(error),
+		     let .loadPlayerItemFailed(error):
 			metadata[Constants.metadataErrorKey] = "\(String(describing: error))"
 		case .writeEventNotAuthorized,
-				.sendToEventProducerSerializationFailed,
-				.sendEventsNotAuthorized,
-				.getAuthBearerTokenToBearerTokenFailed:
+		     .sendToEventProducerSerializationFailed,
+		     .sendEventsNotAuthorized,
+		     .getAuthBearerTokenToBearerTokenFailed:
 			break
 		}
 
@@ -286,48 +320,49 @@ extension PlayerLoggable {
 	var logLevel: Logger.Level {
 		switch self {
 		case .sendEventOfflinePlayFailed,
-				.sendLegacyEventFailed,
-				.migrateLegacyDirectoryFailed,
-				.writeEventNotAuthorized,
-				.writeEventFailed,
-				.sendToEventProducerFailed,
-				.sendToEventProducerSerializationFailed,
-				.sendEventsNotAuthorized,
-				.sendEventsFailed, 
-				.urlForDirectoryFailed,
-				.initializeDirectoryFailed,
-				.streamingNotifyNotAuthorized,
-				.streamingConnectNotAuthorized,
-				.webSocketSendMessageFailed,
-				.webSocketReceiveMessageFailed,
-				.webSocketHandleErrorSleepAndReconnectionFailed,
-				.getPlaybackInfoFailed,
-				.getLicenseFailed,
-				.getAuthBearerTokenCredentialFailed,
-				.credentialsSuccessParserParsingFailed,
-				.downloadFailed,
-				.downloadFinalizeFailed,
-				.deleteOfflinedItem,
-				.deleteAssetCacheFailed,
-				.getAuthBearerTokenToBearerTokenFailed,
-				.licenseLoaderContentKeyRequestFailed,
-				.licenseLoaderProcessContentKeyResponseFailed,
-				.streamingGetLicenseFailed,
-				.payloadEncodingFailed,
-				.payloadDecodingFailed,
-				.loadDataForRequestFailed,
-				.backoffHandleResponseFailed,
-				.startDownloadFailed,
-				.licenseDownloaderContentKeyRequestFailed,
-				.licenseDownloaderGetLicenseFailed,
-				.downloadFinishedMovingFileFailed,
-				.legacyReadPlaybackMetadataFailed,
-				.readPlaybackMetadataFailed,
-				.djSessionStartFailed,
-				.djSessionSendCommandFailed,
-				.loadUCFailed,
-				.loadPlayerItemFailed:
-			return .error
+		     .sendLegacyEventFailed,
+		     .migrateLegacyDirectoryFailed,
+		     .writeEventNotAuthorized,
+		     .writeEventFailed,
+		     .sendToEventProducerFailed,
+		     .sendToEventProducerSerializationFailed,
+		     .sendEventsNotAuthorized,
+		     .sendEventsFailed,
+		     .urlForDirectoryFailed,
+		     .initializeDirectoryFailed,
+		     .streamingNotifyNotAuthorized,
+		     .streamingConnectNotAuthorized,
+		     .webSocketSendMessageFailed,
+		     .webSocketReceiveMessageFailed,
+		     .webSocketHandleErrorSleepAndReconnectionFailed,
+		     .getPlaybackInfoFailed,
+		     .getLicenseFailed,
+		     .getAuthBearerTokenCredentialFailed,
+		     .credentialsSuccessParserParsingFailed,
+		     .downloadFailed,
+		     .downloadFinalizeFailed,
+		     .withDefaultDatabase,
+		     .deleteOfflinedItem,
+		     .deleteAssetCacheFailed,
+		     .getAuthBearerTokenToBearerTokenFailed,
+		     .licenseLoaderContentKeyRequestFailed,
+		     .licenseLoaderProcessContentKeyResponseFailed,
+		     .streamingGetLicenseFailed,
+		     .payloadEncodingFailed,
+		     .payloadDecodingFailed,
+		     .loadDataForRequestFailed,
+		     .backoffHandleResponseFailed,
+		     .startDownloadFailed,
+		     .licenseDownloaderContentKeyRequestFailed,
+		     .licenseDownloaderGetLicenseFailed,
+		     .downloadFinishedMovingFileFailed,
+		     .legacyReadPlaybackMetadataFailed,
+		     .readPlaybackMetadataFailed,
+		     .djSessionStartFailed,
+		     .djSessionSendCommandFailed,
+		     .loadUCFailed,
+		     .loadPlayerItemFailed:
+			.error
 		}
 	}
 
