@@ -119,9 +119,17 @@ public final class TidalEventSender: EventSender {
 		endOutage(eventName: event.name)
 	}
 	
+	/// Used to explicitly send all events directly from the scheduler. Usage would depend on the client (ex. when app moves to the background)
 	public func sendAllEvents() async throws {
 		let headerHelper = HeaderHelper(credentialsProvider: config?.credentialsProvider)
-		try await scheduler?.sendAllEvents(headerHelper: headerHelper)
+		do {
+			try await scheduler?.sendAllEvents(headerHelper: headerHelper)
+		} catch let EventProducerError.unauthorized(code) {
+			_ = try await headerHelper.credentialsProvider?.getCredentials(apiErrorSubStatus: code.description)
+			try await scheduler?.sendAllEvents(headerHelper: headerHelper)
+		} catch {
+			throw error
+		}
 	}
 
 	private func start() {
