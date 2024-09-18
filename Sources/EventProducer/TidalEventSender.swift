@@ -120,8 +120,8 @@ public final class TidalEventSender: EventSender {
 	}
 	
 	public func sendAllEvents() async throws {
-			let headerHelper = HeaderHelper(credentialsProvider: config?.credentialsProvider)
-			try await scheduler?.sendAllEvents(headerHelper: headerHelper)
+		let headerHelper = HeaderHelper(credentialsProvider: config?.credentialsProvider)
+		try await scheduler?.sendAllEvents(headerHelper: headerHelper)
 	}
 
 	private func start() {
