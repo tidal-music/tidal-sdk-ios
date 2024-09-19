@@ -107,7 +107,7 @@ final class PlayerEngine {
 		_ configuration: Configuration,
 		_ playerEventSender: PlayerEventSender,
 		_ networkMonitor: NetworkMonitor,
-		_ storage: Storage,
+		_ offlineStorage: OfflineStorage?,
 		_ playerLoader: PlayerLoader,
 		_ featureFlagProvider: FeatureFlagProvider,
 		_ notificationsHandler: NotificationsHandler?
@@ -129,7 +129,7 @@ final class PlayerEngine {
 		self.notificationsHandler = notificationsHandler
 		self.featureFlagProvider = featureFlagProvider
 
-		playerItemLoader = PlayerItemLoader(with: storage, playbackInfoFetcher, and: playerLoader)
+		playerItemLoader = PlayerItemLoader(with: offlineStorage, playbackInfoFetcher, and: playerLoader)
 
 		state = .IDLE
 		currentItem = nil
@@ -520,6 +520,7 @@ private extension PlayerEngine {
 		do {
 			try await playerItemLoader.load(playerItem)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.loadPlayerItemFailed(error: error))
 			handle(error, in: playerItem)
 		}
 	}

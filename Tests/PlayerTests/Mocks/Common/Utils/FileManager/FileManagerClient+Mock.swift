@@ -9,6 +9,9 @@ extension FileManagerClient {
 		cachesDirectory: {
 			FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
 		},
+		applicationSupportDirectory: {
+			FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+		},
 		fileExistsIsDirectory: { path, isDirectory in
 			FileManager.default.fileExists(atPath: path, isDirectory: isDirectory)
 		},

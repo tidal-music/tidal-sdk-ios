@@ -117,7 +117,8 @@ private extension PlaybackInfoFetcher {
 		let immersiveAudio = configuration.isImmersiveAudio
 
 		let path = "https://api.tidal.com/v1/tracks/\(trackId)/playbackinfo"
-		let parameters = "audioquality=\(audioQuality)&assetpresentation=FULL&playbackmode=\(playbackMode)&immersiveaudio=\(immersiveAudio)"
+		let parameters =
+			"audioquality=\(audioQuality)&assetpresentation=FULL&playbackmode=\(playbackMode)&immersiveaudio=\(immersiveAudio)"
 
 		return try PlaybackInfoFetcher.createUrl(from: "\(path)?\(parameters)")
 	}
@@ -303,8 +304,10 @@ private extension PlaybackInfoFetcher {
 			return playbackInfo
 
 		} catch {
-			let error = PlaybackInfoErrorResponseConverter.convert(error)
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.getPlaybackInfoFailed(error: error))
+
 			// TODO: Should we update this to handle proper conversion from TidalError, otherwise they will always be EUnexpected
+			let error = PlaybackInfoErrorResponseConverter.convert(error)
 			let playerError = PlayerInternalError.from(error)
 
 			let endTimestamp = PlayerWorld.timeProvider.timestamp()

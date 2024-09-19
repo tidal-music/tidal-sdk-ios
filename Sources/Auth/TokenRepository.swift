@@ -11,19 +11,22 @@ struct TokenRepository {
 	private let tokenService: TokenService
 	private let defaultBackoffPolicy: RetryPolicy
 	private let upgradeBackoffPolicy: RetryPolicy
+	private let logger: TidalLogger?
 
 	init(
 		authConfig: AuthConfig,
 		tokensStore: TokensStore,
 		tokenService: TokenService,
 		defaultBackoffPolicy: RetryPolicy,
-		upgradeBackoffPolicy: RetryPolicy
+		upgradeBackoffPolicy: RetryPolicy,
+		logger: TidalLogger?
 	) {
 		self.authConfig = authConfig
 		self.tokensStore = tokensStore
 		self.tokenService = tokenService
 		self.defaultBackoffPolicy = defaultBackoffPolicy
 		self.upgradeBackoffPolicy = upgradeBackoffPolicy
+		self.logger = logger
 	}
 
 	private var needsCredentialsUpgrade: Bool {
@@ -38,7 +41,7 @@ struct TokenRepository {
 	mutating func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
 		var upgradedRefreshToken: String?
 		let tokens = try loadTokensFromStore()
-		
+
 		let result: AuthResult<Credentials>
 		if let tokens, needsCredentialsUpgrade {
 			let upgradeCredentials = try await upgradeToken(storedTokens: tokens)
@@ -64,37 +67,57 @@ struct TokenRepository {
 
 		var refreshCredentialsBlock: (() async -> AuthResult<RefreshResponse>)?
 		var networkErrorLoggableBlock: ((Error) -> AuthLoggable)?
-		
+		var logoutAfterErrorLoggableBlock: ((Error) -> AuthLoggable)?
+
 		// if a refreshToken is available, we'll use it
 		if let refreshToken = storedTokens?.refreshToken {
 			refreshCredentialsBlock = { await refreshUserAccessToken(refreshToken: refreshToken) }
-			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenNetworkError(error: $0) }
+			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenNetworkError(
+				error: $0,
+				previousSubstatus: apiErrorSubStatus
+			) }
+			logoutAfterErrorLoggableBlock = { AuthLoggable.authLogout(
+				reason: "User credentials were downgraded to client credentials after updating token",
+				error: $0,
+				previousSubstatus: apiErrorSubStatus
+			) }
 		} else if let clientSecret = authConfig.clientSecret {
 			// if nothing is stored, we will try and refresh using a client secret
-			AuthLoggable.getCredentialsRefreshTokenIsNotAvailable.log()
+			self.logger?.log(loggable: AuthLoggable.getCredentialsRefreshTokenIsNotAvailable)
+
 			refreshCredentialsBlock = { await getClientAccessToken(clientSecret: clientSecret) }
-			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: $0) }
+			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(
+				error: $0,
+				previousSubstatus: apiErrorSubStatus
+			) }
+			logoutAfterErrorLoggableBlock = { AuthLoggable.authLogout(
+				reason: "Refreshing token with client credentials failed and we should logout",
+				error: $0,
+				previousSubstatus: apiErrorSubStatus
+			) }
 		}
-		
+
 		if let refreshCredentialsBlock {
 			let authResult = await refreshCredentialsBlock()
 				.map { Credentials(authConfig: authConfig, response: $0) }
-			
+
 			switch (authResult, networkErrorLoggableBlock) {
-			case (.failure(let error), _) where shouldLogoutWithLowerLevelTokenAfterUpdate(error: error):
-				AuthLoggable.authLogout(reason: "User credentials were downgraded to client credentials after updating token", error: error).log()
+			case let (.failure(error), _) where shouldLogoutWithLowerLevelTokenAfterUpdate(error: error):
+				if let loggable = logoutAfterErrorLoggableBlock?(error) {
+					self.logger?.log(loggable: loggable)
+				}
 				return .success(.init(authConfig: authConfig))
 
-			case (.failure(let error), .some(let networkErrorLoggableBlock)):
-				networkErrorLoggableBlock(error).log()
-				
+			case let (.failure(error), .some(networkErrorLoggableBlock)):
+				self.logger?.log(loggable: networkErrorLoggableBlock(error))
+
 			default: break
 			}
-			
+
 			return authResult
 		}
 
-		AuthLoggable.authLogout(reason: "No refresh token or client secret available").log()
+		self.logger?.log(loggable: AuthLoggable.authLogout(reason: "No refresh token or client secret available", previousSubstatus: apiErrorSubStatus))
 		return logout()
 	}
 
@@ -121,24 +144,24 @@ struct TokenRepository {
 				expiresIn: successData.expiresIn,
 				token: successData.accessToken
 			)
-			
+
 			return Tokens(
 				credentials: credentials,
 				refreshToken: successData.refreshToken
 			)
 		}.mapError { error in
-			return RetryableError(code: "1", throwable: error) as TidalError
+			RetryableError(code: "1", throwable: error) as TidalError
 		}
-		
+
 		switch result {
-		case .success(let tokens):
+		case let .success(tokens):
 			if tokens.credentials.token == nil {
-				AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse.log()
+				self.logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse)
 			}
-		case .failure(let error):
-			AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error).log()
+		case let .failure(error):
+			self.logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error))
 		}
-		
+
 		return result
 	}
 
@@ -151,16 +174,17 @@ struct TokenRepository {
 			token: nil
 		))
 	}
-	
+
 	private func shouldLogoutWithLowerLevelTokenAfterUpdate(error: TidalError) -> Bool {
 		if let errorCode = (error as? UnexpectedError)?.code,
 		   let code = Int(errorCode),
-		   code <= HTTP_UNAUTHORIZED {
+		   code <= HTTP_UNAUTHORIZED
+		{
 			// if code 400, 401, the user is effectively logged out
 			// and we return a lower level token
-			return true
+			true
 		} else {
-			return false
+			false
 		}
 	}
 

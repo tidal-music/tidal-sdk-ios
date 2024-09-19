@@ -38,7 +38,7 @@ final class PlayLogTests: XCTestCase {
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher!
 	private var djProducer: DJProducer!
 	private var playerLoader: InternalPlayerLoader!
-	private var storage: Storage!
+	private var storage: OfflineStorage!
 	private var networkMonitor: NetworkMonitorMock!
 	private var configuration: Configuration!
 	private var notificationsHandler: NotificationsHandler!
@@ -56,8 +56,7 @@ final class PlayLogTests: XCTestCase {
 				productType: .TRACK,
 				productId: "1",
 				progressSource: nil,
-				playLogSource: Constants.PlayLogSource.short,
-				productURL: url
+				playLogSource: Constants.PlayLogSource.short
 			),
 			url: url,
 			duration: 5.055
@@ -73,8 +72,7 @@ final class PlayLogTests: XCTestCase {
 				productType: .TRACK,
 				productId: "2",
 				progressSource: nil,
-				playLogSource: Constants.PlayLogSource.long,
-				productURL: url
+				playLogSource: Constants.PlayLogSource.long
 			),
 			url: url,
 			duration: 60.61
@@ -124,7 +122,7 @@ final class PlayLogTests: XCTestCase {
 			featureFlagProvider: featureFlagProvider
 		)
 
-		storage = Storage()
+		storage = OfflineStorageMock()
 		fairplayLicenseFetcher = FairPlayLicenseFetcher.mock(
 			httpClient: HttpClient(using: urlSession),
 			credentialsProvider: credentialsProvider,
@@ -1443,12 +1441,12 @@ extension PlayLogTests {
 		XCTAssertEqual(
 			actualPlayLogEvent.sourceType,
 			expectedPlayLogEvent.sourceType,
-			"Expected sourceType to be \(expectedPlayLogEvent.sourceType) but got \(actualPlayLogEvent.sourceType)"
+			"Expected sourceType to be \(String(describing: expectedPlayLogEvent.sourceType)) but got \(String(describing: actualPlayLogEvent.sourceType))"
 		)
 		XCTAssertEqual(
 			actualPlayLogEvent.sourceId,
 			expectedPlayLogEvent.sourceId,
-			"Expected sourceId to be \(expectedPlayLogEvent.sourceId) but got \(actualPlayLogEvent.sourceId)"
+			"Expected sourceId to be \(String(describing: expectedPlayLogEvent.sourceId)) but got \(String(describing: actualPlayLogEvent.sourceId))"
 		)
 		XCTAssertEqual(
 			actualPlayLogEvent.endTimestamp,

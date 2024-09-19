@@ -40,6 +40,7 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 				try keyRequest.respondByRequestingPersistableContentKeyRequest()
 			#endif
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderContentKeyRequestFailed(error: error))
 			downloadTask.failed(with: error)
 		}
 	}
@@ -59,6 +60,7 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 				try self.store(license, for: downloadTask)
 
 			} catch {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderGetLicenseFailed(error: error))
 				downloadTask?.failed(with: error)
 			}
 		}

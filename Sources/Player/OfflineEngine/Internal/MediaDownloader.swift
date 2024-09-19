@@ -4,21 +4,18 @@ import Foundation
 // MARK: - MediaDownloader
 
 final class MediaDownloader: NSObject {
-	private var tasks: [URLSessionTask: DownloadTask]
+	private var activeTasks: [URLSessionTask: DownloadTask] = [:]
 	private var hlsDownloadSession: AVAssetDownloadURLSession!
 	private var urlDownloadSession: URLSession!
 
 	override init() {
-		tasks = [URLSessionTask: DownloadTask]()
-		let operationQueue = OperationQueue()
-
 		super.init()
+		let operationQueue = OperationQueue()
 		hlsDownloadSession = AVAssetDownloadURLSession(
 			configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.player.downloader.hls"),
 			assetDownloadDelegate: self,
 			delegateQueue: operationQueue
 		)
-
 		urlDownloadSession = URLSession(
 			configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.player.downloader.progressive"),
 			delegate: self,
@@ -31,15 +28,21 @@ final class MediaDownloader: NSObject {
 			return
 		}
 
-		tasks[task] = downloadTask
+		activeTasks[task] = downloadTask
 		task.resume()
 	}
 
 	func download(url: URL, for downloadTask: DownloadTask) {
 		let task = createTask(for: url)
 
-		tasks[task] = downloadTask
+		activeTasks[task] = downloadTask
 		task.resume()
+	}
+
+	func cancelAll() {
+		for (task, _) in activeTasks {
+			task.cancel()
+		}
 	}
 }
 
@@ -64,27 +67,27 @@ private extension MediaDownloader {
 extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 	func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
 		defer {
-			tasks.removeValue(forKey: task)
+			activeTasks.removeValue(forKey: task)
 		}
 
 		guard let error else {
 			return
 		}
 
-		tasks[task]?.failed(with: error)
+		activeTasks[task]?.failed(with: error)
 	}
 
 	func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask, didFinishDownloadingTo location: URL) {
 		defer {
-			tasks.removeValue(forKey: assetDownloadTask)
+			activeTasks.removeValue(forKey: assetDownloadTask)
 		}
 
-		tasks[assetDownloadTask]?.setMediaUrl(location)
+		activeTasks[assetDownloadTask]?.setMediaUrl(location)
 	}
 
 	func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
 		defer {
-			tasks.removeValue(forKey: downloadTask)
+			activeTasks.removeValue(forKey: downloadTask)
 		}
 
 		do {
@@ -92,9 +95,10 @@ extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 			let fileManager = PlayerWorld.fileManagerClient
 			let url = fileManager.cachesDirectory().appendingPathComponent(uuid)
 			try fileManager.moveFile(location, url)
-			tasks[downloadTask]?.setMediaUrl(url)
+			activeTasks[downloadTask]?.setMediaUrl(url)
 		} catch {
-			tasks[downloadTask]?.failed(with: error)
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFinishedMovingFileFailed(error: error))
+			activeTasks[downloadTask]?.failed(with: error)
 		}
 	}
 
@@ -117,7 +121,7 @@ extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 			)
 		)
 
-		tasks[assetDownloadTask]?.reportProgress(loadedDuration / expectedDuration)
+		activeTasks[assetDownloadTask]?.reportProgress(loadedDuration / expectedDuration)
 	}
 
 	func urlSession(
@@ -127,6 +131,6 @@ extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 		totalBytesWritten: Int64,
 		totalBytesExpectedToWrite: Int64
 	) {
-		tasks[downloadTask]?.reportProgress(Double(totalBytesWritten) / Double(totalBytesExpectedToWrite))
+		activeTasks[downloadTask]?.reportProgress(Double(totalBytesWritten) / Double(totalBytesExpectedToWrite))
 	}
 }

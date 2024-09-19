@@ -6,9 +6,7 @@ import Foundation
 final class PlayerEventSenderMock: PlayerEventSender {
 	var streamingMetricsEvents = [any StreamingMetricsEvent]()
 	var playLogEvents = [PlayLogEvent]()
-	var progressEvents = [ProgressEvent]()
 	var offlinePlays = [OfflinePlay]()
-	var userConfigurations = [UserConfiguration]()
 	var writtenEvents = [AnyObject]()
 
 	override init(
@@ -17,7 +15,8 @@ final class PlayerEventSenderMock: PlayerEventSender {
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		dataWriter: DataWriterProtocol = DataWriterMock(),
 		featureFlagProvider: FeatureFlagProvider = .mock,
-		eventSender: EventSender = EventSenderMock()
+		eventSender: EventSender = EventSenderMock(),
+		userClientIdSupplier: (() -> Int)? = nil
 	) {
 		super.init(
 			configuration: configuration,
@@ -25,14 +24,14 @@ final class PlayerEventSenderMock: PlayerEventSender {
 			credentialsProvider: credentialsProvider,
 			dataWriter: dataWriter,
 			featureFlagProvider: featureFlagProvider,
-			eventSender: eventSender
+			eventSender: eventSender,
+			userClientIdSupplier: userClientIdSupplier
 		)
 	}
 
 	func reset() {
 		streamingMetricsEvents.removeAll()
 		playLogEvents.removeAll()
-		progressEvents.removeAll()
 		offlinePlays.removeAll()
 	}
 
@@ -40,21 +39,12 @@ final class PlayerEventSenderMock: PlayerEventSender {
 		streamingMetricsEvents.append(event)
 	}
 
-	override func send(_ event: PlayLogEvent) {
+	override func send(_ event: PlayLogEvent, extras: [String: String?]?) {
 		playLogEvents.append(event)
-	}
-
-	override func send(_ event: ProgressEvent) {
-		progressEvents.append(event)
 	}
 
 	override func send(_ offlinePlay: OfflinePlay) {
 		offlinePlays.append(offlinePlay)
-	}
-
-	override func updateUserConfiguration(userConfiguration: UserConfiguration) {
-		userConfigurations.append(userConfiguration)
-		super.updateUserConfiguration(userConfiguration: userConfiguration)
 	}
 
 	override func writeEvent<T: Codable & Equatable>(event: LegacyEvent<T>) {

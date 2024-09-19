@@ -48,7 +48,8 @@ final class TokenRepositoryTest: XCTestCase {
 			tokensStore: fakeTokensStore,
 			tokenService: tokenService,
 			defaultBackoffPolicy: defaultBackoffPolicy ?? MockDefaultRetryPolicy(),
-			upgradeBackoffPolicy: upgradeBackoffPolicy ?? MockUpgradeRetryPolicy()
+			upgradeBackoffPolicy: upgradeBackoffPolicy ?? MockUpgradeRetryPolicy(),
+			logger: nil
 		)
 	}
 

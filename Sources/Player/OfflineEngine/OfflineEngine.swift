@@ -4,29 +4,29 @@ import Foundation
 
 public final class OfflineEngine {
 	private let downloader: Downloader
-	private let storage: Storage
+	private let offlineStorage: OfflineStorage
 	private let playerEventSender: PlayerEventSender
 
 	private weak var offlinerDelegate: OfflinerDelegate?
 
-	init(downloader: Downloader, offlineStorage: Storage, playerEventSender: PlayerEventSender) {
+	init(downloader: Downloader, offlineStorage: OfflineStorage, playerEventSender: PlayerEventSender) {
 		self.downloader = downloader
-		storage = offlineStorage
+		self.offlineStorage = offlineStorage
 		self.playerEventSender = playerEventSender
 		self.downloader.setObserver(observer: self)
 	}
 
 	public func offline(mediaProduct: MediaProduct) -> Bool {
-		guard let item = storage.get(mediaProduct: mediaProduct) else {
-			offlinerDelegate?.offlineStarted(for: mediaProduct)
+		guard let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId) else {
+			offlinerDelegate?.offliningStarted(for: mediaProduct)
 			downloader.download(mediaProduct: mediaProduct, sessionType: .DOWNLOAD)
 			return true
 		}
 
-		if item.state() != .OFFLINED_AND_VALID {
-			storage.delete(mediaProduct: mediaProduct)
-			offlinerDelegate?.offlineStarted(for: mediaProduct)
-			downloader.download(mediaProduct: mediaProduct, sessionType: .PLAYBACK)
+		guard offlineEntry.state == .OFFLINED_AND_VALID else {
+			delete(offlineEntry: offlineEntry)
+			offlinerDelegate?.offliningStarted(for: mediaProduct)
+			downloader.download(mediaProduct: mediaProduct, sessionType: .DOWNLOAD)
 			return true
 		}
 
@@ -34,22 +34,26 @@ public final class OfflineEngine {
 	}
 
 	public func deleteOffline(mediaProduct: MediaProduct) -> Bool {
-		guard let storageItem = storage.get(mediaProduct: mediaProduct) else {
+		guard let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId) else {
 			return false
 		}
 
-		delete(storageItem: storageItem)
+		delete(offlineEntry: offlineEntry)
 		return true
 	}
 
-	public func deleteAllOfflines() -> Bool {
-		storage.clear()
-		offlinerDelegate?.allOfflinesDeleted()
+	public func deleteAllOfflinedMediaProducts() -> Bool {
+		downloader.cancellAll()
+		try? offlineStorage.clear()
+		offlinerDelegate?.allOfflinedMediaProductsDeleted()
 		return true
 	}
 
 	public func getOfflineState(mediaProduct: MediaProduct) -> OfflineState {
-		storage.get(mediaProduct: mediaProduct)?.state() ?? .NOT_OFFLINED
+		guard let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId) else {
+			return .NOT_OFFLINED
+		}
+		return offlineEntry.state.publicState
 	}
 
 	public func setOfflinerDelegate(_ offlinerDelegate: OfflinerDelegate) {
@@ -64,28 +68,39 @@ extension OfflineEngine: DownloadObserver {
 		playerEventSender.send(streamingMetricsEvent)
 	}
 
-	func downloadCompleted(for mediaProduct: MediaProduct, storageItem: StorageItem) {
-		storage.store(storageItem: storageItem)
-		offlinerDelegate?.offlineDone(for: mediaProduct)
-	}
-
-	func downloadFailed(for mediaProduct: MediaProduct, with error: Error) {
-		offlinerDelegate?.offlineFailed(for: mediaProduct)
+	func downloadStarted(for mediaProduct: MediaProduct) {
+		offlinerDelegate?.offliningStarted(for: mediaProduct)
 	}
 
 	func downloadProgress(for mediaProduct: MediaProduct, is percentage: Double) {
-		offlinerDelegate?.offlineProgress(for: mediaProduct, is: percentage)
+		offlinerDelegate?.offliningProgress(for: mediaProduct, is: percentage)
+	}
+
+	func downloadCompleted(for mediaProduct: MediaProduct, offlineEntry: OfflineEntry) {
+		do {
+			try offlineStorage.save(offlineEntry)
+			offlinerDelegate?.offliningCompleted(for: mediaProduct)
+		} catch {
+			print("Failed to save item: \(error)")
+			offlinerDelegate?.offliningFailed(for: mediaProduct)
+		}
+	}
+
+	func downloadFailed(for mediaProduct: MediaProduct, with error: Error) {
+		offlinerDelegate?.offliningFailed(for: mediaProduct)
 	}
 }
 
 private extension OfflineEngine {
-	func delete(storageItem: StorageItem) {
+	func delete(offlineEntry: OfflineEntry) {
 		let mediaProduct = MediaProduct(
-			productType: storageItem.productType,
-			productId: storageItem.productId
+			productType: offlineEntry.productType,
+			productId: offlineEntry.productId
 		)
-
-		guard let mediaUrl = storageItem.mediaUrl, let licenseUrl = storageItem.licenseUrl else {
+		guard
+			let mediaUrl = offlineEntry.mediaURL,
+			let licenseUrl = offlineEntry.licenseURL
+		else {
 			return
 		}
 
@@ -93,8 +108,10 @@ private extension OfflineEngine {
 			let fileManager = PlayerWorld.fileManagerClient
 			try fileManager.removeItem(at: mediaUrl)
 			try fileManager.removeItem(at: licenseUrl)
-			storage.delete(mediaProduct: mediaProduct)
+			try offlineStorage.delete(key: mediaProduct.productId)
+			offlinerDelegate?.offlinedDeleted(for: mediaProduct)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.deleteOfflinedItem(error: error))
 			print("Failed to remove item: \(error)")
 		}
 	}

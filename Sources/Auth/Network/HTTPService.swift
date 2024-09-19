@@ -27,10 +27,10 @@ extension HTTPService {
 		request.httpMethod = httpMethod.rawValue
 		request.setValue(contentType, forHTTPHeaderField: "Content-Type")
 		request.httpBody = urlComponents?.query?.data(using: .utf8)
-		
+
 		return request
 	}
-	
+
 	func executeRequest<T: Decodable>(_ request: URLRequest) async throws -> T {
 		// Send the request asynchronously
 		let (data, response) = try await URLSession.shared.data(for: request)

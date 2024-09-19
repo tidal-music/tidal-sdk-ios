@@ -1,6 +1,5 @@
-import Foundation
-import Logging
 import Common
+import Foundation
 
 // MARK: - TidalAuth
 
@@ -15,16 +14,20 @@ public class TidalAuth: Auth & CredentialsProvider {
 		config: AuthConfig
 	) {
 		self.config = config
+
 		let tokensStore = DefaultTokensStore(credentialsKey: config.credentialsKey, credentialsAccessGroup: config.credentialsAccessGroup)
-		loginRepository = provideLoginRepository(config, tokensStore: tokensStore)
-		tokenRepository = provideTokenRepository(config, tokensStore: tokensStore)
-		
-		// if logger is not provided, use logger that does nothing
-		let logHandlerFactory = config.logHandlerFactory ?? { _ in SwiftLogNoOpLogHandler() }
-		LoggingSystem.bootstrap(logHandlerFactory)
+
+		let authLogger: TidalLogger?
+		if config.enableLogging {
+			authLogger = TidalLogger(label: "Auth", level: .trace)
+		} else {
+			authLogger = nil
+		}
+		loginRepository = provideLoginRepository(config, tokensStore: tokensStore, logger: authLogger)
+		tokenRepository = provideTokenRepository(config, tokensStore: tokensStore, logger: authLogger)
 	}
 	
-	private func provideLoginRepository(_ config: AuthConfig, tokensStore: TokensStore) -> LoginRepository {
+	private func provideLoginRepository(_ config: AuthConfig, tokensStore: TokensStore, logger: TidalLogger?) -> LoginRepository {
 		LoginRepository(
 			authConfig: config,
 			tokensStore: tokensStore,
@@ -34,17 +37,19 @@ public class TidalAuth: Auth & CredentialsProvider {
 				loginBaseUrl: config.tidalLoginServiceBaseUri,
 				scopes: config.scopes
 			),
-			loginService: DefaultLoginService(authBaseUrl: config.tidalAuthServiceBaseUri)
+			loginService: DefaultLoginService(authBaseUrl: config.tidalAuthServiceBaseUri),
+			logger: logger
 		)
 	}
 
-	private func provideTokenRepository(_ config: AuthConfig, tokensStore: TokensStore) -> TokenRepository {
+	private func provideTokenRepository(_ config: AuthConfig, tokensStore: TokensStore, logger: TidalLogger?) -> TokenRepository {
 		TokenRepository(
 			authConfig: config,
 			tokensStore: tokensStore,
 			tokenService: DefaultTokenService(authBaseUrl: config.tidalAuthServiceBaseUri),
 			defaultBackoffPolicy: DefaultRetryPolicy(),
-			upgradeBackoffPolicy: DefaultRetryPolicy()
+			upgradeBackoffPolicy: DefaultRetryPolicy(), 
+			logger: logger
 		)
 	}
 

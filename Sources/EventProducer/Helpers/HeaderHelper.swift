@@ -1,6 +1,6 @@
+import protocol Auth.CredentialsProvider
 import Common
 import Foundation
-import protocol Auth.CredentialsProvider
 #if canImport(UIKit)
 	import UIKit
 #endif
@@ -11,11 +11,11 @@ struct HeaderHelper {
 	private func getCredentialsProviderToken() async throws -> String? {
 		try? await credentialsProvider?.getCredentials().token
 	}
-	
+
 	private func getCredentialsProviderClientId() async throws -> String? {
 		try? await credentialsProvider?.getCredentials().clientId
 	}
-	
+
 	func getAuthTokenHeader() async throws -> [String: String]? {
 		do {
 			if let token = try await getCredentialsProviderToken() {
@@ -58,7 +58,7 @@ struct HeaderHelper {
 			systemName = await UIDevice.current.systemName
 			systemVersion = await UIDevice.current.systemVersion
 		#endif
-		
+
 		let clientId = try? await getCredentialsProviderClientId()
 
 		var headers: [HTTPHeaderKeys: String] = [

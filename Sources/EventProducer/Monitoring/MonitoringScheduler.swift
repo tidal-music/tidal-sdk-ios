@@ -4,7 +4,7 @@ import Foundation
 final class MonitoringScheduler: Scheduler {
 	private let monitoringSchedulerTime: TimeInterval = 60
 	var schedulerTask: Task<Void, any Error>?
-	
+
 	private let consumerUri: String?
 	private let monitoring: Monitoring
 	private let eventScheduler: EventScheduler
@@ -24,14 +24,14 @@ final class MonitoringScheduler: Scheduler {
 	) {
 		self.consumerUri = consumerUri
 		self.monitoring = monitoring
-		self.eventScheduler = EventScheduler(
+		eventScheduler = EventScheduler(
 			consumerUri: consumerUri,
 			eventQueue: eventQueue,
 			monitoring: monitoring
 		)
-		self.networkService = NetworkingService(consumerUri: consumerUri)
+		networkService = NetworkingService(consumerUri: consumerUri)
 	}
-	
+
 	convenience init(config: EventConfig?, eventQueue: EventQueue, monitoring: Monitoring) {
 		self.init(
 			consumerUri: config?.consumerUri,

@@ -33,10 +33,10 @@ final class EventScheduler: Scheduler {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.eventQueue = eventQueue
-		self.networkService = NetworkingService(consumerUri: consumerUri)
+		networkService = NetworkingService(consumerUri: consumerUri)
 		self.monitoring = monitoring
 	}
-	
+
 	convenience init(config: EventConfig?, eventQueue: EventQueue, monitoring: Monitoring) {
 		self.init(
 			consumerUri: config?.consumerUri,
@@ -122,12 +122,12 @@ final class EventScheduler: Scheduler {
 			endpoint = .events(
 				requestData,
 				authHeader: authTokenHeader
-			 )
+			)
 		} else if let clientAuth = try await headerHelper.getClientAuthHeader() {
 			endpoint = .publicEvents(
 				requestData,
 				clientAuth: clientAuth
-			 )
+			)
 		} else {
 			throw EventProducerError.clientIdMissingFailure
 		}
@@ -161,12 +161,12 @@ final class EventScheduler: Scheduler {
 				"\(Parameters.sendBatch.rawValue).\(index).\(Parameters.attribute.rawValue).\(attributeIndex)"
 
 			// Format base attributes
-			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.id.rawValue)"] = event.id
-			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.body.rawValue)"] = event.payload
+			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.id.rawValue)"] = event.id.encoded()
+			parameters["\(Parameters.sendBatch.rawValue).\(index).\(Parameters.body.rawValue)"] = event.payload.encoded()
 
-			parameters["\(baseAttributePrefix).\(Parameters.nameKey.rawValue)"] = Parameters.nameKey.rawValue
-			parameters["\(baseAttributePrefix).\(Parameters.value.rawValue)"] = event.name
-			parameters["\(baseAttributePrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue
+			parameters["\(baseAttributePrefix).\(Parameters.nameKey.rawValue)"] = Parameters.nameKey.rawValue.encoded()
+			parameters["\(baseAttributePrefix).\(Parameters.value.rawValue)"] = event.name.encoded()
+			parameters["\(baseAttributePrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue.encoded()
 
 			// Format headers
 			guard let eventHeadersString = event.headers.jsonEncoded else {
@@ -177,9 +177,9 @@ final class EventScheduler: Scheduler {
 			let baseHeaderPrefix =
 				"\(Parameters.sendBatch.rawValue).\(index).\(Parameters.attribute.rawValue).\(headerAttributeIndex)"
 
-			parameters["\(baseHeaderPrefix).\(Parameters.nameKey.rawValue)"] = Parameters.headers.rawValue
-			parameters["\(baseHeaderPrefix).\(Parameters.value.rawValue)"] = eventHeadersString
-			parameters["\(baseHeaderPrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue
+			parameters["\(baseHeaderPrefix).\(Parameters.nameKey.rawValue)"] = Parameters.headers.rawValue.encoded()
+			parameters["\(baseHeaderPrefix).\(Parameters.value.rawValue)"] = eventHeadersString.encoded()
+			parameters["\(baseHeaderPrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue.encoded()
 		}
 		return parameters
 	}
@@ -207,7 +207,7 @@ private extension EventScheduler {
 extension EventScheduler {
 	func getAllowedBatch(_ batch: [Event]) -> [Event] {
 		var allowedBatch = batch
-		
+
 		while isExceedsMaxSize(for: allowedBatch) {
 			if allowedBatch.isEmpty {
 				return []
@@ -218,9 +218,14 @@ extension EventScheduler {
 		}
 		return allowedBatch
 	}
-	
+
 	private func isExceedsMaxSize(for batch: [Event]) -> Bool {
-		guard let data = try? JSONEncoder().encode(batch) else { return false }
-		return FileManagerHelper.shared.exceedsMaximumSize(object: data, maximumSize: maxDiskUsageBytes ?? EventConfig.defaultQueueMaxDiskUsageBytes)
+		guard let data = try? JSONEncoder().encode(batch) else {
+			return false
+		}
+		return FileManagerHelper.shared.exceedsMaximumSize(
+			object: data,
+			maximumSize: maxDiskUsageBytes ?? EventConfig.defaultQueueMaxDiskUsageBytes
+		)
 	}
 }

@@ -10,7 +10,8 @@ final class LoginRepository {
 	private let loginService: LoginService
 	private let tokensStore: TokensStore
 	private let exponentialBackoffPolicy: RetryPolicy
-
+	private let logger: TidalLogger?
+	
 	private var codeVerifier: String?
 
 	init(
@@ -19,7 +20,8 @@ final class LoginRepository {
 		tokensStore: TokensStore,
 		loginUriBuilder: LoginUriBuilder,
 		loginService: LoginService,
-		exponentialBackoffPolicy: RetryPolicy = DefaultRetryPolicy()
+		exponentialBackoffPolicy: RetryPolicy = DefaultRetryPolicy(),
+		logger: TidalLogger?
 	) {
 		self.authConfig = authConfig
 		self.codeChallengeBuilder = codeChallengeBuilder
@@ -27,6 +29,7 @@ final class LoginRepository {
 		self.loginUriBuilder = loginUriBuilder
 		self.loginService = loginService
 		self.exponentialBackoffPolicy = exponentialBackoffPolicy
+		self.logger = logger
 	}
 
 	private lazy var deviceLoginPollHelper: DeviceLoginPollHelper = DeviceLoginPollHelper(loginService: loginService)
@@ -66,14 +69,14 @@ final class LoginRepository {
 					clientUniqueKey: authConfig.clientUniqueKey
 				)
 			}
-			
+
 			switch response {
-			case .success(let successData):
+			case let .success(successData):
 				try saveTokens(response: successData)
-			case .failure(let error):
-				AuthLoggable.finalizeLoginNetworkError(error: error).log()
+			case let .failure(error):
+				self.logger?.log(loggable: AuthLoggable.finalizeLoginNetworkError(error: error))
 			}
-			
+
 			return response
 		}
 
@@ -111,10 +114,10 @@ final class LoginRepository {
 			return response
 		}
 		
-		if case .failure(let error) = result {
-			AuthLoggable.initializeDeviceLoginNetworkError(error: error).log()
+		if case let .failure(error) = result {
+			self.logger?.log(loggable: AuthLoggable.initializeDeviceLoginNetworkError(error: error))
 		}
-		
+
 		return result
 	}
 
@@ -125,14 +128,13 @@ final class LoginRepository {
 			grantType: GRANT_TYPE_DEVICE_CODE,
 			retryPolicy: exponentialBackoffPolicy
 		)
-		
+
 		switch response {
-		case .success(let successData):
+		case let .success(successData):
 			try saveTokens(response: successData)
-		case .failure(let error):
+		case let .failure(error):
 			let loggable = error.subStatus?.description.isSubStatus(status: .expiredAccessToken) == true ? AuthLoggable.finalizeDevicePollingLimitReached : AuthLoggable.finalizeDeviceLoginNetworkError(error: error)
-			
-			loggable.log()
+			self.logger?.log(loggable: loggable)
 		}
 
 		return response

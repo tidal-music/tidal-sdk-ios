@@ -10,7 +10,7 @@ final class DefaultTokensStore: TokensStore {
 	private var latestTokens: Tokens?
 
 	private let credentialsQueue = DispatchQueue(label: "com.tidal.auth.credentialsQueue")
-	
+
 	init(credentialsKey: String, credentialsAccessGroup: String?) {
 		storageKey = "\(credentialsKey)_\(PREFS_FILE_NAME)"
 		self.credentialsKey = credentialsKey
@@ -65,7 +65,7 @@ final class DefaultTokensStore: TokensStore {
 			try encryptedStorage.removeAll()
 		}
 	}
-	
+
 	private func saveTokensUnsafe(tokens: Tokens) throws {
 		let data = try JSONEncoder().encode(tokens)
 		encryptedStorage[credentialsKey] = String(data: data, encoding: .utf8)

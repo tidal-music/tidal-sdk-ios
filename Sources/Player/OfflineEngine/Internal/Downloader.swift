@@ -5,9 +5,10 @@ import Foundation
 
 protocol DownloadObserver: AnyObject {
 	func handle(streamingMetricsEvent: any StreamingMetricsEvent)
-	func downloadCompleted(for mediaProduct: MediaProduct, storageItem: StorageItem)
-	func downloadFailed(for mediaProduct: MediaProduct, with error: Error)
+	func downloadStarted(for mediaProduct: MediaProduct)
 	func downloadProgress(for mediaProduct: MediaProduct, is percentage: Double)
+	func downloadCompleted(for mediaProduct: MediaProduct, offlineEntry: OfflineEntry)
+	func downloadFailed(for mediaProduct: MediaProduct, with error: Error)
 }
 
 // MARK: - Downloader
@@ -17,6 +18,8 @@ class Downloader {
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
 	private let mediaDownloader: MediaDownloader
 	private let networkMonitor: NetworkMonitor
+
+	private var activeTasks: [String: SafeTask] = [:]
 
 	private weak var observer: DownloadObserver?
 
@@ -31,8 +34,13 @@ class Downloader {
 		self.networkMonitor = networkMonitor
 	}
 
-	func download(mediaProduct: MediaProduct, sessionType: SessionType, outputDevice: String? = nil) {
-		SafeTask {
+	func download(
+		mediaProduct: MediaProduct,
+		sessionType: SessionType,
+		outputDevice: String? = nil
+	) {
+		let taskID = mediaProduct.productId
+		let task = SafeTask {
 			await start(DownloadTask(
 				mediaProduct: mediaProduct,
 				networkType: self.networkMonitor.getNetworkType(),
@@ -41,6 +49,15 @@ class Downloader {
 				monitor: self
 			))
 		}
+		activeTasks[taskID] = task
+	}
+
+	func cancellAll() {
+		for (_, task) in activeTasks {
+			task.cancel()
+		}
+		activeTasks.removeAll()
+		mediaDownloader.cancelAll()
 	}
 
 	func setObserver(observer: DownloadObserver) {
@@ -56,10 +73,9 @@ private extension Downloader {
 				mediaProduct: downloadTask.mediaProduct,
 				playbackMode: .OFFLINE
 			)
-
 			downloadMedia(for: downloadTask, using: playbackInfo)
-
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.startDownloadFailed(error: error))
 			failed(downloadTask: downloadTask, with: error)
 		}
 	}
@@ -107,15 +123,19 @@ extension Downloader: DownloadTaskMonitor {
 		observer?.handle(streamingMetricsEvent: event)
 	}
 
+	func started(downloadTask: DownloadTask) {
+		observer?.downloadStarted(for: downloadTask.mediaProduct)
+	}
+
 	func progress(downloadTask: DownloadTask, progress: Double) {
 		observer?.downloadProgress(for: downloadTask.mediaProduct, is: progress)
 	}
 
-	func failed(downloadTask: DownloadTask, with error: Error) {
-		observer?.downloadFailed(for: downloadTask.mediaProduct, with: error)
+	func completed(downloadTask: DownloadTask, offlineEntry: OfflineEntry) {
+		observer?.downloadCompleted(for: downloadTask.mediaProduct, offlineEntry: offlineEntry)
 	}
 
-	func completed(downloadTask: DownloadTask, storageItem: StorageItem) {
-		observer?.downloadCompleted(for: downloadTask.mediaProduct, storageItem: storageItem)
+	func failed(downloadTask: DownloadTask, with error: Error) {
+		observer?.downloadFailed(for: downloadTask.mediaProduct, with: error)
 	}
 }

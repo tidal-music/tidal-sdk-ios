@@ -5,6 +5,7 @@ import Foundation
 struct PlaybackStatistics: StreamingMetricsEvent {
 	enum EventTag: String, Codable {
 		case CACHED
+		case OFFLINER_V2
 	}
 
 	// MARK: - StreamingMetricsEvent

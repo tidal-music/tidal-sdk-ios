@@ -396,6 +396,7 @@ private extension AVQueuePlayerWrapperLegacy {
 
 			return AssetPlaybackMetadata(sampleRate: sampleRate, formatFlags: bitdepthFlags)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.legacyReadPlaybackMetadataFailed(error: error))
 			return nil
 		}
 	}
@@ -609,7 +610,6 @@ private extension AVQueuePlayerWrapperLegacy {
 			return "empty"
 		}
 
-		let eventsString: String
 		let events = "Log Events: " + log.events.description
 
 		guard let data = log.extendedLogData(),

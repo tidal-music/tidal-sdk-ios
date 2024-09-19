@@ -17,7 +17,7 @@ class PlayerEventSender {
 	private let featureFlagProvider: FeatureFlagProvider
 	private let eventSender: EventSender
 
-	@Atomic private var userConfiguration: UserConfiguration?
+	@Atomic private var userClientIdSupplier: (() -> Int)?
 
 	private let encoder: JSONEncoder
 	private let eventsDirectory: URL
@@ -34,7 +34,8 @@ class PlayerEventSender {
 		credentialsProvider: CredentialsProvider,
 		dataWriter: DataWriterProtocol,
 		featureFlagProvider: FeatureFlagProvider,
-		eventSender: EventSender
+		eventSender: EventSender,
+		userClientIdSupplier: (() -> Int)? = nil
 	) {
 		self.configuration = configuration
 		self.httpClient = httpClient
@@ -42,7 +43,8 @@ class PlayerEventSender {
 		self.dataWriter = dataWriter
 		self.featureFlagProvider = featureFlagProvider
 		self.eventSender = eventSender
-		self.asyncSchedulerFactory = PlayerWorld.asyncSchedulerFactoryProvider.newFactory()
+		self.userClientIdSupplier = userClientIdSupplier
+		asyncSchedulerFactory = PlayerWorld.asyncSchedulerFactoryProvider.newFactory()
 
 		encoder = JSONEncoder()
 
@@ -68,20 +70,18 @@ class PlayerEventSender {
 	}
 
 	func send(_ event: any StreamingMetricsEvent) {
-		write(group: .streamingMetrics, name: event.name, payload: event)
+		write(group: .streamingMetrics, name: event.name, payload: event, extras: nil)
 	}
 
-	func send(_ event: PlayLogEvent) {
-		write(group: .playlog, name: EventNames.playbackSession, payload: event)
-	}
-
-	func send(_ event: ProgressEvent) {
-		write(group: .playback, name: EventNames.progress, payload: event)
+	func send(_ event: PlayLogEvent, extras: [String: String?]?) {
+		write(group: .playlog, name: EventNames.playbackSession, payload: event, extras: extras)
 	}
 
 	func send(_ offlinePlay: OfflinePlay) {
 		asyncSchedulerFactory.create { [weak self] in
-			guard let self else { return }
+			guard let self else {
+				return
+			}
 
 			do {
 				let data = try encoder.encode(offlinePlay)
@@ -89,13 +89,9 @@ class PlayerEventSender {
 				let url = offlinePlaysDirectory.appendingPathComponent(uuid)
 				try dataWriter.write(data: data, to: url, options: .atomic)
 			} catch {
-				// TODO: This error should be centrally logged
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendEventOfflinePlayFailed(error: error))
 			}
 		}
-	}
-
-	func updateUserConfiguration(userConfiguration: UserConfiguration) {
-		self.userConfiguration = userConfiguration
 	}
 
 	func writeEvent<T: Codable & Equatable>(event: LegacyEvent<T>) {
@@ -105,7 +101,7 @@ class PlayerEventSender {
 			let url = eventsDirectory.appendingPathComponent(uuid)
 			try dataWriter.write(data: data, to: url, options: .atomic)
 		} catch {
-			// TODO: This error should be centrally logged
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.sendLegacyEventFailed(error: error))
 		}
 	}
 }
@@ -124,6 +120,7 @@ private extension PlayerEventSender {
 
 			return url
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.urlForDirectoryFailed(error: error))
 			return nil
 		}
 	}
@@ -140,7 +137,7 @@ private extension PlayerEventSender {
 				try fileManager.copyItem(at: sourceURL, to: destURL)
 				try fileManager.removeItem(at: sourceURL)
 			} catch {
-				// TODO: This error should be centrally logged
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.migrateLegacyDirectoryFailed(error: error))
 				print("Could not migrate legacy events folder. \(String(describing: error))")
 			}
 		}
@@ -157,6 +154,7 @@ private extension PlayerEventSender {
 			}
 			return url
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.initializeDirectoryFailed(error: error))
 			return nil
 		}
 	}
@@ -188,32 +186,38 @@ private extension PlayerEventSender {
 		self.timer = timer
 	}
 
-	func write<T: Codable & Equatable>(group: EventGroup, name: String, payload: T) {
+	func write<T: Codable & Equatable>(group: EventGroup, name: String, payload: T, extras: [String: String?]?) {
 		let now = PlayerWorld.timeProvider.timestamp()
 		asyncSchedulerFactory.create { [weak self] in
-			guard let self else { return }
+			guard let self else {
+				return
+			}
 
 			let token: String?
+			let userId: String?
 
 			do {
 				let authToken = try await credentialsProvider.getCredentials()
 				token = authToken.toBearerToken()
+				userId = authToken.userId
 
 				guard authToken.isAuthorized else {
-					// TODO: Should we log this error?
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.writeEventNotAuthorized)
 					print("EventSender succeeded to get credentials but user is not authorized.")
 					return
 				}
 			} catch {
-				// TODO: Should we log this error?
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.writeEventFailed(error: error))
 				print("StreamingPrivilegesHandler failed to get credentials")
 				return
 			}
-
+			
+			let userClientId = userClientIdSupplier?()
+		
 			let user = User(
-				id: userConfiguration!.userId,
+				id: Int(userId!) ?? -1,
 				accessToken: token ?? "N/A",
-				clientId: userConfiguration!.userClientId
+				clientId: userClientId
 			)
 
 			let clientIdString: String = if let token, let clientId = CredentialsSuccessDataParser().clientIdFromToken(token) {
@@ -236,7 +240,8 @@ private extension PlayerEventSender {
 					ts: now,
 					user: user,
 					client: client,
-					payload: payload
+					payload: payload,
+					extras: extras
 				)
 				await sendToEventProducer(name: name, event: event, consentCategory: consentCategory)
 			} else {
@@ -247,7 +252,8 @@ private extension PlayerEventSender {
 					ts: now,
 					user: user,
 					client: client,
-					payload: payload
+					payload: payload,
+					extras: extras
 				)
 				writeEvent(event: event)
 			}
@@ -262,7 +268,7 @@ private extension PlayerEventSender {
 		do {
 			let data = try encoder.encode(event)
 			guard let serializedString = String(data: data, encoding: .utf8) else {
-				// TODO: Should we log this error?
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendToEventProducerSerializationFailed)
 				print("Unable to encode data from encoded event: \(event)")
 				return
 			}
@@ -274,7 +280,7 @@ private extension PlayerEventSender {
 				payload: serializedString
 			)
 		} catch {
-			// TODO: Should we log this error?
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.sendToEventProducerFailed(error: error))
 			print("Error when encoding event: \(event)")
 		}
 	}
@@ -296,16 +302,18 @@ private extension PlayerEventSender {
 
 	func send(contentOfAll urls: [URL], to url: URL, serialize: @escaping ([URL]) throws -> Data?) {
 		asyncSchedulerFactory.create { [weak self] in
-			guard let self else { return }
+			guard let self else {
+				return
+			}
 
 			do {
 				let token: String?
 
-				let authToken = try await self.credentialsProvider.getCredentials()
+				let authToken = try await credentialsProvider.getCredentials()
 				token = authToken.toBearerToken()
 
 				guard authToken.isAuthorized else {
-					// TODO: Should we log this error?
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.sendEventsNotAuthorized)
 					print("EventSender succeeded to get credentials but user is not authorized.")
 					return
 				}
@@ -323,7 +331,7 @@ private extension PlayerEventSender {
 				urls.forEach { try? self.fileManager.removeItem(at: $0) }
 
 			} catch {
-				// TODO: This error should be centrally logged
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendEventsFailed(error: error))
 				print("Failed to send data to \(url) [\(String(describing: error))")
 			}
 		}

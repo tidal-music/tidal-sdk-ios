@@ -1,6 +1,6 @@
+@testable import Auth
 import Common
 @testable import EventProducer
-@testable import Auth
 import XCTest
 
 // MARK: - HeaderHelperTests
@@ -10,7 +10,7 @@ final class HeaderHelperTests: XCTestCase {
 		var testAccessToken: String? = nil
 		let testClientId: String
 		func getCredentials(apiErrorSubStatus: String?) async throws -> Credentials {
-			return Credentials(
+			Credentials(
 				clientId: testClientId,
 				requestedScopes: .init(),
 				clientUniqueKey: "",
@@ -20,6 +20,7 @@ final class HeaderHelperTests: XCTestCase {
 				token: testAccessToken
 			)
 		}
+
 		var isUserLoggedIn: Bool
 	}
 
@@ -52,12 +53,16 @@ final class HeaderHelperTests: XCTestCase {
 	func testGetDefaultHeadersForMonitoringEvent() async throws {
 		let testAccessToken = "testAccessToken"
 		let clientID = "42"
-		let credentialsProvider = MockCredentialsProvider(testAccessToken: testAccessToken, testClientId: clientID, isUserLoggedIn: true)
+		let credentialsProvider = MockCredentialsProvider(
+			testAccessToken: testAccessToken,
+			testClientId: clientID,
+			isUserLoggedIn: true
+		)
 		sut = HeaderHelper(credentialsProvider: credentialsProvider)
 
 		let headers = await sut.getDefaultHeaders(with: .necessary, isMonitoringEvent: false)
 		let keys = headers.compactMap { HTTPHeaderKeys(rawValue: $0.key) }
-		
+
 		let token = try? await credentialsProvider.getCredentials().token
 
 		XCTAssertTrue(!keys.filter { $0 == .authorization }.isEmpty)

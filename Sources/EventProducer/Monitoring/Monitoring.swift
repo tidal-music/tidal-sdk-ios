@@ -1,12 +1,14 @@
-import Foundation
 import Combine
+import Foundation
+
+// MARK: - Monitoring
 
 struct Monitoring {
 	static let eventName = "tep-tl-monitoring"
 
 	var outageSubject: CurrentValueSubject<OutageState, Never>?
 	private var cancellable: AnyCancellable?
-	
+
 	private let monitoringQueue: MonitoringQueue
 
 	init(monitoringQueue: MonitoringQueue) {
@@ -96,22 +98,25 @@ struct Monitoring {
 }
 
 // MARK: Outage Info
+
 extension Monitoring {
 	mutating func initOutageSubject(withEvent eventName: String) {
 		outageSubject = CurrentValueSubject<OutageState, Never>(
 			.outageStart(
-				error: OutageStartError(code: "100", message: "Start outage error for \(eventName)")))
+				error: OutageStartError(code: "100", message: "Start outage error for \(eventName)")
+			)
+		)
 	}
 
 	mutating func startOutage(eventName: String) {
-		guard let outageSubject = outageSubject else {
+		guard let outageSubject else {
 			initOutageSubject(withEvent: eventName)
 			return
 		}
 		outageSubject.send(.outageStart(error: .init(code: "100", message: "Start outage error for \(eventName)")))
 	}
 
-	 func endOutage(eventName: String) {
+	func endOutage(eventName: String) {
 		outageSubject?.send(.outageEnd(message: .init(message: "No outage for \(eventName)")))
 	}
 }

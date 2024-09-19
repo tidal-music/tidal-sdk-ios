@@ -1,7 +1,9 @@
-import Logging
 import Foundation
+import Logging
 
-enum AuthLoggable {
+// MARK: - AuthLoggable
+
+enum AuthLoggable: TidalLoggable {
 	// swiftlint:disable identifier_name
 	case initializeDeviceLoginNetworkError(error: Error)
 	case finalizeLoginNetworkError(error: Error)
@@ -11,20 +13,23 @@ enum AuthLoggable {
 	case getCredentialsScopeIsNotGranted
 	case getCredentialsClientUniqueKeyIsDifferent
 	case getCredentialsUpgradeTokenNoTokenInResponse
-	case getCredentialsRefreshTokenNetworkError(error: Error)
-	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error)
-	case authLogout(reason: String, error: Error? = nil)
+	case getCredentialsRefreshTokenNetworkError(error: Error, previousSubstatus: String? = nil)
+	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error, previousSubstatus: String? = nil)
+	case authLogout(reason: String, error: Error? = nil, previousSubstatus: String? = nil)
 	case getCredentialsRefreshTokenIsNotAvailable
 	// swiftlint:enable identifier_name
 }
 
 // MARK: - Logging
+
 extension AuthLoggable {
+	static var enableLogging: Bool = false
 	private static let metadataErrorKey = "error"
 	private static let metadataReasonKey = "reason"
-	
+	private static let metadataPreviousSubstatusKey = "previous_substatus"
+
 	var loggingMessage: Logger.Message {
-		return switch self {
+		switch self {
 		case .initializeDeviceLoginNetworkError:
 			"InitializeDeviceLoginNetworkError"
 		case .finalizeLoginNetworkError:
@@ -51,44 +56,44 @@ extension AuthLoggable {
 			"AuthLogout"
 		}
 	}
-	
+
 	var loggingMetadata: Logger.Metadata {
 		var metadata = [String: Logger.MetadataValue]()
-		
+
 		switch self {
-		case .initializeDeviceLoginNetworkError(let error),
-			 .finalizeLoginNetworkError(let error),
-			 .finalizeDeviceLoginNetworkError(let error),
-			 .getCredentialsUpgradeTokenNetworkError(let error),
-			 .getCredentialsRefreshTokenNetworkError(let error),
-			 .getCredentialsRefreshTokenWithClientCredentialsNetworkError(let error):
-			metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
-		case .authLogout(let reason, let error):
-			metadata[Self.metadataReasonKey] = .string(reason)
+		case let .initializeDeviceLoginNetworkError(error),
+			 let .finalizeLoginNetworkError(error),
+			 let .finalizeDeviceLoginNetworkError(error),
+			 let .getCredentialsUpgradeTokenNetworkError(error):
+			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
+		case let .getCredentialsRefreshTokenNetworkError(error, previousSubstatus),
+			 let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
+			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
+			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
+		case let .authLogout(reason, error, previousSubstatus):
+			metadata[Self.metadataReasonKey] = "\(reason)"
 			if let error = error {
-				metadata[Self.metadataErrorKey] = .string(error.localizedDescription)
+				metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
 			}
+			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 			return metadata
 		default:
 			return [:]
 		}
-		
+
 		return metadata
 	}
-	
+
 	var logLevel: Logger.Level {
 		switch self {
 		case .getCredentialsRefreshTokenIsNotAvailable, .finalizeDevicePollingLimitReached:
-			return .notice
+			.notice
 		default:
-			return .error
+			.error
 		}
 	}
 	
-	func log() {
-		var logger = Logger(label: "auth_logger")
-		// IIUC, this is a minimum level for the logger
-		logger.logLevel = .trace
-		logger.log(level: logLevel, loggingMessage, metadata: loggingMetadata)
+	var source: String {
+		"Auth"
 	}
 }

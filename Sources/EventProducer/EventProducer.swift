@@ -10,7 +10,7 @@ public protocol EventProducer {
 	var blockedConsentCategories: Set<ConsentCategory>? { get set }
 	/// consumerUri: URI identifying the TL Consumer ingest endpoint.
 	var consumerUri: String? { get set }
-	
+
 	init(
 		credentialsProvider: Auth.CredentialsProvider,
 		maxDiskUsageBytes: Int,
