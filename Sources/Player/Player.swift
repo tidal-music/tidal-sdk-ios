@@ -115,7 +115,8 @@ public extension Player {
 		credentialsProvider: CredentialsProvider,
 		eventSender: EventSender,
 		userClientIdSupplier: (() -> Int)? = nil,
-		shouldAddLogging: Bool = false
+		shouldAddLogging: Bool = false,
+		offlinePlaybackPrivilegeCheck: (() -> Bool)? = nil
 	) -> Player? {
 		if shared != nil {
 			return nil
@@ -463,7 +464,8 @@ private extension Player {
 		_ notificationsHandler: NotificationsHandler?,
 		_ featureFlagProvider: FeatureFlagProvider,
 		_ externalPlayers: [GenericMediaPlayer.Type],
-		_ credentialsProvider: CredentialsProvider
+		_ credentialsProvider: CredentialsProvider,
+		_ offlinePlaybackPrivilegeCheck: (() -> Bool)? = nil
 	) -> PlayerEngine {
 		let internalPlayerLoader = InternalPlayerLoader(
 			with: configuration,
@@ -484,6 +486,7 @@ private extension Player {
 			playerEventSender,
 			networkMonitor,
 			offlineStorage,
+			offlinePlaybackPrivilegeCheck,
 			internalPlayerLoader,
 			featureFlagProvider,
 			notificationsHandler
