@@ -132,6 +132,14 @@ enum PlayerLoggable: TidalLoggable {
 
 	case djSessionStartFailed(error: Error)
 	case djSessionSendCommandFailed(error: Error)
+	case djSessionStartNoCurationURL
+	case djSessionPlayNoCurationURL
+	case djSessionPlayProductNotTrack
+	case djSessionPauseNoCurationURL
+	case djSessionStopNoCurationURL
+	case djSessionStopOnNextCommand
+	case djSessionResetNoCurationURL
+	case djSessionSendStopOnNextCommand
 
 	// MARK: InternalPlayerLoader
 
@@ -184,9 +192,6 @@ enum PlayerLoggable: TidalLoggable {
 
 	case avcontentKeyRequestNoData
 
-	// MARK: DJProducer
-
-	
 }
 // swiftlint:enable identifier_name
 
@@ -342,6 +347,22 @@ extension PlayerLoggable {
 			"DJProducer-djSessionStartFailed"
 		case .djSessionSendCommandFailed:
 			"DJProducer-djSessionSendCommandFailed"
+		case .djSessionStartNoCurationURL:
+			"DJProducer-djSessionStartNoCurationURL"
+		case .djSessionPlayNoCurationURL:
+			"DJProducer-djSessionPlayNoCurationURL"
+		case .djSessionPlayProductNotTrack:
+			"DJProducer-djSessionPlayProductNotTrack"
+		case .djSessionPauseNoCurationURL:
+			"DJProducer-djSessionPauseNoCurationURL"
+		case .djSessionStopNoCurationURL:
+			"DJProducer-djSessionStopNoCurationURL"
+		case .djSessionStopOnNextCommand:
+			"DJProducer-djSessionStopOnNextCommand"
+		case .djSessionResetNoCurationURL:
+			"DJProducer-djSessionResetNoCurationURL"
+		case .djSessionSendStopOnNextCommand:
+			"DJProducer-djSessionSendStopOnNextCommand"
 
 		// InternalPlayerLoader
 		case .loadUCFailed:
@@ -491,7 +512,15 @@ extension PlayerLoggable {
 				.writeEventNoClientId,
 				.assetPlaybackMetadataInitWithoutRateAndDepthData,
 				.assetPlaybackMetadataInitWithoutRequiredData,
-				.avcontentKeyRequestNoData:
+				.avcontentKeyRequestNoData,
+				.djSessionStartNoCurationURL,
+				.djSessionPlayNoCurationURL,
+				.djSessionPlayProductNotTrack,
+				.djSessionPauseNoCurationURL,
+				.djSessionStopNoCurationURL,
+				.djSessionStopOnNextCommand,
+				.djSessionResetNoCurationURL,
+				.djSessionSendStopOnNextCommand:
 			break
 		}
 
@@ -574,7 +603,15 @@ extension PlayerLoggable {
 				.assetPlaybackMetadataInitWithoutRateAndDepthData,
 				.assetPlaybackMetadataInitWithoutRequiredData,
 				.assetPlaybackMetadataInitWithInvalidFormatFlags,
-				.avcontentKeyRequestNoData:
+				.avcontentKeyRequestNoData,
+				.djSessionStartNoCurationURL,
+				.djSessionPlayNoCurationURL,
+				.djSessionPlayProductNotTrack,
+				.djSessionPauseNoCurationURL,
+				.djSessionStopNoCurationURL,
+				.djSessionStopOnNextCommand,
+				.djSessionResetNoCurationURL,
+				.djSessionSendStopOnNextCommand:
 			.debug
 		}
 	}

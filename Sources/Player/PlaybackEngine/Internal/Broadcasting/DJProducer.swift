@@ -35,7 +35,7 @@ final class DJProducer {
 		queue.dispatch {
 			guard self.curationUrl == nil else {
 				// ADD LOG
-//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionStartNoCurationURL)
 				return
 			}
 
@@ -70,14 +70,14 @@ final class DJProducer {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
 				// ADD LOG
-//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionPlayNoCurationURL)
 				return
 			}
 
 			guard mediaProduct.productType == .TRACK else {
 				await self.delete(url: curationUrl, reason: .invalidContent)
 				// ADD LOG
-//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionPlayProductNotTrack)
 				return
 			}
 
@@ -93,7 +93,7 @@ final class DJProducer {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
 				// ADD LOG
-//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionPauseNoCurationURL)
 				return
 			}
 
@@ -106,14 +106,14 @@ final class DJProducer {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
 				// ADD LOG
-//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionStopNoCurationURL)
 				return
 			}
 
 			guard immediately else {
 				self.stopOnNextCommand = true
 				// ADD LOG
-//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionStopOnNextCommand)
 				return
 			}
 
@@ -126,7 +126,7 @@ final class DJProducer {
 			guard let curationUrl = self.curationUrl else {
 				self.clearSession()
 				// ADD LOG
-//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionResetNoCurationURL)
 				return
 			}
 
@@ -144,7 +144,7 @@ private extension DJProducer {
 		if stopOnNextCommand {
 			stop(immediately: true)
 			// ADD LOG
-//			PlayerWorld.logger?.log(loggable: PlayerLoggable.)
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionSendStopOnNextCommand)
 			return
 		}
 
