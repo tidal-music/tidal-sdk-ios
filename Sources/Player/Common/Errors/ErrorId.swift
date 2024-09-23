@@ -19,13 +19,14 @@ public enum ErrorId: String {
 	static func playbackErrorId(from subStatus: Int) -> ErrorId {
 		switch subStatus {
 		case 4010:
-			.PEMonthlyStreamQuotaExceeded
+			return .PEMonthlyStreamQuotaExceeded
 		case 4032, 4035:
-			.PEContentNotAvailableInLocation
+			return .PEContentNotAvailableInLocation
 		case 4033:
-			.PEContentNotAvailableForSubscription
+			return .PEContentNotAvailableForSubscription
 		default:
-			.PENotAllowed
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.playbackErrorIdFromSubstatus(substatus: subStatus))
+			return .PENotAllowed
 		}
 	}
 }

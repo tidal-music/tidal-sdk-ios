@@ -26,6 +26,8 @@ final class NotificationsHandler {
 			queue.async {
 				self.listener.mediaTransitioned(to: mediaProduct, with: playbackContext)
 			}
+		} else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.mediaTransitionedToPlayerItemWithoutRequiredData)
 		}
 	}
 

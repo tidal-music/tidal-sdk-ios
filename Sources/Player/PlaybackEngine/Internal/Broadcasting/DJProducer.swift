@@ -34,6 +34,8 @@ final class DJProducer {
 	func start(_ title: String, with mediaProduct: MediaProduct, at position: Double) {
 		queue.dispatch {
 			guard self.curationUrl == nil else {
+				// ADD LOG
+//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
 				return
 			}
 
@@ -67,11 +69,15 @@ final class DJProducer {
 	func play(_ mediaProduct: MediaProduct, at position: Double) {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
+				// ADD LOG
+//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
 				return
 			}
 
 			guard mediaProduct.productType == .TRACK else {
 				await self.delete(url: curationUrl, reason: .invalidContent)
+				// ADD LOG
+//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
 				return
 			}
 
@@ -86,6 +92,8 @@ final class DJProducer {
 	func pause(_ mediaProduct: MediaProduct) {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
+				// ADD LOG
+//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
 				return
 			}
 
@@ -97,11 +105,15 @@ final class DJProducer {
 	func stop(immediately: Bool) {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
+				// ADD LOG
+//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
 				return
 			}
 
 			guard immediately else {
 				self.stopOnNextCommand = true
+				// ADD LOG
+//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
 				return
 			}
 
@@ -113,6 +125,8 @@ final class DJProducer {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
 				self.clearSession()
+				// ADD LOG
+//				PlayerWorld.logger?.log(loggable: PlayerLoggable.)
 				return
 			}
 
@@ -129,6 +143,8 @@ private extension DJProducer {
 	func send(_ command: Command, to url: URL) async {
 		if stopOnNextCommand {
 			stop(immediately: true)
+			// ADD LOG
+//			PlayerWorld.logger?.log(loggable: PlayerLoggable.)
 			return
 		}
 

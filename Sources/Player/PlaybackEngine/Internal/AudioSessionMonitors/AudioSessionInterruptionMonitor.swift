@@ -35,6 +35,7 @@
 			      let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
 			      let type = AVAudioSession.InterruptionType(rawValue: typeValue)
 			else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.interruptionMonitorHandleNotificationWithoutRequiredData)
 				return
 			}
 
@@ -44,11 +45,13 @@
 				playerEngine?.pause()
 			case .ended:
 				guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.interruptionMonitorHandleNotificationEndedNoOptions)
 					return
 				}
 
 				let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
 				guard options.contains(.shouldResume) else {
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.interruptionMonitorHandleNotificationEndedNoShouldResume)
 					return
 				}
 
@@ -63,6 +66,7 @@
 				}
 
 			default: ()
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.interruptionMonitorHandleNotificationUnknownType)
 			}
 		}
 	}

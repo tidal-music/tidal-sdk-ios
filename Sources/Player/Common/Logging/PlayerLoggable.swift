@@ -6,10 +6,16 @@ import Logging
 
 private enum Constants {
 	static let metadataErrorKey = "error"
+	static let metadataAudioCodecKey = "audioCodec"
+	static let metadataAudioModeKey = "audioMode"
+	static let metadataErrorSubstatusKey = "errorSubstatus"
+	static let metadataFormatFlagsKey = "formatFlags"
+	static let metadataRetryStrategyKey = "retryStrategy"
 }
 
 // MARK: - PlayerLoggable
 
+// swiftlint:disable identifier_name
 enum PlayerLoggable: TidalLoggable {
 	// MARK: Event Sender
 
@@ -24,14 +30,26 @@ enum PlayerLoggable: TidalLoggable {
 	case sendEventsFailed(error: Error)
 	case urlForDirectoryFailed(error: Error)
 	case initializeDirectoryFailed(error: Error)
+	case eventSenderInitEventsDirectoryFailed
+	case eventSenderInitOfflinePlaysDirectoryFailed
+	case eventSenderInitializeDirectoryNoURLPath
+	case writeEventNoClientId
 
 	// MARK: Streaming Privileges
 
+	case streamingNotifyGetCredentialFailed
 	case streamingNotifyNotAuthorized(error: Error)
 	case streamingConnectNotAuthorized(error: Error)
+	case streamingConnectOfflineMode
+	case streamingConnectNoToken
+	case webSocketSendMessageInvalidData
 	case webSocketSendMessageFailed(error: Error)
+	case webSocketReceiveMessageInvalidData
 	case webSocketReceiveMessageFailed(error: Error)
-	case webSocketHandleErrorSleepAndReconnectionFailed(error: Error) // swiftlint:disable:this identifier_name
+	case webSocketHandleErrorSleepAndReconnectionFailed(error: Error)
+	case webSocketHandleErrorRetryStrategyNone
+	case streamingHandleInvalidMessage(message: String)
+	case streamingInterpretInvalidData(text: String)
 
 	// MARK: Playback Info Fetcher
 
@@ -70,7 +88,7 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: StoredLicenseLoader
 
 	case licenseLoaderContentKeyRequestFailed(error: Error)
-	case licenseLoaderProcessContentKeyResponseFailed(error: Error) // swiftlint:disable:this identifier_name
+	case licenseLoaderProcessContentKeyResponseFailed(error: Error)
 
 	// MARK: StreamingLicenseLoader
 
@@ -87,7 +105,7 @@ enum PlayerLoggable: TidalLoggable {
 
 	// MARK: ResponseHandler
 
-	case backoffHandleResponseFailed(error: Error)
+	case backoffHandleResponseFailed(error: Error, retryStrategy: String)
 
 	// MARK: Downloader
 
@@ -122,7 +140,55 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: PlayerEngine
 
 	case loadPlayerItemFailed(error: Error)
+
+	// MARK: AudioCodec
+
+	case audioCodecInitWithEmpty
+	case audioCodecInitWithUnknown(codec: String)
+	case audioCodecInitWithNilQuality
+	case audioCodecInitWithLowQualityAndNilMode
+	case audioCodecInitWithLowQualityAndUnsupportedMode(mode: String)
+
+	// MARK: ErrorId
+
+	case playbackErrorIdFromSubstatus(substatus: Int)
+
+	// MARK: NotificationsHandler
+
+	case mediaTransitionedToPlayerItemWithoutRequiredData
+
+	// MARK: AVPlayer extension
+
+	case avplayerSeekWithoutCurrentItem
+
+	// MARK: AudioSessionInterruptionMonitor
+
+	case interruptionMonitorHandleNotificationWithoutRequiredData
+	case interruptionMonitorHandleNotificationEndedNoOptions
+	case interruptionMonitorHandleNotificationEndedNoShouldResume
+	case interruptionMonitorHandleNotificationUnknownType
+
+	// MARK: AudioSessionRouteChangeMonitor
+
+	case changeMonitorHandleNotificationWithoutRequiredData
+	case changeMonitorHandleNotificationUnknownReason
+	case changeMonitorUpdateVolumeWithoutRequiredData
+
+	// MARK: AssetPlaybackMetadata
+
+	case assetPlaybackMetadataInitWithoutRateAndDepthData
+	case assetPlaybackMetadataInitWithoutRequiredData
+	case assetPlaybackMetadataInitWithInvalidFormatFlags(formatFlags: String)
+
+	// MARK: AVContentKeyRequest
+
+	case avcontentKeyRequestNoData
+
+	// MARK: DJProducer
+
+	
 }
+// swiftlint:enable identifier_name
 
 // MARK: - Logging
 
@@ -152,18 +218,42 @@ extension PlayerLoggable {
 			"EventSender-urlForDirectoryFailed"
 		case .initializeDirectoryFailed:
 			"EventSender-initializeDirectoryFailed"
+		case .eventSenderInitEventsDirectoryFailed:
+			"EventSender-initEventsDirectoryFailed"
+		case .eventSenderInitOfflinePlaysDirectoryFailed:
+			"EventSender-initOfflinePlaysDirectoryFailed"
+		case .eventSenderInitializeDirectoryNoURLPath:
+			"EventSender-initializeDirectoryNoURLPath"
+		case .writeEventNoClientId:
+			"EventSender-writeEventNoClientId"
 
 		// Streaming Privileges
+		case .streamingNotifyGetCredentialFailed:
+			"StreamingPrivileges-streamingNotifyGetCredentialFailed"
 		case .streamingNotifyNotAuthorized:
 			"StreamingPrivileges-streamingNotifyNotAuthorized"
 		case .streamingConnectNotAuthorized:
 			"StreamingPrivileges-streamingConnectNotAuthorized"
+		case .streamingConnectOfflineMode:
+			"StreamingPrivileges-streamingConnectOfflineMode"
+		case .streamingConnectNoToken:
+			"StreamingPrivileges-streamingConnectNoToken"
+		case .webSocketSendMessageInvalidData:
+			"StreamingPrivileges-webSocketSendMessageInvalidData"
 		case .webSocketSendMessageFailed:
 			"StreamingPrivileges-webSocketSendMessageFailed"
+		case .webSocketReceiveMessageInvalidData:
+			"StreamingPrivileges-webSocketReceiveMessageInvalidData"
 		case .webSocketReceiveMessageFailed:
 			"StreamingPrivileges-webSocketReceiveMessageFailed"
 		case .webSocketHandleErrorSleepAndReconnectionFailed:
 			"StreamingPrivileges-webSocketHandleErrorSleepAndReconnectionFailed"
+		case .webSocketHandleErrorRetryStrategyNone:
+			"StreamingPrivileges-webSocketHandleErrorRetryStrategyNone"
+		case .streamingHandleInvalidMessage:
+			"StreamingPrivileges-streamingHandleInvalidMessage"
+		case .streamingInterpretInvalidData:
+			"StreamingPrivileges-streamingInterpretInvalidData"
 
 		// Playback Info Fetcher
 		case .getPlaybackInfoFailed:
@@ -260,6 +350,60 @@ extension PlayerLoggable {
 		// PlayerEngine
 		case .loadPlayerItemFailed:
 			"PlayerEngine-loadPlayerItemFailed"
+
+		// AudioCodec
+		case .audioCodecInitWithEmpty:
+			"AudioCodec-audioCodecInitWithEmpty"
+		case .audioCodecInitWithUnknown:
+			"AudioCodec-audioCodecInitWithUnknown"
+		case .audioCodecInitWithNilQuality:
+			"AudioCodec-initWithNilQuality"
+		case .audioCodecInitWithLowQualityAndNilMode:
+			"AudioCodec-initWithLowQualityAndNilMode"
+		case .audioCodecInitWithLowQualityAndUnsupportedMode:
+			"AudioCodec-initWithLowQualityAndUnsupportedMode"
+
+		// ErrorId
+		case .playbackErrorIdFromSubstatus:
+			"ErrorId-playbackErrorIdFromSubstatus"
+
+		// NotificationsHandler
+		case .mediaTransitionedToPlayerItemWithoutRequiredData:
+			"NotificationsHandler-mediaTransitionedToPlayerItemWithoutRequiredData"
+
+		// AVPlayer
+		case .avplayerSeekWithoutCurrentItem:
+			"AVPlayer-avplayerSeekWithoutCurrentItem"
+
+		// AudioSessionInterruptionMonitor
+		case .interruptionMonitorHandleNotificationWithoutRequiredData:
+			"AudioSessionInterruptionMonitor-handleNotificationWithoutRequiredData"
+		case .interruptionMonitorHandleNotificationEndedNoOptions:
+			"AudioSessionInterruptionMonitor-handleNotificationEndedNoOptions"
+		case .interruptionMonitorHandleNotificationEndedNoShouldResume:
+			"AudioSessionInterruptionMonitor-handleNotificationEndedNoShouldResume"
+		case .interruptionMonitorHandleNotificationUnknownType:
+			"AudioSessionInterruptionMonitor-handleNotificationUnknownType"
+
+		// AudioSessionRouteChangeMonitor
+		case .changeMonitorHandleNotificationWithoutRequiredData:
+			"AudioSessionRouteChangeMonitor-handleNotificationWithoutRequiredData"
+		case .changeMonitorHandleNotificationUnknownReason:
+			"AudioSessionRouteChangeMonitor-handleNotificationUnknownReason"
+		case .changeMonitorUpdateVolumeWithoutRequiredData:
+			"AudioSessionRouteChangeMonitor-updateVolumeWithoutRequiredData"
+
+		// AssetPlaybackMetadata
+		case .assetPlaybackMetadataInitWithoutRateAndDepthData:
+			"AssetPlaybackMetadata-initWithoutRateAndDepthData"
+		case .assetPlaybackMetadataInitWithoutRequiredData:
+			"AssetPlaybackMetadata-initWithoutRequiredData"
+		case .assetPlaybackMetadataInitWithInvalidFormatFlags:
+			"AssetPlaybackMetadata-initWithInvalidFormatFlags"
+
+		// AVContentKeyRequest
+		case .avcontentKeyRequestNoData:
+			"AVContentKeyRequest-noData"
 		}
 	}
 
@@ -295,7 +439,6 @@ extension PlayerLoggable {
 		     let .payloadEncodingFailed(error),
 		     let .payloadDecodingFailed(error),
 		     let .loadDataForRequestFailed(error),
-		     let .backoffHandleResponseFailed(error),
 		     let .startDownloadFailed(error),
 		     let .licenseDownloaderContentKeyRequestFailed(error),
 		     let .licenseDownloaderGetLicenseFailed(error),
@@ -307,10 +450,48 @@ extension PlayerLoggable {
 		     let .loadUCFailed(error),
 		     let .loadPlayerItemFailed(error):
 			metadata[Constants.metadataErrorKey] = "\(String(describing: error))"
-		case .writeEventNotAuthorized,
-		     .sendToEventProducerSerializationFailed,
-		     .sendEventsNotAuthorized,
-		     .getAuthBearerTokenToBearerTokenFailed:
+		case let .backoffHandleResponseFailed(error, retryStrategy):
+			metadata[Constants.metadataErrorKey] = "\(String(describing: error))"
+			metadata[Constants.metadataRetryStrategyKey] = "\(String(describing: retryStrategy))"
+		case let .audioCodecInitWithUnknown(codec):
+			metadata[Constants.metadataAudioCodecKey] = "\(String(describing: codec))"
+		case let .audioCodecInitWithLowQualityAndUnsupportedMode(mode):
+			metadata[Constants.metadataAudioModeKey] = "\(String(describing: mode))"
+		case let .playbackErrorIdFromSubstatus(substatus):
+			metadata[Constants.metadataErrorSubstatusKey] = "\(String(describing: substatus))"
+		case let .assetPlaybackMetadataInitWithInvalidFormatFlags(formatFlags):
+			metadata[Constants.metadataFormatFlagsKey] = "\(String(describing: formatFlags))"
+		case .streamingNotifyGetCredentialFailed,
+				.streamingConnectOfflineMode,
+				.streamingConnectNoToken,
+				.webSocketSendMessageInvalidData,
+				.webSocketReceiveMessageInvalidData,
+				.webSocketHandleErrorRetryStrategyNone,
+				.streamingHandleInvalidMessage,
+				.streamingInterpretInvalidData,
+				.writeEventNotAuthorized,
+				.sendToEventProducerSerializationFailed,
+				.sendEventsNotAuthorized,
+				.getAuthBearerTokenToBearerTokenFailed,
+				.audioCodecInitWithEmpty,
+				.audioCodecInitWithNilQuality,
+				.audioCodecInitWithLowQualityAndNilMode,
+				.mediaTransitionedToPlayerItemWithoutRequiredData,
+				.avplayerSeekWithoutCurrentItem,
+				.interruptionMonitorHandleNotificationWithoutRequiredData,
+				.interruptionMonitorHandleNotificationEndedNoOptions,
+				.interruptionMonitorHandleNotificationEndedNoShouldResume,
+				.interruptionMonitorHandleNotificationUnknownType,
+				.changeMonitorHandleNotificationWithoutRequiredData,
+				.changeMonitorHandleNotificationUnknownReason,
+				.changeMonitorUpdateVolumeWithoutRequiredData,
+				.eventSenderInitEventsDirectoryFailed,
+				.eventSenderInitOfflinePlaysDirectoryFailed,
+				.eventSenderInitializeDirectoryNoURLPath,
+				.writeEventNoClientId,
+				.assetPlaybackMetadataInitWithoutRateAndDepthData,
+				.assetPlaybackMetadataInitWithoutRequiredData,
+				.avcontentKeyRequestNoData:
 			break
 		}
 
@@ -363,6 +544,38 @@ extension PlayerLoggable {
 		     .loadUCFailed,
 		     .loadPlayerItemFailed:
 			.error
+		case .streamingNotifyGetCredentialFailed,
+				.streamingConnectOfflineMode,
+				.streamingConnectNoToken,
+				.webSocketReceiveMessageInvalidData,
+				.webSocketSendMessageInvalidData,
+				.webSocketHandleErrorRetryStrategyNone,
+				.streamingHandleInvalidMessage,
+				.streamingInterpretInvalidData,
+				.audioCodecInitWithEmpty,
+				.audioCodecInitWithUnknown,
+				.audioCodecInitWithNilQuality,
+				.audioCodecInitWithLowQualityAndNilMode,
+				.audioCodecInitWithLowQualityAndUnsupportedMode,
+				.playbackErrorIdFromSubstatus,
+				.mediaTransitionedToPlayerItemWithoutRequiredData,
+				.avplayerSeekWithoutCurrentItem,
+				.interruptionMonitorHandleNotificationWithoutRequiredData,
+				.interruptionMonitorHandleNotificationEndedNoOptions,
+				.interruptionMonitorHandleNotificationEndedNoShouldResume,
+				.interruptionMonitorHandleNotificationUnknownType,
+				.changeMonitorHandleNotificationWithoutRequiredData,
+				.changeMonitorHandleNotificationUnknownReason,
+				.changeMonitorUpdateVolumeWithoutRequiredData,
+				.eventSenderInitEventsDirectoryFailed,
+				.eventSenderInitOfflinePlaysDirectoryFailed,
+				.eventSenderInitializeDirectoryNoURLPath,
+				.writeEventNoClientId,
+				.assetPlaybackMetadataInitWithoutRateAndDepthData,
+				.assetPlaybackMetadataInitWithoutRequiredData,
+				.assetPlaybackMetadataInitWithInvalidFormatFlags,
+				.avcontentKeyRequestNoData:
+			.debug
 		}
 	}
 

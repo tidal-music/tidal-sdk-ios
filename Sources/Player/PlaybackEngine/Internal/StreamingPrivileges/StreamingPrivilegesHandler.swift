@@ -51,6 +51,7 @@ extension StreamingPrivilegesHandler {
 		do {
 			// If user is not authenticated with user level, there's no need to even attempt to connect to the web socket.
 			if try await !credentialsProvider.getCredentials().isAuthorized {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingNotifyGetCredentialFailed)
 				return
 			}
 		} catch {
@@ -89,6 +90,7 @@ private extension StreamingPrivilegesHandler {
 	/// - Parameter shouldReceive: Flag whether ``receive`` func should be called after the message is sent.
 	func sendMessage(shouldReceive: Bool) async {
 		guard let webSocketTask, webSocketTask.closeCode == .invalid, let message = try? createMessage() else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.webSocketSendMessageInvalidData)
 			return
 		}
 
@@ -110,6 +112,7 @@ private extension StreamingPrivilegesHandler {
 	/// Opens the connection with the web socket.
 	func connect() async {
 		if configuration.offlineMode {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingConnectOfflineMode)
 			return
 		}
 
@@ -124,6 +127,7 @@ private extension StreamingPrivilegesHandler {
 		}
 
 		guard let token else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingConnectNoToken)
 			return
 		}
 
@@ -137,6 +141,7 @@ private extension StreamingPrivilegesHandler {
 
 	func receive() async {
 		guard let webSocketTask, webSocketTask.closeCode == .invalid else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.webSocketReceiveMessageInvalidData)
 			return
 		}
 		do {
@@ -170,6 +175,7 @@ private extension StreamingPrivilegesHandler {
 				)
 			}
 		case .NONE:
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.webSocketHandleErrorRetryStrategyNone)
 			print("Tried to reconnect max number of attempts, giving up. Error: \(error)")
 		}
 	}
@@ -204,6 +210,7 @@ private extension StreamingPrivilegesHandler {
 		case let .string(text):
 			await interpret(text)
 		default:
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingHandleInvalidMessage(message: String(describing: message)))
 			break
 		}
 	}
@@ -212,6 +219,7 @@ private extension StreamingPrivilegesHandler {
 		guard let data = text.data(using: .utf8),
 		      let message = try? decoder.decode(IncomingMessage.self, from: data)
 		else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingInterpretInvalidData(text: text))
 			return
 		}
 
