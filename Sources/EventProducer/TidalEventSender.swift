@@ -125,6 +125,7 @@ public final class TidalEventSender: EventSender {
 		do {
 			try await scheduler?.sendAllEvents(headerHelper: headerHelper)
 		} catch let EventProducerError.unauthorized(code) {
+			print("⛔️\(#function): EventProducer is unauthorized with code: \(code)")
 			_ = try await headerHelper.credentialsProvider?.getCredentials(apiErrorSubStatus: code.description)
 			try await scheduler?.sendAllEvents(headerHelper: headerHelper)
 		} catch {
