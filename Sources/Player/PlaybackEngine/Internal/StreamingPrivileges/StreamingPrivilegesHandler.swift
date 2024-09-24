@@ -202,7 +202,7 @@ private extension StreamingPrivilegesHandler {
 
 	func createMessage() throws -> String? {
 		let data = try encoder.encode(UserAction())
-		return String(data: data, encoding: .utf8)
+		return String(decoding: data, as: UTF8.self)
 	}
 
 	func handle(_ message: URLSessionWebSocketTask.Message) async {
