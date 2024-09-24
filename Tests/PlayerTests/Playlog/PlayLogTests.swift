@@ -135,7 +135,7 @@ final class PlayLogTests: XCTestCase {
 
 		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
 		let djProducerSession = URLSession.new(with: djProducerTimeoutPolicy, name: "Player DJ Session")
-
+		let djProducerHTTPClient = HttpClient.mock()
 		djProducer = DJProducer(
 			httpClient: djProducerHTTPClient,
 			credentialsProvider: credentialsProvider,
@@ -1067,7 +1067,6 @@ extension PlayLogTests {
 			XCTFail("Expected for currentItem.asset to be of type AVPlayerAssetLegacy, and for player to be AVQueuePlayerWrapperLegacy.")
 			return
 		}
-		let player = playerWrapper.player
 
 		// skipToNext doesn't do anything since there's no nextItem
 		playerEngine.skipToNext(timestamp: timestamp)
