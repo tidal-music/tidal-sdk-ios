@@ -190,10 +190,6 @@ enum PlayerLoggable: TidalLoggable {
 	case assetPlaybackMetadataInitWithoutRequiredData
 	case assetPlaybackMetadataInitWithInvalidFormatFlags(formatFlags: String)
 
-	// MARK: AVContentKeyRequest
-
-	case avcontentKeyRequestNoData
-
 	// MARK: Metrics
 
 	case metricsNoIdealStartTime
@@ -434,10 +430,6 @@ extension PlayerLoggable {
 		case .assetPlaybackMetadataInitWithInvalidFormatFlags:
 			"AssetPlaybackMetadata-initWithInvalidFormatFlags"
 
-		// AVContentKeyRequest
-		case .avcontentKeyRequestNoData:
-			"AVContentKeyRequest-noData"
-
 		// Metrics
 		case .metricsNoIdealStartTime:
 			"Metrics-noIdealStartTime"
@@ -529,7 +521,6 @@ extension PlayerLoggable {
 				.writeEventNoClientId,
 				.assetPlaybackMetadataInitWithoutRateAndDepthData,
 				.assetPlaybackMetadataInitWithoutRequiredData,
-				.avcontentKeyRequestNoData,
 				.djSessionStartNoCurationURL,
 				.djSessionPlayNoCurationURL,
 				.djSessionPlayProductNotTrack,
@@ -625,7 +616,6 @@ extension PlayerLoggable {
 				.assetPlaybackMetadataInitWithoutRateAndDepthData,
 				.assetPlaybackMetadataInitWithoutRequiredData,
 				.assetPlaybackMetadataInitWithInvalidFormatFlags,
-				.avcontentKeyRequestNoData,
 				.djSessionStartNoCurationURL,
 				.djSessionPlayNoCurationURL,
 				.djSessionPlayProductNotTrack,

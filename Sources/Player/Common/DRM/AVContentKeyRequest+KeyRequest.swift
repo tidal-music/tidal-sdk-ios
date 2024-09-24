@@ -21,7 +21,6 @@ extension AVContentKeyRequest: KeyRequest {
 		try await withCheckedThrowingContinuation { continuation in
 			let completionHandler: (Data?, Error?) -> Void = { spc, error in
 				if let spc {
-					PlayerWorld.logger?.log(loggable: PlayerLoggable.avcontentKeyRequestNoData)
 					continuation.resume(returning: spc)
 					return
 				}
