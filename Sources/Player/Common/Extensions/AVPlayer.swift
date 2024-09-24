@@ -6,6 +6,7 @@ extension AVPlayer {
 		await withCheckedContinuation { continuation in
 			guard let currentItem else {
 				continuation.resume(returning: false)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.avplayerSeekWithoutCurrentItem)
 				return
 			}
 

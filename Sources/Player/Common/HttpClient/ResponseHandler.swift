@@ -36,7 +36,6 @@ final class ResponseHandler {
 		do {
 			return try await executionBlock(request)
 		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.backoffHandleResponseFailed(error: error))
 			let retryStrategy: RetryStrategy = if isTimeoutError(error: error) {
 				timeoutErrorManager.onError(error, attemptCount: attemptCount)
 			} else {
@@ -45,8 +44,10 @@ final class ResponseHandler {
 
 			switch retryStrategy {
 			case .NONE:
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.backoffHandleResponseFailed(error: error, retryStrategy: "NONE"))
 				throw error
 			case let .BACKOFF(duration):
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.backoffHandleResponseFailed(error: error, retryStrategy: "BACKOFF(duration: \(duration))"))
 				try await Task.sleep(seconds: duration)
 				return try await execute(attemptCount: attemptCount + 1)
 			}

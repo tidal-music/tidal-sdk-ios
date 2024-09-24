@@ -53,12 +53,14 @@ class PlayerEventSender {
 		if let eventsDirectory = PlayerEventSender.initializeDirectory(name: "player_events") {
 			self.eventsDirectory = eventsDirectory
 		} else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.eventSenderInitEventsDirectoryFailed)
 			preconditionFailure("[Player] Failed to initilize Events directory")
 		}
 
 		if let offlinePlaysDirectory = PlayerEventSender.initializeDirectory(name: "offline_plays") {
 			self.offlinePlaysDirectory = offlinePlaysDirectory
 		} else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.eventSenderInitOfflinePlaysDirectoryFailed)
 			preconditionFailure("[Player] Failed to initilize Offline Plays directory")
 		}
 
@@ -147,6 +149,7 @@ private extension PlayerEventSender {
 		do {
 			let fileManager = PlayerWorld.fileManagerClient
 			guard let url = urlPathForDirectory(name: name) else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.eventSenderInitializeDirectoryNoURLPath)
 				return nil
 			}
 			if !fileManager.fileExistsAtPath(url.path) {
@@ -220,10 +223,12 @@ private extension PlayerEventSender {
 				clientId: userClientId
 			)
 
-			let clientIdString: String = if let token, let clientId = CredentialsSuccessDataParser().clientIdFromToken(token) {
-				"\(clientId)"
+			let clientIdString: String
+			if let token, let clientId = CredentialsSuccessDataParser().clientIdFromToken(token) {
+				clientIdString = "\(clientId)"
 			} else {
-				""
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.writeEventNoClientId)
+				clientIdString = ""
 			}
 
 			let client = Client(

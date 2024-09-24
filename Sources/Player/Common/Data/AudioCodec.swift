@@ -40,6 +40,7 @@ public enum AudioCodec: Equatable, Codable {
 	// swiftlint:disable cyclomatic_complexity
 	init?(rawValue: String?) {
 		guard let rawValue, rawValue.isEmpty == false else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithEmpty)
 			return nil
 		}
 
@@ -68,6 +69,7 @@ public enum AudioCodec: Equatable, Codable {
 			self = .MP3
 		default:
 			self = .UNKNOWN(value: rawValue)
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithUnknown(codec: rawValue))
 		}
 	}
 
@@ -78,16 +80,20 @@ public enum AudioCodec: Equatable, Codable {
 	/// - Parameter mode: The AudioMode value
 	public init?(from quality: AudioQuality?, mode: AudioMode?) {
 		guard let quality else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithNilQuality)
 			return nil
 		}
 		switch quality {
 		case AudioQuality.LOW:
 			guard let mode else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithLowQualityAndNilMode)
 				return nil
 			}
 			switch mode {
 			// We can't know the exact codec, but the client does not need it.
-			case AudioMode.DOLBY_ATMOS, AudioMode.SONY_360RA: return nil
+			case AudioMode.DOLBY_ATMOS, AudioMode.SONY_360RA: 
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithLowQualityAndUnsupportedMode(mode: mode.rawValue))
+				return nil
 			case AudioMode.STEREO: self = .HE_AAC_V1
 			}
 		case AudioQuality.HIGH: self = .AAC_LC

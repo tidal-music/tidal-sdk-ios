@@ -35,6 +35,7 @@
 			      let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
 			      let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue)
 			else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.changeMonitorHandleNotificationWithoutRequiredData)
 				return
 			}
 
@@ -42,6 +43,7 @@
 			case .oldDeviceUnavailable:
 				playerEngine?.pause()
 			default: ()
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.changeMonitorHandleNotificationDefaultReason(reason: String(describing: reason)))
 			}
 
 			updateVolume()
@@ -54,6 +56,7 @@
 			      let asset = playerItem.asset,
 			      let configuration
 			else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.changeMonitorUpdateVolumeWithoutRequiredData)
 				return
 			}
 
