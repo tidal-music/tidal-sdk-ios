@@ -1,8 +1,8 @@
 import AVFoundation
-
-// swiftlint:disable file_length
 import Foundation
 import MediaPlayer
+
+// swiftlint:disable file_length
 
 // MARK: - Constants
 

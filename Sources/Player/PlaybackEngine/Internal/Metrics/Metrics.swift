@@ -158,6 +158,7 @@ private extension Metrics {
 		guard let idealStartTime else {
 			// idealStartTime isn't set, so there has been no intention to start playback.
 			// If no one has tried to play, playback cannot fail.
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.metricsNoIdealStartTime)
 			return false
 		}
 

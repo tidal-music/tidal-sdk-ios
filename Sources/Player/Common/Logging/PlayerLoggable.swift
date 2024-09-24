@@ -11,6 +11,7 @@ private enum Constants {
 	static let metadataErrorSubstatusKey = "errorSubstatus"
 	static let metadataFormatFlagsKey = "formatFlags"
 	static let metadataRetryStrategyKey = "retryStrategy"
+	static let metadataRouteChangeReasonKey = "routeChangeReason"
 }
 
 // MARK: - PlayerLoggable
@@ -148,6 +149,10 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: PlayerEngine
 
 	case loadPlayerItemFailed(error: Error)
+	case handleErrorNoNotificationsHandler
+	case handleErrorCancellation
+	case handleErrorPlayerItemNotCurrent
+	case handleErrorPlayerItemNotNext
 
 	// MARK: AudioCodec
 
@@ -174,12 +179,13 @@ enum PlayerLoggable: TidalLoggable {
 	case interruptionMonitorHandleNotificationWithoutRequiredData
 	case interruptionMonitorHandleNotificationEndedNoOptions
 	case interruptionMonitorHandleNotificationEndedNoShouldResume
+	case interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted
 	case interruptionMonitorHandleNotificationUnknownType
 
 	// MARK: AudioSessionRouteChangeMonitor
 
 	case changeMonitorHandleNotificationWithoutRequiredData
-	case changeMonitorHandleNotificationUnknownReason
+	case changeMonitorHandleNotificationDefaultReason(reason: String)
 	case changeMonitorUpdateVolumeWithoutRequiredData
 
 	// MARK: AssetPlaybackMetadata
@@ -191,6 +197,10 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: AVContentKeyRequest
 
 	case avcontentKeyRequestNoData
+
+	// MARK: Metrics
+
+	case metricsNoIdealStartTime
 
 }
 // swiftlint:enable identifier_name
@@ -371,6 +381,14 @@ extension PlayerLoggable {
 		// PlayerEngine
 		case .loadPlayerItemFailed:
 			"PlayerEngine-loadPlayerItemFailed"
+		case .handleErrorNoNotificationsHandler:
+			"PlayerEngine-handleErrorNoNotificationsHandler"
+		case .handleErrorCancellation:
+			"PlayerEngine-handleErrorCancellation"
+		case .handleErrorPlayerItemNotCurrent:
+			"PlayerEngine-handleErrorPlayerItemNotCurrent"
+		case .handleErrorPlayerItemNotNext:
+			"PlayerEngine-handleErrorPlayerItemNotNext"
 
 		// AudioCodec
 		case .audioCodecInitWithEmpty:
@@ -403,13 +421,15 @@ extension PlayerLoggable {
 			"AudioSessionInterruptionMonitor-handleNotificationEndedNoOptions"
 		case .interruptionMonitorHandleNotificationEndedNoShouldResume:
 			"AudioSessionInterruptionMonitor-handleNotificationEndedNoShouldResume"
+		case .interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted:
+			"AudioSessionInterruptionMonitor-handleNotificationEndedNotPlayingWhenInterrupted"
 		case .interruptionMonitorHandleNotificationUnknownType:
 			"AudioSessionInterruptionMonitor-handleNotificationUnknownType"
 
 		// AudioSessionRouteChangeMonitor
 		case .changeMonitorHandleNotificationWithoutRequiredData:
 			"AudioSessionRouteChangeMonitor-handleNotificationWithoutRequiredData"
-		case .changeMonitorHandleNotificationUnknownReason:
+		case .changeMonitorHandleNotificationDefaultReason:
 			"AudioSessionRouteChangeMonitor-handleNotificationUnknownReason"
 		case .changeMonitorUpdateVolumeWithoutRequiredData:
 			"AudioSessionRouteChangeMonitor-updateVolumeWithoutRequiredData"
@@ -425,6 +445,10 @@ extension PlayerLoggable {
 		// AVContentKeyRequest
 		case .avcontentKeyRequestNoData:
 			"AVContentKeyRequest-noData"
+
+		// Metrics
+		case .metricsNoIdealStartTime:
+			"Metrics-noIdealStartTime"
 		}
 	}
 
@@ -482,6 +506,8 @@ extension PlayerLoggable {
 			metadata[Constants.metadataErrorSubstatusKey] = "\(String(describing: substatus))"
 		case let .assetPlaybackMetadataInitWithInvalidFormatFlags(formatFlags):
 			metadata[Constants.metadataFormatFlagsKey] = "\(String(describing: formatFlags))"
+		case let .changeMonitorHandleNotificationDefaultReason(reason):
+			metadata[Constants.metadataRouteChangeReasonKey] = "\(String(describing: reason))"
 		case .streamingNotifyGetCredentialFailed,
 				.streamingConnectOfflineMode,
 				.streamingConnectNoToken,
@@ -502,9 +528,9 @@ extension PlayerLoggable {
 				.interruptionMonitorHandleNotificationWithoutRequiredData,
 				.interruptionMonitorHandleNotificationEndedNoOptions,
 				.interruptionMonitorHandleNotificationEndedNoShouldResume,
+				.interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted,
 				.interruptionMonitorHandleNotificationUnknownType,
 				.changeMonitorHandleNotificationWithoutRequiredData,
-				.changeMonitorHandleNotificationUnknownReason,
 				.changeMonitorUpdateVolumeWithoutRequiredData,
 				.eventSenderInitEventsDirectoryFailed,
 				.eventSenderInitOfflinePlaysDirectoryFailed,
@@ -520,7 +546,12 @@ extension PlayerLoggable {
 				.djSessionStopNoCurationURL,
 				.djSessionStopOnNextCommand,
 				.djSessionResetNoCurationURL,
-				.djSessionSendStopOnNextCommand:
+				.djSessionSendStopOnNextCommand,
+				.metricsNoIdealStartTime,
+				.handleErrorNoNotificationsHandler,
+				.handleErrorCancellation,
+				.handleErrorPlayerItemNotCurrent,
+				.handleErrorPlayerItemNotNext:
 			break
 		}
 
@@ -592,9 +623,10 @@ extension PlayerLoggable {
 				.interruptionMonitorHandleNotificationWithoutRequiredData,
 				.interruptionMonitorHandleNotificationEndedNoOptions,
 				.interruptionMonitorHandleNotificationEndedNoShouldResume,
+				.interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted,
 				.interruptionMonitorHandleNotificationUnknownType,
 				.changeMonitorHandleNotificationWithoutRequiredData,
-				.changeMonitorHandleNotificationUnknownReason,
+				.changeMonitorHandleNotificationDefaultReason,
 				.changeMonitorUpdateVolumeWithoutRequiredData,
 				.eventSenderInitEventsDirectoryFailed,
 				.eventSenderInitOfflinePlaysDirectoryFailed,
@@ -611,7 +643,12 @@ extension PlayerLoggable {
 				.djSessionStopNoCurationURL,
 				.djSessionStopOnNextCommand,
 				.djSessionResetNoCurationURL,
-				.djSessionSendStopOnNextCommand:
+				.djSessionSendStopOnNextCommand,
+				.metricsNoIdealStartTime,
+				.handleErrorNoNotificationsHandler,
+				.handleErrorCancellation,
+				.handleErrorPlayerItemNotCurrent,
+				.handleErrorPlayerItemNotNext:
 			.debug
 		}
 	}

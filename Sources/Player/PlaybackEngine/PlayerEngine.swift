@@ -1,8 +1,8 @@
 import Auth
 import AVFoundation
+import Foundation
 
 // swiftlint:disable file_length
-import Foundation
 
 // MARK: - PlayerEngine
 
@@ -527,11 +527,13 @@ private extension PlayerEngine {
 
 	func handle(_ error: Error, in playerItem: PlayerItem) {
 		guard let notificationsHandler else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.handleErrorNoNotificationsHandler)
 			currentError = error
 			return
 		}
 
 		if error is CancellationError {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.handleErrorCancellation)
 			return
 		}
 
@@ -547,11 +549,15 @@ private extension PlayerEngine {
 			djModeProducer.reset(error)
 
 			return
+		} else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.handleErrorPlayerItemNotCurrent)
 		}
 
 		if playerItem === nextItem {
 			nextError = error
 			return
+		} else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.handleErrorPlayerItemNotNext)
 		}
 	}
 }

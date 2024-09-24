@@ -60,6 +60,8 @@
 				if let currentPlayer = playerEngine?.currentPlayer(), currentPlayer.shouldVerifyItWasPlayingBeforeInterruption {
 					if wasPlayingWhenInterrupted {
 						playerEngine?.play(timestamp: PlayerWorld.timeProvider.timestamp())
+					} else {
+						PlayerWorld.logger?.log(loggable: PlayerLoggable.interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted)
 					}
 				} else {
 					playerEngine?.play(timestamp: PlayerWorld.timeProvider.timestamp())
