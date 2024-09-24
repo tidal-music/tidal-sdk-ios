@@ -34,6 +34,7 @@ final class DJProducer {
 	func start(_ title: String, with mediaProduct: MediaProduct, at position: Double) {
 		queue.dispatch {
 			guard self.curationUrl == nil else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionStartNoCurationURL)
 				return
 			}
 
@@ -56,6 +57,7 @@ final class DJProducer {
 				self.delegate?.djSessionStarted(metadata: sessionData)
 				self.curationUrl = response.curationUrl
 			} catch {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionStartFailed(error: error))
 				self.delegate?.djSessionEnded(reason: .failedToStart(code: DJProducer.errorCode(from: error)))
 			}
 
@@ -66,11 +68,13 @@ final class DJProducer {
 	func play(_ mediaProduct: MediaProduct, at position: Double) {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionPlayNoCurationURL)
 				return
 			}
 
 			guard mediaProduct.productType == .TRACK else {
 				await self.delete(url: curationUrl, reason: .invalidContent)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionPlayProductNotTrack)
 				return
 			}
 
@@ -85,6 +89,7 @@ final class DJProducer {
 	func pause(_ mediaProduct: MediaProduct) {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionPauseNoCurationURL)
 				return
 			}
 
@@ -96,11 +101,13 @@ final class DJProducer {
 	func stop(immediately: Bool) {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionStopNoCurationURL)
 				return
 			}
 
 			guard immediately else {
 				self.stopOnNextCommand = true
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionStopOnNextCommand)
 				return
 			}
 
@@ -112,6 +119,7 @@ final class DJProducer {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
 				self.clearSession()
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionResetNoCurationURL)
 				return
 			}
 
@@ -128,12 +136,14 @@ private extension DJProducer {
 	func send(_ command: Command, to url: URL) async {
 		if stopOnNextCommand {
 			stop(immediately: true)
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionSendStopOnNextCommand)
 			return
 		}
 
 		do {
 			_ = try await httpClient.putJsonReceiveData(url: url, headers: [:], payload: command)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionSendCommandFailed(error: error))
 			endSession(with: DJProducer.reason(from: error))
 		}
 	}

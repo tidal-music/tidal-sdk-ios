@@ -41,7 +41,7 @@ public final class Player {
 		}
 	}
 
-	private var offlineStorage: OfflineStorage
+	private var offlineStorage: OfflineStorage?
 	private var djProducer: DJProducer
 	private var playerEventSender: PlayerEventSender
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher
@@ -58,7 +58,7 @@ public final class Player {
 		queue: OperationQueue,
 		urlSession: URLSession,
 		configuration: Configuration,
-		offlineStorage: OfflineStorage,
+		offlineStorage: OfflineStorage?,
 		djProducer: DJProducer,
 		playerEventSender: PlayerEventSender,
 		fairplayLicenseFetcher: FairPlayLicenseFetcher,
@@ -101,6 +101,8 @@ public extension Player {
 	///   - credentialsProvider: Provider of credentials used to authenticate the user.
 	///   - eventSender: Event sender to which events are sent.
 	///   - userClientIdSupplier: Optional function block to supply user cliend id.
+	///   - shouldAddLogging: Flag whether we should add logging. Default is false, meaning in places where logger is used, no
+	/// logging is actually performed.
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
 	static func bootstrap(
 		listener: PlayerListener,
@@ -109,7 +111,8 @@ public extension Player {
 		externalPlayers: [GenericMediaPlayer.Type] = [],
 		credentialsProvider: CredentialsProvider,
 		eventSender: EventSender,
-		userClientIdSupplier: (() -> Int)? = nil
+		userClientIdSupplier: (() -> Int)? = nil,
+		shouldAddLogging: Bool = false
 	) -> Player? {
 		if shared != nil {
 			return nil
@@ -117,21 +120,19 @@ public extension Player {
 
 		Time.initialise()
 
+		// When we have logging enabled, we create a logger to be used inside Player module and set it in PlayerWorld.
+		if shouldAddLogging {
+			PlayerWorld.logger = TidalLogger(label: "Player", level: .trace)
+		}
+
 		let timeoutPolicy = TimeoutPolicy.standard
 		let sharedPlayerURLSession = URLSession.new(with: timeoutPolicy, name: "Player Player", serviceType: .responsiveAV)
 		let configuration = Configuration()
 
-		let databaseURL = PlayerWorldClient.live.fileManagerClient.documentsDirectory().appendingPathComponent("dbPlayer.sqlite")
-		guard let dbQueue = try? DatabaseQueue(path: databaseURL.path) else {
-			return nil
-		}
-
-		let offlineStorage = GRDBOfflineStorage(dbQueue: dbQueue)
-
+		// DJProducer Initialization
 		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
 		let djProducerSession = URLSession.new(with: djProducerTimeoutPolicy, name: "Player DJ Session")
 		let djProducerHTTPClient = HttpClient(using: djProducerSession)
-
 		let djProducer = DJProducer(
 			httpClient: djProducerHTTPClient,
 			credentialsProvider: credentialsProvider,
@@ -166,6 +167,39 @@ public extension Player {
 		let networkMonitor = NetworkMonitor()
 		let notificationsHandler = NotificationsHandler(listener: listener, queue: listenerQueue)
 
+		// For now, OfflineStorage and OfflineEngine can be optional.
+		// Once the functionality is finalized, Player should not work with a missing OfflineEngine.
+		var offlineStorage: GRDBOfflineStorage?
+		var offlineEngine: OfflineEngine?
+		if PlayerWorld.developmentFeatureFlagProvider.isOffliningEnabled {
+			guard let storage = GRDBOfflineStorage.withDefaultDatabase() else {
+				return nil
+			}
+
+			let offlinerHttpClient = HttpClient(using: URLSession.new(with: timeoutPolicy))
+			let offlinerPlaybackInfoFetcher = PlaybackInfoFetcher(
+				with: configuration,
+				offlinerHttpClient,
+				credentialsProvider,
+				networkMonitor,
+				and: playerEventSender,
+				featureFlagProvider: featureFlagProvider
+			)
+
+			let downloader = Downloader(
+				playbackInfoFetcher: offlinerPlaybackInfoFetcher,
+				fairPlayLicenseFetcher: fairplayLicenseFetcher,
+				networkMonitor: networkMonitor
+			)
+
+			offlineStorage = storage
+			offlineEngine = OfflineEngine(
+				downloader: downloader,
+				offlineStorage: storage,
+				playerEventSender: playerEventSender
+			)
+		}
+
 		let playerEngine = Player.newPlayerEngine(
 			sharedPlayerURLSession,
 			configuration,
@@ -179,30 +213,6 @@ public extension Player {
 			externalPlayers,
 			credentialsProvider
 		)
-
-		var offlineEngine: OfflineEngine?
-		if PlayerWorld.developmentFeatureFlagProvider.isOffliningEnabled {
-			let offlinerHttpClient = HttpClient(using: URLSession.new(with: timeoutPolicy))
-			let playbackInfoFetcher = PlaybackInfoFetcher(
-				with: configuration,
-				offlinerHttpClient,
-				credentialsProvider,
-				networkMonitor,
-				and: playerEventSender,
-				featureFlagProvider: featureFlagProvider
-			)
-			let downloader = Downloader(
-				playbackInfoFetcher: playbackInfoFetcher,
-				fairPlayLicenseFetcher: fairplayLicenseFetcher,
-				networkMonitor: networkMonitor
-			)
-
-			offlineEngine = OfflineEngine(
-				downloader: downloader,
-				offlineStorage: offlineStorage,
-				playerEventSender: playerEventSender
-			)
-		}
 
 		shared = Player(
 			queue: OperationQueue.new(),
@@ -426,7 +436,7 @@ private extension Player {
 	static func newPlayerEngine(
 		_ urlSession: URLSession,
 		_ configuration: Configuration,
-		_ offlineStorage: OfflineStorage,
+		_ offlineStorage: OfflineStorage?,
 		_ djProducer: DJProducer,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		_ networkMonitor: NetworkMonitor,

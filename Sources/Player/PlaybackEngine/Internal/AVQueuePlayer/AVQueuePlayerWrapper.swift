@@ -1,8 +1,8 @@
 import AVFoundation
-
-// swiftlint:disable file_length
 import Foundation
 import MediaPlayer
+
+// swiftlint:disable file_length
 
 // MARK: - Constants
 
@@ -459,6 +459,7 @@ private extension AVQueuePlayerWrapper {
 
 			return AssetPlaybackMetadata(sampleRate: sampleRate, formatFlags: bitdepthFlags)
 		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.readPlaybackMetadataFailed(error: error))
 			return nil
 		}
 	}

@@ -17,7 +17,7 @@ private extension TidalLogger {
 }
 
 public extension TidalLogger {
-	func log(loggable: TidalLoggable, file: String = #file, function: String = #function, line: UInt = #line) {
+	func log(loggable: TidalLoggable, file: String = #fileID, function: String = #function, line: UInt = #line) {
 		self.log(
 			level: loggable.logLevel,
 			message: loggable.loggingMessage,

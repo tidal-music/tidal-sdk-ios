@@ -12,6 +12,7 @@ public struct AssetPlaybackMetadata: Equatable {
 			let bitDepth,
 			let bitDepthAsInt = Int(bitDepth)
 		else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.assetPlaybackMetadataInitWithoutRateAndDepthData)
 			return nil
 		}
 		self.sampleRate = Int(sampleRateAsDouble)
@@ -20,6 +21,7 @@ public struct AssetPlaybackMetadata: Equatable {
 
 	public init?(sampleRate: Float64?, formatFlags: AudioFormatFlags?) {
 		guard let sampleRate, let formatFlags else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.assetPlaybackMetadataInitWithoutRequiredData)
 			return nil
 		}
 
@@ -31,6 +33,7 @@ public struct AssetPlaybackMetadata: Equatable {
 		} else if formatFlags == kAppleLosslessFormatFlag_32BitSourceData {
 			bitDepth = 32
 		} else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.assetPlaybackMetadataInitWithInvalidFormatFlags(formatFlags: String(describing: formatFlags)))
 			return nil
 		}
 

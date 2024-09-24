@@ -28,11 +28,10 @@ struct Monitoring {
 	}
 
 	func getMonitoringEvent(from monitoringInfo: MonitoringInfo, headerHelper: HeaderHelper) async -> Event? {
-		guard let monitoringInfoData = try? JSONEncoder().encode(monitoringInfo),
-		      let monitoringPayload = String(data: monitoringInfoData, encoding: .utf8)
-		else {
+		guard let monitoringInfoData = try? JSONEncoder().encode(monitoringInfo) else {
 			return nil
 		}
+		let monitoringPayload = String(decoding: monitoringInfoData, as: UTF8.self)
 		let headers = await headerHelper.getDefaultHeaders(with: .necessary, isMonitoringEvent: true)
 		return Event(name: Self.eventName, headers: headers, payload: monitoringPayload)
 	}

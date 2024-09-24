@@ -304,8 +304,10 @@ private extension PlaybackInfoFetcher {
 			return playbackInfo
 
 		} catch {
-			let error = PlaybackInfoErrorResponseConverter.convert(error)
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.getPlaybackInfoFailed(error: error))
+
 			// TODO: Should we update this to handle proper conversion from TidalError, otherwise they will always be EUnexpected
+			let error = PlaybackInfoErrorResponseConverter.convert(error)
 			let playerError = PlayerInternalError.from(error)
 
 			let endTimestamp = PlayerWorld.timeProvider.timestamp()

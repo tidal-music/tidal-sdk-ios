@@ -43,6 +43,7 @@ extension StreamingLicenseLoader: AVContentKeySessionDelegate {
 				let license = try await getLicense()
 				keyRequest.processContentKeyResponse(AVContentKeyResponse(fairPlayStreamingKeyResponseData: license))
 			} catch {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingGetLicenseFailed(error: error))
 				keyRequest.processContentKeyResponseError(error)
 			}
 		}
