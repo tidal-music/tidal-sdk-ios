@@ -68,7 +68,7 @@ final class DefaultTokensStore: TokensStore {
 
 	private func saveTokensUnsafe(tokens: Tokens) throws {
 		let data = try JSONEncoder().encode(tokens)
-		encryptedStorage[credentialsKey] = String(data: data, encoding: .utf8)
+		encryptedStorage[credentialsKey] = String(decoding: data, as: UTF8.self)
 		latestTokens = tokens
 		// TODO: emit credentails update:  `bus.emit(CredentialsUpdatedMessage)`
 	}

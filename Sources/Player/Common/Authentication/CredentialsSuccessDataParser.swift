@@ -7,10 +7,10 @@ struct CredentialsSuccessDataParser {
 		let credentialStrings = token.components(separatedBy: ".")
 		if credentialStrings.count > 2 {
 			let credentialsSuccessBase64EncodedString = credentialStrings[1].base64WithPadding()
-			if let decodedCredentialsSuccessData = Data(base64Encoded: credentialsSuccessBase64EncodedString),
-			   let jsonCredentialsSuccessString = String(data: decodedCredentialsSuccessData, encoding: .utf8),
-			   let jsonCredentialsSuccessData = jsonCredentialsSuccessString.data(using: .utf8)
-			{
+			if let decodedCredentialsSuccessData = Data(base64Encoded: credentialsSuccessBase64EncodedString) {
+				let jsonCredentialsSuccessString = String(decoding: decodedCredentialsSuccessData, as: UTF8.self)
+				let jsonCredentialsSuccessData = Data(jsonCredentialsSuccessString.utf8)
+
 				let decoder = JSONDecoder()
 				do {
 					let credentialsSuccessData = try decoder.decode(CredentialsSuccessData.self, from: jsonCredentialsSuccessData)

@@ -211,9 +211,9 @@ private extension PlayerEventSender {
 				print("StreamingPrivilegesHandler failed to get credentials")
 				return
 			}
-			
+
 			let userClientId = userClientIdSupplier?()
-		
+
 			let user = User(
 				id: Int(userId!) ?? -1,
 				accessToken: token ?? "N/A",
@@ -267,11 +267,7 @@ private extension PlayerEventSender {
 	) async {
 		do {
 			let data = try encoder.encode(event)
-			guard let serializedString = String(data: data, encoding: .utf8) else {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.sendToEventProducerSerializationFailed)
-				print("Unable to encode data from encoded event: \(event)")
-				return
-			}
+			let serializedString = String(decoding: data, as: UTF8.self)
 
 			try await eventSender.sendEvent(
 				name: name,
