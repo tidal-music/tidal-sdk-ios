@@ -211,7 +211,6 @@ private extension StreamingPrivilegesHandler {
 			await interpret(text)
 		default:
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingHandleInvalidMessage(message: String(describing: message)))
-			break
 		}
 	}
 

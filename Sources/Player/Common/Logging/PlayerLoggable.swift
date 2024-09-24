@@ -166,10 +166,6 @@ enum PlayerLoggable: TidalLoggable {
 
 	case playbackErrorIdFromSubstatus(substatus: Int)
 
-	// MARK: NotificationsHandler
-
-	case mediaTransitionedToPlayerItemWithoutRequiredData
-
 	// MARK: AVPlayer extension
 
 	case avplayerSeekWithoutCurrentItem
@@ -406,10 +402,6 @@ extension PlayerLoggable {
 		case .playbackErrorIdFromSubstatus:
 			"ErrorId-playbackErrorIdFromSubstatus"
 
-		// NotificationsHandler
-		case .mediaTransitionedToPlayerItemWithoutRequiredData:
-			"NotificationsHandler-mediaTransitionedToPlayerItemWithoutRequiredData"
-
 		// AVPlayer
 		case .avplayerSeekWithoutCurrentItem:
 			"AVPlayer-avplayerSeekWithoutCurrentItem"
@@ -523,7 +515,6 @@ extension PlayerLoggable {
 				.audioCodecInitWithEmpty,
 				.audioCodecInitWithNilQuality,
 				.audioCodecInitWithLowQualityAndNilMode,
-				.mediaTransitionedToPlayerItemWithoutRequiredData,
 				.avplayerSeekWithoutCurrentItem,
 				.interruptionMonitorHandleNotificationWithoutRequiredData,
 				.interruptionMonitorHandleNotificationEndedNoOptions,
@@ -618,7 +609,6 @@ extension PlayerLoggable {
 				.audioCodecInitWithLowQualityAndNilMode,
 				.audioCodecInitWithLowQualityAndUnsupportedMode,
 				.playbackErrorIdFromSubstatus,
-				.mediaTransitionedToPlayerItemWithoutRequiredData,
 				.avplayerSeekWithoutCurrentItem,
 				.interruptionMonitorHandleNotificationWithoutRequiredData,
 				.interruptionMonitorHandleNotificationEndedNoOptions,
