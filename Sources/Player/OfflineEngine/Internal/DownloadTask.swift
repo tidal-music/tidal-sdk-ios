@@ -29,6 +29,7 @@ final class DownloadTask {
 
 	private var localAssetUrl: URL?
 	private var localLicenseUrl: URL?
+	private var localAssetSize: Int?
 
 	init(
 		mediaProduct: MediaProduct,
@@ -95,6 +96,11 @@ final class DownloadTask {
 		finalize()
 	}
 
+	func setSize(_ size: Int) {
+		localAssetSize = size
+		finalize()
+	}
+
 	func reportProgress(_ progress: Double) {
 		monitor?.progress(downloadTask: self, progress: progress)
 	}
@@ -122,7 +128,7 @@ final class DownloadTask {
 
 private extension DownloadTask {
 	func finalize() {
-		guard let playbackInfo, let localAssetUrl else {
+		guard let playbackInfo, let localAssetUrl, let localAssetSize else {
 			return
 		}
 
@@ -131,8 +137,12 @@ private extension DownloadTask {
 		}
 
 		do {
-			// TODO: Alberto - Calculate real size of download content
-			let offlineEntry = try OfflineEntry(from: playbackInfo, with: localAssetUrl, and: localLicenseUrl, size: 0)
+			let offlineEntry = try OfflineEntry(
+				from: playbackInfo,
+				with: localAssetUrl,
+				and: localLicenseUrl,
+				size: localAssetSize
+			)
 			monitor?.completed(downloadTask: self, offlineEntry: offlineEntry)
 			endTimestamp = PlayerWorld.timeProvider.timestamp()
 		} catch {
