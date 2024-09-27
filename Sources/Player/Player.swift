@@ -171,7 +171,7 @@ public extension Player {
 		// Once the functionality is finalized, Player should not work with a missing OfflineEngine.
 		var offlineStorage: GRDBOfflineStorage?
 		var offlineEngine: OfflineEngine?
-		if PlayerWorld.developmentFeatureFlagProvider.isOffliningEnabled {
+		if featureFlagProvider.isOfflineEngineEnabled() {
 			guard let storage = GRDBOfflineStorage.withDefaultDatabase() else {
 				return nil
 			}
