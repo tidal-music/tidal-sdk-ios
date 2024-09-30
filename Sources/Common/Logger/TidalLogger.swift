@@ -33,21 +33,18 @@ public extension TidalLogger {
 		message: String,
 		source: String,
 		level: Logger.Level? = nil,
-		metadata: [String: String]? = nil,
+		metadata: Logger.Metadata? = nil,
 		file: String = #fileID,
 		function: String = #function,
 		line: UInt = #line
 	) {
 		let level = level ?? logger.logLevel
 		let loggerMessage = Logger.Message(stringLiteral: message)
-		let loggerMetadata: Logger.Metadata? = metadata?.mapValues {
-			.string($0)
-		}
 	
 		self.log(
 			level: level,
 			message: loggerMessage,
-			metadata: loggerMetadata,
+			metadata: metadata,
 			source: source,
 			file: file,
 			function: function,
