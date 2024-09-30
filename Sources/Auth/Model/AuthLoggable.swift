@@ -65,15 +65,15 @@ extension AuthLoggable {
 			 let .finalizeLoginNetworkError(error),
 			 let .finalizeDeviceLoginNetworkError(error),
 			 let .getCredentialsUpgradeTokenNetworkError(error):
-			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
+			metadata[Self.metadataErrorKey] = .string(.init(describing: error))
 		case let .getCredentialsRefreshTokenNetworkError(error, previousSubstatus),
 			 let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
-			metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
+			metadata[Self.metadataErrorKey] = .string(.init(describing: error))
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 		case let .authLogout(reason, error, previousSubstatus):
 			metadata[Self.metadataReasonKey] = "\(reason)"
 			if let error = error {
-				metadata[Self.metadataErrorKey] = "\(error.localizedDescription)"
+				metadata[Self.metadataErrorKey] = .string(.init(describing: error))
 			}
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 			return metadata
