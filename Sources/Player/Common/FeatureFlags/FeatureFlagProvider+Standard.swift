@@ -5,6 +5,7 @@ public extension FeatureFlagProvider {
 		shouldUseEventProducer: { false },
 		isContentCachingEnabled: { true },
 		shouldSendEventsInDeinit: { true },
-		shouldUseImprovedCaching: { false }
+		shouldUseImprovedCaching: { false },
+		shouldPauseAndPlayAroundSeek: { false }
 	)
 }
