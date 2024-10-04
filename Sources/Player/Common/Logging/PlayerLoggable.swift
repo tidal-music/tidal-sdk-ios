@@ -134,7 +134,6 @@ enum PlayerLoggable: TidalLoggable {
 	case djSessionStartFailed(error: Error)
 	case djSessionSendCommandFailed(error: Error)
 	case djSessionStartNoCurationURL
-	case djSessionPlayNoCurationURL
 	case djSessionPlayProductNotTrack
 	case djSessionPauseNoCurationURL
 	case djSessionStopNoCurationURL
@@ -351,8 +350,6 @@ extension PlayerLoggable {
 			"DJProducer-djSessionSendCommandFailed"
 		case .djSessionStartNoCurationURL:
 			"DJProducer-djSessionStartNoCurationURL"
-		case .djSessionPlayNoCurationURL:
-			"DJProducer-djSessionPlayNoCurationURL"
 		case .djSessionPlayProductNotTrack:
 			"DJProducer-djSessionPlayProductNotTrack"
 		case .djSessionPauseNoCurationURL:
@@ -522,7 +519,6 @@ extension PlayerLoggable {
 				.assetPlaybackMetadataInitWithoutRateAndDepthData,
 				.assetPlaybackMetadataInitWithoutRequiredData,
 				.djSessionStartNoCurationURL,
-				.djSessionPlayNoCurationURL,
 				.djSessionPlayProductNotTrack,
 				.djSessionPauseNoCurationURL,
 				.djSessionStopNoCurationURL,
@@ -617,7 +613,6 @@ extension PlayerLoggable {
 				.assetPlaybackMetadataInitWithoutRequiredData,
 				.assetPlaybackMetadataInitWithInvalidFormatFlags,
 				.djSessionStartNoCurationURL,
-				.djSessionPlayNoCurationURL,
 				.djSessionPlayProductNotTrack,
 				.djSessionPauseNoCurationURL,
 				.djSessionStopNoCurationURL,

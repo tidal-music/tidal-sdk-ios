@@ -68,7 +68,6 @@ final class DJProducer {
 	func play(_ mediaProduct: MediaProduct, at position: Double) {
 		queue.dispatch {
 			guard let curationUrl = self.curationUrl else {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.djSessionPlayNoCurationURL)
 				return
 			}
 
