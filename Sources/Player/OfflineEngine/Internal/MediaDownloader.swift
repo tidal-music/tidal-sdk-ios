@@ -95,7 +95,7 @@ private extension MediaDownloader {
 		} catch {
 			print("Error getting file size: \(error.localizedDescription)")
 		}
-		return total0Size
+		return 0
 	}
 }
 
