@@ -159,7 +159,6 @@ final class AVQueuePlayerWrapperLegacy: GenericMediaPlayer {
 
 			self.delegates.seeking(in: asset)
 
-			let seekTime = CMTime(seconds: time, preferredTimescale: 1000)
 			if self.shouldPauseAndPlayAroundSeek {
 				if self.player.timeControlStatus == .playing {
 					self.isSeeking = true
@@ -173,15 +172,17 @@ final class AVQueuePlayerWrapperLegacy: GenericMediaPlayer {
 				guard completed, currentItem == self.player.currentItem else {
 					return
 				}
+
+				asset.setAssetPosition(currentItem)
 			} else {
 				let completed = await self.player.seek(to: time)
 				guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
 					return
 				}
-			}
 
-			asset.setAssetPosition(currentItem)
-			self.delegates.playing(asset: asset)
+				asset.setAssetPosition(currentItem)
+				self.delegates.playing(asset: asset)
+			}
 		}
 	}
 

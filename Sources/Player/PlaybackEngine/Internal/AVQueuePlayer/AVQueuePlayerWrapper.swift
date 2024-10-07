@@ -203,6 +203,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 					return
 				}
 
+				asset.setAssetPosition(currentItem)
 			} else {
 				let completed = await self.player.seek(to: time)
 				guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
