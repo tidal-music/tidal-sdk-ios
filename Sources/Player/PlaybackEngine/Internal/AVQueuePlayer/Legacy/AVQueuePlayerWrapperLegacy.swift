@@ -174,10 +174,9 @@ final class AVQueuePlayerWrapperLegacy: GenericMediaPlayer {
 					return
 				}
 			} else {
-				self.player.seek(to: seekTime) { completed in
-					guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
-						return
-					}
+				let completed = await self.player.seek(to: time)
+				guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
+					return
 				}
 			}
 
