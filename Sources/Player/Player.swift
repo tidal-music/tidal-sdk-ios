@@ -19,8 +19,12 @@ public final class Player {
 
 	@Atomic
 	private(set) var playerEngine: PlayerEngine
+
 	@Atomic
-	var offlineEngine: OfflineEngine?
+	private(set) var offlineStorage: OfflineStorage?
+
+	@Atomic
+	private(set) var offlineEngine: OfflineEngine?
 
 	// MARK: - Properties
 
@@ -41,7 +45,6 @@ public final class Player {
 		}
 	}
 
-	private var offlineStorage: OfflineStorage?
 	private var djProducer: DJProducer
 	private var playerEventSender: PlayerEventSender
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher
@@ -169,35 +172,21 @@ public extension Player {
 
 		// For now, OfflineStorage and OfflineEngine can be optional.
 		// Once the functionality is finalized, Player should not work with a missing OfflineEngine.
-		var offlineStorage: GRDBOfflineStorage?
+		var offlineStorage: OfflineStorage?
 		var offlineEngine: OfflineEngine?
 		if featureFlagProvider.isOfflineEngineEnabled() {
-			guard let storage = GRDBOfflineStorage.withDefaultDatabase() else {
-				return nil
+			offlineStorage = Player.initializedOfflineStorage()
+			if let offlineStorage {
+				offlineEngine = Player.newOfflineEngine(
+					offlineStorage,
+					configuration,
+					playerEventSender,
+					networkMonitor,
+					fairplayLicenseFetcher,
+					featureFlagProvider,
+					credentialsProvider
+				)
 			}
-
-			let offlinerHttpClient = HttpClient(using: URLSession.new(with: timeoutPolicy))
-			let offlinerPlaybackInfoFetcher = PlaybackInfoFetcher(
-				with: configuration,
-				offlinerHttpClient,
-				credentialsProvider,
-				networkMonitor,
-				and: playerEventSender,
-				featureFlagProvider: featureFlagProvider
-			)
-
-			let downloader = Downloader(
-				playbackInfoFetcher: offlinerPlaybackInfoFetcher,
-				fairPlayLicenseFetcher: fairplayLicenseFetcher,
-				networkMonitor: networkMonitor
-			)
-
-			offlineStorage = storage
-			offlineEngine = OfflineEngine(
-				downloader: downloader,
-				offlineStorage: storage,
-				playerEventSender: playerEventSender
-			)
 		}
 
 		let playerEngine = Player.newPlayerEngine(
@@ -245,19 +234,7 @@ public extension Player {
 			self.playerEngine.notificationsHandler = nil
 			self.playerEngine.resetOrUnload()
 
-			self.playerEngine = Player.newPlayerEngine(
-				self.playerURLSession,
-				self.configuration,
-				self.offlineStorage,
-				self.djProducer,
-				self.fairplayLicenseFetcher,
-				self.networkMonitor,
-				self.playerEventSender,
-				self.notificationsHandler,
-				self.featureFlagProvider,
-				self.registeredPlayers,
-				self.credentialsProvider
-			)
+			self.playerEngine = self.instantiatedPlayerEngine(self.notificationsHandler)
 
 			self.djProducer.delegate = self.playerEngine
 
@@ -270,19 +247,8 @@ public extension Player {
 	func preload(_ mediaProduct: MediaProduct) -> PlayerLoaderHandle {
 		let time = PlayerWorld.timeProvider.timestamp()
 
-		let player = Player.newPlayerEngine(
-			playerURLSession,
-			configuration,
-			offlineStorage,
-			djProducer,
-			fairplayLicenseFetcher,
-			networkMonitor,
-			playerEventSender,
-			nil, // We don't want to notify the client about this player yet
-			featureFlagProvider,
-			registeredPlayers,
-			credentialsProvider
-		)
+		// We don't want to notify the client about this player yet
+		let player = instantiatedPlayerEngine(nil)
 
 		player.load(mediaProduct, timestamp: time, isPreload: true)
 
@@ -381,7 +347,8 @@ public extension Player {
 	///   - mediaProduct: The media product to offline
 	/// - Returns: True if an offline job is created, false otherwise.
 	func offline(mediaProduct: MediaProduct) -> Bool {
-		offlineEngine?.offline(mediaProduct: mediaProduct) ?? false
+		initializeOfflineEngineIfNeeded()
+		return offlineEngine?.offline(mediaProduct: mediaProduct) ?? false
 	}
 
 	/// Deletes an offlined media product. No difference is made between queued, executing or done offlines. Everything is removed
@@ -391,14 +358,16 @@ public extension Player {
 	///   - mediaProduct: Media product to delete offline for
 	/// - Returns: True if a delete job is created, False otherwise.
 	func deleteOffline(mediaProduct: MediaProduct) -> Bool {
-		offlineEngine?.deleteOffline(mediaProduct: mediaProduct) ?? false
+		initializeOfflineEngineIfNeeded()
+		return offlineEngine?.deleteOffline(mediaProduct: mediaProduct) ?? false
 	}
 
 	/// All offlined media products will be deleted. All queued, executing and done offlines will be deleted.
 	/// Async and thread safe. If returns true, progress can be tracked via AllOfflinesDeletedMessage.
 	/// - Returns: True if a delete all offlines job is created, False otherwise.
 	func deleteAllOfflines() -> Bool {
-		offlineEngine?.deleteAllOfflinedMediaProducts() ?? false
+		initializeOfflineEngineIfNeeded()
+		return offlineEngine?.deleteAllOfflinedMediaProducts() ?? false
 	}
 
 	/// Returns offline state of a media product.
@@ -407,10 +376,12 @@ public extension Player {
 	///   - mediaProduct: Media product to gett offline state for.
 	/// - Returns: The state mediaProduct is in.
 	func getOfflineState(mediaProduct: MediaProduct) -> OfflineState {
-		offlineEngine?.getOfflineState(mediaProduct: mediaProduct) ?? .NOT_OFFLINED
+		initializeOfflineEngineIfNeeded()
+		return offlineEngine?.getOfflineState(mediaProduct: mediaProduct) ?? .NOT_OFFLINED
 	}
 
 	func setOfflinerDelegate(_ offlinerDelegate: OfflinerDelegate) {
+		initializeOfflineEngineIfNeeded()
 		offlineEngine?.setOfflinerDelegate(offlinerDelegate)
 	}
 
@@ -433,6 +404,54 @@ public extension Player {
 }
 
 private extension Player {
+	/// We need this for now in case the feature flag is enabled after the bootstrap process
+	func initializeOfflineEngineIfNeeded() {
+		if featureFlagProvider.isOfflineEngineEnabled(), offlineEngine == nil {
+			if offlineStorage == nil {
+				offlineStorage = Player.initializedOfflineStorage()
+			}
+			if let offlineStorage {
+				offlineEngine = Player.newOfflineEngine(
+					offlineStorage,
+					configuration,
+					playerEventSender,
+					networkMonitor,
+					fairplayLicenseFetcher,
+					featureFlagProvider,
+					credentialsProvider
+				)
+			}
+		}
+	}
+
+	func instantiatedPlayerEngine(_ notificationsHandler: NotificationsHandler?) -> PlayerEngine {
+		var controlledOfflineStorage: OfflineStorage?
+		if offlineStorage != nil, !featureFlagProvider.isOfflineEngineEnabled() {
+			// We use this to control the case where the feature flag is disabled after bootstraping the player
+			controlledOfflineStorage = nil
+		} else if offlineStorage == nil, featureFlagProvider.isOfflineEngineEnabled() {
+			// We use this to control the case where the feature flag is enabled after bootstraping the player
+			offlineStorage = Player.initializedOfflineStorage()
+			controlledOfflineStorage = offlineStorage
+		} else {
+			controlledOfflineStorage = offlineStorage
+		}
+
+		return Player.newPlayerEngine(
+			playerURLSession,
+			configuration,
+			controlledOfflineStorage,
+			djProducer,
+			fairplayLicenseFetcher,
+			networkMonitor,
+			playerEventSender,
+			notificationsHandler,
+			featureFlagProvider,
+			registeredPlayers,
+			credentialsProvider
+		)
+	}
+
 	static func newPlayerEngine(
 		_ urlSession: URLSession,
 		_ configuration: Configuration,
@@ -471,6 +490,36 @@ private extension Player {
 		)
 
 		return playerInstance
+	}
+
+	static func initializedOfflineStorage() -> OfflineStorage? {
+		GRDBOfflineStorage.withDefaultDatabase()
+	}
+
+	static func newOfflineEngine(
+		_ storage: OfflineStorage,
+		_ configuration: Configuration,
+		_ playerEventSender: PlayerEventSender,
+		_ networkMonitor: NetworkMonitor,
+		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
+		_ featureFlagProvider: FeatureFlagProvider,
+		_ credentialsProvider: CredentialsProvider
+	) -> OfflineEngine {
+		let offlinerPlaybackInfoFetcher = PlaybackInfoFetcher(
+			with: configuration,
+			HttpClient(using: URLSession.new(with: TimeoutPolicy.standard)),
+			credentialsProvider,
+			networkMonitor,
+			and: playerEventSender,
+			featureFlagProvider: featureFlagProvider
+		)
+		let downloader = Downloader(
+			playbackInfoFetcher: offlinerPlaybackInfoFetcher,
+			fairPlayLicenseFetcher: fairplayLicenseFetcher,
+			networkMonitor: networkMonitor
+		)
+
+		return OfflineEngine(downloader: downloader, offlineStorage: storage, playerEventSender: playerEventSender)
 	}
 }
 
