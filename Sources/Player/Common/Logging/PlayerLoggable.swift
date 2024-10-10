@@ -120,6 +120,8 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: MediaDownloader
 
 	case downloadFinishedMovingFileFailed(error: Error)
+	case failedToCalculateSizeForHLSDownload(error: Error)
+	case failedToCalculateSizeForProgressiveDownload(error: Error)
 
 	// MARK: AVQueuePlayerWrapperLegacy
 
@@ -192,8 +194,8 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: Metrics
 
 	case metricsNoIdealStartTime
-
 }
+
 // swiftlint:enable identifier_name
 
 // MARK: - Logging
@@ -334,6 +336,10 @@ extension PlayerLoggable {
 		// MediaDownloader
 		case .downloadFinishedMovingFileFailed:
 			"MediaDownloader-downloadFinishedMovingFileFailed"
+		case .failedToCalculateSizeForHLSDownload:
+			"MediaDownloader-failedToCalculateSizeForHLSDownload"
+		case .failedToCalculateSizeForProgressiveDownload:
+			"MediaDownloader-failedToCalculateSizeForProgressiveDownload"
 
 		// AVQueuePlayerWrapperLegacy
 		case .legacyReadPlaybackMetadataFailed:
@@ -469,6 +475,8 @@ extension PlayerLoggable {
 		     let .licenseDownloaderContentKeyRequestFailed(error),
 		     let .licenseDownloaderGetLicenseFailed(error),
 		     let .downloadFinishedMovingFileFailed(error),
+		     let .failedToCalculateSizeForHLSDownload(error),
+		     let .failedToCalculateSizeForProgressiveDownload(error),
 		     let .legacyReadPlaybackMetadataFailed(error),
 		     let .readPlaybackMetadataFailed(error),
 		     let .djSessionStartFailed(error),
@@ -490,46 +498,46 @@ extension PlayerLoggable {
 		case let .changeMonitorHandleNotificationDefaultReason(reason):
 			metadata[Constants.metadataRouteChangeReasonKey] = "\(String(describing: reason))"
 		case .streamingNotifyGetCredentialFailed,
-				.streamingConnectOfflineMode,
-				.streamingConnectNoToken,
-				.webSocketSendMessageInvalidData,
-				.webSocketReceiveMessageInvalidData,
-				.webSocketHandleErrorRetryStrategyNone,
-				.streamingHandleInvalidMessage,
-				.streamingInterpretInvalidData,
-				.writeEventNotAuthorized,
-				.sendToEventProducerSerializationFailed,
-				.sendEventsNotAuthorized,
-				.getAuthBearerTokenToBearerTokenFailed,
-				.audioCodecInitWithEmpty,
-				.audioCodecInitWithNilQuality,
-				.audioCodecInitWithLowQualityAndNilMode,
-				.avplayerSeekWithoutCurrentItem,
-				.interruptionMonitorHandleNotificationWithoutRequiredData,
-				.interruptionMonitorHandleNotificationEndedNoOptions,
-				.interruptionMonitorHandleNotificationEndedNoShouldResume,
-				.interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted,
-				.interruptionMonitorHandleNotificationUnknownType,
-				.changeMonitorHandleNotificationWithoutRequiredData,
-				.changeMonitorUpdateVolumeWithoutRequiredData,
-				.eventSenderInitEventsDirectoryFailed,
-				.eventSenderInitOfflinePlaysDirectoryFailed,
-				.eventSenderInitializeDirectoryNoURLPath,
-				.writeEventNoClientId,
-				.assetPlaybackMetadataInitWithoutRateAndDepthData,
-				.assetPlaybackMetadataInitWithoutRequiredData,
-				.djSessionStartNoCurationURL,
-				.djSessionPlayProductNotTrack,
-				.djSessionPauseNoCurationURL,
-				.djSessionStopNoCurationURL,
-				.djSessionStopOnNextCommand,
-				.djSessionResetNoCurationURL,
-				.djSessionSendStopOnNextCommand,
-				.metricsNoIdealStartTime,
-				.handleErrorNoNotificationsHandler,
-				.handleErrorCancellation,
-				.handleErrorPlayerItemNotCurrent,
-				.handleErrorPlayerItemNotNext:
+		     .streamingConnectOfflineMode,
+		     .streamingConnectNoToken,
+		     .webSocketSendMessageInvalidData,
+		     .webSocketReceiveMessageInvalidData,
+		     .webSocketHandleErrorRetryStrategyNone,
+		     .streamingHandleInvalidMessage,
+		     .streamingInterpretInvalidData,
+		     .writeEventNotAuthorized,
+		     .sendToEventProducerSerializationFailed,
+		     .sendEventsNotAuthorized,
+		     .getAuthBearerTokenToBearerTokenFailed,
+		     .audioCodecInitWithEmpty,
+		     .audioCodecInitWithNilQuality,
+		     .audioCodecInitWithLowQualityAndNilMode,
+		     .avplayerSeekWithoutCurrentItem,
+		     .interruptionMonitorHandleNotificationWithoutRequiredData,
+		     .interruptionMonitorHandleNotificationEndedNoOptions,
+		     .interruptionMonitorHandleNotificationEndedNoShouldResume,
+		     .interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted,
+		     .interruptionMonitorHandleNotificationUnknownType,
+		     .changeMonitorHandleNotificationWithoutRequiredData,
+		     .changeMonitorUpdateVolumeWithoutRequiredData,
+		     .eventSenderInitEventsDirectoryFailed,
+		     .eventSenderInitOfflinePlaysDirectoryFailed,
+		     .eventSenderInitializeDirectoryNoURLPath,
+		     .writeEventNoClientId,
+		     .assetPlaybackMetadataInitWithoutRateAndDepthData,
+		     .assetPlaybackMetadataInitWithoutRequiredData,
+		     .djSessionStartNoCurationURL,
+		     .djSessionPlayProductNotTrack,
+		     .djSessionPauseNoCurationURL,
+		     .djSessionStopNoCurationURL,
+		     .djSessionStopOnNextCommand,
+		     .djSessionResetNoCurationURL,
+		     .djSessionSendStopOnNextCommand,
+		     .metricsNoIdealStartTime,
+		     .handleErrorNoNotificationsHandler,
+		     .handleErrorCancellation,
+		     .handleErrorPlayerItemNotCurrent,
+		     .handleErrorPlayerItemNotNext:
 			break
 		}
 
@@ -575,6 +583,8 @@ extension PlayerLoggable {
 		     .licenseDownloaderContentKeyRequestFailed,
 		     .licenseDownloaderGetLicenseFailed,
 		     .downloadFinishedMovingFileFailed,
+		     .failedToCalculateSizeForHLSDownload,
+		     .failedToCalculateSizeForProgressiveDownload,
 		     .legacyReadPlaybackMetadataFailed,
 		     .readPlaybackMetadataFailed,
 		     .djSessionStartFailed,
@@ -583,47 +593,47 @@ extension PlayerLoggable {
 		     .loadPlayerItemFailed:
 			.error
 		case .streamingNotifyGetCredentialFailed,
-				.streamingConnectOfflineMode,
-				.streamingConnectNoToken,
-				.webSocketReceiveMessageInvalidData,
-				.webSocketSendMessageInvalidData,
-				.webSocketHandleErrorRetryStrategyNone,
-				.streamingHandleInvalidMessage,
-				.streamingInterpretInvalidData,
-				.audioCodecInitWithEmpty,
-				.audioCodecInitWithUnknown,
-				.audioCodecInitWithNilQuality,
-				.audioCodecInitWithLowQualityAndNilMode,
-				.audioCodecInitWithLowQualityAndUnsupportedMode,
-				.playbackErrorIdFromSubstatus,
-				.avplayerSeekWithoutCurrentItem,
-				.interruptionMonitorHandleNotificationWithoutRequiredData,
-				.interruptionMonitorHandleNotificationEndedNoOptions,
-				.interruptionMonitorHandleNotificationEndedNoShouldResume,
-				.interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted,
-				.interruptionMonitorHandleNotificationUnknownType,
-				.changeMonitorHandleNotificationWithoutRequiredData,
-				.changeMonitorHandleNotificationDefaultReason,
-				.changeMonitorUpdateVolumeWithoutRequiredData,
-				.eventSenderInitEventsDirectoryFailed,
-				.eventSenderInitOfflinePlaysDirectoryFailed,
-				.eventSenderInitializeDirectoryNoURLPath,
-				.writeEventNoClientId,
-				.assetPlaybackMetadataInitWithoutRateAndDepthData,
-				.assetPlaybackMetadataInitWithoutRequiredData,
-				.assetPlaybackMetadataInitWithInvalidFormatFlags,
-				.djSessionStartNoCurationURL,
-				.djSessionPlayProductNotTrack,
-				.djSessionPauseNoCurationURL,
-				.djSessionStopNoCurationURL,
-				.djSessionStopOnNextCommand,
-				.djSessionResetNoCurationURL,
-				.djSessionSendStopOnNextCommand,
-				.metricsNoIdealStartTime,
-				.handleErrorNoNotificationsHandler,
-				.handleErrorCancellation,
-				.handleErrorPlayerItemNotCurrent,
-				.handleErrorPlayerItemNotNext:
+		     .streamingConnectOfflineMode,
+		     .streamingConnectNoToken,
+		     .webSocketReceiveMessageInvalidData,
+		     .webSocketSendMessageInvalidData,
+		     .webSocketHandleErrorRetryStrategyNone,
+		     .streamingHandleInvalidMessage,
+		     .streamingInterpretInvalidData,
+		     .audioCodecInitWithEmpty,
+		     .audioCodecInitWithUnknown,
+		     .audioCodecInitWithNilQuality,
+		     .audioCodecInitWithLowQualityAndNilMode,
+		     .audioCodecInitWithLowQualityAndUnsupportedMode,
+		     .playbackErrorIdFromSubstatus,
+		     .avplayerSeekWithoutCurrentItem,
+		     .interruptionMonitorHandleNotificationWithoutRequiredData,
+		     .interruptionMonitorHandleNotificationEndedNoOptions,
+		     .interruptionMonitorHandleNotificationEndedNoShouldResume,
+		     .interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted,
+		     .interruptionMonitorHandleNotificationUnknownType,
+		     .changeMonitorHandleNotificationWithoutRequiredData,
+		     .changeMonitorHandleNotificationDefaultReason,
+		     .changeMonitorUpdateVolumeWithoutRequiredData,
+		     .eventSenderInitEventsDirectoryFailed,
+		     .eventSenderInitOfflinePlaysDirectoryFailed,
+		     .eventSenderInitializeDirectoryNoURLPath,
+		     .writeEventNoClientId,
+		     .assetPlaybackMetadataInitWithoutRateAndDepthData,
+		     .assetPlaybackMetadataInitWithoutRequiredData,
+		     .assetPlaybackMetadataInitWithInvalidFormatFlags,
+		     .djSessionStartNoCurationURL,
+		     .djSessionPlayProductNotTrack,
+		     .djSessionPauseNoCurationURL,
+		     .djSessionStopNoCurationURL,
+		     .djSessionStopOnNextCommand,
+		     .djSessionResetNoCurationURL,
+		     .djSessionSendStopOnNextCommand,
+		     .metricsNoIdealStartTime,
+		     .handleErrorNoNotificationsHandler,
+		     .handleErrorCancellation,
+		     .handleErrorPlayerItemNotCurrent,
+		     .handleErrorPlayerItemNotNext:
 			.debug
 		}
 	}
