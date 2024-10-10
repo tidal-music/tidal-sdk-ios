@@ -35,6 +35,3 @@ excluded:
   - '**/Generated/**'
   - bin
   - Sources/Player/Mocks/PlaybackEngine/Internal/
-  - Sources/Player/Mocks/PlaybackEngine/Configuration+Mock.swift
-  - Sources/Player/Mocks/PlaybackEngine/PlayerListenerMock.swift
-  - Sources/Player/Mocks/PlaybackEngine/PlayerMock.swift
