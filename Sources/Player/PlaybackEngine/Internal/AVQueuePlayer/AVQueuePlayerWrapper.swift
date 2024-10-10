@@ -20,6 +20,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	@Atomic private var player: AVQueuePlayer
 	private var playerMonitor: AVPlayerMonitor?
+	private var isSeeking = false
 
 	private let contentKeyDelegateQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.contentkeydelegate.queue")
 	private let playbackTimeProgressQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.playbacktimeprogress.queue")
@@ -32,6 +33,10 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	private var isContentCachingEnabled: Bool {
 		featureFlagProvider.isContentCachingEnabled()
+	}
+
+	private var shouldPauseAndPlayAroundSeek: Bool {
+		featureFlagProvider.shouldPauseAndPlayAroundSeek()
 	}
 
 	private let supportedCodecs: [PlayerAudioCodec] = [
@@ -184,13 +189,30 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 			self.delegates.seeking(in: asset)
 
-			let completed = await self.player.seek(to: time)
-			guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
-				return
-			}
+			if self.shouldPauseAndPlayAroundSeek {
+				if self.player.timeControlStatus == .playing {
+					self.isSeeking = true
+					await self.player.pause()
+				}
 
-			asset.setAssetPosition(currentItem)
-			self.delegates.playing(asset: asset)
+				let completed = await self.player.seek(to: time)
+				self.isSeeking = false
+				await self.player.play()
+
+				guard completed, currentItem == self.player.currentItem else {
+					return
+				}
+
+				asset.setAssetPosition(currentItem)
+			} else {
+				let completed = await self.player.seek(to: time)
+				guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
+					return
+				}
+
+				asset.setAssetPosition(currentItem)
+				self.delegates.playing(asset: asset)
+			}
 		}
 	}
 
@@ -512,6 +534,9 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	func paused(playerItem: AVPlayerItem) {
+		guard !isSeeking else {
+			return
+		}
 		queue.dispatch {
 			guard let asset = self.playerItemAssets[playerItem] else {
 				return
