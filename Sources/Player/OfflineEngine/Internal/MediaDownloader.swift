@@ -62,18 +62,15 @@ private extension MediaDownloader {
 	}
 
 	func calculateHLSStreamSize(for path: URL) -> UInt64 {
-		let fileManager = FileManager.default
 		var totalSize: UInt64 = 0
 
-		if let enumerator = fileManager.enumerator(
+		if let enumerator = PlayerWorld.fileManagerClient.enumerator(
 			at: path,
-			includingPropertiesForKeys: [.fileSizeKey],
-			options: [],
-			errorHandler: nil
+			includingPropertiesForKeys: [URLResourceKey.fileSizeKey]
 		) {
 			for case let fileURL as URL in enumerator {
 				do {
-					let fileAttributes = try fileURL.resourceValues(forKeys: [.fileSizeKey])
+					let fileAttributes = try fileURL.resourceValues(forKeys: [URLResourceKey.fileSizeKey])
 					if let fileSize = fileAttributes.fileSize {
 						totalSize += UInt64(fileSize)
 					}
