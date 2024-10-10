@@ -34,8 +34,5 @@ excluded:
   - '**/.build'
   - '**/Generated/**'
   - bin
-  - Sources/Player/Common/
+#  - Sources/Player/Common/
   - Sources/Player/Mocks/
-#	- Sources/Player/OfflineEngine/
-#	- Sources/Player/PlaybackEngine
-#	- Sources/Player/Player
