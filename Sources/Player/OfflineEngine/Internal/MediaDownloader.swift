@@ -75,7 +75,7 @@ private extension MediaDownloader {
 						totalSize += UInt64(fileSize)
 					}
 				} catch {
-					print("Error reading file size: \(error.localizedDescription)")
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.failedToCalculateSizeForHLSDownload(error: error))
 				}
 			}
 		}
@@ -90,7 +90,7 @@ private extension MediaDownloader {
 				return fileSize
 			}
 		} catch {
-			print("Error getting file size: \(error.localizedDescription)")
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.failedToCalculateSizeForProgressiveDownload(error: error))
 		}
 		return 0
 	}
