@@ -34,4 +34,4 @@ excluded:
   - '**/.build'
   - '**/Generated/**'
   - bin
-  - Sources/Player/Mocks/PlaybackEngine/
+  - Sources/Player/Mocks/PlaybackEngine/Internal/
