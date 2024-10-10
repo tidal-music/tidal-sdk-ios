@@ -20,6 +20,12 @@ struct FileManagerClient {
 	var createDirectory: (_ url: URL, _ createIntermediates: Bool, _ attributes: [FileAttributeKey: Any]?) throws -> Void
 	var contentsOfDirectory: (_ url: URL, _ keys: [URLResourceKey]?, _ options: FileManager.DirectoryEnumerationOptions) throws
 		-> [URL]
+	var enumerator: (
+		_ url: URL,
+		_ includingPropertiesForKeys: [URLResourceKey]?,
+		_ options: FileManager.DirectoryEnumerationOptions,
+		_ handler: ((URL, any Error) -> Bool)?
+	) -> FileManager.DirectoryEnumerator?
 }
 
 extension FileManagerClient {
@@ -62,5 +68,14 @@ extension FileManagerClient {
 		options mask: FileManager.DirectoryEnumerationOptions = []
 	) throws -> [URL] {
 		try contentsOfDirectory(url, keys, mask)
+	}
+
+	func enumerator(
+		at url: URL,
+		includingPropertiesForKeys keys: [URLResourceKey]?,
+		options mask: FileManager.DirectoryEnumerationOptions = [],
+		errorHandler handler: ((URL, any Error) -> Bool)? = nil
+	) -> FileManager.DirectoryEnumerator? {
+		enumerator(url, keys, mask, handler)
 	}
 }
