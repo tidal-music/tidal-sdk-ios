@@ -8,7 +8,11 @@ final class PlayerItemLoader {
 	private let playbackInfoFetcher: PlaybackInfoFetcher
 	private var playerLoader: PlayerLoader
 
-	init(with offlineStorage: OfflineStorage?, _ playbackInfoFetcher: PlaybackInfoFetcher, and playerLoader: PlayerLoader) {
+	init(
+		with offlineStorage: OfflineStorage?,
+		_ playbackInfoFetcher: PlaybackInfoFetcher,
+		and playerLoader: PlayerLoader
+	) {
 		self.offlineStorage = offlineStorage
 		self.playbackInfoFetcher = playbackInfoFetcher
 		self.playerLoader = playerLoader
@@ -40,8 +44,7 @@ private extension PlayerItemLoader {
 			return try await (metadata(of: storedMediaProduct), playerLoader.load(storedMediaProduct))
 		}
 
-		if PlayerWorld.developmentFeatureFlagProvider.isOffliningEnabled,
-		   let offlineEntry = try? offlineStorage?.get(key: mediaProduct.productId),
+		if let offlineEntry = try? offlineStorage?.get(key: mediaProduct.productId),
 		   let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: offlineEntry)
 		{
 			return try await (metadata(of: offlinedMediaProduct), playerLoader.load(offlinedMediaProduct))
