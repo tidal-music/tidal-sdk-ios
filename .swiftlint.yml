@@ -34,3 +34,4 @@ excluded:
   - '**/.build'
   - '**/Generated/**'
   - bin
+  - Sources/Player/PlayerMock.swift
