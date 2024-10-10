@@ -35,4 +35,4 @@ excluded:
   - '**/Generated/**'
   - bin
 #  - Sources/Player/Common/
-  - Sources/Player/Mocks/Common/FeatureFlags/
+  - Sources/Player/Mocks/Common/Types/
