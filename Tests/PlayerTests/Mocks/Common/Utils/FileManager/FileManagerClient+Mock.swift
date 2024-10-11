@@ -39,6 +39,9 @@ extension FileManagerClient {
 		},
 		contentsOfDirectory: { url, keys, options in
 			try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: keys, options: options)
+		},
+		enumerator: { url, keys, options, handler in
+			FileManager.default.enumerator(at: url, includingPropertiesForKeys: keys, options: options, errorHandler: handler)
 		}
 	)
 }
