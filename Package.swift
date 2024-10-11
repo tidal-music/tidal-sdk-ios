@@ -71,7 +71,7 @@ let package = Package(
 		.target(
 			name: "Common",
 			dependencies: [
-				.Logging
+				.Logging,
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
@@ -128,6 +128,7 @@ let package = Package(
 				.auth,
 				.eventProducer,
 				.GRDB,
+				.AnyCodable,
 			],
 			resources: [
 				.process("README.md"),
