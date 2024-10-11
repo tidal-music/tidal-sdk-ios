@@ -1,4 +1,5 @@
 import Auth
+import Common
 import EventProducer
 import Foundation
 
@@ -75,7 +76,7 @@ class PlayerEventSender {
 		write(group: .streamingMetrics, name: event.name, payload: event, extras: nil)
 	}
 
-	func send(_ event: PlayLogEvent, extras: [String: String?]?) {
+	func send(_ event: PlayLogEvent, extras: PlayerEvent.Extras?) {
 		write(group: .playlog, name: EventNames.playbackSession, payload: event, extras: extras)
 	}
 
@@ -189,7 +190,12 @@ private extension PlayerEventSender {
 		self.timer = timer
 	}
 
-	func write<T: Codable & Equatable>(group: EventGroup, name: String, payload: T, extras: [String: String?]?) {
+	func write<T: Codable & Equatable>(
+		group: EventGroup,
+		name: String,
+		payload: T,
+		extras: PlayerEvent.Extras?
+	) {
 		let now = PlayerWorld.timeProvider.timestamp()
 		asyncSchedulerFactory.create { [weak self] in
 			guard let self else {

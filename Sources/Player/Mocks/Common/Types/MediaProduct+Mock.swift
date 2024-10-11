@@ -7,7 +7,7 @@ public extension MediaProduct {
 		referenceId: String? = nil,
 		progressSource: Source? = nil,
 		playLogSource: Source? = nil,
-		extras: [String: String?]? = nil
+		extras: Extras? = nil
 	) -> MediaProduct {
 		MediaProduct(
 			productType: productType,

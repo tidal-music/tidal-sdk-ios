@@ -20,7 +20,7 @@ public final class StoredMediaProduct: MediaProduct {
 		referenceId: String?,
 		progressSource: Source?,
 		playLogSource: Source?,
-		extras: [String: String?]?,
+		extras: Extras?,
 		assetPresentation: AssetPresentation,
 		audioMode: AudioMode?,
 		audioQuality: AudioQuality?,
