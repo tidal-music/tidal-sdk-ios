@@ -12,7 +12,6 @@ protocol AssetFactoryDelegate: AnyObject {
 final class AVURLAssetFactory: NSObject {
 	private static let TTL: Int = 24 * 60 * 60
 
-	private let queue: OperationQueue
 	private let assetCache: AssetCache
 
 	private var downloads: [Download] = [Download]()
@@ -23,14 +22,12 @@ final class AVURLAssetFactory: NSObject {
 	private lazy var session: AVAssetDownloadURLSession = AVAssetDownloadURLSession(
 		configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.player.hls-cache-\(uuid)"),
 		assetDownloadDelegate: self,
-		delegateQueue: queue
+		delegateQueue: nil
 	)
 
 	init(
-		with queue: OperationQueue,
 		assetCache: AssetCache = AssetCache()
 	) {
-		self.queue = queue
 		self.assetCache = assetCache
 	}
 
