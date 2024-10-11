@@ -13,13 +13,12 @@ on:
 jobs:
   run-swiftlint:
     name: Run SwiftLint
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     permissions:
       contents: read
       pull-requests: write
     steps:
     - uses: actions/checkout@v4
-    - uses: swift-actions/setup-swift@v2
 
     - name: Get changed directories
       id: changed-files
@@ -27,6 +26,7 @@ jobs:
       with:
         files: |
           **/*.swift
+
     - name: Run swiftlint on changed files
       run: |
         files="${{ steps.changed-files.outputs.all_changed_files }}"
