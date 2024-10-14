@@ -11,7 +11,7 @@ public struct TidalLogger {
 }
 
 private extension TidalLogger {
-	func log(level: Logger.Level, message: Logger.Message, metadata: Logger.Metadata? = nil, source: String, file: String, function: String, line: UInt) {
+	func log(level: Logger.Level, message: Logger.Message, metadata: Logger.Metadata? = nil, source: String? = nil, file: String, function: String, line: UInt) {
 		self.logger.log(level: level, message, metadata: metadata, source: source, file: file, function: function, line: line)
 	}
 }
@@ -31,7 +31,7 @@ public extension TidalLogger {
 	
 	func log(
 		message: String,
-		source: String,
+		source: String? = nil,
 		level: Logger.Level? = nil,
 		metadata: Logger.Metadata? = nil,
 		file: String = #fileID,

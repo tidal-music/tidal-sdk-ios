@@ -93,7 +93,7 @@ extension AuthLoggable {
 		}
 	}
 	
-	var source: String {
+	var source: String? {
 		"Auth"
 	}
 }
