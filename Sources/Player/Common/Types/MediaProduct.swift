@@ -1,10 +1,8 @@
-import Common
 import Foundation
 
 // MARK: - MediaProduct
 
 public class MediaProduct: Codable {
-	public typealias Extras = AnyCodableDictionary
 	public let productType: ProductType
 	public let productId: String
 	public let referenceId: String?
