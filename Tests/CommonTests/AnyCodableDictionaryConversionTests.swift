@@ -3,9 +3,9 @@ import AnyCodable
 import Foundation
 import XCTest
 
-// MARK: - CommonTests
+// MARK: - AnyCodableDictionaryConversionTests
 
-final class CommonTests: XCTestCase {
+final class AnyCodableDictionaryConversionTests: XCTestCase {
 	func test_asAnyCodableDictionary_convertsToAnyCodableDictionary() throws {
 		let codableFixture = CodableFixture.anyCodableFixture
 
@@ -19,7 +19,7 @@ final class CommonTests: XCTestCase {
 
 // MARK: - CodableFixture
 
-private struct CodableFixture: AnyCodableDictionaryConvertible, Equatable {
+private struct CodableFixture: Codable, Equatable {
 	let optional: String?
 	let optionalString: String?
 	let string: String
