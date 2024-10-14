@@ -7,5 +7,6 @@ public extension FeatureFlagProvider {
 		shouldSendEventsInDeinit: { true },
 		shouldUseImprovedCaching: { false },
 		shouldPauseAndPlayAroundSeek: { false }
+		shouldNotPerformActionAtItemEnd: { false }
 	)
 }

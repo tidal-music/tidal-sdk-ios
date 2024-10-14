@@ -65,7 +65,7 @@ final class AVQueuePlayerWrapperLegacy: GenericMediaPlayer {
 		playbackTimeProgressQueue = DispatchQueue(label: "com.tidal.player.playbacktimeprogress.queue")
 
 		assetFactory = AVURLAssetFactoryLegacy(with: queue)
-		player = AVQueuePlayerWrapperLegacy.createPlayer()
+		player = AVQueuePlayerWrapperLegacy.createPlayer(featureFlagProvider: featureFlagProvider)
 
 		playerItemMonitors = [AVPlayerItem: AVPlayerItemMonitor]()
 		playerItemAssets = [AVPlayerItem: AVPlayerAssetLegacy]()
@@ -209,7 +209,7 @@ final class AVQueuePlayerWrapperLegacy: GenericMediaPlayer {
 			self.playerItemAssets.removeAll()
 			self.playerMonitor = nil
 			self.delegates.removeAll()
-			self.player = AVQueuePlayerWrapperLegacy.createPlayer()
+			self.player = AVQueuePlayerWrapperLegacy.createPlayer(featureFlagProvider: self.featureFlagProvider)
 
 			self.preparePlayer()
 
@@ -314,10 +314,14 @@ extension AVQueuePlayerWrapperLegacy: VideoPlayer {
 }
 
 private extension AVQueuePlayerWrapperLegacy {
-	static func createPlayer() -> AVQueuePlayer {
+	static func createPlayer(featureFlagProvider: FeatureFlagProvider) -> AVQueuePlayer {
 		let player = AVQueuePlayer()
 		player.automaticallyWaitsToMinimizeStalling = true
-		player.actionAtItemEnd = .advance
+		player.actionAtItemEnd = if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
+			.none
+		} else {
+			.advance
+		}
 		player.allowsExternalPlayback = false
 		return player
 	}

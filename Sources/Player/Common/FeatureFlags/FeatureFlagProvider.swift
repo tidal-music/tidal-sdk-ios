@@ -11,11 +11,13 @@ public struct FeatureFlagProvider {
 		shouldSendEventsInDeinit: @escaping () -> Bool,
 		shouldUseImprovedCaching: @escaping () -> Bool,
 		shouldPauseAndPlayAroundSeek: @escaping () -> Bool
+		shouldNotPerformActionAtItemEnd: @escaping () -> Bool
 	) {
 		self.shouldUseEventProducer = shouldUseEventProducer
 		self.isContentCachingEnabled = isContentCachingEnabled
 		self.shouldSendEventsInDeinit = shouldSendEventsInDeinit
 		self.shouldUseImprovedCaching = shouldUseImprovedCaching
 		self.shouldPauseAndPlayAroundSeek = shouldPauseAndPlayAroundSeek
+		self.shouldNotPerformActionAtItemEnd = shouldNotPerformActionAtItemEnd
 	}
 }

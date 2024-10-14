@@ -63,7 +63,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		queue.qualityOfService = .userInitiated
 
 		assetFactory = AVURLAssetFactory(with: queue)
-		player = AVQueuePlayerWrapper.createPlayer()
+		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
 
 		preparePlayer()
 		preparePlayerCache()
@@ -333,10 +333,14 @@ extension AVQueuePlayerWrapper: VideoPlayer {
 }
 
 private extension AVQueuePlayerWrapper {
-	static func createPlayer() -> AVQueuePlayer {
+	static func createPlayer(featureFlagProvider: FeatureFlagProvider) -> AVQueuePlayer {
 		let player = AVQueuePlayer()
 		player.automaticallyWaitsToMinimizeStalling = true
-		player.actionAtItemEnd = .advance
+		player.actionAtItemEnd = if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
+			.none
+		} else {
+			.advance
+		}
 		player.allowsExternalPlayback = false
 		return player
 	}
@@ -496,7 +500,7 @@ private extension AVQueuePlayerWrapper {
 		player.pause()
 		player.removeAllItems()
 
-		player = AVQueuePlayerWrapper.createPlayer()
+		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
 		preparePlayer()
 	}
 }
