@@ -60,6 +60,40 @@ private extension MediaDownloader {
 	func createTask(for url: URL) -> URLSessionDownloadTask {
 		urlDownloadSession.downloadTask(with: url)
 	}
+
+	func calculateHLSStreamSize(for path: URL) -> UInt64 {
+		var totalSize: UInt64 = 0
+
+		if let enumerator = PlayerWorld.fileManagerClient.enumerator(
+			at: path,
+			includingPropertiesForKeys: [URLResourceKey.fileSizeKey]
+		) {
+			for case let fileURL as URL in enumerator {
+				do {
+					let fileAttributes = try fileURL.resourceValues(forKeys: [URLResourceKey.fileSizeKey])
+					if let fileSize = fileAttributes.fileSize {
+						totalSize += UInt64(fileSize)
+					}
+				} catch {
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.failedToCalculateSizeForHLSDownload(error: error))
+				}
+			}
+		}
+
+		return totalSize
+	}
+
+	func calculateProgressiveFileSize(for path: URL) -> UInt64 {
+		do {
+			let fileAttributes = try FileManager.default.attributesOfItem(atPath: path.path)
+			if let fileSize = fileAttributes[.size] as? UInt64 {
+				return fileSize
+			}
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.failedToCalculateSizeForProgressiveDownload(error: error))
+		}
+		return 0
+	}
 }
 
 // MARK: AVAssetDownloadDelegate, URLSessionDownloadDelegate
@@ -82,6 +116,7 @@ extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 			activeTasks.removeValue(forKey: assetDownloadTask)
 		}
 
+		activeTasks[assetDownloadTask]?.setSize(Int(calculateHLSStreamSize(for: location)))
 		activeTasks[assetDownloadTask]?.setMediaUrl(location)
 	}
 
@@ -95,6 +130,7 @@ extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 			let fileManager = PlayerWorld.fileManagerClient
 			let url = fileManager.cachesDirectory().appendingPathComponent(uuid)
 			try fileManager.moveFile(location, url)
+			activeTasks[downloadTask]?.setSize(Int(calculateProgressiveFileSize(for: location)))
 			activeTasks[downloadTask]?.setMediaUrl(url)
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFinishedMovingFileFailed(error: error))
