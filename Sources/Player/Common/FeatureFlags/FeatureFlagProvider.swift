@@ -4,6 +4,7 @@ public struct FeatureFlagProvider {
 	public var shouldSendEventsInDeinit: () -> Bool
 	public var shouldUseImprovedCaching: () -> Bool
 	public var shouldPauseAndPlayAroundSeek: () -> Bool
+	public var shouldNotPerformActionAtItemEnd: () -> Bool
 	public var isOfflineEngineEnabled: () -> Bool
 
 	public init(
