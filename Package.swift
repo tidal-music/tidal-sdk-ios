@@ -32,7 +32,7 @@ let package = Package(
 		),
 	],
 	dependencies: [
-		.package(url: "https://github.com/groue/GRDB.swift.git", from: "6.27.0"),
+		.package(url: "https://github.com/groue/GRDB.swift.git", exact: "6.29.1"),
 		.package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "7.0.2"),
 		.package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
 		.package(url: "https://github.com/MobileNativeFoundation/Kronos.git", exact: "4.2.2"),
