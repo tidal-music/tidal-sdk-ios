@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.37] - 2024-10-15
+
+### Added
+- Calculate size of downloaded MediaProducts (Player)
+- Upgraded OfflineEngine from dev flag to feature flag (Player)
+- New AnyCodable Extras class for the PlayLog metadata (Player)
+
+### Fixed
+- Reworked AVQueuePlayerWrapper and cache integration to try to solve an enqueue crash (Player)
+
 ## [0.3.36] - 2024-10-10
 ### Added
 - Add new FF `shouldPauseAndPlayAroundSeek` and related logic to pause and play around the seek call (Player)
