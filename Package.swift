@@ -71,7 +71,8 @@ let package = Package(
 		.target(
 			name: "Common",
 			dependencies: [
-				.Logging
+				.Logging,
+				.AnyCodable,
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),

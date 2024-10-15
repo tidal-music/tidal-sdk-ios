@@ -10,9 +10,12 @@ import XCTest
 private enum Constants {
 	static let token = "1234"
 	static let tokenEncodedBase64 = "blabla.eyJjaWQiOjEyMzR9.blahblah"
-	
+
 	static let userId = 19
-	static let successfulAuthResult: AuthResult = AuthResult.success(Credentials.mock(userId: String(userId), token: tokenEncodedBase64))
+	static let successfulAuthResult: AuthResult = AuthResult.success(Credentials.mock(
+		userId: String(userId),
+		token: tokenEncodedBase64
+	))
 	static let successfulAuthResultNoUserId: AuthResult = AuthResult.success(Credentials.mock(token: tokenEncodedBase64))
 	static let failedAuthResult: AuthResult = AuthResult<Credentials>.failure(TidalErrorMock(code: "81"))
 	static let userClientId = 10
@@ -450,7 +453,7 @@ private extension PlayerEventSenderTests {
 
 	func assertLegacyPlayLogEvent() async {
 		let playLogEvent = PlayLogEvent.mock()
-		let playLogEventExtras = ["field_1": "1", "field_2": nil]
+		let playLogEventExtras: PlayerEvent.Extras = .mock()
 		playerEventSender.send(playLogEvent, extras: playLogEventExtras)
 
 		await asyncSchedulerFactory.executeAll()
@@ -471,7 +474,7 @@ private extension PlayerEventSenderTests {
 
 	func assertPlayLogEvent() async {
 		let playLogEvent = PlayLogEvent.mock()
-		let playLogEventExtras = ["field_1": "1", "field_2": nil]
+		let playLogEventExtras: PlayerEvent.Extras = .mock()
 		playerEventSender.send(playLogEvent, extras: playLogEventExtras)
 
 		await asyncSchedulerFactory.executeAll()
@@ -487,7 +490,7 @@ private extension PlayerEventSenderTests {
 		group: EventGroup,
 		consentCategory: ConsentCategory,
 		playerEvent: T,
-		extras: [String: String?]?
+		extras: PlayerEvent.Extras?
 	) {
 		let expectedEvent = PlayerEvent(
 			group: group.rawValue,
