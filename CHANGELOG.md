@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Calculate size of downloaded MediaProducts (Player)
--  Upgraded OfflineEngine from dev flag to feature flag (Player)
+- Upgraded OfflineEngine from dev flag to feature flag (Player)
+- New AnyCodable Extras class for the PlayLog metadata (Player)
 
 ### Fixed
 - Reworked AVQueuePlayerWrapper and cache integration to try to solve an enqueue crash (Player)
