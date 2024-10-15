@@ -594,7 +594,7 @@ private extension AVQueuePlayerWrapper {
 					self.playing(playerItem: currentPlayerItem)
 				}
 			} else {
-				// AVPlayer had no other item in the queue (we are still downloading the next one?)
+				// AVPlayer had no other item in the queue (We might still be downloading the next one)`
 				PlayerWorld.logger?.log(loggable: PlayerLoggable.itemChangedWithoutQueuedItems)
 				if let (nextPlayerItem, _) = self.playerItemAssets.first {
 					self.enqueue(playerItem: nextPlayerItem)
