@@ -130,6 +130,8 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: AVQueuePlayerWrapper
 
 	case readPlaybackMetadataFailed(error: Error)
+	case playWithoutQueuedItems
+	case itemChangedWithoutQueuedItems
 
 	// MARK: DJProducer
 
@@ -348,6 +350,10 @@ extension PlayerLoggable {
 		// AVQueuePlayerWrapper
 		case .readPlaybackMetadataFailed:
 			"AVQueuePlayerWrapper-readPlaybackMetadataFailed"
+		case .playWithoutQueuedItems:
+			"AVQueuePlayerWrapper-playWithoutQueuedItems"
+		case .itemChangedWithoutQueuedItems:
+			"AVQueuePlayerWrapper-itemChangedWithoutQueuedItems"
 
 		// DJProducer
 		case .djSessionStartFailed:
@@ -537,7 +543,9 @@ extension PlayerLoggable {
 		     .handleErrorNoNotificationsHandler,
 		     .handleErrorCancellation,
 		     .handleErrorPlayerItemNotCurrent,
-		     .handleErrorPlayerItemNotNext:
+		     .handleErrorPlayerItemNotNext,
+		     .playWithoutQueuedItems,
+		     .itemChangedWithoutQueuedItems:
 			break
 		}
 
@@ -633,7 +641,9 @@ extension PlayerLoggable {
 		     .handleErrorNoNotificationsHandler,
 		     .handleErrorCancellation,
 		     .handleErrorPlayerItemNotCurrent,
-		     .handleErrorPlayerItemNotNext:
+		     .handleErrorPlayerItemNotNext,
+		     .playWithoutQueuedItems,
+		     .itemChangedWithoutQueuedItems:
 			.debug
 		}
 	}
