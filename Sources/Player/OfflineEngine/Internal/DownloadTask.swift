@@ -93,11 +93,7 @@ final class DownloadTask {
 
 	func setMediaUrl(_ url: URL) {
 		localAssetUrl = url
-		finalize()
-	}
-
-	func setSize(_ size: Int) {
-		localAssetSize = size
+		localAssetSize = calculateSize()
 		finalize()
 	}
 
@@ -127,6 +123,54 @@ final class DownloadTask {
 }
 
 private extension DownloadTask {
+	func calculateSize() -> Int {
+		guard let playbackInfo, let localAssetUrl else {
+			return 0
+		}
+
+		if playbackInfo.mediaType == MediaTypes.HLS ||
+			(playbackInfo.productType == .VIDEO && playbackInfo.mediaType == MediaTypes.EMU)
+		{
+			return calculateHLSStreamSize(for: localAssetUrl)
+		} else {
+			return calculateProgressiveFileSize(for: localAssetUrl)
+		}
+	}
+
+	func calculateHLSStreamSize(for path: URL) -> Int {
+		var totalSize: Int = 0
+
+		if let enumerator = PlayerWorld.fileManagerClient.enumerator(
+			at: path,
+			includingPropertiesForKeys: [URLResourceKey.fileSizeKey]
+		) {
+			for case let fileURL as URL in enumerator {
+				do {
+					let fileAttributes = try fileURL.resourceValues(forKeys: [URLResourceKey.fileSizeKey])
+					if let fileSize = fileAttributes.fileSize {
+						totalSize += Int(fileSize)
+					}
+				} catch {
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.failedToCalculateSizeForHLSDownload(error: error))
+				}
+			}
+		}
+
+		return totalSize
+	}
+
+	func calculateProgressiveFileSize(for path: URL) -> Int {
+		do {
+			let fileAttributes = try FileManager.default.attributesOfItem(atPath: path.path)
+			if let fileSize = fileAttributes[.size] as? Int {
+				return fileSize
+			}
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.failedToCalculateSizeForProgressiveDownload(error: error))
+		}
+		return 0
+	}
+
 	func finalize() {
 		guard let playbackInfo, let localAssetUrl, let localAssetSize else {
 			return
