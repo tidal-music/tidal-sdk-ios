@@ -1,8 +1,10 @@
+import Common
 import EventProducer
 
 // MARK: - PlayerEvent
 
 final class PlayerEvent<T: Codable & Equatable>: Codable {
+	typealias Extras = AnyCodableDictionary
 	let group: String
 	let version: Int
 	let ts: UInt64
@@ -10,9 +12,9 @@ final class PlayerEvent<T: Codable & Equatable>: Codable {
 	let user: User
 	let client: Client
 	let payload: T
-	let extras: [String: String?]?
+	let extras: Extras?
 
-	init(group: String, version: Int, ts: UInt64, user: User, client: Client, payload: T, extras: [String: String?]?) {
+	init(group: String, version: Int, ts: UInt64, user: User, client: Client, payload: T, extras: Extras?) {
 		self.group = group
 		self.version = version
 		self.ts = ts

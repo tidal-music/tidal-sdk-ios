@@ -8,7 +8,7 @@ public class MediaProduct: Codable {
 	public let referenceId: String?
 	public let progressSource: Source?
 	public let playLogSource: Source?
-	public let extras: [String: String?]?
+	public let extras: Extras?
 
 	public init(
 		productType: ProductType,
@@ -16,7 +16,7 @@ public class MediaProduct: Codable {
 		referenceId: String?,
 		progressSource: Source?,
 		playLogSource: Source?,
-		extras: [String: String?]?
+		extras: Extras?
 	) {
 		self.productType = productType
 		self.productId = productId

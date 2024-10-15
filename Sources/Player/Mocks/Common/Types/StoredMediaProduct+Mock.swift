@@ -7,7 +7,7 @@ public extension StoredMediaProduct {
 		referenceId: String? = nil,
 		progressSource: Source? = nil,
 		playLogSource: Source? = nil,
-		extras: [String: String?]? = nil,
+		extras: Extras? = nil,
 		assetPresentation: AssetPresentation = .FULL,
 		audioMode: AudioMode? = nil,
 		audioQuality: AudioQuality? = nil,

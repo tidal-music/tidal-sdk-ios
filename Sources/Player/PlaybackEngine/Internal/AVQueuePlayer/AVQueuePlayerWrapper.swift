@@ -2,9 +2,9 @@ import AVFoundation
 import Foundation
 import MediaPlayer
 
-// swiftlint:disable file_length
-
 // MARK: - Constants
+
+// swiftlint:disable file_length
 
 private enum Constants {
 	static let defaultVolume: Float = 1
@@ -62,7 +62,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		queue.maxConcurrentOperationCount = 1
 		queue.qualityOfService = .userInitiated
 
-		assetFactory = AVURLAssetFactory(with: queue)
+		assetFactory = AVURLAssetFactory()
 		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
 
 		preparePlayer()
@@ -130,30 +130,27 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	func unload(asset: Asset) {
 		queue.dispatch {
-			guard let (playerItem, asset) = self.playerItemAssets.first(where: { _, a in a === asset }) else {
+			guard let (playerItem, _) = self.playerItemAssets.first(where: { _, a in a === asset }) else {
 				return
 			}
 
-			if let urlAsset = playerItem.asset as? AVURLAsset,
-			   !urlAsset.isPlayableOffline,
-			   let key = asset.cacheState?.key
-			{
+			if let key = asset.cacheState?.key {
 				self.assetFactory.cancel(with: key)
 			}
 
 			self.unload(playerItem: playerItem)
 
 			if playerItem === self.player.currentItem {
+				// If we are unloading the item that is playing
+				// And there are no more assets loaded we do a reset
 				guard let (nextPlayerItem, _) = self.playerItemAssets.first else {
-					// If we are unloading the item that is playing
-					// And there are no more assets loaded we do a reset
 					self.internalReset()
 					return
 				}
 				self.enqueue(playerItem: nextPlayerItem)
 				self.player.advanceToNextItem()
 			} else {
-				if self.player.items().contains(playerItem) {
+				if !self.player.canInsert(playerItem, after: nil) {
 					self.player.remove(playerItem)
 				}
 				if self.playerItemAssets.isEmpty {
@@ -166,10 +163,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	func play() {
 		queue.dispatch {
 			if self.player.items().isEmpty {
-				guard let (playerItem, _) = self.playerItemAssets.first else {
-					return
-				}
-				self.enqueue(playerItem: playerItem)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.playWithoutQueuedItems)
 			}
 			self.player.play()
 		}
@@ -379,7 +373,6 @@ private extension AVQueuePlayerWrapper {
 		let playerItem = AVQueuePlayerWrapper.createPlayerItem(urlAsset)
 		register(playerItem: playerItem, for: asset)
 
-		// We only insert it if we don't need to cache it.
 		// Items in the AVPlayer queue are not downloaded in advance
 		// This way the next item in the queue can be downloaded in advance.
 		if cacheState == nil {
@@ -388,6 +381,9 @@ private extension AVQueuePlayerWrapper {
 			switch state.status {
 			case .notCached:
 				assetFactory.cacheAsset(urlAsset, for: state.key)
+				if player.items().isEmpty {
+					enqueue(playerItem: playerItem)
+				}
 			case .cached:
 				enqueue(playerItem: playerItem)
 			}
@@ -598,19 +594,17 @@ private extension AVQueuePlayerWrapper {
 			// AVPlayer has moved to the next item in its queue
 			if let currentPlayerItem = self.player.currentItem {
 				self.delegates.completed(asset: asset)
-
 				if self.player.timeControlStatus == .playing {
 					self.playing(playerItem: currentPlayerItem)
 				}
-
 			} else {
-				// AVPlayer had no other item in the queue (we are still downloading the next one)
+				// AVPlayer had no other item in the queue (We might still be downloading the next one)`
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.itemChangedWithoutQueuedItems)
 				if let (nextPlayerItem, _) = self.playerItemAssets.first {
 					self.enqueue(playerItem: nextPlayerItem)
 				} else {
 					self.internalReset()
 				}
-
 				self.delegates.completed(asset: asset)
 			}
 		}
@@ -644,7 +638,7 @@ extension AVQueuePlayerWrapper: AssetFactoryDelegate {
 		queue.dispatch {
 			guard
 				let (oldPlayerItem, asset) = self.playerItemAssets.first(where: { $0.value.cacheState?.key == cacheKey }),
-				!self.player.items().contains(oldPlayerItem)
+				self.player.canInsert(oldPlayerItem, after: nil)
 			else {
 				return
 			}
