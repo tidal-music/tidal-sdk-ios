@@ -1,8 +1,10 @@
+import Common
 import Foundation
 
 // MARK: - LegacyEvent
 
 final class LegacyEvent<T: Codable & Equatable>: Codable {
+	typealias Extras = AnyCodableDictionary
 	let group: String
 	let name: String
 	let version: Int
@@ -11,9 +13,9 @@ final class LegacyEvent<T: Codable & Equatable>: Codable {
 	let user: User
 	let client: Client
 	let payload: T
-	let extras: [String: String?]?
+	let extras: Extras?
 
-	init(group: String, name: String, version: Int, ts: UInt64, user: User, client: Client, payload: T, extras: [String: String?]?) {
+	init(group: String, name: String, version: Int, ts: UInt64, user: User, client: Client, payload: T, extras: Extras?) {
 		self.group = group
 		self.name = name
 		self.version = version
