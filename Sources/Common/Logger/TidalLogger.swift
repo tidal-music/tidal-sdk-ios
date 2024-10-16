@@ -36,11 +36,11 @@ public extension TidalLogger {
 	///   - level: Level of a log message
 	///   - metadata: Additional information attached to a log message
 	///   - file: The file this log message originates from (there's usually no need to pass it explicitly as it
-	///            defaults to `#fileID`.
+	/// defaults to `#fileID`.
 	///   - function: The function this log message originates from (there's usually no need to pass it explicitly as
-	///                it defaults to `#function`).
+	/// it defaults to `#function`).
 	///   - line: The line this log message originates from (there's usually no need to pass it explicitly as it
-	///            defaults to `#line`).
+	/// defaults to `#line`).
 	func log(
 		message: String,
 		source: String? = nil,
