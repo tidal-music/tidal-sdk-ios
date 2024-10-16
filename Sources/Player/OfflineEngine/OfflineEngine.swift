@@ -93,22 +93,16 @@ extension OfflineEngine: DownloadObserver {
 
 private extension OfflineEngine {
 	func delete(offlineEntry: OfflineEntry) {
-		let mediaProduct = MediaProduct(
-			productType: offlineEntry.productType,
-			productId: offlineEntry.productId
-		)
-		guard
-			let mediaUrl = offlineEntry.mediaURL,
-			let licenseUrl = offlineEntry.licenseURL
-		else {
-			return
-		}
-
 		do {
 			let fileManager = PlayerWorld.fileManagerClient
-			try fileManager.removeItem(at: mediaUrl)
-			try fileManager.removeItem(at: licenseUrl)
-			try offlineStorage.delete(key: mediaProduct.productId)
+			if let mediaURL = offlineEntry.mediaURL {
+				try? fileManager.removeItem(at: mediaURL)
+			}
+			if let licenseURL = offlineEntry.licenseURL {
+				try? fileManager.removeItem(at: licenseURL)
+			}
+			try offlineStorage.delete(key: offlineEntry.productId)
+			let mediaProduct = MediaProduct(productType: offlineEntry.productType, productId: offlineEntry.productId)
 			offlinerDelegate?.offlinedDeleted(for: mediaProduct)
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.deleteOfflinedItemFailed(error: error))
