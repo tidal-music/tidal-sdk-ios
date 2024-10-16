@@ -648,7 +648,7 @@ extension PlayerLoggable {
 		}
 	}
 
-	var source: String {
+	var source: String? {
 		"Player"
 	}
 }
