@@ -2,10 +2,12 @@ import Foundation
 
 final class NotificationsHandler {
 	private let listener: PlayerListener
+	private let offlineEngineListener: OfflineEngineListener?
 	private let queue: DispatchQueue
 
-	init(listener: PlayerListener, queue: DispatchQueue) {
+	init(listener: PlayerListener, offlineEngineListener: OfflineEngineListener, queue: DispatchQueue) {
 		self.listener = listener
+		self.offlineEngineListener = offlineEngineListener
 		self.queue = queue
 	}
 
@@ -56,6 +58,42 @@ final class NotificationsHandler {
 	func djSessionTransitioned(to transition: DJSessionTransition) {
 		queue.async {
 			self.listener.djSessionTransitioned(to: transition)
+		}
+	}
+
+	func offliningStarted(for mediaProduct: MediaProduct) {
+		queue.async {
+			self.offlineEngineListener?.offliningStarted(for: mediaProduct)
+		}
+	}
+
+	func offliningProgress(for mediaProduct: MediaProduct, is downloadPercentage: Double) {
+		queue.async {
+			self.offlineEngineListener?.offliningProgress(for: mediaProduct, is: downloadPercentage)
+		}
+	}
+
+	func offliningCompleted(for mediaProduct: MediaProduct) {
+		queue.async {
+			self.offlineEngineListener?.offliningCompleted(for: mediaProduct)
+		}
+	}
+
+	func offliningFailed(for mediaProduct: MediaProduct) {
+		queue.async {
+			self.offlineEngineListener?.offliningFailed(for: mediaProduct)
+		}
+	}
+
+	func offlinedDeleted(for mediaProduct: MediaProduct) {
+		queue.async {
+			self.offlineEngineListener?.offlinedDeleted(for: mediaProduct)
+		}
+	}
+
+	func allOfflinedMediaProductsDeleted() {
+		queue.async {
+			self.offlineEngineListener?.allOfflinedMediaProductsDeleted()
 		}
 	}
 }
