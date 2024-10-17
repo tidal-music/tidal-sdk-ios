@@ -5,7 +5,7 @@ final class NotificationsHandler {
 	private let offlineEngineListener: OfflineEngineListener?
 	private let queue: DispatchQueue
 
-	init(listener: PlayerListener, offlineEngineListener: OfflineEngineListener, queue: DispatchQueue) {
+	init(listener: PlayerListener, offlineEngineListener: OfflineEngineListener?, queue: DispatchQueue) {
 		self.listener = listener
 		self.offlineEngineListener = offlineEngineListener
 		self.queue = queue

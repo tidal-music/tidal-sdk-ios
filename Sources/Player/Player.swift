@@ -109,7 +109,7 @@ public extension Player {
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
 	static func bootstrap(
 		listener: PlayerListener,
-		offlineEngineListener: OfflineEngineListener,
+		offlineEngineListener: OfflineEngineListener? = nil,
 		listenerQueue: DispatchQueue = .main,
 		featureFlagProvider: FeatureFlagProvider = .standard,
 		externalPlayers: [GenericMediaPlayer.Type] = [],
