@@ -21,6 +21,7 @@ final class FeatureFlagProviderTests: XCTestCase {
 
 		let playerInstance = Player.bootstrap(
 			listener: PlayerListenerMock(),
+			offlineEngineListener: OfflineEngineListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: CredentialsProviderMock(),
@@ -38,6 +39,7 @@ final class FeatureFlagProviderTests: XCTestCase {
 
 		let playerInstance = Player.bootstrap(
 			listener: PlayerListenerMock(),
+			offlineEngineListener: OfflineEngineListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: CredentialsProviderMock(),
@@ -55,6 +57,7 @@ final class FeatureFlagProviderTests: XCTestCase {
 
 		let playerInstance = Player.bootstrap(
 			listener: PlayerListenerMock(),
+			offlineEngineListener: OfflineEngineListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: CredentialsProviderMock(),

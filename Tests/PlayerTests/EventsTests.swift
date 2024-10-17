@@ -114,7 +114,7 @@ final class EventsTests: XCTestCase {
 
 		listener = PlayerListenerMock()
 		listenerQueue = DispatchQueue(label: "com.tidal.queue.for.testing")
-		notificationsHandler = NotificationsHandler(listener: listener, queue: listenerQueue)
+		notificationsHandler = .mock(listener: listener, queue: listenerQueue)
 
 		djProducer = DJProducer(
 			httpClient: httpClient,
