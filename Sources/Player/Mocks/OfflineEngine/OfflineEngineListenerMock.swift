@@ -3,7 +3,7 @@ import Foundation
 public final class OfflineEngineListenerMock: OfflineEngineListener {
 	public func offliningStarted(for mediaProduct: MediaProduct) {}
 
-	public func offliningProgress(for mediaProduct: MediaProduct, is downloadPercentage: Double) {}
+	public func offliningProgressed(for mediaProduct: MediaProduct, is downloadPercentage: Double) {}
 
 	public func offliningCompleted(for mediaProduct: MediaProduct) {}
 

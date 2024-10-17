@@ -55,7 +55,7 @@ final class PlayerViewModel: ObservableObject {
 
 	private func initPlayer() {
 		player = Player.bootstrap(
-			listener: self,
+			playerListener: self,
 			credentialsProvider: auth,
 			eventSender: eventSender
 		)

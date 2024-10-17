@@ -20,7 +20,7 @@ final class FeatureFlagProviderTests: XCTestCase {
 		shouldUseOfflineEngine = false
 
 		let playerInstance = Player.bootstrap(
-			listener: PlayerListenerMock(),
+			playerListener: PlayerListenerMock(),
 			offlineEngineListener: OfflineEngineListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),
 			featureFlagProvider: featureFlagProvider,
@@ -38,7 +38,7 @@ final class FeatureFlagProviderTests: XCTestCase {
 		shouldUseOfflineEngine = true
 
 		let playerInstance = Player.bootstrap(
-			listener: PlayerListenerMock(),
+			playerListener: PlayerListenerMock(),
 			offlineEngineListener: OfflineEngineListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),
 			featureFlagProvider: featureFlagProvider,
@@ -56,7 +56,7 @@ final class FeatureFlagProviderTests: XCTestCase {
 		shouldUseOfflineEngine = false
 
 		let playerInstance = Player.bootstrap(
-			listener: PlayerListenerMock(),
+			playerListener: PlayerListenerMock(),
 			offlineEngineListener: OfflineEngineListenerMock(),
 			listenerQueue: DispatchQueue(label: "com.tidal.queue.for.testing"),
 			featureFlagProvider: featureFlagProvider,

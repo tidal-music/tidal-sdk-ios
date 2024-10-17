@@ -108,7 +108,7 @@ public extension Player {
 	/// logging is actually performed.
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
 	static func bootstrap(
-		listener: PlayerListener,
+		playerListener: PlayerListener,
 		offlineEngineListener: OfflineEngineListener? = nil,
 		listenerQueue: DispatchQueue = .main,
 		featureFlagProvider: FeatureFlagProvider = .standard,
@@ -170,7 +170,7 @@ public extension Player {
 
 		let networkMonitor = NetworkMonitor()
 		let notificationsHandler = NotificationsHandler(
-			listener: listener,
+			listener: playerListener,
 			offlineEngineListener: offlineEngineListener,
 			queue: listenerQueue
 		)

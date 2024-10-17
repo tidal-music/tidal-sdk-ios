@@ -69,7 +69,7 @@ final class NotificationsHandler {
 
 	func offliningProgress(for mediaProduct: MediaProduct, is downloadPercentage: Double) {
 		queue.async {
-			self.offlineEngineListener?.offliningProgress(for: mediaProduct, is: downloadPercentage)
+			self.offlineEngineListener?.offliningProgressed(for: mediaProduct, is: downloadPercentage)
 		}
 	}
 
