@@ -80,7 +80,8 @@ enum PlayerLoggable: TidalLoggable {
 
 	// MARK: Offline Engine
 
-	case deleteOfflinedItem(error: Error)
+	case saveOfflinedItemFailed(error: Error)
+	case deleteOfflinedItemFailed(error: Error)
 
 	// MARK: Asset Cache Legacy
 
@@ -294,8 +295,10 @@ extension PlayerLoggable {
 			"GRDBOfflineStorage-withDefaultDatabase"
 
 		// Offline Engine
-		case .deleteOfflinedItem:
-			"OfflineEngine-deleteOfflinedItem"
+		case .saveOfflinedItemFailed:
+			"OfflineEngine-saveOfflinedItemFailed"
+		case .deleteOfflinedItemFailed:
+			"OfflineEngine-deleteOfflinedItemFailed"
 
 		// Asset Cache Legacy
 		case .deleteAssetCacheFailed:
@@ -468,7 +471,8 @@ extension PlayerLoggable {
 		     let .downloadFailed(error),
 		     let .downloadFinalizeFailed(error),
 		     let .withDefaultDatabase(error),
-		     let .deleteOfflinedItem(error),
+		     let .saveOfflinedItemFailed(error),
+		     let .deleteOfflinedItemFailed(error),
 		     let .deleteAssetCacheFailed(error),
 		     let .getAuthBearerTokenCredentialFailed(error),
 		     let .licenseLoaderContentKeyRequestFailed(error),
@@ -577,7 +581,8 @@ extension PlayerLoggable {
 		     .downloadFailed,
 		     .downloadFinalizeFailed,
 		     .withDefaultDatabase,
-		     .deleteOfflinedItem,
+		     .saveOfflinedItemFailed,
+		     .deleteOfflinedItemFailed,
 		     .deleteAssetCacheFailed,
 		     .getAuthBearerTokenToBearerTokenFailed,
 		     .licenseLoaderContentKeyRequestFailed,

@@ -81,7 +81,7 @@ extension OfflineEngine: DownloadObserver {
 			try offlineStorage.save(offlineEntry)
 			offlinerDelegate?.offliningCompleted(for: mediaProduct)
 		} catch {
-			print("Failed to save item: \(error)")
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.saveOfflinedItemFailed(error: error))
 			offlinerDelegate?.offliningFailed(for: mediaProduct)
 		}
 	}
@@ -111,8 +111,7 @@ private extension OfflineEngine {
 			try offlineStorage.delete(key: mediaProduct.productId)
 			offlinerDelegate?.offlinedDeleted(for: mediaProduct)
 		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.deleteOfflinedItem(error: error))
-			print("Failed to remove item: \(error)")
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.deleteOfflinedItemFailed(error: error))
 		}
 	}
 }
