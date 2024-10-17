@@ -19,10 +19,7 @@ extension PlayerEngine {
 		storage: OfflineStorage = OfflineStorageMock(),
 		playerLoader: PlayerLoader = PlayerLoaderMock(),
 		featureFlagProvider: FeatureFlagProvider = .mock,
-		notificationsHandler: NotificationsHandler? = NotificationsHandler(
-			listener: PlayerListenerMock(),
-			queue: DispatchQueue(label: "com.tidal.queue.for.testing")
-		)
+		notificationsHandler: NotificationsHandler? = .mock(queue: DispatchQueue(label: "com.tidal.queue.for.testing"))
 	) -> PlayerEngine {
 		PlayerEngine(
 			with: queue,

@@ -7,7 +7,7 @@ public typealias PlayerState = State
 
 // MARK: - PlayerViewModel
 
-final class PlayerViewModel: ObservableObject, PlayerListener {
+final class PlayerViewModel: ObservableObject {
 	private let CLIENT_ID = "YOUR_CLIENT_ID"
 	private let CLIENT_SECRET = "YOUR_CLIENT_SECRET"
 	private let CREDENTIALS_KEY = "YOUR_CREDENTIALS_KEY"
@@ -55,7 +55,7 @@ final class PlayerViewModel: ObservableObject, PlayerListener {
 
 	private func initPlayer() {
 		player = Player.bootstrap(
-			listener: self,
+			playerListener: self,
 			credentialsProvider: auth,
 			eventSender: eventSender
 		)
@@ -70,7 +70,11 @@ final class PlayerViewModel: ObservableObject, PlayerListener {
 		)
 		player?.play()
 	}
+}
 
+// MARK: PlayerListener
+
+extension PlayerViewModel: PlayerListener {
 	func stateChanged(to state: State) {
 		playerState = state
 	}

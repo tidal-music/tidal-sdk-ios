@@ -7,25 +7,31 @@ public final class OfflineEngine {
 	private let offlineStorage: OfflineStorage
 	private let playerEventSender: PlayerEventSender
 
-	private weak var offlinerDelegate: OfflinerDelegate?
+	@Atomic private var notificationsHandler: NotificationsHandler?
 
-	init(downloader: Downloader, offlineStorage: OfflineStorage, playerEventSender: PlayerEventSender) {
+	init(
+		downloader: Downloader,
+		offlineStorage: OfflineStorage,
+		playerEventSender: PlayerEventSender,
+		notificationsHandler: NotificationsHandler
+	) {
 		self.downloader = downloader
 		self.offlineStorage = offlineStorage
 		self.playerEventSender = playerEventSender
+		self.notificationsHandler = notificationsHandler
 		self.downloader.setObserver(observer: self)
 	}
 
 	public func offline(mediaProduct: MediaProduct) -> Bool {
 		guard let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId) else {
-			offlinerDelegate?.offliningStarted(for: mediaProduct)
+			notificationsHandler?.offliningStarted(for: mediaProduct)
 			downloader.download(mediaProduct: mediaProduct, sessionType: .DOWNLOAD)
 			return true
 		}
 
 		guard offlineEntry.state == .OFFLINED_AND_VALID else {
 			delete(offlineEntry: offlineEntry)
-			offlinerDelegate?.offliningStarted(for: mediaProduct)
+			notificationsHandler?.offliningStarted(for: mediaProduct)
 			downloader.download(mediaProduct: mediaProduct, sessionType: .DOWNLOAD)
 			return true
 		}
@@ -45,7 +51,7 @@ public final class OfflineEngine {
 	public func deleteAllOfflinedMediaProducts() -> Bool {
 		downloader.cancellAll()
 		try? offlineStorage.clear()
-		offlinerDelegate?.allOfflinedMediaProductsDeleted()
+		notificationsHandler?.allOfflinedMediaProductsDeleted()
 		return true
 	}
 
@@ -54,10 +60,6 @@ public final class OfflineEngine {
 			return .NOT_OFFLINED
 		}
 		return offlineEntry.state.publicState
-	}
-
-	public func setOfflinerDelegate(_ offlinerDelegate: OfflinerDelegate) {
-		self.offlinerDelegate = offlinerDelegate
 	}
 }
 
@@ -69,25 +71,25 @@ extension OfflineEngine: DownloadObserver {
 	}
 
 	func downloadStarted(for mediaProduct: MediaProduct) {
-		offlinerDelegate?.offliningStarted(for: mediaProduct)
+		notificationsHandler?.offliningStarted(for: mediaProduct)
 	}
 
 	func downloadProgress(for mediaProduct: MediaProduct, is percentage: Double) {
-		offlinerDelegate?.offliningProgress(for: mediaProduct, is: percentage)
+		notificationsHandler?.offliningProgress(for: mediaProduct, is: percentage)
 	}
 
 	func downloadCompleted(for mediaProduct: MediaProduct, offlineEntry: OfflineEntry) {
 		do {
 			try offlineStorage.save(offlineEntry)
-			offlinerDelegate?.offliningCompleted(for: mediaProduct)
+			notificationsHandler?.offliningCompleted(for: mediaProduct)
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.saveOfflinedItemFailed(error: error))
-			offlinerDelegate?.offliningFailed(for: mediaProduct)
+			notificationsHandler?.offliningFailed(for: mediaProduct)
 		}
 	}
 
 	func downloadFailed(for mediaProduct: MediaProduct, with error: Error) {
-		offlinerDelegate?.offliningFailed(for: mediaProduct)
+		notificationsHandler?.offliningFailed(for: mediaProduct)
 	}
 }
 
@@ -103,7 +105,7 @@ private extension OfflineEngine {
 			}
 			try offlineStorage.delete(key: offlineEntry.productId)
 			let mediaProduct = MediaProduct(productType: offlineEntry.productType, productId: offlineEntry.productId)
-			offlinerDelegate?.offlinedDeleted(for: mediaProduct)
+			notificationsHandler?.offlinedDeleted(for: mediaProduct)
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.deleteOfflinedItemFailed(error: error))
 		}

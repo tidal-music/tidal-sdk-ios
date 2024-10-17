@@ -108,7 +108,8 @@ public extension Player {
 	/// logging is actually performed.
 	/// - Returns: Instance of Player if not initialized yet, or nil if initized already.
 	static func bootstrap(
-		listener: PlayerListener,
+		playerListener: PlayerListener,
+		offlineEngineListener: OfflineEngineListener? = nil,
 		listenerQueue: DispatchQueue = .main,
 		featureFlagProvider: FeatureFlagProvider = .standard,
 		externalPlayers: [GenericMediaPlayer.Type] = [],
@@ -168,7 +169,11 @@ public extension Player {
 		)
 
 		let networkMonitor = NetworkMonitor()
-		let notificationsHandler = NotificationsHandler(listener: listener, queue: listenerQueue)
+		let notificationsHandler = NotificationsHandler(
+			listener: playerListener,
+			offlineEngineListener: offlineEngineListener,
+			queue: listenerQueue
+		)
 
 		// For now, OfflineStorage and OfflineEngine can be optional.
 		// Once the functionality is finalized, Player should not work with a missing OfflineEngine.
@@ -184,7 +189,8 @@ public extension Player {
 					networkMonitor,
 					fairplayLicenseFetcher,
 					featureFlagProvider,
-					credentialsProvider
+					credentialsProvider,
+					notificationsHandler
 				)
 			}
 		}
@@ -380,11 +386,6 @@ public extension Player {
 		return offlineEngine?.getOfflineState(mediaProduct: mediaProduct) ?? .NOT_OFFLINED
 	}
 
-	func setOfflinerDelegate(_ offlinerDelegate: OfflinerDelegate) {
-		initializeOfflineEngineIfNeeded()
-		offlineEngine?.setOfflinerDelegate(offlinerDelegate)
-	}
-
 	func startDjSession(title: String) {
 		queue.dispatch {
 			let now = PlayerWorld.timeProvider.timestamp()
@@ -418,7 +419,8 @@ private extension Player {
 					networkMonitor,
 					fairplayLicenseFetcher,
 					featureFlagProvider,
-					credentialsProvider
+					credentialsProvider,
+					notificationsHandler
 				)
 			}
 		}
@@ -503,7 +505,8 @@ private extension Player {
 		_ networkMonitor: NetworkMonitor,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		_ featureFlagProvider: FeatureFlagProvider,
-		_ credentialsProvider: CredentialsProvider
+		_ credentialsProvider: CredentialsProvider,
+		_ notificationsHandler: NotificationsHandler
 	) -> OfflineEngine {
 		let offlinerPlaybackInfoFetcher = PlaybackInfoFetcher(
 			with: configuration,
@@ -518,8 +521,12 @@ private extension Player {
 			fairPlayLicenseFetcher: fairplayLicenseFetcher,
 			networkMonitor: networkMonitor
 		)
-
-		return OfflineEngine(downloader: downloader, offlineStorage: storage, playerEventSender: playerEventSender)
+		return OfflineEngine(
+			downloader: downloader,
+			offlineStorage: storage,
+			playerEventSender: playerEventSender,
+			notificationsHandler: notificationsHandler
+		)
 	}
 }
 
