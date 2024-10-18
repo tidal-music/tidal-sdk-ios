@@ -30,6 +30,7 @@ class GRDBOfflineStorage {
 					t.column("albumPeakAmplitude", .double)
 					t.column("trackReplayGain", .double)
 					t.column("trackPeakAmplitude", .double)
+					t.column("licenseSecurityToken", .text)
 					t.column("size", .integer)
 					t.column("mediaBookmark", .blob)
 					t.column("licenseBookmark", .blob)
