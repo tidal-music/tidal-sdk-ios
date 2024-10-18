@@ -5,15 +5,18 @@ import Foundation
 
 final class PlayerItemLoader {
 	private let offlineStorage: OfflineStorage?
+	private let offlinePlaybackPrivilegeCheck: (() -> Bool)?
 	private let playbackInfoFetcher: PlaybackInfoFetcher
 	private var playerLoader: PlayerLoader
 
 	init(
 		with offlineStorage: OfflineStorage?,
+		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
 		_ playbackInfoFetcher: PlaybackInfoFetcher,
 		and playerLoader: PlayerLoader
 	) {
 		self.offlineStorage = offlineStorage
+		self.offlinePlaybackPrivilegeCheck = offlinePlaybackPrivilegeCheck
 		self.playbackInfoFetcher = playbackInfoFetcher
 		self.playerLoader = playerLoader
 	}
@@ -44,8 +47,10 @@ private extension PlayerItemLoader {
 			return try await (metadata(of: storedMediaProduct), playerLoader.load(storedMediaProduct))
 		}
 
+		let offlinePlaybackAllowed = offlinePlaybackPrivilegeCheck?() ?? true
 		if let offlineEntry = try? offlineStorage?.get(key: mediaProduct.productId),
-		   let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: offlineEntry)
+		   let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: offlineEntry),
+		   offlinePlaybackAllowed
 		{
 			return try await (metadata(of: offlinedMediaProduct), playerLoader.load(offlinedMediaProduct))
 		}

@@ -108,6 +108,7 @@ final class PlayerEngine {
 		_ playerEventSender: PlayerEventSender,
 		_ networkMonitor: NetworkMonitor,
 		_ offlineStorage: OfflineStorage?,
+		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
 		_ playerLoader: PlayerLoader,
 		_ featureFlagProvider: FeatureFlagProvider,
 		_ notificationsHandler: NotificationsHandler?
@@ -129,7 +130,12 @@ final class PlayerEngine {
 		self.notificationsHandler = notificationsHandler
 		self.featureFlagProvider = featureFlagProvider
 
-		playerItemLoader = PlayerItemLoader(with: offlineStorage, playbackInfoFetcher, and: playerLoader)
+		playerItemLoader = PlayerItemLoader(
+			with: offlineStorage,
+			offlinePlaybackPrivilegeCheck,
+			playbackInfoFetcher,
+			and: playerLoader
+		)
 
 		state = .IDLE
 		currentItem = nil

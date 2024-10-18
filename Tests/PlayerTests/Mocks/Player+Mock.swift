@@ -31,6 +31,7 @@ extension PlayerEngine {
 			playerEventSender,
 			networkMonitor,
 			storage,
+			nil,
 			playerLoader,
 			featureFlagProvider,
 			notificationsHandler
