@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.38] - 2024-10-18
+### Changed
+- Make source optional + added documentation (Logging)
+- Refactor OfflineEngine Listener setup and handling (Player)
+
+### Added
+- Add `Common` product (SDK)
+- Add FF `shouldNotPerformActionAtItemEnd` for not performing any action when item reaches end (Player)
+
+### Fixed
+- Fix OfflineItem size calculation
+- Fix OfflineEntry deletion edge cases
+
 ## [0.3.37] - 2024-10-15
 
 ### Added
