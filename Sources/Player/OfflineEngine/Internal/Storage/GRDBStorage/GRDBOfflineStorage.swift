@@ -119,9 +119,9 @@ extension GRDBOfflineStorage: OfflineStorage {
 
 private extension GRDBOfflineStorage {
 	static func databaseURL() throws -> URL {
-		let appSupportURL = PlayerWorldClient.live.fileManagerClient.applicationSupportDirectory()
+		let appSupportURL = PlayerWorld.fileManagerClient.applicationSupportDirectory()
 		let directoryURL = appSupportURL.appendingPathComponent("PlayerOfflineDatabase", isDirectory: true)
-		try PlayerWorldClient.live.fileManagerClient.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+		try PlayerWorld.fileManagerClient.createDirectory(at: directoryURL, withIntermediateDirectories: true)
 		return directoryURL.appendingPathComponent("db.sqlite")
 	}
 
