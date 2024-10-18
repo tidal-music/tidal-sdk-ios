@@ -62,28 +62,19 @@ private extension MediaDownloader {
 	}
 }
 
-// MARK: AVAssetDownloadDelegate, URLSessionDownloadDelegate
+// MARK: URLSessionDownloadDelegate
 
-extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
+extension MediaDownloader: URLSessionDownloadDelegate {
 	func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-		defer {
-			activeTasks.removeValue(forKey: task)
-		}
-
 		guard let error else {
 			return
 		}
 
-		activeTasks[task]?.failed(with: error)
-	}
-
-	func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask, didFinishDownloadingTo location: URL) {
 		defer {
-			activeTasks.removeValue(forKey: assetDownloadTask)
+			activeTasks.removeValue(forKey: task)
 		}
 
-		let task = activeTasks[assetDownloadTask]
-		task?.setMediaUrl(location)
+		activeTasks[task]?.failed(with: error)
 	}
 
 	func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
@@ -92,9 +83,14 @@ extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 		}
 
 		do {
-			let uuid = PlayerWorld.uuidProvider.uuidString()
 			let fileManager = PlayerWorld.fileManagerClient
-			let url = fileManager.cachesDirectory().appendingPathComponent(uuid)
+			let appSupportURL = fileManager.applicationSupportDirectory()
+			let directoryURL = appSupportURL.appendingPathComponent("ProgressiveDownloads", isDirectory: true)
+			try fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+
+			let uuid = PlayerWorld.uuidProvider.uuidString()
+			let url = directoryURL.appendingPathComponent(uuid)
+
 			try fileManager.moveFile(location, url)
 
 			let task = activeTasks[downloadTask]
@@ -103,6 +99,30 @@ extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFinishedMovingFileFailed(error: error))
 			activeTasks[downloadTask]?.failed(with: error)
 		}
+	}
+
+	func urlSession(
+		_ session: URLSession,
+		downloadTask: URLSessionDownloadTask,
+		didWriteData bytesWritten: Int64,
+		totalBytesWritten: Int64,
+		totalBytesExpectedToWrite: Int64
+	) {
+		let progress = Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
+		activeTasks[downloadTask]?.reportProgress(progress)
+	}
+}
+
+// MARK: AVAssetDownloadDelegate
+
+extension MediaDownloader: AVAssetDownloadDelegate {
+	func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask, didFinishDownloadingTo location: URL) {
+		defer {
+			activeTasks.removeValue(forKey: assetDownloadTask)
+		}
+
+		let task = activeTasks[assetDownloadTask]
+		task?.setMediaUrl(location)
 	}
 
 	func urlSession(
@@ -124,16 +144,7 @@ extension MediaDownloader: AVAssetDownloadDelegate, URLSessionDownloadDelegate {
 			)
 		)
 
-		activeTasks[assetDownloadTask]?.reportProgress(loadedDuration / expectedDuration)
-	}
-
-	func urlSession(
-		_ session: URLSession,
-		downloadTask: URLSessionDownloadTask,
-		didWriteData bytesWritten: Int64,
-		totalBytesWritten: Int64,
-		totalBytesExpectedToWrite: Int64
-	) {
-		activeTasks[downloadTask]?.reportProgress(Double(totalBytesWritten) / Double(totalBytesExpectedToWrite))
+		let progress = loadedDuration / expectedDuration
+		activeTasks[assetDownloadTask]?.reportProgress(progress)
 	}
 }
