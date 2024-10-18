@@ -24,7 +24,7 @@ final class MediaDownloader: NSObject {
 	}
 
 	func download(asset: AVURLAsset, for downloadTask: DownloadTask) {
-		guard let task = createTask(for: asset) else {
+		guard let task = createTask(for: asset, downloadTask) else {
 			return
 		}
 
@@ -47,13 +47,13 @@ final class MediaDownloader: NSObject {
 }
 
 private extension MediaDownloader {
-	func createTask(for asset: AVURLAsset) -> AVAssetDownloadTask? {
-		let uuid = PlayerWorld.uuidProvider.uuidString()
+	func createTask(for asset: AVURLAsset, _ downloadTask: DownloadTask) -> AVAssetDownloadTask? {
+		let type = downloadTask.mediaProduct.productType.rawValue.lowercased()
+		let title = "\(type)-offlined-\(downloadTask.mediaProduct.productId)"
 		return hlsDownloadSession.makeAssetDownloadTask(
 			asset: asset,
-			assetTitle: uuid,
-			assetArtworkData: nil,
-			options: nil
+			assetTitle: title,
+			assetArtworkData: nil
 		)
 	}
 
