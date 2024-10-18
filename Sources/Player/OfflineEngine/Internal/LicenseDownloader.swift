@@ -20,7 +20,10 @@ final class LicenseDownloader: NSObject {
 
 	private func store(_ license: Data, for downloadTask: DownloadTask) throws {
 		let uuid = PlayerWorld.uuidProvider.uuidString()
-		let url = PlayerWorld.fileManagerClient.cachesDirectory().appendingPathComponent("\(uuid).license")
+		let appSupportURL = PlayerWorld.fileManagerClient.applicationSupportDirectory()
+		let directoryURL = appSupportURL.appendingPathComponent("PlayerOfflineLicenses", isDirectory: true)
+		try PlayerWorld.fileManagerClient.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+		let url = directoryURL.appendingPathComponent("\(uuid).license")
 		try license.write(to: url, options: .atomic)
 		downloadTask.setLicenseUrl(url)
 	}
