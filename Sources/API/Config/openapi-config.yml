@@ -2,9 +2,9 @@ additionalProperties:
   useJsonEncodable: false
   responseAs: AsyncAwait
 
-embeddedTemplateDir: ./openAPI_config/custom_template
+embeddedTemplateDir: ./Config/custom_template
+templateDir: ./Config/custom_template
 
-templateDir: ./openAPI_config/custom_template
 files:
   TidalAPI.mustache:
     templateType: API
