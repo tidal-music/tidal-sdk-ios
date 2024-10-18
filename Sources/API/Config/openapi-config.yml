@@ -1,0 +1,11 @@
+additionalProperties:
+  useJsonEncodable: false
+  responseAs: AsyncAwait
+
+embeddedTemplateDir: ./openAPI_config/custom_template
+
+templateDir: ./openAPI_config/custom_template
+files:
+  TidalAPI.mustache:
+    templateType: API
+    destinationFilename: Tidal.swift

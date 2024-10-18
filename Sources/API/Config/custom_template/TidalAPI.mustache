@@ -1,0 +1,81 @@
+import Foundation
+#if canImport(AnyCodable)
+import AnyCodable
+#endif
+
+{{#operations}}
+/// This is a wrapper around `{{classname}}` that uses the injected credentialsprovider
+/// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
+///
+/// Usage example:
+/// ```swift
+/// OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
+/// let dataDocument = try await {{classname}}.getResource()
+/// ```
+public enum {{classname}}Tidal {
+{{#operation}}
+
+{{#allParams}}
+    {{#isEnum}}
+
+	/**
+	 * enum for parameter {{paramName}}
+	 */
+	public enum {{enumName}}_{{operationId}}: {{^isContainer}}{{{dataType}}}{{/isContainer}}{{#isContainer}}String{{/isContainer}}, CaseIterable{{#useVapor}}, Content{{/useVapor}} {
+        {{^enumUnknownDefaultCase}}
+        {{#allowableValues}}
+        {{#enumVars}}
+		case {{name}} = {{{value}}}
+        {{/enumVars}}
+        {{/allowableValues}}
+        {{/enumUnknownDefaultCase}}
+        {{#enumUnknownDefaultCase}}
+        {{#allowableValues}}
+        {{#enumVars}}
+        {{^-last}}
+		case {{name}} = {{{value}}}
+        {{/-last}}
+        {{/enumVars}}
+        {{/allowableValues}}
+        {{/enumUnknownDefaultCase}}
+
+		func to{{classname}}Enum() -> {{classname}}.{{enumName}}_{{operationId}} {
+			switch self {
+          {{^enumUnknownDefaultCase}}
+          {{#allowableValues}}
+          {{#enumVars}}
+			case .{{name}}: return .{{name}}
+          {{/enumVars}}
+          {{/allowableValues}}
+          {{/enumUnknownDefaultCase}}
+          {{#enumUnknownDefaultCase}}
+          {{#allowableValues}}
+          {{#enumVars}}
+          {{^-last}}
+			case .{{name}}: return .{{name}}
+          {{/-last}}
+          {{/enumVars}}
+          {{/allowableValues}}
+          {{/enumUnknownDefaultCase}}
+			}
+		}
+	}
+    {{/isEnum}}
+    {{/allParams}}
+
+	/**
+     {{summary}}
+     
+     {{#params}}
+     - parameter {{paramName}}: ({{paramLocation}}) {{description}} 
+     {{/params}}
+     - returns: {{returnType}}
+     */
+	public static func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}[{{classname}}Tidal.{{enumName}}_{{operationId}}]{{/isContainer}}{{^isContainer}}{{classname}}Tidal.{{enumName}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) async throws{{#returnType}} -> {{{returnType}}}{{#returnType}}{{#isResponseOptional}}?{{/isResponseOptional}}{{/returnType}}{{/returnType}} {
+		return try await RequestHelper.createRequest {
+			{{classname}}.{{operationId}}WithRequestBuilder({{#allParams}}{{paramName}}: {{#isEnum}}{{paramName}}{{^required}}?{{/required}}.to{{classname}}Enum(){{/isEnum}}{{^isEnum}}{{paramName}}{{/isEnum}}{{^-last}}, {{/-last}}{{/allParams}})
+		}
+	}
+{{/operation}}
+}
+{{/operations}}
