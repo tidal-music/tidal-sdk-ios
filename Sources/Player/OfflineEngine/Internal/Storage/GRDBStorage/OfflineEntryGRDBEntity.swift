@@ -20,6 +20,7 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 	let albumPeakAmplitude: Float?
 	let trackReplayGain: Float?
 	let trackPeakAmplitude: Float?
+	let licenseSecurityToken: String?
 	let size: Int
 	let mediaBookmark: Data?
 	let licenseBookmark: Data?
@@ -42,6 +43,7 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 			albumPeakAmplitude: albumPeakAmplitude,
 			trackReplayGain: trackReplayGain,
 			trackPeakAmplitude: trackPeakAmplitude,
+			licenseSecurityToken: licenseSecurityToken,
 			size: size,
 			mediaURL: mediaURL,
 			licenseURL: licenseURL
@@ -99,6 +101,7 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 		albumPeakAmplitude = entry.albumPeakAmplitude
 		trackReplayGain = entry.trackReplayGain
 		trackPeakAmplitude = entry.trackPeakAmplitude
+		licenseSecurityToken = entry.licenseSecurityToken
 		size = entry.size
 		mediaBookmark = try? entry.mediaURL?.bookmarkData()
 		licenseBookmark = try? entry.licenseURL?.bookmarkData()

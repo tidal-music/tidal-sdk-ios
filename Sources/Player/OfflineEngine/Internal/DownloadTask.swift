@@ -105,20 +105,16 @@ final class DownloadTask {
 		self.error = error
 		endTimestamp = PlayerWorld.timeProvider.timestamp()
 
+		let fileManager = PlayerWorld.fileManagerClient
+		if let localAssetUrl {
+			try? fileManager.removeItem(at: localAssetUrl)
+		}
+		if let localLicenseUrl {
+			try? fileManager.removeItem(at: localLicenseUrl)
+		}
+
+		PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFailed(error: error))
 		monitor?.failed(downloadTask: self, with: error)
-
-		guard let localAssetUrl, let localLicenseUrl else {
-			return
-		}
-
-		do {
-			let fileManager = PlayerWorld.fileManagerClient
-			try fileManager.removeItem(at: localAssetUrl)
-			try fileManager.removeItem(at: localLicenseUrl)
-		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFailed(error: error))
-			print("Failed to remove item: \(error)")
-		}
 	}
 }
 
@@ -176,7 +172,7 @@ private extension DownloadTask {
 			return
 		}
 
-		guard licenseDownloader == nil || localLicenseUrl != nil else {
+		guard licenseDownloader == nil || (licenseDownloader != nil && localLicenseUrl != nil) else {
 			return
 		}
 

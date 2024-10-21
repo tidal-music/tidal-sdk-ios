@@ -25,6 +25,7 @@ extension OfflineEntry {
 			albumPeakAmplitude: nil,
 			trackReplayGain: nil,
 			trackPeakAmplitude: nil,
+			licenseSecurityToken: nil,
 			size: size,
 			mediaURL: URL,
 			licenseURL: nil
@@ -54,6 +55,7 @@ extension OfflineEntry {
 			albumPeakAmplitude: playbackInfo.albumPeakAmplitude,
 			trackReplayGain: playbackInfo.trackReplayGain,
 			trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
+			licenseSecurityToken: playbackInfo.licenseSecurityToken,
 			size: size,
 			mediaURL: assetURL,
 			licenseURL: licenseURL
