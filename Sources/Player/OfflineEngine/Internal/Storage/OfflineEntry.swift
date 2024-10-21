@@ -18,12 +18,17 @@ struct OfflineEntry: Codable {
 	let albumPeakAmplitude: Float?
 	let trackReplayGain: Float?
 	let trackPeakAmplitude: Float?
+	let licenseSecurityToken: String?
 	let size: Int
 	var mediaURL: URL?
 	var licenseURL: URL?
 
 	var state: InternalOfflineState {
-		guard let mediaURL, licenseURL != nil else {
+		let needsLicense = needsLicense()
+		guard
+			let mediaURL,
+			!needsLicense || (needsLicense && licenseURL != nil)
+		else {
 			return .OFFLINED_BUT_NO_LICENSE
 		}
 
@@ -59,6 +64,7 @@ struct OfflineEntry: Codable {
 		albumPeakAmplitude: Float?,
 		trackReplayGain: Float?,
 		trackPeakAmplitude: Float?,
+		licenseSecurityToken: String?,
 		size: Int,
 		mediaURL: URL?,
 		licenseURL: URL?
@@ -79,6 +85,7 @@ struct OfflineEntry: Codable {
 		self.albumPeakAmplitude = albumPeakAmplitude
 		self.trackReplayGain = trackReplayGain
 		self.trackPeakAmplitude = trackPeakAmplitude
+		self.licenseSecurityToken = licenseSecurityToken
 		self.size = size
 		self.mediaURL = mediaURL
 		self.licenseURL = licenseURL
@@ -106,6 +113,7 @@ struct OfflineEntry: Codable {
 		albumPeakAmplitude = playbackInfo.albumPeakAmplitude
 		trackReplayGain = playbackInfo.trackReplayGain
 		trackPeakAmplitude = playbackInfo.trackPeakAmplitude
+		licenseSecurityToken = playbackInfo.licenseSecurityToken
 		self.size = size
 		self.mediaURL = mediaURL
 		self.licenseURL = licenseURL
@@ -113,5 +121,9 @@ struct OfflineEntry: Codable {
 
 	func isPlayable() -> Bool {
 		state == .OFFLINED_AND_VALID
+	}
+
+	func needsLicense() -> Bool {
+		licenseSecurityToken != nil
 	}
 }

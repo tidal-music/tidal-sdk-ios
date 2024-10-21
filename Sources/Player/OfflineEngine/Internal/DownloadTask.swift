@@ -21,6 +21,8 @@ final class DownloadTask {
 
 	private weak var monitor: DownloadTaskMonitor?
 
+	private let queue: OperationQueue
+
 	var playbackInfo: PlaybackInfo?
 
 	var startTimestamp: UInt64?
@@ -42,6 +44,10 @@ final class DownloadTask {
 
 		self.mediaProduct = mediaProduct
 		self.monitor = monitor
+
+		queue = OperationQueue()
+		queue.maxConcurrentOperationCount = 1
+		queue.qualityOfService = .userInitiated
 
 		contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
 
@@ -87,37 +93,41 @@ final class DownloadTask {
 	}
 
 	func setLicenseUrl(_ url: URL) {
-		localLicenseUrl = url
-		finalize()
+		queue.dispatch {
+			self.localLicenseUrl = url
+			self.finalize()
+		}
 	}
 
 	func setMediaUrl(_ url: URL) {
-		localAssetUrl = url
-		localAssetSize = calculateSize()
-		finalize()
+		queue.dispatch {
+			self.localAssetUrl = url
+			self.localAssetSize = self.calculateSize()
+			self.finalize()
+		}
 	}
 
 	func reportProgress(_ progress: Double) {
-		monitor?.progress(downloadTask: self, progress: progress)
+		queue.dispatch {
+			self.monitor?.progress(downloadTask: self, progress: progress)
+		}
 	}
 
 	func failed(with error: Error) {
-		self.error = error
-		endTimestamp = PlayerWorld.timeProvider.timestamp()
+		queue.dispatch {
+			self.error = error
+			self.endTimestamp = PlayerWorld.timeProvider.timestamp()
 
-		monitor?.failed(downloadTask: self, with: error)
-
-		guard let localAssetUrl, let localLicenseUrl else {
-			return
-		}
-
-		do {
 			let fileManager = PlayerWorld.fileManagerClient
-			try fileManager.removeItem(at: localAssetUrl)
-			try fileManager.removeItem(at: localLicenseUrl)
-		} catch {
+			if let localAssetUrl = self.localAssetUrl {
+				try? fileManager.removeItem(at: localAssetUrl)
+			}
+			if let localLicenseUrl = self.localLicenseUrl {
+				try? fileManager.removeItem(at: localLicenseUrl)
+			}
+
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFailed(error: error))
-			print("Failed to remove item: \(error)")
+			self.monitor?.failed(downloadTask: self, with: error)
 		}
 	}
 }
@@ -176,7 +186,7 @@ private extension DownloadTask {
 			return
 		}
 
-		guard licenseDownloader == nil || localLicenseUrl != nil else {
+		guard licenseDownloader == nil || (licenseDownloader != nil && localLicenseUrl != nil) else {
 			return
 		}
 
