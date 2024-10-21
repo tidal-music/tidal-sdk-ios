@@ -162,7 +162,7 @@ enum PlayerLoggable: TidalLoggable {
 
 	case audioCodecInitWithEmpty
 	case audioCodecInitWithUnknown(codec: String)
-	case audioCodecInitWithNilQuality
+	case audioCodecInitWithNilQuality(audioMode: String)
 	case audioCodecInitWithLowQualityAndNilMode
 	case audioCodecInitWithLowQualityAndUnsupportedMode(mode: String)
 
@@ -187,6 +187,11 @@ enum PlayerLoggable: TidalLoggable {
 	case changeMonitorHandleNotificationWithoutRequiredData
 	case changeMonitorHandleNotificationDefaultReason(reason: String)
 	case changeMonitorUpdateVolumeWithoutRequiredData
+
+	// MARK: AudioSessionMediaServicesWereResetMonitor
+
+	case handleMediaServicesWereLost
+	case handleMediaServicesWereReset
 
 	// MARK: AssetPlaybackMetadata
 
@@ -434,6 +439,12 @@ extension PlayerLoggable {
 		case .changeMonitorUpdateVolumeWithoutRequiredData:
 			"AudioSessionRouteChangeMonitor-updateVolumeWithoutRequiredData"
 
+		// AudioSessionMediaServicesWereResetMonitor
+		case .handleMediaServicesWereLost:
+			"AudioSessionMediaServicesWereResetMonitor-handleMediaServicesWereLost"
+		case .handleMediaServicesWereReset:
+			"AudioSessionMediaServicesWereResetMonitor-handleMediaServicesWereReset"
+
 		// AssetPlaybackMetadata
 		case .assetPlaybackMetadataInitWithoutRateAndDepthData:
 			"AssetPlaybackMetadata-initWithoutRateAndDepthData"
@@ -507,6 +518,8 @@ extension PlayerLoggable {
 			metadata[Constants.metadataFormatFlagsKey] = "\(String(describing: formatFlags))"
 		case let .changeMonitorHandleNotificationDefaultReason(reason):
 			metadata[Constants.metadataRouteChangeReasonKey] = "\(String(describing: reason))"
+		case let .audioCodecInitWithNilQuality(mode):
+			metadata[Constants.metadataAudioModeKey] = "\(String(describing: mode))"
 		case .streamingNotifyGetCredentialFailed,
 		     .streamingConnectOfflineMode,
 		     .streamingConnectNoToken,
@@ -530,6 +543,8 @@ extension PlayerLoggable {
 		     .interruptionMonitorHandleNotificationUnknownType,
 		     .changeMonitorHandleNotificationWithoutRequiredData,
 		     .changeMonitorUpdateVolumeWithoutRequiredData,
+			 .handleMediaServicesWereReset,
+			 .handleMediaServicesWereLost,
 		     .eventSenderInitEventsDirectoryFailed,
 		     .eventSenderInitOfflinePlaysDirectoryFailed,
 		     .eventSenderInitializeDirectoryNoURLPath,
@@ -628,6 +643,8 @@ extension PlayerLoggable {
 		     .changeMonitorHandleNotificationWithoutRequiredData,
 		     .changeMonitorHandleNotificationDefaultReason,
 		     .changeMonitorUpdateVolumeWithoutRequiredData,
+			 .handleMediaServicesWereLost,
+			 .handleMediaServicesWereReset,
 		     .eventSenderInitEventsDirectoryFailed,
 		     .eventSenderInitOfflinePlaysDirectoryFailed,
 		     .eventSenderInitializeDirectoryNoURLPath,

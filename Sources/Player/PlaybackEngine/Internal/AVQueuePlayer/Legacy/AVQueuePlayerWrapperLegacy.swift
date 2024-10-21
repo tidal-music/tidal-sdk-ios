@@ -590,13 +590,28 @@ private extension AVQueuePlayerWrapperLegacy {
 	}
 
 	static func mediaError(_ error: Error, with description: String) -> PlayerInternalError? {
-		(error as? AVError).map {
-			PlayerInternalError(
+		let nserror = error as NSError
+
+		// If it's the error related to the media services being reset, we create a specific internal error instead of a generic one.
+		// This is because the media services being reset is a recoverable error that should be handled differently.
+		if nserror.domain == ErrorConstants.avfoundationErrorDomain,
+				nserror.code == ErrorConstants.averrorMediaServicesWereResetErrorCode
+		{
+			return PlayerInternalError(
 				errorId: .PERetryable,
-				errorType: .avPlayerAvError,
-				code: $0.code.rawValue,
-				description: description
-			)
+				 errorType: .mediaServicesWereReset,
+				 code: nserror.code,
+				 description: description
+			 )
+		} else {
+			return (error as? AVError).map {
+				PlayerInternalError(
+					errorId: .PERetryable,
+					errorType: .avPlayerAvError,
+					code: $0.code.rawValue,
+					description: description
+				)
+			}
 		}
 	}
 

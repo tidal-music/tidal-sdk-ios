@@ -96,6 +96,7 @@ final class PlayerEngine {
 	#if !os(macOS)
 		private var audioSessionInterruptionMonitor: AudioSessionInterruptionMonitor!
 		private var audioSessionRouteChangeMonitor: AudioSessionRouteChangeMonitor!
+		private var audioSessionMediaServicesWereResetMonitor: AudioSessionMediaServicesWereResetMonitor!
 	#endif
 
 	init(
@@ -139,6 +140,7 @@ final class PlayerEngine {
 		#if !os(macOS)
 			audioSessionInterruptionMonitor = AudioSessionInterruptionMonitor(self)
 			audioSessionRouteChangeMonitor = AudioSessionRouteChangeMonitor(self, configuration: configuration)
+			audioSessionMediaServicesWereResetMonitor = AudioSessionMediaServicesWereResetMonitor(playerEngine: self)
 		#endif
 	}
 
@@ -265,7 +267,7 @@ final class PlayerEngine {
 	}
 
 	/// The Player SDK creates new PlayerEngine instances when starting a new explicit playback.
-	/// This means it discards the previous isntance, which won't be reused.
+	/// This means it discards the previous instance, which won't be reused.
 	/// Which allows us to optimize how we clean up as it won't be reused (no need to queue up the clean operation)
 	func unload() {
 		cancellAllNetworkRequests()
@@ -282,7 +284,7 @@ final class PlayerEngine {
 	/// The Player SDK creates new PlayerEngine instances when starting a new explicit playback.
 	/// In theory, this should allows us to never need to reuse an instance.
 	/// But that requires a bit more changes, so until then, when the client calls reset,
-	/// we still need to call reset to the active instance. which cleans up syncronously to avoid thread issues.
+	/// we still need to call reset to the active instance. which cleans up synchronously to avoid thread issues.
 	func reset() {
 		// Unload and nullify the current item so that it immediately stops playing.
 		currentItem?.unloadFromPlayer()
@@ -343,6 +345,15 @@ final class PlayerEngine {
 
 	func currentPlayer() -> GenericMediaPlayer? {
 		currentItem?.asset?.player
+	}
+
+	func resetPlayerAndSetUpAudioSessionAfterMediaServiceWereReset() {
+		// When media services are reset, we must reset the player.
+		self.reset()
+
+		// Then we should also set it up again the audio session as done initially. Since this is done outside the SDK, we delegate it
+		// to the notification handler to do it.
+		notificationsHandler?.mediaServicesWereReset()
 	}
 }
 
