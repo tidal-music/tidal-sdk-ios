@@ -63,6 +63,10 @@ class Downloader {
 	func setObserver(observer: DownloadObserver) {
 		self.observer = observer
 	}
+
+	func updateConfiguration(_ configuration: Configuration) {
+		playbackInfoFetcher.updateConfiguration(configuration)
+	}
 }
 
 private extension Downloader {

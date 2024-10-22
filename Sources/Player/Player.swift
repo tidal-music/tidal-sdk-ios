@@ -41,6 +41,7 @@ public final class Player {
 		// immediately.
 		didSet {
 			playerEngine.updateConfiguration(configuration)
+			offlineEngine.updateConfiguration(configuration)
 			streamingPrivilegesHandler.updateConfiguration(configuration)
 		}
 	}
