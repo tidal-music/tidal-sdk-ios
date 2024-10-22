@@ -192,6 +192,7 @@ private extension DownloadTask {
 
 		do {
 			let offlineEntry = try OfflineEntry(
+				for: mediaProduct,
 				from: playbackInfo,
 				with: localAssetUrl,
 				and: localLicenseUrl,

@@ -5,6 +5,7 @@ import GRDB
 
 struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 	let productId: String
+	let actualProductId: String
 	let productType: ProductType
 	let assetPresentation: AssetPresentation
 	let audioMode: AudioMode?
@@ -28,6 +29,7 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 	var offlineEntry: OfflineEntry {
 		OfflineEntry(
 			productId: productId,
+			actualProductId: actualProductId,
 			productType: productType,
 			assetPresentation: assetPresentation,
 			audioMode: audioMode,
@@ -86,6 +88,7 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 
 	init(from entry: OfflineEntry) {
 		productId = entry.productId
+		actualProductId = entry.actualProductId
 		productType = entry.productType
 		assetPresentation = entry.assetPresentation
 		audioMode = entry.audioMode

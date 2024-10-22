@@ -3,6 +3,7 @@ import Foundation
 
 struct OfflineEntry: Codable {
 	let productId: String
+	let actualProductId: String
 	let productType: ProductType
 	let assetPresentation: AssetPresentation
 	let audioMode: AudioMode?
@@ -49,6 +50,7 @@ struct OfflineEntry: Codable {
 
 	init(
 		productId: String,
+		actualProductId: String,
 		productType: ProductType,
 		assetPresentation: AssetPresentation,
 		audioMode: AudioMode?,
@@ -70,6 +72,7 @@ struct OfflineEntry: Codable {
 		licenseURL: URL?
 	) {
 		self.productId = productId
+		self.actualProductId = actualProductId
 		self.productType = productType
 		self.assetPresentation = assetPresentation
 		self.audioMode = audioMode
@@ -92,13 +95,15 @@ struct OfflineEntry: Codable {
 	}
 
 	init(
+		for mediaProduct: MediaProduct,
 		from playbackInfo: PlaybackInfo,
 		with mediaURL: URL,
 		and licenseURL: URL?,
 		size: Int
 	) throws {
+		productId = mediaProduct.productId
+		actualProductId = playbackInfo.productId
 		productType = playbackInfo.productType
-		productId = playbackInfo.productId
 		assetPresentation = playbackInfo.assetPresentation
 		audioMode = playbackInfo.audioMode
 		audioQuality = playbackInfo.audioQuality
