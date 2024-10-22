@@ -1,6 +1,6 @@
 import Auth
-@testable import Player
 import GRDB
+@testable import Player
 import XCTest
 
 // MARK: - PlayerTests
@@ -9,7 +9,7 @@ final class PlayerTests: XCTestCase {
 	private var player: Player!
 	private var playerEventSender: PlayerEventSenderMock!
 	private var dbQueue: DatabaseQueue!
-	
+
 	override func setUpWithError() throws {
 		PlayerWorld = PlayerWorldClient.mock(developmentFeatureFlagProvider: DevelopmentFeatureFlagProvider.mock)
 
@@ -50,6 +50,11 @@ final class PlayerTests: XCTestCase {
 		)
 
 		let notificationsHandler = NotificationsHandler.mock()
+		let offlineEngine = OfflineEngine.mock(
+			storage: storage,
+			playerEventSender: playerEventSender,
+			notificationsHandler: notificationsHandler
+		)
 		let playerEngine = PlayerEngine.mock(httpClient: httpClient)
 
 		player = Player(
@@ -64,7 +69,7 @@ final class PlayerTests: XCTestCase {
 			networkMonitor: networkMonitor,
 			notificationsHandler: notificationsHandler,
 			playerEngine: playerEngine,
-			offlineEngine: nil,
+			offlineEngine: offlineEngine,
 			featureFlagProvider: .mock,
 			externalPlayers: [],
 			credentialsProvider: CredentialsProviderMock()

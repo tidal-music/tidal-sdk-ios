@@ -5,7 +5,6 @@ public struct FeatureFlagProvider {
 	public var shouldUseImprovedCaching: () -> Bool
 	public var shouldPauseAndPlayAroundSeek: () -> Bool
 	public var shouldNotPerformActionAtItemEnd: () -> Bool
-	public var isOfflineEngineEnabled: () -> Bool
 
 	public init(
 		shouldUseEventProducer: @escaping () -> Bool,
@@ -13,8 +12,7 @@ public struct FeatureFlagProvider {
 		shouldSendEventsInDeinit: @escaping () -> Bool,
 		shouldUseImprovedCaching: @escaping () -> Bool,
 		shouldPauseAndPlayAroundSeek: @escaping () -> Bool,
-		shouldNotPerformActionAtItemEnd: @escaping () -> Bool,
-		isOfflineEngineEnabled: @escaping () -> Bool
+		shouldNotPerformActionAtItemEnd: @escaping () -> Bool
 	) {
 		self.shouldUseEventProducer = shouldUseEventProducer
 		self.isContentCachingEnabled = isContentCachingEnabled
@@ -22,6 +20,5 @@ public struct FeatureFlagProvider {
 		self.shouldUseImprovedCaching = shouldUseImprovedCaching
 		self.shouldPauseAndPlayAroundSeek = shouldPauseAndPlayAroundSeek
 		self.shouldNotPerformActionAtItemEnd = shouldNotPerformActionAtItemEnd
-		self.isOfflineEngineEnabled = isOfflineEngineEnabled
 	}
 }
