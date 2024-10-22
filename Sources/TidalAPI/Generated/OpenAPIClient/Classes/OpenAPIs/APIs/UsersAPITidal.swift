@@ -9,7 +9,7 @@ import AnyCodable
 /// Usage example:
 /// ```swift
 /// OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
-/// let dataDocument = try await UsersAPI.getResource()
+/// let dataDocument = try await UsersAPITidal.getResource()
 /// ```
 public enum UsersAPITidal {
 
