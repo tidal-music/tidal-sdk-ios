@@ -44,7 +44,7 @@ private extension AudioSessionMediaServicesWereResetMonitor {
 
 	@objc
 	func handleMediaServicesWereLost(notification: Notification) {
-		PlayerWorld.logger?.log(loggable: PlayerLoggable.handleMediaServicesWereReset)
+		PlayerWorld.logger?.log(loggable: PlayerLoggable.handleMediaServicesWereLost)
 	}
 
 	@objc
