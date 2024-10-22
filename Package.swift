@@ -35,8 +35,8 @@ let package = Package(
 			targets: ["Common"]
 		),
 		.library(
-			name: "API",
-			targets: ["API"]
+			name: "TidalAPI",
+			targets: ["TidalAPI"]
 		),
 	],
 	dependencies: [
@@ -71,7 +71,7 @@ let package = Package(
 			]
 		),
 		.target(
-			name: "API",
+			name: "TidalAPI",
 			dependencies: [
 				.AnyCodable,
 			],
@@ -176,7 +176,7 @@ extension Target.Dependency {
 	static let template = byName(name: "Template")
 	static let eventProducer = byName(name: "EventProducer")
 	static let catalogue = byName(name: "Catalogue")
-	static let api = byName(name: "API")
+	static let tidalAPI = byName(name: "TidalAPI")
 	static let common = byName(name: "Common")
 	static let auth = byName(name: "Auth")
 	static let player = byName(name: "Player")
