@@ -87,6 +87,13 @@ extension PlayerViewModel: PlayerListener {
 		self.error = CustomError.playerError(code: error.errorCode)
 		showAlert = true
 	}
+
+	func mediaServicesWereReset() {
+		// We must set up again the audio session for the correct behavior after media services are reset.
+		let audioSession = AVAudioSession.sharedInstance()
+		try? audioSession.setCategory(.playback, mode: .default, policy: .longFormAudio)
+		try audioSession.setActive(true)
+	}
 }
 
 // MARK: - CustomError
