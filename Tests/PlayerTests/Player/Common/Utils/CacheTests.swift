@@ -114,7 +114,7 @@ extension CacheTests {
 		cache.delete(key: key)
 
 		optimizedWait {
-			cache.cache.cachedResponse(for: request)?.data == nil
+			self.cache.cache.cachedResponse(for: request)?.data == nil
 		}
 
 		// THEN

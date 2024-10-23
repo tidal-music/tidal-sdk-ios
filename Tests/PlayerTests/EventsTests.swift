@@ -209,8 +209,8 @@ final class EventsTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.succeed(with: Constants.trackPlaybackInfo)
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.isEmpty &&
-				playerEventSender.playLogEvents.isEmpty
+			self.playerEventSender.streamingMetricsEvents.isEmpty &&
+				self.playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
@@ -224,8 +224,8 @@ final class EventsTests: XCTestCase {
 		playerEngine.reset()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 3 &&
-				playerEventSender.playLogEvents.isEmpty
+			self.playerEventSender.streamingMetricsEvents.count == 3 &&
+				self.playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
@@ -264,8 +264,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.isEmpty &&
-					playerEventSender.playLogEvents.isEmpty
+				self.playerEventSender.streamingMetricsEvents.isEmpty &&
+					self.playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
@@ -283,8 +283,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 3 &&
-					playerEventSender.playLogEvents.isEmpty
+				self.playerEventSender.streamingMetricsEvents.count == 3 &&
+					self.playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
@@ -349,8 +349,8 @@ final class EventsTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.isEmpty &&
-				playerEventSender.playLogEvents.isEmpty
+			self.playerEventSender.streamingMetricsEvents.isEmpty &&
+				self.playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 0)
@@ -360,8 +360,8 @@ final class EventsTests: XCTestCase {
 		playerEngine.load(Constants.mediaProduct, timestamp: initialTimestamp)
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 3 &&
-				playerEventSender.playLogEvents.isEmpty
+			self.playerEventSender.streamingMetricsEvents.count == 3 &&
+				self.playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
@@ -402,8 +402,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.isEmpty &&
-					playerEventSender.playLogEvents.isEmpty
+				self.playerEventSender.streamingMetricsEvents.isEmpty &&
+					self.playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
@@ -415,8 +415,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 3 &&
-					playerEventSender.playLogEvents.isEmpty
+				self.playerEventSender.streamingMetricsEvents.count == 3 &&
+					self.playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
@@ -566,8 +566,8 @@ final class EventsTests: XCTestCase {
 		player.playing()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 2 &&
-				playerEventSender.playLogEvents.isEmpty
+			self.playerEventSender.streamingMetricsEvents.count == 2 &&
+				self.playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
@@ -596,7 +596,7 @@ final class EventsTests: XCTestCase {
 		playerEngine.skipToNext(timestamp: skipToNextTimestamp)
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4
+			self.playerEventSender.streamingMetricsEvents.count == 4
 		}
 
 		let actualPlaybackStatistics = playerEventSender.streamingMetricsEvents[2] as! PlaybackStatistics
@@ -614,7 +614,7 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 6
+			self.playerEventSender.streamingMetricsEvents.count == 6
 		}
 
 		// Events of the second item
@@ -682,8 +682,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 2 &&
-					playerEventSender.playLogEvents.isEmpty
+				self.playerEventSender.streamingMetricsEvents.count == 2 &&
+					self.playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
@@ -714,7 +714,7 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4
+				self.playerEventSender.streamingMetricsEvents.count == 4
 			}
 		}
 
@@ -734,7 +734,7 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 6
+				self.playerEventSender.streamingMetricsEvents.count == 6
 			}
 		}
 
@@ -819,8 +819,8 @@ final class EventsTests: XCTestCase {
 		player.loaded()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 2 &&
-				playerEventSender.playLogEvents.isEmpty
+			self.playerEventSender.streamingMetricsEvents.count == 2 &&
+				self.playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
@@ -868,8 +868,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 2 &&
-					playerEventSender.playLogEvents.isEmpty
+				self.playerEventSender.streamingMetricsEvents.count == 2 &&
+					self.playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
@@ -936,8 +936,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 7 &&
-					playerEventSender.playLogEvents.isEmpty
+				self.playerEventSender.streamingMetricsEvents.count == 7 &&
+					self.playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
@@ -1018,8 +1018,8 @@ final class EventsTests: XCTestCase {
 		playerEngine.setNext(Constants.mediaProduct, timestamp: nextTimestamp)
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 2 &&
-				playerEventSender.playLogEvents.isEmpty
+			self.playerEventSender.streamingMetricsEvents.count == 2 &&
+				self.playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
@@ -1068,8 +1068,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 2 &&
-					playerEventSender.playLogEvents.isEmpty
+				self.playerEventSender.streamingMetricsEvents.count == 2 &&
+					self.playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
@@ -1184,8 +1184,8 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -1266,8 +1266,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1
 			}
 		}
 
@@ -1480,8 +1480,8 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -1563,8 +1563,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1
 			}
 		}
 
@@ -1704,8 +1704,8 @@ final class EventsTests: XCTestCase {
 		player.failed(with: Constants.error)
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -1787,8 +1787,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1
 			}
 		}
 
@@ -1939,8 +1939,8 @@ final class EventsTests: XCTestCase {
 		playerEngine.reset()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		let events = playerEventSender.streamingMetricsEvents
@@ -2025,8 +2025,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1
 			}
 		}
 
@@ -2216,8 +2216,8 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		optimizedWait(until: {
-			playerEventSender.streamingMetricsEvents.count == 6 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 6 &&
+				self.playerEventSender.playLogEvents.count == 1
 		})
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 6)
@@ -2262,8 +2262,8 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		optimizedWait(until: {
-			playerEventSender.streamingMetricsEvents.count == 8 &&
-				playerEventSender.playLogEvents.count == 2
+			self.playerEventSender.streamingMetricsEvents.count == 8 &&
+				self.playerEventSender.playLogEvents.count == 2
 		})
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 8)
@@ -2344,8 +2344,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 6 &&
-					playerEventSender.playLogEvents.count == 1
+				self.playerEventSender.streamingMetricsEvents.count == 6 &&
+					self.playerEventSender.playLogEvents.count == 1
 			}
 		}
 
@@ -2392,8 +2392,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 8 &&
-					playerEventSender.playLogEvents.count == 2
+				self.playerEventSender.streamingMetricsEvents.count == 8 &&
+					self.playerEventSender.playLogEvents.count == 2
 			}
 		}
 
@@ -2501,8 +2501,8 @@ final class EventsTests: XCTestCase {
 		player.failed(with: Constants.error)
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.isEmpty
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.isEmpty
 		}
 
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
@@ -2565,8 +2565,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.isEmpty
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.isEmpty
 			}
 		}
 
@@ -2725,8 +2725,8 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 8 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 8 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
@@ -2820,8 +2820,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 8 &&
-					playerEventSender.playLogEvents.count == 1
+				self.playerEventSender.streamingMetricsEvents.count == 8 &&
+					self.playerEventSender.playLogEvents.count == 1
 			}
 		}
 
@@ -2991,8 +2991,8 @@ final class EventsTests: XCTestCase {
 		playerEngine.reset()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3076,8 +3076,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1
 			}
 		}
 
@@ -3250,8 +3250,8 @@ final class EventsTests: XCTestCase {
 		player.failed(with: NSError(domain: "Stall", code: 1, userInfo: nil))
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3346,8 +3346,8 @@ final class EventsTests: XCTestCase {
 		player.failed(with: NSError(domain: "Stall", code: 1, userInfo: nil))
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3508,8 +3508,8 @@ final class EventsTests: XCTestCase {
 		playerEngine.reset()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3598,8 +3598,8 @@ final class EventsTests: XCTestCase {
 		playerEngine.reset()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3775,8 +3775,8 @@ final class EventsTests: XCTestCase {
 		player.completed()
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -3875,8 +3875,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1
 			}
 		}
 
@@ -4066,8 +4066,8 @@ final class EventsTests: XCTestCase {
 		listenerQueue.sync {}
 
 		optimizedWait {
-			playerEventSender.streamingMetricsEvents.count == 4 &&
-				playerEventSender.playLogEvents.count == 1
+			self.playerEventSender.streamingMetricsEvents.count == 4 &&
+				self.playerEventSender.playLogEvents.count == 1
 		}
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 4)
@@ -4172,8 +4172,8 @@ final class EventsTests: XCTestCase {
 
 		if shouldSendEventsInDeinit {
 			optimizedWait {
-				playerEventSender.streamingMetricsEvents.count == 4 &&
-					playerEventSender.playLogEvents.count == 1
+				self.playerEventSender.streamingMetricsEvents.count == 4 &&
+					self.playerEventSender.playLogEvents.count == 1
 			}
 		}
 

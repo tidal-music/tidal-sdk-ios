@@ -19,7 +19,7 @@ final class AVQueuePlayerWrapperLegacy: GenericMediaPlayer {
 	private let playbackTimeProgressQueue: DispatchQueue
 
 	private let assetFactory: AVURLAssetFactoryLegacy
-	@Atomic private var player: AVQueuePlayer
+	@Atomic private(set) var player: AVQueuePlayer
 
 	private var playerItemMonitors: [AVPlayerItem: AVPlayerItemMonitor]
 	private var playerItemAssets: [AVPlayerItem: AVPlayerAssetLegacy]

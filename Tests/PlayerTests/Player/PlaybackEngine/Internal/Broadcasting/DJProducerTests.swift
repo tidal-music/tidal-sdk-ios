@@ -66,7 +66,7 @@ extension DJProducerTests {
 
 		// Then
 		optimizedWait(until: {
-			djProducerListener.djSessionStartedMetadatas.count == 1
+			self.djProducerListener.djSessionStartedMetadatas.count == 1
 		})
 
 		let expectedDJSessionMetadata = DJSessionMetadata(
@@ -92,7 +92,7 @@ extension DJProducerTests {
 
 		// Then
 		optimizedWait(until: {
-			djProducerListener.djSessionEndReasons.count == 1
+			self.djProducerListener.djSessionEndReasons.count == 1
 		})
 
 		let expectedDJSessionMetadata = DJSessionEndReason.failedToStart(code: "1")
