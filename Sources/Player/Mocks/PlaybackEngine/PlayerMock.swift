@@ -42,7 +42,12 @@ public final class PlayerMock: GenericMediaPlayer {
 
 	public init(cachePath: URL, featureFlagProvider: FeatureFlagProvider) {}
 
-	public func canPlay(productType: PlayerProductType, codec: PlayerAudioCodec?, mediaType: String?, isOfflined: Bool) -> Bool {
+	public func canPlay(
+		productType: PlayerProductType,
+		codec: PlayerAudioCodec?,
+		mediaType: String?,
+		isOfflined: Bool
+	) -> Bool {
 		true
 	}
 

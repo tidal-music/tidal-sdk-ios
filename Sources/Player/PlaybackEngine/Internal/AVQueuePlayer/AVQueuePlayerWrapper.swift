@@ -81,7 +81,9 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		guard let codec else {
 			return false
 		}
-		return supportedCodecs.contains(codec) || (codec == .FLAC && !isOfflined)
+		// Because we need to support items downloaded with both the legacy and the new OfflineEngine
+		// We can't just add .FLAC to the 'supportedCodecs' array, and we need to depend on the mediaType
+		return supportedCodecs.contains(codec) || (codec == .FLAC && mediaType != MediaTypes.BTS)
 	}
 
 	func load(

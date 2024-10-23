@@ -71,7 +71,9 @@ final class InternalPlayerLoader: PlayerLoader {
 		let player = try getPlayer(
 			for: offlinedProduct.audioMode,
 			and: offlinedProduct.audioQuality,
+			with: offlinedProduct.mediaType,
 			audioCodec: offlinedProduct.audioCodec,
+			isOfflined: true,
 			type: offlinedProduct.productType
 		)
 
@@ -100,6 +102,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		let player = try getPlayer(
 			for: storedMediaProduct.audioMode,
 			and: storedMediaProduct.audioQuality,
+			with: MediaTypes.BTS,
 			audioCodec: storedMediaProduct.audioCodec,
 			isOfflined: true,
 			type: storedMediaProduct.productType
@@ -134,6 +137,7 @@ final class InternalPlayerLoader: PlayerLoader {
 				and: playbackInfo.audioQuality,
 				with: playbackInfo.mediaType,
 				audioCodec: playbackInfo.audioCodec,
+				isOfflined: false,
 				type: playbackInfo.productType
 			)
 			return await loadTrack(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: player)
