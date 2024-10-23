@@ -10,6 +10,7 @@ extension OfflineEntry {
 	) -> OfflineEntry {
 		OfflineEntry(
 			productId: productId,
+			actualProductId: productId,
 			productType: productType,
 			assetPresentation: .FULL,
 			audioMode: .STEREO,
@@ -33,13 +34,15 @@ extension OfflineEntry {
 	}
 
 	static func mock(
+		for mediaProduct: MediaProduct = .mock(),
 		from playbackInfo: PlaybackInfo = .mock(),
 		assetURL: URL? = URL(string: "https://www.tidal.com")!,
 		licenseURL: URL? = URL(string: "https://www.tidal.com/license")!,
 		size: Int = 0
 	) -> OfflineEntry {
 		OfflineEntry(
-			productId: playbackInfo.productId,
+			productId: mediaProduct.productId,
+			actualProductId: playbackInfo.productId,
 			productType: playbackInfo.productType,
 			assetPresentation: playbackInfo.assetPresentation,
 			audioMode: playbackInfo.audioMode,

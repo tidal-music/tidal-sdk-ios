@@ -1,8 +1,9 @@
 import Foundation
 
 struct PlayableOfflinedMediaProduct: Equatable {
-	let productType: ProductType
 	let productId: String
+	let actualProductId: String
+	let productType: ProductType
 	let assetPresentation: AssetPresentation
 	let audioMode: AudioMode?
 	let audioQuality: AudioQuality?
@@ -25,8 +26,9 @@ struct PlayableOfflinedMediaProduct: Equatable {
 			return nil
 		}
 
-		productType = offlineEntry.productType
 		productId = offlineEntry.productId
+		actualProductId = offlineEntry.actualProductId
+		productType = offlineEntry.productType
 		assetPresentation = offlineEntry.assetPresentation
 		audioMode = offlineEntry.audioMode
 		audioQuality = offlineEntry.audioQuality
