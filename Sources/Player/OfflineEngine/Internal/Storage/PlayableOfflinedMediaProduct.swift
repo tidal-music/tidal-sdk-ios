@@ -11,6 +11,7 @@ struct PlayableOfflinedMediaProduct: Equatable {
 	let audioSampleRate: Int?
 	let audioBitDepth: Int?
 	let videoQuality: VideoQuality?
+	let mediaType: String?
 	let mediaURL: URL
 	let licenseURL: URL?
 	let albumReplayGain: Float?
@@ -36,6 +37,7 @@ struct PlayableOfflinedMediaProduct: Equatable {
 		audioSampleRate = offlineEntry.audioSampleRate
 		audioBitDepth = offlineEntry.audioBitDepth
 		videoQuality = offlineEntry.videoQuality
+		mediaType = offlineEntry.mediaType
 		mediaURL = URL
 		licenseURL = offlineEntry.licenseURL
 		albumReplayGain = offlineEntry.albumReplayGain
