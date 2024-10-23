@@ -95,13 +95,13 @@ struct OfflineEntry: Codable {
 	}
 
 	init(
-		for mediaProduct: MediaProduct,
+		for mediaProductId: String,
 		from playbackInfo: PlaybackInfo,
 		with mediaURL: URL,
 		and licenseURL: URL?,
 		size: Int
 	) throws {
-		productId = mediaProduct.productId
+		productId = mediaProductId
 		actualProductId = playbackInfo.productId
 		productType = playbackInfo.productType
 		assetPresentation = playbackInfo.assetPresentation
