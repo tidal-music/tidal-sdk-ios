@@ -34,6 +34,10 @@ let package = Package(
 			name: "Common",
 			targets: ["Common"]
 		),
+		.library(
+			name: "TidalAPI",
+			targets: ["TidalAPI"]
+		),
 	],
 	dependencies: [
 		.package(url: "https://github.com/groue/GRDB.swift.git", from: "6.27.0"),
@@ -61,6 +65,16 @@ let package = Package(
 			name: "Catalogue",
 			dependencies: [
 				.AnyCodable,
+			],
+			plugins: [
+				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
+			]
+		),
+		.target(
+			name: "TidalAPI",
+			dependencies: [
+				.AnyCodable,
+				.auth
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
@@ -163,6 +177,7 @@ extension Target.Dependency {
 	static let template = byName(name: "Template")
 	static let eventProducer = byName(name: "EventProducer")
 	static let catalogue = byName(name: "Catalogue")
+	static let tidalAPI = byName(name: "TidalAPI")
 	static let common = byName(name: "Common")
 	static let auth = byName(name: "Auth")
 	static let player = byName(name: "Player")
