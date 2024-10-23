@@ -4,7 +4,7 @@ import Foundation
 // MARK: - PlaybackInfoFetcher
 
 final class PlaybackInfoFetcher {
-	private let configuration: Configuration
+	private var configuration: Configuration
 	private let httpClient: HttpClient
 	private let credentialsProvider: CredentialsProvider
 	private let networkMonitor: NetworkMonitor
@@ -62,6 +62,10 @@ final class PlaybackInfoFetcher {
 
 	func cancellNetworkRequests() {
 		httpClient.cancelAllRequests()
+	}
+
+	func updateConfiguration(_ configuration: Configuration) {
+		self.configuration = configuration
 	}
 }
 
