@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Update client configuraiton correctly in OfflineEngine when it changes (Player)
-- Save the actualProductId when backend returnsa different product than requested (Player)
+- Save the `actualProductId` when backend returns a different product than requested (Player)
 - Fix canPlay checks for new OfflineEngine items (Player)
 
 ## [0.3.39] - 2024-10-22
