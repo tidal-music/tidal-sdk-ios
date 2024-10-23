@@ -439,11 +439,12 @@ private extension PlayerItem {
 
 	func emitOfflinePlay() {
 		guard let metrics,
-		      let playbackContext,
-		      let asset,
-		      let productId = Int(playbackContext.productId),
 		      metrics.actualStartTime != nil,
-		      mediaProduct is StoredMediaProduct
+		      let metadata,
+		      metadata.playbackSource.isOfflineSource(),
+		      let playbackContext,
+		      let productId = Int(playbackContext.productId),
+		      let asset
 		else {
 			return
 		}
