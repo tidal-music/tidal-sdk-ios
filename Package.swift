@@ -62,15 +62,6 @@ let package = Package(
 			]
 		),
 		.target(
-			name: "Catalogue",
-			dependencies: [
-				.AnyCodable,
-			],
-			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
-			]
-		),
-		.target(
 			name: "TidalAPI",
 			dependencies: [
 				.AnyCodable,
@@ -78,12 +69,6 @@ let package = Package(
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
-			]
-		),
-		.testTarget(
-			name: "CatalogueTests",
-			dependencies: [
-				.catalogue,
 			]
 		),
 		.target(
@@ -176,7 +161,6 @@ extension Target.Dependency {
 	/// Local
 	static let template = byName(name: "Template")
 	static let eventProducer = byName(name: "EventProducer")
-	static let catalogue = byName(name: "Catalogue")
 	static let tidalAPI = byName(name: "TidalAPI")
 	static let common = byName(name: "Common")
 	static let auth = byName(name: "Auth")
