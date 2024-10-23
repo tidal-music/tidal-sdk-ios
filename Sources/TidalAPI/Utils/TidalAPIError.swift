@@ -1,6 +1,6 @@
 import Foundation
 
-public struct APIError: LocalizedError, Equatable {
+public struct TidalAPIError: LocalizedError, Equatable {
 	let fileID: String
 	let line: UInt
 	let column: UInt
@@ -36,7 +36,7 @@ public struct APIError: LocalizedError, Equatable {
 	}
 }
 
-extension APIError {
+extension TidalAPIError {
 	init(
 		fileID: StaticString = #fileID,
 		line: UInt = #line,

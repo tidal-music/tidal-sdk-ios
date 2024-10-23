@@ -9,7 +9,7 @@ enum RequestHelper {
 		requestBuilder: @escaping () async throws -> RequestBuilder<T>
 	) async throws -> T {
 		guard let credentialsProvider = OpenAPIClientAPI.credentialsProvider else {
-			throw APIError(message: "NO_CREDENTIALS_PROVIDER", url: "Not available")
+			throw TidalAPIError(message: "NO_CREDENTIALS_PROVIDER", url: "Not available")
 		}
 		
 		let credentials = try await credentialsProvider.getCredentials()
@@ -19,7 +19,7 @@ enum RequestHelper {
 			let token = credentials.token,
 			OpenAPIClientAPI.credentialsProvider?.isUserLoggedIn == true
 		else {
-			throw APIError(
+			throw TidalAPIError(
 				message: "NO_TOKEN",
 				url: requestURL
 			)
@@ -68,7 +68,7 @@ enum RequestHelper {
 		let currentRetryCount = retries[url] ?? 0 // Default to 0 if nil
 		
 		guard let provider = OpenAPIClientAPI.credentialsProvider else {
-			throw APIError(message: "NO_CREDENTIALS_PROVIDER", url: url)
+			throw TidalAPIError(message: "NO_CREDENTIALS_PROVIDER", url: url)
 		}
 		
 		switch error {
@@ -80,19 +80,19 @@ enum RequestHelper {
 					_ = try await provider.getCredentials(apiErrorSubStatus: subStatus.flatMap(String.init))
 				} catch {
 					if subStatus != nil {
-						throw APIError(
+						throw TidalAPIError(
 							message: "Failed to get credentials",
 							url: url,
 							statusCode: statusCode,
 							subStatus: subStatus
 						)
 					} else {
-						throw APIError(error: error, url: url)
+						throw TidalAPIError(error: error, url: url)
 					}
 				}
 				
 				if subStatus != nil, OpenAPIClientAPI.credentialsProvider?.isUserLoggedIn == false {
-					throw APIError(
+					throw TidalAPIError(
 						message: "User is not logged in",
 						url: url,
 						statusCode: statusCode,
@@ -109,6 +109,6 @@ enum RequestHelper {
 			}
 		}
 		
-		throw APIError(error: error, url: url) // Propagate the error if not handled or retried
+		throw TidalAPIError(error: error, url: url) // Propagate the error if not handled or retried
 	}
 }
