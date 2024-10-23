@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.40] - 2024-10-23
+
+### Added
+- Added support for `OfflinePlay` events with new OfflineEngine (Player)
+
+### Fixed
+- Update client configuraiton correctly in OfflineEngine when it changes (Player)
+- Save the `actualProductId` when backend returns a different product than requested (Player)
+- Fix canPlay checks for new OfflineEngine items (Player)
+
 ## [0.3.39] - 2024-10-22
 ### Changed
 - Make OfflineEngine non-optional in Player setup (Logging)
