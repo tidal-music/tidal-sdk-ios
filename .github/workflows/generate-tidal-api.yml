@@ -10,7 +10,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Check version in changelog
-      #   id: check_version
-      #   run: |
-      #     Scripts/checkVersionSync.sh
+      - name: Run Code Generation Script
+        run: |
+          cd ./TidalAPI/
+          ./generate_and_clean.sh 
+
+      - name: Check for changes in Generated folder
+        id: check_for_changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add Generated/
+          git diff --quiet 
+      
+      # || git commit -m "Update generated files"
+
+      # - name: Create Pull Request if there are changes
+      #   if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
+      #   uses: peter-evans/create-pull-request@v7
+      #   with:
+      #       token: ${{ secrets.GITHUB_TOKEN }}
+      #       branch: update-generated-files
+      #       commit-message: "Update generated files"
+      #       title: "[Automated] Update Generated Files"
+      #       body: |
+      #         The following changes were made to the generated files:
+      #         ## Changes:
+      #         $(git diff --name-only Generated/)
+      #       labels: auto-generated
