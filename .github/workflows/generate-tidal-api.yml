@@ -1,0 +1,16 @@
+name: Generate API in the TidalAPI module and create a PR if there are changes
+
+on:
+  workflow_dispatch: # manual triggering of this workflow
+
+jobs:
+  codegen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # - name: Check version in changelog
+      #   id: check_version
+      #   run: |
+      #     Scripts/checkVersionSync.sh
