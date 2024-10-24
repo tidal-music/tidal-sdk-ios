@@ -533,7 +533,6 @@ extension PlayerLoggable {
 		     .sendEventsNotAuthorized,
 		     .getAuthBearerTokenToBearerTokenFailed,
 		     .audioCodecInitWithEmpty,
-		     .audioCodecInitWithNilQuality,
 		     .audioCodecInitWithLowQualityAndNilMode,
 		     .avplayerSeekWithoutCurrentItem,
 		     .interruptionMonitorHandleNotificationWithoutRequiredData,
