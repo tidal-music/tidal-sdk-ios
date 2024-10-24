@@ -51,7 +51,7 @@ private extension AudioSessionMediaServicesWereResetMonitor {
 	func handleMediaServicesWereReset(notification: Notification) {
 		PlayerWorld.logger?.log(loggable: PlayerLoggable.handleMediaServicesWereReset)
 
-		self.playerEngine?.resetPlayerAndSetUpAudioSessionAfterMediaServiceWereReset()
+		self.playerEngine?.mediaServicesWereReset()
 	}
 }
 #endif

@@ -96,6 +96,7 @@ final class PlayerEngine {
 	#if !os(macOS)
 		private var audioSessionInterruptionMonitor: AudioSessionInterruptionMonitor!
 		private var audioSessionRouteChangeMonitor: AudioSessionRouteChangeMonitor!
+		// swiftlint:disable:next identifier_name
 		private var audioSessionMediaServicesWereResetMonitor: AudioSessionMediaServicesWereResetMonitor!
 	#endif
 
@@ -347,8 +348,10 @@ final class PlayerEngine {
 		currentItem?.asset?.player
 	}
 
-	func resetPlayerAndSetUpAudioSessionAfterMediaServiceWereReset() {
-		// When media services are reset, we must reset the player.
+	func mediaServicesWereReset() {
+		// When media services are reset, Apple recommends to reinitialize the app's audio objects, which is out case is the player,
+		// and which is performed directly by the SDK. It's also recommended to reset the audio session’s category, options, and mode
+		// configuration. This is performed below.
 		self.reset()
 
 		// Then we should also set it up again the audio session as done initially. Since this is done outside the SDK, we delegate it
