@@ -1,8 +1,9 @@
 import Foundation
 
 struct PlayableOfflinedMediaProduct: Equatable {
-	let productType: ProductType
 	let productId: String
+	let actualProductId: String
+	let productType: ProductType
 	let assetPresentation: AssetPresentation
 	let audioMode: AudioMode?
 	let audioQuality: AudioQuality?
@@ -10,6 +11,7 @@ struct PlayableOfflinedMediaProduct: Equatable {
 	let audioSampleRate: Int?
 	let audioBitDepth: Int?
 	let videoQuality: VideoQuality?
+	let mediaType: String?
 	let mediaURL: URL
 	let licenseURL: URL?
 	let albumReplayGain: Float?
@@ -25,8 +27,9 @@ struct PlayableOfflinedMediaProduct: Equatable {
 			return nil
 		}
 
-		productType = offlineEntry.productType
 		productId = offlineEntry.productId
+		actualProductId = offlineEntry.actualProductId
+		productType = offlineEntry.productType
 		assetPresentation = offlineEntry.assetPresentation
 		audioMode = offlineEntry.audioMode
 		audioQuality = offlineEntry.audioQuality
@@ -34,6 +37,7 @@ struct PlayableOfflinedMediaProduct: Equatable {
 		audioSampleRate = offlineEntry.audioSampleRate
 		audioBitDepth = offlineEntry.audioBitDepth
 		videoQuality = offlineEntry.videoQuality
+		mediaType = offlineEntry.mediaType
 		mediaURL = URL
 		licenseURL = offlineEntry.licenseURL
 		albumReplayGain = offlineEntry.albumReplayGain

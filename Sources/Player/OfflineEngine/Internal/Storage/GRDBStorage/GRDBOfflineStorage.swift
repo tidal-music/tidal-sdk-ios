@@ -15,6 +15,7 @@ class GRDBOfflineStorage {
 			if try !db.tableExists(OfflineEntryGRDBEntity.databaseTableName) {
 				try db.create(table: OfflineEntryGRDBEntity.databaseTableName) { t in
 					t.column("productId", .text).primaryKey()
+					t.column("actualProductId", .text).notNull()
 					t.column("productType", .text).notNull()
 					t.column("assetPresentation", .text).notNull()
 					t.column("audioMode", .text)

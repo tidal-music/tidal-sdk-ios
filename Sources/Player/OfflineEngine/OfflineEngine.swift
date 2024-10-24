@@ -61,6 +61,10 @@ public final class OfflineEngine {
 		}
 		return offlineEntry.state.publicState
 	}
+
+	func updateConfiguration(_ configuration: Configuration) {
+		downloader.updateConfiguration(configuration)
+	}
 }
 
 // MARK: DownloadObserver

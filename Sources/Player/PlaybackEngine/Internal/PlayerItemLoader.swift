@@ -63,7 +63,7 @@ private extension PlayerItemLoader {
 private extension PlayerItemLoader {
 	func metadata(of playableStorageMediaProduct: PlayableOfflinedMediaProduct) -> Metadata {
 		Metadata(
-			productId: playableStorageMediaProduct.productId,
+			productId: playableStorageMediaProduct.actualProductId,
 			streamType: .ON_DEMAND,
 			assetPresentation: playableStorageMediaProduct.assetPresentation,
 			audioMode: playableStorageMediaProduct.audioMode,
