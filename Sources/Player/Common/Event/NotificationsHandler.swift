@@ -96,4 +96,10 @@ final class NotificationsHandler {
 			self.offlineEngineListener?.allOfflinedMediaProductsDeleted()
 		}
 	}
+
+	func mediaServicesWereReset() {
+		queue.async {
+			self.listener.mediaServicesWereReset()
+		}
+	}
 }
