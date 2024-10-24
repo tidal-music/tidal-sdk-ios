@@ -1,0 +1,59 @@
+name: Generate API in the TidalAPI module and create a PR if there are changes
+
+on:
+  workflow_dispatch: # manual triggering of this workflow
+
+jobs:
+  codegen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Code Generation Script
+        run: |
+          cd ./Sources/TidalAPI/
+          ./generate_and_clean.sh
+        if: false 
+
+      - name: Check for changes in Generated folder
+        id: check_for_changes
+        run: |
+          cd ./Sources/TidalAPI/
+          pwd
+          result=$(git status .)
+          echo $result
+#          changesFound = "git diff --quiet ./Generated"
+#          echo 'CHANGES FOUND ='$changesFound >> $GITHUB_ENV
+      
+      # || git commit -m "Update generated files"
+
+      - name: Create Pull Request if there are changes
+        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
+        run: |
+          echo "Found changes in Generated folder"
+
+      - name: Report no changes found
+        if: ${{ steps.check_for_changes.outputs.changes_detected == 'false' }}
+        run: |
+           echo "No changes found in Generated folder"
+      #   else: 
+      #     run: |
+            
+      #   uses: peter-evans/create-pull-request@v7
+      #   with:
+      #       token: ${{ secrets.GITHUB_TOKEN }}
+      #       branch: update-generated-files
+      #       commit-message: "Update generated files"
+      #       title: "[Automated] Update Generated Files"
+      #       body: |
+      #         The following changes were made to the generated files:
+      #         ## Changes:
+      #         $(git diff --name-only Generated/)
+      #       labels: auto-generated
+
+      # git add ./Sources/TidalAPI/Generated/
+      # git config --global user.name 'github-actions[bot]'
+       # git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      #  --quiet 
+      # && echo "changes_detected=false" || echo "changes_detected=true"
