@@ -20,47 +20,14 @@ jobs:
         id: check_for_changes
         run: |
           cd ./Sources/TidalAPI/
-          pwd
-          result=$(git status Generated -s)
-          if [ -z "$result" ]
-          then
-            echo "Changes not found"
-          else
-            echo "Changes found:"
-            echo $result
-          fi
-#          echo "Found changes: $result"
-#          changesFound = "git diff --quiet ./Generated"
-#          echo 'CHANGES FOUND ='$changesFound >> $GITHUB_ENV
-      
-      # || git commit -m "Update generated files"
+          [ -n "$(git status -s Generated)" ] && echo "changes_detected=true" >> "$GITHUB_OUTPUT" || echo "changes_detected=false" >> "$GITHUB_OUTPUT"
+
+      - name: No Changes Found - Say Goodbye
+        if: ${{ steps.check_for_changes.outputs.changes_detected == 'false' }}
+        run: |
+            echo "No changes found. Good bye"
 
       - name: Create Pull Request if there are changes
         if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
         run: |
-          echo "Found changes in Generated folder"
-
-      - name: Report no changes found
-        if: ${{ steps.check_for_changes.outputs.changes_detected == 'false' }}
-        run: |
-           echo "No changes found in Generated folder"
-      #   else: 
-      #     run: |
-            
-      #   uses: peter-evans/create-pull-request@v7
-      #   with:
-      #       token: ${{ secrets.GITHUB_TOKEN }}
-      #       branch: update-generated-files
-      #       commit-message: "Update generated files"
-      #       title: "[Automated] Update Generated Files"
-      #       body: |
-      #         The following changes were made to the generated files:
-      #         ## Changes:
-      #         $(git diff --name-only Generated/)
-      #       labels: auto-generated
-
-      # git add ./Sources/TidalAPI/Generated/
-      # git config --global user.name 'github-actions[bot]'
-       # git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-      #  --quiet 
-      # && echo "changes_detected=false" || echo "changes_detected=true"
+          echo "Creating PR"
