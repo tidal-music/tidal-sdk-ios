@@ -10,25 +10,21 @@ permissions:
 
 jobs:
   codegen:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-    
-      - name: Install Homebrew
-        run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> $GITHUB_ENV
 
-      - name: Install openapi-generator
+      # Step 2: Install OpenAPI Generator via Homebrew
+      - name: Install OpenAPI Generator with Homebrew
         run: |
-          source $GITHUB_ENV
+          brew update
           brew install openapi-generator
-          brew list
 
       - name: Run Code Generation Script
         run: |
           cd ./Sources/TidalAPI/
+          chmod +x generate_and_clean.sh
           ./generate_and_clean.sh
 
       - name: Check for changes in Generated folder
