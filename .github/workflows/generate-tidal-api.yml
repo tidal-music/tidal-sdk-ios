@@ -21,8 +21,16 @@ jobs:
         run: |
           cd ./Sources/TidalAPI/
           pwd
-          result=$(git status .)
-          echo $result
+          rm -f Config/input/tidal-user-v2-openapi-3.0.json          
+          result=$(git status Generated -s)
+          if [ -z "$result" ]
+          then
+            echo "Changes not found"
+          else
+            echo "Changes found:"
+            echo $result
+          fi
+#          echo "Found changes: $result"
 #          changesFound = "git diff --quiet ./Generated"
 #          echo 'CHANGES FOUND ='$changesFound >> $GITHUB_ENV
       
