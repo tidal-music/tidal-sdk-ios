@@ -14,11 +14,8 @@ jobs:
       - name: Install Homebrew
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo >> /root/.bashrc
-          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /root/.bashrc
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          echo "Brew installed"
-#          sudo apt-get install build-essential
+          echo "HOMEBREW_PREFIX=$(brew --prefix)" >> $GITHUB_ENV
+          echo 'PATH="$HOMEBREW_PREFIX/bin:$PATH"' >> $GITHUB_ENV
 
       - name: Install openapi-generator
         run: |
