@@ -18,8 +18,7 @@ jobs:
       - name: Install Homebrew
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo "HOMEBREW_PREFIX=$(brew --prefix)" >> $GITHUB_ENV
-          echo 'PATH="$HOMEBREW_PREFIX/bin:$PATH"' >> $GITHUB_ENV
+          echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> $GITHUB_ENV
 
       - name: Install openapi-generator
         run: |
