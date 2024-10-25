@@ -4,6 +4,10 @@ on:
   workflow_dispatch: # manual triggering of this workflow
   push:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   codegen:
     runs-on: ubuntu-latest
@@ -19,6 +23,7 @@ jobs:
 
       - name: Install openapi-generator
         run: |
+          source $GITHUB_ENV
           brew install openapi-generator
           brew list
 
