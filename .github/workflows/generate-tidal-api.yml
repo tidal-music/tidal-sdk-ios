@@ -2,6 +2,7 @@ name: Generate API in the TidalAPI module and create a PR if there are changes
 
 on:
   workflow_dispatch: # manual triggering of this workflow
+  push:
 
 jobs:
   codegen:
