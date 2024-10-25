@@ -21,7 +21,6 @@ jobs:
         run: |
           cd ./Sources/TidalAPI/
           pwd
-          rm -f Config/input/tidal-user-v2-openapi-3.0.json          
           result=$(git status Generated -s)
           if [ -z "$result" ]
           then
