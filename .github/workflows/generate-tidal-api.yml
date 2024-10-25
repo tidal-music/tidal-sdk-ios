@@ -15,7 +15,6 @@ jobs:
         run: |
           cd ./Sources/TidalAPI/
           ./generate_and_clean.sh
-        if: false 
 
       - name: Check for changes in Generated folder
         id: check_for_changes
