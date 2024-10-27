@@ -372,6 +372,7 @@ private extension AVQueuePlayerWrapperLegacy {
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
+			onItemPlayedToEnd: playedToEnd, 
 			onDjSessionTransition: receivedDjSessionTransition
 		)
 	}
@@ -530,6 +531,8 @@ private extension AVQueuePlayerWrapperLegacy {
 			let asset = self.playerItemAssets.removeValue(forKey: oldPlayerItem)
 			self.delegates.completed(asset: asset)
 
+			self.player.remove(oldPlayerItem)
+
 			guard let newPlayerItem = self.player.currentItem else {
 				self.reset()
 				return
@@ -558,6 +561,12 @@ private extension AVQueuePlayerWrapperLegacy {
 			}
 
 			self.delegates.djSessionTransition(asset: asset, transition: transition)
+		}
+	}
+
+	func playedToEnd(playerItem: AVPlayerItem) {
+		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
+			self.player.remove(playerItem)
 		}
 	}
 }
