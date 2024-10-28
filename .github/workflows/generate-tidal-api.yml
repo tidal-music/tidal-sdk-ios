@@ -39,20 +39,33 @@ jobs:
           cd $API_FOLDER
           git add . 
           changes_in_generated=$(git status -s $GENERATED_FOLDER_NAME | awk '{print $1 " " $2}')
-          if [ -n "$changes_in_generated" ]; then
+          echo "Changes in $GENERATED_FOLDER_NAME:"
+          echo "$changes_in_generated"
+
+          changes_in_input=$(git status -s $INPUT_FOLDER_NAME | awk '{print $1 " " $2}')
+          echo "Changes in $INPUT_FOLDER_NAME:"
+          echo "$changes_in_input"
+
+          if [ -n "$changes_in_generated" || [ -n "$changes_in_input"]; then
             changes_detected="true"
           else
             changes_detected="false"
           fi
-          echo "Changes:"
-          echo "$changes_in_generated"
           echo "Changes detected: $changes_detected"
-          echo "CHANGES_DETECTED=$changes_detected" >> $GITHUB_OUTPUT
+
           {
             echo 'CHANGES_IN_GENERATED<<EOF'
             echo "$changes_in_generated"
             echo 'EOF'
           } >> $GITHUB_OUTPUT
+
+          {
+            echo 'CHANGES_IN_INPUT<<EOF'
+            echo "$changes_in_input"
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+          echo "CHANGES_DETECTED=$changes_detected" >> $GITHUB_OUTPUT
 
       - name: No Changes Found - Say Goodbye
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'false' }}
@@ -91,6 +104,10 @@ jobs:
           pr_body=$(cat <<EOF
 
           This PR was created by GitHub Actions.
+
+          Changes in $INPUT_FOLDER_NAME folder:
+          
+          ${{ steps.check_for_changes.outputs.CHANGES_IN_INPUT }}
 
           Changes in $GENERATED_FOLDER_NAME folder:
           
