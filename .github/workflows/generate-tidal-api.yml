@@ -11,6 +11,10 @@ permissions:
 jobs:
   codegen:
     runs-on: macos-latest
+    env:
+      API_FOLDER: Sources/TidalAPI/
+      GENERATED_FOLDER_NAME: Generated
+      INPUT_FOLDER_NAME: Config/input
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,35 +29,39 @@ jobs:
 
       - name: Run Code Generation Script
         run: |
-          cd ./Sources/TidalAPI/
+          cd $API_FOLDER
           chmod +x generate_and_clean.sh
           ./generate_and_clean.sh
 
-      - name: Check for changes in Generated folder
+      - name: Check for changes
         id: check_for_changes
         run: |
-          cd ./Sources/TidalAPI/
+          cd $API_FOLDER
           git add . 
-          changes="$(git status -s Generated)"
-          if [ -n "$changes" ]; then
+          changes_in_generated=$(git status -s $GENERATED_FOLDER_NAME | awk '{print $1 " " $2}')
+          if [ -n "$changes_in_generated" ]; then
             changes_detected="true"
           else
             changes_detected="false"
           fi
           echo "Changes:"
-          echo "$changes"
+          echo "$changes_in_generated"
           echo "Changes detected: $changes_detected"
-          echo "changes=$changes" >> $GITHUB_OUTPUT
-          echo "changes_detected=$changes_detected" >> $GITHUB_OUTPUT
+          echo "CHANGES_DETECTED=$changes_detected" >> $GITHUB_OUTPUT
+          {
+            echo 'CHANGES_IN_GENERATED<<EOF'
+            echo "$changes_in_generated"
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
 
       - name: No Changes Found - Say Goodbye
-        if: ${{ steps.check_for_changes.outputs.changes_detected == 'false' }}
+        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'false' }}
         run: |
             echo "No changes found. Good bye"
       
       - name: Prepare git and define a branch name
         id: prepare_git_and_define_branch_name
-        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
+        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         run: |
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
@@ -62,28 +70,37 @@ jobs:
           echo "branch_name=$branch_name" >> "$GITHUB_OUTPUT"
 
       - name: Commit changes
-        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
+        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         run: |
           git checkout -b "${{steps.prepare_git_and_define_branch_name.outputs.branch_name }}"
           git add .
           git commit -m "Update TidalAPI with new generated files"
   
       - name: Push changes
-        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
+        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             git push origin "${{steps.prepare_git_and_define_branch_name.outputs.branch_name }}"
 
       - name: Create Pull Request
-        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
+        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          pr_body=$(cat <<EOF
+
+          This PR was created by GitHub Actions.
+
+          Changes in $GENERATED_FOLDER_NAME folder:
+          
+          ${{ steps.check_for_changes.outputs.CHANGES_IN_GENERATED }}
+          EOF
+          )
           PR_DATA=$(jq -n --arg title "!!!TEST PULL REQUEST, PLEASE IGNORE IT!!!" \
                             --arg head "${{steps.prepare_git_and_define_branch_name.outputs.branch_name }}" \
                             --arg base "ekononenko/test-api-changes" \
-                            --arg body "This PR was created by GitHub Actions.\n\nChanges in Generated folder:\n\n${{ steps.check_for_changes.outputs.changes }}" \
+                            --arg body "$pr_body" \
                             '{title: $title, head: $head, base: $base, body: $body}')
 
           curl -X POST \
