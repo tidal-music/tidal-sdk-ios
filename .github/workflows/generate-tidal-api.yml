@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: 'ekononenko/test-api-changes'
 
       # Step 2: Install OpenAPI Generator via Homebrew
       - name: Install OpenAPI Generator with Homebrew
@@ -31,19 +33,29 @@ jobs:
         id: check_for_changes
         run: |
           cd ./Sources/TidalAPI/
-          [ -n "$(git status -s Generated)" ] && echo "changes_detected=true" >> "$GITHUB_OUTPUT" || echo "changes_detected=false" >> "$GITHUB_OUTPUT"
+          changes="$(git status -s Generated)"
+          echo "changes=$changes" >> "$GITHUB_OUTPUT"
+          [ -n "$changes" ] && echo "changes_detected=true" >> "$GITHUB_OUTPUT" || echo "changes_detected=false" >> "$GITHUB_OUTPUT"
 
       - name: No Changes Found - Say Goodbye
         if: ${{ steps.check_for_changes.outputs.changes_detected == 'false' }}
         run: |
             echo "No changes found. Good bye"
-
-      - name: Commit changes
+      
+      - name: Prepare git and define a branch name
+        id: prepare_git_and_define_branch_name
         if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
         run: |
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
-          git checkout -b tidal-music-tools/Update-Tidal-Api
+          timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
+          branch_name="tidal-music-tools/Update-TidalAPI-${timestamp}"
+          echo "branch_name=$branch_name" >> "$GITHUB_OUTPUT"
+
+      - name: Commit changes
+        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
+        run: |
+          git checkout -b "${{steps.prepare_git_and_define_branch_name.outputs.branch_name }}"
           git add .
           git commit -m "Update TidalAPI with new generated files"
   
@@ -52,4 +64,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            git push origin tidal-music-tools/Update-Tidal-Api
+            git push origin "${{steps.prepare_git_and_define_branch_name.outputs.branch_name }}"
+
+      - name: Create Pull Request
+        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_DATA=$(jq -n --arg title "!!!TEST PULL REQUEST, PLEASE IGNORE IT!!!" \
+                            --arg head "${{steps.prepare_git_and_define_branch_name.outputs.branch_name }}" \
+                            --arg base "ekononenko/test-api-changes" \
+                            --arg body "This PR was created by GitHub Actions.\n\nChanges in Generated folder:\n\n${{ steps.check_for_changes.outputs.changes }}" \
+                            '{title: $title, head: $head, base: $base, body: $body}')
+
+          curl -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d "$PR_DATA" \
+            https://api.github.com/repos/${{ github.repository }}/pulls
