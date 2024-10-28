@@ -13,6 +13,7 @@ jobs:
     runs-on: macos-latest
     env:
       API_FOLDER: Sources/TidalAPI/
+      GENERATED_FOLDER_NAME: Generated
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,7 +37,7 @@ jobs:
         run: |
           cd $API_FOLDER
           git add . 
-          changes=$(git status -s Generated | awk '{print $1 " " $2}')
+          changes=$(git status -s $GENERATED_FOLDER_NAME | awk '{print $1 " " $2}')
           if [ -n "$changes" ]; then
             changes_detected="true"
           else
