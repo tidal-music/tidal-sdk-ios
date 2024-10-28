@@ -53,7 +53,7 @@ public final class Player {
 	private var networkMonitor: NetworkMonitor
 	private var notificationsHandler: NotificationsHandler
 	private let featureFlagProvider: FeatureFlagProvider
-	private var registeredPlayers: [GenericMediaPlayer.Type] = []
+	private var externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?
 	private let credentialsProvider: CredentialsProvider
 
 	// MARK: - Initialization
@@ -72,7 +72,7 @@ public final class Player {
 		playerEngine: PlayerEngine,
 		offlineEngine: OfflineEngine,
 		featureFlagProvider: FeatureFlagProvider,
-		externalPlayers: [GenericMediaPlayer.Type],
+		externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?,
 		credentialsProvider: CredentialsProvider
 	) {
 		self.queue = queue
@@ -88,7 +88,7 @@ public final class Player {
 		self.playerEngine = playerEngine
 		self.offlineEngine = offlineEngine
 		self.featureFlagProvider = featureFlagProvider
-		registeredPlayers = externalPlayers
+		self.externalPlayersSupplier = externalPlayersSupplier
 		self.credentialsProvider = credentialsProvider
 	}
 }
@@ -113,9 +113,9 @@ public extension Player {
 		offlineEngineListener: OfflineEngineListener? = nil,
 		listenerQueue: DispatchQueue = .main,
 		featureFlagProvider: FeatureFlagProvider = .standard,
-		externalPlayers: [GenericMediaPlayer.Type] = [],
 		credentialsProvider: CredentialsProvider,
 		eventSender: EventSender,
+		externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])? = nil,
 		userClientIdSupplier: (() -> Int)? = nil,
 		shouldAddLogging: Bool = false
 	) -> Player? {
@@ -201,7 +201,7 @@ public extension Player {
 			playerEventSender,
 			notificationsHandler,
 			featureFlagProvider,
-			externalPlayers,
+			externalPlayersSupplier,
 			credentialsProvider
 		)
 
@@ -219,7 +219,7 @@ public extension Player {
 			playerEngine: playerEngine,
 			offlineEngine: offlineEngine,
 			featureFlagProvider: featureFlagProvider,
-			externalPlayers: externalPlayers,
+			externalPlayersSupplier: externalPlayersSupplier,
 			credentialsProvider: credentialsProvider
 		)
 
@@ -408,7 +408,7 @@ private extension Player {
 			playerEventSender,
 			notificationsHandler,
 			featureFlagProvider,
-			registeredPlayers,
+			externalPlayersSupplier,
 			credentialsProvider
 		)
 	}
@@ -423,7 +423,7 @@ private extension Player {
 		_ playerEventSender: PlayerEventSender,
 		_ notificationsHandler: NotificationsHandler?,
 		_ featureFlagProvider: FeatureFlagProvider,
-		_ externalPlayers: [GenericMediaPlayer.Type],
+		_ externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])? = nil,
 		_ credentialsProvider: CredentialsProvider
 	) -> PlayerEngine {
 		let internalPlayerLoader = InternalPlayerLoader(
@@ -432,7 +432,7 @@ private extension Player {
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
 			mainPlayer: Player.mainPlayerType(featureFlagProvider),
-			externalPlayers: externalPlayers
+			externalPlayers: externalPlayersSupplier?() ?? []
 		)
 
 		let playerInstance = PlayerEngine(
