@@ -39,7 +39,7 @@ jobs:
           cd $API_FOLDER
           git add . 
           changes_in_generated=$(git status -s $GENERATED_FOLDER_NAME | awk '{print $1 " " $2}')
-          if [ -n "$changes" ]; then
+          if [ -n "$changes_in_generated" ]; then
             changes_detected="true"
           else
             changes_detected="false"
