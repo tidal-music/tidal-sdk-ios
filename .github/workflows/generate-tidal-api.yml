@@ -43,6 +43,7 @@ jobs:
           echo "Changes:"
           echo "$changes"
           echo "Changes detected: $changes_detected"
+          echo "changes_detected=$changes_detected" >> $GITHUB_OUTPUT
           {
             echo 'changes<<EOF'
             echo "$changes"
