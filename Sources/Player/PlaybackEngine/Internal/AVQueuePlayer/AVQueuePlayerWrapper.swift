@@ -401,6 +401,7 @@ private extension AVQueuePlayerWrapper {
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
+			onItemPlayedToEnd: playedToEnd,
 			onDjSessionTransition: receivedDjSessionTransition
 		)
 	}
@@ -629,6 +630,12 @@ private extension AVQueuePlayerWrapper {
 			}
 
 			self.delegates.djSessionTransition(asset: asset, transition: transition)
+		}
+	}
+	
+	func playedToEnd(playerItem: AVPlayerItem) {
+		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
+			self.player.remove(playerItem)
 		}
 	}
 }
