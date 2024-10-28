@@ -46,7 +46,7 @@ jobs:
           echo "Changes in $INPUT_FOLDER_NAME:"
           echo "$changes_in_input"
 
-          if [ -n "$changes_in_generated" || [ -n "$changes_in_input"]; then
+          if [ -n "$changes_in_generated" ] || [ -n "$changes_in_input" ]; then
             changes_detected="true"
           else
             changes_detected="false"
