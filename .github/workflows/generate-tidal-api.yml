@@ -11,6 +11,8 @@ permissions:
 jobs:
   codegen:
     runs-on: macos-latest
+    env:
+      API_FOLDER: Sources/TidalAPI/
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,14 +27,14 @@ jobs:
 
       - name: Run Code Generation Script
         run: |
-          cd ./Sources/TidalAPI/
+          cd $API_FOLDER
           chmod +x generate_and_clean.sh
           ./generate_and_clean.sh
 
       - name: Check for changes in Generated folder
         id: check_for_changes
         run: |
-          cd ./Sources/TidalAPI/
+          cd $API_FOLDER
           git add . 
           changes=$(git status -s Generated | awk '{print $1 " " $2}')
           if [ -n "$changes" ]; then
