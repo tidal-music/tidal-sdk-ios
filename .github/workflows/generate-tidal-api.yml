@@ -42,3 +42,17 @@ jobs:
         if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
         run: |
           echo "Creating PR"
+
+      - name: Commit changes
+        run: |
+          git config user.email "svc-github-tidal-music-tools@block.xyz"
+          git config user.name "TIDAL Music Tools"
+          git checkout -b tidal-music-tools/Update-Tidal-Api
+          git add .
+          git commit -m "Update TidalAPI with new generated files"
+  
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            git push origin tidal-music-tools/Update-Tidal-Api
