@@ -42,7 +42,7 @@ jobs:
           echo "Changes in $GENERATED_FOLDER_NAME:"
           echo "$changes_in_generated"
 
-          changes_in_input=$(git status -s $INPUT_FOLDER_NAME | awk '{print $1 " " $2}')
+          changes_in_input=$(git status -s $INPUT_FOLDER_NAME)
           echo "Changes in $INPUT_FOLDER_NAME:"
           echo "$changes_in_input"
 
