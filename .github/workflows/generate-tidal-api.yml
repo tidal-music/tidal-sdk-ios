@@ -34,8 +34,11 @@ jobs:
         run: |
           cd ./Sources/TidalAPI/
           changes="$(git status -s Generated)"
-          echo "changes=$changes"
-          [ -n "$changes" ] && "changes_detected=true" || "changes_detected=false"
+          if [ -n "$changes" ]; then
+            changes_detected="true"
+          else
+            changes_detected="false"
+          fi
           {
             "changes=$changes"
             "changes_detected=$changes_detected"
