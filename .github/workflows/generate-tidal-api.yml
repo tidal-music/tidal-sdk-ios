@@ -2,7 +2,6 @@ name: Generate API in the TidalAPI module and create a PR if there are changes
 
 on:
   workflow_dispatch: # manual triggering of this workflow
-  push:
 
 permissions:
   contents: write
@@ -19,8 +18,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: 'ekononenko/test-api-changes'
 
       # Step 2: Install OpenAPI Generator via Homebrew
       - name: Install OpenAPI Generator with Homebrew
@@ -113,9 +110,9 @@ jobs:
           ${{ steps.check_for_changes.outputs.CHANGES_IN_GENERATED }}          
           EOF
           )
-          pr_data=$(jq -n --arg title "!!!TEST PULL REQUEST, PLEASE IGNORE IT!!!" \
+          pr_data=$(jq -n --arg title "TidalAPI: updates after code generation" \
                             --arg head "${{steps.prepare_git_and_define_branch_name.outputs.BRANCH_NAME }}" \
-                            --arg base "ekononenko/test-api-changes" \
+                            --arg base "main" \
                             --arg body "$pr_body" \
                             '{title: $title, head: $head, base: $base, body: $body}')
 
