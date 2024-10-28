@@ -11,7 +11,7 @@
     "x-spec-default-endpoint-url-unique-name" : "get-albums-v2"
   },
   "externalDocs" : {
-    "description" : "TIDAL Developer Documentation test test test",
+    "description" : "TIDAL Developer Documentation",
     "url" : "https://developer.tidal.com/documentation"
   },
   "servers" : [ {
