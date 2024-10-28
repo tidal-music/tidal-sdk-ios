@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: 'ekononenko/test-api-changes'
 
       # Step 2: Install OpenAPI Generator via Homebrew
       - name: Install OpenAPI Generator with Homebrew
@@ -43,7 +45,9 @@ jobs:
         run: |
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
-          git checkout -b tidal-music-tools/Update-Tidal-Api
+          timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
+          branch_name="tidal-music-tools/Update-Tidal-Api-${timestamp}"
+          git checkout -b "$branch_name"
           git add .
           git commit -m "Update TidalAPI with new generated files"
   
