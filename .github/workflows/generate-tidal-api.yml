@@ -105,13 +105,11 @@ jobs:
 
           This PR was created by GitHub Actions.
 
-          Changes in $INPUT_FOLDER_NAME folder:
-          
+          **Changes in Input folder:**
           ${{ steps.check_for_changes.outputs.CHANGES_IN_INPUT }}
 
-          Changes in $GENERATED_FOLDER_NAME folder:
-          
-          ${{ steps.check_for_changes.outputs.CHANGES_IN_GENERATED }}
+          **Changes in Generated folder:**
+          ${{ steps.check_for_changes.outputs.CHANGES_IN_GENERATED }}          
           EOF
           )
           PR_DATA=$(jq -n --arg title "!!!TEST PULL REQUEST, PLEASE IGNORE IT!!!" \
