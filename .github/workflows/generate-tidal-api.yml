@@ -47,7 +47,7 @@ jobs:
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
           timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
-          branch_name="tidal-music-tools/Update-Tidal-Api-${timestamp}"
+          branch_name="tidal-music-tools/Update-TidalAPI-${timestamp}"
           echo "branch_name=$branch_name" >> "$GITHUB_OUTPUT"
 
       - name: Commit changes
