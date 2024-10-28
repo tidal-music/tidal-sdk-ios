@@ -34,8 +34,12 @@ jobs:
         run: |
           cd ./Sources/TidalAPI/
           changes="$(git status -s Generated)"
-          echo "changes=$changes" >> "$GITHUB_OUTPUT"
-          [ -n "$changes" ] && echo "changes_detected=true" >> "$GITHUB_OUTPUT" || echo "changes_detected=false" >> "$GITHUB_OUTPUT"
+          echo "changes=$changes"
+          [ -n "$changes" ] && echo "changes_detected=true" || echo "changes_detected=false"
+          {
+            "changes=$changes"
+            "changes_detected=$changes_detected"
+          } >> $GITHUB_OUTPUT
 
       - name: No Changes Found - Say Goodbye
         if: ${{ steps.check_for_changes.outputs.changes_detected == 'false' }}
