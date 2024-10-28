@@ -80,7 +80,7 @@ public enum AudioCodec: Equatable, Codable {
 	/// - Parameter mode: The AudioMode value
 	public init?(from quality: AudioQuality?, mode: AudioMode?) {
 		guard let quality else {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithNilQuality)
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithNilQuality(audioMode: mode?.rawValue ?? "nil"))
 			return nil
 		}
 		switch quality {
