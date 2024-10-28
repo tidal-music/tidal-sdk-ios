@@ -28,7 +28,6 @@ final class ItemPlayedToEndMonitor {
 	@objc
 	private func playerItemDidPlayToEndTime(notification: Notification) {
 		if let playerItem = notification.object as? AVPlayerItem {
-			print("--> PlayerItemDidPlayToEndTimeMonitor.playerItemDidPlayToEndTime(notification: \(notification))")
 			onPlayedToEnd(playerItem)
 		}
 	}
