@@ -38,12 +38,8 @@ jobs:
         run: |
             echo "No changes found. Good bye"
 
-      - name: Create Pull Request if there are changes
-        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
-        run: |
-          echo "Creating PR"
-
       - name: Commit changes
+        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
         run: |
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
@@ -52,6 +48,7 @@ jobs:
           git commit -m "Update TidalAPI with new generated files"
   
       - name: Push changes
+        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
