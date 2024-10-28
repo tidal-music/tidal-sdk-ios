@@ -34,7 +34,7 @@ jobs:
         run: |
           cd ./Sources/TidalAPI/
           git add . 
-          changes="$(git status -s Generated)"
+          changes="$(git status -s Generated | awk '{print $1 " " $2})"
           if [ -n "$changes" ]; then
             changes_detected="true"
           else
