@@ -84,10 +84,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          pr_body=$(cat <<EOF
+
+          This PR was created by GitHub Actions.
+
+          Changes in Generated folder:
+          
+          ${{ steps.check_for_changes.outputs.changes }}
+          EOF
+          )
           PR_DATA=$(jq -n --arg title "!!!TEST PULL REQUEST, PLEASE IGNORE IT!!!" \
                             --arg head "${{steps.prepare_git_and_define_branch_name.outputs.branch_name }}" \
                             --arg base "ekononenko/test-api-changes" \
-                            --arg body "This PR was created by GitHub Actions.\n\nChanges in Generated folder:\n\n${{ steps.check_for_changes.outputs.changes }}" \
+                            --arg body "$pr_body" \
                             '{title: $title, head: $head, base: $base, body: $body}')
 
           curl -X POST \
