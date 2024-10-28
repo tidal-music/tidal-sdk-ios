@@ -39,15 +39,21 @@ jobs:
         if: ${{ steps.check_for_changes.outputs.changes_detected == 'false' }}
         run: |
             echo "No changes found. Good bye"
-
-      - name: Commit changes
+      
+      - name: Prepare git and define a branch name
+        id: prepare_git_and_define_branch_name
         if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
         run: |
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
           timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
           branch_name="tidal-music-tools/Update-Tidal-Api-${timestamp}"
-          git checkout -b "$branch_name"
+          echo "branch_name=$branch_name" >> "$GITHUB_OUTPUT"
+
+      - name: Commit changes
+        if: ${{ steps.check_for_changes.outputs.changes_detected == 'true' }}
+        run: |
+          git checkout -b "${{steps.prepare_git_and_define_branch_name.outputs.branch_name }}"
           git add .
           git commit -m "Update TidalAPI with new generated files"
   
@@ -56,4 +62,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            git push origin tidal-music-tools/Update-Tidal-Api
+            git push origin "${{steps.prepare_git_and_define_branch_name.outputs.branch_name }}"
