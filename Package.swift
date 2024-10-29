@@ -18,26 +18,11 @@ let package = Package(
 		.watchOS(.v7),
 	],
 	products: [
-		.library(
-			name: "EventProducer",
-			targets: ["EventProducer"]
-		),
-		.library(
-			name: "Auth",
-			targets: ["Auth"]
-		),
-		.library(
-			name: "Player",
-			targets: ["Player"]
-		),
-		.library(
-			name: "Common",
-			targets: ["Common"]
-		),
-		.library(
-			name: "TidalAPI",
-			targets: ["TidalAPI"]
-		),
+		.singleTargetLibrary("EventProducer"),
+		.singleTargetLibrary("Auth"),
+		.singleTargetLibrary("Player"),
+		.singleTargetLibrary("Common"),
+		.singleTargetLibrary("TidalAPI"),
 	],
 	dependencies: [
 		.package(url: "https://github.com/groue/GRDB.swift.git", from: "6.27.0"),
@@ -50,10 +35,7 @@ let package = Package(
 	] + (shouldIncludeDocCPlugin ? [.package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")] : []),
 	targets: [
 		.target(
-			name: "Template",
-			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
-			]
+			name: "Template"
 		),
 		.testTarget(
 			name: "TemplateTests",
@@ -66,9 +48,6 @@ let package = Package(
 			dependencies: [
 				.AnyCodable,
 				.auth
-			],
-			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.target(
@@ -76,9 +55,6 @@ let package = Package(
 			dependencies: [
 				.Logging,
 				.AnyCodable,
-			],
-			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
@@ -94,9 +70,6 @@ let package = Package(
 				.GRDB,
 				.SWXMLHash,
 				.auth,
-			],
-			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
@@ -113,9 +86,6 @@ let package = Package(
 				.common,
 				.KeychainAccess,
 				.Logging,
-			],
-			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
@@ -135,9 +105,6 @@ let package = Package(
 			],
 			resources: [
 				.process("README.md"),
-			],
-			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
@@ -149,13 +116,27 @@ let package = Package(
 			],
 			resources: [
 				.process("Resources"),
-			],
-			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 	]
 )
+
+// Inject SwiftLint plugin into all targets
+package.targets = package.targets.map { target in
+	var plugins = target.plugins ?? []
+	plugins.append(.plugin(name: "SwiftLint", package: "SwiftLintPlugin"))
+	target.plugins = plugins
+	return target
+}
+
+// MARK: - Extensions
+
+extension Product {
+	/// Creates a library product that contains a single target with the specified name.
+	static func singleTargetLibrary(_ name: String) -> Product {
+		.library(name: name, targets: [name])
+	}
+}
 
 extension Target.Dependency {
 	/// Local
