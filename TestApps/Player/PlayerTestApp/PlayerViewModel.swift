@@ -1,4 +1,5 @@
 import Auth
+import AVFAudio
 import EventProducer
 import Foundation
 import Player
@@ -86,6 +87,17 @@ extension PlayerViewModel: PlayerListener {
 	func failed(with error: PlayerError) {
 		self.error = CustomError.playerError(code: error.errorCode)
 		showAlert = true
+	}
+
+	func mediaServicesWereReset() {
+		// We must set up again the audio session for the correct behavior after media services are reset.
+		do {
+			let audioSession = AVAudioSession.sharedInstance()
+			try? audioSession.setCategory(.playback, mode: .default, policy: .longFormAudio)
+			try audioSession.setActive(true)
+		} catch {
+			print("Error: \(String(describing: error))")
+		}
 	}
 }
 

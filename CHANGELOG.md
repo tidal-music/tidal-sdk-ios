@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.41] - 2024-10-28
+
+### Added
+- Add TidalAPI module (TidalAPI)
+- Add logic in Player to handle issue when media services are reset (Player)
+- Add player item monitor for when an item reaches the end when action at end is none (Player)
+
+### Removed
+- Remove old Catalogue module (Catalogue)
+
+### Changed
+- Change how external players are provided so they can be changed at runtime (Player)
+
 ## [0.3.40] - 2024-10-23
 
 ### Added
