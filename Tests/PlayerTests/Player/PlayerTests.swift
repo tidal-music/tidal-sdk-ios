@@ -71,7 +71,7 @@ final class PlayerTests: XCTestCase {
 			playerEngine: playerEngine,
 			offlineEngine: offlineEngine,
 			featureFlagProvider: .mock,
-			externalPlayers: [],
+			externalPlayersSupplier: nil,
 			credentialsProvider: CredentialsProviderMock()
 		)
 	}
