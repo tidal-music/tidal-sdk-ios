@@ -25,14 +25,12 @@ jobs:
       # Step 2: Install OpenAPI Generator via Homebrew
       - name: Install OpenAPI Generator with Homebrew
         run: |
-          brew update
           brew install openapi-generator
 
       - name: Run Code Generation Script
         run: |
-          cd $API_FOLDER
-          chmod +x $SCRIPT_NAME
-          ./$SCRIPT_NAME
+          chmod +x $API_FOLDER/$SCRIPT_NAME
+          ./$API_FOLDER/$SCRIPT_NAME
 
       - name: Check for changes
         id: check_for_changes
