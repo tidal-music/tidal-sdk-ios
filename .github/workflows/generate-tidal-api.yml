@@ -66,15 +66,9 @@ jobs:
           } >> $GITHUB_OUTPUT
 
           echo "CHANGES_DETECTED=$changes_detected" >> $GITHUB_OUTPUT
-
-      - name: No Changes Found - Say Goodbye
-        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'false' }}
-        run: |
-            echo "No changes found. Good bye"
       
       - name: Prepare git and define a branch name
         id: prepare_git_and_define_branch_name
-        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         run: |
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
@@ -83,21 +77,18 @@ jobs:
           echo "BRANCH_NAME=$branch_name" >> "$GITHUB_OUTPUT"
 
       - name: Commit changes
-        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         run: |
           git checkout -b "${{steps.prepare_git_and_define_branch_name.outputs.BRANCH_NAME }}"
           git add .
           git commit -m "Update TidalAPI with new generated files"
   
       - name: Push changes
-        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             git push origin "${{steps.prepare_git_and_define_branch_name.outputs.BRANCH_NAME }}"
 
       - name: Create Pull Request
-        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
