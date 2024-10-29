@@ -29,8 +29,9 @@ jobs:
 
       - name: Run Code Generation Script
         run: |
-          chmod +x $API_FOLDER/$SCRIPT_NAME
-          ./$API_FOLDER/$SCRIPT_NAME
+          cd $API_FOLDER
+          chmod +x $SCRIPT_NAME
+          ./$SCRIPT_NAME
 
       - name: Check for changes
         id: check_for_changes
