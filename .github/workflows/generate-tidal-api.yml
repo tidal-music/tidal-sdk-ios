@@ -50,6 +50,8 @@ jobs:
             changes_detected="true"
           else
             changes_detected="false"
+            echo "No changes found. Good bye"
+            exit 0
           fi
           echo "Changes detected: $changes_detected"
 
