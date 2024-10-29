@@ -126,9 +126,6 @@ final class PlayLogWithDeinitTests: XCTestCase {
 		fairplayLicenseFetcher = FairPlayLicenseFetcher.mock()
 		networkMonitor = NetworkMonitorMock()
 
-		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
-		let djProducerSession = URLSession.new(with: djProducerTimeoutPolicy, name: "Player DJ Session")
-
 		djProducer = DJProducer(
 			httpClient: HttpClient.mock(),
 			credentialsProvider: credentialsProvider,

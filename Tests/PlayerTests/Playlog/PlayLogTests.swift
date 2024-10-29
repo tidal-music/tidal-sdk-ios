@@ -131,10 +131,7 @@ final class PlayLogTests: XCTestCase {
 		)
 
 		networkMonitor = NetworkMonitorMock()
-
-		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
-		let djProducerSession = URLSession.new(with: djProducerTimeoutPolicy, name: "Player DJ Session")
-
+		
 		djProducer = DJProducer(
 			httpClient: HttpClient.mock(),
 			credentialsProvider: credentialsProvider,

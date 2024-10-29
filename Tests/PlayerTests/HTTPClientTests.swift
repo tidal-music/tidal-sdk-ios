@@ -42,8 +42,8 @@ final class HTTPClientTests: XCTestCase {
 
 		JsonEncodedResponseURLProtocol.replay([
 			JsonEncodedResponseURLProtocol.Response(error: URLError(URLError.networkConnectionLost)),
-			JsonEncodedResponseURLProtocol.Response(data: "Success 1".data(using: .utf8)),
-			JsonEncodedResponseURLProtocol.Response(data: "Success 2".data(using: .utf8)),
+			JsonEncodedResponseURLProtocol.Response(data: Data("Success 1".utf8)),
+			JsonEncodedResponseURLProtocol.Response(data: Data("Success 2".utf8)),
 		])
 
 		do {
@@ -67,9 +67,8 @@ final class HTTPClientTests: XCTestCase {
 				}
 
 				for try await result in taskGroup {
-					if let stringResult = String(data: result, encoding: .utf8) {
-						responses.append(stringResult)
-					}
+					let stringResult = String(decoding: result, as: UTF8.self)
+					responses.append(stringResult)
 				}
 
 				return responses
@@ -175,7 +174,7 @@ final class HTTPClientTests: XCTestCase {
 
 	func test4XXError_HTTPClientError() async {
 		let httpErrorCode = 401
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -196,7 +195,7 @@ final class HTTPClientTests: XCTestCase {
 
 	func test429Error_HTTPClientError() async {
 		let httpErrorCode = 429
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -217,7 +216,7 @@ final class HTTPClientTests: XCTestCase {
 
 	func test5XXError_HTTPServerError() async {
 		let httpErrorCode = 501
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -238,7 +237,7 @@ final class HTTPClientTests: XCTestCase {
 
 	func test503Error_HTTPServerError() async {
 		let httpErrorCode = 503
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -259,7 +258,7 @@ final class HTTPClientTests: XCTestCase {
 
 	func test7XXError_UnsupportedHttpStatus() async {
 		let httpErrorCode = 707
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -312,7 +311,7 @@ final class HTTPClientTests: XCTestCase {
 		// swiftlint:enable force_try
 
 		let httpErrorCode = 501
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 
 		var responses = [JsonEncodedResponseURLProtocol.Response](
 			repeating: JsonEncodedResponseURLProtocol.Response(error: URLError(URLError.networkConnectionLost)),

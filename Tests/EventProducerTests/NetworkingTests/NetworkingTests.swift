@@ -29,11 +29,8 @@ final class NetworkingTests: XCTestCase {
 			XCTFail("data error")
 			return
 		}
-		guard let body = String(data: data, encoding: .utf8) else {
-			XCTFail("body string issue")
-			return
-		}
-
+		
+		let body = String(decoding: data, as: UTF8.self)
 		let sortedBody = body.sorted(by: <)
 		let sortedParams = "name=value&test=123".sorted(by: <)
 

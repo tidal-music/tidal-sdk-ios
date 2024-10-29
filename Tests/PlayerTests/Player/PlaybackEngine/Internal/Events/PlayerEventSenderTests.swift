@@ -502,11 +502,11 @@ private extension PlayerEventSenderTests {
 			extras: extras
 		)
 
-		guard let data = try? encoder.encode(expectedEvent), let payloadString = String(data: data, encoding: .utf8) else {
+		guard let data = try? encoder.encode(expectedEvent) else {
 			XCTFail("Failed to encode event: \(expectedEvent)")
 			return
 		}
-
+		let payloadString = String(decoding: data, as: UTF8.self)
 		let expectedEventSent = EventSenderMock.Event(
 			name: name,
 			consentCategory: consentCategory,

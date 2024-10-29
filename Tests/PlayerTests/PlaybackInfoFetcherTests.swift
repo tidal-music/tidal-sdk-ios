@@ -221,7 +221,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 
 	func test4XXError_UnHandledHttpStatus() async {
 		let httpErrorCode = 412
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		let fetcher = PlaybackInfoFetcher.mock(
@@ -265,7 +265,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
 		let httpErrorCode = 403
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -301,7 +301,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 
 		let httpErrorCode = 403
 		let subStatus = 4006
-		let randomData = "{\"subStatus\": \(subStatus)}".data(using: .utf8)
+		let randomData = Data("{\"subStatus\": \(subStatus)}".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -331,7 +331,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 
 		let httpErrorCode = 403
 		let subStatus = 4010
-		let randomData = "{\"subStatus\": \(subStatus)}".data(using: .utf8)
+		let randomData = Data("{\"subStatus\": \(subStatus)}".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -367,7 +367,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 
 		let httpErrorCode = 403
 		let subStatus = 4032
-		let randomData = "{\"subStatus\": \(subStatus)}".data(using: .utf8)
+		let randomData = Data("{\"subStatus\": \(subStatus)}".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -403,7 +403,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 
 		let httpErrorCode = 403
 		let subStatus = 4033
-		let randomData = "{\"subStatus\": \(subStatus)}".data(using: .utf8)
+		let randomData = Data("{\"subStatus\": \(subStatus)}".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -439,7 +439,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 
 		let httpErrorCode = 403
 		let subStatus = 4035
-		let randomData = "{\"subStatus\": \(subStatus)}".data(using: .utf8)
+		let randomData = Data("{\"subStatus\": \(subStatus)}".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -475,7 +475,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 
 		let httpErrorCode = 403
 		let subStatus = 4027
-		let randomData = "{\"subStatus\": \(subStatus)}".data(using: .utf8)
+		let randomData = Data("{\"subStatus\": \(subStatus)}".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -510,7 +510,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
 		let httpErrorCode = 404
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -546,7 +546,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 
 		let httpErrorCode = 404
 		let subStatus = 4004
-		let randomData = "{\"subStatus\": \(subStatus)}".data(using: .utf8)
+		let randomData = Data("{\"subStatus\": \(subStatus)}".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -581,7 +581,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
 		let httpErrorCode = 429
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
@@ -616,7 +616,7 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 		credentialsProvider.injectSuccessfulUserLevelCredentials()
 
 		let httpErrorCode = 501
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
