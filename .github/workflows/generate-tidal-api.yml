@@ -48,8 +48,10 @@ jobs:
 
           if [ -n "$changes_in_generated" ] || [ -n "$changes_in_input" ]; then
             changes_detected="true"
+            changed_file_count=$(echo "$changes_in_generated" | wc -l)+$(echo "$changes_in_input" | wc -l)
           else
             changes_detected="false"
+            changed_file_count=0
           fi
           echo "Changes detected: $changes_detected"
 
@@ -66,6 +68,7 @@ jobs:
           } >> $GITHUB_OUTPUT
 
           echo "CHANGES_DETECTED=$changes_detected" >> $GITHUB_OUTPUT
+          echo "CHANGED_FILE_COUNT=$changed_file_count" >> $GITHUB_OUTPUT
 
       - name: No Changes Found - Say Goodbye
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'false' }}
@@ -86,7 +89,7 @@ jobs:
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         run: |
           git checkout -b "${{steps.prepare_git_and_define_branch_name.outputs.BRANCH_NAME }}"
-          git commit -m "Update TidalAPI with new generated files"
+          git commit -m "Add ${{ steps.check_for_changes.outputs.changed_file_count }} files via GitHub Actions"
   
       - name: Push changes
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
@@ -100,6 +103,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          pr_title="Automatic Tidal API module update - ${{ steps.check_for_changes.outputs.changed_file_count }} files changed"
           pr_body=$(cat <<EOF
 
           This PR was created by GitHub Actions.
@@ -112,7 +116,7 @@ jobs:
           EOF
           )
 
-          pr_data=$(jq -n --arg title "!!!TEST PULL REQUEST, PLEASE IGNORE IT!!!" \
+          pr_data=$(jq -n --arg title "$pr_title" \
                             --arg head "${{steps.prepare_git_and_define_branch_name.outputs.BRANCH_NAME }}" \
                             --arg base "ekononenko/test-api-changes" \
                             --arg body "$pr_body" \
