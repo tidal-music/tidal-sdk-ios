@@ -43,6 +43,7 @@ jobs:
           echo "$changes_in_generated"
 
           changes_in_input=$(git status -s $INPUT_FOLDER_NAME | sed 's/"//g')
+          
           echo "Changes in $INPUT_FOLDER_NAME:"
           echo "$changes_in_input"
 
@@ -91,7 +92,7 @@ jobs:
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         run: |
           git checkout -b "${{steps.prepare_git_and_define_branch_name.outputs.BRANCH_NAME }}"
-          git commit -m "Add ${{ steps.check_for_changes.outputs.changed_file_count }} files via GitHub Actions"
+          git commit -m "Changed ${{ steps.check_for_changes.outputs.CHANGED_FILE_COUNT }} files via GitHub Actions"
   
       - name: Push changes
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
