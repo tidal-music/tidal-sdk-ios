@@ -48,7 +48,9 @@ jobs:
 
           if [ -n "$changes_in_generated" ] || [ -n "$changes_in_input" ]; then
             changes_detected="true"
-            changed_file_count=$(echo "$changes_in_generated" | wc -l)+$(echo "$changes_in_input" | wc -l)
+            changes_in_input_file_count=$(echo "$changes_in_input" | wc -l)
+            changed_in_generated_file_count=$(echo "$changes_in_generated" | wc -l)
+            changed_file_count=$((changes_in_input_file_count+changed_in_generated_file_count))
           else
             changes_detected="false"
             changed_file_count=0
