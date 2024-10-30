@@ -50,8 +50,6 @@ jobs:
             changes_detected="true"
           else
             changes_detected="false"
-            echo "No changes found. Good bye"
-            exit 0
           fi
           echo "Changes detected: $changes_detected"
 
@@ -113,6 +111,7 @@ jobs:
           ${{ steps.check_for_changes.outputs.CHANGES_IN_GENERATED }}          
           EOF
           )
+
           pr_data=$(jq -n --arg title "!!!TEST PULL REQUEST, PLEASE IGNORE IT!!!" \
                             --arg head "${{steps.prepare_git_and_define_branch_name.outputs.BRANCH_NAME }}" \
                             --arg base "ekononenko/test-api-changes" \
