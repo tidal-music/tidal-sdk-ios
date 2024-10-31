@@ -106,7 +106,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pr_title="Automatic Tidal API module update - ${{ steps.check_for_changes.outputs.changed_file_count }} files changed"
+          pr_title="Automatic Tidal API module update - ${{ steps.check_for_changes.outputs.CHANGED_FILE_COUNT }} files changed"
           pr_body=$(cat <<EOF
 
           This PR was created by GitHub Actions.
