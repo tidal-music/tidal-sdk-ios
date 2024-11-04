@@ -2,6 +2,7 @@
 
 extension DevelopmentFeatureFlagProvider {
 	static let mock: Self = DevelopmentFeatureFlagProvider(
-		shouldReadAndVerifyPlaybackMetadata: false
+		shouldReadAndVerifyPlaybackMetadata: false,
+		shouldCheckExpiryAndRevalidateOfflineItems: false
 	)
 }
