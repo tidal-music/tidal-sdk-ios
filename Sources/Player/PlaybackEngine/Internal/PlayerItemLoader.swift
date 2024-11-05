@@ -50,14 +50,14 @@ final class PlayerItemLoader {
 
 private extension PlayerItemLoader {
 	func load(_ mediaProduct: MediaProduct, with streamingSessionId: String) async throws -> (Metadata, Asset) {
-		let offlinePlaybackAllowed = offlinePlaybackPrivilegeCheck?() ?? true
-		if let storedMediaProduct = mediaProduct as? StoredMediaProduct, offlinePlaybackAllowed {
+		let offlinePlaybackAllowed = offlinePlaybackPrivilegeCheck?() ?? false
+		if offlinePlaybackAllowed, let storedMediaProduct = mediaProduct as? StoredMediaProduct {
 			return try await (metadata(of: storedMediaProduct), playerLoader.load(storedMediaProduct))
 		}
 
-		if let offlineEntry = try? offlineStorage?.get(key: mediaProduct.productId),
-		   let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: offlineEntry),
-		   offlinePlaybackAllowed
+		if offlinePlaybackAllowed,
+		   let offlineEntry = try? offlineStorage?.get(key: mediaProduct.productId),
+		   let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: offlineEntry)
 		{
 			return try await (metadata(of: offlinedMediaProduct), playerLoader.load(offlinedMediaProduct))
 		}
