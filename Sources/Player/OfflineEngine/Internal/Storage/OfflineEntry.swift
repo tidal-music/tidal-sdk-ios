@@ -33,7 +33,7 @@ struct OfflineEntry: Codable {
 			return .OFFLINED_BUT_NO_LICENSE
 		}
 
-		if PlayerWorld.developmentFeatureFlagProvider.shouldCheckExpiryAndRevalidateOfflineItems {
+		if PlayerWorld.developmentFeatureFlagProvider.shouldCheckAndRevalidateOfflineItems {
 			let now = PlayerWorld.timeProvider.timestamp()
 			if let expiry, now > expiry * 1000 {
 				return .OFFLINED_BUT_EXPIRED

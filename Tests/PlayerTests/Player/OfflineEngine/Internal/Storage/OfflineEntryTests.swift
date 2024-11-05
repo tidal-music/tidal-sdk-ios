@@ -16,7 +16,7 @@ final class OfflineEntryTests: XCTestCase {
 
 	// MARK: - state
 
-	func test_state_offlined_not_valid() async throws {
+	func test_stateIsOfflinedButNotValid_whenNoPlayableAVPlayer() async throws {
 		// GIVEN
 		let trackPlaybackInfo = TrackPlaybackInfo.mock(
 			licenseSecurityToken: "sdfasdfasdf",
@@ -30,10 +30,11 @@ final class OfflineEntryTests: XCTestCase {
 			licenseURL: URL(string: "www.tidal.com/license")!
 		)
 
+		// THEN
 		XCTAssertEqual(offlineEntry.state, .OFFLINED_BUT_NOT_VALID)
 	}
 
-	func test_state_no_license() async throws {
+	func test_stateIsOfflinedButNotLicense_whenNoLicenseURL() async throws {
 		// GIVEN
 		let trackPlaybackInfo = TrackPlaybackInfo.mock(
 			licenseSecurityToken: "sdfasdfasdf",
@@ -47,13 +48,14 @@ final class OfflineEntryTests: XCTestCase {
 			licenseURL: nil
 		)
 
+		// THEN
 		XCTAssertEqual(offlineEntry.state, .OFFLINED_BUT_NO_LICENSE)
 	}
 
-	func test_state_expired() async throws {
+	func test_stateIsOfflinedButExpired_whenOfflineValidUntilHasPassed() async throws {
 		// GIVEN
 		currentTimestamp = 2 * 1000
-		PlayerWorld.developmentFeatureFlagProvider.shouldCheckExpiryAndRevalidateOfflineItems = true
+		PlayerWorld.developmentFeatureFlagProvider.shouldCheckAndRevalidateOfflineItems = true
 
 		let trackPlaybackInfo = TrackPlaybackInfo.mock(
 			licenseSecurityToken: "sdfasdfasdf",
@@ -70,6 +72,8 @@ final class OfflineEntryTests: XCTestCase {
 			assetURL: URL(string: "www.tidal.com")!,
 			licenseURL: URL(string: "www.tidal.com/license")!
 		)
+
+		// THEN
 		XCTAssertEqual(offlineEntry.state, .OFFLINED_BUT_EXPIRED)
 	}
 }
