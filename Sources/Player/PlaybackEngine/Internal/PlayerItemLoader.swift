@@ -7,17 +7,20 @@ final class PlayerItemLoader {
 	private let offlineStorage: OfflineStorage?
 	private let offlinePlaybackPrivilegeCheck: (() -> Bool)?
 	private let playbackInfoFetcher: PlaybackInfoFetcher
+	private var configuration: Configuration
 	private var playerLoader: PlayerLoader
 
 	init(
 		with offlineStorage: OfflineStorage?,
 		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
 		_ playbackInfoFetcher: PlaybackInfoFetcher,
+		_ configuration: Configuration,
 		and playerLoader: PlayerLoader
 	) {
 		self.offlineStorage = offlineStorage
 		self.offlinePlaybackPrivilegeCheck = offlinePlaybackPrivilegeCheck
 		self.playbackInfoFetcher = playbackInfoFetcher
+		self.configuration = configuration
 		self.playerLoader = playerLoader
 	}
 
@@ -39,20 +42,28 @@ final class PlayerItemLoader {
 	func renderVideo(in view: AVPlayerLayer) {
 		playerLoader.renderVideo(in: view)
 	}
+
+	func updateConfiguration(_ configuration: Configuration) {
+		self.configuration = configuration
+	}
 }
 
 private extension PlayerItemLoader {
 	func load(_ mediaProduct: MediaProduct, with streamingSessionId: String) async throws -> (Metadata, Asset) {
-		if let storedMediaProduct = mediaProduct as? StoredMediaProduct {
+		let offlinePlaybackAllowed = offlinePlaybackPrivilegeCheck?() ?? true
+		if let storedMediaProduct = mediaProduct as? StoredMediaProduct, offlinePlaybackAllowed {
 			return try await (metadata(of: storedMediaProduct), playerLoader.load(storedMediaProduct))
 		}
 
-		let offlinePlaybackAllowed = offlinePlaybackPrivilegeCheck?() ?? true
 		if let offlineEntry = try? offlineStorage?.get(key: mediaProduct.productId),
 		   let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: offlineEntry),
 		   offlinePlaybackAllowed
 		{
 			return try await (metadata(of: offlinedMediaProduct), playerLoader.load(offlinedMediaProduct))
+		}
+
+		guard configuration.offlineMode == false else {
+			throw PlayerItemLoaderError.streamNotAllowedInOfflineMode.error(.PENotAllowedInOfflineMode)
 		}
 
 		let playbackInfo = try await playbackInfoFetcher.getPlaybackInfo(
