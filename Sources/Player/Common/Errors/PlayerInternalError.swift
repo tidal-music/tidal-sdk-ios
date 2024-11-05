@@ -22,6 +22,7 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 		case unknown
 		case playerLoaderError
 		case mediaServicesWereReset
+		case playerItemLoaderError
 	}
 
 	let errorId: ErrorId

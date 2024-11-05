@@ -9,6 +9,7 @@ public enum ErrorId: String {
 	case PERetryable
 	case PENetwork
 	case PENotSupported
+	case PENotAllowedInOfflineMode
 	case OEContentNotAvailableInLocation
 	case OEContentNotAvailableForSubscription
 	case OEOffliningNotAllowedOnDevice
