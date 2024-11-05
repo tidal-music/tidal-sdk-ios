@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.42] - 2024-11-05
+
+### Added
+- Add Offline playback privilege check (Player)
+
+### Changed
+- Moved OfflineEntry expiry check behind development flag until revalidation is fully implemented (Player)
+
 ## [0.3.41] - 2024-10-28
 
 ### Added
