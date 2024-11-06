@@ -2,9 +2,9 @@ import Auth
 import AVFoundation
 import Foundation
 
-// swiftlint:disable file_length
-
 // MARK: - PlayerEngine
+
+// swiftlint:disable file_length
 
 final class PlayerEngine {
 	private let queue: OperationQueue
@@ -18,6 +18,7 @@ final class PlayerEngine {
 		// After receiving a new value, we need to update the loudness normalization of the current and next items.
 		didSet {
 			updateLoudnessNormalizationMode(configuration.loudnessNormalizationMode)
+			playerItemLoader.updateConfiguration(configuration)
 		}
 	}
 
@@ -105,6 +106,7 @@ final class PlayerEngine {
 		_ playerEventSender: PlayerEventSender,
 		_ networkMonitor: NetworkMonitor,
 		_ offlineStorage: OfflineStorage?,
+		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
 		_ playerLoader: PlayerLoader,
 		_ featureFlagProvider: FeatureFlagProvider,
 		_ notificationsHandler: NotificationsHandler?
@@ -126,7 +128,13 @@ final class PlayerEngine {
 		self.notificationsHandler = notificationsHandler
 		self.featureFlagProvider = featureFlagProvider
 
-		playerItemLoader = PlayerItemLoader(with: offlineStorage, playbackInfoFetcher, and: playerLoader)
+		playerItemLoader = PlayerItemLoader(
+			with: offlineStorage,
+			offlinePlaybackPrivilegeCheck,
+			playbackInfoFetcher,
+			configuration,
+			and: playerLoader
+		)
 
 		state = .IDLE
 		currentItem = nil
@@ -347,7 +355,7 @@ final class PlayerEngine {
 		// When media services are reset, Apple recommends to reinitialize the app's audio objects, which is out case is the player,
 		// and which is performed directly by the SDK. It's also recommended to reset the audio session’s category, options, and mode
 		// configuration. This is performed below.
-		self.reset()
+		reset()
 
 		// Then we should also set it up again the audio session as done initially. Since this is done outside the SDK, we delegate it
 		// to the notification handler to do it.

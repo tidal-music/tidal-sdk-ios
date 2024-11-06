@@ -1,5 +1,6 @@
 extension DevelopmentFeatureFlagProvider {
 	static let live = DevelopmentFeatureFlagProvider(
-		shouldReadAndVerifyPlaybackMetadata: false
+		shouldReadAndVerifyPlaybackMetadata: false,
+		shouldCheckAndRevalidateOfflineItems: false
 	)
 }

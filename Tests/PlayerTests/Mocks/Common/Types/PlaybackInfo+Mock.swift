@@ -69,13 +69,13 @@ extension PlaybackInfo {
 			contentHash: trackPlaybackInfo.manifestHash,
 			mediaType: trackPlaybackInfo.manifestMimeType,
 			url: URL(string: "https://www.tidal.com")!, // from the manifest
-			licenseSecurityToken: nil,
+			licenseSecurityToken: trackPlaybackInfo.licenseSecurityToken,
 			albumReplayGain: trackPlaybackInfo.albumReplayGain,
 			albumPeakAmplitude: trackPlaybackInfo.albumPeakAmplitude,
 			trackReplayGain: trackPlaybackInfo.trackReplayGain,
 			trackPeakAmplitude: trackPlaybackInfo.trackPeakAmplitude,
-			offlineRevalidateAt: nil,
-			offlineValidUntil: nil
+			offlineRevalidateAt: trackPlaybackInfo.offlineRevalidateAt,
+			offlineValidUntil: trackPlaybackInfo.offlineValidUntil
 		)
 	}
 }

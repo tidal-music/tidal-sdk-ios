@@ -33,12 +33,14 @@ struct OfflineEntry: Codable {
 			return .OFFLINED_BUT_NO_LICENSE
 		}
 
-		let now = PlayerWorld.timeProvider.timestamp()
-		if let expiry, now > expiry * 1000 {
-			return .OFFLINED_BUT_EXPIRED
+		if PlayerWorld.developmentFeatureFlagProvider.shouldCheckAndRevalidateOfflineItems {
+			let now = PlayerWorld.timeProvider.timestamp()
+			if let expiry, now > expiry * 1000 {
+				return .OFFLINED_BUT_EXPIRED
+			}
 		}
 
-		if mediaType == MediaTypes.HLS {
+		if mediaType == MediaTypes.HLS || mediaType == MediaTypes.EMU {
 			let asset = AVURLAsset(url: mediaURL)
 			guard let cache = asset.assetCache, cache.isPlayableOffline else {
 				return .OFFLINED_BUT_NOT_VALID

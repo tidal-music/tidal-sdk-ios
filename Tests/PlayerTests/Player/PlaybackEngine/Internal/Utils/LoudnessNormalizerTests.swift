@@ -7,6 +7,7 @@ private enum Constants {
 	static let albumReplayGain: Float = 1
 	static let albumPeakAmplitude: Float = 3
 	static let playbackInfo = PlaybackInfo.mock(
+		mediaType: MediaTypes.BTS,
 		albumReplayGain: albumReplayGain,
 		albumPeakAmplitude: albumPeakAmplitude,
 		trackReplayGain: 2,
