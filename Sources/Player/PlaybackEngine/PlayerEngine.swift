@@ -55,7 +55,7 @@ final class PlayerEngine {
 
 	@Atomic private(set) var currentItem: PlayerItem? {
 		didSet {
-			if let oldValue, !shouldSendEventsInDeinit, oldValue.id != currentItem?.id {
+			if let oldValue, oldValue.id != currentItem?.id {
 				oldValue.emitEvents()
 			}
 
@@ -71,7 +71,7 @@ final class PlayerEngine {
 
 	@Atomic private(set) var nextItem: PlayerItem? {
 		didSet {
-			if let oldValue, !shouldSendEventsInDeinit {
+			if let oldValue {
 				// If previous next item is same as current item, it means we will send metrics later on, so don't send it now.
 				guard oldValue.id != currentItem?.id else {
 					return
@@ -87,11 +87,6 @@ final class PlayerEngine {
 
 	@Atomic private var currentError: Error?
 	@Atomic private var nextError: Error?
-
-	/// Flag whether we should emit events on the deinit of the current and next items.
-	private var shouldSendEventsInDeinit: Bool {
-		featureFlagProvider.shouldSendEventsInDeinit()
-	}
 
 	#if !os(macOS)
 		private var audioSessionInterruptionMonitor: AudioSessionInterruptionMonitor!

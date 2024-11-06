@@ -45,7 +45,6 @@ final class PlayLogTests: XCTestCase {
 
 	private var timestamp: UInt64 = 1
 	private var uuid = "uuid"
-	private var shouldSendEventsInDeinit: Bool = false
 
 	lazy var shortAudioFile: AudioFile = {
 		let url = PlayLogTestsHelper.url(from: Constants.AudioFileName.short)
@@ -81,9 +80,6 @@ final class PlayLogTests: XCTestCase {
 
 	override func setUp() {
 		featureFlagProvider = FeatureFlagProvider.mock
-		featureFlagProvider.shouldSendEventsInDeinit = {
-			self.shouldSendEventsInDeinit
-		}
 
 		let timeProvider = TimeProvider.mock(
 			timestamp: {
