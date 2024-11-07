@@ -82,12 +82,6 @@ final class PlayerItem {
 		))
 	}
 
-	deinit {
-		if featureFlagProvider.shouldSendEventsInDeinit() {
-			emitEvents()
-		}
-	}
-
 	func emitEvents() {
 		emitStreamingMetrics()
 		emitPlayLog()
