@@ -78,7 +78,12 @@ final class InternalPlayerLoaderTests: XCTestCase {
 
 	func test_load_PlayableStorageItem() async throws {
 		// GIVEN
-		let trackPlaybackInfo = TrackPlaybackInfo.mock(albumReplayGain: 4, albumPeakAmplitude: 1)
+		let trackPlaybackInfo = TrackPlaybackInfo.mock(
+			licenseSecurityToken: "sdf2ewerqwe",
+			manifestMimeType: MediaTypes.BTS,
+			albumReplayGain: 4,
+			albumPeakAmplitude: 1
+		)
 		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(), trackPlaybackInfo: trackPlaybackInfo)
 		let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: OfflineEntry.mock(
 			from: playbackInfo,
