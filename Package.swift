@@ -44,7 +44,6 @@ let package = Package(
 		.package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "7.0.2"),
 		.package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
 		.package(url: "https://github.com/MobileNativeFoundation/Kronos.git", exact: "4.2.2"),
-		.package(url: "https://github.com/lukepistrol/SwiftLintPlugin", from: "0.54.0"),
 		.package(url: "https://github.com/apple/swift-log.git", from: "1.6.1"),
 		.package(url: "https://github.com/Flight-School/AnyCodable", from: "0.6.0"),
 	] + (shouldIncludeDocCPlugin ? [.package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")] : []),
@@ -52,7 +51,6 @@ let package = Package(
 		.target(
 			name: "Template",
 			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
@@ -68,7 +66,6 @@ let package = Package(
 				.auth
 			],
 			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.target(
@@ -78,7 +75,6 @@ let package = Package(
 				.AnyCodable,
 			],
 			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
@@ -96,7 +92,6 @@ let package = Package(
 				.auth,
 			],
 			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
@@ -115,7 +110,6 @@ let package = Package(
 				.Logging,
 			],
 			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
@@ -137,7 +131,6 @@ let package = Package(
 				.process("README.md"),
 			],
 			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 		.testTarget(
@@ -151,7 +144,6 @@ let package = Package(
 				.process("Resources"),
 			],
 			plugins: [
-				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),
 			]
 		),
 	]
