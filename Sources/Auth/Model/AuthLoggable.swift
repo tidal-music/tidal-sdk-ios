@@ -26,6 +26,7 @@ extension AuthLoggable {
 	static var enableLogging: Bool = false
 	private static let metadataErrorKey = "error"
 	private static let metadataReasonKey = "reason"
+	private static let metadataErrorCodeKey = "code"
 	private static let metadataPreviousSubstatusKey = "previous_substatus"
 
 	var loggingMessage: Logger.Message {
@@ -80,6 +81,8 @@ extension AuthLoggable {
 		default:
 			return [:]
 		}
+		
+		metadata[Self.metadataErrorCodeKey] = .string(errorCode)
 
 		return metadata
 	}
@@ -95,5 +98,36 @@ extension AuthLoggable {
 	
 	var source: String? {
 		"Auth"
+	}
+	
+	private var errorCode: String {
+		let intCode = switch self {
+		case .initializeDeviceLoginNetworkError:
+			1
+		case .finalizeLoginNetworkError:
+			2
+		case .finalizeDeviceLoginNetworkError:
+			3
+		case .finalizeDevicePollingLimitReached:
+			4
+		case .getCredentialsUpgradeTokenNetworkError:
+			5
+		case .getCredentialsScopeIsNotGranted:
+			6
+		case .getCredentialsClientUniqueKeyIsDifferent:
+			7
+		case .getCredentialsUpgradeTokenNoTokenInResponse:
+			8
+		case .getCredentialsRefreshTokenNetworkError:
+			9
+		case .getCredentialsRefreshTokenWithClientCredentialsNetworkError:
+			10
+		case .authLogout:
+			11
+		case .getCredentialsRefreshTokenIsNotAvailable:
+			12
+		}
+		
+		return intCode.description
 	}
 }
