@@ -26,7 +26,7 @@ extension AuthLoggable {
 	static var enableLogging: Bool = false
 	private static let metadataErrorKey = "error"
 	private static let metadataReasonKey = "reason"
-	private static let metadataErrorCodeKey = "code"
+	private static let metadataCodeKey = "code"
 	private static let metadataPreviousSubstatusKey = "previous_substatus"
 
 	var loggingMessage: Logger.Message {
@@ -82,7 +82,7 @@ extension AuthLoggable {
 			return [:]
 		}
 		
-		metadata[Self.metadataErrorCodeKey] = .string(errorCode)
+		metadata[Self.metadataCodeKey] = .string(eventCode)
 
 		return metadata
 	}
@@ -100,7 +100,7 @@ extension AuthLoggable {
 		"Auth"
 	}
 	
-	private var errorCode: String {
+	private var eventCode: String {
 		let intCode = switch self {
 		case .initializeDeviceLoginNetworkError:
 			1
