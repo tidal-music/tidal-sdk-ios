@@ -24,9 +24,6 @@ enum AuthLoggable: TidalLoggable {
 
 extension AuthLoggable {
 	static var enableLogging: Bool = false
-	private static let metadataErrorKey = "error"
-	private static let metadataReasonKey = "reason"
-	private static let metadataCodeKey = "code"
 	private static let metadataPreviousSubstatusKey = "previous_substatus"
 
 	var loggingMessage: Logger.Message {
@@ -66,15 +63,15 @@ extension AuthLoggable {
 			 let .finalizeLoginNetworkError(error),
 			 let .finalizeDeviceLoginNetworkError(error),
 			 let .getCredentialsUpgradeTokenNetworkError(error):
-			metadata[Self.metadataErrorKey] = .string(.init(describing: error))
+			metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 		case let .getCredentialsRefreshTokenNetworkError(error, previousSubstatus),
 			 let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
-			metadata[Self.metadataErrorKey] = .string(.init(describing: error))
+			metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 		case let .authLogout(reason, error, previousSubstatus):
-			metadata[Self.metadataReasonKey] = "\(reason)"
+			metadata[Logger.Metadata.reasonKey] = "\(reason)"
 			if let error = error {
-				metadata[Self.metadataErrorKey] = .string(.init(describing: error))
+				metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 			}
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 			return metadata
@@ -82,7 +79,7 @@ extension AuthLoggable {
 			return [:]
 		}
 		
-		metadata[Self.metadataCodeKey] = .string(eventCode)
+		metadata[Logger.Metadata.codeKey] = .string(eventCode)
 
 		return metadata
 	}
