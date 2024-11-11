@@ -55,6 +55,7 @@ public final class Player {
 	private let featureFlagProvider: FeatureFlagProvider
 	private var externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?
 	private let credentialsProvider: CredentialsProvider
+	private let offlinePlaybackPrivilegeCheck: (() -> Bool)?
 
 	// MARK: - Initialization
 
@@ -73,7 +74,8 @@ public final class Player {
 		offlineEngine: OfflineEngine,
 		featureFlagProvider: FeatureFlagProvider,
 		externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?,
-		credentialsProvider: CredentialsProvider
+		credentialsProvider: CredentialsProvider,
+		offlinePlaybackPrivilegeCheck: (() -> Bool)?
 	) {
 		self.queue = queue
 		playerURLSession = urlSession
@@ -90,6 +92,7 @@ public final class Player {
 		self.featureFlagProvider = featureFlagProvider
 		self.externalPlayersSupplier = externalPlayersSupplier
 		self.credentialsProvider = credentialsProvider
+		self.offlinePlaybackPrivilegeCheck = offlinePlaybackPrivilegeCheck
 	}
 }
 
@@ -203,7 +206,8 @@ public extension Player {
 			notificationsHandler,
 			featureFlagProvider,
 			externalPlayersSupplier,
-			credentialsProvider
+			credentialsProvider,
+			offlinePlaybackPrivilegeCheck
 		)
 
 		shared = Player(
@@ -221,7 +225,8 @@ public extension Player {
 			offlineEngine: offlineEngine,
 			featureFlagProvider: featureFlagProvider,
 			externalPlayersSupplier: externalPlayersSupplier,
-			credentialsProvider: credentialsProvider
+			credentialsProvider: credentialsProvider,
+			offlinePlaybackPrivilegeCheck: offlinePlaybackPrivilegeCheck
 		)
 
 		return shared
@@ -410,7 +415,8 @@ private extension Player {
 			notificationsHandler,
 			featureFlagProvider,
 			externalPlayersSupplier,
-			credentialsProvider
+			credentialsProvider,
+			offlinePlaybackPrivilegeCheck
 		)
 	}
 
@@ -424,9 +430,9 @@ private extension Player {
 		_ playerEventSender: PlayerEventSender,
 		_ notificationsHandler: NotificationsHandler?,
 		_ featureFlagProvider: FeatureFlagProvider,
-		_ externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])? = nil,
+		_ externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?,
 		_ credentialsProvider: CredentialsProvider,
-		_ offlinePlaybackPrivilegeCheck: (() -> Bool)? = nil
+		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?
 	) -> PlayerEngine {
 		let internalPlayerLoader = InternalPlayerLoader(
 			with: configuration,
