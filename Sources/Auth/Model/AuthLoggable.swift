@@ -78,9 +78,8 @@ extension AuthLoggable {
 				metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 			}
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
-			return metadata
 		default:
-			return [:]
+			break
 		}
 		
 		metadata[Logger.Metadata.codeKey] = .string(eventCode)
