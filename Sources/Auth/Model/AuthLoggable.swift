@@ -17,6 +17,7 @@ enum AuthLoggable: TidalLoggable {
 	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error, previousSubstatus: String? = nil)
 	case authLogout(reason: String, error: Error? = nil, previousSubstatus: String? = nil)
 	case getCredentialsRefreshTokenIsNotAvailable
+	case loadTokensFromStoreError(error: Error)
 	// swiftlint:enable identifier_name
 }
 
@@ -52,6 +53,8 @@ extension AuthLoggable {
 			"getCredentialsRefreshTokenIsNotAvailable"
 		case .authLogout:
 			"AuthLogout"
+		case .loadTokensFromStoreError:
+			"LoadTokensFromStoreError"
 		}
 	}
 
@@ -60,12 +63,13 @@ extension AuthLoggable {
 
 		switch self {
 		case let .initializeDeviceLoginNetworkError(error),
-			 let .finalizeLoginNetworkError(error),
-			 let .finalizeDeviceLoginNetworkError(error),
-			 let .getCredentialsUpgradeTokenNetworkError(error):
+			let .finalizeLoginNetworkError(error),
+			let .finalizeDeviceLoginNetworkError(error),
+			let .getCredentialsUpgradeTokenNetworkError(error),
+			let .loadTokensFromStoreError(error):
 			metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 		case let .getCredentialsRefreshTokenNetworkError(error, previousSubstatus),
-			 let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
+			let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
 			metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 		case let .authLogout(reason, error, previousSubstatus):
@@ -123,6 +127,8 @@ extension AuthLoggable {
 			11
 		case .getCredentialsRefreshTokenIsNotAvailable:
 			12
+		case .loadTokensFromStoreError:
+			13
 		}
 		
 		return intCode.description
