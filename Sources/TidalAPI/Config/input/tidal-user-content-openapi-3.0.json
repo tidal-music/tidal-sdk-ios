@@ -66,6 +66,59 @@
           "example" : "123456"
         } ],
         "responses" : {
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
           "415" : {
             "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
             "headers" : {
@@ -114,59 +167,6 @@
                 "examples" : {
                   "Unsupported_Media_Type_Error_Doc" : {
                     "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
-          "406" : {
-            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Not_Acceptable_Error_Doc" : {
-                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
                   }
                 }
               }
@@ -278,59 +278,6 @@
               }
             }
           },
-          "404" : {
-            "description" : "Resource not found. The requested resource is not found.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Resource_Not_Found_Error_Doc" : {
-                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
           "500" : {
             "description" : "Internal Server Error. Something went wrong on the server party.",
             "headers" : {
@@ -379,6 +326,59 @@
                 "examples" : {
                   "Internal_Server_Error_Doc" : {
                     "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
                   }
                 }
               }
@@ -484,6 +484,59 @@
           "example" : "items"
         } ],
         "responses" : {
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
           "415" : {
             "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
             "headers" : {
@@ -532,59 +585,6 @@
                 "examples" : {
                   "Unsupported_Media_Type_Error_Doc" : {
                     "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
-          "406" : {
-            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Not_Acceptable_Error_Doc" : {
-                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
                   }
                 }
               }
@@ -696,59 +696,6 @@
               }
             }
           },
-          "404" : {
-            "description" : "Resource not found. The requested resource is not found.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Resource_Not_Found_Error_Doc" : {
-                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
           "500" : {
             "description" : "Internal Server Error. Something went wrong on the server party.",
             "headers" : {
@@ -797,6 +744,59 @@
                 "examples" : {
                   "Internal_Server_Error_Doc" : {
                     "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
                   }
                 }
               }
@@ -902,6 +902,59 @@
           "example" : "owners"
         } ],
         "responses" : {
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
           "415" : {
             "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
             "headers" : {
@@ -950,59 +1003,6 @@
                 "examples" : {
                   "Unsupported_Media_Type_Error_Doc" : {
                     "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
-          "406" : {
-            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Not_Acceptable_Error_Doc" : {
-                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
                   }
                 }
               }
@@ -1114,59 +1114,6 @@
               }
             }
           },
-          "404" : {
-            "description" : "Resource not found. The requested resource is not found.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Resource_Not_Found_Error_Doc" : {
-                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
           "500" : {
             "description" : "Internal Server Error. Something went wrong on the server party.",
             "headers" : {
@@ -1220,6 +1167,59 @@
               }
             }
           },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
           "200" : {
             "description" : "Playlist owner retrieved successfully",
             "headers" : {
@@ -1263,7 +1263,7 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Playlists_Owners_Relationship_Document"
+                  "$ref" : "#/components/schemas/Playlists_Multi_Data_Relationship_Document"
                 }
               }
             }
@@ -1328,6 +1328,59 @@
           }
         } ],
         "responses" : {
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
           "415" : {
             "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
             "headers" : {
@@ -1376,59 +1429,6 @@
                 "examples" : {
                   "Unsupported_Media_Type_Error_Doc" : {
                     "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
-          "406" : {
-            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Not_Acceptable_Error_Doc" : {
-                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
                   }
                 }
               }
@@ -1540,59 +1540,6 @@
               }
             }
           },
-          "404" : {
-            "description" : "Resource not found. The requested resource is not found.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Resource_Not_Found_Error_Doc" : {
-                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
           "500" : {
             "description" : "Internal Server Error. Something went wrong on the server party.",
             "headers" : {
@@ -1641,6 +1588,59 @@
                 "examples" : {
                   "Internal_Server_Error_Doc" : {
                     "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
                   }
                 }
               }
@@ -1689,7 +1689,7 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Playlists_Items_Relationship_Document"
+                  "$ref" : "#/components/schemas/Playlists_Multi_Data_Relationship_Document"
                 }
               }
             }
@@ -1736,6 +1736,59 @@
           }
         } ],
         "responses" : {
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
           "415" : {
             "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
             "headers" : {
@@ -1784,59 +1837,6 @@
                 "examples" : {
                   "Unsupported_Media_Type_Error_Doc" : {
                     "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
-          "406" : {
-            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Not_Acceptable_Error_Doc" : {
-                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
                   }
                 }
               }
@@ -1948,59 +1948,6 @@
               }
             }
           },
-          "404" : {
-            "description" : "Resource not found. The requested resource is not found.",
-            "headers" : {
-              "X-RateLimit-Remaining" : {
-                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Burst-Capacity" : {
-                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "20"
-              },
-              "X-RateLimit-Replenish-Rate" : {
-                "description" : "Number of tokens replenished per second.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              },
-              "X-RateLimit-Requested-Tokens" : {
-                "description" : "Request cost in tokens.",
-                "required" : true,
-                "schema" : {
-                  "type" : "integer",
-                  "format" : "int32"
-                },
-                "example" : "5"
-              }
-            },
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error_Document"
-                },
-                "examples" : {
-                  "Resource_Not_Found_Error_Doc" : {
-                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
-                  }
-                }
-              }
-            }
-          },
           "500" : {
             "description" : "Internal Server Error. Something went wrong on the server party.",
             "headers" : {
@@ -2049,6 +1996,59 @@
                 "examples" : {
                   "Internal_Server_Error_Doc" : {
                     "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            },
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
                   }
                 }
               }
@@ -2131,7 +2131,8 @@
           "links" : {
             "$ref" : "#/components/schemas/Links"
           }
-        }
+        },
+        "description" : "JSON:API error document object"
       },
       "Error_Object" : {
         "type" : "object",
@@ -2155,7 +2156,8 @@
           "source" : {
             "$ref" : "#/components/schemas/Error_Object_Source"
           }
-        }
+        },
+        "description" : "JSON:API error object"
       },
       "Error_Object_Source" : {
         "type" : "object",
@@ -2193,10 +2195,10 @@
             "example" : "/artists/xyz/relationships/tracks?page[cursor]=zyx"
           }
         },
-        "description" : "links object"
+        "description" : "Links JSON:API object"
       },
       "Albums_Attributes" : {
-        "required" : [ "barcodeId", "duration", "explicit", "mediaTags", "numberOfItems", "numberOfVolumes", "popularity", "title" ],
+        "required" : [ "barcodeId", "duration", "explicit", "mediaTags", "numberOfItems", "numberOfVolumes", "popularity", "title", "type" ],
         "type" : "object",
         "properties" : {
           "title" : {
@@ -2284,237 +2286,11 @@
             "items" : {
               "$ref" : "#/components/schemas/Catalogue_Item_External_Link"
             }
-          }
-        },
-        "description" : "attributes object representing some of the resource's data"
-      },
-      "Albums_Item_Resource_Identifier" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "resource unique identifier",
-            "example" : "12345"
           },
           "type" : {
             "type" : "string",
-            "description" : "resource unique type",
-            "example" : "tracks"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/Albums_Item_Resource_Identifier_Meta"
-          }
-        }
-      },
-      "Albums_Item_Resource_Identifier_Meta" : {
-        "required" : [ "trackNumber", "volumeNumber" ],
-        "type" : "object",
-        "properties" : {
-          "volumeNumber" : {
-            "type" : "integer",
-            "description" : "volume number",
-            "format" : "int32",
-            "example" : 1
-          },
-          "trackNumber" : {
-            "type" : "integer",
-            "description" : "track number",
-            "format" : "int32",
-            "example" : 4
-          }
-        }
-      },
-      "Albums_Items_Relationship" : {
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "type" : "array",
-              "items" : {
-                "$ref" : "#/components/schemas/Albums_Item_Resource_Identifier"
-              }
-            }
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        },
-        "description" : "Album items (tracks/videos) relationship"
-      },
-      "Albums_Relationships" : {
-        "required" : [ "artists", "items", "providers", "similarAlbums" ],
-        "type" : "object",
-        "properties" : {
-          "artists" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "items" : {
-            "$ref" : "#/components/schemas/Albums_Items_Relationship"
-          },
-          "similarAlbums" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "providers" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          }
-        },
-        "description" : "relationships object describing relationships between the resource and other resources"
-      },
-      "Albums_Resource" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Albums_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/Albums_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "resource unique identifier",
-            "example" : "12345"
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "resource unique type",
-            "example" : "tracks"
-          }
-        }
-      },
-      "Artists_Attributes" : {
-        "required" : [ "name", "popularity" ],
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string",
-            "description" : "Artist name",
-            "example" : "JAY Z"
-          },
-          "popularity" : {
-            "type" : "number",
-            "description" : "Artist popularity (ranged in 0.00 ... 1.00). Conditionally visible",
-            "format" : "double",
-            "example" : 0.56
-          },
-          "imageLinks" : {
-            "type" : "array",
-            "description" : "Represents available links to, and metadata about, an artist images",
-            "items" : {
-              "$ref" : "#/components/schemas/Catalogue_Item_Image_Link"
-            }
-          },
-          "externalLinks" : {
-            "type" : "array",
-            "description" : "Represents available links to something that is related to an artist resource, but external to the TIDAL API",
-            "items" : {
-              "$ref" : "#/components/schemas/Catalogue_Item_External_Link"
-            }
-          }
-        },
-        "description" : "attributes object representing some of the resource's data"
-      },
-      "Artists_Relationships" : {
-        "required" : [ "albums", "radio", "similarArtists", "trackProviders", "tracks", "videos" ],
-        "type" : "object",
-        "properties" : {
-          "albums" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "tracks" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "videos" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "similarArtists" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "trackProviders" : {
-            "$ref" : "#/components/schemas/Artists_Track_Providers_Relationship"
-          },
-          "radio" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          }
-        },
-        "description" : "relationships object describing relationships between the resource and other resources"
-      },
-      "Artists_Resource" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Artists_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/Artists_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "resource unique identifier",
-            "example" : "12345"
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "resource unique type",
-            "example" : "tracks"
-          }
-        }
-      },
-      "Artists_Track_Providers_Relationship" : {
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "type" : "array",
-              "items" : {
-                "$ref" : "#/components/schemas/Artists_Track_Providers_Resource_Identifier"
-              }
-            }
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        },
-        "description" : "Providers that have released tracks for this artist"
-      },
-      "Artists_Track_Providers_Resource_Identifier" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "resource unique identifier",
-            "example" : "12345"
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "resource unique type",
-            "example" : "tracks"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/Artists_Track_Providers_Resource_Identifier_Meta"
-          }
-        }
-      },
-      "Artists_Track_Providers_Resource_Identifier_Meta" : {
-        "required" : [ "numberOfTracks" ],
-        "type" : "object",
-        "properties" : {
-          "numberOfTracks" : {
-            "type" : "integer",
-            "description" : "total number of tracks released together with the provider",
-            "format" : "int64",
-            "example" : 14
+            "description" : "Album type, e.g. single, regular album, or extended play",
+            "enum" : [ "ALBUM", "EP", "SINGLE" ]
           }
         }
       },
@@ -2592,12 +2368,30 @@
         },
         "description" : "metadata about an image"
       },
+      "Video_Link_Meta" : {
+        "required" : [ "height", "width" ],
+        "type" : "object",
+        "properties" : {
+          "width" : {
+            "type" : "integer",
+            "description" : "video width (in pixels)",
+            "format" : "int32",
+            "example" : 80
+          },
+          "height" : {
+            "type" : "integer",
+            "description" : "video height (in pixels)",
+            "format" : "int32",
+            "example" : 80
+          }
+        },
+        "description" : "metadata about a video"
+      },
       "Multi_Data_Relationship_Doc" : {
         "type" : "object",
         "properties" : {
           "data" : {
             "type" : "array",
-            "description" : "array of relationship resource linkages",
             "items" : {
               "$ref" : "#/components/schemas/Resource_Identifier"
             }
@@ -2605,8 +2399,129 @@
           "links" : {
             "$ref" : "#/components/schemas/Links"
           }
+        }
+      },
+      "Resource_Identifier" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          }
         },
-        "description" : "User profile public picks"
+        "description" : "Resource identifier JSON:API object"
+      },
+      "Singleton_Data_Relationship_Doc" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Resource_Identifier"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Albums_Relationships" : {
+        "required" : [ "artists", "items", "providers", "similarAlbums" ],
+        "properties" : {
+          "artists" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "similarAlbums" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "items" : {
+            "$ref" : "#/components/schemas/Albums_Items_Multi_Data_Relationship_Document"
+          },
+          "providers" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
+      "Albums_Items_Multi_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Albums_Items_Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Albums_Items_Resource_Identifier" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Albums_Items_Resource_Identifier_Meta"
+          }
+        },
+        "description" : "Resource identifier JSON:API object"
+      },
+      "Albums_Items_Resource_Identifier_Meta" : {
+        "required" : [ "trackNumber", "volumeNumber" ],
+        "type" : "object",
+        "properties" : {
+          "volumeNumber" : {
+            "type" : "integer",
+            "description" : "volume number",
+            "format" : "int32",
+            "example" : 1
+          },
+          "trackNumber" : {
+            "type" : "integer",
+            "description" : "track number",
+            "format" : "int32",
+            "example" : 4
+          }
+        }
+      },
+      "Albums_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/Albums_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Albums_Relationships"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          }
+        }
       },
       "Playlists_Attributes" : {
         "required" : [ "bounded", "createdAt", "externalLinks", "imageLinks", "lastModifiedAt", "name", "playlistType", "privacy" ],
@@ -2674,8 +2589,7 @@
               "$ref" : "#/components/schemas/Playlists_Image_Link"
             }
           }
-        },
-        "description" : "attributes object representing some of the resource's data"
+        }
       },
       "Playlists_External_Link" : {
         "required" : [ "href", "meta" ],
@@ -2709,60 +2623,66 @@
         "description" : "Images associated with the playlist",
         "example" : true
       },
-      "Playlists_Multi_Data_Document" : {
+      "Playlists_Relationships" : {
+        "required" : [ "items", "owners" ],
+        "properties" : {
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "items" : {
+            "$ref" : "#/components/schemas/Playlists_Items_Multi_Data_Relationship_Document"
+          }
+        }
+      },
+      "Playlists_Items_Multi_Data_Relationship_Document" : {
         "type" : "object",
         "properties" : {
           "data" : {
             "type" : "array",
-            "description" : "array of primary resource data",
             "items" : {
-              "$ref" : "#/components/schemas/Playlists_Resource"
+              "$ref" : "#/components/schemas/Playlists_Items_Resource_Identifier"
             }
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
-          },
-          "included" : {
-            "type" : "array",
-            "items" : {
-              "type" : "object",
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Users_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/User_Recommendations_Resource"
-              }, {
-                "$ref" : "#/components/schemas/User_Public_Profiles_Resource"
-              }, {
-                "$ref" : "#/components/schemas/User_Entitlements_Resource"
-              } ]
-            }
           }
         }
       },
-      "Playlists_Relationships" : {
-        "required" : [ "items", "owners" ],
+      "Playlists_Items_Resource_Identifier" : {
+        "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "items" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
           },
-          "owners" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Playlists_Items_Resource_Identifier_Meta"
           }
         },
-        "description" : "relationships object describing relationships between the resource and other resources"
+        "description" : "Resource identifier JSON:API object"
+      },
+      "Playlists_Items_Resource_Identifier_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "itemId" : {
+            "type" : "string",
+            "description" : "Unique identifier of the item in a playlist",
+            "example" : "1234567890"
+          },
+          "addedAt" : {
+            "type" : "string",
+            "description" : "When the item was added to the playlist",
+            "format" : "date-time",
+            "example" : "2021-08-01T00:00:00Z"
+          }
+        }
       },
       "Playlists_Resource" : {
         "required" : [ "id", "type" ],
@@ -2789,31 +2709,40 @@
           }
         }
       },
-      "Providers_Attributes" : {
-        "required" : [ "name" ],
+      "Playlists_Single_Data_Document" : {
         "type" : "object",
         "properties" : {
-          "name" : {
-            "type" : "string",
-            "description" : "Provider name. Conditionally visible.",
-            "example" : "Columbia/Legacy"
+          "data" : {
+            "$ref" : "#/components/schemas/Playlists_Resource"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "type" : "array",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/Users_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
+              } ]
+            }
           }
-        },
-        "description" : "attributes object representing some of the resource's data"
+        }
       },
-      "Providers_Relationships" : {
-        "type" : "object",
-        "description" : "relationships object describing relationships between the resource and other resources"
-      },
-      "Providers_Resource" : {
+      "ResourceObjectObject" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
-            "$ref" : "#/components/schemas/Providers_Attributes"
+            "type" : "object"
           },
           "relationships" : {
-            "$ref" : "#/components/schemas/Providers_Relationships"
+            "type" : "object"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
@@ -2830,352 +2759,132 @@
           }
         }
       },
-      "Resource_Identifier" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "resource unique identifier",
-            "example" : "12345"
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "resource unique type",
-            "example" : "tracks"
-          }
-        },
-        "description" : "relationship resource linkage"
-      },
-      "Singleton_Data_Relationship_Doc" : {
+      "Playlists_Multi_Data_Document" : {
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/Resource_Identifier"
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Playlists_Resource"
+            }
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "type" : "array",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/Users_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
+              } ]
+            }
           }
-        },
-        "description" : "User recommendations"
+        }
       },
-      "Tracks_Attributes" : {
-        "required" : [ "duration", "explicit", "isrc", "mediaTags", "popularity", "title" ],
+      "Playlists_Multi_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "type" : "array",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/Users_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Playlists_Resource"
+              } ]
+            }
+          }
+        }
+      },
+      "UserPublicProfilePicks_Attributes" : {
+        "required" : [ "colors", "description", "supportedContentType", "title" ],
         "type" : "object",
         "properties" : {
           "title" : {
             "type" : "string",
-            "description" : "Album item's title",
-            "example" : "Kill Jay Z"
+            "description" : "Pick title",
+            "example" : "My favorite track on repeat"
           },
-          "version" : {
+          "description" : {
             "type" : "string",
-            "description" : "Version of the album's item; complements title",
-            "example" : "Kill Jay Z"
+            "description" : "Description of pick",
+            "example" : "This is the track I listen to when I need to focus"
           },
-          "isrc" : {
+          "supportedContentType" : {
             "type" : "string",
-            "description" : "ISRC code",
-            "example" : "TIDAL2274"
+            "description" : "CatalogueResourceType for supported item for the pick",
+            "example" : "TRACK",
+            "enum" : [ "TRACKS", "VIDEOS", "ALBUMS", "ARTISTS", "PROVIDERS" ]
           },
-          "duration" : {
+          "colors" : {
+            "$ref" : "#/components/schemas/Prompt_Colors"
+          },
+          "lastModifiedAt" : {
             "type" : "string",
-            "description" : "Duration expressed in accordance with ISO 8601",
-            "example" : "P30M5S"
-          },
-          "copyright" : {
-            "type" : "string",
-            "description" : "Copyright information",
-            "example" : "(p)(c) 2017 S. CARTER ENTERPRISES, LLC. MARKETED BY ROC NATION & DISTRIBUTED BY ROC NATION/UMG RECORDINGS INC."
-          },
-          "explicit" : {
-            "type" : "boolean",
-            "description" : "Indicates whether a catalog item consist of any explicit content",
-            "example" : false
-          },
-          "popularity" : {
-            "type" : "number",
-            "description" : "Track or video popularity (ranged in 0.00 ... 1.00). Conditionally visible",
-            "format" : "double",
-            "example" : 0.56
-          },
-          "availability" : {
-            "type" : "array",
-            "description" : "Defines a catalog item availability e.g. for streaming, DJs, stems",
-            "items" : {
-              "type" : "string",
-              "enum" : [ "STREAM", "DJ", "STEM" ]
-            }
-          },
-          "mediaTags" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "description" : "Media metadata tags",
-              "example" : "LOSSLESS"
-            }
-          },
-          "externalLinks" : {
-            "type" : "array",
-            "description" : "Represents available links to something that is related to a catalog item, but external to the TIDAL API",
-            "items" : {
-              "$ref" : "#/components/schemas/Catalogue_Item_External_Link"
-            }
+            "description" : "Date of last modification of the pick (ISO 8601)",
+            "format" : "date-time",
+            "example" : "2021-08-31T12:00:00Z"
           }
-        },
-        "description" : "attributes object representing some of the resource's data"
+        }
       },
-      "Tracks_Relationships" : {
-        "required" : [ "albums", "artists", "providers", "radio", "similarTracks" ],
+      "Prompt_Colors" : {
+        "required" : [ "primary", "secondary" ],
         "type" : "object",
         "properties" : {
-          "albums" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          "primary" : {
+            "type" : "string",
+            "description" : "Primary color to visually render the pick",
+            "example" : "#FF0000"
           },
-          "artists" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "providers" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "similarTracks" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "radio" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          "secondary" : {
+            "type" : "string",
+            "description" : "Secondary color to visually render the pick",
+            "example" : "#00FF00"
           }
         },
-        "description" : "relationships object describing relationships between the resource and other resources"
+        "description" : "Primary and Secondary color to visually render the pick"
       },
-      "Tracks_Resource" : {
+      "UserPublicProfilePicks_Relationships" : {
+        "required" : [ "item", "userPublicProfile" ],
+        "properties" : {
+          "userPublicProfile" : {
+            "$ref" : "#/components/schemas/Singleton_Data_Relationship_Doc"
+          },
+          "item" : {
+            "$ref" : "#/components/schemas/Singleton_Data_Relationship_Doc"
+          }
+        }
+      },
+      "UserPublicProfilePicks_Resource" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
-            "$ref" : "#/components/schemas/Tracks_Attributes"
+            "$ref" : "#/components/schemas/UserPublicProfilePicks_Attributes"
           },
           "relationships" : {
-            "$ref" : "#/components/schemas/Tracks_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "resource unique identifier",
-            "example" : "12345"
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "resource unique type",
-            "example" : "tracks"
-          }
-        }
-      },
-      "User_Entitlements_Attributes" : {
-        "required" : [ "entitlements" ],
-        "type" : "object",
-        "properties" : {
-          "entitlements" : {
-            "type" : "array",
-            "description" : "entitlements for user",
-            "items" : {
-              "type" : "string",
-              "description" : "entitlements for user",
-              "enum" : [ "MUSIC", "DJ" ]
-            }
-          }
-        },
-        "description" : "attributes object representing some of the resource's data"
-      },
-      "User_Entitlements_Resource" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/User_Entitlements_Attributes"
-          },
-          "relationships" : {
-            "type" : "object",
-            "description" : "relationships object describing relationships between the resource and other resources"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "resource unique identifier",
-            "example" : "12345"
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "resource unique type",
-            "example" : "tracks"
-          }
-        }
-      },
-      "User_Public_Profiles_Attributes" : {
-        "required" : [ "color" ],
-        "type" : "object",
-        "properties" : {
-          "profileName" : {
-            "type" : "string",
-            "description" : "Public Name of the user profile",
-            "example" : "JohnSmith"
-          },
-          "picture" : {
-            "$ref" : "#/components/schemas/User_Public_Profiles_Image_Link"
-          },
-          "color" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "description" : "Color information for the user profile when no image is available",
-              "example" : "326650"
-            }
-          },
-          "externalLinks" : {
-            "type" : "array",
-            "description" : "ExternalLinks for the user's profile",
-            "items" : {
-              "$ref" : "#/components/schemas/User_Public_Profiles_External_Link"
-            }
-          },
-          "numberOfFollowers" : {
-            "type" : "integer",
-            "description" : "Number of followers for the user",
-            "format" : "int32",
-            "example" : 32
-          },
-          "numberOfFollows" : {
-            "type" : "integer",
-            "description" : "Number of users the user follows",
-            "format" : "int32",
-            "example" : 32
-          }
-        },
-        "description" : "attributes object representing some of the resource's data"
-      },
-      "User_Public_Profiles_External_Link" : {
-        "required" : [ "href", "meta" ],
-        "type" : "object",
-        "properties" : {
-          "href" : {
-            "type" : "string",
-            "description" : "link to something that is related to a resource",
-            "example" : "https://tidal.com/browse/artist/1566"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/User_Public_Profiles_External_Link_Meta"
-          }
-        }
-      },
-      "User_Public_Profiles_External_Link_Meta" : {
-        "required" : [ "handle", "type" ],
-        "type" : "object",
-        "properties" : {
-          "type" : {
-            "type" : "string",
-            "description" : "external link type",
-            "example" : "TIDAL_SHARING",
-            "enum" : [ "TIDAL_SHARING", "TIDAL_AUTOPLAY_ANDROID", "TIDAL_AUTOPLAY_IOS", "TIDAL_AUTOPLAY_WEB", "TWITTER", "FACEBOOK", "INSTAGRAM", "TIKTOK", "SNAPCHAT", "HOMEPAGE" ]
-          },
-          "handle" : {
-            "type" : "string",
-            "description" : "external link handle",
-            "example" : "JohnSmith"
-          }
-        },
-        "description" : "metadata about an external link"
-      },
-      "User_Public_Profiles_Image_Link" : {
-        "required" : [ "href" ],
-        "type" : "object",
-        "properties" : {
-          "href" : {
-            "type" : "string",
-            "description" : "link to an image",
-            "example" : "https://resources.tidal.com/images/717dfdae/beb0/4aea/a553/a70064c30386/80x80.jpg"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/Image_Link_Meta"
-          }
-        },
-        "description" : "ImageLink to the users image"
-      },
-      "User_Public_Profiles_Relationships" : {
-        "required" : [ "followers", "following", "publicPicks", "publicPlaylists" ],
-        "type" : "object",
-        "properties" : {
-          "followers" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "following" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "publicPlaylists" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "publicPicks" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          }
-        },
-        "description" : "relationships object describing relationships between the resource and other resources"
-      },
-      "User_Public_Profiles_Resource" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/User_Public_Profiles_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/User_Public_Profiles_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "resource unique identifier",
-            "example" : "12345"
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "resource unique type",
-            "example" : "tracks"
-          }
-        }
-      },
-      "User_Recommendations_Attributes" : {
-        "type" : "object",
-        "description" : "attributes object representing some of the resource's data"
-      },
-      "User_Recommendations_Relationships" : {
-        "required" : [ "discoveryMixes", "myMixes", "newArrivalMixes" ],
-        "type" : "object",
-        "properties" : {
-          "myMixes" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "discoveryMixes" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          },
-          "newArrivalMixes" : {
-            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
-          }
-        },
-        "description" : "relationships object describing relationships between the resource and other resources"
-      },
-      "User_Recommendations_Resource" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/User_Recommendations_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/User_Recommendations_Relationships"
+            "$ref" : "#/components/schemas/UserPublicProfilePicks_Relationships"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
@@ -3226,12 +2935,10 @@
             "description" : "Users last name",
             "example" : "Rambo"
           }
-        },
-        "description" : "attributes object representing some of the resource's data"
+        }
       },
       "Users_Relationships" : {
         "required" : [ "entitlements", "publicProfile", "recommendations" ],
-        "type" : "object",
         "properties" : {
           "entitlements" : {
             "$ref" : "#/components/schemas/Singleton_Data_Relationship_Doc"
@@ -3242,8 +2949,7 @@
           "recommendations" : {
             "$ref" : "#/components/schemas/Singleton_Data_Relationship_Doc"
           }
-        },
-        "description" : "relationships object describing relationships between the resource and other resources"
+        }
       },
       "Users_Resource" : {
         "required" : [ "id", "type" ],
@@ -3270,24 +2976,75 @@
           }
         }
       },
-      "Video_Link_Meta" : {
-        "required" : [ "height", "width" ],
+      "UserEntitlements_Attributes" : {
+        "required" : [ "entitlements" ],
         "type" : "object",
         "properties" : {
-          "width" : {
-            "type" : "integer",
-            "description" : "video width (in pixels)",
-            "format" : "int32",
-            "example" : 80
-          },
-          "height" : {
-            "type" : "integer",
-            "description" : "video height (in pixels)",
-            "format" : "int32",
-            "example" : 80
+          "entitlements" : {
+            "type" : "array",
+            "description" : "entitlements for user",
+            "items" : {
+              "type" : "string",
+              "description" : "entitlements for user",
+              "enum" : [ "MUSIC", "DJ" ]
+            }
           }
-        },
-        "description" : "metadata about a video"
+        }
+      },
+      "UserEntitlements_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserEntitlements_Attributes"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "Providers_Attributes" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "Provider name. Conditionally visible.",
+            "example" : "Columbia/Legacy"
+          }
+        }
+      },
+      "Providers_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/Providers_Attributes"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          }
+        }
       },
       "Videos_Attributes" : {
         "required" : [ "duration", "explicit", "isrc", "popularity", "title" ],
@@ -3357,12 +3114,10 @@
               "$ref" : "#/components/schemas/Catalogue_Item_External_Link"
             }
           }
-        },
-        "description" : "attributes object representing some of the resource's data"
+        }
       },
       "Videos_Relationships" : {
         "required" : [ "albums", "artists", "providers" ],
-        "type" : "object",
         "properties" : {
           "albums" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
@@ -3373,8 +3128,7 @@
           "providers" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           }
-        },
-        "description" : "relationships object describing relationships between the resource and other resources"
+        }
       },
       "Videos_Resource" : {
         "required" : [ "id", "type" ],
@@ -3401,117 +3155,433 @@
           }
         }
       },
-      "Playlists_Single_Data_Document" : {
+      "Tracks_Attributes" : {
+        "required" : [ "duration", "explicit", "isrc", "mediaTags", "popularity", "title" ],
         "type" : "object",
         "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/Playlists_Resource"
+          "title" : {
+            "type" : "string",
+            "description" : "Album item's title",
+            "example" : "Kill Jay Z"
           },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
+          "version" : {
+            "type" : "string",
+            "description" : "Version of the album's item; complements title",
+            "example" : "Kill Jay Z"
           },
-          "included" : {
+          "isrc" : {
+            "type" : "string",
+            "description" : "ISRC code",
+            "example" : "TIDAL2274"
+          },
+          "duration" : {
+            "type" : "string",
+            "description" : "Duration expressed in accordance with ISO 8601",
+            "example" : "P30M5S"
+          },
+          "copyright" : {
+            "type" : "string",
+            "description" : "Copyright information",
+            "example" : "(p)(c) 2017 S. CARTER ENTERPRISES, LLC. MARKETED BY ROC NATION & DISTRIBUTED BY ROC NATION/UMG RECORDINGS INC."
+          },
+          "explicit" : {
+            "type" : "boolean",
+            "description" : "Indicates whether a catalog item consist of any explicit content",
+            "example" : false
+          },
+          "popularity" : {
+            "type" : "number",
+            "description" : "Track or video popularity (ranged in 0.00 ... 1.00). Conditionally visible",
+            "format" : "double",
+            "example" : 0.56
+          },
+          "availability" : {
+            "type" : "array",
+            "description" : "Defines a catalog item availability e.g. for streaming, DJs, stems",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "STREAM", "DJ", "STEM" ]
+            }
+          },
+          "mediaTags" : {
             "type" : "array",
             "items" : {
-              "type" : "object",
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Users_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/User_Recommendations_Resource"
-              }, {
-                "$ref" : "#/components/schemas/User_Public_Profiles_Resource"
-              }, {
-                "$ref" : "#/components/schemas/User_Entitlements_Resource"
-              } ]
+              "type" : "string",
+              "description" : "Media metadata tags",
+              "example" : "LOSSLESS"
+            }
+          },
+          "externalLinks" : {
+            "type" : "array",
+            "description" : "Represents available links to something that is related to a catalog item, but external to the TIDAL API",
+            "items" : {
+              "$ref" : "#/components/schemas/Catalogue_Item_External_Link"
             }
           }
         }
       },
-      "Playlists_Owners_Relationship_Document" : {
+      "Tracks_Relationships" : {
+        "required" : [ "albums", "artists", "providers", "radio", "similarTracks" ],
+        "properties" : {
+          "albums" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "artists" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "similarTracks" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "providers" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "radio" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
+      "Tracks_Resource" : {
+        "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "data" : {
-            "type" : "array",
-            "description" : "array of relationship resource linkages",
-            "items" : {
-              "$ref" : "#/components/schemas/Resource_Identifier"
-            }
+          "attributes" : {
+            "$ref" : "#/components/schemas/Tracks_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Tracks_Relationships"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
           },
-          "included" : {
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "UserPublicProfiles_Attributes" : {
+        "required" : [ "color" ],
+        "type" : "object",
+        "properties" : {
+          "handle" : {
+            "type" : "string",
+            "description" : "A customizable handle for the user profile",
+            "example" : "@johnSmith"
+          },
+          "profileName" : {
+            "type" : "string",
+            "description" : "Public Name of the user profile",
+            "example" : "JohnSmith"
+          },
+          "picture" : {
+            "$ref" : "#/components/schemas/User_Public_Profiles_Image_Link"
+          },
+          "color" : {
             "type" : "array",
             "items" : {
-              "type" : "object",
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Users_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/User_Entitlements_Resource"
-              }, {
-                "$ref" : "#/components/schemas/User_Public_Profiles_Resource"
-              }, {
-                "$ref" : "#/components/schemas/User_Recommendations_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              } ]
+              "type" : "string",
+              "description" : "Color information for the user profile when no image is available",
+              "example" : "326650"
+            }
+          },
+          "externalLinks" : {
+            "type" : "array",
+            "description" : "ExternalLinks for the user's profile",
+            "items" : {
+              "$ref" : "#/components/schemas/User_Public_Profiles_External_Link"
+            }
+          },
+          "numberOfFollowers" : {
+            "type" : "integer",
+            "description" : "Number of followers for the user",
+            "format" : "int32",
+            "example" : 32
+          },
+          "numberOfFollows" : {
+            "type" : "integer",
+            "description" : "Number of users the user follows",
+            "format" : "int32",
+            "example" : 32
+          }
+        }
+      },
+      "User_Public_Profiles_External_Link" : {
+        "required" : [ "href", "meta" ],
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string",
+            "description" : "link to something that is related to a resource",
+            "example" : "https://tidal.com/browse/artist/1566"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/User_Public_Profiles_External_Link_Meta"
+          }
+        }
+      },
+      "User_Public_Profiles_External_Link_Meta" : {
+        "required" : [ "handle", "type" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "description" : "external link type",
+            "example" : "TIDAL_SHARING",
+            "enum" : [ "TIDAL_SHARING", "TIDAL_AUTOPLAY_ANDROID", "TIDAL_AUTOPLAY_IOS", "TIDAL_AUTOPLAY_WEB", "TWITTER", "FACEBOOK", "INSTAGRAM", "TIKTOK", "SNAPCHAT", "HOMEPAGE" ]
+          },
+          "handle" : {
+            "type" : "string",
+            "description" : "external link handle",
+            "example" : "JohnSmith"
+          }
+        },
+        "description" : "metadata about an external link"
+      },
+      "User_Public_Profiles_Image_Link" : {
+        "required" : [ "href" ],
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string",
+            "description" : "link to an image",
+            "example" : "https://resources.tidal.com/images/717dfdae/beb0/4aea/a553/a70064c30386/80x80.jpg"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Image_Link_Meta"
+          }
+        },
+        "description" : "ImageLink to the users image"
+      },
+      "UserPublicProfiles_Relationships" : {
+        "required" : [ "followers", "following", "publicPicks", "publicPlaylists" ],
+        "properties" : {
+          "followers" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "following" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "publicPlaylists" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "publicPicks" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
+      "UserPublicProfiles_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserPublicProfiles_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/UserPublicProfiles_Relationships"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "UserRecommendations_Attributes" : {
+        "type" : "object"
+      },
+      "UserRecommendations_Relationships" : {
+        "required" : [ "discoveryMixes", "myMixes", "newArrivalMixes" ],
+        "properties" : {
+          "discoveryMixes" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "newArrivalMixes" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "myMixes" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
+      "UserRecommendations_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserRecommendations_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/UserRecommendations_Relationships"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "Artists_Attributes" : {
+        "required" : [ "name", "popularity" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "Artist name",
+            "example" : "JAY Z"
+          },
+          "popularity" : {
+            "type" : "number",
+            "description" : "Artist popularity (ranged in 0.00 ... 1.00). Conditionally visible",
+            "format" : "double",
+            "example" : 0.56
+          },
+          "imageLinks" : {
+            "type" : "array",
+            "description" : "Represents available links to, and metadata about, an artist images",
+            "items" : {
+              "$ref" : "#/components/schemas/Catalogue_Item_Image_Link"
+            }
+          },
+          "externalLinks" : {
+            "type" : "array",
+            "description" : "Represents available links to something that is related to an artist resource, but external to the TIDAL API",
+            "items" : {
+              "$ref" : "#/components/schemas/Catalogue_Item_External_Link"
+            }
+          },
+          "roles" : {
+            "type" : "array",
+            "description" : "Artist roles",
+            "items" : {
+              "$ref" : "#/components/schemas/Artist_Role"
             }
           }
         }
       },
-      "Playlists_Items_Relationship_Document" : {
+      "Artist_Role" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Artists_Relationships" : {
+        "required" : [ "albums", "radio", "similarArtists", "trackProviders", "tracks", "videos" ],
+        "properties" : {
+          "similarArtists" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "albums" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "videos" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "trackProviders" : {
+            "$ref" : "#/components/schemas/Artists_TrackProviders_Multi_Data_Relationship_Document"
+          },
+          "tracks" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "radio" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
+      "Artists_TrackProviders_Multi_Data_Relationship_Document" : {
         "type" : "object",
         "properties" : {
           "data" : {
             "type" : "array",
-            "description" : "array of relationship resource linkages",
             "items" : {
-              "$ref" : "#/components/schemas/Resource_Identifier"
+              "$ref" : "#/components/schemas/Artists_TrackProviders_Resource_Identifier"
             }
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Artists_TrackProviders_Resource_Identifier" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
           },
-          "included" : {
-            "type" : "array",
-            "items" : {
-              "type" : "object",
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              } ]
-            }
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Artists_TrackProviders_Resource_Identifier_Meta"
+          }
+        },
+        "description" : "Resource identifier JSON:API object"
+      },
+      "Artists_TrackProviders_Resource_Identifier_Meta" : {
+        "required" : [ "numberOfTracks" ],
+        "type" : "object",
+        "properties" : {
+          "numberOfTracks" : {
+            "type" : "integer",
+            "description" : "total number of tracks released together with the provider",
+            "format" : "int64",
+            "example" : 14
+          }
+        }
+      },
+      "Artists_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/Artists_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Artists_Relationships"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
           }
         }
       }

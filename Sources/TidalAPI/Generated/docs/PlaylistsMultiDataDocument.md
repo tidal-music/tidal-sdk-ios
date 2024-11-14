@@ -3,9 +3,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [PlaylistsResource] | array of primary resource data | [optional] 
+**data** | [PlaylistsResource] |  | [optional] 
 **links** | [**Links**](Links.md) |  | [optional] 
-**included** | [PlaylistsMultiDataDocumentIncludedInner] |  | [optional] 
+**included** | [PlaylistsSingleDataDocumentIncludedInner] |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **getSearchResultsAlbumsRelationship**
 ```swift
-    open class func getSearchResultsAlbumsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getSearchResultsAlbumsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: albums
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsRelationshipDocument**](AlbumsRelationshipDocument.md)
+[**SearchresultsMultiDataRelationshipDocument**](SearchresultsMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **getSearchResultsArtistsRelationship**
 ```swift
-    open class func getSearchResultsArtistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getSearchResultsArtistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: artists
@@ -112,7 +112,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsRelationshipDocument**](ArtistsRelationshipDocument.md)
+[**SearchresultsMultiDataRelationshipDocument**](SearchresultsMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -127,7 +127,7 @@ Name | Type | Description  | Notes
 
 # **getSearchResultsByQuery**
 ```swift
-    open class func getSearchResultsByQuery(query: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: SearchResultsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func getSearchResultsByQuery(query: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: SearchresultsSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
 Search for music metadata by a query
@@ -166,7 +166,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchResultsSingleDataDocument**](SearchResultsSingleDataDocument.md)
+[**SearchresultsSingleDataDocument**](SearchresultsSingleDataDocument.md)
 
 ### Authorization
 
@@ -181,7 +181,7 @@ Name | Type | Description  | Notes
 
 # **getSearchResultsPlaylistsRelationship**
 ```swift
-    open class func getSearchResultsPlaylistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getSearchResultsPlaylistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: playlists
@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlaylistsRelationshipDocument**](PlaylistsRelationshipDocument.md)
+[**SearchresultsMultiDataRelationshipDocument**](SearchresultsMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -237,7 +237,7 @@ Name | Type | Description  | Notes
 
 # **getSearchResultsTopHitsRelationship**
 ```swift
-    open class func getSearchResultsTopHitsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchResultsTopHitsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getSearchResultsTopHitsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: topHits
@@ -278,7 +278,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchResultsTopHitsRelationshipDocument**](SearchResultsTopHitsRelationshipDocument.md)
+[**SearchresultsMultiDataRelationshipDocument**](SearchresultsMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -293,7 +293,7 @@ Name | Type | Description  | Notes
 
 # **getSearchResultsTracksRelationship**
 ```swift
-    open class func getSearchResultsTracksRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksRelationshipsDocument?, _ error: Error?) -> Void)
+    open class func getSearchResultsTracksRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: tracks
@@ -334,7 +334,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksRelationshipsDocument**](TracksRelationshipsDocument.md)
+[**SearchresultsMultiDataRelationshipDocument**](SearchresultsMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -349,7 +349,7 @@ Name | Type | Description  | Notes
 
 # **getSearchResultsVideosRelationship**
 ```swift
-    open class func getSearchResultsVideosRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosRelationshipsDocument?, _ error: Error?) -> Void)
+    open class func getSearchResultsVideosRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: videos
@@ -390,7 +390,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**VideosRelationshipsDocument**](VideosRelationshipsDocument.md)
+[**SearchresultsMultiDataRelationshipDocument**](SearchresultsMultiDataRelationshipDocument.md)
 
 ### Authorization
 

@@ -14,9 +14,9 @@ public struct AlbumsSingleDataDocument: Codable, Hashable {
 
     public var data: AlbumsResource?
     public var links: Links?
-    public var included: [AlbumsMultiDataDocumentIncludedInner]?
+    public var included: [AlbumsSingleDataDocumentIncludedInner]?
 
-    public init(data: AlbumsResource? = nil, links: Links? = nil, included: [AlbumsMultiDataDocumentIncludedInner]? = nil) {
+    public init(data: AlbumsResource? = nil, links: Links? = nil, included: [AlbumsSingleDataDocumentIncludedInner]? = nil) {
         self.data = data
         self.links = links
         self.included = included

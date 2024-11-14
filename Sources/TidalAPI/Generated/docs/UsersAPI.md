@@ -116,7 +116,7 @@ Name | Type | Description  | Notes
 
 # **getUserEntitlementsRelationship**
 ```swift
-    open class func getUserEntitlementsRelationship(id: String, include: [String]? = nil, completion: @escaping (_ data: UserEntitlementsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserEntitlementsRelationship(id: String, include: [String]? = nil, completion: @escaping (_ data: UsersSingletonDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: entitlements
@@ -153,7 +153,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserEntitlementsRelationshipDocument**](UserEntitlementsRelationshipDocument.md)
+[**UsersSingletonDataRelationshipDocument**](UsersSingletonDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -168,7 +168,7 @@ Name | Type | Description  | Notes
 
 # **getUserPublicProfileRelationship**
 ```swift
-    open class func getUserPublicProfileRelationship(id: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserPublicProfileRelationship(id: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UsersSingletonDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: public profile
@@ -207,7 +207,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserPublicProfilesRelationshipDocument**](UserPublicProfilesRelationshipDocument.md)
+[**UsersSingletonDataRelationshipDocument**](UsersSingletonDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 
 # **getUserRecommendationsRelationship**
 ```swift
-    open class func getUserRecommendationsRelationship(id: String, include: [String]? = nil, completion: @escaping (_ data: UsersRecommendationsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserRecommendationsRelationship(id: String, include: [String]? = nil, completion: @escaping (_ data: UsersSingletonDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: user recommendations
@@ -259,7 +259,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UsersRecommendationsRelationshipDocument**](UsersRecommendationsRelationshipDocument.md)
+[**UsersSingletonDataRelationshipDocument**](UsersSingletonDataRelationshipDocument.md)
 
 ### Authorization
 

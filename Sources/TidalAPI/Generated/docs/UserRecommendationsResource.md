@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **AnyCodable** | attributes object representing some of the resource&#39;s data | [optional] 
+**attributes** | **AnyCodable** |  | [optional] 
 **relationships** | [**UserRecommendationsRelationships**](UserRecommendationsRelationships.md) |  | [optional] 
 **links** | [**Links**](Links.md) |  | [optional] 
 **id** | **String** | resource unique identifier | 

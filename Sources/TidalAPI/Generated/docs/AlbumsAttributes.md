@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **imageLinks** | [CatalogueItemImageLink] | Represents available links to, and metadata about, an album cover images | [optional] 
 **videoLinks** | [CatalogueItemVideoLink] | Represents available links to, and metadata about, an album cover videos | [optional] 
 **externalLinks** | [CatalogueItemExternalLink] | Represents available links to something that is related to an album resource, but external to the TIDAL API | [optional] 
+**type** | **String** | Album type, e.g. single, regular album, or extended play | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

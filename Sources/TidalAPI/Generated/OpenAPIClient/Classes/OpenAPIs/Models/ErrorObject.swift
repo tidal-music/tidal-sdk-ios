@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** JSON:API error object */
 public struct ErrorObject: Codable, Hashable {
 
     /** unique identifier for this particular occurrence of the problem */

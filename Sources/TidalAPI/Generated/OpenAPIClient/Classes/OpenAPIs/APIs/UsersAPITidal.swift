@@ -41,9 +41,9 @@ public enum UsersAPITidal {
 	/**
      Relationship: entitlements
      
-     - returns: UserEntitlementsRelationshipDocument
+     - returns: UsersSingletonDataRelationshipDocument
      */
-	public static func getUserEntitlementsRelationship(id: String, include: [String]? = nil) async throws -> UserEntitlementsRelationshipDocument {
+	public static func getUserEntitlementsRelationship(id: String, include: [String]? = nil) async throws -> UsersSingletonDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UsersAPI.getUserEntitlementsRelationshipWithRequestBuilder(id: id, include: include)
 		}
@@ -53,9 +53,9 @@ public enum UsersAPITidal {
 	/**
      Relationship: public profile
      
-     - returns: UserPublicProfilesRelationshipDocument
+     - returns: UsersSingletonDataRelationshipDocument
      */
-	public static func getUserPublicProfileRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilesRelationshipDocument {
+	public static func getUserPublicProfileRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UsersSingletonDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UsersAPI.getUserPublicProfileRelationshipWithRequestBuilder(id: id, locale: locale, include: include)
 		}
@@ -65,9 +65,9 @@ public enum UsersAPITidal {
 	/**
      Relationship: user recommendations
      
-     - returns: UsersRecommendationsRelationshipDocument
+     - returns: UsersSingletonDataRelationshipDocument
      */
-	public static func getUserRecommendationsRelationship(id: String, include: [String]? = nil) async throws -> UsersRecommendationsRelationshipDocument {
+	public static func getUserRecommendationsRelationship(id: String, include: [String]? = nil) async throws -> UsersSingletonDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UsersAPI.getUserRecommendationsRelationshipWithRequestBuilder(id: id, include: include)
 		}

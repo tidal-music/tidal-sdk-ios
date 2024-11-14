@@ -10,9 +10,10 @@ import Foundation
 import AnyCodable
 #endif
 
-/** attributes object representing some of the resource&#39;s data */
 public struct UserPublicProfilesAttributes: Codable, Hashable {
 
+    /** A customizable handle for the user profile */
+    public var handle: String?
     /** Public Name of the user profile */
     public var profileName: String?
     public var picture: UserPublicProfilesImageLink?
@@ -24,7 +25,8 @@ public struct UserPublicProfilesAttributes: Codable, Hashable {
     /** Number of users the user follows */
     public var numberOfFollows: Int?
 
-    public init(profileName: String? = nil, picture: UserPublicProfilesImageLink? = nil, color: [String], externalLinks: [UserPublicProfilesExternalLink]? = nil, numberOfFollowers: Int? = nil, numberOfFollows: Int? = nil) {
+    public init(handle: String? = nil, profileName: String? = nil, picture: UserPublicProfilesImageLink? = nil, color: [String], externalLinks: [UserPublicProfilesExternalLink]? = nil, numberOfFollowers: Int? = nil, numberOfFollows: Int? = nil) {
+        self.handle = handle
         self.profileName = profileName
         self.picture = picture
         self.color = color
@@ -34,6 +36,7 @@ public struct UserPublicProfilesAttributes: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case handle
         case profileName
         case picture
         case color
@@ -46,6 +49,7 @@ public struct UserPublicProfilesAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(handle, forKey: .handle)
         try container.encodeIfPresent(profileName, forKey: .profileName)
         try container.encodeIfPresent(picture, forKey: .picture)
         try container.encode(color, forKey: .color)

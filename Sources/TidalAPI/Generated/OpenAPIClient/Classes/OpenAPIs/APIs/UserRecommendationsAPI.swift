@@ -155,10 +155,10 @@ internal class UserRecommendationsAPI {
      - parameter id: (path) User recommendations id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: PlaylistsRelationshipDocument
+     - returns: UserRecommendationsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserRecommendationsDiscoveryMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+    internal class func getUserRecommendationsDiscoveryMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
         return try await getUserRecommendationsDiscoveryMixesRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -173,9 +173,9 @@ internal class UserRecommendationsAPI {
      - parameter id: (path) User recommendations id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<PlaylistsRelationshipDocument> 
+     - returns: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> 
      */
-    internal class func getUserRecommendationsDiscoveryMixesRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsRelationshipDocument> {
+    internal class func getUserRecommendationsDiscoveryMixesRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/discoveryMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -195,7 +195,7 @@ internal class UserRecommendationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlaylistsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -206,10 +206,10 @@ internal class UserRecommendationsAPI {
      - parameter id: (path) User recommendations id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: PlaylistsRelationshipDocument
+     - returns: UserRecommendationsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserRecommendationsMyMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+    internal class func getUserRecommendationsMyMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
         return try await getUserRecommendationsMyMixesRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -224,9 +224,9 @@ internal class UserRecommendationsAPI {
      - parameter id: (path) User recommendations id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<PlaylistsRelationshipDocument> 
+     - returns: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> 
      */
-    internal class func getUserRecommendationsMyMixesRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsRelationshipDocument> {
+    internal class func getUserRecommendationsMyMixesRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/myMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -246,7 +246,7 @@ internal class UserRecommendationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlaylistsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -257,10 +257,10 @@ internal class UserRecommendationsAPI {
      - parameter id: (path) User recommendations id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: PlaylistsRelationshipDocument
+     - returns: UserRecommendationsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserRecommendationsNewArrivalMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+    internal class func getUserRecommendationsNewArrivalMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
         return try await getUserRecommendationsNewArrivalMixesRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -275,9 +275,9 @@ internal class UserRecommendationsAPI {
      - parameter id: (path) User recommendations id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<PlaylistsRelationshipDocument> 
+     - returns: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> 
      */
-    internal class func getUserRecommendationsNewArrivalMixesRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsRelationshipDocument> {
+    internal class func getUserRecommendationsNewArrivalMixesRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/newArrivalMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -297,7 +297,7 @@ internal class UserRecommendationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlaylistsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

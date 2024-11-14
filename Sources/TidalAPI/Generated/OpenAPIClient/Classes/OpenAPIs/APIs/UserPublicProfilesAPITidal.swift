@@ -41,9 +41,9 @@ public enum UserPublicProfilesAPITidal {
 	/**
      Relationship: followers
      
-     - returns: UsersRelationshipDocument
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
      */
-	public static func getUserPublicProfileFollowersRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UsersRelationshipDocument {
+	public static func getUserPublicProfileFollowersRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UserPublicProfilesAPI.getUserPublicProfileFollowersRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -53,9 +53,9 @@ public enum UserPublicProfilesAPITidal {
 	/**
      Relationship: following
      
-     - returns: UsersRelationshipDocument
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
      */
-	public static func getUserPublicProfileFollowingRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UsersRelationshipDocument {
+	public static func getUserPublicProfileFollowingRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UserPublicProfilesAPI.getUserPublicProfileFollowingRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -65,9 +65,9 @@ public enum UserPublicProfilesAPITidal {
 	/**
      Relationship: picks
      
-     - returns: UserPublicProfilePicksRelationshipDocument
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
      */
-	public static func getUserPublicProfilePublicPicksRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilePicksRelationshipDocument {
+	public static func getUserPublicProfilePublicPicksRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UserPublicProfilesAPI.getUserPublicProfilePublicPicksRelationshipWithRequestBuilder(id: id, locale: locale, include: include)
 		}
@@ -77,9 +77,9 @@ public enum UserPublicProfilesAPITidal {
 	/**
      Relationship: playlists
      
-     - returns: PlaylistsRelationshipDocument
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
      */
-	public static func getUserPublicProfilePublicPlaylistsRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+	public static func getUserPublicProfilePublicPlaylistsRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UserPublicProfilesAPI.getUserPublicProfilePublicPlaylistsRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -94,6 +94,18 @@ public enum UserPublicProfilesAPITidal {
 	public static func getUserPublicProfilesByFilters(locale: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> UserPublicProfilesMultiDataDocument {
 		return try await RequestHelper.createRequest {
 			UserPublicProfilesAPI.getUserPublicProfilesByFiltersWithRequestBuilder(locale: locale, include: include, filterId: filterId)
+		}
+	}
+
+
+	/**
+     Update user public profile
+     
+     - returns: AnyCodable
+     */
+	public static func updateMyUserProfile(id: String, updateUserProfileBody: UpdateUserProfileBody, include: [String]? = nil) async throws -> AnyCodable {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilesAPI.updateMyUserProfileWithRequestBuilder(id: id, updateUserProfileBody: updateUserProfileBody, include: include)
 		}
 	}
 }

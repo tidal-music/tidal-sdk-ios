@@ -122,10 +122,10 @@ internal class PlaylistsAPI {
      - parameter countryCode: (query) Country code (ISO 3166-1 alpha-2) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: PlaylistsItemsRelationshipDocument
+     - returns: PlaylistsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getPlaylistItemsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsItemsRelationshipDocument {
+    internal class func getPlaylistItemsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiDataRelationshipDocument {
         return try await getPlaylistItemsRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -144,9 +144,9 @@ internal class PlaylistsAPI {
      - parameter countryCode: (query) Country code (ISO 3166-1 alpha-2) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<PlaylistsItemsRelationshipDocument> 
+     - returns: RequestBuilder<PlaylistsMultiDataRelationshipDocument> 
      */
-    internal class func getPlaylistItemsRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsItemsRelationshipDocument> {
+    internal class func getPlaylistItemsRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsMultiDataRelationshipDocument> {
         var localVariablePath = "/playlists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -167,7 +167,7 @@ internal class PlaylistsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlaylistsItemsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlaylistsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -178,10 +178,10 @@ internal class PlaylistsAPI {
      - parameter id: (path) TIDAL playlist id 
      - parameter countryCode: (query) Country code (ISO 3166-1 alpha-2) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - returns: PlaylistsOwnersRelationshipDocument
+     - returns: PlaylistsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getPlaylistOwnersRelationship(id: String, countryCode: String, include: [String]? = nil) async throws -> PlaylistsOwnersRelationshipDocument {
+    internal class func getPlaylistOwnersRelationship(id: String, countryCode: String, include: [String]? = nil) async throws -> PlaylistsMultiDataRelationshipDocument {
         return try await getPlaylistOwnersRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
     }
 
@@ -199,9 +199,9 @@ internal class PlaylistsAPI {
      - parameter id: (path) TIDAL playlist id 
      - parameter countryCode: (query) Country code (ISO 3166-1 alpha-2) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - returns: RequestBuilder<PlaylistsOwnersRelationshipDocument> 
+     - returns: RequestBuilder<PlaylistsMultiDataRelationshipDocument> 
      */
-    internal class func getPlaylistOwnersRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<PlaylistsOwnersRelationshipDocument> {
+    internal class func getPlaylistOwnersRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataRelationshipDocument> {
         var localVariablePath = "/playlists/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -221,7 +221,7 @@ internal class PlaylistsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlaylistsOwnersRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlaylistsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

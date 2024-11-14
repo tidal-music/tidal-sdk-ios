@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**getUserPublicProfilePublicPicksRelationship**](UserPublicProfilesAPI.md#getuserpublicprofilepublicpicksrelationship) | **GET** /userPublicProfiles/{id}/relationships/publicPicks | Relationship: picks
 [**getUserPublicProfilePublicPlaylistsRelationship**](UserPublicProfilesAPI.md#getuserpublicprofilepublicplaylistsrelationship) | **GET** /userPublicProfiles/{id}/relationships/publicPlaylists | Relationship: playlists
 [**getUserPublicProfilesByFilters**](UserPublicProfilesAPI.md#getuserpublicprofilesbyfilters) | **GET** /userPublicProfiles | Get user public profiles
+[**updateMyUserProfile**](UserPublicProfilesAPI.md#updatemyuserprofile) | **PATCH** /userPublicProfiles/{id} | Update user public profile
 
 
 # **getMyUserPublicProfile**
@@ -121,7 +122,7 @@ Name | Type | Description  | Notes
 
 # **getUserPublicProfileFollowersRelationship**
 ```swift
-    open class func getUserPublicProfileFollowersRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UsersRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserPublicProfileFollowersRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: followers
@@ -160,7 +161,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UsersRelationshipDocument**](UsersRelationshipDocument.md)
+[**UserPublicProfilesMultiDataRelationshipDocument**](UserPublicProfilesMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -175,7 +176,7 @@ Name | Type | Description  | Notes
 
 # **getUserPublicProfileFollowingRelationship**
 ```swift
-    open class func getUserPublicProfileFollowingRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UsersRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserPublicProfileFollowingRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: following
@@ -214,7 +215,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UsersRelationshipDocument**](UsersRelationshipDocument.md)
+[**UserPublicProfilesMultiDataRelationshipDocument**](UserPublicProfilesMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -229,7 +230,7 @@ Name | Type | Description  | Notes
 
 # **getUserPublicProfilePublicPicksRelationship**
 ```swift
-    open class func getUserPublicProfilePublicPicksRelationship(id: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilePicksRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserPublicProfilePublicPicksRelationship(id: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: picks
@@ -268,7 +269,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserPublicProfilePicksRelationshipDocument**](UserPublicProfilePicksRelationshipDocument.md)
+[**UserPublicProfilesMultiDataRelationshipDocument**](UserPublicProfilesMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -283,7 +284,7 @@ Name | Type | Description  | Notes
 
 # **getUserPublicProfilePublicPlaylistsRelationship**
 ```swift
-    open class func getUserPublicProfilePublicPlaylistsRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserPublicProfilePublicPlaylistsRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: playlists
@@ -322,7 +323,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlaylistsRelationshipDocument**](PlaylistsRelationshipDocument.md)
+[**UserPublicProfilesMultiDataRelationshipDocument**](UserPublicProfilesMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -386,6 +387,60 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **updateMyUserProfile**
+```swift
+    open class func updateMyUserProfile(id: String, updateUserProfileBody: UpdateUserProfileBody, include: [String]? = nil, completion: @escaping (_ data: AnyCodable?, _ error: Error?) -> Void)
+```
+
+Update user public profile
+
+Update user public profile
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | ${public.usercontent.updateProfile.id.descr}
+let updateUserProfileBody = UpdateUserProfileBody(data: UpdateUserProfileBody_Data(attributes: UpdateUserProfileBody_Data_Attributes(handle: "handle_example", profileName: "profileName_example", externalLinks: [User_Public_Profiles_External_Link(href: "href_example", meta: User_Public_Profiles_External_Link_Meta(type: "type_example", handle: "handle_example"))]))) // UpdateUserProfileBody | 
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned (optional)
+
+// Update user public profile
+UserPublicProfilesAPI.updateMyUserProfile(id: id, updateUserProfileBody: updateUserProfileBody, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | ${public.usercontent.updateProfile.id.descr} | 
+ **updateUserProfileBody** | [**UpdateUserProfileBody**](UpdateUserProfileBody.md) |  | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned | [optional] 
+
+### Return type
+
+**AnyCodable**
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json, */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

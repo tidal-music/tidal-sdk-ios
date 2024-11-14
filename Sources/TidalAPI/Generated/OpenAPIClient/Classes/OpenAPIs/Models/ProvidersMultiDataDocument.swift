@@ -12,7 +12,6 @@ import AnyCodable
 
 public struct ProvidersMultiDataDocument: Codable, Hashable {
 
-    /** array of primary resource data */
     public var data: [ProvidersResource]?
     public var links: Links?
 

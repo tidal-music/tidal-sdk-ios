@@ -119,7 +119,7 @@ Name | Type | Description  | Notes
 
 # **getPlaylistItemsRelationship**
 ```swift
-    open class func getPlaylistItemsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsItemsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getPlaylistItemsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: items
@@ -160,7 +160,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlaylistsItemsRelationshipDocument**](PlaylistsItemsRelationshipDocument.md)
+[**PlaylistsMultiDataRelationshipDocument**](PlaylistsMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -175,7 +175,7 @@ Name | Type | Description  | Notes
 
 # **getPlaylistOwnersRelationship**
 ```swift
-    open class func getPlaylistOwnersRelationship(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsOwnersRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getPlaylistOwnersRelationship(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: owner
@@ -214,7 +214,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlaylistsOwnersRelationshipDocument**](PlaylistsOwnersRelationshipDocument.md)
+[**PlaylistsMultiDataRelationshipDocument**](PlaylistsMultiDataRelationshipDocument.md)
 
 ### Authorization
 

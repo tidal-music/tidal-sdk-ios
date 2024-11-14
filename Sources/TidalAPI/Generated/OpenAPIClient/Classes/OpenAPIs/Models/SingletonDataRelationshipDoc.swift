@@ -10,7 +10,6 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Pick&#39;s owning user public profile relationship */
 public struct SingletonDataRelationshipDoc: Codable, Hashable {
 
     public var data: ResourceIdentifier?

@@ -12,12 +12,11 @@ import AnyCodable
 
 public struct VideosMultiDataDocument: Codable, Hashable {
 
-    /** array of primary resource data */
     public var data: [VideosResource]?
     public var links: Links?
-    public var included: [VideosMultiDataDocumentIncludedInner]?
+    public var included: [VideosSingleDataDocumentIncludedInner]?
 
-    public init(data: [VideosResource]? = nil, links: Links? = nil, included: [VideosMultiDataDocumentIncludedInner]? = nil) {
+    public init(data: [VideosResource]? = nil, links: Links? = nil, included: [VideosSingleDataDocumentIncludedInner]? = nil) {
         self.data = data
         self.links = links
         self.included = included

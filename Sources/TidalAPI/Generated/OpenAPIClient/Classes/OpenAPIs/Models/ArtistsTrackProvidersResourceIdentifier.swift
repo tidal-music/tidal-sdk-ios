@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Resource identifier JSON:API object */
 public struct ArtistsTrackProvidersResourceIdentifier: Codable, Hashable {
 
     /** resource unique identifier */

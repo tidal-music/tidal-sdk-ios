@@ -1,10 +1,10 @@
-# SearchResultsSingleDataDocumentIncludedInner
+# SearchresultsSingleDataDocumentIncludedInner
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | [**UsersAttributes**](UsersAttributes.md) |  | [optional] 
-**relationships** | [**UsersRelationships**](UsersRelationships.md) |  | [optional] 
+**attributes** | [**TracksAttributes**](TracksAttributes.md) |  | [optional] 
+**relationships** | [**TracksRelationships**](TracksRelationships.md) |  | [optional] 
 **links** | [**Links**](Links.md) |  | [optional] 
 **id** | **String** | resource unique identifier | 
 **type** | **String** | resource unique type | 

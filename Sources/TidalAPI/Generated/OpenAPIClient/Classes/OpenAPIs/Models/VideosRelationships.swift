@@ -10,7 +10,6 @@ import Foundation
 import AnyCodable
 #endif
 
-/** relationships object describing relationships between the resource and other resources */
 public struct VideosRelationships: Codable, Hashable {
 
     public var albums: MultiDataRelationshipDoc

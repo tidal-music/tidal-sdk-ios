@@ -14,9 +14,9 @@ public struct TracksSingleDataDocument: Codable, Hashable {
 
     public var data: TracksResource?
     public var links: Links?
-    public var included: [TracksMultiDataDocumentIncludedInner]?
+    public var included: [TracksSingleDataDocumentIncludedInner]?
 
-    public init(data: TracksResource? = nil, links: Links? = nil, included: [TracksMultiDataDocumentIncludedInner]? = nil) {
+    public init(data: TracksResource? = nil, links: Links? = nil, included: [TracksSingleDataDocumentIncludedInner]? = nil) {
         self.data = data
         self.links = links
         self.included = included

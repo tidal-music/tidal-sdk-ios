@@ -10,7 +10,6 @@ import Foundation
 import AnyCodable
 #endif
 
-/** attributes object representing some of the resource&#39;s data */
 public struct ArtistsAttributes: Codable, Hashable {
 
     /** Artist name */
@@ -21,12 +20,15 @@ public struct ArtistsAttributes: Codable, Hashable {
     public var imageLinks: [CatalogueItemImageLink]?
     /** Represents available links to something that is related to an artist resource, but external to the TIDAL API */
     public var externalLinks: [CatalogueItemExternalLink]?
+    /** Artist roles */
+    public var roles: [ArtistRole]?
 
-    public init(name: String, popularity: Double, imageLinks: [CatalogueItemImageLink]? = nil, externalLinks: [CatalogueItemExternalLink]? = nil) {
+    public init(name: String, popularity: Double, imageLinks: [CatalogueItemImageLink]? = nil, externalLinks: [CatalogueItemExternalLink]? = nil, roles: [ArtistRole]? = nil) {
         self.name = name
         self.popularity = popularity
         self.imageLinks = imageLinks
         self.externalLinks = externalLinks
+        self.roles = roles
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -34,6 +36,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         case popularity
         case imageLinks
         case externalLinks
+        case roles
     }
 
     // Encodable protocol methods
@@ -44,6 +47,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(imageLinks, forKey: .imageLinks)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(roles, forKey: .roles)
     }
 }
 

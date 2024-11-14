@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** links object */
+/** Links JSON:API object */
 public struct Links: Codable, Hashable {
 
     /** the link that generated the current response document */

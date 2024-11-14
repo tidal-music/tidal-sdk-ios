@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** JSON:API error document object */
 public struct ErrorDocument: Codable, Hashable {
 
     /** array of error objects */

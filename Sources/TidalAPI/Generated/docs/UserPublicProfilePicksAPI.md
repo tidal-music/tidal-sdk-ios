@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **getUserPublicProfilePickItemRelationship**
 ```swift
-    open class func getUserPublicProfilePickItemRelationship(id: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilePicksItemRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserPublicProfilePickItemRelationship(id: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilePicksSingletonDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: item (read)
@@ -104,7 +104,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserPublicProfilePicksItemRelationshipDocument**](UserPublicProfilePicksItemRelationshipDocument.md)
+[**UserPublicProfilePicksSingletonDataRelationshipDocument**](UserPublicProfilePicksSingletonDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -119,7 +119,7 @@ Name | Type | Description  | Notes
 
 # **getUserPublicProfilePickUserPublicProfileRelationship**
 ```swift
-    open class func getUserPublicProfilePickUserPublicProfileRelationship(id: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserPublicProfilePickUserPublicProfileRelationship(id: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilePicksSingletonDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: user public profile
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserPublicProfilesRelationshipDocument**](UserPublicProfilesRelationshipDocument.md)
+[**UserPublicProfilePicksSingletonDataRelationshipDocument**](UserPublicProfilePicksSingletonDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -227,7 +227,7 @@ Name | Type | Description  | Notes
 
 # **setUserPublicProfilePickItemRelationship**
 ```swift
-    open class func setUserPublicProfilePickItemRelationship(id: String, updateUserPublicProfilePicksRelationshipDocument: UpdateUserPublicProfilePicksRelationshipDocument, include: [String]? = nil, completion: @escaping (_ data: AnyCodable?, _ error: Error?) -> Void)
+    open class func setUserPublicProfilePickItemRelationship(id: String, updatePickRelationshipBody: UpdatePickRelationshipBody, include: [String]? = nil, completion: @escaping (_ data: AnyCodable?, _ error: Error?) -> Void)
 ```
 
 Relationship: item (update)
@@ -240,11 +240,11 @@ Updates a picks item relationship, e.g. sets a 'track', 'album' or 'artist' refe
 import OpenAPIClient
 
 let id = "id_example" // String | TIDAL pick id
-let updateUserPublicProfilePicksRelationshipDocument = Update_User_Public_Profile_Picks_Relationship_Document(data: Resource_Identifier(id: "id_example", type: "type_example")) // UpdateUserPublicProfilePicksRelationshipDocument | 
+let updatePickRelationshipBody = UpdatePickRelationshipBody(data: UpdatePickRelationshipBody_Data(type: "type_example", id: "id_example")) // UpdatePickRelationshipBody | 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned (optional)
 
 // Relationship: item (update)
-UserPublicProfilePicksAPI.setUserPublicProfilePickItemRelationship(id: id, updateUserPublicProfilePicksRelationshipDocument: updateUserPublicProfilePicksRelationshipDocument, include: include) { (response, error) in
+UserPublicProfilePicksAPI.setUserPublicProfilePickItemRelationship(id: id, updatePickRelationshipBody: updatePickRelationshipBody, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -261,7 +261,7 @@ UserPublicProfilePicksAPI.setUserPublicProfilePickItemRelationship(id: id, updat
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | TIDAL pick id | 
- **updateUserPublicProfilePicksRelationshipDocument** | [**UpdateUserPublicProfilePicksRelationshipDocument**](UpdateUserPublicProfilePicksRelationshipDocument.md) |  | 
+ **updatePickRelationshipBody** | [**UpdatePickRelationshipBody**](UpdatePickRelationshipBody.md) |  | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned | [optional] 
 
 ### Return type

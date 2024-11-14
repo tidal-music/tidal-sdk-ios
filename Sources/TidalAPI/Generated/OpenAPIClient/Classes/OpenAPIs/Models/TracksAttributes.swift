@@ -10,7 +10,6 @@ import Foundation
 import AnyCodable
 #endif
 
-/** attributes object representing some of the resource&#39;s data */
 public struct TracksAttributes: Codable, Hashable {
 
     public enum Availability: String, Codable, CaseIterable {
