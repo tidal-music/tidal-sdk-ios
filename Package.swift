@@ -9,6 +9,7 @@ import PackageDescription
 let environmentVariables = ProcessInfo.processInfo.environment
 let shouldIncludeDocCPlugin = environmentVariables["INCLUDE_DOCC_PLUGIN"] == "true"
 
+// swiftLint makes no sense in a library!
 let package = Package(
 	name: "tidal-sdk-ios",
 	platforms: [
