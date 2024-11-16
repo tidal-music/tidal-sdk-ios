@@ -17,6 +17,7 @@ enum AuthLoggable: TidalLoggable {
 	case getCredentialsRefreshTokenWithClientCredentialsNetworkError(error: Error, previousSubstatus: String? = nil)
 	case authLogout(reason: String, error: Error? = nil, previousSubstatus: String? = nil)
 	case getCredentialsRefreshTokenIsNotAvailable
+	case loadTokensFromStoreError(error: Error)
 	// swiftlint:enable identifier_name
 }
 
@@ -24,8 +25,6 @@ enum AuthLoggable: TidalLoggable {
 
 extension AuthLoggable {
 	static var enableLogging: Bool = false
-	private static let metadataErrorKey = "error"
-	private static let metadataReasonKey = "reason"
 	private static let metadataPreviousSubstatusKey = "previous_substatus"
 
 	var loggingMessage: Logger.Message {
@@ -54,6 +53,8 @@ extension AuthLoggable {
 			"getCredentialsRefreshTokenIsNotAvailable"
 		case .authLogout:
 			"AuthLogout"
+		case .loadTokensFromStoreError:
+			"LoadTokensFromStoreError"
 		}
 	}
 
@@ -62,24 +63,26 @@ extension AuthLoggable {
 
 		switch self {
 		case let .initializeDeviceLoginNetworkError(error),
-			 let .finalizeLoginNetworkError(error),
-			 let .finalizeDeviceLoginNetworkError(error),
-			 let .getCredentialsUpgradeTokenNetworkError(error):
-			metadata[Self.metadataErrorKey] = .string(.init(describing: error))
+			let .finalizeLoginNetworkError(error),
+			let .finalizeDeviceLoginNetworkError(error),
+			let .getCredentialsUpgradeTokenNetworkError(error),
+			let .loadTokensFromStoreError(error):
+			metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 		case let .getCredentialsRefreshTokenNetworkError(error, previousSubstatus),
-			 let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
-			metadata[Self.metadataErrorKey] = .string(.init(describing: error))
+			let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
+			metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 		case let .authLogout(reason, error, previousSubstatus):
-			metadata[Self.metadataReasonKey] = "\(reason)"
+			metadata[Logger.Metadata.reasonKey] = "\(reason)"
 			if let error = error {
-				metadata[Self.metadataErrorKey] = .string(.init(describing: error))
+				metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 			}
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
-			return metadata
 		default:
-			return [:]
+			break
 		}
+		
+		metadata[Logger.Metadata.codeKey] = .string(eventCode)
 
 		return metadata
 	}
@@ -95,5 +98,38 @@ extension AuthLoggable {
 	
 	var source: String? {
 		"Auth"
+	}
+	
+	private var eventCode: String {
+		let intCode = switch self {
+		case .initializeDeviceLoginNetworkError:
+			1
+		case .finalizeLoginNetworkError:
+			2
+		case .finalizeDeviceLoginNetworkError:
+			3
+		case .finalizeDevicePollingLimitReached:
+			4
+		case .getCredentialsUpgradeTokenNetworkError:
+			5
+		case .getCredentialsScopeIsNotGranted:
+			6
+		case .getCredentialsClientUniqueKeyIsDifferent:
+			7
+		case .getCredentialsUpgradeTokenNoTokenInResponse:
+			8
+		case .getCredentialsRefreshTokenNetworkError:
+			9
+		case .getCredentialsRefreshTokenWithClientCredentialsNetworkError:
+			10
+		case .authLogout:
+			11
+		case .getCredentialsRefreshTokenIsNotAvailable:
+			12
+		case .loadTokensFromStoreError:
+			13
+		}
+		
+		return intCode.description
 	}
 }

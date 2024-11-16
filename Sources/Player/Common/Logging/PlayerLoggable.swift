@@ -5,7 +5,6 @@ import Logging
 // MARK: - Constants
 
 private enum Constants {
-	static let metadataErrorKey = "error"
 	static let metadataAudioCodecKey = "audioCodec"
 	static let metadataAudioModeKey = "audioMode"
 	static let metadataErrorSubstatusKey = "errorSubstatus"
@@ -504,9 +503,9 @@ extension PlayerLoggable {
 		     let .djSessionSendCommandFailed(error),
 		     let .loadUCFailed(error),
 		     let .loadPlayerItemFailed(error):
-			metadata[Constants.metadataErrorKey] = "\(String(describing: error))"
+			metadata[Logger.Metadata.errorKey] = "\(String(describing: error))"
 		case let .backoffHandleResponseFailed(error, retryStrategy):
-			metadata[Constants.metadataErrorKey] = "\(String(describing: error))"
+			metadata[Logger.Metadata.errorKey] = "\(String(describing: error))"
 			metadata[Constants.metadataRetryStrategyKey] = "\(String(describing: retryStrategy))"
 		case let .audioCodecInitWithUnknown(codec):
 			metadata[Constants.metadataAudioCodecKey] = "\(String(describing: codec))"

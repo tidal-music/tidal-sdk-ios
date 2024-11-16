@@ -40,7 +40,13 @@ struct TokenRepository {
 
 	mutating func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
 		var upgradedRefreshToken: String?
-		let tokens = try loadTokensFromStore()
+		let tokens: Tokens?
+		do {
+			tokens = try loadTokensFromStore()
+		} catch {
+			logger?.log(loggable: AuthLoggable.loadTokensFromStoreError(error: error))
+			throw error
+		}
 
 		let result: AuthResult<Credentials>
 		if let tokens, needsCredentialsUpgrade {
