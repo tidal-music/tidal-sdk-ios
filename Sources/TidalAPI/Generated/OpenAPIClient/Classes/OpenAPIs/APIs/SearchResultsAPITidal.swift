@@ -17,9 +17,9 @@ public enum SearchResultsAPITidal {
 	/**
      Relationship: albums
      
-     - returns: AlbumsRelationshipDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
-	public static func getSearchResultsAlbumsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsRelationshipDocument {
+	public static func getSearchResultsAlbumsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.getSearchResultsAlbumsRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -29,9 +29,9 @@ public enum SearchResultsAPITidal {
 	/**
      Relationship: artists
      
-     - returns: ArtistsRelationshipDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
-	public static func getSearchResultsArtistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsRelationshipDocument {
+	public static func getSearchResultsArtistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.getSearchResultsArtistsRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -41,9 +41,9 @@ public enum SearchResultsAPITidal {
 	/**
      Search for music metadata by a query
      
-     - returns: SearchResultsSingleDataDocument
+     - returns: SearchresultsSingleDataDocument
      */
-	public static func getSearchResultsByQuery(query: String, countryCode: String, include: [String]? = nil) async throws -> SearchResultsSingleDataDocument {
+	public static func getSearchResultsByQuery(query: String, countryCode: String, include: [String]? = nil) async throws -> SearchresultsSingleDataDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.getSearchResultsByQueryWithRequestBuilder(query: query, countryCode: countryCode, include: include)
 		}
@@ -53,9 +53,9 @@ public enum SearchResultsAPITidal {
 	/**
      Relationship: playlists
      
-     - returns: PlaylistsRelationshipDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
-	public static func getSearchResultsPlaylistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+	public static func getSearchResultsPlaylistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.getSearchResultsPlaylistsRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -65,9 +65,9 @@ public enum SearchResultsAPITidal {
 	/**
      Relationship: topHits
      
-     - returns: SearchResultsTopHitsRelationshipDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
-	public static func getSearchResultsTopHitsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsTopHitsRelationshipDocument {
+	public static func getSearchResultsTopHitsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.getSearchResultsTopHitsRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -77,9 +77,9 @@ public enum SearchResultsAPITidal {
 	/**
      Relationship: tracks
      
-     - returns: TracksRelationshipsDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
-	public static func getSearchResultsTracksRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksRelationshipsDocument {
+	public static func getSearchResultsTracksRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.getSearchResultsTracksRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -89,9 +89,9 @@ public enum SearchResultsAPITidal {
 	/**
      Relationship: videos
      
-     - returns: VideosRelationshipsDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
-	public static func getSearchResultsVideosRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosRelationshipsDocument {
+	public static func getSearchResultsVideosRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.getSearchResultsVideosRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}

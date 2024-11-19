@@ -67,10 +67,10 @@ internal class UserPublicProfilePicksAPI {
      - parameter id: (path) TIDAL pick id 
      - parameter locale: (query) Locale language tag (IETF BCP 47 Language Tag) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item (optional)
-     - returns: UserPublicProfilePicksItemRelationshipDocument
+     - returns: UserPublicProfilePicksSingletonDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserPublicProfilePickItemRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilePicksItemRelationshipDocument {
+    internal class func getUserPublicProfilePickItemRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilePicksSingletonDataRelationshipDocument {
         return try await getUserPublicProfilePickItemRelationshipWithRequestBuilder(id: id, locale: locale, include: include).execute().body
     }
 
@@ -88,9 +88,9 @@ internal class UserPublicProfilePicksAPI {
      - parameter id: (path) TIDAL pick id 
      - parameter locale: (query) Locale language tag (IETF BCP 47 Language Tag) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item (optional)
-     - returns: RequestBuilder<UserPublicProfilePicksItemRelationshipDocument> 
+     - returns: RequestBuilder<UserPublicProfilePicksSingletonDataRelationshipDocument> 
      */
-    internal class func getUserPublicProfilePickItemRelationshipWithRequestBuilder(id: String, locale: String, include: [String]? = nil) -> RequestBuilder<UserPublicProfilePicksItemRelationshipDocument> {
+    internal class func getUserPublicProfilePickItemRelationshipWithRequestBuilder(id: String, locale: String, include: [String]? = nil) -> RequestBuilder<UserPublicProfilePicksSingletonDataRelationshipDocument> {
         var localVariablePath = "/userPublicProfilePicks/{id}/relationships/item"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -110,7 +110,7 @@ internal class UserPublicProfilePicksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilePicksItemRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilePicksSingletonDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -120,10 +120,10 @@ internal class UserPublicProfilePicksAPI {
      
      - parameter id: (path) TIDAL pick id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: userPublicProfile (optional)
-     - returns: UserPublicProfilesRelationshipDocument
+     - returns: UserPublicProfilePicksSingletonDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserPublicProfilePickUserPublicProfileRelationship(id: String, include: [String]? = nil) async throws -> UserPublicProfilesRelationshipDocument {
+    internal class func getUserPublicProfilePickUserPublicProfileRelationship(id: String, include: [String]? = nil) async throws -> UserPublicProfilePicksSingletonDataRelationshipDocument {
         return try await getUserPublicProfilePickUserPublicProfileRelationshipWithRequestBuilder(id: id, include: include).execute().body
     }
 
@@ -140,9 +140,9 @@ internal class UserPublicProfilePicksAPI {
      - responseHeaders: [X-RateLimit-Remaining(Int), X-RateLimit-Burst-Capacity(Int), X-RateLimit-Replenish-Rate(Int), X-RateLimit-Requested-Tokens(Int)]
      - parameter id: (path) TIDAL pick id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: userPublicProfile (optional)
-     - returns: RequestBuilder<UserPublicProfilesRelationshipDocument> 
+     - returns: RequestBuilder<UserPublicProfilePicksSingletonDataRelationshipDocument> 
      */
-    internal class func getUserPublicProfilePickUserPublicProfileRelationshipWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UserPublicProfilesRelationshipDocument> {
+    internal class func getUserPublicProfilePickUserPublicProfileRelationshipWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UserPublicProfilePicksSingletonDataRelationshipDocument> {
         var localVariablePath = "/userPublicProfilePicks/{id}/relationships/userPublicProfile"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -161,7 +161,7 @@ internal class UserPublicProfilePicksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilesRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilePicksSingletonDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -225,13 +225,13 @@ internal class UserPublicProfilePicksAPI {
      Relationship: item (update)
      
      - parameter id: (path) TIDAL pick id 
-     - parameter updateUserPublicProfilePicksRelationshipDocument: (body)  
+     - parameter updatePickRelationshipBody: (body)  
      - parameter include: (query) Allows the client to customize which related resources should be returned (optional)
      - returns: AnyCodable
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func setUserPublicProfilePickItemRelationship(id: String, updateUserPublicProfilePicksRelationshipDocument: UpdateUserPublicProfilePicksRelationshipDocument, include: [String]? = nil) async throws -> AnyCodable {
-        return try await setUserPublicProfilePickItemRelationshipWithRequestBuilder(id: id, updateUserPublicProfilePicksRelationshipDocument: updateUserPublicProfilePicksRelationshipDocument, include: include).execute().body
+    internal class func setUserPublicProfilePickItemRelationship(id: String, updatePickRelationshipBody: UpdatePickRelationshipBody, include: [String]? = nil) async throws -> AnyCodable {
+        return try await setUserPublicProfilePickItemRelationshipWithRequestBuilder(id: id, updatePickRelationshipBody: updatePickRelationshipBody, include: include).execute().body
     }
 
     /**
@@ -243,17 +243,17 @@ internal class UserPublicProfilePicksAPI {
        - name: Authorization_Code_PKCE
      - responseHeaders: [X-RateLimit-Remaining(Int), X-RateLimit-Burst-Capacity(Int), X-RateLimit-Replenish-Rate(Int), X-RateLimit-Requested-Tokens(Int)]
      - parameter id: (path) TIDAL pick id 
-     - parameter updateUserPublicProfilePicksRelationshipDocument: (body)  
+     - parameter updatePickRelationshipBody: (body)  
      - parameter include: (query) Allows the client to customize which related resources should be returned (optional)
      - returns: RequestBuilder<AnyCodable> 
      */
-    internal class func setUserPublicProfilePickItemRelationshipWithRequestBuilder(id: String, updateUserPublicProfilePicksRelationshipDocument: UpdateUserPublicProfilePicksRelationshipDocument, include: [String]? = nil) -> RequestBuilder<AnyCodable> {
+    internal class func setUserPublicProfilePickItemRelationshipWithRequestBuilder(id: String, updatePickRelationshipBody: UpdatePickRelationshipBody, include: [String]? = nil) -> RequestBuilder<AnyCodable> {
         var localVariablePath = "/userPublicProfilePicks/{id}/relationships/item"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updateUserPublicProfilePicksRelationshipDocument)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updatePickRelationshipBody)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([

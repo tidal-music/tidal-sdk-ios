@@ -4,7 +4,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **attributes** | [**ProvidersAttributes**](ProvidersAttributes.md) |  | [optional] 
-**relationships** | **AnyCodable** | relationships object describing relationships between the resource and other resources | [optional] 
 **links** | [**Links**](Links.md) |  | [optional] 
 **id** | **String** | resource unique identifier | 
 **type** | **String** | resource unique type | 

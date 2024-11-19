@@ -41,9 +41,9 @@ public enum PlaylistsAPITidal {
 	/**
      Relationship: items
      
-     - returns: PlaylistsItemsRelationshipDocument
+     - returns: PlaylistsMultiDataRelationshipDocument
      */
-	public static func getPlaylistItemsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsItemsRelationshipDocument {
+	public static func getPlaylistItemsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.getPlaylistItemsRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -53,9 +53,9 @@ public enum PlaylistsAPITidal {
 	/**
      Relationship: owner
      
-     - returns: PlaylistsOwnersRelationshipDocument
+     - returns: PlaylistsMultiDataRelationshipDocument
      */
-	public static func getPlaylistOwnersRelationship(id: String, countryCode: String, include: [String]? = nil) async throws -> PlaylistsOwnersRelationshipDocument {
+	public static func getPlaylistOwnersRelationship(id: String, countryCode: String, include: [String]? = nil) async throws -> PlaylistsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.getPlaylistOwnersRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}

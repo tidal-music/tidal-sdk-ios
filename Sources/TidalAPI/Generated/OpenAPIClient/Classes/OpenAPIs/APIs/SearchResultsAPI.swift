@@ -19,10 +19,10 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: AlbumsRelationshipDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getSearchResultsAlbumsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsRelationshipDocument {
+    internal class func getSearchResultsAlbumsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
         return try await getSearchResultsAlbumsRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -41,9 +41,9 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<AlbumsRelationshipDocument> 
+     - returns: RequestBuilder<SearchresultsMultiDataRelationshipDocument> 
      */
-    internal class func getSearchResultsAlbumsRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<AlbumsRelationshipDocument> {
+    internal class func getSearchResultsAlbumsRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchresultsMultiDataRelationshipDocument> {
         var localVariablePath = "/searchresults/{query}/relationships/albums"
         let queryPreEscape = "\(APIHelper.mapValueToPathItem(query))"
         let queryPostEscape = queryPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -64,7 +64,7 @@ internal class SearchResultsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<AlbumsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchresultsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -76,10 +76,10 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: ArtistsRelationshipDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getSearchResultsArtistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsRelationshipDocument {
+    internal class func getSearchResultsArtistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
         return try await getSearchResultsArtistsRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -98,9 +98,9 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<ArtistsRelationshipDocument> 
+     - returns: RequestBuilder<SearchresultsMultiDataRelationshipDocument> 
      */
-    internal class func getSearchResultsArtistsRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ArtistsRelationshipDocument> {
+    internal class func getSearchResultsArtistsRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchresultsMultiDataRelationshipDocument> {
         var localVariablePath = "/searchresults/{query}/relationships/artists"
         let queryPreEscape = "\(APIHelper.mapValueToPathItem(query))"
         let queryPostEscape = queryPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -121,7 +121,7 @@ internal class SearchResultsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ArtistsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchresultsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -132,10 +132,10 @@ internal class SearchResultsAPI {
      - parameter query: (path) Search query 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, albums, tracks, videos, playlists, topHits (optional)
-     - returns: SearchResultsSingleDataDocument
+     - returns: SearchresultsSingleDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getSearchResultsByQuery(query: String, countryCode: String, include: [String]? = nil) async throws -> SearchResultsSingleDataDocument {
+    internal class func getSearchResultsByQuery(query: String, countryCode: String, include: [String]? = nil) async throws -> SearchresultsSingleDataDocument {
         return try await getSearchResultsByQueryWithRequestBuilder(query: query, countryCode: countryCode, include: include).execute().body
     }
 
@@ -153,9 +153,9 @@ internal class SearchResultsAPI {
      - parameter query: (path) Search query 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, albums, tracks, videos, playlists, topHits (optional)
-     - returns: RequestBuilder<SearchResultsSingleDataDocument> 
+     - returns: RequestBuilder<SearchresultsSingleDataDocument> 
      */
-    internal class func getSearchResultsByQueryWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<SearchResultsSingleDataDocument> {
+    internal class func getSearchResultsByQueryWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<SearchresultsSingleDataDocument> {
         var localVariablePath = "/searchresults/{query}"
         let queryPreEscape = "\(APIHelper.mapValueToPathItem(query))"
         let queryPostEscape = queryPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -175,7 +175,7 @@ internal class SearchResultsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SearchResultsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchresultsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -187,10 +187,10 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: PlaylistsRelationshipDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getSearchResultsPlaylistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+    internal class func getSearchResultsPlaylistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
         return try await getSearchResultsPlaylistsRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -209,9 +209,9 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<PlaylistsRelationshipDocument> 
+     - returns: RequestBuilder<SearchresultsMultiDataRelationshipDocument> 
      */
-    internal class func getSearchResultsPlaylistsRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsRelationshipDocument> {
+    internal class func getSearchResultsPlaylistsRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchresultsMultiDataRelationshipDocument> {
         var localVariablePath = "/searchresults/{query}/relationships/playlists"
         let queryPreEscape = "\(APIHelper.mapValueToPathItem(query))"
         let queryPostEscape = queryPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -232,7 +232,7 @@ internal class SearchResultsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlaylistsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchresultsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -244,10 +244,10 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: SearchResultsTopHitsRelationshipDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getSearchResultsTopHitsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsTopHitsRelationshipDocument {
+    internal class func getSearchResultsTopHitsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
         return try await getSearchResultsTopHitsRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -266,9 +266,9 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<SearchResultsTopHitsRelationshipDocument> 
+     - returns: RequestBuilder<SearchresultsMultiDataRelationshipDocument> 
      */
-    internal class func getSearchResultsTopHitsRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchResultsTopHitsRelationshipDocument> {
+    internal class func getSearchResultsTopHitsRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchresultsMultiDataRelationshipDocument> {
         var localVariablePath = "/searchresults/{query}/relationships/topHits"
         let queryPreEscape = "\(APIHelper.mapValueToPathItem(query))"
         let queryPostEscape = queryPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -289,7 +289,7 @@ internal class SearchResultsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SearchResultsTopHitsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchresultsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -301,10 +301,10 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: TracksRelationshipsDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getSearchResultsTracksRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksRelationshipsDocument {
+    internal class func getSearchResultsTracksRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
         return try await getSearchResultsTracksRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -323,9 +323,9 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<TracksRelationshipsDocument> 
+     - returns: RequestBuilder<SearchresultsMultiDataRelationshipDocument> 
      */
-    internal class func getSearchResultsTracksRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksRelationshipsDocument> {
+    internal class func getSearchResultsTracksRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchresultsMultiDataRelationshipDocument> {
         var localVariablePath = "/searchresults/{query}/relationships/tracks"
         let queryPreEscape = "\(APIHelper.mapValueToPathItem(query))"
         let queryPostEscape = queryPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -346,7 +346,7 @@ internal class SearchResultsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<TracksRelationshipsDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchresultsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -358,10 +358,10 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: VideosRelationshipsDocument
+     - returns: SearchresultsMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getSearchResultsVideosRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosRelationshipsDocument {
+    internal class func getSearchResultsVideosRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
         return try await getSearchResultsVideosRelationshipWithRequestBuilder(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -380,9 +380,9 @@ internal class SearchResultsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<VideosRelationshipsDocument> 
+     - returns: RequestBuilder<SearchresultsMultiDataRelationshipDocument> 
      */
-    internal class func getSearchResultsVideosRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<VideosRelationshipsDocument> {
+    internal class func getSearchResultsVideosRelationshipWithRequestBuilder(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchresultsMultiDataRelationshipDocument> {
         var localVariablePath = "/searchresults/{query}/relationships/videos"
         let queryPreEscape = "\(APIHelper.mapValueToPathItem(query))"
         let queryPostEscape = queryPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -403,7 +403,7 @@ internal class SearchResultsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<VideosRelationshipsDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchresultsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

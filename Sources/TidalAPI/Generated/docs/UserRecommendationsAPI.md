@@ -168,7 +168,7 @@ Name | Type | Description  | Notes
 
 # **getUserRecommendationsDiscoveryMixesRelationship**
 ```swift
-    open class func getUserRecommendationsDiscoveryMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserRecommendationsDiscoveryMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: discovery mixes
@@ -207,7 +207,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlaylistsRelationshipDocument**](PlaylistsRelationshipDocument.md)
+[**UserRecommendationsMultiDataRelationshipDocument**](UserRecommendationsMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 
 # **getUserRecommendationsMyMixesRelationship**
 ```swift
-    open class func getUserRecommendationsMyMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserRecommendationsMyMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: my mixes
@@ -261,7 +261,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlaylistsRelationshipDocument**](PlaylistsRelationshipDocument.md)
+[**UserRecommendationsMultiDataRelationshipDocument**](UserRecommendationsMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -276,7 +276,7 @@ Name | Type | Description  | Notes
 
 # **getUserRecommendationsNewArrivalMixesRelationship**
 ```swift
-    open class func getUserRecommendationsNewArrivalMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getUserRecommendationsNewArrivalMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: new arrivals mixes
@@ -315,7 +315,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlaylistsRelationshipDocument**](PlaylistsRelationshipDocument.md)
+[**UserRecommendationsMultiDataRelationshipDocument**](UserRecommendationsMultiDataRelationshipDocument.md)
 
 ### Authorization
 

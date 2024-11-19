@@ -108,10 +108,10 @@ internal class UsersAPI {
      
      - parameter id: (path) User Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: entitlements (optional)
-     - returns: UserEntitlementsRelationshipDocument
+     - returns: UsersSingletonDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserEntitlementsRelationship(id: String, include: [String]? = nil) async throws -> UserEntitlementsRelationshipDocument {
+    internal class func getUserEntitlementsRelationship(id: String, include: [String]? = nil) async throws -> UsersSingletonDataRelationshipDocument {
         return try await getUserEntitlementsRelationshipWithRequestBuilder(id: id, include: include).execute().body
     }
 
@@ -125,9 +125,9 @@ internal class UsersAPI {
      - responseHeaders: [X-RateLimit-Remaining(Int), X-RateLimit-Burst-Capacity(Int), X-RateLimit-Replenish-Rate(Int), X-RateLimit-Requested-Tokens(Int)]
      - parameter id: (path) User Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: entitlements (optional)
-     - returns: RequestBuilder<UserEntitlementsRelationshipDocument> 
+     - returns: RequestBuilder<UsersSingletonDataRelationshipDocument> 
      */
-    internal class func getUserEntitlementsRelationshipWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UserEntitlementsRelationshipDocument> {
+    internal class func getUserEntitlementsRelationshipWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UsersSingletonDataRelationshipDocument> {
         var localVariablePath = "/users/{id}/relationships/entitlements"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -146,7 +146,7 @@ internal class UsersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserEntitlementsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UsersSingletonDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -157,10 +157,10 @@ internal class UsersAPI {
      - parameter id: (path) User Id 
      - parameter locale: (query) Locale language tag (IETF BCP 47 Language Tag) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: publicProfile (optional)
-     - returns: UserPublicProfilesRelationshipDocument
+     - returns: UsersSingletonDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserPublicProfileRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilesRelationshipDocument {
+    internal class func getUserPublicProfileRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UsersSingletonDataRelationshipDocument {
         return try await getUserPublicProfileRelationshipWithRequestBuilder(id: id, locale: locale, include: include).execute().body
     }
 
@@ -175,9 +175,9 @@ internal class UsersAPI {
      - parameter id: (path) User Id 
      - parameter locale: (query) Locale language tag (IETF BCP 47 Language Tag) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: publicProfile (optional)
-     - returns: RequestBuilder<UserPublicProfilesRelationshipDocument> 
+     - returns: RequestBuilder<UsersSingletonDataRelationshipDocument> 
      */
-    internal class func getUserPublicProfileRelationshipWithRequestBuilder(id: String, locale: String, include: [String]? = nil) -> RequestBuilder<UserPublicProfilesRelationshipDocument> {
+    internal class func getUserPublicProfileRelationshipWithRequestBuilder(id: String, locale: String, include: [String]? = nil) -> RequestBuilder<UsersSingletonDataRelationshipDocument> {
         var localVariablePath = "/users/{id}/relationships/publicProfile"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -197,7 +197,7 @@ internal class UsersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilesRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UsersSingletonDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -207,10 +207,10 @@ internal class UsersAPI {
      
      - parameter id: (path) User Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: recommendations (optional)
-     - returns: UsersRecommendationsRelationshipDocument
+     - returns: UsersSingletonDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserRecommendationsRelationship(id: String, include: [String]? = nil) async throws -> UsersRecommendationsRelationshipDocument {
+    internal class func getUserRecommendationsRelationship(id: String, include: [String]? = nil) async throws -> UsersSingletonDataRelationshipDocument {
         return try await getUserRecommendationsRelationshipWithRequestBuilder(id: id, include: include).execute().body
     }
 
@@ -224,9 +224,9 @@ internal class UsersAPI {
      - responseHeaders: [X-RateLimit-Remaining(Int), X-RateLimit-Burst-Capacity(Int), X-RateLimit-Replenish-Rate(Int), X-RateLimit-Requested-Tokens(Int)]
      - parameter id: (path) User Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: recommendations (optional)
-     - returns: RequestBuilder<UsersRecommendationsRelationshipDocument> 
+     - returns: RequestBuilder<UsersSingletonDataRelationshipDocument> 
      */
-    internal class func getUserRecommendationsRelationshipWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UsersRecommendationsRelationshipDocument> {
+    internal class func getUserRecommendationsRelationshipWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UsersSingletonDataRelationshipDocument> {
         var localVariablePath = "/users/{id}/relationships/recommendations"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -245,7 +245,7 @@ internal class UsersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UsersRecommendationsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UsersSingletonDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

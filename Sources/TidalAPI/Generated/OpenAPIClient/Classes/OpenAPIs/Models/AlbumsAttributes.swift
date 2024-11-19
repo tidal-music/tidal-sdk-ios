@@ -10,13 +10,17 @@ import Foundation
 import AnyCodable
 #endif
 
-/** attributes object representing some of the resource&#39;s data */
 public struct AlbumsAttributes: Codable, Hashable {
 
     public enum Availability: String, Codable, CaseIterable {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
+    }
+    public enum ModelType: String, Codable, CaseIterable {
+        case album = "ALBUM"
+        case ep = "EP"
+        case single = "SINGLE"
     }
     /** Original title */
     public var title: String
@@ -45,8 +49,10 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var videoLinks: [CatalogueItemVideoLink]?
     /** Represents available links to something that is related to an album resource, but external to the TIDAL API */
     public var externalLinks: [CatalogueItemExternalLink]?
+    /** Album type, e.g. single, regular album, or extended play */
+    public var type: ModelType
 
-    public init(title: String, barcodeId: String, numberOfVolumes: Int, numberOfItems: Int, duration: String, explicit: Bool, releaseDate: Date? = nil, copyright: String? = nil, popularity: Double, availability: [Availability]? = nil, mediaTags: [String], imageLinks: [CatalogueItemImageLink]? = nil, videoLinks: [CatalogueItemVideoLink]? = nil, externalLinks: [CatalogueItemExternalLink]? = nil) {
+    public init(title: String, barcodeId: String, numberOfVolumes: Int, numberOfItems: Int, duration: String, explicit: Bool, releaseDate: Date? = nil, copyright: String? = nil, popularity: Double, availability: [Availability]? = nil, mediaTags: [String], imageLinks: [CatalogueItemImageLink]? = nil, videoLinks: [CatalogueItemVideoLink]? = nil, externalLinks: [CatalogueItemExternalLink]? = nil, type: ModelType) {
         self.title = title
         self.barcodeId = barcodeId
         self.numberOfVolumes = numberOfVolumes
@@ -61,6 +67,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         self.imageLinks = imageLinks
         self.videoLinks = videoLinks
         self.externalLinks = externalLinks
+        self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -78,6 +85,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         case imageLinks
         case videoLinks
         case externalLinks
+        case type
     }
 
     // Encodable protocol methods
@@ -98,6 +106,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         try container.encodeIfPresent(imageLinks, forKey: .imageLinks)
         try container.encodeIfPresent(videoLinks, forKey: .videoLinks)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encode(type, forKey: .type)
     }
 }
 

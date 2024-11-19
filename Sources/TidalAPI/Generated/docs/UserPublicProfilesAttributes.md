@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**handle** | **String** | A customizable handle for the user profile | [optional] 
 **profileName** | **String** | Public Name of the user profile | [optional] 
 **picture** | [**UserPublicProfilesImageLink**](UserPublicProfilesImageLink.md) |  | [optional] 
 **color** | **[String]** |  | 

@@ -53,9 +53,9 @@ public enum UserRecommendationsAPITidal {
 	/**
      Relationship: discovery mixes
      
-     - returns: PlaylistsRelationshipDocument
+     - returns: UserRecommendationsMultiDataRelationshipDocument
      */
-	public static func getUserRecommendationsDiscoveryMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+	public static func getUserRecommendationsDiscoveryMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationsAPI.getUserRecommendationsDiscoveryMixesRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -65,9 +65,9 @@ public enum UserRecommendationsAPITidal {
 	/**
      Relationship: my mixes
      
-     - returns: PlaylistsRelationshipDocument
+     - returns: UserRecommendationsMultiDataRelationshipDocument
      */
-	public static func getUserRecommendationsMyMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+	public static func getUserRecommendationsMyMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationsAPI.getUserRecommendationsMyMixesRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -77,9 +77,9 @@ public enum UserRecommendationsAPITidal {
 	/**
      Relationship: new arrivals mixes
      
-     - returns: PlaylistsRelationshipDocument
+     - returns: UserRecommendationsMultiDataRelationshipDocument
      */
-	public static func getUserRecommendationsNewArrivalMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+	public static func getUserRecommendationsNewArrivalMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationsAPI.getUserRecommendationsNewArrivalMixesRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

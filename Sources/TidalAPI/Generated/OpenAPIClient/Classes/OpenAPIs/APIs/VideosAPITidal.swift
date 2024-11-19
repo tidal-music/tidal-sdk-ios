@@ -17,9 +17,9 @@ public enum VideosAPITidal {
 	/**
      Relationship: albums
      
-     - returns: AlbumsRelationshipDocument
+     - returns: VideosMultiDataRelationshipDocument
      */
-	public static func getVideoAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsRelationshipDocument {
+	public static func getVideoAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.getVideoAlbumsRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -29,9 +29,9 @@ public enum VideosAPITidal {
 	/**
      Relationship: artists
      
-     - returns: ArtistsRelationshipDocument
+     - returns: VideosMultiDataRelationshipDocument
      */
-	public static func getVideoArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsRelationshipDocument {
+	public static func getVideoArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.getVideoArtistsRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -53,9 +53,9 @@ public enum VideosAPITidal {
 	/**
      Relationship: providers
      
-     - returns: ProvidersRelationshipDocument
+     - returns: VideosMultiDataRelationshipDocument
      */
-	public static func getVideoProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ProvidersRelationshipDocument {
+	public static func getVideoProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.getVideoProvidersRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}

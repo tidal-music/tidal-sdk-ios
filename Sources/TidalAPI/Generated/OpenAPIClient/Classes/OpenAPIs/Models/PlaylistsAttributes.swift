@@ -10,7 +10,6 @@ import Foundation
 import AnyCodable
 #endif
 
-/** attributes object representing some of the resource&#39;s data */
 public struct PlaylistsAttributes: Codable, Hashable {
 
     /** Playlist name */

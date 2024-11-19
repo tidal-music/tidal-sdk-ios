@@ -10,7 +10,6 @@ import Foundation
 import AnyCodable
 #endif
 
-/** attributes object representing some of the resource&#39;s data */
 public struct ProvidersAttributes: Codable, Hashable {
 
     /** Provider name. Conditionally visible. */

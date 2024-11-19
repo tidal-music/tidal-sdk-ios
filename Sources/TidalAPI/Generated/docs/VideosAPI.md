@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **getVideoAlbumsRelationship**
 ```swift
-    open class func getVideoAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getVideoAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: albums
@@ -54,7 +54,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsRelationshipDocument**](AlbumsRelationshipDocument.md)
+[**VideosMultiDataRelationshipDocument**](VideosMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **getVideoArtistsRelationship**
 ```swift
-    open class func getVideoArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getVideoArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: artists
@@ -110,7 +110,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsRelationshipDocument**](ArtistsRelationshipDocument.md)
+[**VideosMultiDataRelationshipDocument**](VideosMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -179,7 +179,7 @@ Name | Type | Description  | Notes
 
 # **getVideoProvidersRelationship**
 ```swift
-    open class func getVideoProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ProvidersRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getVideoProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: providers
@@ -220,7 +220,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ProvidersRelationshipDocument**](ProvidersRelationshipDocument.md)
+[**VideosMultiDataRelationshipDocument**](VideosMultiDataRelationshipDocument.md)
 
 ### Authorization
 

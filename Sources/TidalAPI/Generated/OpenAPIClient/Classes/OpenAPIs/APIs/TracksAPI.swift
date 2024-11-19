@@ -19,10 +19,10 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: AlbumsRelationshipDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getTrackAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsRelationshipDocument {
+    internal class func getTrackAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
         return try await getTrackAlbumsRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -41,9 +41,9 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<AlbumsRelationshipDocument> 
+     - returns: RequestBuilder<TracksMultiDataRelationshipDocument> 
      */
-    internal class func getTrackAlbumsRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<AlbumsRelationshipDocument> {
+    internal class func getTrackAlbumsRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksMultiDataRelationshipDocument> {
         var localVariablePath = "/tracks/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -64,7 +64,7 @@ internal class TracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<AlbumsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TracksMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -76,10 +76,10 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: ArtistsRelationshipDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getTrackArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsRelationshipDocument {
+    internal class func getTrackArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
         return try await getTrackArtistsRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -98,9 +98,9 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<ArtistsRelationshipDocument> 
+     - returns: RequestBuilder<TracksMultiDataRelationshipDocument> 
      */
-    internal class func getTrackArtistsRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ArtistsRelationshipDocument> {
+    internal class func getTrackArtistsRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksMultiDataRelationshipDocument> {
         var localVariablePath = "/tracks/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -121,7 +121,7 @@ internal class TracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ArtistsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TracksMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -187,10 +187,10 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: ProvidersRelationshipDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getTrackProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ProvidersRelationshipDocument {
+    internal class func getTrackProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
         return try await getTrackProvidersRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -209,9 +209,9 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<ProvidersRelationshipDocument> 
+     - returns: RequestBuilder<TracksMultiDataRelationshipDocument> 
      */
-    internal class func getTrackProvidersRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ProvidersRelationshipDocument> {
+    internal class func getTrackProvidersRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksMultiDataRelationshipDocument> {
         var localVariablePath = "/tracks/{id}/relationships/providers"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -232,7 +232,7 @@ internal class TracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ProvidersRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TracksMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -244,10 +244,10 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: radio (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: TracksRelationshipsDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getTrackRadioRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksRelationshipsDocument {
+    internal class func getTrackRadioRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
         return try await getTrackRadioRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -266,9 +266,9 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: radio (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<TracksRelationshipsDocument> 
+     - returns: RequestBuilder<TracksMultiDataRelationshipDocument> 
      */
-    internal class func getTrackRadioRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksRelationshipsDocument> {
+    internal class func getTrackRadioRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksMultiDataRelationshipDocument> {
         var localVariablePath = "/tracks/{id}/relationships/radio"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -289,7 +289,7 @@ internal class TracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<TracksRelationshipsDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TracksMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -301,10 +301,10 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarTracks (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: TracksRelationshipsDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getTrackSimilarTracksRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksRelationshipsDocument {
+    internal class func getTrackSimilarTracksRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
         return try await getTrackSimilarTracksRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -323,9 +323,9 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarTracks (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<TracksRelationshipsDocument> 
+     - returns: RequestBuilder<TracksMultiDataRelationshipDocument> 
      */
-    internal class func getTrackSimilarTracksRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksRelationshipsDocument> {
+    internal class func getTrackSimilarTracksRelationshipWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksMultiDataRelationshipDocument> {
         var localVariablePath = "/tracks/{id}/relationships/similarTracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -346,7 +346,7 @@ internal class TracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<TracksRelationshipsDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TracksMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

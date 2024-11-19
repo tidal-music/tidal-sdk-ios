@@ -1,10 +1,10 @@
-# SearchResultsResource
+# SearchresultsResource
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | [**SearchResultsAttributes**](SearchResultsAttributes.md) |  | [optional] 
-**relationships** | [**SearchResultsRelationships**](SearchResultsRelationships.md) |  | [optional] 
+**attributes** | [**SearchresultsAttributes**](SearchresultsAttributes.md) |  | [optional] 
+**relationships** | [**SearchresultsRelationships**](SearchresultsRelationships.md) |  | [optional] 
 **links** | [**Links**](Links.md) |  | [optional] 
 **id** | **String** | resource unique identifier | 
 **type** | **String** | resource unique type | 

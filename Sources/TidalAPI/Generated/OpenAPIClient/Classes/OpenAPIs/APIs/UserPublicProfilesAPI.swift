@@ -121,10 +121,10 @@ internal class UserPublicProfilesAPI {
      - parameter id: (path) TIDAL user id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: followers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: UsersRelationshipDocument
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserPublicProfileFollowersRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UsersRelationshipDocument {
+    internal class func getUserPublicProfileFollowersRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
         return try await getUserPublicProfileFollowersRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -142,9 +142,9 @@ internal class UserPublicProfilesAPI {
      - parameter id: (path) TIDAL user id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: followers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<UsersRelationshipDocument> 
+     - returns: RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument> 
      */
-    internal class func getUserPublicProfileFollowersRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UsersRelationshipDocument> {
+    internal class func getUserPublicProfileFollowersRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument> {
         var localVariablePath = "/userPublicProfiles/{id}/relationships/followers"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -164,7 +164,7 @@ internal class UserPublicProfilesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UsersRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -175,10 +175,10 @@ internal class UserPublicProfilesAPI {
      - parameter id: (path) TIDAL user id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: following (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: UsersRelationshipDocument
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserPublicProfileFollowingRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UsersRelationshipDocument {
+    internal class func getUserPublicProfileFollowingRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
         return try await getUserPublicProfileFollowingRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -196,9 +196,9 @@ internal class UserPublicProfilesAPI {
      - parameter id: (path) TIDAL user id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: following (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<UsersRelationshipDocument> 
+     - returns: RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument> 
      */
-    internal class func getUserPublicProfileFollowingRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UsersRelationshipDocument> {
+    internal class func getUserPublicProfileFollowingRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument> {
         var localVariablePath = "/userPublicProfiles/{id}/relationships/following"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -218,7 +218,7 @@ internal class UserPublicProfilesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UsersRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -229,10 +229,10 @@ internal class UserPublicProfilesAPI {
      - parameter id: (path) TIDAL user id 
      - parameter locale: (query) Locale language tag (IETF BCP 47 Language Tag) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: publicPicks (optional)
-     - returns: UserPublicProfilePicksRelationshipDocument
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserPublicProfilePublicPicksRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilePicksRelationshipDocument {
+    internal class func getUserPublicProfilePublicPicksRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
         return try await getUserPublicProfilePublicPicksRelationshipWithRequestBuilder(id: id, locale: locale, include: include).execute().body
     }
 
@@ -250,9 +250,9 @@ internal class UserPublicProfilesAPI {
      - parameter id: (path) TIDAL user id 
      - parameter locale: (query) Locale language tag (IETF BCP 47 Language Tag) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: publicPicks (optional)
-     - returns: RequestBuilder<UserPublicProfilePicksRelationshipDocument> 
+     - returns: RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument> 
      */
-    internal class func getUserPublicProfilePublicPicksRelationshipWithRequestBuilder(id: String, locale: String, include: [String]? = nil) -> RequestBuilder<UserPublicProfilePicksRelationshipDocument> {
+    internal class func getUserPublicProfilePublicPicksRelationshipWithRequestBuilder(id: String, locale: String, include: [String]? = nil) -> RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument> {
         var localVariablePath = "/userPublicProfiles/{id}/relationships/publicPicks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -272,7 +272,7 @@ internal class UserPublicProfilesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilePicksRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -283,10 +283,10 @@ internal class UserPublicProfilesAPI {
      - parameter id: (path) TIDAL user id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: publicPlaylists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: PlaylistsRelationshipDocument
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func getUserPublicProfilePublicPlaylistsRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsRelationshipDocument {
+    internal class func getUserPublicProfilePublicPlaylistsRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
         return try await getUserPublicProfilePublicPlaylistsRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -304,9 +304,9 @@ internal class UserPublicProfilesAPI {
      - parameter id: (path) TIDAL user id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: publicPlaylists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<PlaylistsRelationshipDocument> 
+     - returns: RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument> 
      */
-    internal class func getUserPublicProfilePublicPlaylistsRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsRelationshipDocument> {
+    internal class func getUserPublicProfilePublicPlaylistsRelationshipWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument> {
         var localVariablePath = "/userPublicProfiles/{id}/relationships/publicPlaylists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -326,7 +326,7 @@ internal class UserPublicProfilesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlaylistsRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserPublicProfilesMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -381,5 +381,58 @@ internal class UserPublicProfilesAPI {
         let localVariableRequestBuilder: RequestBuilder<UserPublicProfilesMultiDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Update user public profile
+     
+     - parameter id: (path) ${public.usercontent.updateProfile.id.descr} 
+     - parameter updateUserProfileBody: (body)  
+     - parameter include: (query) Allows the client to customize which related resources should be returned (optional)
+     - returns: AnyCodable
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func updateMyUserProfile(id: String, updateUserProfileBody: UpdateUserProfileBody, include: [String]? = nil) async throws -> AnyCodable {
+        return try await updateMyUserProfileWithRequestBuilder(id: id, updateUserProfileBody: updateUserProfileBody, include: include).execute().body
+    }
+
+    /**
+     Update user public profile
+     - PATCH /userPublicProfiles/{id}
+     - Update user public profile
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - responseHeaders: [X-RateLimit-Remaining(Int), X-RateLimit-Burst-Capacity(Int), X-RateLimit-Replenish-Rate(Int), X-RateLimit-Requested-Tokens(Int)]
+     - parameter id: (path) ${public.usercontent.updateProfile.id.descr} 
+     - parameter updateUserProfileBody: (body)  
+     - parameter include: (query) Allows the client to customize which related resources should be returned (optional)
+     - returns: RequestBuilder<AnyCodable> 
+     */
+    internal class func updateMyUserProfileWithRequestBuilder(id: String, updateUserProfileBody: UpdateUserProfileBody, include: [String]? = nil) -> RequestBuilder<AnyCodable> {
+        var localVariablePath = "/userPublicProfiles/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updateUserProfileBody)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AnyCodable>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 }

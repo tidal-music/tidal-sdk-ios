@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **getTrackAlbumsRelationship**
 ```swift
-    open class func getTrackAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getTrackAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: albums
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsRelationshipDocument**](AlbumsRelationshipDocument.md)
+[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **getTrackArtistsRelationship**
 ```swift
-    open class func getTrackArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getTrackArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: artists
@@ -112,7 +112,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsRelationshipDocument**](ArtistsRelationshipDocument.md)
+[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -181,7 +181,7 @@ Name | Type | Description  | Notes
 
 # **getTrackProvidersRelationship**
 ```swift
-    open class func getTrackProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ProvidersRelationshipDocument?, _ error: Error?) -> Void)
+    open class func getTrackProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: providers
@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ProvidersRelationshipDocument**](ProvidersRelationshipDocument.md)
+[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -237,7 +237,7 @@ Name | Type | Description  | Notes
 
 # **getTrackRadioRelationship**
 ```swift
-    open class func getTrackRadioRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksRelationshipsDocument?, _ error: Error?) -> Void)
+    open class func getTrackRadioRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: radio
@@ -278,7 +278,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksRelationshipsDocument**](TracksRelationshipsDocument.md)
+[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -293,7 +293,7 @@ Name | Type | Description  | Notes
 
 # **getTrackSimilarTracksRelationship**
 ```swift
-    open class func getTrackSimilarTracksRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksRelationshipsDocument?, _ error: Error?) -> Void)
+    open class func getTrackSimilarTracksRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: similar tracks
@@ -334,7 +334,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksRelationshipsDocument**](TracksRelationshipsDocument.md)
+[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
 
 ### Authorization
 

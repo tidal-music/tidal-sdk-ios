@@ -12,7 +12,6 @@ import AnyCodable
 
 public struct UserRecommendationsResource: Codable, Hashable {
 
-    /** attributes object representing some of the resource's data */
     public var attributes: AnyCodable?
     public var relationships: UserRecommendationsRelationships?
     public var links: Links?

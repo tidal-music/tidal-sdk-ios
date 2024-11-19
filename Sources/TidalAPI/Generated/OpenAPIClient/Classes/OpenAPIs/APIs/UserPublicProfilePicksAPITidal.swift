@@ -29,9 +29,9 @@ public enum UserPublicProfilePicksAPITidal {
 	/**
      Relationship: item (read)
      
-     - returns: UserPublicProfilePicksItemRelationshipDocument
+     - returns: UserPublicProfilePicksSingletonDataRelationshipDocument
      */
-	public static func getUserPublicProfilePickItemRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilePicksItemRelationshipDocument {
+	public static func getUserPublicProfilePickItemRelationship(id: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilePicksSingletonDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UserPublicProfilePicksAPI.getUserPublicProfilePickItemRelationshipWithRequestBuilder(id: id, locale: locale, include: include)
 		}
@@ -41,9 +41,9 @@ public enum UserPublicProfilePicksAPITidal {
 	/**
      Relationship: user public profile
      
-     - returns: UserPublicProfilesRelationshipDocument
+     - returns: UserPublicProfilePicksSingletonDataRelationshipDocument
      */
-	public static func getUserPublicProfilePickUserPublicProfileRelationship(id: String, include: [String]? = nil) async throws -> UserPublicProfilesRelationshipDocument {
+	public static func getUserPublicProfilePickUserPublicProfileRelationship(id: String, include: [String]? = nil) async throws -> UserPublicProfilePicksSingletonDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			UserPublicProfilePicksAPI.getUserPublicProfilePickUserPublicProfileRelationshipWithRequestBuilder(id: id, include: include)
 		}
@@ -67,9 +67,9 @@ public enum UserPublicProfilePicksAPITidal {
      
      - returns: AnyCodable
      */
-	public static func setUserPublicProfilePickItemRelationship(id: String, updateUserPublicProfilePicksRelationshipDocument: UpdateUserPublicProfilePicksRelationshipDocument, include: [String]? = nil) async throws -> AnyCodable {
+	public static func setUserPublicProfilePickItemRelationship(id: String, updatePickRelationshipBody: UpdatePickRelationshipBody, include: [String]? = nil) async throws -> AnyCodable {
 		return try await RequestHelper.createRequest {
-			UserPublicProfilePicksAPI.setUserPublicProfilePickItemRelationshipWithRequestBuilder(id: id, updateUserPublicProfilePicksRelationshipDocument: updateUserPublicProfilePicksRelationshipDocument, include: include)
+			UserPublicProfilePicksAPI.setUserPublicProfilePickItemRelationshipWithRequestBuilder(id: id, updatePickRelationshipBody: updatePickRelationshipBody, include: include)
 		}
 	}
 }

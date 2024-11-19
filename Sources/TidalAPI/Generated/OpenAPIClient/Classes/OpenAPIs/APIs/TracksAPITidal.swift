@@ -17,9 +17,9 @@ public enum TracksAPITidal {
 	/**
      Relationship: albums
      
-     - returns: AlbumsRelationshipDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
-	public static func getTrackAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsRelationshipDocument {
+	public static func getTrackAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.getTrackAlbumsRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -29,9 +29,9 @@ public enum TracksAPITidal {
 	/**
      Relationship: artists
      
-     - returns: ArtistsRelationshipDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
-	public static func getTrackArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsRelationshipDocument {
+	public static func getTrackArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.getTrackArtistsRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -53,9 +53,9 @@ public enum TracksAPITidal {
 	/**
      Relationship: providers
      
-     - returns: ProvidersRelationshipDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
-	public static func getTrackProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ProvidersRelationshipDocument {
+	public static func getTrackProvidersRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.getTrackProvidersRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -65,9 +65,9 @@ public enum TracksAPITidal {
 	/**
      Relationship: radio
      
-     - returns: TracksRelationshipsDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
-	public static func getTrackRadioRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksRelationshipsDocument {
+	public static func getTrackRadioRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.getTrackRadioRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -77,9 +77,9 @@ public enum TracksAPITidal {
 	/**
      Relationship: similar tracks
      
-     - returns: TracksRelationshipsDocument
+     - returns: TracksMultiDataRelationshipDocument
      */
-	public static func getTrackSimilarTracksRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksRelationshipsDocument {
+	public static func getTrackSimilarTracksRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.getTrackSimilarTracksRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
