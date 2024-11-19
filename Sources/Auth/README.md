@@ -66,8 +66,6 @@ let expires: Date? = credentials.expires
 4. Make API calls to your desired endpoint and include `Authentication: Bearer YOUR_TOKEN` as a header.
 
 ### Authorization Code Flow (user login)
-(Only available for TIDAL internally developed applications for now)
-
 To implement the login redirect flow, follow these steps or refer to our [Demo app](https://github.com/tidal-music/tidal-sdk-ios/tree/main/TestApps/AuthTestApp) implementation.
 
 1. Initiate the process by initialising [TIDALAuth](./auth.swift).
