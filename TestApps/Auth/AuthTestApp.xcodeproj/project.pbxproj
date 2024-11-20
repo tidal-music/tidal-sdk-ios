@@ -13,12 +13,12 @@
 		E16DACF52B971AD9006C66C9 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16DACF12B971AD9006C66C9 /* HomeView.swift */; };
 		E16DACF62B971AD9006C66C9 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16DACF22B971AD9006C66C9 /* AuthViewModel.swift */; };
 		E16DACFE2B971B7F006C66C9 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16DACFD2B971B7F006C66C9 /* AuthView.swift */; };
-		E16DAD012B971BE1006C66C9 /* SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16DAD002B971BE1006C66C9 /* SafariWebView.swift */; };
 		E1D552F32B97303F00C26F97 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = E1D552F22B97303F00C26F97 /* Auth */; };
 		E1D552F92B9730F300C26F97 /* tidal-sdk-ios in Resources */ = {isa = PBXBuildFile; fileRef = E1D552F82B9730ED00C26F97 /* tidal-sdk-ios */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C625802C2CEE301100D2B293 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C6D0C3312BF348CA005442B2 /* AuthTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuthTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E16DACE52B97196A006C66C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E16DACE82B97196A006C66C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -26,7 +26,6 @@
 		E16DACF12B971AD9006C66C9 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = AuthTestApp/HomeView.swift; sourceTree = SOURCE_ROOT; };
 		E16DACF22B971AD9006C66C9 /* AuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthViewModel.swift; path = AuthTestApp/AuthViewModel.swift; sourceTree = SOURCE_ROOT; };
 		E16DACFD2B971B7F006C66C9 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
-		E16DAD002B971BE1006C66C9 /* SafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebView.swift; sourceTree = "<group>"; };
 		E1D552F82B9730ED00C26F97 /* tidal-sdk-ios */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "tidal-sdk-ios"; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -42,23 +41,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C657E4142CE2251B00D16710 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E16DACD52B971969006C66C9 = {
 			isa = PBXGroup;
 			children = (
 				E1D552F82B9730ED00C26F97 /* tidal-sdk-ios */,
 				E16DACE02B971969006C66C9 /* AuthTestApp */,
 				C6D0C3312BF348CA005442B2 /* AuthTestApp.app */,
+				C657E4142CE2251B00D16710 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		E16DACE02B971969006C66C9 /* AuthTestApp */ = {
 			isa = PBXGroup;
 			children = (
-				E16DACFF2B971BD3006C66C9 /* Utils */,
-				E16DACFD2B971B7F006C66C9 /* AuthView.swift */,
+				C625802C2CEE301100D2B293 /* Info.plist */,
 				E16DACF02B971AD9006C66C9 /* AuthTestAppApp.swift */,
-				E16DACF22B971AD9006C66C9 /* AuthViewModel.swift */,
 				E16DACF12B971AD9006C66C9 /* HomeView.swift */,
+				E16DACFD2B971B7F006C66C9 /* AuthView.swift */,
+				E16DACF22B971AD9006C66C9 /* AuthViewModel.swift */,
 				E16DACE52B97196A006C66C9 /* Assets.xcassets */,
 				E16DACE72B97196A006C66C9 /* Preview Content */,
 			);
@@ -71,14 +78,6 @@
 				E16DACE82B97196A006C66C9 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		E16DACFF2B971BD3006C66C9 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				E16DAD002B971BE1006C66C9 /* SafariWebView.swift */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,7 +157,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16DACF62B971AD9006C66C9 /* AuthViewModel.swift in Sources */,
-				E16DAD012B971BE1006C66C9 /* SafariWebView.swift in Sources */,
 				E16DACF52B971AD9006C66C9 /* HomeView.swift in Sources */,
 				E16DACFE2B971B7F006C66C9 /* AuthView.swift in Sources */,
 				E16DACF42B971AD9006C66C9 /* AuthTestAppApp.swift in Sources */,
@@ -298,11 +296,13 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AuthTestApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,11 +328,13 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AuthTestApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
