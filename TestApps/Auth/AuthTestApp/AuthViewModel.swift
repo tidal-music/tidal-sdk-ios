@@ -5,7 +5,7 @@ import Foundation
 // MARK: - AuthViewModel
 
 @MainActor
-class AuthViewModel: NSObject, ObservableObject, ASWebAuthenticationPresentationContextProviding {
+class AuthViewModel: NSObject, ObservableObject {
 	private let CLIENT_UNIQUE_KEY = "ClientUniqueKey"
 	private let CLIENT_ID_DEVICE_LOGIN = "ClientIDDeviceLogin"
 	private let CLIENT_ID = "ClientID"
@@ -26,6 +26,7 @@ class AuthViewModel: NSObject, ObservableObject, ASWebAuthenticationPresentation
 	@Published var expiresIn: String = ""
 
 	private var webAuthSession: ASWebAuthenticationSession?
+	private var contextProvider: ASWebAuthenticationPresentationContextProviding?
 
 	private var loginUrl: URL?
 	private var loginConfig: LoginConfig {
@@ -82,6 +83,11 @@ class AuthViewModel: NSObject, ObservableObject, ASWebAuthenticationPresentation
 
 	func finalizeLogin(_ url: String) {
 		Task {
+			defer {
+				contextProvider = nil
+				webAuthSession = nil
+			}
+
 			do {
 				try await auth.finalizeLogin(loginResponseUri: url)
 				isLoggedIn = auth.isUserLoggedIn
@@ -128,10 +134,6 @@ class AuthViewModel: NSObject, ObservableObject, ASWebAuthenticationPresentation
 			expiresIn = String(format: "%02d:%02d", minutes, seconds)
 		}
 	}
-
-	func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-		ASPresentationAnchor()
-	}
 }
 
 private extension AuthViewModel {
@@ -165,7 +167,8 @@ private extension AuthViewModel {
 		}
 
 		// Provide the presentation context for iPad compatibility
-		webAuthSession?.presentationContextProvider = self
+		contextProvider = PresentationContextProvider()
+		webAuthSession?.presentationContextProvider = contextProvider
 		webAuthSession?.prefersEphemeralWebBrowserSession = false
 		webAuthSession?.start()
 	}

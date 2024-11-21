@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C625802E2CEF3AE700D2B293 /* PresentationContextProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C625802D2CEF3AE700D2B293 /* PresentationContextProvider.swift */; };
 		E16DACE62B97196A006C66C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E16DACE52B97196A006C66C9 /* Assets.xcassets */; };
 		E16DACE92B97196A006C66C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E16DACE82B97196A006C66C9 /* Preview Assets.xcassets */; };
 		E16DACF42B971AD9006C66C9 /* AuthTestAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16DACF02B971AD9006C66C9 /* AuthTestAppApp.swift */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		C625802C2CEE301100D2B293 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C625802D2CEF3AE700D2B293 /* PresentationContextProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationContextProvider.swift; sourceTree = "<group>"; };
 		C6D0C3312BF348CA005442B2 /* AuthTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuthTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E16DACE52B97196A006C66C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E16DACE82B97196A006C66C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				E16DACF12B971AD9006C66C9 /* HomeView.swift */,
 				E16DACFD2B971B7F006C66C9 /* AuthView.swift */,
 				E16DACF22B971AD9006C66C9 /* AuthViewModel.swift */,
+				C625802D2CEF3AE700D2B293 /* PresentationContextProvider.swift */,
 				E16DACE52B97196A006C66C9 /* Assets.xcassets */,
 				E16DACE72B97196A006C66C9 /* Preview Content */,
 			);
@@ -156,6 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C625802E2CEF3AE700D2B293 /* PresentationContextProvider.swift in Sources */,
 				E16DACF62B971AD9006C66C9 /* AuthViewModel.swift in Sources */,
 				E16DACF52B971AD9006C66C9 /* HomeView.swift in Sources */,
 				E16DACFE2B971B7F006C66C9 /* AuthView.swift in Sources */,
