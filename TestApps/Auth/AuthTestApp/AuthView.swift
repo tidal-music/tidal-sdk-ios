@@ -2,7 +2,6 @@ import Auth
 import SwiftUI
 
 struct AuthView: View {
-	@State private var presentLoginScreen = false
 	@StateObject var viewModel: AuthViewModel = AuthViewModel()
 	let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
@@ -60,17 +59,7 @@ struct AuthView: View {
 
 				if !viewModel.isLoggedIn, !viewModel.isDeviceLoginEnabled {
 					Button("Login") {
-						viewModel.errorMessage = ""
 						viewModel.initializeLogin()
-						presentLoginScreen = true
-					}
-					.sheet(isPresented: $presentLoginScreen) {
-						if let url = viewModel.loginUrl {
-							SafariWebView(url: url, redicrectUrl: AuthViewModel.redirectUri) { url in
-								viewModel.finalizeLogin(url)
-								presentLoginScreen = false
-							}
-						}
 					}
 				}
 

@@ -65,7 +65,8 @@ let package = Package(
 			name: "TidalAPI",
 			dependencies: [
 				.AnyCodable,
-				.auth
+				.auth,
+				.common,
 			],
 			plugins: [
 				.plugin(name: "SwiftLint", package: "SwiftLintPlugin"),

@@ -4,7 +4,7 @@ import SwiftUI
 struct AuthTestAppApp: App {
 	var body: some Scene {
 		WindowGroup {
-			NavigationStack {
+			NavigationView {
 				HomeView()
 			}
 			.environment(\.colorScheme, .dark)

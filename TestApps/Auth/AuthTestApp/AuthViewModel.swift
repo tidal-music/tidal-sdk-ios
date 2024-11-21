@@ -1,12 +1,18 @@
 import Auth
+import AuthenticationServices
 import Foundation
 
+// MARK: - AuthViewModel
+
 @MainActor
-class AuthViewModel: ObservableObject {
+class AuthViewModel: NSObject, ObservableObject {
 	private let CLIENT_UNIQUE_KEY = "ClientUniqueKey"
-	private let CLIENT_ID_DEVICE_LOGIN = "ClientID2"
+	private let CLIENT_ID_DEVICE_LOGIN = "ClientIDDeviceLogin"
 	private let CLIENT_ID = "ClientID"
-	static let redirectUri = "https://tidal.com/ios/login/auth"
+	private let CLIENT_SECRET = "ClientSecret"
+	private let customScheme = "testauthsdk"
+	private let redirectUri = "testauthsdk://auth-test"
+	private let scopes: Set<String> = []
 
 	@Published var isDeviceLoginEnabled: Bool = false {
 		didSet {
@@ -18,30 +24,39 @@ class AuthViewModel: ObservableObject {
 	@Published var isLoggedIn: Bool = false
 	@Published var errorMessage: String = ""
 	@Published var expiresIn: String = ""
-	private(set) var loginUrl: URL?
+
+	private var webAuthSession: ASWebAuthenticationSession?
+	private var contextProvider: ASWebAuthenticationPresentationContextProviding?
+
+	private var loginUrl: URL?
+	private var loginConfig: LoginConfig {
+		LoginConfig(customParams: [QueryParameter(key: "appMode", value: "iOS")])
+	}
+
 	private var expiresAt: Date = Date()
+	private var isDeviceLoginCodeExpired: Bool {
+		Date() > expiresAt
+	}
+
+	private var auth: TidalAuth {
+		.shared
+	}
 
 	private var authConfig: AuthConfig {
 		AuthConfig(
 			clientId: isDeviceLoginEnabled ? CLIENT_ID_DEVICE_LOGIN : CLIENT_ID,
 			clientUniqueKey: CLIENT_UNIQUE_KEY,
-			credentialsKey: "storage"
+			credentialsKey: "auth-storage",
+			scopes: scopes
 		)
 	}
 
-	private var loginConfig: LoginConfig {
-		LoginConfig(customParams: [QueryParameter(key: "appMode", value: "iOS")])
+	override init() {
+		super.init()
+		initAuth()
 	}
 
-	var isDeviceLoginCodeExpired: Bool {
-		Date() > expiresAt
-	}
-
-	var auth: TidalAuth {
-		.shared
-	}
-
-	init() {
+	func initAuth() {
 		auth.config(config: authConfig)
 		isLoggedIn = auth.isUserLoggedIn
 	}
@@ -53,26 +68,31 @@ class AuthViewModel: ObservableObject {
 			errorMessage = ""
 			isLoggedIn = auth.isUserLoggedIn
 		} catch {
-			errorMessage = error.localizedDescription
+			errorMessage = "Logout error: " + error.localizedDescription
 		}
 	}
 
 	func initializeLogin() {
-		if let url = auth.initializeLogin(redirectUri: Self.redirectUri, loginConfig: loginConfig) {
-			loginUrl = url
-		} else {
+		guard let url = auth.initializeLogin(redirectUri: redirectUri, loginConfig: loginConfig) else {
 			loginUrl = nil
 			errorMessage = "Error: login URL can't be populated"
+			return
 		}
+		startAuthenticationFlow(with: url)
 	}
 
 	func finalizeLogin(_ url: String) {
 		Task {
+			defer {
+				contextProvider = nil
+				webAuthSession = nil
+			}
+
 			do {
 				try await auth.finalizeLogin(loginResponseUri: url)
 				isLoggedIn = auth.isUserLoggedIn
 			} catch {
-				errorMessage = error.localizedDescription
+				errorMessage = "Login error: " + error.localizedDescription
 			}
 		}
 	}
@@ -89,6 +109,8 @@ class AuthViewModel: ObservableObject {
 			} catch let error as TidalError {
 				if let message = error.message {
 					errorMessage = message
+				} else {
+					errorMessage = error.localizedDescription
 				}
 			} catch {
 				errorMessage = error.localizedDescription
@@ -102,7 +124,52 @@ class AuthViewModel: ObservableObject {
 			return
 		}
 
-		let duration = Duration.seconds(expiresAt.timeIntervalSinceNow)
-		expiresIn = duration.formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
+		if #available(iOS 16, *) {
+			let duration = Duration.seconds(expiresAt.timeIntervalSinceNow)
+			expiresIn = duration.formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
+		} else {
+			let timeInterval = expiresAt.timeIntervalSinceNow
+			let minutes = Int(timeInterval) / 60
+			let seconds = Int(timeInterval) % 60
+			expiresIn = String(format: "%02d:%02d", minutes, seconds)
+		}
+	}
+}
+
+private extension AuthViewModel {
+	private func startAuthenticationFlow(with loginURL: URL) {
+		errorMessage = ""
+		loginUrl = loginURL
+
+		let completionHandler: ASWebAuthenticationSession.CompletionHandler = { [weak self] callbackURL, error in
+			guard let self else {
+				return
+			}
+			if let error {
+				errorMessage = "Authentication failed: " + error.localizedDescription
+			} else if let callbackURL {
+				finalizeLogin(callbackURL.absoluteString)
+			}
+		}
+
+		if #available(iOS 17.4, *) {
+			webAuthSession = ASWebAuthenticationSession(
+				url: loginURL,
+				callback: .customScheme(customScheme),
+				completionHandler: completionHandler
+			)
+		} else {
+			webAuthSession = ASWebAuthenticationSession(
+				url: loginURL,
+				callbackURLScheme: customScheme,
+				completionHandler: completionHandler
+			)
+		}
+
+		// Provide the presentation context for iPad compatibility
+		contextProvider = PresentationContextProvider()
+		webAuthSession?.presentationContextProvider = contextProvider
+		webAuthSession?.prefersEphemeralWebBrowserSession = false
+		webAuthSession?.start()
 	}
 }
