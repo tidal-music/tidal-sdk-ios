@@ -76,6 +76,7 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: Offline Storage
 
 	case withDefaultDatabase(error: Error)
+	case updateDBFileAttributes(error: Error)
 
 	// MARK: Offline Engine
 
@@ -201,6 +202,10 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: Metrics
 
 	case metricsNoIdealStartTime
+
+	// MARK: Player
+
+	case alreadyInitialized
 }
 
 // swiftlint:enable identifier_name
@@ -297,6 +302,8 @@ extension PlayerLoggable {
 		// GRDBOfflineStorage
 		case .withDefaultDatabase:
 			"GRDBOfflineStorage-withDefaultDatabase"
+		case .updateDBFileAttributes:
+			"GRDBOfflineStorage-updateDBFileAttributes"
 
 		// Offline Engine
 		case .saveOfflinedItemFailed:
@@ -455,6 +462,10 @@ extension PlayerLoggable {
 		// Metrics
 		case .metricsNoIdealStartTime:
 			"Metrics-noIdealStartTime"
+
+		// Player
+		case .alreadyInitialized:
+			"Player-alreadyInitialized"
 		}
 	}
 
@@ -481,6 +492,7 @@ extension PlayerLoggable {
 		     let .downloadFailed(error),
 		     let .downloadFinalizeFailed(error),
 		     let .withDefaultDatabase(error),
+		     let .updateDBFileAttributes(error),
 		     let .saveOfflinedItemFailed(error),
 		     let .deleteOfflinedItemFailed(error),
 		     let .deleteAssetCacheFailed(error),
@@ -541,8 +553,8 @@ extension PlayerLoggable {
 		     .interruptionMonitorHandleNotificationUnknownType,
 		     .changeMonitorHandleNotificationWithoutRequiredData,
 		     .changeMonitorUpdateVolumeWithoutRequiredData,
-			 .handleMediaServicesWereReset,
-			 .handleMediaServicesWereLost,
+		     .handleMediaServicesWereReset,
+		     .handleMediaServicesWereLost,
 		     .eventSenderInitEventsDirectoryFailed,
 		     .eventSenderInitOfflinePlaysDirectoryFailed,
 		     .eventSenderInitializeDirectoryNoURLPath,
@@ -562,7 +574,8 @@ extension PlayerLoggable {
 		     .handleErrorPlayerItemNotCurrent,
 		     .handleErrorPlayerItemNotNext,
 		     .playWithoutQueuedItems,
-		     .itemChangedWithoutQueuedItems:
+		     .itemChangedWithoutQueuedItems,
+		     .alreadyInitialized:
 			break
 		}
 
@@ -594,6 +607,7 @@ extension PlayerLoggable {
 		     .downloadFailed,
 		     .downloadFinalizeFailed,
 		     .withDefaultDatabase,
+		     .updateDBFileAttributes,
 		     .saveOfflinedItemFailed,
 		     .deleteOfflinedItemFailed,
 		     .deleteAssetCacheFailed,
@@ -616,7 +630,8 @@ extension PlayerLoggable {
 		     .djSessionStartFailed,
 		     .djSessionSendCommandFailed,
 		     .loadUCFailed,
-		     .loadPlayerItemFailed:
+		     .loadPlayerItemFailed,
+		     .alreadyInitialized:
 			.error
 		case .streamingNotifyGetCredentialFailed,
 		     .streamingConnectOfflineMode,
@@ -641,8 +656,8 @@ extension PlayerLoggable {
 		     .changeMonitorHandleNotificationWithoutRequiredData,
 		     .changeMonitorHandleNotificationDefaultReason,
 		     .changeMonitorUpdateVolumeWithoutRequiredData,
-			 .handleMediaServicesWereLost,
-			 .handleMediaServicesWereReset,
+		     .handleMediaServicesWereLost,
+		     .handleMediaServicesWereReset,
 		     .eventSenderInitEventsDirectoryFailed,
 		     .eventSenderInitOfflinePlaysDirectoryFailed,
 		     .eventSenderInitializeDirectoryNoURLPath,
