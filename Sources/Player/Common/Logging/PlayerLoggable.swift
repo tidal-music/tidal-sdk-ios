@@ -201,6 +201,10 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: Metrics
 
 	case metricsNoIdealStartTime
+
+	// MARK: Player
+
+	case alreadyInitialized
 }
 
 // swiftlint:enable identifier_name
@@ -455,6 +459,9 @@ extension PlayerLoggable {
 		// Metrics
 		case .metricsNoIdealStartTime:
 			"Metrics-noIdealStartTime"
+		// Player
+		case .alreadyInitialized:
+			"Player-alreadyInitialized"
 		}
 	}
 
@@ -541,8 +548,8 @@ extension PlayerLoggable {
 		     .interruptionMonitorHandleNotificationUnknownType,
 		     .changeMonitorHandleNotificationWithoutRequiredData,
 		     .changeMonitorUpdateVolumeWithoutRequiredData,
-			 .handleMediaServicesWereReset,
-			 .handleMediaServicesWereLost,
+		     .handleMediaServicesWereReset,
+		     .handleMediaServicesWereLost,
 		     .eventSenderInitEventsDirectoryFailed,
 		     .eventSenderInitOfflinePlaysDirectoryFailed,
 		     .eventSenderInitializeDirectoryNoURLPath,
@@ -562,7 +569,8 @@ extension PlayerLoggable {
 		     .handleErrorPlayerItemNotCurrent,
 		     .handleErrorPlayerItemNotNext,
 		     .playWithoutQueuedItems,
-		     .itemChangedWithoutQueuedItems:
+		     .itemChangedWithoutQueuedItems,
+		     .alreadyInitialized:
 			break
 		}
 
@@ -616,7 +624,8 @@ extension PlayerLoggable {
 		     .djSessionStartFailed,
 		     .djSessionSendCommandFailed,
 		     .loadUCFailed,
-		     .loadPlayerItemFailed:
+		     .loadPlayerItemFailed,
+		     .alreadyInitialized:
 			.error
 		case .streamingNotifyGetCredentialFailed,
 		     .streamingConnectOfflineMode,
@@ -641,8 +650,8 @@ extension PlayerLoggable {
 		     .changeMonitorHandleNotificationWithoutRequiredData,
 		     .changeMonitorHandleNotificationDefaultReason,
 		     .changeMonitorUpdateVolumeWithoutRequiredData,
-			 .handleMediaServicesWereLost,
-			 .handleMediaServicesWereReset,
+		     .handleMediaServicesWereLost,
+		     .handleMediaServicesWereReset,
 		     .eventSenderInitEventsDirectoryFailed,
 		     .eventSenderInitOfflinePlaysDirectoryFailed,
 		     .eventSenderInitializeDirectoryNoURLPath,

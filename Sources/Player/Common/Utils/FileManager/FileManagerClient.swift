@@ -26,6 +26,8 @@ struct FileManagerClient {
 		_ options: FileManager.DirectoryEnumerationOptions,
 		_ handler: ((URL, any Error) -> Bool)?
 	) -> FileManager.DirectoryEnumerator?
+	var attributesOfItem: (_ path: String) throws -> [FileAttributeKey: Any]
+	var setAttributes: (_ attributes: [FileAttributeKey: Any], _ path: String) throws -> Void
 }
 
 extension FileManagerClient {

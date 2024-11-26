@@ -40,17 +40,12 @@ class GRDBOfflineStorage {
 		}
 	}
 
-	static func withDefaultDatabase() -> GRDBOfflineStorage? {
-		do {
-			let databaseURL = try GRDBOfflineStorage.databaseURL()
-			let dbQueue = try DatabaseQueue(path: databaseURL.path)
-			try GRDBOfflineStorage.initializeDatabase(dbQueue: dbQueue)
+	static func withDefaultDatabase() throws -> GRDBOfflineStorage {
+		let databaseURL = try GRDBOfflineStorage.databaseURL()
+		let dbQueue = try DatabaseQueue(path: databaseURL.path)
+		try GRDBOfflineStorage.initializeDatabase(dbQueue: dbQueue)
 
-			return GRDBOfflineStorage(dbQueue: dbQueue)
-		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.withDefaultDatabase(error: error))
-			return nil
-		}
+		return GRDBOfflineStorage(dbQueue: dbQueue)
 	}
 }
 
@@ -122,7 +117,22 @@ private extension GRDBOfflineStorage {
 	static func databaseURL() throws -> URL {
 		let appSupportURL = PlayerWorld.fileManagerClient.applicationSupportDirectory()
 		let directoryURL = appSupportURL.appendingPathComponent("PlayerOfflineDatabase", isDirectory: true)
-		try PlayerWorld.fileManagerClient.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+		if PlayerWorld.fileManagerClient.fileExists(atPath: directoryURL.path, isDirectory: nil) {
+			var attributes = try? PlayerWorld.fileManagerClient.attributesOfItem(directoryURL.path)
+			if attributes != nil,
+			   let protectionKey = attributes?[FileAttributeKey.protectionKey] as? FileProtectionType,
+			   protectionKey != FileProtectionType.none
+			{
+				attributes?[FileAttributeKey.protectionKey] = FileProtectionType.none
+				try? PlayerWorld.fileManagerClient.setAttributes(attributes!, directoryURL.path)
+			}
+		} else {
+			try PlayerWorld.fileManagerClient.createDirectory(
+				at: directoryURL,
+				withIntermediateDirectories: true,
+				attributes: [FileAttributeKey.protectionKey: URLFileProtection.none]
+			)
+		}
 		return directoryURL.appendingPathComponent("db.sqlite")
 	}
 

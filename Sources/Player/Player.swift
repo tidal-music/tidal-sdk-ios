@@ -123,20 +123,25 @@ public extension Player {
 		shouldAddLogging: Bool = false,
 		offlinePlaybackPrivilegeCheck: (() -> Bool)? = nil
 	) -> Player? {
+		// When we have logging enabled, we create a logger to be used inside Player module and set it in PlayerWorld.
+		if shouldAddLogging, PlayerWorld.logger == nil {
+			PlayerWorld.logger = TidalLogger(label: "Player", level: .trace)
+		}
+
 		if shared != nil {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.alreadyInitialized)
 			return nil
 		}
 
-		guard let offlineStorage = Player.initializedOfflineStorage() else {
+		let offlineStorage: OfflineStorage
+		do {
+			offlineStorage = try Player.initializedOfflineStorage()
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.withDefaultDatabase(error: error))
 			return nil
 		}
 
 		Time.initialise()
-
-		// When we have logging enabled, we create a logger to be used inside Player module and set it in PlayerWorld.
-		if shouldAddLogging {
-			PlayerWorld.logger = TidalLogger(label: "Player", level: .trace)
-		}
 
 		let timeoutPolicy = TimeoutPolicy.standard
 		let sharedPlayerURLSession = URLSession.new(with: timeoutPolicy, name: "Player Player", serviceType: .responsiveAV)
@@ -462,8 +467,8 @@ private extension Player {
 		return playerInstance
 	}
 
-	static func initializedOfflineStorage() -> OfflineStorage? {
-		GRDBOfflineStorage.withDefaultDatabase()
+	static func initializedOfflineStorage() throws -> OfflineStorage {
+		try GRDBOfflineStorage.withDefaultDatabase()
 	}
 
 	static func newOfflineEngine(

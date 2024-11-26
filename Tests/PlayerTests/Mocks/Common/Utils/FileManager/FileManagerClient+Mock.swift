@@ -42,6 +42,12 @@ extension FileManagerClient {
 		},
 		enumerator: { url, keys, options, handler in
 			FileManager.default.enumerator(at: url, includingPropertiesForKeys: keys, options: options, errorHandler: handler)
+		},
+		attributesOfItem: { path in
+			try FileManager.default.attributesOfItem(atPath: path)
+		},
+		setAttributes: { attributes, path in
+			try FileManager.default.setAttributes(attributes, ofItemAtPath: path)
 		}
 	)
 }
