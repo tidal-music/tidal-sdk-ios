@@ -118,13 +118,16 @@ private extension GRDBOfflineStorage {
 		let appSupportURL = PlayerWorld.fileManagerClient.applicationSupportDirectory()
 		let directoryURL = appSupportURL.appendingPathComponent("PlayerOfflineDatabase", isDirectory: true)
 		if PlayerWorld.fileManagerClient.fileExists(atPath: directoryURL.path, isDirectory: nil) {
-			var attributes = try? PlayerWorld.fileManagerClient.attributesOfItem(directoryURL.path)
-			if attributes != nil,
-			   let protectionKey = attributes?[FileAttributeKey.protectionKey] as? FileProtectionType,
-			   protectionKey != FileProtectionType.none
-			{
-				attributes?[FileAttributeKey.protectionKey] = FileProtectionType.none
-				try? PlayerWorld.fileManagerClient.setAttributes(attributes!, directoryURL.path)
+			do {
+				var attributes = try PlayerWorld.fileManagerClient.attributesOfItem(directoryURL.path)
+				if let protectionKey = attributes[FileAttributeKey.protectionKey] as? FileProtectionType,
+				   protectionKey != FileProtectionType.none
+				{
+					attributes[FileAttributeKey.protectionKey] = FileProtectionType.none
+					try PlayerWorld.fileManagerClient.setAttributes(attributes, directoryURL.path)
+				}
+			} catch {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.updateDBFileAttributes(error: error))
 			}
 		} else {
 			try PlayerWorld.fileManagerClient.createDirectory(
