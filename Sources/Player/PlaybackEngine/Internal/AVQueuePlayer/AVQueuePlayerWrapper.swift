@@ -442,8 +442,9 @@ private extension AVQueuePlayerWrapper {
 		}
 	}
 
-	func readPlaybackMetadata(playerItem: AVPlayerItem) {
+	func readPlaybackMetadata(playerItem: AVPlayerItem, asset: AVPlayerAsset) {
 		guard PlayerWorld.developmentFeatureFlagProvider.shouldReadAndVerifyPlaybackMetadata else {
+			delegates.playbackMetadataLoaded(asset: asset)
 			return
 		}
 
@@ -513,7 +514,7 @@ private extension AVQueuePlayerWrapper {
 				return
 			}
 
-			self.readPlaybackMetadata(playerItem: playerItem)
+			self.readPlaybackMetadata(playerItem: playerItem, asset: asset)
 
 			self.delegates.loaded(asset: asset, with: CMTimeGetSeconds(playerItem.duration))
 		}
@@ -632,10 +633,10 @@ private extension AVQueuePlayerWrapper {
 			self.delegates.djSessionTransition(asset: asset, transition: transition)
 		}
 	}
-	
+
 	func playedToEnd(playerItem: AVPlayerItem) {
 		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
-			self.player.remove(playerItem)
+			player.remove(playerItem)
 		}
 	}
 }
@@ -702,14 +703,14 @@ private extension AVQueuePlayerWrapper {
 		// If it's the error related to the media services being reset, we create a specific internal error instead of a generic one.
 		// This is because the media services being reset is a recoverable error that should be handled differently.
 		if nserror.domain == ErrorConstants.avfoundationErrorDomain,
-				nserror.code == ErrorConstants.averrorMediaServicesWereResetErrorCode
+		   nserror.code == ErrorConstants.averrorMediaServicesWereResetErrorCode
 		{
 			return PlayerInternalError(
 				errorId: .PERetryable,
-				 errorType: .mediaServicesWereReset,
-				 code: nserror.code,
-				 description: description
-			 )
+				errorType: .mediaServicesWereReset,
+				code: nserror.code,
+				description: description
+			)
 		} else {
 			return (error as? AVError).map {
 				PlayerInternalError(
