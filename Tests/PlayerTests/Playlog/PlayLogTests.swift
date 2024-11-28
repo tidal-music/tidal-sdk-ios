@@ -1238,7 +1238,7 @@ extension PlayLogTests {
 		// Simulate Player.load() is called.
 		// This is in order to simulate the following scenario: load and play a track, load and play another track.
 		playerEngine.notificationsHandler = nil
-		playerEngine.resetOrUnload()
+		playerEngine.unload()
 
 		// Wait for the player engine state to be IDLE.
 		optimizedWait {
@@ -1334,7 +1334,7 @@ extension PlayLogTests {
 		// Simulate Player.load() is called.
 		// This is in order to simulate the following scenario: load and play a track, load and play another track.
 		playerEngine.notificationsHandler = nil
-		playerEngine.resetOrUnload()
+		playerEngine.unload()
 
 		// Wait for the player engine state to be IDLE.
 		optimizedWait {
@@ -1507,7 +1507,7 @@ private extension PlayLogTests {
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
-			mainPlayer: Player.mainPlayerType(featureFlagProvider),
+			mainPlayer: Player.mainPlayerType(),
 			externalPlayers: []
 		)
 

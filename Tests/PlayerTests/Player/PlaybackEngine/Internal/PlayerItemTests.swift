@@ -53,7 +53,6 @@ final class PlayerItemTests: XCTestCase {
 
 		featureFlagProvider = FeatureFlagProvider.mock
 		featureFlagProvider.isContentCachingEnabled = { self.isContentCachingEnabled }
-		featureFlagProvider.shouldUseImprovedCaching = { self.shouldUseCachingV2 }
 
 		monitor = PlayerItemMonitorMock()
 		dataWriter = DataWriterMock()
@@ -480,7 +479,6 @@ final class PlayerItemTests: XCTestCase {
 	}
 
 	// MARK: - seek
-
 
 	func test_seek() {
 		// GIVEN

@@ -40,7 +40,6 @@ final class PlayerEngineTests: XCTestCase {
 
 	private var playerEngine: PlayerEngine!
 	private var timestamp: UInt64 = Constants.initialTime
-	private var shouldUseImprovedCaching: Bool = false
 
 	private var genericPlayer: PlayerMock!
 	private var playerLoader: PlayerLoaderMock!
@@ -78,9 +77,6 @@ final class PlayerEngineTests: XCTestCase {
 		notificationsHandler = .mock(listener: listener, queue: listenerQueue)
 		credentialsProvider = CredentialsProviderMock()
 		featureFlagProvider = FeatureFlagProvider.mock
-		featureFlagProvider.shouldUseImprovedCaching = {
-			self.shouldUseImprovedCaching
-		}
 
 		djProducer = DJProducer(
 			httpClient: httpClient,
@@ -252,8 +248,6 @@ extension PlayerEngineTests {
 	}
 
 	func test_setNext_repeated_is_ignored() {
-		shouldUseImprovedCaching = true
-
 		// GIVEN
 		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
 		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
@@ -296,8 +290,6 @@ extension PlayerEngineTests {
 	}
 
 	func test_setNext_same_product_but_stored() {
-		shouldUseImprovedCaching = true
-
 		// GIVEN
 		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
 		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
