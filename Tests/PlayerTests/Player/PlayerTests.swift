@@ -9,7 +9,7 @@ final class PlayerTests: XCTestCase {
 	private var player: Player!
 	private var playerEventSender: PlayerEventSenderMock!
 	private var offlineDbQueue: DatabaseQueue!
-	private var cachedDQueue: DatabaseQueue!
+	private var cachedDbQueue: DatabaseQueue!
 
 	override func setUpWithError() throws {
 		PlayerWorld = PlayerWorldClient.mock(developmentFeatureFlagProvider: DevelopmentFeatureFlagProvider.mock)
@@ -37,8 +37,8 @@ final class PlayerTests: XCTestCase {
 		offlineDbQueue = try DatabaseQueue()
 		let offlineStorage = GRDBOfflineStorage(dbQueue: offlineDbQueue)
 
-		cachedDQueue = try DatabaseQueue()
-		let cacheStorage = GRDBCacheStorage(dbQueue: cachedDQueue)
+		cachedDbQueue = try DatabaseQueue()
+		let cacheStorage = GRDBCacheStorage(dbQueue: cachedDbQueue)
 
 		let fairplayLicenseFetcher = FairPlayLicenseFetcher.mock()
 		let networkMonitor = NetworkMonitorMock()
