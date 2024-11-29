@@ -24,6 +24,9 @@ public final class Player {
 	private(set) var offlineStorage: OfflineStorage
 
 	@Atomic
+	private(set) var cacheStorage: CacheStorage?
+
+	@Atomic
 	private(set) var offlineEngine: OfflineEngine
 
 	// MARK: - Properties
@@ -64,6 +67,7 @@ public final class Player {
 		urlSession: URLSession,
 		configuration: Configuration,
 		offlineStorage: OfflineStorage,
+		cacheStorage: CacheStorage?,
 		djProducer: DJProducer,
 		playerEventSender: PlayerEventSender,
 		fairplayLicenseFetcher: FairPlayLicenseFetcher,
@@ -81,6 +85,7 @@ public final class Player {
 		playerURLSession = urlSession
 		self.configuration = configuration
 		self.offlineStorage = offlineStorage
+		self.cacheStorage = cacheStorage
 		self.djProducer = djProducer
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
 		self.streamingPrivilegesHandler = streamingPrivilegesHandler
@@ -136,6 +141,14 @@ public extension Player {
 		let offlineStorage: OfflineStorage
 		do {
 			offlineStorage = try Player.initializedOfflineStorage()
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.withDefaultDatabase(error: error))
+			return nil
+		}
+
+		let cacheStorage: CacheStorage
+		do {
+			cacheStorage = try Player.initializedCacheStorage()
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.withDefaultDatabase(error: error))
 			return nil
@@ -204,6 +217,7 @@ public extension Player {
 			sharedPlayerURLSession,
 			configuration,
 			offlineStorage,
+			cacheStorage,
 			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
@@ -220,6 +234,7 @@ public extension Player {
 			urlSession: sharedPlayerURLSession,
 			configuration: configuration,
 			offlineStorage: offlineStorage,
+			cacheStorage: cacheStorage,
 			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
@@ -413,6 +428,7 @@ private extension Player {
 			playerURLSession,
 			configuration,
 			offlineStorage,
+			cacheStorage,
 			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
@@ -428,7 +444,8 @@ private extension Player {
 	static func newPlayerEngine(
 		_ urlSession: URLSession,
 		_ configuration: Configuration,
-		_ offlineStorage: OfflineStorage?,
+		_ offlineStorage: OfflineStorage,
+		_ cacheStorage: CacheStorage?,
 		_ djProducer: DJProducer,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		_ networkMonitor: NetworkMonitor,
@@ -445,7 +462,8 @@ private extension Player {
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
 			mainPlayer: Player.mainPlayerType(),
-			externalPlayers: externalPlayersSupplier?() ?? []
+			externalPlayers: externalPlayersSupplier?() ?? [],
+			cacheStorage: cacheStorage
 		)
 
 		let playerInstance = PlayerEngine(
@@ -458,6 +476,7 @@ private extension Player {
 			playerEventSender,
 			networkMonitor,
 			offlineStorage,
+			cacheStorage,
 			offlinePlaybackPrivilegeCheck,
 			internalPlayerLoader,
 			featureFlagProvider,
@@ -469,6 +488,10 @@ private extension Player {
 
 	static func initializedOfflineStorage() throws -> OfflineStorage {
 		try GRDBOfflineStorage.withDefaultDatabase()
+	}
+
+	static func initializedCacheStorage() throws -> CacheStorage {
+		try GRDBCacheStorage.withDefaultDatabase()
 	}
 
 	static func newOfflineEngine(

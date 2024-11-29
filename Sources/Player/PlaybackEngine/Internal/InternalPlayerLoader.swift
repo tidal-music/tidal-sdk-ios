@@ -11,10 +11,9 @@ typealias MainPlayerType = GenericMediaPlayer & LiveMediaPlayer & UCMediaPlayer 
 final class InternalPlayerLoader: PlayerLoader {
 	private let configuration: Configuration
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
-
 	private let credentialsProvider: CredentialsProvider
-
 	private let featureFlagProvider: FeatureFlagProvider
+	private let cacheStorage: CacheStorage?
 
 	let mainPlayer: MainPlayerType
 	var players: [GenericMediaPlayer] = []
@@ -29,20 +28,22 @@ final class InternalPlayerLoader: PlayerLoader {
 
 	required init(
 		with configuration: Configuration,
-		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
+		and fairPlayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
 		credentialsProvider: CredentialsProvider,
 		mainPlayer: MainPlayerType.Type,
-		externalPlayers: [GenericMediaPlayer.Type]
+		externalPlayers: [GenericMediaPlayer.Type],
+		cacheStorage: CacheStorage?
 	) {
 		self.configuration = configuration
-		fairPlayLicenseFetcher = fairplayLicenseFetcher
+		self.fairPlayLicenseFetcher = fairPlayLicenseFetcher
 		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
+		self.cacheStorage = cacheStorage
 
-		let fileManager = PlayerWorld.fileManagerClient
+		let cachePath = PlayerWorld.fileManagerClient.cachesDirectory()
 		self.mainPlayer = mainPlayer.init(
-			cachePath: fileManager.cachesDirectory(),
+			cachePath: cachePath,
 			featureFlagProvider: featureFlagProvider
 		)
 
@@ -51,7 +52,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		externalPlayers.forEach { externalPlayerType in
 			registerPlayer(
 				externalPlayerType.init(
-					cachePath: fileManager.cachesDirectory(),
+					cachePath: cachePath,
 					featureFlagProvider: featureFlagProvider
 				)
 			)

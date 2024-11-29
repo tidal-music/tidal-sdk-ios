@@ -25,7 +25,8 @@ protocol PlayerLoader: AnyObject {
 		featureFlagProvider: FeatureFlagProvider,
 		credentialsProvider: CredentialsProvider,
 		mainPlayer: MainPlayerType.Type,
-		externalPlayers: [GenericMediaPlayer.Type]
+		externalPlayers: [GenericMediaPlayer.Type],
+		cacheStorage: CacheStorage?
 	)
 
 	func load(_ playableStorageMediaProduct: PlayableOfflinedMediaProduct) async throws -> Asset

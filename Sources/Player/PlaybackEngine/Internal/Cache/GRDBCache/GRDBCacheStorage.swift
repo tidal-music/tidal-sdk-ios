@@ -8,7 +8,28 @@ final class GRDBCacheStorage {
 
 	init(dbQueue: DatabaseQueue) {
 		self.dbQueue = dbQueue
-		try? initializeDatabase()
+	}
+
+	static func initializeDatabase(dbQueue: DatabaseQueue) throws {
+		try dbQueue.write { db in
+			if try !db.tableExists(CacheEntryGRDBEntity.databaseTableName) {
+				try db.create(table: CacheEntryGRDBEntity.databaseTableName) { t in
+					t.column("key", .text).primaryKey()
+					t.column("type", .text).notNull()
+					t.column("url", .text).notNull()
+					t.column("lastAccessedAt", .datetime).notNull()
+					t.column("size", .integer).notNull()
+				}
+			}
+		}
+	}
+
+	static func withDefaultDatabase() throws -> GRDBCacheStorage {
+		let databaseURL = try GRDBCacheStorage.databaseURL()
+		let dbQueue = try DatabaseQueue(path: databaseURL.path)
+		try GRDBCacheStorage.initializeDatabase(dbQueue: dbQueue)
+
+		return GRDBCacheStorage(dbQueue: dbQueue)
 	}
 }
 
@@ -100,23 +121,14 @@ extension GRDBCacheStorage: CacheStorage {
 }
 
 private extension GRDBCacheStorage {
-	func initializeDatabase() throws {
-		do {
-			try dbQueue.write { db in				
-				if try !db.tableExists(CacheEntryGRDBEntity.databaseTableName) {
-					try db.create(table: CacheEntryGRDBEntity.databaseTableName) { t in
-						t.column("key", .text).primaryKey()
-						t.column("type", .text).notNull()
-						t.column("url", .text).notNull()
-						t.column("lastAccessedAt", .datetime).notNull()
-						t.column("size", .integer).notNull()
-					}
-				}
-			}
-		} catch {
-			// TODO: Log error
-			print("Failed to initialize table \(CacheEntryGRDBEntity.databaseTableName): \(error)")
-			throw error
-		}
+	static func databaseURL() throws -> URL {
+		let appSupportURL = PlayerWorld.fileManagerClient.applicationSupportDirectory()
+		let directoryURL = appSupportURL.appendingPathComponent("PlayerCacheDatabase", isDirectory: true)
+		try PlayerWorld.fileManagerClient.createDirectory(
+			at: directoryURL,
+			withIntermediateDirectories: true,
+			attributes: [FileAttributeKey.protectionKey: URLFileProtection.none]
+		)
+		return directoryURL.appendingPathComponent("db.sqlite")
 	}
 }
