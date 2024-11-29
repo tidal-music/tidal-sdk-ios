@@ -856,7 +856,10 @@ final class EventsTests: XCTestCase {
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
-		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT, sessionTags: [.PRELOADED])
+		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(
+			startReason: .EXPLICIT,
+			sessionTags: [.PRELOADED, .CACHING_V2]
+		)
 		validateStreamingSessionStart(event: actualStreamingSessionStartEvent, expectedEvent: expectedStreamingSessionStartEvent)
 
 		let actualPlaybackInfoFetch = events[1] as! PlaybackInfoFetch
@@ -924,7 +927,10 @@ final class EventsTests: XCTestCase {
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
-		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT, sessionTags: [.PRELOADED])
+		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(
+			startReason: .EXPLICIT,
+			sessionTags: [.PRELOADED, .CACHING_V2]
+		)
 		validateStreamingSessionStart(event: actualStreamingSessionStartEvent, expectedEvent: expectedStreamingSessionStartEvent)
 
 		let actualPlaybackInfoFetch = events[1] as! PlaybackInfoFetch
@@ -2599,7 +2605,7 @@ private extension EventsTests {
 		startReason: StartReason,
 		timestamp: UInt64 = 1,
 		sessionProductId: String = "productId",
-		sessionTags: [StreamingSessionStart.SessionTag]? = nil
+		sessionTags: [StreamingSessionStart.SessionTag]? = [StreamingSessionStart.SessionTag.CACHING_V2]
 	) -> StreamingSessionStart {
 		StreamingSessionStart.mock(
 			streamingSessionId: streamingSessionId,

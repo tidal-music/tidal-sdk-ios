@@ -10,7 +10,7 @@ extension StreamingSessionStart {
 		sessionType: SessionType = .PLAYBACK,
 		sessionProductType: ProductType = .TRACK,
 		sessionProductId: String = "productId",
-		sessionTags: [SessionTag]? = nil
+		sessionTags: [SessionTag]? = [StreamingSessionStart.SessionTag.CACHING_V2]
 	) -> Self {
 		StreamingSessionStart(
 			streamingSessionId: streamingSessionId,
