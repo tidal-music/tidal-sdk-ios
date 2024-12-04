@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - CacheEntry
 
-struct CacheEntry: Codable {
+public struct CacheEntry: Codable {
 	var key: String
 	var type: CacheEntryType
 	var url: URL?

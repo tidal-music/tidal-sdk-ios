@@ -1,6 +1,6 @@
 import Foundation
 
-protocol CacheStorage {
+public protocol CacheStorage {
 	// MARK: - Save CacheEntry
 
 	func save(_ entry: CacheEntry) throws
@@ -12,6 +12,10 @@ protocol CacheStorage {
 	// MARK: - Delete CacheEntry by Key
 
 	func delete(key: String) throws
+
+	// MARK: - Delete All CacheEntries
+
+	func deleteAll() throws
 
 	// MARK: - Update CacheEntry
 

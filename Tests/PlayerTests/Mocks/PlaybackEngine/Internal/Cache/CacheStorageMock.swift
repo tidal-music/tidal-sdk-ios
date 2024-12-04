@@ -10,6 +10,8 @@ final class CacheStorageMock: CacheStorage {
 
 	func delete(key: String) throws {}
 
+	func deleteAll() throws {}
+
 	func update(_ entry: CacheEntry) throws {}
 
 	func getAll() throws -> [CacheEntry] {
