@@ -231,10 +231,8 @@ final class PlayerEngine {
 				return
 			}
 
-			if self.featureFlagProvider.shouldUseImprovedCaching() {
-				guard self.nextItem?.mediaProduct != mediaProduct else {
-					return
-				}
+			guard self.nextItem?.mediaProduct != mediaProduct else {
+				return
 			}
 
 			self.nextItem?.unload()
@@ -259,14 +257,6 @@ final class PlayerEngine {
 			if let currentItem = self.currentItem, currentItem.isCompletelyDownloaded {
 				await self.load(self.nextItem!)
 			}
-		}
-	}
-
-	func resetOrUnload() {
-		if featureFlagProvider.shouldUseImprovedCaching() {
-			unload()
-		} else {
-			reset()
 		}
 	}
 

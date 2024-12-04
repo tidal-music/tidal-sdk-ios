@@ -64,8 +64,7 @@ final class PlayerItem {
 		}
 		if !featureFlagProvider.isContentCachingEnabled() {
 			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_DISABLED)
-		}
-		if featureFlagProvider.shouldUseImprovedCaching() {
+		} else {
 			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_V2)
 		}
 

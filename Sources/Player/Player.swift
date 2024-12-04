@@ -245,7 +245,7 @@ public extension Player {
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
 			self.playerEngine.notificationsHandler = nil
-			self.playerEngine.resetOrUnload()
+			self.playerEngine.unload()
 
 			self.playerEngine = self.instantiatedPlayerEngine(self.notificationsHandler)
 
@@ -304,7 +304,7 @@ public extension Player {
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
 			self.playerEngine.notificationsHandler = nil
-			self.playerEngine.resetOrUnload()
+			self.playerEngine.unload()
 
 			self.playerEngine = handle.player
 			self.playerEngine.notificationsHandler = self.notificationsHandler
@@ -444,7 +444,7 @@ private extension Player {
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
-			mainPlayer: Player.mainPlayerType(featureFlagProvider),
+			mainPlayer: Player.mainPlayerType(),
 			externalPlayers: externalPlayersSupplier?() ?? []
 		)
 
