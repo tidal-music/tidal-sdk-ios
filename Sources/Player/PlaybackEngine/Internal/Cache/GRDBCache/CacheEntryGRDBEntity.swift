@@ -8,14 +8,25 @@ extension CacheEntryType: DatabaseValueConvertible {}
 // MARK: - CacheEntryGRDBEntity
 
 struct CacheEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
-	var key: String
-	var type: CacheEntryType
-	var url: URL
-	var lastAccessedAt: Date
-	var size: Int
+	let key: String
+	let type: CacheEntryType
+	let mediaBookmark: Data?
+	let lastAccessedAt: Date
+	let size: Int
 
 	var cacheEntry: CacheEntry {
-		CacheEntry(key: key, type: type, url: url, lastAccessedAt: lastAccessedAt, size: size)
+		CacheEntry(key: key, type: type, url: mediaURL, lastAccessedAt: lastAccessedAt, size: size)
+	}
+
+	private var mediaURL: URL? {
+		var isStale = false
+		guard
+			let mediaBookmark,
+			let url = try? URL(resolvingBookmarkData: mediaBookmark, bookmarkDataIsStale: &isStale)
+		else {
+			return nil
+		}
+		return url
 	}
 
 	static let databaseTableName = "cacheEntries"
@@ -23,15 +34,15 @@ struct CacheEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 	enum Columns {
 		static let key = Column(CodingKeys.key)
 		static let type = Column(CodingKeys.type)
-		static let url = Column(CodingKeys.url)
+		static let mediaBookmark = Column(CodingKeys.mediaBookmark)
 		static let lastAccessedAt = Column(CodingKeys.lastAccessedAt)
 		static let size = Column(CodingKeys.size)
 	}
 
-	init(key: String, type: CacheEntryType, url: URL, lastAccessedAt: Date = Date.now, size: Int) {
+	init(key: String, type: CacheEntryType, mediaURL: URL?, lastAccessedAt: Date = Date.now, size: Int) {
 		self.key = key
 		self.type = type
-		self.url = url
+		mediaBookmark = try? mediaURL?.bookmarkData()
 		self.lastAccessedAt = lastAccessedAt
 		self.size = size
 	}
@@ -39,8 +50,22 @@ struct CacheEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 	init(from entry: CacheEntry) {
 		key = entry.key
 		type = entry.type
-		url = entry.url
+		mediaBookmark = try? entry.url?.bookmarkData()
 		lastAccessedAt = entry.lastAccessedAt
 		size = entry.size
+	}
+
+	func bookmarkDataNeedsUpdating() -> Bool {
+		guard let mediaBookmark else {
+			return false
+		}
+
+		do {
+			var isStale = false
+			_ = try URL(resolvingBookmarkData: mediaBookmark, bookmarkDataIsStale: &isStale)
+			return isStale
+		} catch {
+			return false
+		}
 	}
 }

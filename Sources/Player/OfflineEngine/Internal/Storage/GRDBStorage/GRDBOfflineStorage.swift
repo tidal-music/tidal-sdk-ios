@@ -67,7 +67,16 @@ extension GRDBOfflineStorage: OfflineStorage {
 		let entity = try dbQueue.read { db in
 			try OfflineEntryGRDBEntity.filter(OfflineEntryGRDBEntity.Columns.productId == key).fetchOne(db)
 		}
-		return entity?.offlineEntry
+
+		guard let entity else {
+			return nil
+		}
+
+		if entity.bookmarkDataNeedsUpdating() {
+			try update(entity.offlineEntry)
+		}
+
+		return entity.offlineEntry
 	}
 
 	// MARK: - Delete OfflineEntry by MediaProduct

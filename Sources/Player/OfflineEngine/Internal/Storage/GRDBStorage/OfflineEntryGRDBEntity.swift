@@ -56,8 +56,7 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 		var isStale = false
 		guard
 			let mediaBookmark,
-			let url = try? URL(resolvingBookmarkData: mediaBookmark, bookmarkDataIsStale: &isStale),
-			!isStale
+			let url = try? URL(resolvingBookmarkData: mediaBookmark, bookmarkDataIsStale: &isStale)
 		else {
 			return nil
 		}
@@ -68,12 +67,10 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 		var isStale = false
 		guard
 			let licenseBookmark,
-			let url = try? URL(resolvingBookmarkData: licenseBookmark, bookmarkDataIsStale: &isStale),
-			!isStale
+			let url = try? URL(resolvingBookmarkData: licenseBookmark, bookmarkDataIsStale: &isStale)
 		else {
 			return nil
 		}
-
 		return url
 	}
 
@@ -108,5 +105,23 @@ struct OfflineEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
 		size = entry.size
 		mediaBookmark = try? entry.mediaURL?.bookmarkData()
 		licenseBookmark = try? entry.licenseURL?.bookmarkData()
+	}
+
+	func bookmarkDataNeedsUpdating() -> Bool {
+		do {
+			var mediaBookmarkIsStale = false
+			var licenseBookmarkIsStale = false
+
+			if let mediaBookmark {
+				_ = try URL(resolvingBookmarkData: mediaBookmark, bookmarkDataIsStale: &mediaBookmarkIsStale)
+			}
+			if let licenseBookmark {
+				_ = try URL(resolvingBookmarkData: licenseBookmark, bookmarkDataIsStale: &licenseBookmarkIsStale)
+			}
+
+			return mediaBookmarkIsStale || licenseBookmarkIsStale
+		} catch {
+			return false
+		}
 	}
 }

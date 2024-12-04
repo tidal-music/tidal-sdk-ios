@@ -5,11 +5,11 @@ import Foundation
 struct CacheEntry: Codable {
 	var key: String
 	var type: CacheEntryType
-	var url: URL
+	var url: URL?
 	var lastAccessedAt: Date
 	var size: Int
 
-	init(key: String, type: CacheEntryType, url: URL, lastAccessedAt: Date = Date.now, size: Int) {
+	init(key: String, type: CacheEntryType, url: URL?, lastAccessedAt: Date = Date.now, size: Int) {
 		self.key = key
 		self.type = type
 		self.url = url
