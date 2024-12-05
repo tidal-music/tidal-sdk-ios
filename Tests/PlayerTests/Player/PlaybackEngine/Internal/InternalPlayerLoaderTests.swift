@@ -30,7 +30,8 @@ final class InternalPlayerLoaderTests: XCTestCase {
 			featureFlagProvider: FeatureFlagProvider.mock,
 			credentialsProvider: CredentialsProviderMock(),
 			mainPlayer: PlayerMock.self,
-			externalPlayers: []
+			externalPlayers: [],
+			cacheStorage: CacheStorageMock()
 		)
 		mockPlayer = internalLoader.getMainPlayerInstance() as? PlayerMock
 	}

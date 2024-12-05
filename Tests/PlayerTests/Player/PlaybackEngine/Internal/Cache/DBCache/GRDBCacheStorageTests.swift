@@ -39,7 +39,7 @@ final class GRDBCacheStorageTests: XCTestCase {
 	override func setUpWithError() throws {
 		// Create an in-memory database for testing
 		dbQueue = try DatabaseQueue()
-
+		try GRDBCacheStorage.initializeDatabase(dbQueue: dbQueue)
 		cacheStorage = GRDBCacheStorage(dbQueue: dbQueue)
 	}
 
