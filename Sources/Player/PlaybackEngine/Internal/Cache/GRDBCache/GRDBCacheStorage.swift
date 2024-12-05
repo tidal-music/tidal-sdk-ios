@@ -11,16 +11,24 @@ final class GRDBCacheStorage {
 	}
 
 	static func initializeDatabase(dbQueue: DatabaseQueue) throws {
-		try dbQueue.write { db in
-			if try !db.tableExists(CacheEntryGRDBEntity.databaseTableName) {
+		do {
+			var migrator = DatabaseMigrator()
+
+			migrator.registerMigration("Setup CacheEntries table") { db in
 				try db.create(table: CacheEntryGRDBEntity.databaseTableName) { t in
 					t.column("key", .text).primaryKey()
 					t.column("type", .text).notNull()
-					t.column("url", .text).notNull()
+					t.column("mediaBookmark", .blob)
 					t.column("lastAccessedAt", .datetime).notNull()
 					t.column("size", .integer).notNull()
 				}
 			}
+
+			try migrator.migrate(dbQueue)
+		} catch {
+			// TODO: Log error
+			print("Failed to initialize Cache database: \(error)")
+			throw error
 		}
 	}
 
@@ -58,7 +66,16 @@ extension GRDBCacheStorage: CacheStorage {
 		let entity = try dbQueue.read { db in
 			try CacheEntryGRDBEntity.filter(CacheEntryGRDBEntity.Columns.key == key).fetchOne(db)
 		}
-		return entity?.cacheEntry
+
+		guard let entity else {
+			return nil
+		}
+
+		if entity.bookmarkDataNeedsUpdating() {
+			try update(entity.cacheEntry)
+		}
+
+		return entity.cacheEntry
 	}
 
 	// MARK: - Delete CacheEntry by Key
