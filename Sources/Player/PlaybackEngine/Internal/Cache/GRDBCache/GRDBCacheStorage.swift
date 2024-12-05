@@ -95,6 +95,10 @@ extension GRDBCacheStorage: CacheStorage {
 			try CacheEntryGRDBEntity.deleteAll(db)
 		}
 
+		guard !contentURLs.isEmpty else {
+			return
+		}
+
 		SafeTask { [contentURLs] in
 			for url in contentURLs {
 				try? PlayerWorld.fileManagerClient.removeFile(url)
