@@ -43,7 +43,8 @@
 			case .oldDeviceUnavailable:
 				playerEngine?.pause()
 			default: ()
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.changeMonitorHandleNotificationDefaultReason(reason: String(describing: reason)))
+				PlayerWorld.logger?
+					.log(loggable: PlayerLoggable.changeMonitorHandleNotificationDefaultReason(reason: String(describing: reason)))
 			}
 
 			updateVolume()

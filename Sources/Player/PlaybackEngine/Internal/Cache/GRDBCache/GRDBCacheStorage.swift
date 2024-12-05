@@ -102,7 +102,7 @@ extension GRDBCacheStorage: CacheStorage {
 private extension GRDBCacheStorage {
 	func initializeDatabase() throws {
 		do {
-			try dbQueue.write { db in				
+			try dbQueue.write { db in
 				if try !db.tableExists(CacheEntryGRDBEntity.databaseTableName) {
 					try db.create(table: CacheEntryGRDBEntity.databaseTableName) { t in
 						t.column("key", .text).primaryKey()

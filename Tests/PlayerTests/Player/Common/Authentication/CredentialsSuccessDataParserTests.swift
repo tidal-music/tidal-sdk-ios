@@ -29,7 +29,7 @@ extension CredentialsSuccessDataParserTests {
 		let clientId = credentialsSuccessDataParser.clientIdFromToken(token)
 		XCTAssertEqual(clientId, nil)
 	}
-	
+
 	func test_clientIdFromToken_when_StringRequiresPadding() async throws {
 		let token = "Bearer blabla.eyJjaWQiOjEyMzQ1fQ.blahblah"
 		let clientId = credentialsSuccessDataParser.clientIdFromToken(token)

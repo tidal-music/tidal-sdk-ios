@@ -89,7 +89,7 @@ struct TokenRepository {
 			) }
 		} else if let clientSecret = authConfig.clientSecret {
 			// if nothing is stored, we will try and refresh using a client secret
-			self.logger?.log(loggable: AuthLoggable.getCredentialsRefreshTokenIsNotAvailable)
+			logger?.log(loggable: AuthLoggable.getCredentialsRefreshTokenIsNotAvailable)
 
 			refreshCredentialsBlock = { await getClientAccessToken(clientSecret: clientSecret) }
 			networkErrorLoggableBlock = { AuthLoggable.getCredentialsRefreshTokenWithClientCredentialsNetworkError(
@@ -110,12 +110,12 @@ struct TokenRepository {
 			switch (authResult, networkErrorLoggableBlock) {
 			case let (.failure(error), _) where shouldLogoutWithLowerLevelTokenAfterUpdate(error: error):
 				if let loggable = logoutAfterErrorLoggableBlock?(error) {
-					self.logger?.log(loggable: loggable)
+					logger?.log(loggable: loggable)
 				}
 				return .success(.init(authConfig: authConfig))
 
 			case let (.failure(error), .some(networkErrorLoggableBlock)):
-				self.logger?.log(loggable: networkErrorLoggableBlock(error))
+				logger?.log(loggable: networkErrorLoggableBlock(error))
 
 			default: break
 			}
@@ -123,7 +123,10 @@ struct TokenRepository {
 			return authResult
 		}
 
-		self.logger?.log(loggable: AuthLoggable.authLogout(reason: "No refresh token or client secret available", previousSubstatus: apiErrorSubStatus))
+		logger?.log(loggable: AuthLoggable.authLogout(
+			reason: "No refresh token or client secret available",
+			previousSubstatus: apiErrorSubStatus
+		))
 		return logout()
 	}
 
@@ -162,10 +165,10 @@ struct TokenRepository {
 		switch result {
 		case let .success(tokens):
 			if tokens.credentials.token == nil {
-				self.logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse)
+				logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNoTokenInResponse)
 			}
 		case let .failure(error):
-			self.logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error))
+			logger?.log(loggable: AuthLoggable.getCredentialsUpgradeTokenNetworkError(error: error))
 		}
 
 		return result

@@ -15,18 +15,20 @@ public class TidalAuth: Auth & CredentialsProvider {
 	) {
 		self.config = config
 
-		let tokensStore = DefaultTokensStore(credentialsKey: config.credentialsKey, credentialsAccessGroup: config.credentialsAccessGroup)
+		let tokensStore = DefaultTokensStore(
+			credentialsKey: config.credentialsKey,
+			credentialsAccessGroup: config.credentialsAccessGroup
+		)
 
-		let authLogger: TidalLogger?
-		if config.enableLogging {
-			authLogger = TidalLogger(label: "Auth", level: .trace)
+		let authLogger: TidalLogger? = if config.enableLogging {
+			TidalLogger(label: "Auth", level: .trace)
 		} else {
-			authLogger = nil
+			nil
 		}
 		loginRepository = provideLoginRepository(config, tokensStore: tokensStore, logger: authLogger)
 		tokenRepository = provideTokenRepository(config, tokensStore: tokensStore, logger: authLogger)
 	}
-	
+
 	private func provideLoginRepository(_ config: AuthConfig, tokensStore: TokensStore, logger: TidalLogger?) -> LoginRepository {
 		LoginRepository(
 			authConfig: config,
@@ -48,7 +50,7 @@ public class TidalAuth: Auth & CredentialsProvider {
 			tokensStore: tokensStore,
 			tokenService: DefaultTokenService(authBaseUrl: config.tidalAuthServiceBaseUri),
 			defaultBackoffPolicy: DefaultRetryPolicy(),
-			upgradeBackoffPolicy: DefaultRetryPolicy(), 
+			upgradeBackoffPolicy: DefaultRetryPolicy(),
 			logger: logger
 		)
 	}

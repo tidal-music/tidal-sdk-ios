@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - TidalAPIError
+
 public struct TidalAPIError: LocalizedError, Equatable {
 	let fileID: String
 	let line: UInt
@@ -8,7 +10,7 @@ public struct TidalAPIError: LocalizedError, Equatable {
 	public let url: String
 	public var statusCode: Int?
 	public var subStatus: Int?
-	
+
 	public init(
 		fileID: StaticString = #fileID,
 		line: UInt = #line,
@@ -26,13 +28,13 @@ public struct TidalAPIError: LocalizedError, Equatable {
 		self.statusCode = statusCode
 		self.subStatus = subStatus
 	}
-	
+
 	public var errorDescription: String {
-	"""
-	API Error: \(String(describing: statusCode))
-	URL: \(url)
-	SubStatus: \(String(describing: subStatus))
-	"""
+		"""
+		API Error: \(String(describing: statusCode))
+		URL: \(url)
+		SubStatus: \(String(describing: subStatus))
+		"""
 	}
 }
 

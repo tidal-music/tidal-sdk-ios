@@ -1,5 +1,5 @@
 import Auth
 
-extension OpenAPIClientAPI {
-	public static var credentialsProvider: (any CredentialsProvider)?
+public extension OpenAPIClientAPI {
+	static var credentialsProvider: (any CredentialsProvider)?
 }

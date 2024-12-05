@@ -118,8 +118,9 @@ public final class TidalEventSender: EventSender {
 		)
 		endOutage(eventName: event.name)
 	}
-	
-	/// Used to explicitly send all events directly from the scheduler. Usage would depend on the client (ex. when app moves to the background)
+
+	/// Used to explicitly send all events directly from the scheduler. Usage would depend on the client (ex. when app moves to the
+	/// background)
 	public func sendAllEvents() async throws {
 		let headerHelper = HeaderHelper(credentialsProvider: config?.credentialsProvider)
 		do {

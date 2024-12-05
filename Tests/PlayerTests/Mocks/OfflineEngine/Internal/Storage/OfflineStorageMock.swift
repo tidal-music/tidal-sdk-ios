@@ -13,8 +13,8 @@ final class OfflineStorageMock: OfflineStorage {
 	func getAll() throws -> [OfflineEntry] { [] }
 
 	func clear() {}
-	
-	func totalSize() throws -> Int { 
+
+	func totalSize() throws -> Int {
 		0
 	}
 }

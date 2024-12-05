@@ -372,7 +372,7 @@ private extension AVQueuePlayerWrapperLegacy {
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
-			onItemPlayedToEnd: playedToEnd, 
+			onItemPlayedToEnd: playedToEnd,
 			onDjSessionTransition: receivedDjSessionTransition
 		)
 	}
@@ -566,7 +566,7 @@ private extension AVQueuePlayerWrapperLegacy {
 
 	func playedToEnd(playerItem: AVPlayerItem) {
 		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
-			self.player.remove(playerItem)
+			player.remove(playerItem)
 		}
 	}
 }
@@ -606,14 +606,14 @@ private extension AVQueuePlayerWrapperLegacy {
 		// If it's the error related to the media services being reset, we create a specific internal error instead of a generic one.
 		// This is because the media services being reset is a recoverable error that should be handled differently.
 		if nserror.domain == ErrorConstants.avfoundationErrorDomain,
-				nserror.code == ErrorConstants.averrorMediaServicesWereResetErrorCode
+		   nserror.code == ErrorConstants.averrorMediaServicesWereResetErrorCode
 		{
 			return PlayerInternalError(
 				errorId: .PERetryable,
-				 errorType: .mediaServicesWereReset,
-				 code: nserror.code,
-				 description: description
-			 )
+				errorType: .mediaServicesWereReset,
+				code: nserror.code,
+				description: description
+			)
 		} else {
 			return (error as? AVError).map {
 				PlayerInternalError(

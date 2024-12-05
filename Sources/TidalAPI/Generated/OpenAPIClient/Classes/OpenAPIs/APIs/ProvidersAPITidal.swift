@@ -1,7 +1,9 @@
 import Foundation
 #if canImport(AnyCodable)
-import AnyCodable
+	import AnyCodable
 #endif
+
+// MARK: - ProvidersAPITidal
 
 /// This is a wrapper around `ProvidersAPI` that uses the injected credentialsprovider
 /// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
@@ -12,27 +14,23 @@ import AnyCodable
 /// let dataDocument = try await ProvidersAPITidal.getResource()
 /// ```
 public enum ProvidersAPITidal {
-
-
-	/**
-     Get single provider
-     
-     - returns: ProvidersSingleDataDocument
-     */
+	/// Get single provider
+	///
+	/// - returns: ProvidersSingleDataDocument
 	public static func getProviderById(id: String, include: [String]? = nil) async throws -> ProvidersSingleDataDocument {
-		return try await RequestHelper.createRequest {
+		try await RequestHelper.createRequest {
 			ProvidersAPI.getProviderByIdWithRequestBuilder(id: id, include: include)
 		}
 	}
 
-
-	/**
-     Get multiple providers
-     
-     - returns: ProvidersMultiDataDocument
-     */
-	public static func getProvidersByFilters(include: [String]? = nil, filterId: [String]? = nil) async throws -> ProvidersMultiDataDocument {
-		return try await RequestHelper.createRequest {
+	/// Get multiple providers
+	///
+	/// - returns: ProvidersMultiDataDocument
+	public static func getProvidersByFilters(
+		include: [String]? = nil,
+		filterId: [String]? = nil
+	) async throws -> ProvidersMultiDataDocument {
+		try await RequestHelper.createRequest {
 			ProvidersAPI.getProvidersByFiltersWithRequestBuilder(include: include, filterId: filterId)
 		}
 	}

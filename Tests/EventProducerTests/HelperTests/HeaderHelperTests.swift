@@ -7,7 +7,7 @@ import XCTest
 
 final class HeaderHelperTests: XCTestCase {
 	private struct MockCredentialsProvider: CredentialsProvider {
-		var testAccessToken: String? = nil
+		var testAccessToken: String?
 		let testClientId: String
 		func getCredentials(apiErrorSubStatus: String?) async throws -> Credentials {
 			Credentials(

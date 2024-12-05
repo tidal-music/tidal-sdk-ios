@@ -33,7 +33,8 @@ public struct AssetPlaybackMetadata: Equatable {
 		} else if formatFlags == kAppleLosslessFormatFlag_32BitSourceData {
 			bitDepth = 32
 		} else {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.assetPlaybackMetadataInitWithInvalidFormatFlags(formatFlags: String(describing: formatFlags)))
+			PlayerWorld.logger?
+				.log(loggable: PlayerLoggable.assetPlaybackMetadataInitWithInvalidFormatFlags(formatFlags: String(describing: formatFlags)))
 			return nil
 		}
 
