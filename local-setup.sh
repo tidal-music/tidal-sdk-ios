@@ -8,4 +8,15 @@ create_git_hooks() {
     echo "Done." >&2
 }
 
+configure_git_blame_ignore_revs() {
+    if [ -f ".git-blame-ignore-revs" ]; then
+        echo "Configuring git blame to ignore revisions listed in .git-blame-ignore-revs" >&2
+        git config blame.ignoreRevsFile .git-blame-ignore-revs
+        echo "Git blame configuration updated." >&2
+    else
+        echo ".git-blame-ignore-revs file not found. Skipping git blame configuration." >&2
+    fi
+}
+
 create_git_hooks
+configure_git_blame_ignore_revs

@@ -9,6 +9,16 @@ repos:
         alias: format
         entry: swiftformat --config ./.swiftformat
         stages: [pre-commit]
+  - repo: https://github.com/realm/SwiftLint
+    rev: 0.57.0
+    hooks:
+      - id: swiftlint
+        entry: swiftlint --config ./.swiftlint.yml --fix --quiet
+  - repo: https://github.com/realm/SwiftLint
+    rev: 0.57.0
+    hooks:
+      - id: swiftlint
+        entry: swiftlint --config ./.swiftlint.yml --strict --quiet
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.28.0
     hooks:
