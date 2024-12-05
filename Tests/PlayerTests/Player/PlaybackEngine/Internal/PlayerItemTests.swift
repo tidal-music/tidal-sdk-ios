@@ -481,7 +481,6 @@ final class PlayerItemTests: XCTestCase {
 
 	// MARK: - seek
 
-
 	func test_seek() {
 		// GIVEN
 		let playerItem = PlayerItem.mock(

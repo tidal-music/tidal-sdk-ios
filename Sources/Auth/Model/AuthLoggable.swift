@@ -63,25 +63,25 @@ extension AuthLoggable {
 
 		switch self {
 		case let .initializeDeviceLoginNetworkError(error),
-			let .finalizeLoginNetworkError(error),
-			let .finalizeDeviceLoginNetworkError(error),
-			let .getCredentialsUpgradeTokenNetworkError(error),
-			let .loadTokensFromStoreError(error):
+		     let .finalizeLoginNetworkError(error),
+		     let .finalizeDeviceLoginNetworkError(error),
+		     let .getCredentialsUpgradeTokenNetworkError(error),
+		     let .loadTokensFromStoreError(error):
 			metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 		case let .getCredentialsRefreshTokenNetworkError(error, previousSubstatus),
-			let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
+		     let .getCredentialsRefreshTokenWithClientCredentialsNetworkError(error, previousSubstatus):
 			metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 		case let .authLogout(reason, error, previousSubstatus):
 			metadata[Logger.Metadata.reasonKey] = "\(reason)"
-			if let error = error {
+			if let error {
 				metadata[Logger.Metadata.errorKey] = .string(.init(describing: error))
 			}
 			metadata[Self.metadataPreviousSubstatusKey] = "\(previousSubstatus ?? "nil")"
 		default:
 			break
 		}
-		
+
 		metadata[Logger.Metadata.codeKey] = .string(eventCode)
 
 		return metadata
@@ -95,11 +95,11 @@ extension AuthLoggable {
 			.error
 		}
 	}
-	
+
 	var source: String? {
 		"Auth"
 	}
-	
+
 	private var eventCode: String {
 		let intCode = switch self {
 		case .initializeDeviceLoginNetworkError:
@@ -129,7 +129,7 @@ extension AuthLoggable {
 		case .loadTokensFromStoreError:
 			13
 		}
-		
+
 		return intCode.description
 	}
 }

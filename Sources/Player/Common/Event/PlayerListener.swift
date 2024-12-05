@@ -19,7 +19,8 @@ public protocol PlayerListener: AnyObject {
 
 	func djSessionTransitioned(to transition: DJSessionTransition)
 
-	/// Called when the media services were reset. A chance for the client of the player to respond appropriately to mediaServicesWereResetNotification. More info about this issue:
+	/// Called when the media services were reset. A chance for the client of the player to respond appropriately to
+	/// mediaServicesWereResetNotification. More info about this issue:
 	/// https://developer.apple.com/documentation/avfaudio/avaudiosession/1616540-mediaserviceswereresetnotificati
 	/// - Important: This is a good time to set up the audio session again.
 	func mediaServicesWereReset()

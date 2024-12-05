@@ -32,6 +32,6 @@ public final class PlayerListenerMock: PlayerListener {
 	public func djSessionEnded(with reason: DJSessionEndReason) {}
 
 	public func djSessionTransitioned(to transition: DJSessionTransition) {}
-	
+
 	public func mediaServicesWereReset() {}
 }
