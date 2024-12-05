@@ -16,7 +16,9 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	private let featureFlagProvider: FeatureFlagProvider
 
 	private let queue: OperationQueue
+
 	private let assetFactory: AVURLAssetFactory
+	private let cacheStorage: CacheStorage?
 
 	@Atomic private var player: AVQueuePlayer
 	private var playerMonitor: AVPlayerMonitor?
@@ -55,14 +57,15 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	// MARK: Initialization
 
-	init(cachePath: URL, featureFlagProvider: FeatureFlagProvider) {
+	init(cachePath: URL, cacheStorage: CacheStorage?, featureFlagProvider: FeatureFlagProvider) {
+		self.cacheStorage = cacheStorage
 		self.featureFlagProvider = featureFlagProvider
 
 		queue = OperationQueue()
 		queue.maxConcurrentOperationCount = 1
 		queue.qualityOfService = .userInitiated
 
-		assetFactory = AVURLAssetFactory()
+		assetFactory = AVURLAssetFactory(cacheStorage: cacheStorage)
 		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
 
 		preparePlayer()

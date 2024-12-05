@@ -13,6 +13,7 @@ final class AVURLAssetFactory: NSObject {
 	private static let TTL: Int = 24 * 60 * 60
 
 	private let assetCache: AssetCache
+	private let cacheStorage: CacheStorage?
 
 	private var downloads: [Download] = [Download]()
 	private lazy var uuid: String = PlayerWorld.uuidProvider.uuidString()
@@ -26,13 +27,15 @@ final class AVURLAssetFactory: NSObject {
 	)
 
 	init(
-		assetCache: AssetCache = AssetCache()
+		assetCache: AssetCache = AssetCache(),
+		cacheStorage: CacheStorage?
 	) {
 		self.assetCache = assetCache
+		self.cacheStorage = cacheStorage
 	}
 
 	func get(with cacheKey: String?) -> AssetCacheState? {
-		guard let cacheKey else {
+		guard let cacheKey, let cacheStorage else {
 			return nil
 		}
 
@@ -41,7 +44,7 @@ final class AVURLAssetFactory: NSObject {
 		case .notCached:
 			return state
 		case let .cached(cachedURL: cachedURL):
-			guard cachedURL.isFileURL, FileManager.default.fileExists(atPath: cachedURL.path) else {
+			guard cachedURL.isFileURL, PlayerWorld.fileManagerClient.fileExists(atPath: cachedURL.path, isDirectory: nil) else {
 				assetCache.delete(cacheKey)
 				return AssetCacheState(key: cacheKey, status: .notCached)
 			}
@@ -71,7 +74,7 @@ final class AVURLAssetFactory: NSObject {
 	}
 
 	func clearCache() {
-		// TODO: This can't be implemented until we fully fix caching in a later PR
+		try? cacheStorage?.deleteAll()
 	}
 }
 

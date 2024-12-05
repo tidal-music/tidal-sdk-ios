@@ -40,7 +40,7 @@ public final class PlayerMock: GenericMediaPlayer {
 
 	public init() {}
 
-	public init(cachePath: URL, featureFlagProvider: FeatureFlagProvider) {}
+	public init(cachePath: URL, cacheStorage: CacheStorage?, featureFlagProvider: FeatureFlagProvider) {}
 
 	public func canPlay(
 		productType: PlayerProductType,

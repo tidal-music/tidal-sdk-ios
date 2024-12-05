@@ -86,6 +86,26 @@ extension GRDBCacheStorage: CacheStorage {
 		}
 	}
 
+	// MARK: - Delete All CacheEntries
+
+	func deleteAll() throws {
+		let contentURLs = try getAll().compactMap { $0.url }
+
+		_ = try dbQueue.write { db in
+			try CacheEntryGRDBEntity.deleteAll(db)
+		}
+
+		guard !contentURLs.isEmpty else {
+			return
+		}
+
+		SafeTask { [contentURLs] in
+			for url in contentURLs {
+				try? PlayerWorld.fileManagerClient.removeFile(url)
+			}
+		}
+	}
+
 	// MARK: - Update CacheEntry
 
 	func update(_ entry: CacheEntry) throws {
