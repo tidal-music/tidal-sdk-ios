@@ -1,7 +1,9 @@
 import Foundation
 #if canImport(AnyCodable)
-import AnyCodable
+	import AnyCodable
 #endif
+
+// MARK: - UserRecommendationsAPITidal
 
 /// This is a wrapper around `UserRecommendationsAPI` that uses the injected credentialsprovider
 /// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
@@ -12,76 +14,87 @@ import AnyCodable
 /// let dataDocument = try await UserRecommendationsAPITidal.getResource()
 /// ```
 public enum UserRecommendationsAPITidal {
-
-
-	/**
-     Get the current users recommendations
-     
-     - returns: UserRecommendationsSingleDataDocument
-     */
+	/// Get the current users recommendations
+	///
+	/// - returns: UserRecommendationsSingleDataDocument
 	public static func getMyUserRecommendations(include: [String]? = nil) async throws -> UserRecommendationsSingleDataDocument {
-		return try await RequestHelper.createRequest {
+		try await RequestHelper.createRequest {
 			UserRecommendationsAPI.getMyUserRecommendationsWithRequestBuilder(include: include)
 		}
 	}
 
-
-	/**
-     Get recommendations for users in batch
-     
-     - returns: UserRecommendationsMultiDataDocument
-     */
-	public static func getUserRecommendationsByFilters(include: [String]? = nil, filterId: [String]? = nil) async throws -> UserRecommendationsMultiDataDocument {
-		return try await RequestHelper.createRequest {
+	/// Get recommendations for users in batch
+	///
+	/// - returns: UserRecommendationsMultiDataDocument
+	public static func getUserRecommendationsByFilters(
+		include: [String]? = nil,
+		filterId: [String]? = nil
+	) async throws -> UserRecommendationsMultiDataDocument {
+		try await RequestHelper.createRequest {
 			UserRecommendationsAPI.getUserRecommendationsByFiltersWithRequestBuilder(include: include, filterId: filterId)
 		}
 	}
 
-
-	/**
-     Get user recommendations for user
-     
-     - returns: UserRecommendationsSingleDataDocument
-     */
-	public static func getUserRecommendationsById(id: String, include: [String]? = nil) async throws -> UserRecommendationsSingleDataDocument {
-		return try await RequestHelper.createRequest {
+	/// Get user recommendations for user
+	///
+	/// - returns: UserRecommendationsSingleDataDocument
+	public static func getUserRecommendationsById(
+		id: String,
+		include: [String]? = nil
+	) async throws -> UserRecommendationsSingleDataDocument {
+		try await RequestHelper.createRequest {
 			UserRecommendationsAPI.getUserRecommendationsByIdWithRequestBuilder(id: id, include: include)
 		}
 	}
 
-
-	/**
-     Relationship: discovery mixes
-     
-     - returns: UserRecommendationsMultiDataRelationshipDocument
-     */
-	public static func getUserRecommendationsDiscoveryMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
-		return try await RequestHelper.createRequest {
-			UserRecommendationsAPI.getUserRecommendationsDiscoveryMixesRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+	/// Relationship: discovery mixes
+	///
+	/// - returns: UserRecommendationsMultiDataRelationshipDocument
+	public static func getUserRecommendationsDiscoveryMixesRelationship(
+		id: String,
+		include: [String]? = nil,
+		pageCursor: String? = nil
+	) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+		try await RequestHelper.createRequest {
+			UserRecommendationsAPI.getUserRecommendationsDiscoveryMixesRelationshipWithRequestBuilder(
+				id: id,
+				include: include,
+				pageCursor: pageCursor
+			)
 		}
 	}
 
-
-	/**
-     Relationship: my mixes
-     
-     - returns: UserRecommendationsMultiDataRelationshipDocument
-     */
-	public static func getUserRecommendationsMyMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
-		return try await RequestHelper.createRequest {
-			UserRecommendationsAPI.getUserRecommendationsMyMixesRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+	/// Relationship: my mixes
+	///
+	/// - returns: UserRecommendationsMultiDataRelationshipDocument
+	public static func getUserRecommendationsMyMixesRelationship(
+		id: String,
+		include: [String]? = nil,
+		pageCursor: String? = nil
+	) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+		try await RequestHelper.createRequest {
+			UserRecommendationsAPI.getUserRecommendationsMyMixesRelationshipWithRequestBuilder(
+				id: id,
+				include: include,
+				pageCursor: pageCursor
+			)
 		}
 	}
 
-
-	/**
-     Relationship: new arrivals mixes
-     
-     - returns: UserRecommendationsMultiDataRelationshipDocument
-     */
-	public static func getUserRecommendationsNewArrivalMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
-		return try await RequestHelper.createRequest {
-			UserRecommendationsAPI.getUserRecommendationsNewArrivalMixesRelationshipWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+	/// Relationship: new arrivals mixes
+	///
+	/// - returns: UserRecommendationsMultiDataRelationshipDocument
+	public static func getUserRecommendationsNewArrivalMixesRelationship(
+		id: String,
+		include: [String]? = nil,
+		pageCursor: String? = nil
+	) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+		try await RequestHelper.createRequest {
+			UserRecommendationsAPI.getUserRecommendationsNewArrivalMixesRelationshipWithRequestBuilder(
+				id: id,
+				include: include,
+				pageCursor: pageCursor
+			)
 		}
 	}
 }

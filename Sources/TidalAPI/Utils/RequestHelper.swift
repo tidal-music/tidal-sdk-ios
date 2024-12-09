@@ -4,14 +4,14 @@ import Foundation
 
 enum RequestHelper {
 	private static var retries: [String: Int?] = [:]
-	
+
 	static func createRequest<T>(
 		requestBuilder: @escaping () async throws -> RequestBuilder<T>
 	) async throws -> T {
 		guard let credentialsProvider = OpenAPIClientAPI.credentialsProvider else {
 			throw TidalAPIError(message: "NO_CREDENTIALS_PROVIDER", url: "Not available")
 		}
-		
+
 		let credentials = try await credentialsProvider.getCredentials()
 		let requestBuilder = try await requestBuilder()
 		let requestURL = requestBuilder.URLString
@@ -27,7 +27,7 @@ enum RequestHelper {
 
 		let request = requestBuilder
 			.addHeader(name: "Authorization", value: "Bearer \(token)")
-		
+
 		do {
 			let result = try await request.execute().body
 			// Clear the retry count for the URL on success
@@ -43,20 +43,21 @@ enum RequestHelper {
 			throw TidalError(code: error.localizedDescription)
 		}
 	}
-	
+
 	static func handleErrorResult<T>(
 		_ error: ErrorResponse,
 		urlAttachedToError url: String,
 		requestBuilder: @escaping () async throws -> RequestBuilder<T>
 	) async throws -> T {
 		func getHttpSubStatus(data: Data?) -> Int? {
-			guard let data = data else {
+			guard let data else {
 				return nil
 			}
-			
+
 			do {
 				if let parsedObject = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any],
-					 let subStatus = parsedObject["subStatus"] as? Int {
+				   let subStatus = parsedObject["subStatus"] as? Int
+				{
 					return subStatus
 				}
 			} catch {
@@ -64,18 +65,18 @@ enum RequestHelper {
 			}
 			return nil
 		}
-		
+
 		let currentRetryCount = retries[url] ?? 0 // Default to 0 if nil
-		
+
 		guard let provider = OpenAPIClientAPI.credentialsProvider else {
 			throw TidalAPIError(message: "NO_CREDENTIALS_PROVIDER", url: url)
 		}
-		
+
 		switch error {
-		case .error(let statusCode, let data, _, _):
+		case let .error(statusCode, data, _, _):
 			if statusCode == 401 {
 				let subStatus = getHttpSubStatus(data: data)
-				
+
 				do {
 					_ = try await provider.getCredentials(apiErrorSubStatus: subStatus.flatMap(String.init))
 				} catch {
@@ -90,7 +91,7 @@ enum RequestHelper {
 						throw TidalAPIError(error: error, url: url)
 					}
 				}
-				
+
 				if subStatus != nil, OpenAPIClientAPI.credentialsProvider?.isUserLoggedIn == false {
 					throw TidalAPIError(
 						message: "User is not logged in",
@@ -99,7 +100,7 @@ enum RequestHelper {
 						subStatus: subStatus
 					)
 				}
-				
+
 				// Retry the async operation if the retry count is 0
 				if currentRetryCount == 0 {
 					retries[url] = 1 // Increment retry count to 1
@@ -108,7 +109,7 @@ enum RequestHelper {
 				}
 			}
 		}
-		
+
 		throw TidalAPIError(error: error, url: url) // Propagate the error if not handled or retried
 	}
 }

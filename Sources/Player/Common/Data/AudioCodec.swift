@@ -91,7 +91,7 @@ public enum AudioCodec: Equatable, Codable {
 			}
 			switch mode {
 			// We can't know the exact codec, but the client does not need it.
-			case AudioMode.DOLBY_ATMOS, AudioMode.SONY_360RA: 
+			case AudioMode.DOLBY_ATMOS, AudioMode.SONY_360RA:
 				PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithLowQualityAndUnsupportedMode(mode: mode.rawValue))
 				return nil
 			case AudioMode.STEREO: self = .HE_AAC_V1
