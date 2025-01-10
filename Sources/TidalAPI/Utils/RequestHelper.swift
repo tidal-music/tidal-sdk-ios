@@ -15,10 +15,7 @@ enum RequestHelper {
 		let credentials = try await credentialsProvider.getCredentials()
 		let requestBuilder = try await requestBuilder()
 		let requestURL = requestBuilder.URLString
-		guard
-			let token = credentials.token,
-			OpenAPIClientAPI.credentialsProvider?.isUserLoggedIn == true
-		else {
+		guard let token = credentials.token else {
 			throw TidalAPIError(
 				message: "NO_TOKEN",
 				url: requestURL
