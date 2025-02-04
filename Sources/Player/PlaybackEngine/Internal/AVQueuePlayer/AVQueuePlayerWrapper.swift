@@ -297,8 +297,10 @@ extension AVQueuePlayerWrapper: UCMediaPlayer {
 					"AVURLAssetHTTPHeaderFieldsKey": headers,
 				]
 
-				if #available(iOS 17.0, macOS 14.0, *) {
-					options[AVURLAssetOverrideMIMETypeKey] = "application/vnd.apple.mpegurl"
+				if !url.isFileURL {
+					if #available(iOS 17.0, macOS 14.0, *) {
+						options[AVURLAssetOverrideMIMETypeKey] = "application/vnd.apple.mpegurl"
+					}
 				}
 
 				let urlAsset = AVURLAsset(url: url, options: options)

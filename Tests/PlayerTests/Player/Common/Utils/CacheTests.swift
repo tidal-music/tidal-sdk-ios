@@ -76,10 +76,8 @@ extension CacheTests {
 		cache.set(key: key, data: data, timeToLiveSeconds: Constants.timeToLive)
 
 		// Set time to anything bigger than 1002ms (now 1002 - timestamp 1) to fake expiration (1000): 1001 > 1000.
-		Task.sleep
-		timestamp += 1000
+		timestamp = 1002
 
-		Match()
 		// WHEN
 		let response = cache.get(key: key)
 
