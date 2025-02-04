@@ -7,8 +7,8 @@ private enum Constants {
 	static let prefix = "cachetests"
 	static let timeToLive: Int = 1
 
-	static let key = "1".data(using: .utf8)!
-	static let data = "data".data(using: .utf8)!
+	static let key = Data("1".utf8)
+	static let data = Data("data".utf8)
 }
 
 // MARK: - CacheTests
@@ -71,13 +71,15 @@ extension CacheTests {
 
 	func test_get_whenTimeToLiveExpired_returnsNil() {
 		// GIVEN
-		let key = "ttl".data(using: .utf8)!
+		let key = Data("ttl".utf8)
 		let data = Constants.data
 		cache.set(key: key, data: data, timeToLiveSeconds: Constants.timeToLive)
 
 		// Set time to anything bigger than 1002ms (now 1002 - timestamp 1) to fake expiration (1000): 1001 > 1000.
-		timestamp = 1002
+		Task.sleep
+		timestamp += 1000
 
+		Match()
 		// WHEN
 		let response = cache.get(key: key)
 
@@ -89,7 +91,7 @@ extension CacheTests {
 
 	func test_get_whenItWasNotSet_returnsNil() {
 		// GIVEN
-		let key = "get".data(using: .utf8)!
+		let key = Data("get".utf8)
 
 		// WHEN
 		let response = cache.get(key: key)

@@ -78,6 +78,11 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		if productType == .VIDEO || productType == .BROADCAST {
 			return true
 		}
+
+		if case let .UC(url) = productType, url.isFileURL {
+			return true
+		}
+
 		guard let codec else {
 			return false
 		}
