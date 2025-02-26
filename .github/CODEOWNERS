@@ -1,18 +1,1 @@
-*    @tidal-music/tidal-eng-ios
-
-# Teams
-
-## Music Foundations
-
-### Player
-Sources/Player/ @tidal-music/mf-ios
-Tests/PlayerTests/ @tidal-music/mf-ios
-
-Sources/Auth/ @tidal-music/mf-ios
-Tests/AuthTests/ @tidal-music/mf-ios
-Sources/Common/ @tidal-music/mf-ios
-Tests/CommonTests/ @tidal-music/mf-ios
-Sources/EventProducer/ @tidal-music/mf-ios
-Tests/EventProducerTests/ @tidal-music/mf-ios
-Sources/Template/ @tidal-music/mf-ios
-Tests/TemplateTests/ @tidal-music/mf-ios
+* @tidal-music/tidal-eng-ios
