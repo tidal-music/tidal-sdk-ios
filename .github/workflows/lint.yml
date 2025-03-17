@@ -20,19 +20,29 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Get changed directories
-      id: changed-files
-      uses: tj-actions/changed-files@v44
-      with:
-        files: |
-          **/*.swift
-
-    - name: Run swiftlint on changed files
+    - name: Find modified Swift files and lint them
       run: |
-        files="${{ steps.changed-files.outputs.all_changed_files }}"
-        echo "Changed files: $files"
-        if [[ -z $files ]]; then
-          echo "No swift files were changed. Linter won't run"
-        else
-          ./bin/swiftlint/run-swiftlint.sh $files
+        BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
+        FEATURE_BRANCH="${{ github.event.pull_request.head.ref }}"
+
+        # Get list of changed Swift files as an array
+        modified_files=($(git diff --name-only origin/$BASE_BRANCH...$FEATURE_BRANCH -- '*.swift'))
+        readonly modified_files
+
+        if [ -z "$modified_files" ]; then
+            echo "No Swift files were changed. Linter won't run."
+            exit 0
         fi
+
+        files_argument=""
+        for i in "${modified_files[@]}"; do
+            files_argument="$files_argument $i"
+        done
+
+        echo "Base branch: $BASE_BRANCH"
+        echo "Feature branch: $FEATURE_BRANCH"
+        echo "Modified files: $files_argument"
+
+        # Run SwiftLint on the changed files
+        echo "Executing: ./bin/swiftlint/run-swiftlint.sh -i $files_argument"
+        ./bin/swiftlint/run-swiftlint.sh -i "$files_argument"
