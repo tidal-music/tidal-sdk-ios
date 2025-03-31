@@ -4,28 +4,29 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getMyUserEntitlements**](UserEntitlementsAPI.md#getmyuserentitlements) | **GET** /userEntitlements/me | Get the current users entitlements
-[**getUserEntitlementsById**](UserEntitlementsAPI.md#getuserentitlementsbyid) | **GET** /userEntitlements/{id} | Get user entitlements for user
+[**userEntitlementsGet**](UserEntitlementsAPI.md#userentitlementsget) | **GET** /userEntitlements | Get all userEntitlements
+[**userEntitlementsIdGet**](UserEntitlementsAPI.md#userentitlementsidget) | **GET** /userEntitlements/{id} | Get single userEntitlement
+[**userEntitlementsMeGet**](UserEntitlementsAPI.md#userentitlementsmeget) | **GET** /userEntitlements/me | Get current user&#39;s userEntitlement data
 
 
-# **getMyUserEntitlements**
+# **userEntitlementsGet**
 ```swift
-    open class func getMyUserEntitlements(include: [String]? = nil, completion: @escaping (_ data: UserEntitlementsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userEntitlementsGet(filterId: [String]? = nil, completion: @escaping (_ data: UserEntitlementsMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get the current users entitlements
+Get all userEntitlements
 
-Get the current users entitlements
+Retrieves all userEntitlement details by available filters or without (if applicable).
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned (optional)
+let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
 
-// Get the current users entitlements
-UserEntitlementsAPI.getMyUserEntitlements(include: include) { (response, error) in
+// Get all userEntitlements
+UserEntitlementsAPI.userEntitlementsGet(filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -41,11 +42,11 @@ UserEntitlementsAPI.getMyUserEntitlements(include: include) { (response, error) 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned | [optional] 
+ **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
 
 ### Return type
 
-[**UserEntitlementsSingleDataDocument**](UserEntitlementsSingleDataDocument.md)
+[**UserEntitlementsMultiDataDocument**](UserEntitlementsMultiDataDocument.md)
 
 ### Authorization
 
@@ -58,14 +59,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserEntitlementsById**
+# **userEntitlementsIdGet**
 ```swift
-    open class func getUserEntitlementsById(id: String, include: [String]? = nil, completion: @escaping (_ data: UserEntitlementsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userEntitlementsIdGet(id: String, completion: @escaping (_ data: UserEntitlementsSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get user entitlements for user
+Get single userEntitlement
 
-Get user entitlements for user
+Retrieves userEntitlement details by an unique id.
 
 ### Example
 ```swift
@@ -73,10 +74,9 @@ Get user entitlements for user
 import OpenAPIClient
 
 let id = "id_example" // String | User entitlements id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned (optional)
 
-// Get user entitlements for user
-UserEntitlementsAPI.getUserEntitlementsById(id: id, include: include) { (response, error) in
+// Get single userEntitlement
+UserEntitlementsAPI.userEntitlementsIdGet(id: id) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -93,7 +93,52 @@ UserEntitlementsAPI.getUserEntitlementsById(id: id, include: include) { (respons
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User entitlements id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned | [optional] 
+
+### Return type
+
+[**UserEntitlementsSingleDataDocument**](UserEntitlementsSingleDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userEntitlementsMeGet**
+```swift
+    open class func userEntitlementsMeGet(completion: @escaping (_ data: UserEntitlementsSingleDataDocument?, _ error: Error?) -> Void)
+```
+
+Get current user's userEntitlement data
+
+Retrieves current user's userEntitlement details.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+
+// Get current user's userEntitlement data
+UserEntitlementsAPI.userEntitlementsMeGet() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
 
 ### Return type
 

@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | [**TracksAttributes**](TracksAttributes.md) |  | [optional] 
-**relationships** | [**TracksRelationships**](TracksRelationships.md) |  | [optional] 
+**attributes** | [**UserPublicProfilesAttributes**](UserPublicProfilesAttributes.md) |  | [optional] 
+**relationships** | [**UserPublicProfilesRelationships**](UserPublicProfilesRelationships.md) |  | [optional] 
 **links** | [**Links**](Links.md) |  | [optional] 
 **id** | **String** | resource unique identifier | 
 **type** | **String** | resource unique type | 

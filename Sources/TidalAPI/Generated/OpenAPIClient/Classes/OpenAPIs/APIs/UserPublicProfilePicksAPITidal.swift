@@ -1,9 +1,7 @@
 import Foundation
 #if canImport(AnyCodable)
-	import AnyCodable
+import AnyCodable
 #endif
-
-// MARK: - UserPublicProfilePicksAPITidal
 
 /// This is a wrapper around `UserPublicProfilePicksAPI` that uses the injected credentialsprovider
 /// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
@@ -14,76 +12,64 @@ import Foundation
 /// let dataDocument = try await UserPublicProfilePicksAPITidal.getResource()
 /// ```
 public enum UserPublicProfilePicksAPITidal {
-	/// Get my picks
-	///
-	/// - returns: UserPublicProfilePicksMultiDataDocument
-	public static func getMyUserPublicProfilePicks(
-		locale: String,
-		include: [String]? = nil
-	) async throws -> UserPublicProfilePicksMultiDataDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilePicksAPI.getMyUserPublicProfilePicksWithRequestBuilder(locale: locale, include: include)
+
+
+	/**
+     Get all userPublicProfilePicks
+     
+     - returns: UserPublicProfilePicksMultiDataDocument
+     */
+	public static func userPublicProfilePicksGet(countryCode: String, locale: String, include: [String]? = nil, filterUserPublicProfileId: [String]? = nil, filterId: [String]? = nil) async throws -> UserPublicProfilePicksMultiDataDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilePicksAPI.userPublicProfilePicksGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include, filterUserPublicProfileId: filterUserPublicProfileId, filterId: filterId)
 		}
 	}
 
-	/// Relationship: item (read)
-	///
-	/// - returns: UserPublicProfilePicksSingletonDataRelationshipDocument
-	public static func getUserPublicProfilePickItemRelationship(
-		id: String,
-		locale: String,
-		include: [String]? = nil
-	) async throws -> UserPublicProfilePicksSingletonDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilePicksAPI.getUserPublicProfilePickItemRelationshipWithRequestBuilder(id: id, locale: locale, include: include)
+
+	/**
+     Relationship: item(read)
+     
+     - returns: UserPublicProfilePicksSingletonDataRelationshipDocument
+     */
+	public static func userPublicProfilePicksIdRelationshipsItemGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilePicksSingletonDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilePicksAPI.userPublicProfilePicksIdRelationshipsItemGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 
-	/// Relationship: user public profile
-	///
-	/// - returns: UserPublicProfilePicksSingletonDataRelationshipDocument
-	public static func getUserPublicProfilePickUserPublicProfileRelationship(
-		id: String,
-		include: [String]? = nil
-	) async throws -> UserPublicProfilePicksSingletonDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilePicksAPI.getUserPublicProfilePickUserPublicProfileRelationshipWithRequestBuilder(id: id, include: include)
+
+	/**
+     Relationship: item (create/update/delete)
+     
+     - returns: 
+     */
+	public static func userPublicProfilePicksIdRelationshipsItemPatch(updatePickRelationshipBody: UpdatePickRelationshipBody? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilePicksAPI.userPublicProfilePicksIdRelationshipsItemPatchWithRequestBuilder(updatePickRelationshipBody: updatePickRelationshipBody)
 		}
 	}
 
-	/// Get picks
-	///
-	/// - returns: UserPublicProfilePicksMultiDataDocument
-	public static func getUserPublicProfilePicksByFilters(
-		locale: String,
-		include: [String]? = nil,
-		filterId: [String]? = nil,
-		filterUserPublicProfileId: [String]? = nil
-	) async throws -> UserPublicProfilePicksMultiDataDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilePicksAPI.getUserPublicProfilePicksByFiltersWithRequestBuilder(
-				locale: locale,
-				include: include,
-				filterId: filterId,
-				filterUserPublicProfileId: filterUserPublicProfileId
-			)
+
+	/**
+     Relationship: userPublicProfile(read)
+     
+     - returns: UserPublicProfilePicksSingletonDataRelationshipDocument
+     */
+	public static func userPublicProfilePicksIdRelationshipsUserPublicProfileGet(id: String, include: [String]? = nil) async throws -> UserPublicProfilePicksSingletonDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilePicksAPI.userPublicProfilePicksIdRelationshipsUserPublicProfileGetWithRequestBuilder(id: id, include: include)
 		}
 	}
 
-	/// Relationship: item (update)
-	///
-	/// - returns: AnyCodable
-	public static func setUserPublicProfilePickItemRelationship(
-		id: String,
-		updatePickRelationshipBody: UpdatePickRelationshipBody,
-		include: [String]? = nil
-	) async throws -> AnyCodable {
-		try await RequestHelper.createRequest {
-			UserPublicProfilePicksAPI.setUserPublicProfilePickItemRelationshipWithRequestBuilder(
-				id: id,
-				updatePickRelationshipBody: updatePickRelationshipBody,
-				include: include
-			)
+
+	/**
+     Get current user&#39;s userPublicProfilePick data
+     
+     - returns: UserPublicProfilePicksMultiDataDocument
+     */
+	public static func userPublicProfilePicksMeGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserPublicProfilePicksMultiDataDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilePicksAPI.userPublicProfilePicksMeGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 }

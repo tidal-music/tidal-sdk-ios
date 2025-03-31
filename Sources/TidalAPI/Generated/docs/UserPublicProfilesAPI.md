@@ -4,35 +4,36 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getMyUserPublicProfile**](UserPublicProfilesAPI.md#getmyuserpublicprofile) | **GET** /userPublicProfiles/me | Get my user profile
-[**getUserPublicProfileById**](UserPublicProfilesAPI.md#getuserpublicprofilebyid) | **GET** /userPublicProfiles/{id} | Get user public profile by id
-[**getUserPublicProfileFollowersRelationship**](UserPublicProfilesAPI.md#getuserpublicprofilefollowersrelationship) | **GET** /userPublicProfiles/{id}/relationships/followers | Relationship: followers
-[**getUserPublicProfileFollowingRelationship**](UserPublicProfilesAPI.md#getuserpublicprofilefollowingrelationship) | **GET** /userPublicProfiles/{id}/relationships/following | Relationship: following
-[**getUserPublicProfilePublicPicksRelationship**](UserPublicProfilesAPI.md#getuserpublicprofilepublicpicksrelationship) | **GET** /userPublicProfiles/{id}/relationships/publicPicks | Relationship: picks
-[**getUserPublicProfilePublicPlaylistsRelationship**](UserPublicProfilesAPI.md#getuserpublicprofilepublicplaylistsrelationship) | **GET** /userPublicProfiles/{id}/relationships/publicPlaylists | Relationship: playlists
-[**getUserPublicProfilesByFilters**](UserPublicProfilesAPI.md#getuserpublicprofilesbyfilters) | **GET** /userPublicProfiles | Get user public profiles
-[**updateMyUserProfile**](UserPublicProfilesAPI.md#updatemyuserprofile) | **PATCH** /userPublicProfiles/{id} | Update user public profile
+[**userPublicProfilesGet**](UserPublicProfilesAPI.md#userpublicprofilesget) | **GET** /userPublicProfiles | Get all userPublicProfiles
+[**userPublicProfilesIdGet**](UserPublicProfilesAPI.md#userpublicprofilesidget) | **GET** /userPublicProfiles/{id} | Get single userPublicProfile
+[**userPublicProfilesIdPatch**](UserPublicProfilesAPI.md#userpublicprofilesidpatch) | **PATCH** /userPublicProfiles/{id} | Update single userPublicProfile
+[**userPublicProfilesIdRelationshipsFollowersGet**](UserPublicProfilesAPI.md#userpublicprofilesidrelationshipsfollowersget) | **GET** /userPublicProfiles/{id}/relationships/followers | Relationship: followers
+[**userPublicProfilesIdRelationshipsFollowingGet**](UserPublicProfilesAPI.md#userpublicprofilesidrelationshipsfollowingget) | **GET** /userPublicProfiles/{id}/relationships/following | Relationship: following
+[**userPublicProfilesIdRelationshipsPublicPicksGet**](UserPublicProfilesAPI.md#userpublicprofilesidrelationshipspublicpicksget) | **GET** /userPublicProfiles/{id}/relationships/publicPicks | Relationship: publicPicks
+[**userPublicProfilesIdRelationshipsPublicPlaylistsGet**](UserPublicProfilesAPI.md#userpublicprofilesidrelationshipspublicplaylistsget) | **GET** /userPublicProfiles/{id}/relationships/publicPlaylists | Relationship: publicPlaylists
+[**userPublicProfilesMeGet**](UserPublicProfilesAPI.md#userpublicprofilesmeget) | **GET** /userPublicProfiles/me | Get current user&#39;s userPublicProfile data
 
 
-# **getMyUserPublicProfile**
+# **userPublicProfilesGet**
 ```swift
-    open class func getMyUserPublicProfile(locale: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userPublicProfilesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get my user profile
+Get all userPublicProfiles
 
-Retrieve the logged-in user's public profile details.
+Retrieves all userPublicProfile details by available filters or without (if applicable).
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let locale = "locale_example" // String | Locale language tag (IETF BCP 47 Language Tag)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: publicPlaylists, publicPicks, followers, following (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: followers, following, publicPicks, publicPlaylists (optional)
+let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
 
-// Get my user profile
-UserPublicProfilesAPI.getMyUserPublicProfile(locale: locale, include: include) { (response, error) in
+// Get all userPublicProfiles
+UserPublicProfilesAPI.userPublicProfilesGet(countryCode: countryCode, include: include, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -48,16 +49,17 @@ UserPublicProfilesAPI.getMyUserPublicProfile(locale: locale, include: include) {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **locale** | **String** | Locale language tag (IETF BCP 47 Language Tag) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: publicPlaylists, publicPicks, followers, following | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: followers, following, publicPicks, publicPlaylists | [optional] 
+ **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
 
 ### Return type
 
-[**UserPublicProfilesSingleDataDocument**](UserPublicProfilesSingleDataDocument.md)
+[**UserPublicProfilesMultiDataDocument**](UserPublicProfilesMultiDataDocument.md)
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
@@ -66,26 +68,26 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserPublicProfileById**
+# **userPublicProfilesIdGet**
 ```swift
-    open class func getUserPublicProfileById(id: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userPublicProfilesIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get user public profile by id
+Get single userPublicProfile
 
-Retrieve user public profile details by TIDAL user id.
+Retrieves userPublicProfile details by an unique id.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL user id
-let locale = "locale_example" // String | Locale language tag (IETF BCP 47 Language Tag)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: publicPlaylists, publicPicks, followers, following (optional)
+let id = "id_example" // String | User profile id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: followers, following, publicPicks, publicPlaylists (optional)
 
-// Get user public profile by id
-UserPublicProfilesAPI.getUserPublicProfileById(id: id, locale: locale, include: include) { (response, error) in
+// Get single userPublicProfile
+UserPublicProfilesAPI.userPublicProfilesIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -101,9 +103,9 @@ UserPublicProfilesAPI.getUserPublicProfileById(id: id, locale: locale, include: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL user id | 
- **locale** | **String** | Locale language tag (IETF BCP 47 Language Tag) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: publicPlaylists, publicPicks, followers, following | [optional] 
+ **id** | **String** | User profile id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: followers, following, publicPicks, publicPlaylists | [optional] 
 
 ### Return type
 
@@ -111,7 +113,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
@@ -120,26 +122,76 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserPublicProfileFollowersRelationship**
+# **userPublicProfilesIdPatch**
 ```swift
-    open class func getUserPublicProfileFollowersRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userPublicProfilesIdPatch(updateUserProfileBody: UpdateUserProfileBody? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Update single userPublicProfile
+
+Updates the existing instance of userPublicProfile's resource.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let updateUserProfileBody = UpdateUserProfileBody(data: UpdateUserProfileBody_Data(id: "id_example", type: "type_example", attributes: UpdateUserProfileBody_Data_Attributes(handle: "handle_example", profileName: "profileName_example", externalLinks: [User_Public_Profiles_External_Link(href: "href_example", meta: User_Public_Profiles_External_Link_Meta(type: "type_example", handle: "handle_example"))]))) // UpdateUserProfileBody |  (optional)
+
+// Update single userPublicProfile
+UserPublicProfilesAPI.userPublicProfilesIdPatch(updateUserProfileBody: updateUserProfileBody) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **updateUserProfileBody** | [**UpdateUserProfileBody**](UpdateUserProfileBody.md) |  | [optional] 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userPublicProfilesIdRelationshipsFollowersGet**
+```swift
+    open class func userPublicProfilesIdRelationshipsFollowersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: followers
 
-Retrieve user's public followers
+Retrieves followers relationship details of the related userPublicProfile resource.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL user id
+let id = "id_example" // String | User profile id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: followers (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Relationship: followers
-UserPublicProfilesAPI.getUserPublicProfileFollowersRelationship(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+UserPublicProfilesAPI.userPublicProfilesIdRelationshipsFollowersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -155,7 +207,7 @@ UserPublicProfilesAPI.getUserPublicProfileFollowersRelationship(id: id, include:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL user id | 
+ **id** | **String** | User profile id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: followers | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -165,7 +217,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
@@ -174,26 +226,26 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserPublicProfileFollowingRelationship**
+# **userPublicProfilesIdRelationshipsFollowingGet**
 ```swift
-    open class func getUserPublicProfileFollowingRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userPublicProfilesIdRelationshipsFollowingGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Relationship: following
 
-Retrieve user's public followings
+Retrieves following relationship details of the related userPublicProfile resource.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL user id
+let id = "id_example" // String | User profile id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: following (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Relationship: following
-UserPublicProfilesAPI.getUserPublicProfileFollowingRelationship(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+UserPublicProfilesAPI.userPublicProfilesIdRelationshipsFollowingGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -209,7 +261,7 @@ UserPublicProfilesAPI.getUserPublicProfileFollowingRelationship(id: id, include:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL user id | 
+ **id** | **String** | User profile id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: following | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -219,7 +271,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
@@ -228,26 +280,28 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserPublicProfilePublicPicksRelationship**
+# **userPublicProfilesIdRelationshipsPublicPicksGet**
 ```swift
-    open class func getUserPublicProfilePublicPicksRelationship(id: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userPublicProfilesIdRelationshipsPublicPicksGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: picks
+Relationship: publicPicks
 
-Retrieve user's public picks.
+Retrieves publicPicks relationship details of the related userPublicProfile resource.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL user id
-let locale = "locale_example" // String | Locale language tag (IETF BCP 47 Language Tag)
+let id = "id_example" // String | User profile id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let locale = "locale_example" // String | BCP47 locale code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: publicPicks (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: picks
-UserPublicProfilesAPI.getUserPublicProfilePublicPicksRelationship(id: id, locale: locale, include: include) { (response, error) in
+// Relationship: publicPicks
+UserPublicProfilesAPI.userPublicProfilesIdRelationshipsPublicPicksGet(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -263,9 +317,11 @@ UserPublicProfilesAPI.getUserPublicProfilePublicPicksRelationship(id: id, locale
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL user id | 
- **locale** | **String** | Locale language tag (IETF BCP 47 Language Tag) | 
+ **id** | **String** | User profile id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **locale** | **String** | BCP47 locale code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: publicPicks | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 
@@ -273,7 +329,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
@@ -282,26 +338,27 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserPublicProfilePublicPlaylistsRelationship**
+# **userPublicProfilesIdRelationshipsPublicPlaylistsGet**
 ```swift
-    open class func getUserPublicProfilePublicPlaylistsRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userPublicProfilesIdRelationshipsPublicPlaylistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: playlists
+Relationship: publicPlaylists
 
-Retrieves user's public playlists.
+Retrieves publicPlaylists relationship details of the related userPublicProfile resource.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL user id
+let id = "id_example" // String | User profile id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: publicPlaylists (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: playlists
-UserPublicProfilesAPI.getUserPublicProfilePublicPlaylistsRelationship(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+// Relationship: publicPlaylists
+UserPublicProfilesAPI.userPublicProfilesIdRelationshipsPublicPlaylistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -317,7 +374,8 @@ UserPublicProfilesAPI.getUserPublicProfilePublicPlaylistsRelationship(id: id, in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL user id | 
+ **id** | **String** | User profile id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: publicPlaylists | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -327,7 +385,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
@@ -336,26 +394,25 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserPublicProfilesByFilters**
+# **userPublicProfilesMeGet**
 ```swift
-    open class func getUserPublicProfilesByFilters(locale: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesMultiDataDocument?, _ error: Error?) -> Void)
+    open class func userPublicProfilesMeGet(countryCode: String, include: [String]? = nil, completion: @escaping (_ data: UserPublicProfilesSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get user public profiles
+Get current user's userPublicProfile data
 
-Reads user public profile details by TIDAL user ids.
+Retrieves current user's userPublicProfile details.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let locale = "locale_example" // String | Locale language tag (IETF BCP 47 Language Tag)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: publicPlaylists, publicPicks, followers, following (optional)
-let filterId = ["inner_example"] // [String] | TIDAL user id (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: followers, following, publicPicks, publicPlaylists (optional)
 
-// Get user public profiles
-UserPublicProfilesAPI.getUserPublicProfilesByFilters(locale: locale, include: include, filterId: filterId) { (response, error) in
+// Get current user's userPublicProfile data
+UserPublicProfilesAPI.userPublicProfilesMeGet(countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -371,76 +428,21 @@ UserPublicProfilesAPI.getUserPublicProfilesByFilters(locale: locale, include: in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **locale** | **String** | Locale language tag (IETF BCP 47 Language Tag) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: publicPlaylists, publicPicks, followers, following | [optional] 
- **filterId** | [**[String]**](String.md) | TIDAL user id | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: followers, following, publicPicks, publicPlaylists | [optional] 
 
 ### Return type
 
-[**UserPublicProfilesMultiDataDocument**](UserPublicProfilesMultiDataDocument.md)
+[**UserPublicProfilesSingleDataDocument**](UserPublicProfilesSingleDataDocument.md)
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **updateMyUserProfile**
-```swift
-    open class func updateMyUserProfile(id: String, updateUserProfileBody: UpdateUserProfileBody, include: [String]? = nil, completion: @escaping (_ data: AnyCodable?, _ error: Error?) -> Void)
-```
-
-Update user public profile
-
-Update user public profile
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | ${public.usercontent.updateProfile.id.descr}
-let updateUserProfileBody = UpdateUserProfileBody(data: UpdateUserProfileBody_Data(attributes: UpdateUserProfileBody_Data_Attributes(handle: "handle_example", profileName: "profileName_example", externalLinks: [User_Public_Profiles_External_Link(href: "href_example", meta: User_Public_Profiles_External_Link_Meta(type: "type_example", handle: "handle_example"))]))) // UpdateUserProfileBody | 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned (optional)
-
-// Update user public profile
-UserPublicProfilesAPI.updateMyUserProfile(id: id, updateUserProfileBody: updateUserProfileBody, include: include) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | ${public.usercontent.updateProfile.id.descr} | 
- **updateUserProfileBody** | [**UpdateUserProfileBody**](UpdateUserProfileBody.md) |  | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned | [optional] 
-
-### Return type
-
-**AnyCodable**
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
-
-### HTTP request headers
-
- - **Content-Type**: application/vnd.api+json
- - **Accept**: application/vnd.api+json, */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

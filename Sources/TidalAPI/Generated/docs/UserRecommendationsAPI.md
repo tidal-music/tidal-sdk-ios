@@ -4,32 +4,33 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getMyUserRecommendations**](UserRecommendationsAPI.md#getmyuserrecommendations) | **GET** /userRecommendations/me | Get the current users recommendations
-[**getUserRecommendationsByFilters**](UserRecommendationsAPI.md#getuserrecommendationsbyfilters) | **GET** /userRecommendations | Get recommendations for users in batch
-[**getUserRecommendationsById**](UserRecommendationsAPI.md#getuserrecommendationsbyid) | **GET** /userRecommendations/{id} | Get user recommendations for user
-[**getUserRecommendationsDiscoveryMixesRelationship**](UserRecommendationsAPI.md#getuserrecommendationsdiscoverymixesrelationship) | **GET** /userRecommendations/{id}/relationships/discoveryMixes | Relationship: discovery mixes
-[**getUserRecommendationsMyMixesRelationship**](UserRecommendationsAPI.md#getuserrecommendationsmymixesrelationship) | **GET** /userRecommendations/{id}/relationships/myMixes | Relationship: my mixes
-[**getUserRecommendationsNewArrivalMixesRelationship**](UserRecommendationsAPI.md#getuserrecommendationsnewarrivalmixesrelationship) | **GET** /userRecommendations/{id}/relationships/newArrivalMixes | Relationship: new arrivals mixes
+[**userRecommendationsGet**](UserRecommendationsAPI.md#userrecommendationsget) | **GET** /userRecommendations | Get all userRecommendations
+[**userRecommendationsIdGet**](UserRecommendationsAPI.md#userrecommendationsidget) | **GET** /userRecommendations/{id} | Get single userRecommendation
+[**userRecommendationsIdRelationshipsDiscoveryMixesGet**](UserRecommendationsAPI.md#userrecommendationsidrelationshipsdiscoverymixesget) | **GET** /userRecommendations/{id}/relationships/discoveryMixes | Relationship: discoveryMixes
+[**userRecommendationsIdRelationshipsMyMixesGet**](UserRecommendationsAPI.md#userrecommendationsidrelationshipsmymixesget) | **GET** /userRecommendations/{id}/relationships/myMixes | Relationship: myMixes
+[**userRecommendationsIdRelationshipsNewArrivalMixesGet**](UserRecommendationsAPI.md#userrecommendationsidrelationshipsnewarrivalmixesget) | **GET** /userRecommendations/{id}/relationships/newArrivalMixes | Relationship: newArrivalMixes
+[**userRecommendationsMeGet**](UserRecommendationsAPI.md#userrecommendationsmeget) | **GET** /userRecommendations/me | Get current user&#39;s userRecommendation data
 
 
-# **getMyUserRecommendations**
+# **userRecommendationsGet**
 ```swift
-    open class func getMyUserRecommendations(include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsGet(include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get the current users recommendations
+Get all userRecommendations
 
-Get the current users recommendations
+Retrieves all userRecommendation details by available filters or without (if applicable).
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: myMixes, discoveryMixes, newArrivalMixes (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
+let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
 
-// Get the current users recommendations
-UserRecommendationsAPI.getMyUserRecommendations(include: include) { (response, error) in
+// Get all userRecommendations
+UserRecommendationsAPI.userRecommendationsGet(include: include, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,59 +46,8 @@ UserRecommendationsAPI.getMyUserRecommendations(include: include) { (response, e
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: myMixes, discoveryMixes, newArrivalMixes | [optional] 
-
-### Return type
-
-[**UserRecommendationsSingleDataDocument**](UserRecommendationsSingleDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **getUserRecommendationsByFilters**
-```swift
-    open class func getUserRecommendationsByFilters(include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataDocument?, _ error: Error?) -> Void)
-```
-
-Get recommendations for users in batch
-
-Get recommendations for users in batch
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: myMixes, discoveryMixes, newArrivalMixes (optional)
-let filterId = ["inner_example"] // [String] | User recommendations id (optional)
-
-// Get recommendations for users in batch
-UserRecommendationsAPI.getUserRecommendationsByFilters(include: include, filterId: filterId) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: myMixes, discoveryMixes, newArrivalMixes | [optional] 
- **filterId** | [**[String]**](String.md) | User recommendations id | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes | [optional] 
+ **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
 
 ### Return type
 
@@ -114,14 +64,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserRecommendationsById**
+# **userRecommendationsIdGet**
 ```swift
-    open class func getUserRecommendationsById(id: String, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get user recommendations for user
+Get single userRecommendation
 
-Get user recommendations for user
+Retrieves userRecommendation details by an unique id.
 
 ### Example
 ```swift
@@ -129,10 +79,10 @@ Get user recommendations for user
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendations id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: myMixes, discoveryMixes, newArrivalMixes (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
 
-// Get user recommendations for user
-UserRecommendationsAPI.getUserRecommendationsById(id: id, include: include) { (response, error) in
+// Get single userRecommendation
+UserRecommendationsAPI.userRecommendationsIdGet(id: id, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -149,7 +99,7 @@ UserRecommendationsAPI.getUserRecommendationsById(id: id, include: include) { (r
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendations id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: myMixes, discoveryMixes, newArrivalMixes | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes | [optional] 
 
 ### Return type
 
@@ -166,14 +116,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserRecommendationsDiscoveryMixesRelationship**
+# **userRecommendationsIdRelationshipsDiscoveryMixesGet**
 ```swift
-    open class func getUserRecommendationsDiscoveryMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: discovery mixes
+Relationship: discoveryMixes
 
-Get discovery mixes relationship
+Retrieves discoveryMixes relationship details of the related userRecommendation resource.
 
 ### Example
 ```swift
@@ -181,11 +131,12 @@ Get discovery mixes relationship
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendations id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: discovery mixes
-UserRecommendationsAPI.getUserRecommendationsDiscoveryMixesRelationship(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+// Relationship: discoveryMixes
+UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -202,6 +153,7 @@ UserRecommendationsAPI.getUserRecommendationsDiscoveryMixesRelationship(id: id, 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendations id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: discoveryMixes | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -220,14 +172,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserRecommendationsMyMixesRelationship**
+# **userRecommendationsIdRelationshipsMyMixesGet**
 ```swift
-    open class func getUserRecommendationsMyMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsMyMixesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: my mixes
+Relationship: myMixes
 
-Get my mixes relationship
+Retrieves myMixes relationship details of the related userRecommendation resource.
 
 ### Example
 ```swift
@@ -238,8 +190,8 @@ let id = "id_example" // String | User recommendations id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: my mixes
-UserRecommendationsAPI.getUserRecommendationsMyMixesRelationship(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+// Relationship: myMixes
+UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -274,14 +226,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getUserRecommendationsNewArrivalMixesRelationship**
+# **userRecommendationsIdRelationshipsNewArrivalMixesGet**
 ```swift
-    open class func getUserRecommendationsNewArrivalMixesRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: new arrivals mixes
+Relationship: newArrivalMixes
 
-Get new arrival mixes relationship
+Retrieves newArrivalMixes relationship details of the related userRecommendation resource.
 
 ### Example
 ```swift
@@ -289,11 +241,12 @@ Get new arrival mixes relationship
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendations id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: new arrivals mixes
-UserRecommendationsAPI.getUserRecommendationsNewArrivalMixesRelationship(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+// Relationship: newArrivalMixes
+UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -310,12 +263,63 @@ UserRecommendationsAPI.getUserRecommendationsNewArrivalMixesRelationship(id: id,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendations id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: newArrivalMixes | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 
 [**UserRecommendationsMultiDataRelationshipDocument**](UserRecommendationsMultiDataRelationshipDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userRecommendationsMeGet**
+```swift
+    open class func userRecommendationsMeGet(include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleDataDocument?, _ error: Error?) -> Void)
+```
+
+Get current user's userRecommendation data
+
+Retrieves current user's userRecommendation details.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
+
+// Get current user's userRecommendation data
+UserRecommendationsAPI.userRecommendationsMeGet(include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes | [optional] 
+
+### Return type
+
+[**UserRecommendationsSingleDataDocument**](UserRecommendationsSingleDataDocument.md)
 
 ### Authorization
 

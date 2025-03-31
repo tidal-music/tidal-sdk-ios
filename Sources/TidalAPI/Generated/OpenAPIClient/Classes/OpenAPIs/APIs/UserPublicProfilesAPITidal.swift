@@ -1,9 +1,7 @@
 import Foundation
 #if canImport(AnyCodable)
-	import AnyCodable
+import AnyCodable
 #endif
-
-// MARK: - UserPublicProfilesAPITidal
 
 /// This is a wrapper around `UserPublicProfilesAPI` that uses the injected credentialsprovider
 /// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
@@ -14,122 +12,100 @@ import Foundation
 /// let dataDocument = try await UserPublicProfilesAPITidal.getResource()
 /// ```
 public enum UserPublicProfilesAPITidal {
-	/// Get my user profile
-	///
-	/// - returns: UserPublicProfilesSingleDataDocument
-	public static func getMyUserPublicProfile(
-		locale: String,
-		include: [String]? = nil
-	) async throws -> UserPublicProfilesSingleDataDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilesAPI.getMyUserPublicProfileWithRequestBuilder(locale: locale, include: include)
+
+
+	/**
+     Get all userPublicProfiles
+     
+     - returns: UserPublicProfilesMultiDataDocument
+     */
+	public static func userPublicProfilesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> UserPublicProfilesMultiDataDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilesAPI.userPublicProfilesGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId)
 		}
 	}
 
-	/// Get user public profile by id
-	///
-	/// - returns: UserPublicProfilesSingleDataDocument
-	public static func getUserPublicProfileById(
-		id: String,
-		locale: String,
-		include: [String]? = nil
-	) async throws -> UserPublicProfilesSingleDataDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilesAPI.getUserPublicProfileByIdWithRequestBuilder(id: id, locale: locale, include: include)
+
+	/**
+     Get single userPublicProfile
+     
+     - returns: UserPublicProfilesSingleDataDocument
+     */
+	public static func userPublicProfilesIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> UserPublicProfilesSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilesAPI.userPublicProfilesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
 	}
 
-	/// Relationship: followers
-	///
-	/// - returns: UserPublicProfilesMultiDataRelationshipDocument
-	public static func getUserPublicProfileFollowersRelationship(
-		id: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilesAPI.getUserPublicProfileFollowersRelationshipWithRequestBuilder(
-				id: id,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+	/**
+     Update single userPublicProfile
+     
+     - returns: 
+     */
+	public static func userPublicProfilesIdPatch(updateUserProfileBody: UpdateUserProfileBody? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilesAPI.userPublicProfilesIdPatchWithRequestBuilder(updateUserProfileBody: updateUserProfileBody)
 		}
 	}
 
-	/// Relationship: following
-	///
-	/// - returns: UserPublicProfilesMultiDataRelationshipDocument
-	public static func getUserPublicProfileFollowingRelationship(
-		id: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilesAPI.getUserPublicProfileFollowingRelationshipWithRequestBuilder(
-				id: id,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+	/**
+     Relationship: followers
+     
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
+     */
+	public static func userPublicProfilesIdRelationshipsFollowersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilesAPI.userPublicProfilesIdRelationshipsFollowersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Relationship: picks
-	///
-	/// - returns: UserPublicProfilesMultiDataRelationshipDocument
-	public static func getUserPublicProfilePublicPicksRelationship(
-		id: String,
-		locale: String,
-		include: [String]? = nil
-	) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilesAPI.getUserPublicProfilePublicPicksRelationshipWithRequestBuilder(id: id, locale: locale, include: include)
+
+	/**
+     Relationship: following
+     
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
+     */
+	public static func userPublicProfilesIdRelationshipsFollowingGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilesAPI.userPublicProfilesIdRelationshipsFollowingGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Relationship: playlists
-	///
-	/// - returns: UserPublicProfilesMultiDataRelationshipDocument
-	public static func getUserPublicProfilePublicPlaylistsRelationship(
-		id: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilesAPI.getUserPublicProfilePublicPlaylistsRelationshipWithRequestBuilder(
-				id: id,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+	/**
+     Relationship: publicPicks
+     
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
+     */
+	public static func userPublicProfilesIdRelationshipsPublicPicksGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilesAPI.userPublicProfilesIdRelationshipsPublicPicksGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Get user public profiles
-	///
-	/// - returns: UserPublicProfilesMultiDataDocument
-	public static func getUserPublicProfilesByFilters(
-		locale: String,
-		include: [String]? = nil,
-		filterId: [String]? = nil
-	) async throws -> UserPublicProfilesMultiDataDocument {
-		try await RequestHelper.createRequest {
-			UserPublicProfilesAPI.getUserPublicProfilesByFiltersWithRequestBuilder(locale: locale, include: include, filterId: filterId)
+
+	/**
+     Relationship: publicPlaylists
+     
+     - returns: UserPublicProfilesMultiDataRelationshipDocument
+     */
+	public static func userPublicProfilesIdRelationshipsPublicPlaylistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserPublicProfilesMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilesAPI.userPublicProfilesIdRelationshipsPublicPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Update user public profile
-	///
-	/// - returns: AnyCodable
-	public static func updateMyUserProfile(
-		id: String,
-		updateUserProfileBody: UpdateUserProfileBody,
-		include: [String]? = nil
-	) async throws -> AnyCodable {
-		try await RequestHelper.createRequest {
-			UserPublicProfilesAPI.updateMyUserProfileWithRequestBuilder(
-				id: id,
-				updateUserProfileBody: updateUserProfileBody,
-				include: include
-			)
+
+	/**
+     Get current user&#39;s userPublicProfile data
+     
+     - returns: UserPublicProfilesSingleDataDocument
+     */
+	public static func userPublicProfilesMeGet(countryCode: String, include: [String]? = nil) async throws -> UserPublicProfilesSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			UserPublicProfilesAPI.userPublicProfilesMeGetWithRequestBuilder(countryCode: countryCode, include: include)
 		}
 	}
 }
