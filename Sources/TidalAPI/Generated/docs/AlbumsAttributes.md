@@ -3,21 +3,21 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**title** | **String** | Original title | 
+**title** | **String** | Album title | 
 **barcodeId** | **String** | Barcode id (EAN-13 or UPC-A) | 
 **numberOfVolumes** | **Int** | Number of volumes | 
-**numberOfItems** | **Int** | Number of album items | 
-**duration** | **String** | Duration (ISO-8601) | 
-**explicit** | **Bool** | Indicates whether an album consist of any explicit content | 
+**numberOfItems** | **Int** | Number of items in album | 
+**duration** | **String** | Duration (ISO 8601) | 
+**explicit** | **Bool** | Explicit content | 
 **releaseDate** | **Date** | Release date (ISO-8601) | [optional] 
-**copyright** | **String** | Copyright information | [optional] 
-**popularity** | **Double** | Album popularity (ranged in 0.00 ... 1.00). Conditionally visible | 
-**availability** | **[String]** | Defines an album availability e.g. for streaming, DJs, stems | [optional] 
+**copyright** | **String** | Copyright | [optional] 
+**popularity** | **Double** | Popularity (0.0 - 1.0) | 
+**availability** | **[String]** | Available usage for this album | [optional] 
 **mediaTags** | **[String]** |  | 
-**imageLinks** | [CatalogueItemImageLink] | Represents available links to, and metadata about, an album cover images | [optional] 
-**videoLinks** | [CatalogueItemVideoLink] | Represents available links to, and metadata about, an album cover videos | [optional] 
-**externalLinks** | [CatalogueItemExternalLink] | Represents available links to something that is related to an album resource, but external to the TIDAL API | [optional] 
-**type** | **String** | Album type, e.g. single, regular album, or extended play | 
+**imageLinks** | [ImageLink] | Album image links and metadata | [optional] 
+**videoLinks** | [VideoLink] | Album video links and metadata | [optional] 
+**externalLinks** | [ExternalLink] | Album links external to TIDAL API | [optional] 
+**type** | **String** | Album type | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

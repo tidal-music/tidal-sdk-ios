@@ -1,9 +1,7 @@
 import Foundation
 #if canImport(AnyCodable)
-	import AnyCodable
+import AnyCodable
 #endif
-
-// MARK: - UserEntitlementsAPITidal
 
 /// This is a wrapper around `UserEntitlementsAPI` that uses the injected credentialsprovider
 /// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
@@ -14,24 +12,16 @@ import Foundation
 /// let dataDocument = try await UserEntitlementsAPITidal.getResource()
 /// ```
 public enum UserEntitlementsAPITidal {
-	/// Get the current users entitlements
-	///
-	/// - returns: UserEntitlementsSingleDataDocument
-	public static func getMyUserEntitlements(include: [String]? = nil) async throws -> UserEntitlementsSingleDataDocument {
-		try await RequestHelper.createRequest {
-			UserEntitlementsAPI.getMyUserEntitlementsWithRequestBuilder(include: include)
-		}
-	}
 
-	/// Get user entitlements for user
-	///
-	/// - returns: UserEntitlementsSingleDataDocument
-	public static func getUserEntitlementsById(
-		id: String,
-		include: [String]? = nil
-	) async throws -> UserEntitlementsSingleDataDocument {
-		try await RequestHelper.createRequest {
-			UserEntitlementsAPI.getUserEntitlementsByIdWithRequestBuilder(id: id, include: include)
+
+	/**
+     Get single userEntitlement.
+     
+     - returns: UserEntitlementsSingleDataDocument
+     */
+	public static func userEntitlementsIdGet(id: String) async throws -> UserEntitlementsSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			UserEntitlementsAPI.userEntitlementsIdGetWithRequestBuilder(id: id)
 		}
 	}
 }

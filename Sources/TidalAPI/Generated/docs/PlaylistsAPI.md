@@ -4,32 +4,40 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getMyPlaylists**](PlaylistsAPI.md#getmyplaylists) | **GET** /playlists/me | Get current user&#39;s playlists
-[**getPlaylistById**](PlaylistsAPI.md#getplaylistbyid) | **GET** /playlists/{id} | Get single playlist
-[**getPlaylistItemsRelationship**](PlaylistsAPI.md#getplaylistitemsrelationship) | **GET** /playlists/{id}/relationships/items | Relationship: items
-[**getPlaylistOwnersRelationship**](PlaylistsAPI.md#getplaylistownersrelationship) | **GET** /playlists/{id}/relationships/owners | Relationship: owner
-[**getPlaylistsByFilters**](PlaylistsAPI.md#getplaylistsbyfilters) | **GET** /playlists | Get multiple playlists
+[**playlistsGet**](PlaylistsAPI.md#playlistsget) | **GET** /playlists | Get multiple playlists.
+[**playlistsIdDelete**](PlaylistsAPI.md#playlistsiddelete) | **DELETE** /playlists/{id} | Delete single playlist.
+[**playlistsIdGet**](PlaylistsAPI.md#playlistsidget) | **GET** /playlists/{id} | Get single playlist.
+[**playlistsIdPatch**](PlaylistsAPI.md#playlistsidpatch) | **PATCH** /playlists/{id} | Update single playlist.
+[**playlistsIdRelationshipsItemsDelete**](PlaylistsAPI.md#playlistsidrelationshipsitemsdelete) | **DELETE** /playlists/{id}/relationships/items | Delete from items relationship (\&quot;to-many\&quot;).
+[**playlistsIdRelationshipsItemsGet**](PlaylistsAPI.md#playlistsidrelationshipsitemsget) | **GET** /playlists/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
+[**playlistsIdRelationshipsItemsPatch**](PlaylistsAPI.md#playlistsidrelationshipsitemspatch) | **PATCH** /playlists/{id}/relationships/items | Update items relationship (\&quot;to-many\&quot;).
+[**playlistsIdRelationshipsItemsPost**](PlaylistsAPI.md#playlistsidrelationshipsitemspost) | **POST** /playlists/{id}/relationships/items | Add to items relationship (\&quot;to-many\&quot;).
+[**playlistsIdRelationshipsOwnersGet**](PlaylistsAPI.md#playlistsidrelationshipsownersget) | **GET** /playlists/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+[**playlistsMeGet**](PlaylistsAPI.md#playlistsmeget) | **GET** /playlists/me | Get current user&#39;s playlist(s).
+[**playlistsPost**](PlaylistsAPI.md#playlistspost) | **POST** /playlists | Create single playlist.
 
 
-# **getMyPlaylists**
+# **playlistsGet**
 ```swift
-    open class func getMyPlaylists(include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsGet(countryCode: String, locale: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get current user's playlists
+Get multiple playlists.
 
-Get my playlists
+Retrieves multiple playlists by available filters, or without if applicable.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let locale = "locale_example" // String | BCP47 locale code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let filterId = ["inner_example"] // [String] | Playlist id (optional)
 
-// Get current user's playlists
-PlaylistsAPI.getMyPlaylists(include: include, pageCursor: pageCursor) { (response, error) in
+// Get multiple playlists.
+PlaylistsAPI.playlistsGet(countryCode: countryCode, locale: locale, include: include, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,8 +53,10 @@ PlaylistsAPI.getMyPlaylists(include: include, pageCursor: pageCursor) { (respons
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **locale** | **String** | BCP47 locale code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **filterId** | [**[String]**](String.md) | Playlist id | [optional] 
 
 ### Return type
 
@@ -63,26 +73,24 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getPlaylistById**
+# **playlistsIdDelete**
 ```swift
-    open class func getPlaylistById(countryCode: String, id: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdDelete(id: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
-Get single playlist
+Delete single playlist.
 
-Get playlist by id
+Deletes existing playlist.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | Country code (ISO 3166-1 alpha-2)
-let id = "id_example" // String | TIDAL playlist id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+let id = "id_example" // String | Playlist id
 
-// Get single playlist
-PlaylistsAPI.getPlaylistById(countryCode: countryCode, id: id, include: include) { (response, error) in
+// Delete single playlist.
+PlaylistsAPI.playlistsIdDelete(id: id) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -98,8 +106,62 @@ PlaylistsAPI.getPlaylistById(countryCode: countryCode, id: id, include: include)
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | Country code (ISO 3166-1 alpha-2) | 
- **id** | **String** | TIDAL playlist id | 
+ **id** | **String** | Playlist id | 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **playlistsIdGet**
+```swift
+    open class func playlistsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsSingleDataDocument?, _ error: Error?) -> Void)
+```
+
+Get single playlist.
+
+Retrieves single playlist by id.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Playlist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let locale = "locale_example" // String | BCP47 locale code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+
+// Get single playlist.
+PlaylistsAPI.playlistsIdGet(id: id, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Playlist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **locale** | **String** | BCP47 locale code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
 
 ### Return type
@@ -117,27 +179,25 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getPlaylistItemsRelationship**
+# **playlistsIdPatch**
 ```swift
-    open class func getPlaylistItemsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdPatch(id: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
-Relationship: items
+Update single playlist.
 
-Get playlist items
+Updates existing playlist.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL playlist id
-let countryCode = "countryCode_example" // String | Country code (ISO 3166-1 alpha-2)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let id = "id_example" // String | Playlist id
+let playlistUpdateOperationPayload = PlaylistUpdateOperation_Payload(data: PlaylistUpdateOperation_Payload_Data(id: "id_example", type: "type_example", attributes: PlaylistUpdateOperation_Payload_Data_Attributes(name: "name_example", description: "description_example", privacy: "privacy_example"))) // PlaylistUpdateOperationPayload |  (optional)
 
-// Relationship: items
-PlaylistsAPI.getPlaylistItemsRelationship(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Update single playlist.
+PlaylistsAPI.playlistsIdPatch(id: id, playlistUpdateOperationPayload: playlistUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -153,9 +213,277 @@ PlaylistsAPI.getPlaylistItemsRelationship(id: id, countryCode: countryCode, incl
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL playlist id | 
- **countryCode** | **String** | Country code (ISO 3166-1 alpha-2) | 
+ **id** | **String** | Playlist id | 
+ **playlistUpdateOperationPayload** | [**PlaylistUpdateOperationPayload**](PlaylistUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **playlistsIdRelationshipsItemsDelete**
+```swift
+    open class func playlistsIdRelationshipsItemsDelete(id: String, playlistItemsRelationshipRemoveOperationPayload: PlaylistItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Delete from items relationship (\"to-many\").
+
+Deletes item(s) from items relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Playlist id
+let playlistItemsRelationshipRemoveOperationPayload = PlaylistItemsRelationshipRemoveOperation_Payload(data: [PlaylistItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example", meta: PlaylistItemsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"))]) // PlaylistItemsRelationshipRemoveOperationPayload |  (optional)
+
+// Delete from items relationship (\"to-many\").
+PlaylistsAPI.playlistsIdRelationshipsItemsDelete(id: id, playlistItemsRelationshipRemoveOperationPayload: playlistItemsRelationshipRemoveOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Playlist id | 
+ **playlistItemsRelationshipRemoveOperationPayload** | [**PlaylistItemsRelationshipRemoveOperationPayload**](PlaylistItemsRelationshipRemoveOperationPayload.md) |  | [optional] 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **playlistsIdRelationshipsItemsGet**
+```swift
+    open class func playlistsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: PlaylistsItemsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+```
+
+Get items relationship (\"to-many\").
+
+Retrieves items relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Playlist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+
+// Get items relationship (\"to-many\").
+PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Playlist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+
+### Return type
+
+[**PlaylistsItemsMultiDataRelationshipDocument**](PlaylistsItemsMultiDataRelationshipDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **playlistsIdRelationshipsItemsPatch**
+```swift
+    open class func playlistsIdRelationshipsItemsPatch(id: String, playlistItemsRelationshipReorderOperationPayload: PlaylistItemsRelationshipReorderOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Update items relationship (\"to-many\").
+
+Updates items relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Playlist id
+let playlistItemsRelationshipReorderOperationPayload = PlaylistItemsRelationshipReorderOperation_Payload(data: [PlaylistItemsRelationshipReorderOperation_Payload_Data(id: "id_example", type: "type_example", meta: PlaylistItemsRelationshipReorderOperation_Payload_Data_Meta(itemId: "itemId_example"))], meta: PlaylistItemsRelationshipReorderOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistItemsRelationshipReorderOperationPayload |  (optional)
+
+// Update items relationship (\"to-many\").
+PlaylistsAPI.playlistsIdRelationshipsItemsPatch(id: id, playlistItemsRelationshipReorderOperationPayload: playlistItemsRelationshipReorderOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Playlist id | 
+ **playlistItemsRelationshipReorderOperationPayload** | [**PlaylistItemsRelationshipReorderOperationPayload**](PlaylistItemsRelationshipReorderOperationPayload.md) |  | [optional] 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **playlistsIdRelationshipsItemsPost**
+```swift
+    open class func playlistsIdRelationshipsItemsPost(id: String, countryCode: String, playlistItemsRelationshipAddOperationPayload: PlaylistItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Add to items relationship (\"to-many\").
+
+Adds item(s) to items relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Playlist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let playlistItemsRelationshipAddOperationPayload = PlaylistItemsRelationshipAddOperation_Payload(data: [PlaylistItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlaylistItemsRelationshipAddOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistItemsRelationshipAddOperationPayload |  (optional)
+
+// Add to items relationship (\"to-many\").
+PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, countryCode: countryCode, playlistItemsRelationshipAddOperationPayload: playlistItemsRelationshipAddOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Playlist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **playlistItemsRelationshipAddOperationPayload** | [**PlaylistItemsRelationshipAddOperationPayload**](PlaylistItemsRelationshipAddOperationPayload.md) |  | [optional] 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **playlistsIdRelationshipsOwnersGet**
+```swift
+    open class func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+```
+
+Get owners relationship (\"to-many\").
+
+Retrieves owners relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Playlist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get owners relationship (\"to-many\").
+PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Playlist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
@@ -173,26 +501,26 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getPlaylistOwnersRelationship**
+# **playlistsMeGet**
 ```swift
-    open class func getPlaylistOwnersRelationship(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func playlistsMeGet(countryCode: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: owner
+Get current user's playlist(s).
 
-Get playlist owner
+Retrieves current user's playlist(s).
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL playlist id
-let countryCode = "countryCode_example" // String | Country code (ISO 3166-1 alpha-2)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let locale = "locale_example" // String | BCP47 locale code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
 
-// Relationship: owner
-PlaylistsAPI.getPlaylistOwnersRelationship(id: id, countryCode: countryCode, include: include) { (response, error) in
+// Get current user's playlist(s).
+PlaylistsAPI.playlistsMeGet(countryCode: countryCode, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -208,17 +536,17 @@ PlaylistsAPI.getPlaylistOwnersRelationship(id: id, countryCode: countryCode, inc
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL playlist id | 
- **countryCode** | **String** | Country code (ISO 3166-1 alpha-2) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **locale** | **String** | BCP47 locale code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
 
 ### Return type
 
-[**PlaylistsMultiDataRelationshipDocument**](PlaylistsMultiDataRelationshipDocument.md)
+[**PlaylistsMultiDataDocument**](PlaylistsMultiDataDocument.md)
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
@@ -227,26 +555,26 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getPlaylistsByFilters**
+# **playlistsPost**
 ```swift
-    open class func getPlaylistsByFilters(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsPost(countryCode: String, locale: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil, completion: @escaping (_ data: PlaylistsSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get multiple playlists
+Create single playlist.
 
-Get user playlists
+Creates a new playlist.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | Country code (ISO 3166-1 alpha-2)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-let filterId = ["inner_example"] // [String] | public.usercontent.getPlaylists.ids.descr (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let locale = "locale_example" // String | BCP47 locale code
+let playlistCreateOperationPayload = PlaylistCreateOperation_Payload(data: PlaylistCreateOperation_Payload_Data(type: "type_example", attributes: PlaylistCreateOperation_Payload_Data_Attributes(name: "name_example", description: "description_example", privacy: "privacy_example"))) // PlaylistCreateOperationPayload |  (optional)
 
-// Get multiple playlists
-PlaylistsAPI.getPlaylistsByFilters(countryCode: countryCode, include: include, filterId: filterId) { (response, error) in
+// Create single playlist.
+PlaylistsAPI.playlistsPost(countryCode: countryCode, locale: locale, playlistCreateOperationPayload: playlistCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -262,22 +590,22 @@ PlaylistsAPI.getPlaylistsByFilters(countryCode: countryCode, include: include, f
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | Country code (ISO 3166-1 alpha-2) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
- **filterId** | [**[String]**](String.md) | public.usercontent.getPlaylists.ids.descr | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **locale** | **String** | BCP47 locale code | 
+ **playlistCreateOperationPayload** | [**PlaylistCreateOperationPayload**](PlaylistCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
-[**PlaylistsMultiDataDocument**](PlaylistsMultiDataDocument.md)
+[**PlaylistsSingleDataDocument**](PlaylistsSingleDataDocument.md)
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json, */*
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

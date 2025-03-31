@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **emailVerified** | **Bool** | Is the email verified | [optional] 
 **firstName** | **String** | Users first name | [optional] 
 **lastName** | **String** | Users last name | [optional] 
+**nostrPublicKey** | **String** | Users nostr public key | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

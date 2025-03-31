@@ -4,29 +4,28 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getProviderById**](ProvidersAPI.md#getproviderbyid) | **GET** /providers/{id} | Get single provider
-[**getProvidersByFilters**](ProvidersAPI.md#getprovidersbyfilters) | **GET** /providers | Get multiple providers
+[**providersGet**](ProvidersAPI.md#providersget) | **GET** /providers | Get multiple providers.
+[**providersIdGet**](ProvidersAPI.md#providersidget) | **GET** /providers/{id} | Get single provider.
 
 
-# **getProviderById**
+# **providersGet**
 ```swift
-    open class func getProviderById(id: String, include: [String]? = nil, completion: @escaping (_ data: ProvidersSingleDataDocument?, _ error: Error?) -> Void)
+    open class func providersGet(filterId: [String]? = nil, completion: @escaping (_ data: ProvidersMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get single provider
+Get multiple providers.
 
-Retrieve provider details by TIDAL provider id.
+Retrieves multiple providers by available filters, or without if applicable.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL provider id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned (optional)
+let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
 
-// Get single provider
-ProvidersAPI.getProviderById(id: id, include: include) { (response, error) in
+// Get multiple providers.
+ProvidersAPI.providersGet(filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -42,12 +41,11 @@ ProvidersAPI.getProviderById(id: id, include: include) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL provider id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned | [optional] 
+ **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
 
 ### Return type
 
-[**ProvidersSingleDataDocument**](ProvidersSingleDataDocument.md)
+[**ProvidersMultiDataDocument**](ProvidersMultiDataDocument.md)
 
 ### Authorization
 
@@ -60,25 +58,24 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getProvidersByFilters**
+# **providersIdGet**
 ```swift
-    open class func getProvidersByFilters(include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ProvidersMultiDataDocument?, _ error: Error?) -> Void)
+    open class func providersIdGet(id: String, completion: @escaping (_ data: ProvidersSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get multiple providers
+Get single provider.
 
-Retrieve multiple provider details.
+Retrieves single provider by id.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned (optional)
-let filterId = ["inner_example"] // [String] | provider id (optional)
+let id = "id_example" // String | Provider id
 
-// Get multiple providers
-ProvidersAPI.getProvidersByFilters(include: include, filterId: filterId) { (response, error) in
+// Get single provider.
+ProvidersAPI.providersIdGet(id: id) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -94,12 +91,11 @@ ProvidersAPI.getProvidersByFilters(include: include, filterId: filterId) { (resp
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned | [optional] 
- **filterId** | [**[String]**](String.md) | provider id | [optional] 
+ **id** | **String** | Provider id | 
 
 ### Return type
 
-[**ProvidersMultiDataDocument**](ProvidersMultiDataDocument.md)
+[**ProvidersSingleDataDocument**](ProvidersSingleDataDocument.md)
 
 ### Authorization
 

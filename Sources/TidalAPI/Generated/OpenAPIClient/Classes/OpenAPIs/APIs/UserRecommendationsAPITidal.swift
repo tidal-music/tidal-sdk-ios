@@ -1,9 +1,7 @@
 import Foundation
 #if canImport(AnyCodable)
-	import AnyCodable
+import AnyCodable
 #endif
-
-// MARK: - UserRecommendationsAPITidal
 
 /// This is a wrapper around `UserRecommendationsAPI` that uses the injected credentialsprovider
 /// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
@@ -14,87 +12,64 @@ import Foundation
 /// let dataDocument = try await UserRecommendationsAPITidal.getResource()
 /// ```
 public enum UserRecommendationsAPITidal {
-	/// Get the current users recommendations
-	///
-	/// - returns: UserRecommendationsSingleDataDocument
-	public static func getMyUserRecommendations(include: [String]? = nil) async throws -> UserRecommendationsSingleDataDocument {
-		try await RequestHelper.createRequest {
-			UserRecommendationsAPI.getMyUserRecommendationsWithRequestBuilder(include: include)
+
+
+	/**
+     Get single userRecommendation.
+     
+     - returns: UserRecommendationsSingleDataDocument
+     */
+	public static func userRecommendationsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			UserRecommendationsAPI.userRecommendationsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 
-	/// Get recommendations for users in batch
-	///
-	/// - returns: UserRecommendationsMultiDataDocument
-	public static func getUserRecommendationsByFilters(
-		include: [String]? = nil,
-		filterId: [String]? = nil
-	) async throws -> UserRecommendationsMultiDataDocument {
-		try await RequestHelper.createRequest {
-			UserRecommendationsAPI.getUserRecommendationsByFiltersWithRequestBuilder(include: include, filterId: filterId)
+
+	/**
+     Get discoveryMixes relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserRecommendationsMultiDataRelationshipDocument
+     */
+	public static func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Get user recommendations for user
-	///
-	/// - returns: UserRecommendationsSingleDataDocument
-	public static func getUserRecommendationsById(
-		id: String,
-		include: [String]? = nil
-	) async throws -> UserRecommendationsSingleDataDocument {
-		try await RequestHelper.createRequest {
-			UserRecommendationsAPI.getUserRecommendationsByIdWithRequestBuilder(id: id, include: include)
+
+	/**
+     Get myMixes relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserRecommendationsMultiDataRelationshipDocument
+     */
+	public static func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Relationship: discovery mixes
-	///
-	/// - returns: UserRecommendationsMultiDataRelationshipDocument
-	public static func getUserRecommendationsDiscoveryMixesRelationship(
-		id: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> UserRecommendationsMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			UserRecommendationsAPI.getUserRecommendationsDiscoveryMixesRelationshipWithRequestBuilder(
-				id: id,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+	/**
+     Get newArrivalMixes relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserRecommendationsMultiDataRelationshipDocument
+     */
+	public static func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Relationship: my mixes
-	///
-	/// - returns: UserRecommendationsMultiDataRelationshipDocument
-	public static func getUserRecommendationsMyMixesRelationship(
-		id: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> UserRecommendationsMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			UserRecommendationsAPI.getUserRecommendationsMyMixesRelationshipWithRequestBuilder(
-				id: id,
-				include: include,
-				pageCursor: pageCursor
-			)
-		}
-	}
 
-	/// Relationship: new arrivals mixes
-	///
-	/// - returns: UserRecommendationsMultiDataRelationshipDocument
-	public static func getUserRecommendationsNewArrivalMixesRelationship(
-		id: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> UserRecommendationsMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			UserRecommendationsAPI.getUserRecommendationsNewArrivalMixesRelationshipWithRequestBuilder(
-				id: id,
-				include: include,
-				pageCursor: pageCursor
-			)
+	/**
+     Get current user&#39;s userRecommendation(s).
+     
+     - returns: UserRecommendationsSingleDataDocument
+     */
+	public static func userRecommendationsMeGet(countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			UserRecommendationsAPI.userRecommendationsMeGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 }
