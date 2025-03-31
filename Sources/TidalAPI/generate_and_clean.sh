@@ -28,6 +28,7 @@ for json_file in "$input_dir"/*.json; do
     -g swift5 \
     -o "$output_dir" \
     -c Config/openapi-config.yml \
+    --skip-validate-spec
     
   # Step 5: Remove the unwanted files
   rm -f "$output_dir/Package.swift"
@@ -37,7 +38,7 @@ for json_file in "$input_dir"/*.json; do
   rm -f "$output_dir/OpenAPIClient.podspec"
   rm -f "$output_dir/.swiftformat"
   rm -f "$output_dir/.gitignore"
-  rm -f "$output_dir/.openapi-generator"
+  rm -rf "$output_dir/.openapi-generator"
   rm -f "$output_dir/.openapi-generator-ignore"
 
   echo "Generation and cleanup completed successfully for $(basename "$json_file")."
