@@ -10,10 +10,12 @@ mkdir -p "$input_dir"
 
 # Step 2: Download the JSON files and save them in the input directory
 echo "Dowloading API specs from developer.tidal.com"
-curl -o "$input_dir/tidal-catalog-v2-openapi-3.0.json" https://developer.tidal.com/apiref/api-specifications/api-public-catalogue-jsonapi/tidal-catalog-v2-openapi-3.0.json
-curl -o "$input_dir/tidal-search-v2-openapi-3.0.json" https://developer.tidal.com/apiref/api-specifications/api-public-search-jsonapi/tidal-search-v2-openapi-3.0.json
-curl -o "$input_dir/tidal-user-v2-openapi-3.0.json" https://developer.tidal.com/apiref/api-specifications/api-public-user-jsonapi/tidal-user-v2-openapi-3.0.json
-curl -o "$input_dir/tidal-user-content-openapi-3.0.json" https://developer.tidal.com/apiref/api-specifications/api-public-user-content/tidal-user-content-openapi-3.0.json
+
+curl -o "$input_dir/tidal-api-oas-prod.json" https://developer.tidal.com/specs/tidal/tidal-api/tidal-api-oas-prod.json
+#curl -o "$input_dir/tidal-catalog-v2-openapi-3.0.json" https://developer.tidal.com/apiref/api-specifications/api-public-catalogue-jsonapi/tidal-catalog-v2-openapi-3.0.json
+#curl -o "$input_dir/tidal-search-v2-openapi-3.0.json" https://developer.tidal.com/apiref/api-specifications/api-public-search-jsonapi/tidal-search-v2-openapi-3.0.json
+#curl -o "$input_dir/tidal-user-v2-openapi-3.0.json" https://developer.tidal.com/apiref/api-specifications/api-public-user-jsonapi/tidal-user-v2-openapi-3.0.json
+#curl -o "$input_dir/tidal-user-content-openapi-3.0.json" https://developer.tidal.com/apiref/api-specifications/api-public-user-content/tidal-user-content-openapi-3.0.json
 
 # Step 3: Clear the contents of the output directory
 echo "Clear the contents of the output directory"
