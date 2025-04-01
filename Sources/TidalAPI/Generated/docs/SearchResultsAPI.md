@@ -1,39 +1,38 @@
-# SearchResultsAPI
+# SearchresultsAPI
 
 All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getSearchResultsAlbumsRelationship**](SearchResultsAPI.md#getsearchresultsalbumsrelationship) | **GET** /searchresults/{query}/relationships/albums | Relationship: albums
-[**getSearchResultsArtistsRelationship**](SearchResultsAPI.md#getsearchresultsartistsrelationship) | **GET** /searchresults/{query}/relationships/artists | Relationship: artists
-[**getSearchResultsByQuery**](SearchResultsAPI.md#getsearchresultsbyquery) | **GET** /searchresults/{query} | Search for music metadata by a query
-[**getSearchResultsPlaylistsRelationship**](SearchResultsAPI.md#getsearchresultsplaylistsrelationship) | **GET** /searchresults/{query}/relationships/playlists | Relationship: playlists
-[**getSearchResultsTopHitsRelationship**](SearchResultsAPI.md#getsearchresultstophitsrelationship) | **GET** /searchresults/{query}/relationships/topHits | Relationship: topHits
-[**getSearchResultsTracksRelationship**](SearchResultsAPI.md#getsearchresultstracksrelationship) | **GET** /searchresults/{query}/relationships/tracks | Relationship: tracks
-[**getSearchResultsVideosRelationship**](SearchResultsAPI.md#getsearchresultsvideosrelationship) | **GET** /searchresults/{query}/relationships/videos | Relationship: videos
+[**searchresultsIdGet**](SearchresultsAPI.md#searchresultsidget) | **GET** /searchresults/{id} | Get single searchresult.
+[**searchresultsIdRelationshipsAlbumsGet**](SearchresultsAPI.md#searchresultsidrelationshipsalbumsget) | **GET** /searchresults/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
+[**searchresultsIdRelationshipsArtistsGet**](SearchresultsAPI.md#searchresultsidrelationshipsartistsget) | **GET** /searchresults/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
+[**searchresultsIdRelationshipsPlaylistsGet**](SearchresultsAPI.md#searchresultsidrelationshipsplaylistsget) | **GET** /searchresults/{id}/relationships/playlists | Get playlists relationship (\&quot;to-many\&quot;).
+[**searchresultsIdRelationshipsTopHitsGet**](SearchresultsAPI.md#searchresultsidrelationshipstophitsget) | **GET** /searchresults/{id}/relationships/topHits | Get topHits relationship (\&quot;to-many\&quot;).
+[**searchresultsIdRelationshipsTracksGet**](SearchresultsAPI.md#searchresultsidrelationshipstracksget) | **GET** /searchresults/{id}/relationships/tracks | Get tracks relationship (\&quot;to-many\&quot;).
+[**searchresultsIdRelationshipsVideosGet**](SearchresultsAPI.md#searchresultsidrelationshipsvideosget) | **GET** /searchresults/{id}/relationships/videos | Get videos relationship (\&quot;to-many\&quot;).
 
 
-# **getSearchResultsAlbumsRelationship**
+# **searchresultsIdGet**
 ```swift
-    open class func getSearchResultsAlbumsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func searchresultsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: SearchresultsSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: albums
+Get single searchresult.
 
-Search for albums by a query.
+Retrieves single searchresult by id.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let query = "query_example" // String | Search query
+let id = "id_example" // String | Search query
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
 
-// Relationship: albums
-SearchResultsAPI.getSearchResultsAlbumsRelationship(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get single searchresult.
+SearchresultsAPI.searchresultsIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -49,7 +48,62 @@ SearchResultsAPI.getSearchResultsAlbumsRelationship(query: query, countryCode: c
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | **String** | Search query | 
+ **id** | **String** | Search query | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos | [optional] 
+
+### Return type
+
+[**SearchresultsSingleDataDocument**](SearchresultsSingleDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **searchresultsIdRelationshipsAlbumsGet**
+```swift
+    open class func searchresultsIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+```
+
+Get albums relationship (\"to-many\").
+
+Retrieves albums relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Search query
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get albums relationship (\"to-many\").
+SearchresultsAPI.searchresultsIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Search query | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -69,27 +123,27 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getSearchResultsArtistsRelationship**
+# **searchresultsIdRelationshipsArtistsGet**
 ```swift
-    open class func getSearchResultsArtistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func searchresultsIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: artists
+Get artists relationship (\"to-many\").
 
-Search for artists by a query.
+Retrieves artists relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let query = "query_example" // String | Search query
+let id = "id_example" // String | Search query
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: artists
-SearchResultsAPI.getSearchResultsArtistsRelationship(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get artists relationship (\"to-many\").
+SearchresultsAPI.searchresultsIdRelationshipsArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -105,7 +159,7 @@ SearchResultsAPI.getSearchResultsArtistsRelationship(query: query, countryCode: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | **String** | Search query | 
+ **id** | **String** | Search query | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -125,81 +179,27 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getSearchResultsByQuery**
+# **searchresultsIdRelationshipsPlaylistsGet**
 ```swift
-    open class func getSearchResultsByQuery(query: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: SearchresultsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func searchresultsIdRelationshipsPlaylistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Search for music metadata by a query
+Get playlists relationship (\"to-many\").
 
-Search for music: albums, artists, tracks, etc.
+Retrieves playlists relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let query = "query_example" // String | Search query
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, albums, tracks, videos, playlists, topHits (optional)
-
-// Search for music metadata by a query
-SearchResultsAPI.getSearchResultsByQuery(query: query, countryCode: countryCode, include: include) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **query** | **String** | Search query | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, albums, tracks, videos, playlists, topHits | [optional] 
-
-### Return type
-
-[**SearchresultsSingleDataDocument**](SearchresultsSingleDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **getSearchResultsPlaylistsRelationship**
-```swift
-    open class func getSearchResultsPlaylistsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
-```
-
-Relationship: playlists
-
-Search for playlists by a query.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let query = "query_example" // String | Searh query
+let id = "id_example" // String | Search query
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlists (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: playlists
-SearchResultsAPI.getSearchResultsPlaylistsRelationship(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get playlists relationship (\"to-many\").
+SearchresultsAPI.searchresultsIdRelationshipsPlaylistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -215,7 +215,7 @@ SearchResultsAPI.getSearchResultsPlaylistsRelationship(query: query, countryCode
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | **String** | Searh query | 
+ **id** | **String** | Search query | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlists | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -235,27 +235,27 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getSearchResultsTopHitsRelationship**
+# **searchresultsIdRelationshipsTopHitsGet**
 ```swift
-    open class func getSearchResultsTopHitsRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func searchresultsIdRelationshipsTopHitsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: topHits
+Get topHits relationship (\"to-many\").
 
-Search for top hits by a query: artists, albums, tracks, videos.
+Retrieves topHits relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let query = "query_example" // String | Search query
+let id = "id_example" // String | Search query
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: topHits (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: topHits
-SearchResultsAPI.getSearchResultsTopHitsRelationship(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get topHits relationship (\"to-many\").
+SearchresultsAPI.searchresultsIdRelationshipsTopHitsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -271,7 +271,7 @@ SearchResultsAPI.getSearchResultsTopHitsRelationship(query: query, countryCode: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | **String** | Search query | 
+ **id** | **String** | Search query | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: topHits | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -291,27 +291,27 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getSearchResultsTracksRelationship**
+# **searchresultsIdRelationshipsTracksGet**
 ```swift
-    open class func getSearchResultsTracksRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func searchresultsIdRelationshipsTracksGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: tracks
+Get tracks relationship (\"to-many\").
 
-Search for tracks by a query.
+Retrieves tracks relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let query = "query_example" // String | Search query
+let id = "id_example" // String | Search query
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: tracks
-SearchResultsAPI.getSearchResultsTracksRelationship(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get tracks relationship (\"to-many\").
+SearchresultsAPI.searchresultsIdRelationshipsTracksGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -327,7 +327,7 @@ SearchResultsAPI.getSearchResultsTracksRelationship(query: query, countryCode: c
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | **String** | Search query | 
+ **id** | **String** | Search query | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -347,27 +347,27 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getSearchResultsVideosRelationship**
+# **searchresultsIdRelationshipsVideosGet**
 ```swift
-    open class func getSearchResultsVideosRelationship(query: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func searchresultsIdRelationshipsVideosGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchresultsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: videos
+Get videos relationship (\"to-many\").
 
-Search for videos by a query.
+Retrieves videos relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let query = "query_example" // String | Search query
+let id = "id_example" // String | Search query
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: videos
-SearchResultsAPI.getSearchResultsVideosRelationship(query: query, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get videos relationship (\"to-many\").
+SearchresultsAPI.searchresultsIdRelationshipsVideosGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -383,7 +383,7 @@ SearchResultsAPI.getSearchResultsVideosRelationship(query: query, countryCode: c
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | **String** | Search query | 
+ **id** | **String** | Search query | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 

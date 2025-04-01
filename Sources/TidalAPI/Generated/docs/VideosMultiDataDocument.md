@@ -5,7 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **data** | [VideosResource] |  | [optional] 
 **links** | [**Links**](Links.md) |  | [optional] 
-**included** | [VideosSingleDataDocumentIncludedInner] |  | [optional] 
+**included** | [VideosMultiDataDocumentIncludedInner] |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

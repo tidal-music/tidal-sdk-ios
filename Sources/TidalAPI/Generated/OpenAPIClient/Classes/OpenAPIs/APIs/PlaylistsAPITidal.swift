@@ -1,9 +1,7 @@
 import Foundation
 #if canImport(AnyCodable)
-	import AnyCodable
+import AnyCodable
 #endif
-
-// MARK: - PlaylistsAPITidal
 
 /// This is a wrapper around `PlaylistsAPI` that uses the injected credentialsprovider
 /// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
@@ -14,73 +12,136 @@ import Foundation
 /// let dataDocument = try await PlaylistsAPITidal.getResource()
 /// ```
 public enum PlaylistsAPITidal {
-	/// Get current user&#39;s playlists
-	///
-	/// - returns: PlaylistsMultiDataDocument
-	public static func getMyPlaylists(
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> PlaylistsMultiDataDocument {
-		try await RequestHelper.createRequest {
-			PlaylistsAPI.getMyPlaylistsWithRequestBuilder(include: include, pageCursor: pageCursor)
+
+
+	/**
+     Get multiple playlists.
+     
+     - returns: PlaylistsMultiDataDocument
+     */
+	public static func playlistsGet(countryCode: String, locale: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include, filterId: filterId)
 		}
 	}
 
-	/// Get single playlist
-	///
-	/// - returns: PlaylistsSingleDataDocument
-	public static func getPlaylistById(
-		countryCode: String,
-		id: String,
-		include: [String]? = nil
-	) async throws -> PlaylistsSingleDataDocument {
-		try await RequestHelper.createRequest {
-			PlaylistsAPI.getPlaylistByIdWithRequestBuilder(countryCode: countryCode, id: id, include: include)
+
+	/**
+     Delete single playlist.
+     
+     - returns: 
+     */
+	public static func playlistsIdDelete(id: String) async throws {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdDeleteWithRequestBuilder(id: id)
 		}
 	}
 
-	/// Relationship: items
-	///
-	/// - returns: PlaylistsMultiDataRelationshipDocument
-	public static func getPlaylistItemsRelationship(
-		id: String,
-		countryCode: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> PlaylistsMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			PlaylistsAPI.getPlaylistItemsRelationshipWithRequestBuilder(
-				id: id,
-				countryCode: countryCode,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+	/**
+     Get single playlist.
+     
+     - returns: PlaylistsSingleDataDocument
+     */
+	public static func playlistsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 
-	/// Relationship: owner
-	///
-	/// - returns: PlaylistsMultiDataRelationshipDocument
-	public static func getPlaylistOwnersRelationship(
-		id: String,
-		countryCode: String,
-		include: [String]? = nil
-	) async throws -> PlaylistsMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			PlaylistsAPI.getPlaylistOwnersRelationshipWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+
+	/**
+     Update single playlist.
+     
+     - returns: 
+     */
+	public static func playlistsIdPatch(id: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdPatchWithRequestBuilder(id: id, playlistUpdateOperationPayload: playlistUpdateOperationPayload)
 		}
 	}
 
-	/// Get multiple playlists
-	///
-	/// - returns: PlaylistsMultiDataDocument
-	public static func getPlaylistsByFilters(
-		countryCode: String,
-		include: [String]? = nil,
-		filterId: [String]? = nil
-	) async throws -> PlaylistsMultiDataDocument {
-		try await RequestHelper.createRequest {
-			PlaylistsAPI.getPlaylistsByFiltersWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId)
+
+	/**
+     Delete from items relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func playlistsIdRelationshipsItemsDelete(id: String, playlistItemsRelationshipRemoveOperationPayload: PlaylistItemsRelationshipRemoveOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, playlistItemsRelationshipRemoveOperationPayload: playlistItemsRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+     Get items relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsItemsMultiDataRelationshipDocument
+     */
+	public static func playlistsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlaylistsItemsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Update items relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func playlistsIdRelationshipsItemsPatch(id: String, playlistItemsRelationshipReorderOperationPayload: PlaylistItemsRelationshipReorderOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsItemsPatchWithRequestBuilder(id: id, playlistItemsRelationshipReorderOperationPayload: playlistItemsRelationshipReorderOperationPayload)
+		}
+	}
+
+
+	/**
+     Add to items relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func playlistsIdRelationshipsItemsPost(id: String, countryCode: String, playlistItemsRelationshipAddOperationPayload: PlaylistItemsRelationshipAddOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, playlistItemsRelationshipAddOperationPayload: playlistItemsRelationshipAddOperationPayload)
+		}
+	}
+
+
+	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiDataRelationshipDocument
+     */
+	public static func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Get current user&#39;s playlist(s).
+     
+     - returns: PlaylistsMultiDataDocument
+     */
+	public static func playlistsMeGet(countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsMeGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include)
+		}
+	}
+
+
+	/**
+     Create single playlist.
+     
+     - returns: PlaylistsSingleDataDocument
+     */
+	public static func playlistsPost(countryCode: String, locale: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) async throws -> PlaylistsSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsPostWithRequestBuilder(countryCode: countryCode, locale: locale, playlistCreateOperationPayload: playlistCreateOperationPayload)
 		}
 	}
 }

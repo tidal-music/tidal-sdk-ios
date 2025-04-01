@@ -4,37 +4,39 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getArtistAlbumsRelationship**](ArtistsAPI.md#getartistalbumsrelationship) | **GET** /artists/{id}/relationships/albums | Relationship: albums
-[**getArtistById**](ArtistsAPI.md#getartistbyid) | **GET** /artists/{id} | Get single artist
-[**getArtistRadioRelationship**](ArtistsAPI.md#getartistradiorelationship) | **GET** /artists/{id}/relationships/radio | Relationship: radio
-[**getArtistSimilarArtistsRelationship**](ArtistsAPI.md#getartistsimilarartistsrelationship) | **GET** /artists/{id}/relationships/similarArtists | Relationship: similar artists
-[**getArtistTrackProvidersRelationship**](ArtistsAPI.md#getartisttrackprovidersrelationship) | **GET** /artists/{id}/relationships/trackProviders | Relationship: track providers
-[**getArtistTracksRelationship**](ArtistsAPI.md#getartisttracksrelationship) | **GET** /artists/{id}/relationships/tracks | Relationship: tracks
-[**getArtistVideosRelationship**](ArtistsAPI.md#getartistvideosrelationship) | **GET** /artists/{id}/relationships/videos | Relationship: videos
-[**getArtistsByFilters**](ArtistsAPI.md#getartistsbyfilters) | **GET** /artists | Get multiple artists
+[**artistsGet**](ArtistsAPI.md#artistsget) | **GET** /artists | Get multiple artists.
+[**artistsIdGet**](ArtistsAPI.md#artistsidget) | **GET** /artists/{id} | Get single artist.
+[**artistsIdPatch**](ArtistsAPI.md#artistsidpatch) | **PATCH** /artists/{id} | Update single artist.
+[**artistsIdRelationshipsAlbumsGet**](ArtistsAPI.md#artistsidrelationshipsalbumsget) | **GET** /artists/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsRadioGet**](ArtistsAPI.md#artistsidrelationshipsradioget) | **GET** /artists/{id}/relationships/radio | Get radio relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsRolesGet**](ArtistsAPI.md#artistsidrelationshipsrolesget) | **GET** /artists/{id}/relationships/roles | Get roles relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsSimilarArtistsGet**](ArtistsAPI.md#artistsidrelationshipssimilarartistsget) | **GET** /artists/{id}/relationships/similarArtists | Get similarArtists relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsTrackProvidersGet**](ArtistsAPI.md#artistsidrelationshipstrackprovidersget) | **GET** /artists/{id}/relationships/trackProviders | Get trackProviders relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsTracksGet**](ArtistsAPI.md#artistsidrelationshipstracksget) | **GET** /artists/{id}/relationships/tracks | Get tracks relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsVideosGet**](ArtistsAPI.md#artistsidrelationshipsvideosget) | **GET** /artists/{id}/relationships/videos | Get videos relationship (\&quot;to-many\&quot;).
 
 
-# **getArtistAlbumsRelationship**
+# **artistsGet**
 ```swift
-    open class func getArtistAlbumsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsGet(countryCode: String, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistsMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: albums
+Get multiple artists.
 
-Retrieve album details of the related artist.
+Retrieves multiple artists by available filters, or without if applicable.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL artist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+let filterHandle = ["inner_example"] // [String] | Allows to filter the collection of resources based on handle attribute value (optional)
+let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
 
-// Relationship: albums
-ArtistsAPI.getArtistAlbumsRelationship(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get multiple artists.
+ArtistsAPI.artistsGet(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -50,7 +52,169 @@ ArtistsAPI.getArtistAlbumsRelationship(id: id, countryCode: countryCode, include
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL artist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
+ **filterHandle** | [**[String]**](String.md) | Allows to filter the collection of resources based on handle attribute value | [optional] 
+ **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
+
+### Return type
+
+[**ArtistsMultiDataDocument**](ArtistsMultiDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artistsIdGet**
+```swift
+    open class func artistsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistsSingleDataDocument?, _ error: Error?) -> Void)
+```
+
+Get single artist.
+
+Retrieves single artist by id.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+
+// Get single artist.
+ArtistsAPI.artistsIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
+
+### Return type
+
+[**ArtistsSingleDataDocument**](ArtistsSingleDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artistsIdPatch**
+```swift
+    open class func artistsIdPatch(id: String, artistUpdateBody: ArtistUpdateBody? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Update single artist.
+
+Updates existing artist.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(id: "id_example", type: "type_example", attributes: ArtistUpdateBody_Data_Attributes(name: "name_example", handle: "handle_example", imageLinks: [Image_Link(href: "href_example", meta: Image_Link_Meta(width: 123, height: 123))], externalLinks: [External_Link(href: "href_example", meta: External_Link_Meta(type: "type_example"))]))) // ArtistUpdateBody |  (optional)
+
+// Update single artist.
+ArtistsAPI.artistsIdPatch(id: id, artistUpdateBody: artistUpdateBody) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
+ **artistUpdateBody** | [**ArtistUpdateBody**](ArtistUpdateBody.md) |  | [optional] 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artistsIdRelationshipsAlbumsGet**
+```swift
+    open class func artistsIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+```
+
+Get albums relationship (\"to-many\").
+
+Retrieves albums relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get albums relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -70,81 +234,27 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getArtistById**
+# **artistsIdRelationshipsRadioGet**
 ```swift
-    open class func getArtistById(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsRadioGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Get single artist
+Get radio relationship (\"to-many\").
 
-Retrieve artist details by TIDAL artist id.
+Retrieves radio relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, tracks, videos, similarArtists, trackProviders, radio (optional)
-
-// Get single artist
-ArtistsAPI.getArtistById(id: id, countryCode: countryCode, include: include) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, tracks, videos, similarArtists, trackProviders, radio | [optional] 
-
-### Return type
-
-[**ArtistsSingleDataDocument**](ArtistsSingleDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **getArtistRadioRelationship**
-```swift
-    open class func getArtistRadioRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
-```
-
-Relationship: radio
-
-This endpoint can be used to retrieve a list of radios for the given artist.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | TIDAL id of the artist
+let id = "id_example" // String | Artist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: radio (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: radio
-ArtistsAPI.getArtistRadioRelationship(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get radio relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsRadioGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -160,7 +270,7 @@ ArtistsAPI.getArtistRadioRelationship(id: id, countryCode: countryCode, include:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL id of the artist | 
+ **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: radio | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -180,27 +290,26 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getArtistSimilarArtistsRelationship**
+# **artistsIdRelationshipsRolesGet**
 ```swift
-    open class func getArtistSimilarArtistsRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsRolesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: similar artists
+Get roles relationship (\"to-many\").
 
-This endpoint can be used to retrieve a list of artists similar to the given artist.
+Retrieves roles relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL id of the artist
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarArtists (optional)
+let id = "id_example" // String | Artist id
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: roles (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: similar artists
-ArtistsAPI.getArtistSimilarArtistsRelationship(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get roles relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsRolesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -216,7 +325,62 @@ ArtistsAPI.getArtistSimilarArtistsRelationship(id: id, countryCode: countryCode,
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL id of the artist | 
+ **id** | **String** | Artist id | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: roles | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artistsIdRelationshipsSimilarArtistsGet**
+```swift
+    open class func artistsIdRelationshipsSimilarArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+```
+
+Get similarArtists relationship (\"to-many\").
+
+Retrieves similarArtists relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarArtists (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get similarArtists relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsSimilarArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: similarArtists | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -236,26 +400,26 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getArtistTrackProvidersRelationship**
+# **artistsIdRelationshipsTrackProvidersGet**
 ```swift
-    open class func getArtistTrackProvidersRelationship(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsTrackProvidersMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsTrackProvidersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsTrackProvidersResourceIdentifier?, _ error: Error?) -> Void)
 ```
 
-Relationship: track providers
+Get trackProviders relationship (\"to-many\").
 
-Retrieve providers that have released tracks for this artist
+Retrieves trackProviders relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL id of the artist
+let id = "id_example" // String | Artist id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: trackProviders (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: track providers
-ArtistsAPI.getArtistTrackProvidersRelationship(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+// Get trackProviders relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsTrackProvidersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -271,13 +435,13 @@ ArtistsAPI.getArtistTrackProvidersRelationship(id: id, include: include, pageCur
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL id of the artist | 
+ **id** | **String** | Artist id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: trackProviders | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 
-[**ArtistsTrackProvidersMultiDataRelationshipDocument**](ArtistsTrackProvidersMultiDataRelationshipDocument.md)
+[**ArtistsTrackProvidersResourceIdentifier**](ArtistsTrackProvidersResourceIdentifier.md)
 
 ### Authorization
 
@@ -290,28 +454,28 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getArtistTracksRelationship**
+# **artistsIdRelationshipsTracksGet**
 ```swift
-    open class func getArtistTracksRelationship(id: String, countryCode: String, collapseBy: CollapseBy_getArtistTracksRelationship? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsTracksGet(id: String, countryCode: String, collapseBy: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: tracks
+Get tracks relationship (\"to-many\").
 
-Retrieve track details by related artist.
+Retrieves tracks relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL artist id
+let id = "id_example" // String | Artist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let collapseBy = "collapseBy_example" // String | Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based item fingerprints while collapsing by ID always returns all available items. (optional) (default to .fingerprint)
+let collapseBy = "collapseBy_example" // String | Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items.
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: tracks
-ArtistsAPI.getArtistTracksRelationship(id: id, countryCode: countryCode, collapseBy: collapseBy, include: include, pageCursor: pageCursor) { (response, error) in
+// Get tracks relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsTracksGet(id: id, countryCode: countryCode, collapseBy: collapseBy, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -327,9 +491,9 @@ ArtistsAPI.getArtistTracksRelationship(id: id, countryCode: countryCode, collaps
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL artist id | 
+ **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **collapseBy** | **String** | Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based item fingerprints while collapsing by ID always returns all available items. | [optional] [default to .fingerprint]
+ **collapseBy** | **String** | Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items. | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -348,27 +512,27 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getArtistVideosRelationship**
+# **artistsIdRelationshipsVideosGet**
 ```swift
-    open class func getArtistVideosRelationship(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsVideosGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
-Relationship: videos
+Get videos relationship (\"to-many\").
 
-Retrieve video details by related artist.
+Retrieves videos relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | TIDAL artist id
+let id = "id_example" // String | Artist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Relationship: videos
-ArtistsAPI.getArtistVideosRelationship(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+// Get videos relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsVideosGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -384,7 +548,7 @@ ArtistsAPI.getArtistVideosRelationship(id: id, countryCode: countryCode, include
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | TIDAL artist id | 
+ **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -392,60 +556,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **getArtistsByFilters**
-```swift
-    open class func getArtistsByFilters(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistsMultiDataDocument?, _ error: Error?) -> Void)
-```
-
-Get multiple artists
-
-Retrieve multiple artist details.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, tracks, videos, similarArtists, trackProviders, radio (optional)
-let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
-
-// Get multiple artists
-ArtistsAPI.getArtistsByFilters(countryCode: countryCode, include: include, filterId: filterId) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, tracks, videos, similarArtists, trackProviders, radio | [optional] 
- **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
-
-### Return type
-
-[**ArtistsMultiDataDocument**](ArtistsMultiDataDocument.md)
 
 ### Authorization
 

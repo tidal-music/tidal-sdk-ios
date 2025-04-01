@@ -1,9 +1,7 @@
 import Foundation
 #if canImport(AnyCodable)
-	import AnyCodable
+import AnyCodable
 #endif
-
-// MARK: - TracksAPITidal
 
 /// This is a wrapper around `TracksAPI` that uses the injected credentialsprovider
 /// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
@@ -14,130 +12,88 @@ import Foundation
 /// let dataDocument = try await TracksAPITidal.getResource()
 /// ```
 public enum TracksAPITidal {
-	/// Relationship: albums
-	///
-	/// - returns: TracksMultiDataRelationshipDocument
-	public static func getTrackAlbumsRelationship(
-		id: String,
-		countryCode: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> TracksMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			TracksAPI.getTrackAlbumsRelationshipWithRequestBuilder(
-				id: id,
-				countryCode: countryCode,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+
+	/**
+     Get multiple tracks.
+     
+     - returns: TracksMultiDataDocument
+     */
+	public static func tracksGet(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> TracksMultiDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksGetWithRequestBuilder(countryCode: countryCode, include: include, filterIsrc: filterIsrc, filterId: filterId)
 		}
 	}
 
-	/// Relationship: artists
-	///
-	/// - returns: TracksMultiDataRelationshipDocument
-	public static func getTrackArtistsRelationship(
-		id: String,
-		countryCode: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> TracksMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			TracksAPI.getTrackArtistsRelationshipWithRequestBuilder(
-				id: id,
-				countryCode: countryCode,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+	/**
+     Get single track.
+     
+     - returns: TracksSingleDataDocument
+     */
+	public static func tracksIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> TracksSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
 	}
 
-	/// Get single track
-	///
-	/// - returns: TracksSingleDataDocument
-	public static func getTrackById(
-		id: String,
-		countryCode: String,
-		include: [String]? = nil
-	) async throws -> TracksSingleDataDocument {
-		try await RequestHelper.createRequest {
-			TracksAPI.getTrackByIdWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+
+	/**
+     Get albums relationship (\&quot;to-many\&quot;).
+     
+     - returns: TracksMultiDataRelationshipDocument
+     */
+	public static func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Relationship: providers
-	///
-	/// - returns: TracksMultiDataRelationshipDocument
-	public static func getTrackProvidersRelationship(
-		id: String,
-		countryCode: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> TracksMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			TracksAPI.getTrackProvidersRelationshipWithRequestBuilder(
-				id: id,
-				countryCode: countryCode,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+	/**
+     Get artists relationship (\&quot;to-many\&quot;).
+     
+     - returns: TracksMultiDataRelationshipDocument
+     */
+	public static func tracksIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Relationship: radio
-	///
-	/// - returns: TracksMultiDataRelationshipDocument
-	public static func getTrackRadioRelationship(
-		id: String,
-		countryCode: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> TracksMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			TracksAPI.getTrackRadioRelationshipWithRequestBuilder(
-				id: id,
-				countryCode: countryCode,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+	/**
+     Get providers relationship (\&quot;to-many\&quot;).
+     
+     - returns: TracksMultiDataRelationshipDocument
+     */
+	public static func tracksIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Relationship: similar tracks
-	///
-	/// - returns: TracksMultiDataRelationshipDocument
-	public static func getTrackSimilarTracksRelationship(
-		id: String,
-		countryCode: String,
-		include: [String]? = nil,
-		pageCursor: String? = nil
-	) async throws -> TracksMultiDataRelationshipDocument {
-		try await RequestHelper.createRequest {
-			TracksAPI.getTrackSimilarTracksRelationshipWithRequestBuilder(
-				id: id,
-				countryCode: countryCode,
-				include: include,
-				pageCursor: pageCursor
-			)
+
+	/**
+     Get radio relationship (\&quot;to-many\&quot;).
+     
+     - returns: TracksMultiDataRelationshipDocument
+     */
+	public static func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsRadioGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
-	/// Get multiple tracks
-	///
-	/// - returns: TracksMultiDataDocument
-	public static func getTracksByFilters(
-		countryCode: String,
-		include: [String]? = nil,
-		filterId: [String]? = nil,
-		filterIsrc: [String]? = nil
-	) async throws -> TracksMultiDataDocument {
-		try await RequestHelper.createRequest {
-			TracksAPI.getTracksByFiltersWithRequestBuilder(
-				countryCode: countryCode,
-				include: include,
-				filterId: filterId,
-				filterIsrc: filterIsrc
-			)
+
+	/**
+     Get similarTracks relationship (\&quot;to-many\&quot;).
+     
+     - returns: TracksMultiDataRelationshipDocument
+     */
+	public static func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 }
