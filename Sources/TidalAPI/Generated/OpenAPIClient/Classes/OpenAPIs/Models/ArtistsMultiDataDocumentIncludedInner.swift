@@ -61,6 +61,24 @@ public enum ArtistsMultiDataDocumentIncludedInner: Codable, JSONEncodable, Hasha
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
-extension ArtistsMultiDataDocumentIncludedInner: Identifiable {}
+extension ArtistsMultiDataDocumentIncludedInner: Identifiable {
+	public var id: some Hashable {
+		switch self {
+		case let .typeAlbumsResource(value):
+			value.id
+		case let .typeArtistRolesResource(value):
+			value.id
+		case let .typeArtistsResource(value):
+			value.id
+		case let .typePlaylistsResource(value):
+			value.id
+		case let .typeProvidersResource(value):
+			value.id
+		case let .typeTracksResource(value):
+			value.id
+		case let .typeVideosResource(value):
+			value.id
+		}
+	}
+}

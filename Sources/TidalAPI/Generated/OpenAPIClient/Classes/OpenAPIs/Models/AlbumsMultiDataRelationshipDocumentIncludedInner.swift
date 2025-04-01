@@ -51,6 +51,20 @@ public enum AlbumsMultiDataRelationshipDocumentIncludedInner: Codable, JSONEncod
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
-extension AlbumsMultiDataRelationshipDocumentIncludedInner: Identifiable {}
+extension AlbumsMultiDataRelationshipDocumentIncludedInner: Identifiable {
+	public var id: some Hashable {
+		switch self {
+		case let .typeAlbumsResource(value):
+			value.id
+		case let .typeArtistsResource(value):
+			value.id
+		case let .typeProvidersResource(value):
+			value.id
+		case let .typeTracksResource(value):
+			value.id
+		case let .typeVideosResource(value):
+			value.id
+		}
+	}
+}
