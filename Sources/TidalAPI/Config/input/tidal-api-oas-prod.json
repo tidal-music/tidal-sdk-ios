@@ -29,6 +29,10 @@
   }, {
     "name" : "providers"
   }, {
+    "name" : "searchResults"
+  }, {
+    "name" : "searchSuggestions"
+  }, {
     "name" : "searchresults"
   }, {
     "name" : "tracks"
@@ -3787,15 +3791,6 @@
           },
           "example" : "US"
         }, {
-          "name" : "locale",
-          "in" : "query",
-          "description" : "BCP47 locale code",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "en-US"
-        }, {
           "name" : "include",
           "in" : "query",
           "description" : "Allows the client to customize which related resources should be returned. Available options: items, owners",
@@ -3969,7 +3964,7 @@
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
-          "Authorization_Code_PKCE" : [ "playlists.read", "r_usr" ]
+          "Authorization_Code_PKCE" : [ ]
         } ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -4338,15 +4333,6 @@
           },
           "example" : "US"
         }, {
-          "name" : "locale",
-          "in" : "query",
-          "description" : "BCP47 locale code",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "en-US"
-        }, {
           "name" : "include",
           "in" : "query",
           "description" : "Allows the client to customize which related resources should be returned. Available options: items, owners",
@@ -4533,7 +4519,7 @@
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
-          "Authorization_Code_PKCE" : [ "playlists.read", "r_usr" ]
+          "Authorization_Code_PKCE" : [ ]
         } ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -4751,14 +4737,13 @@
           },
           "example" : "US"
         }, {
-          "name" : "locale",
+          "name" : "page[cursor]",
           "in" : "query",
-          "description" : "BCP47 locale code",
-          "required" : true,
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
           "schema" : {
             "type" : "string"
-          },
-          "example" : "en-US"
+          }
         }, {
           "name" : "include",
           "in" : "query",
@@ -6273,11 +6258,1899 @@
         }
       }
     },
+    "/searchResults/{id}" : {
+      "get" : {
+        "tags" : [ "searchResults" ],
+        "summary" : "Get single searchResult.",
+        "description" : "Retrieves single searchResult by id.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Search query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "moon"
+        }, {
+          "name" : "countryCode",
+          "in" : "query",
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "albums"
+            }
+          },
+          "example" : "albums"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchResults_Single_Data_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/searchResults/{id}/relationships/albums" : {
+      "get" : {
+        "tags" : [ "searchResults" ],
+        "summary" : "Get albums relationship (\"to-many\").",
+        "description" : "Retrieves albums relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Search query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "moon"
+        }, {
+          "name" : "countryCode",
+          "in" : "query",
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "albums"
+            }
+          },
+          "example" : "albums"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/searchResults/{id}/relationships/artists" : {
+      "get" : {
+        "tags" : [ "searchResults" ],
+        "summary" : "Get artists relationship (\"to-many\").",
+        "description" : "Retrieves artists relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Search query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "moon"
+        }, {
+          "name" : "countryCode",
+          "in" : "query",
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: artists",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "artists"
+            }
+          },
+          "example" : "artists"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/searchResults/{id}/relationships/playlists" : {
+      "get" : {
+        "tags" : [ "searchResults" ],
+        "summary" : "Get playlists relationship (\"to-many\").",
+        "description" : "Retrieves playlists relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Search query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "moon"
+        }, {
+          "name" : "countryCode",
+          "in" : "query",
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: playlists",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "playlists"
+            }
+          },
+          "example" : "playlists"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/searchResults/{id}/relationships/topHits" : {
+      "get" : {
+        "tags" : [ "searchResults" ],
+        "summary" : "Get topHits relationship (\"to-many\").",
+        "description" : "Retrieves topHits relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Search query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "moon"
+        }, {
+          "name" : "countryCode",
+          "in" : "query",
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: topHits",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "topHits"
+            }
+          },
+          "example" : "topHits"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/searchResults/{id}/relationships/tracks" : {
+      "get" : {
+        "tags" : [ "searchResults" ],
+        "summary" : "Get tracks relationship (\"to-many\").",
+        "description" : "Retrieves tracks relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Search query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "moon"
+        }, {
+          "name" : "countryCode",
+          "in" : "query",
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: tracks",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "tracks"
+            }
+          },
+          "example" : "tracks"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/searchResults/{id}/relationships/videos" : {
+      "get" : {
+        "tags" : [ "searchResults" ],
+        "summary" : "Get videos relationship (\"to-many\").",
+        "description" : "Retrieves videos relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Search query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "moon"
+        }, {
+          "name" : "countryCode",
+          "in" : "query",
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: videos",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "videos"
+            }
+          },
+          "example" : "videos"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/searchSuggestions/{id}" : {
+      "get" : {
+        "tags" : [ "searchSuggestions" ],
+        "summary" : "Get single searchSuggestion.",
+        "description" : "Retrieves single searchSuggestion by id.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "countryCode",
+          "in" : "query",
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: directHits",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "directHits"
+            }
+          },
+          "example" : "directHits"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchSuggestions_Single_Data_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/searchSuggestions/{id}/relationships/directHits" : {
+      "get" : {
+        "tags" : [ "searchSuggestions" ],
+        "summary" : "Get directHits relationship (\"to-many\").",
+        "description" : "Retrieves directHits relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "countryCode",
+          "in" : "query",
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: directHits",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "directHits"
+            }
+          },
+          "example" : "directHits"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchSuggestions_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
     "/searchresults/{id}" : {
       "get" : {
         "tags" : [ "searchresults" ],
         "summary" : "Get single searchresult.",
-        "description" : "Retrieves single searchresult by id.",
+        "description" : "This operation is deprecated and will be removed shortly. Please switch to the renamed /searchResults/xyz endpoint.\n\nRetrieves single searchresult by id.",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -6467,6 +8340,7 @@
             }
           }
         },
+        "deprecated" : true,
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
@@ -6481,7 +8355,7 @@
       "get" : {
         "tags" : [ "searchresults" ],
         "summary" : "Get albums relationship (\"to-many\").",
-        "description" : "Retrieves albums relationship.",
+        "description" : "This operation is deprecated and will be removed shortly. Please switch to the renamed /searchResults/xyz endpoint.\n\nRetrieves albums relationship.",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -6679,6 +8553,7 @@
             }
           }
         },
+        "deprecated" : true,
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
@@ -6693,7 +8568,7 @@
       "get" : {
         "tags" : [ "searchresults" ],
         "summary" : "Get artists relationship (\"to-many\").",
-        "description" : "Retrieves artists relationship.",
+        "description" : "This operation is deprecated and will be removed shortly. Please switch to the renamed /searchResults/xyz endpoint.\n\nRetrieves artists relationship.",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -6891,6 +8766,7 @@
             }
           }
         },
+        "deprecated" : true,
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
@@ -6905,7 +8781,7 @@
       "get" : {
         "tags" : [ "searchresults" ],
         "summary" : "Get playlists relationship (\"to-many\").",
-        "description" : "Retrieves playlists relationship.",
+        "description" : "This operation is deprecated and will be removed shortly. Please switch to the renamed /searchResults/xyz endpoint.\n\nRetrieves playlists relationship.",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -7103,6 +8979,7 @@
             }
           }
         },
+        "deprecated" : true,
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
@@ -7117,7 +8994,7 @@
       "get" : {
         "tags" : [ "searchresults" ],
         "summary" : "Get topHits relationship (\"to-many\").",
-        "description" : "Retrieves topHits relationship.",
+        "description" : "This operation is deprecated and will be removed shortly. Please switch to the renamed /searchResults/xyz endpoint.\n\nRetrieves topHits relationship.",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -7315,6 +9192,7 @@
             }
           }
         },
+        "deprecated" : true,
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
@@ -7329,7 +9207,7 @@
       "get" : {
         "tags" : [ "searchresults" ],
         "summary" : "Get tracks relationship (\"to-many\").",
-        "description" : "Retrieves tracks relationship.",
+        "description" : "This operation is deprecated and will be removed shortly. Please switch to the renamed /searchResults/xyz endpoint.\n\nRetrieves tracks relationship.",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -7527,6 +9405,7 @@
             }
           }
         },
+        "deprecated" : true,
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
@@ -7541,7 +9420,7 @@
       "get" : {
         "tags" : [ "searchresults" ],
         "summary" : "Get videos relationship (\"to-many\").",
-        "description" : "Retrieves videos relationship.",
+        "description" : "This operation is deprecated and will be removed shortly. Please switch to the renamed /searchResults/xyz endpoint.\n\nRetrieves videos relationship.",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -7739,6 +9618,7 @@
             }
           }
         },
+        "deprecated" : true,
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
@@ -9649,7 +11529,7 @@
           "Authorization_Code_PKCE" : [ "collection.read", "user.read" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       },
       "post" : {
@@ -9834,7 +11714,7 @@
           "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       },
       "delete" : {
@@ -10010,7 +11890,7 @@
           "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       }
     },
@@ -10227,7 +12107,7 @@
           "Authorization_Code_PKCE" : [ "collection.read", "user.read" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       },
       "post" : {
@@ -10412,7 +12292,7 @@
           "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       },
       "delete" : {
@@ -10588,7 +12468,7 @@
           "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       }
     },
@@ -10796,7 +12676,7 @@
           "Authorization_Code_PKCE" : [ "collection.read", "user.read" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       },
       "post" : {
@@ -10972,7 +12852,7 @@
           "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       },
       "delete" : {
@@ -11148,7 +13028,7 @@
           "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       }
     },
@@ -11547,7 +13427,7 @@
       "get" : {
         "tags" : [ "userRecommendations" ],
         "summary" : "Get current user's userRecommendation(s).",
-        "description" : "Retrieves current user's userRecommendation(s).",
+        "description" : "This operation is deprecated and will be removed shortly. Please switch to the equivalent /userRecommendations/{userId} endpoint. You can find your user id by calling /users/me.\n\nRetrieves current user's userRecommendation(s).",
         "parameters" : [ {
           "name" : "countryCode",
           "in" : "query",
@@ -14234,15 +16114,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Albums_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/Albums_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -14252,6 +16123,12 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/Albums_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Albums_Relationships"
           }
         }
       },
@@ -14308,12 +16185,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/ArtistRoles_Attributes"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -14323,6 +16194,9 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/ArtistRoles_Attributes"
           }
         }
       },
@@ -14412,15 +16286,6 @@
             "description" : "Artist links external to TIDAL API",
             "items" : {
               "$ref" : "#/components/schemas/External_Link"
-            }
-          },
-          "roles" : {
-            "type" : "array",
-            "description" : "Artist roles",
-            "deprecated" : true,
-            "items" : {
-              "type" : "string",
-              "enum" : [ "ARTIST", "SONGWRITER", "ENGINEER", "PRODUCTION_TEAM", "PERFORMER", "PRODUCER", "MISC" ]
             }
           },
           "handle" : {
@@ -14530,15 +16395,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Artists_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/Artists_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -14548,6 +16404,12 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/Artists_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Artists_Relationships"
           }
         }
       },
@@ -14700,8 +16562,7 @@
           "meta" : {
             "$ref" : "#/components/schemas/External_Link_Meta"
           }
-        },
-        "description" : "Playlist links external to TIDAL API"
+        }
       },
       "External_Link_Meta" : {
         "required" : [ "type" ],
@@ -14724,8 +16585,7 @@
           "meta" : {
             "$ref" : "#/components/schemas/Image_Link_Meta"
           }
-        },
-        "description" : "Playlist image links and metadata"
+        }
       },
       "Image_Link_Meta" : {
         "required" : [ "height", "width" ],
@@ -15012,14 +16872,12 @@
           },
           "externalLinks" : {
             "type" : "array",
-            "description" : "Playlist links external to TIDAL API",
             "items" : {
               "$ref" : "#/components/schemas/External_Link"
             }
           },
           "imageLinks" : {
             "type" : "array",
-            "description" : "Playlist image links and metadata",
             "items" : {
               "$ref" : "#/components/schemas/Image_Link"
             }
@@ -15112,9 +16970,9 @@
               }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Users_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Users_Resource"
               } ]
             }
           }
@@ -15140,9 +16998,9 @@
               }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Users_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Users_Resource"
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               } ]
@@ -15165,15 +17023,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Playlists_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/Playlists_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -15183,6 +17032,12 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/Playlists_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Playlists_Relationships"
           }
         }
       },
@@ -15203,9 +17058,9 @@
               }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Users_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Users_Resource"
               } ]
             }
           }
@@ -15240,12 +17095,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Providers_Attributes"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -15255,6 +17104,9 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/Providers_Attributes"
           }
         }
       },
@@ -15273,15 +17125,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "type" : "object"
-          },
-          "relationships" : {
-            "type" : "object"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -15291,6 +17134,12 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "type" : "object"
+          },
+          "relationships" : {
+            "type" : "object"
           }
         }
       },
@@ -15310,6 +17159,345 @@
           }
         },
         "description" : "Resource identifier JSON:API object"
+      },
+      "SearchResults_Attributes" : {
+        "required" : [ "trackingId" ],
+        "type" : "object",
+        "properties" : {
+          "trackingId" : {
+            "type" : "string",
+            "description" : "search request unique tracking number",
+            "example" : "5896e37d-e847-4ca6-9629-ef8001719f7f"
+          },
+          "didYouMean" : {
+            "type" : "string",
+            "description" : "'did you mean' prompt",
+            "example" : "beatles"
+          }
+        }
+      },
+      "SearchResults_Multi_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SearchResults_Resource"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "type" : "array",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/Albums_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Playlists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
+              } ]
+            }
+          }
+        }
+      },
+      "SearchResults_Multi_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "type" : "array",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/Albums_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Playlists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
+              }, {
+                "$ref" : "#/components/schemas/SearchResults_Resource"
+              } ]
+            }
+          }
+        }
+      },
+      "SearchResults_Relationships" : {
+        "required" : [ "albums", "artists", "playlists", "topHits", "tracks", "videos" ],
+        "properties" : {
+          "albums" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "artists" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "playlists" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "videos" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "topHits" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "tracks" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
+      "SearchResults_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/SearchResults_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/SearchResults_Relationships"
+          }
+        }
+      },
+      "SearchResults_Single_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/SearchResults_Resource"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "type" : "array",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/Albums_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Playlists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
+              } ]
+            }
+          }
+        }
+      },
+      "SearchSuggestions_Attributes" : {
+        "required" : [ "trackingId" ],
+        "type" : "object",
+        "properties" : {
+          "trackingId" : {
+            "type" : "string",
+            "description" : "Unique tracking id"
+          },
+          "history" : {
+            "type" : "array",
+            "description" : "Suggestions from search history",
+            "items" : {
+              "$ref" : "#/components/schemas/SearchSuggestions_History"
+            }
+          },
+          "suggestions" : {
+            "type" : "array",
+            "description" : "Suggested search queries",
+            "items" : {
+              "$ref" : "#/components/schemas/SearchSuggestions_Suggestions"
+            }
+          }
+        }
+      },
+      "SearchSuggestions_Highlights" : {
+        "required" : [ "length", "start" ],
+        "type" : "object",
+        "properties" : {
+          "start" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "length" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "SearchSuggestions_History" : {
+        "required" : [ "query" ],
+        "type" : "object",
+        "properties" : {
+          "query" : {
+            "type" : "string"
+          },
+          "highlights" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SearchSuggestions_Highlights"
+            }
+          }
+        },
+        "description" : "Suggestions from search history"
+      },
+      "SearchSuggestions_Multi_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SearchSuggestions_Resource"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "type" : "array",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/Albums_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Playlists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
+              } ]
+            }
+          }
+        }
+      },
+      "SearchSuggestions_Multi_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "type" : "array",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/Albums_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Playlists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
+              }, {
+                "$ref" : "#/components/schemas/SearchSuggestions_Resource"
+              } ]
+            }
+          }
+        }
+      },
+      "SearchSuggestions_Relationships" : {
+        "required" : [ "directHits" ],
+        "properties" : {
+          "directHits" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
+      "SearchSuggestions_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/SearchSuggestions_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/SearchSuggestions_Relationships"
+          }
+        }
+      },
+      "SearchSuggestions_Single_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/SearchSuggestions_Resource"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "type" : "array",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/Albums_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Playlists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
+              } ]
+            }
+          }
+        }
+      },
+      "SearchSuggestions_Suggestions" : {
+        "required" : [ "query" ],
+        "type" : "object",
+        "properties" : {
+          "query" : {
+            "type" : "string"
+          },
+          "highlights" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SearchSuggestions_Highlights"
+            }
+          }
+        },
+        "description" : "Suggested search queries"
       },
       "Searchresults_Attributes" : {
         "required" : [ "trackingId" ],
@@ -15349,9 +17537,9 @@
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               } ]
             }
           }
@@ -15379,9 +17567,9 @@
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
                 "$ref" : "#/components/schemas/Searchresults_Resource"
               } ]
@@ -15416,15 +17604,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Searchresults_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/Searchresults_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -15434,6 +17613,12 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/Searchresults_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Searchresults_Relationships"
           }
         }
       },
@@ -15456,9 +17641,9 @@
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               } ]
             }
           }
@@ -15624,15 +17809,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Tracks_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/Tracks_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -15642,6 +17818,12 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/Tracks_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Tracks_Relationships"
           }
         }
       },
@@ -16025,15 +18207,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/UserCollections_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/UserCollections_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -16043,6 +18216,12 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserCollections_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/UserCollections_Relationships"
           }
         }
       },
@@ -16102,12 +18281,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/UserEntitlements_Attributes"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -16117,6 +18290,9 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserEntitlements_Attributes"
           }
         }
       },
@@ -16198,15 +18374,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/UserRecommendations_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/UserRecommendations_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -16216,6 +18383,12 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserRecommendations_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/UserRecommendations_Relationships"
           }
         }
       },
@@ -16297,12 +18470,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Users_Attributes"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -16312,6 +18479,9 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/Users_Attributes"
           }
         }
       },
@@ -16499,15 +18669,6 @@
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Videos_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/Videos_Relationships"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
           "id" : {
             "type" : "string",
             "description" : "resource unique identifier",
@@ -16517,6 +18678,12 @@
             "type" : "string",
             "description" : "resource unique type",
             "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/Videos_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Videos_Relationships"
           }
         }
       },
@@ -16581,22 +18748,26 @@
             "scopes" : {
               "user.read" : "Read access to a user's account information, such as country and email address.",
               "collection.read" : "Read access to a user's \"My Collection\".",
+              "search.read" : "Required to read personalized search results.",
               "playlists.write" : "Write access to a user's playlists.",
               "collection.write" : "Write access to a user's \"My Collection\".",
-              "playlists.read" : "Read access to a user's playlists.",
+              "playlists.read" : "Required to list playlists created by a user.",
               "playback" : "Required to play media content and control playback.",
               "recommendations.read" : "Read access to a user’s personal recommendations.",
-              "entitlements.read" : "Read access to what functionality a user is entitled to access on TIDAL, such as whether they can stream music, use DJ add-ons and similar."
+              "entitlements.read" : "Read access to what functionality a user is entitled to access on TIDAL, such as whether they can stream music, use DJ add-ons and similar.",
+              "search.write" : "Required to update personalized search results, e.g. delete search history."
             },
             "x-scopes-required-access-tier" : {
               "user.read" : "THIRD_PARTY",
               "collection.read" : "THIRD_PARTY",
+              "search.read" : "THIRD_PARTY",
               "playlists.write" : "THIRD_PARTY",
               "collection.write" : "THIRD_PARTY",
               "playlists.read" : "THIRD_PARTY",
               "playback" : "THIRD_PARTY",
               "recommendations.read" : "THIRD_PARTY",
-              "entitlements.read" : "THIRD_PARTY"
+              "entitlements.read" : "THIRD_PARTY",
+              "search.write" : "THIRD_PARTY"
             }
           }
         }

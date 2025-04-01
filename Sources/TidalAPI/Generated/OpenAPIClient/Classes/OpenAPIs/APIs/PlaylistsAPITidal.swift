@@ -19,9 +19,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsMultiDataDocument
      */
-	public static func playlistsGet(countryCode: String, locale: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+	public static func playlistsGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include, filterId: filterId)
+			PlaylistsAPI.playlistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsSingleDataDocument
      */
-	public static func playlistsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsSingleDataDocument {
+	public static func playlistsIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> PlaylistsSingleDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			PlaylistsAPI.playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
 	}
 
@@ -127,9 +127,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsMultiDataDocument
      */
-	public static func playlistsMeGet(countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+	public static func playlistsMeGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsMeGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include)
+			PlaylistsAPI.playlistsMeGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 

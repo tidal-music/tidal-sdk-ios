@@ -58,6 +58,15 @@ Class | Method | HTTP request | Description
 *PlaylistsAPI* | [**playlistsPost**](docs/PlaylistsAPI.md#playlistspost) | **POST** /playlists | Create single playlist.
 *ProvidersAPI* | [**providersGet**](docs/ProvidersAPI.md#providersget) | **GET** /providers | Get multiple providers.
 *ProvidersAPI* | [**providersIdGet**](docs/ProvidersAPI.md#providersidget) | **GET** /providers/{id} | Get single provider.
+*SearchResultsAPI* | [**searchResultsIdGet**](docs/SearchResultsAPI.md#searchresultsidget) | **GET** /searchResults/{id} | Get single searchResult.
+*SearchResultsAPI* | [**searchResultsIdRelationshipsAlbumsGet**](docs/SearchResultsAPI.md#searchresultsidrelationshipsalbumsget) | **GET** /searchResults/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
+*SearchResultsAPI* | [**searchResultsIdRelationshipsArtistsGet**](docs/SearchResultsAPI.md#searchresultsidrelationshipsartistsget) | **GET** /searchResults/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
+*SearchResultsAPI* | [**searchResultsIdRelationshipsPlaylistsGet**](docs/SearchResultsAPI.md#searchresultsidrelationshipsplaylistsget) | **GET** /searchResults/{id}/relationships/playlists | Get playlists relationship (\&quot;to-many\&quot;).
+*SearchResultsAPI* | [**searchResultsIdRelationshipsTopHitsGet**](docs/SearchResultsAPI.md#searchresultsidrelationshipstophitsget) | **GET** /searchResults/{id}/relationships/topHits | Get topHits relationship (\&quot;to-many\&quot;).
+*SearchResultsAPI* | [**searchResultsIdRelationshipsTracksGet**](docs/SearchResultsAPI.md#searchresultsidrelationshipstracksget) | **GET** /searchResults/{id}/relationships/tracks | Get tracks relationship (\&quot;to-many\&quot;).
+*SearchResultsAPI* | [**searchResultsIdRelationshipsVideosGet**](docs/SearchResultsAPI.md#searchresultsidrelationshipsvideosget) | **GET** /searchResults/{id}/relationships/videos | Get videos relationship (\&quot;to-many\&quot;).
+*SearchSuggestionsAPI* | [**searchSuggestionsIdGet**](docs/SearchSuggestionsAPI.md#searchsuggestionsidget) | **GET** /searchSuggestions/{id} | Get single searchSuggestion.
+*SearchSuggestionsAPI* | [**searchSuggestionsIdRelationshipsDirectHitsGet**](docs/SearchSuggestionsAPI.md#searchsuggestionsidrelationshipsdirecthitsget) | **GET** /searchSuggestions/{id}/relationships/directHits | Get directHits relationship (\&quot;to-many\&quot;).
 *SearchresultsAPI* | [**searchresultsIdGet**](docs/SearchresultsAPI.md#searchresultsidget) | **GET** /searchresults/{id} | Get single searchresult.
 *SearchresultsAPI* | [**searchresultsIdRelationshipsAlbumsGet**](docs/SearchresultsAPI.md#searchresultsidrelationshipsalbumsget) | **GET** /searchresults/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
 *SearchresultsAPI* | [**searchresultsIdRelationshipsArtistsGet**](docs/SearchresultsAPI.md#searchresultsidrelationshipsartistsget) | **GET** /searchresults/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
@@ -171,9 +180,26 @@ Class | Method | HTTP request | Description
  - [ProvidersSingleDataDocument](docs/ProvidersSingleDataDocument.md)
  - [ResourceIdentifier](docs/ResourceIdentifier.md)
  - [ResourceObjectObject](docs/ResourceObjectObject.md)
+ - [SearchResultsAttributes](docs/SearchResultsAttributes.md)
+ - [SearchResultsMultiDataDocument](docs/SearchResultsMultiDataDocument.md)
+ - [SearchResultsMultiDataDocumentIncludedInner](docs/SearchResultsMultiDataDocumentIncludedInner.md)
+ - [SearchResultsMultiDataRelationshipDocument](docs/SearchResultsMultiDataRelationshipDocument.md)
+ - [SearchResultsMultiDataRelationshipDocumentIncludedInner](docs/SearchResultsMultiDataRelationshipDocumentIncludedInner.md)
+ - [SearchResultsRelationships](docs/SearchResultsRelationships.md)
+ - [SearchResultsResource](docs/SearchResultsResource.md)
+ - [SearchResultsSingleDataDocument](docs/SearchResultsSingleDataDocument.md)
+ - [SearchSuggestionsAttributes](docs/SearchSuggestionsAttributes.md)
+ - [SearchSuggestionsHighlights](docs/SearchSuggestionsHighlights.md)
+ - [SearchSuggestionsHistory](docs/SearchSuggestionsHistory.md)
+ - [SearchSuggestionsMultiDataDocument](docs/SearchSuggestionsMultiDataDocument.md)
+ - [SearchSuggestionsMultiDataRelationshipDocument](docs/SearchSuggestionsMultiDataRelationshipDocument.md)
+ - [SearchSuggestionsMultiDataRelationshipDocumentIncludedInner](docs/SearchSuggestionsMultiDataRelationshipDocumentIncludedInner.md)
+ - [SearchSuggestionsRelationships](docs/SearchSuggestionsRelationships.md)
+ - [SearchSuggestionsResource](docs/SearchSuggestionsResource.md)
+ - [SearchSuggestionsSingleDataDocument](docs/SearchSuggestionsSingleDataDocument.md)
+ - [SearchSuggestionsSuggestions](docs/SearchSuggestionsSuggestions.md)
  - [SearchresultsAttributes](docs/SearchresultsAttributes.md)
  - [SearchresultsMultiDataDocument](docs/SearchresultsMultiDataDocument.md)
- - [SearchresultsMultiDataDocumentIncludedInner](docs/SearchresultsMultiDataDocumentIncludedInner.md)
  - [SearchresultsMultiDataRelationshipDocument](docs/SearchresultsMultiDataRelationshipDocument.md)
  - [SearchresultsMultiDataRelationshipDocumentIncludedInner](docs/SearchresultsMultiDataRelationshipDocumentIncludedInner.md)
  - [SearchresultsRelationships](docs/SearchresultsRelationships.md)
@@ -255,12 +281,14 @@ Authentication schemes defined for the API:
 - **Scopes**: 
  - **user.read**: Read access to a user's account information, such as country and email address.
  - **collection.read**: Read access to a user's \"My Collection\".
+ - **search.read**: Required to read personalized search results.
  - **playlists.write**: Write access to a user's playlists.
  - **collection.write**: Write access to a user's \"My Collection\".
- - **playlists.read**: Read access to a user's playlists.
+ - **playlists.read**: Required to list playlists created by a user.
  - **playback**: Required to play media content and control playback.
  - **recommendations.read**: Read access to a user’s personal recommendations.
  - **entitlements.read**: Read access to what functionality a user is entitled to access on TIDAL, such as whether they can stream music, use DJ add-ons and similar.
+ - **search.write**: Required to update personalized search results, e.g. delete search history.
 
 <a id="Client_Credentials"></a>
 ### Client_Credentials

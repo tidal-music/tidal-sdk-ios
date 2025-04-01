@@ -43,14 +43,13 @@ public enum VideosMultiDataDocumentIncludedInner: Codable, JSONEncodable, Hashab
 
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension VideosMultiDataDocumentIncludedInner: Identifiable {
-	public var id: some Hashable {
-		switch self {
-		case let .typeAlbumsResource(value):
-			value.id
-		case let .typeArtistsResource(value):
-			value.id
-		case let .typeProvidersResource(value):
-			value.id
-		}
-	}
+    public var id: String {
+        switch self {
+        case .typeAlbumsResource(let value): return value.id
+        case .typeArtistsResource(let value): return value.id
+        case .typeProvidersResource(let value): return value.id
+        }
+    }
 }
+
+

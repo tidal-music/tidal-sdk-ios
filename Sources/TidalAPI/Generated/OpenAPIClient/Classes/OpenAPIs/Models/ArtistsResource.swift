@@ -12,42 +12,39 @@ import AnyCodable
 
 public struct ArtistsResource: Codable, Hashable {
 
-    public var attributes: ArtistsAttributes?
-    public var relationships: ArtistsRelationships?
-    public var links: Links?
     /** resource unique identifier */
     public var id: String
     /** resource unique type */
     public var type: String
+    public var attributes: ArtistsAttributes?
+    public var relationships: ArtistsRelationships?
 
-    public init(attributes: ArtistsAttributes? = nil, relationships: ArtistsRelationships? = nil, links: Links? = nil, id: String, type: String) {
-        self.attributes = attributes
-        self.relationships = relationships
-        self.links = links
+    public init(id: String, type: String, attributes: ArtistsAttributes? = nil, relationships: ArtistsRelationships? = nil) {
         self.id = id
         self.type = type
+        self.attributes = attributes
+        self.relationships = relationships
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case attributes
-        case relationships
-        case links
         case id
         case type
+        case attributes
+        case relationships
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(attributes, forKey: .attributes)
-        try container.encodeIfPresent(relationships, forKey: .relationships)
-        try container.encodeIfPresent(links, forKey: .links)
         try container.encode(id, forKey: .id)
         try container.encode(type, forKey: .type)
+        try container.encodeIfPresent(attributes, forKey: .attributes)
+        try container.encodeIfPresent(relationships, forKey: .relationships)
     }
 }
 
 
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension ArtistsResource: Identifiable {}
+

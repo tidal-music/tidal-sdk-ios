@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 # **playlistsGet**
 ```swift
-    open class func playlistsGet(countryCode: String, locale: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple playlists.
@@ -32,12 +32,11 @@ Retrieves multiple playlists by available filters, or without if applicable.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let locale = "locale_example" // String | BCP47 locale code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
 let filterId = ["inner_example"] // [String] | Playlist id (optional)
 
 // Get multiple playlists.
-PlaylistsAPI.playlistsGet(countryCode: countryCode, locale: locale, include: include, filterId: filterId) { (response, error) in
+PlaylistsAPI.playlistsGet(countryCode: countryCode, include: include, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -54,7 +53,6 @@ PlaylistsAPI.playlistsGet(countryCode: countryCode, locale: locale, include: inc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **locale** | **String** | BCP47 locale code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
  **filterId** | [**[String]**](String.md) | Playlist id | [optional] 
 
@@ -125,7 +123,7 @@ Void (empty response body)
 
 # **playlistsIdGet**
 ```swift
-    open class func playlistsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single playlist.
@@ -139,11 +137,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let locale = "locale_example" // String | BCP47 locale code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
 
 // Get single playlist.
-PlaylistsAPI.playlistsIdGet(id: id, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+PlaylistsAPI.playlistsIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -161,7 +158,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **locale** | **String** | BCP47 locale code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
 
 ### Return type
@@ -503,7 +499,7 @@ Name | Type | Description  | Notes
 
 # **playlistsMeGet**
 ```swift
-    open class func playlistsMeGet(countryCode: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsMeGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get current user's playlist(s).
@@ -516,11 +512,11 @@ Retrieves current user's playlist(s).
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let locale = "locale_example" // String | BCP47 locale code
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
 
 // Get current user's playlist(s).
-PlaylistsAPI.playlistsMeGet(countryCode: countryCode, locale: locale, include: include) { (response, error) in
+PlaylistsAPI.playlistsMeGet(countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -537,7 +533,7 @@ PlaylistsAPI.playlistsMeGet(countryCode: countryCode, locale: locale, include: i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **locale** | **String** | BCP47 locale code | 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
 
 ### Return type

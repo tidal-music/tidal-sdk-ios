@@ -42,3 +42,4 @@ public struct ArtistUpdateBodyDataAttributes: Codable, Hashable {
     }
 }
 
+

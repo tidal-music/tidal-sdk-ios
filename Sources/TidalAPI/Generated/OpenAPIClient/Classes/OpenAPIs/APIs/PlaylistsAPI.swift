@@ -16,14 +16,13 @@ internal class PlaylistsAPI {
      Get multiple playlists.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
      - parameter filterId: (query) Playlist id (optional)
      - returns: PlaylistsMultiDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsGet(countryCode: String, locale: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
-        return try await playlistsGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include, filterId: filterId).execute().body
+    internal class func playlistsGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+        return try await playlistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId).execute().body
     }
 
     /**
@@ -37,12 +36,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
      - parameter filterId: (query) Playlist id (optional)
      - returns: RequestBuilder<PlaylistsMultiDataDocument> 
      */
-    internal class func playlistsGetWithRequestBuilder(countryCode: String, locale: String, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataDocument> {
+    internal class func playlistsGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataDocument> {
         let localVariablePath = "/playlists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -50,7 +48,6 @@ internal class PlaylistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
         ])
@@ -113,13 +110,12 @@ internal class PlaylistsAPI {
      
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
      - returns: PlaylistsSingleDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsSingleDataDocument {
-        return try await playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
+    internal class func playlistsIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> PlaylistsSingleDataDocument {
+        return try await playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
     }
 
     /**
@@ -134,11 +130,10 @@ internal class PlaylistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
      - returns: RequestBuilder<PlaylistsSingleDataDocument> 
      */
-    internal class func playlistsIdGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil) -> RequestBuilder<PlaylistsSingleDataDocument> {
+    internal class func playlistsIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<PlaylistsSingleDataDocument> {
         var localVariablePath = "/playlists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -149,7 +144,6 @@ internal class PlaylistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -461,13 +455,13 @@ internal class PlaylistsAPI {
      Get current user's playlist(s).
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
      - returns: PlaylistsMultiDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsMeGet(countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
-        return try await playlistsMeGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include).execute().body
+    internal class func playlistsMeGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+        return try await playlistsMeGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
     }
 
     /**
@@ -478,11 +472,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
      - returns: RequestBuilder<PlaylistsMultiDataDocument> 
      */
-    internal class func playlistsMeGetWithRequestBuilder(countryCode: String, locale: String, include: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataDocument> {
+    internal class func playlistsMeGetWithRequestBuilder(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataDocument> {
         let localVariablePath = "/playlists/me"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -490,7 +484,7 @@ internal class PlaylistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 

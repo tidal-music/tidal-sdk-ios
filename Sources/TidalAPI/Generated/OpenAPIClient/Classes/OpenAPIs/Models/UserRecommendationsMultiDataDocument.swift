@@ -38,3 +38,4 @@ public struct UserRecommendationsMultiDataDocument: Codable, Hashable {
     }
 }
 
+

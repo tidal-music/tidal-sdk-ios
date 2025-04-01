@@ -3,25 +3,25 @@ import Foundation
 import AnyCodable
 #endif
 
-/// This is a wrapper around `SearchresultsAPI` that uses the injected credentialsprovider
+/// This is a wrapper around `SearchResultsAPI` that uses the injected credentialsprovider
 /// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
 ///
 /// Usage example:
 /// ```swift
 /// OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
-/// let dataDocument = try await SearchresultsAPITidal.getResource()
+/// let dataDocument = try await SearchResultsAPITidal.getResource()
 /// ```
-public enum SearchresultsAPITidal {
+public enum SearchResultsAPITidal {
 
 
 	/**
-     Get single searchresult.
+     Get single searchResult.
      
-     - returns: SearchresultsSingleDataDocument
+     - returns: SearchResultsSingleDataDocument
      */
-	public static func searchresultsIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> SearchresultsSingleDataDocument {
+	public static func searchResultsIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> SearchResultsSingleDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchresultsAPI.searchresultsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+			SearchResultsAPI.searchResultsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
 	}
 
@@ -29,11 +29,11 @@ public enum SearchresultsAPITidal {
 	/**
      Get albums relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchresultsMultiDataRelationshipDocument
+     - returns: SearchResultsMultiDataRelationshipDocument
      */
-	public static func searchresultsIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
+	public static func searchResultsIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			SearchresultsAPI.searchresultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			SearchResultsAPI.searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -41,11 +41,11 @@ public enum SearchresultsAPITidal {
 	/**
      Get artists relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchresultsMultiDataRelationshipDocument
+     - returns: SearchResultsMultiDataRelationshipDocument
      */
-	public static func searchresultsIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
+	public static func searchResultsIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			SearchresultsAPI.searchresultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			SearchResultsAPI.searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -53,11 +53,11 @@ public enum SearchresultsAPITidal {
 	/**
      Get playlists relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchresultsMultiDataRelationshipDocument
+     - returns: SearchResultsMultiDataRelationshipDocument
      */
-	public static func searchresultsIdRelationshipsPlaylistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
+	public static func searchResultsIdRelationshipsPlaylistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			SearchresultsAPI.searchresultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -65,11 +65,11 @@ public enum SearchresultsAPITidal {
 	/**
      Get topHits relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchresultsMultiDataRelationshipDocument
+     - returns: SearchResultsMultiDataRelationshipDocument
      */
-	public static func searchresultsIdRelationshipsTopHitsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
+	public static func searchResultsIdRelationshipsTopHitsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			SearchresultsAPI.searchresultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			SearchResultsAPI.searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -77,11 +77,11 @@ public enum SearchresultsAPITidal {
 	/**
      Get tracks relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchresultsMultiDataRelationshipDocument
+     - returns: SearchResultsMultiDataRelationshipDocument
      */
-	public static func searchresultsIdRelationshipsTracksGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
+	public static func searchResultsIdRelationshipsTracksGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			SearchresultsAPI.searchresultsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			SearchResultsAPI.searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -89,11 +89,11 @@ public enum SearchresultsAPITidal {
 	/**
      Get videos relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchresultsMultiDataRelationshipDocument
+     - returns: SearchResultsMultiDataRelationshipDocument
      */
-	public static func searchresultsIdRelationshipsVideosGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchresultsMultiDataRelationshipDocument {
+	public static func searchResultsIdRelationshipsVideosGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			SearchresultsAPI.searchresultsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			SearchResultsAPI.searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 }
