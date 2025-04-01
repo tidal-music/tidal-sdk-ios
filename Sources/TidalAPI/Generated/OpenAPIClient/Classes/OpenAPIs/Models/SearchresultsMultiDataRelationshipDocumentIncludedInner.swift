@@ -56,6 +56,22 @@ public enum SearchresultsMultiDataRelationshipDocumentIncludedInner: Codable, JS
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
-extension SearchresultsMultiDataRelationshipDocumentIncludedInner: Identifiable {}
+extension SearchresultsMultiDataRelationshipDocumentIncludedInner: Identifiable {
+	public var id: some Hashable {
+		switch self {
+		case let .typeAlbumsResource(value):
+			value.id
+		case let .typeArtistsResource(value):
+			value.id
+		case let .typePlaylistsResource(value):
+			value.id
+		case let .typeSearchresultsResource(value):
+			value.id
+		case let .typeTracksResource(value):
+			value.id
+		case let .typeVideosResource(value):
+			value.id
+		}
+	}
+}
