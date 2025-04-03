@@ -1,6 +1,7 @@
 additionalProperties:
   useJsonEncodable: false
   responseAs: AsyncAwait
+  identifiableModels: true
 
 embeddedTemplateDir: ./Config/custom_template
 templateDir: ./Config/custom_template

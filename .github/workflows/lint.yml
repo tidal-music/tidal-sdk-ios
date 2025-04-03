@@ -19,6 +19,9 @@ jobs:
       pull-requests: write
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history so git diff works
+        ref: ${{ github.event.pull_request.head.ref }}  # Ensure we checkout the PR head
 
     - name: Find modified Swift files and lint them
       run: |
