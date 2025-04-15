@@ -68,7 +68,10 @@ final class PlayerItem {
 		if featureFlagProvider.shouldUseImprovedCaching() {
 			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_V2)
 		}
-
+		if mediaProduct.extras?[MediaProduct.Extras.Constants.UploadsDictKey] != nil {
+			sessionTags.append(StreamingSessionStart.SessionTag.UPLOAD)
+		}
+		
 		playerEventSender.send(StreamingSessionStart(
 			streamingSessionId: id,
 			startReason: playbackStartReason,
@@ -79,7 +82,7 @@ final class PlayerItem {
 			sessionProductType: mediaProduct.productType.rawValue,
 			sessionProductId: mediaProduct.productId,
 			sessionTags: sessionTags.isEmpty ? nil : sessionTags
-		))
+		), extras: mediaProduct.extras)
 	}
 
 	func emitEvents() {

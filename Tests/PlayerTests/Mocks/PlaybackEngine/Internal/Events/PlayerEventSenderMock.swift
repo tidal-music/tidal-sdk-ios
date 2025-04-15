@@ -35,7 +35,7 @@ final class PlayerEventSenderMock: PlayerEventSender {
 		offlinePlays.removeAll()
 	}
 
-	override func send(_ event: any StreamingMetricsEvent) {
+	override func send(_ event: any StreamingMetricsEvent, extras: PlayerEvent.Extras? = nil) {
 		streamingMetricsEvents.append(event)
 	}
 

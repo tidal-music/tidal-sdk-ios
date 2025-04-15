@@ -72,8 +72,8 @@ class PlayerEventSender {
 		timer?.invalidate()
 	}
 
-	func send(_ event: any StreamingMetricsEvent) {
-		write(group: .streamingMetrics, name: event.name, payload: event, extras: nil)
+	func send(_ event: any StreamingMetricsEvent, extras: PlayerEvent.Extras? = nil) {
+		write(group: .streamingMetrics, name: event.name, payload: event, extras: extras)
 	}
 
 	func send(_ event: PlayLogEvent, extras: PlayerEvent.Extras?) {

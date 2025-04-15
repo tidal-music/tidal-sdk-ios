@@ -5,6 +5,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		case PRELOADED
 		case CACHING_DISABLED
 		case CACHING_V2
+		case UPLOAD
 	}
 
 	// MARK: - StreamingMetricsEvent
