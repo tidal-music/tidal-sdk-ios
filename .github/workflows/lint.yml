@@ -18,15 +18,29 @@ jobs:
       contents: read
       pull-requests: write
     steps:
+    - name: Determine base and feature branches
+      id: vars
+      run: |
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "BASE_BRANCH=${{ github.event.pull_request.base.ref }}" >> $GITHUB_OUTPUT
+            echo "FEATURE_BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_OUTPUT
+        elif [ "${{ github.event_name }}" = "merge_group" ]; then
+            echo "BASE_BRANCH=${{ github.event.merge_group.base_ref }}" >> $GITHUB_OUTPUT
+            echo "FEATURE_BRANCH=HEAD" >> $GITHUB_OUTPUT  # This is a synthetic merge commit
+        else
+            echo "Unsupported event: ${{ github.event_name }}"
+            exit 1
+        fi
+
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Fetch all history so git diff works
-        ref: ${{ github.event.pull_request.head.ref }}  # Ensure we checkout the PR head
+        ref: ${{ steps.vars.outputs.FEATURE_BRANCH }}  # Ensure we checkout the PR head
 
     - name: Find modified Swift files and lint them
       run: |
-        BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
-        FEATURE_BRANCH="${{ github.event.pull_request.head.ref }}"
+        BASE_BRANCH="${{ steps.vars.outputs.BASE_BRANCH }}"
+        FEATURE_BRANCH="${{ steps.vars.outputs.FEATURE_BRANCH }}"
 
         # Get list of changed Swift files as an array
         modified_files=($(git diff --name-only origin/$BASE_BRANCH...$FEATURE_BRANCH -- '*.swift'))
