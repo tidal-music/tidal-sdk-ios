@@ -12,6 +12,7 @@ import AnyCodable
 
 public enum PlaylistsMultiDataDocumentIncludedInner: Codable, JSONEncodable, Hashable {
     case typeArtistsResource(ArtistsResource)
+    case typeArtworksResource(ArtworksResource)
     case typeTracksResource(TracksResource)
     case typeUsersResource(UsersResource)
     case typeVideosResource(VideosResource)
@@ -20,6 +21,8 @@ public enum PlaylistsMultiDataDocumentIncludedInner: Codable, JSONEncodable, Has
         var container = encoder.singleValueContainer()
         switch self {
         case .typeArtistsResource(let value):
+            try container.encode(value)
+        case .typeArtworksResource(let value):
             try container.encode(value)
         case .typeTracksResource(let value):
             try container.encode(value)
@@ -34,6 +37,8 @@ public enum PlaylistsMultiDataDocumentIncludedInner: Codable, JSONEncodable, Has
         let container = try decoder.singleValueContainer()
         if let value = try? container.decode(ArtistsResource.self) {
             self = .typeArtistsResource(value)
+        } else if let value = try? container.decode(ArtworksResource.self) {
+            self = .typeArtworksResource(value)
         } else if let value = try? container.decode(TracksResource.self) {
             self = .typeTracksResource(value)
         } else if let value = try? container.decode(UsersResource.self) {
@@ -48,16 +53,15 @@ public enum PlaylistsMultiDataDocumentIncludedInner: Codable, JSONEncodable, Has
 
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension PlaylistsMultiDataDocumentIncludedInner: Identifiable {
-	public var id: some Hashable {
-		switch self {
-		case let .typeArtistsResource(value):
-			value.id
-		case let .typeTracksResource(value):
-			value.id
-		case let .typeUsersResource(value):
-			value.id
-		case let .typeVideosResource(value):
-			value.id
-		}
-	}
+    public var id: String {
+        switch self {
+        case .typeArtistsResource(let value): return value.id
+        case .typeArtworksResource(let value): return value.id
+        case .typeTracksResource(let value): return value.id
+        case .typeUsersResource(let value): return value.id
+        case .typeVideosResource(let value): return value.id
+        }
+    }
 }
+
+

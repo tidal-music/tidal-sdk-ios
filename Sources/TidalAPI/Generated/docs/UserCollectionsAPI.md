@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 # **userCollectionsIdGet**
 ```swift
-    open class func userCollectionsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsSingleDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollection.
@@ -31,12 +31,12 @@ Retrieves single userCollection by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User id
+let locale = "locale_example" // String | BCP 47 locale
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let locale = "locale_example" // String | BCP47 locale code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists (optional)
 
 // Get single userCollection.
-UserCollectionsAPI.userCollectionsIdGet(id: id, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionsAPI.userCollectionsIdGet(id: id, locale: locale, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -53,8 +53,8 @@ UserCollectionsAPI.userCollectionsIdGet(id: id, countryCode: countryCode, locale
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User id | 
+ **locale** | **String** | BCP 47 locale | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **locale** | **String** | BCP47 locale code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists | [optional] 
 
 ### Return type
@@ -86,7 +86,7 @@ Deletes item(s) from albums relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | User id
 let userCollectionAlbumsRelationshipRemoveOperationPayload = UserCollectionAlbumsRelationshipRemoveOperation_Payload(data: [UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example", meta: UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"))]) // UserCollectionAlbumsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from albums relationship (\"to-many\").
@@ -106,7 +106,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDelete(id: id, userCollec
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | User id | 
  **userCollectionAlbumsRelationshipRemoveOperationPayload** | [**UserCollectionAlbumsRelationshipRemoveOperationPayload**](UserCollectionAlbumsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -138,7 +138,7 @@ Retrieves albums relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | User id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let locale = "locale_example" // String | BCP 47 locale
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -161,7 +161,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsGet(id: id, countryCode: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | User id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **locale** | **String** | BCP 47 locale | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -196,7 +196,7 @@ Adds item(s) to albums relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | User id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let userCollectionAlbumsRelationshipAddOperationPayload = UserCollectionAlbumsRelationshipAddOperation_Payload(data: [UserCollectionAlbumsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionAlbumsRelationshipAddOperationPayload |  (optional)
 
@@ -217,7 +217,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPost(id: id, countryCode:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | User id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **userCollectionAlbumsRelationshipAddOperationPayload** | [**UserCollectionAlbumsRelationshipAddOperationPayload**](UserCollectionAlbumsRelationshipAddOperationPayload.md) |  | [optional] 
 
@@ -250,7 +250,7 @@ Deletes item(s) from artists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | User id
 let userCollectionArtistsRelationshipRemoveOperationPayload = UserCollectionArtistsRelationshipRemoveOperation_Payload(data: [UserCollectionArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example", meta: UserCollectionArtistsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"))]) // UserCollectionArtistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from artists relationship (\"to-many\").
@@ -270,7 +270,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDelete(id: id, userColle
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | User id | 
  **userCollectionArtistsRelationshipRemoveOperationPayload** | [**UserCollectionArtistsRelationshipRemoveOperationPayload**](UserCollectionArtistsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -302,7 +302,7 @@ Retrieves artists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | User id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let locale = "locale_example" // String | BCP 47 locale
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -325,7 +325,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsArtistsGet(id: id, countryCode:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | User id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **locale** | **String** | BCP 47 locale | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -360,7 +360,7 @@ Adds item(s) to artists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | User id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let userCollectionArtistsRelationshipAddOperationPayload = UserCollectionArtistsRelationshipAddOperation_Payload(data: [UserCollectionArtistsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionArtistsRelationshipAddOperationPayload |  (optional)
 
@@ -381,7 +381,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPost(id: id, countryCode
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | User id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **userCollectionArtistsRelationshipAddOperationPayload** | [**UserCollectionArtistsRelationshipAddOperationPayload**](UserCollectionArtistsRelationshipAddOperationPayload.md) |  | [optional] 
 
@@ -414,7 +414,7 @@ Deletes item(s) from playlists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | User id
 let userCollectionPlaylistsRelationshipRemoveOperationPayload = UserCollectionPlaylistsRelationshipRemoveOperation_Payload(data: [UserCollectionPlaylistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionPlaylistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from playlists relationship (\"to-many\").
@@ -434,7 +434,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDelete(id: id, userCol
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | User id | 
  **userCollectionPlaylistsRelationshipRemoveOperationPayload** | [**UserCollectionPlaylistsRelationshipRemoveOperationPayload**](UserCollectionPlaylistsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -466,7 +466,7 @@ Retrieves playlists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | User id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlists (optional)
@@ -488,7 +488,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGet(id: id, countryCod
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | User id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlists | [optional] 
@@ -522,7 +522,7 @@ Adds item(s) to playlists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | User id
 let userCollectionPlaylistsRelationshipRemoveOperationPayload = UserCollectionPlaylistsRelationshipRemoveOperation_Payload(data: [UserCollectionPlaylistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionPlaylistsRelationshipRemoveOperationPayload |  (optional)
 
 // Add to playlists relationship (\"to-many\").
@@ -542,7 +542,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPost(id: id, userColle
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | User id | 
  **userCollectionPlaylistsRelationshipRemoveOperationPayload** | [**UserCollectionPlaylistsRelationshipRemoveOperationPayload**](UserCollectionPlaylistsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type

@@ -16,7 +16,7 @@ internal class ArtistsAPI {
      Get multiple artists.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Allows to filter the collection of resources based on handle attribute value (optional)
      - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
      - returns: ArtistsMultiDataDocument
@@ -37,7 +37,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Allows to filter the collection of resources based on handle attribute value (optional)
      - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
      - returns: RequestBuilder<ArtistsMultiDataDocument> 
@@ -71,7 +71,7 @@ internal class ArtistsAPI {
      
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - returns: ArtistsSingleDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -91,7 +91,7 @@ internal class ArtistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - returns: RequestBuilder<ArtistsSingleDataDocument> 
      */
     internal class func artistsIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<ArtistsSingleDataDocument> {
@@ -195,6 +195,62 @@ internal class ArtistsAPI {
      */
     internal class func artistsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ArtistsMultiDataRelationshipDocument> {
         var localVariablePath = "/artists/{id}/relationships/albums"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ArtistsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get profileArt relationship (\"to-many\").
+     
+     - parameter id: (path) Artist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: profileArt (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: ArtistsMultiDataRelationshipDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func artistsIdRelationshipsProfileArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
+        return try await artistsIdRelationshipsProfileArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+    }
+
+    /**
+     Get profileArt relationship (\"to-many\").
+     - GET /artists/{id}/relationships/profileArt
+     - Retrieves profileArt relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) Artist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: profileArt (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<ArtistsMultiDataRelationshipDocument> 
+     */
+    internal class func artistsIdRelationshipsProfileArtGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ArtistsMultiDataRelationshipDocument> {
+        var localVariablePath = "/artists/{id}/relationships/profileArt"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)

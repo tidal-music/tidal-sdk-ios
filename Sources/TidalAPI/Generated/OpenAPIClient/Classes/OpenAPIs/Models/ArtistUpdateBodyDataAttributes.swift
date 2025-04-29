@@ -14,20 +14,17 @@ public struct ArtistUpdateBodyDataAttributes: Codable, Hashable {
 
     public var name: String?
     public var handle: String?
-    public var imageLinks: [ImageLink]?
     public var externalLinks: [ExternalLink]?
 
-    public init(name: String? = nil, handle: String? = nil, imageLinks: [ImageLink]? = nil, externalLinks: [ExternalLink]? = nil) {
+    public init(name: String? = nil, handle: String? = nil, externalLinks: [ExternalLink]? = nil) {
         self.name = name
         self.handle = handle
-        self.imageLinks = imageLinks
         self.externalLinks = externalLinks
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case name
         case handle
-        case imageLinks
         case externalLinks
     }
 
@@ -37,8 +34,8 @@ public struct ArtistUpdateBodyDataAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(handle, forKey: .handle)
-        try container.encodeIfPresent(imageLinks, forKey: .imageLinks)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
     }
 }
+
 

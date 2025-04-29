@@ -19,9 +19,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsMultiDataDocument
      */
-	public static func playlistsGet(countryCode: String, locale: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+	public static func playlistsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include, filterId: filterId)
+			PlaylistsAPI.playlistsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterROwnersId: filterROwnersId, filterId: filterId)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsSingleDataDocument
      */
-	public static func playlistsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsSingleDataDocument {
+	public static func playlistsIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> PlaylistsSingleDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			PlaylistsAPI.playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
 	}
 
@@ -55,9 +55,21 @@ public enum PlaylistsAPITidal {
      
      - returns: 
      */
-	public static func playlistsIdPatch(id: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) async throws {
+	public static func playlistsIdPatch(id: String, countryCode: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdPatchWithRequestBuilder(id: id, playlistUpdateOperationPayload: playlistUpdateOperationPayload)
+			PlaylistsAPI.playlistsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, playlistUpdateOperationPayload: playlistUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Get coverArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiDataRelationshipDocument
+     */
+	public static func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -127,9 +139,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsMultiDataDocument
      */
-	public static func playlistsMeGet(countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+	public static func playlistsMeGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsMeGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include)
+			PlaylistsAPI.playlistsMeGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -139,9 +151,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsSingleDataDocument
      */
-	public static func playlistsPost(countryCode: String, locale: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) async throws -> PlaylistsSingleDataDocument {
+	public static func playlistsPost(countryCode: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) async throws -> PlaylistsSingleDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsPostWithRequestBuilder(countryCode: countryCode, locale: locale, playlistCreateOperationPayload: playlistCreateOperationPayload)
+			PlaylistsAPI.playlistsPostWithRequestBuilder(countryCode: countryCode, playlistCreateOperationPayload: playlistCreateOperationPayload)
 		}
 	}
 }

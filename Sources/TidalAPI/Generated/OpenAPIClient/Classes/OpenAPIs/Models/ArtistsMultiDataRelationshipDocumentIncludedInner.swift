@@ -14,6 +14,7 @@ public enum ArtistsMultiDataRelationshipDocumentIncludedInner: Codable, JSONEnco
     case typeAlbumsResource(AlbumsResource)
     case typeArtistRolesResource(ArtistRolesResource)
     case typeArtistsResource(ArtistsResource)
+    case typeArtworksResource(ArtworksResource)
     case typePlaylistsResource(PlaylistsResource)
     case typeProvidersResource(ProvidersResource)
     case typeTracksResource(TracksResource)
@@ -27,6 +28,8 @@ public enum ArtistsMultiDataRelationshipDocumentIncludedInner: Codable, JSONEnco
         case .typeArtistRolesResource(let value):
             try container.encode(value)
         case .typeArtistsResource(let value):
+            try container.encode(value)
+        case .typeArtworksResource(let value):
             try container.encode(value)
         case .typePlaylistsResource(let value):
             try container.encode(value)
@@ -47,6 +50,8 @@ public enum ArtistsMultiDataRelationshipDocumentIncludedInner: Codable, JSONEnco
             self = .typeArtistRolesResource(value)
         } else if let value = try? container.decode(ArtistsResource.self) {
             self = .typeArtistsResource(value)
+        } else if let value = try? container.decode(ArtworksResource.self) {
+            self = .typeArtworksResource(value)
         } else if let value = try? container.decode(PlaylistsResource.self) {
             self = .typePlaylistsResource(value)
         } else if let value = try? container.decode(ProvidersResource.self) {
@@ -63,22 +68,18 @@ public enum ArtistsMultiDataRelationshipDocumentIncludedInner: Codable, JSONEnco
 
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension ArtistsMultiDataRelationshipDocumentIncludedInner: Identifiable {
-	public var id: some Hashable {
-		switch self {
-		case let .typeAlbumsResource(value):
-			value.id
-		case let .typeArtistRolesResource(value):
-			value.id
-		case let .typeArtistsResource(value):
-			value.id
-		case let .typePlaylistsResource(value):
-			value.id
-		case let .typeProvidersResource(value):
-			value.id
-		case let .typeTracksResource(value):
-			value.id
-		case let .typeVideosResource(value):
-			value.id
-		}
-	}
+    public var id: String {
+        switch self {
+        case .typeAlbumsResource(let value): return value.id
+        case .typeArtistRolesResource(let value): return value.id
+        case .typeArtistsResource(let value): return value.id
+        case .typeArtworksResource(let value): return value.id
+        case .typePlaylistsResource(let value): return value.id
+        case .typeProvidersResource(let value): return value.id
+        case .typeTracksResource(let value): return value.id
+        case .typeVideosResource(let value): return value.id
+        }
+    }
 }
+
+

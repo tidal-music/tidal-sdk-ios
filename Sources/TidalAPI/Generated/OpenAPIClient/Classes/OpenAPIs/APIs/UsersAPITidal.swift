@@ -15,30 +15,6 @@ public enum UsersAPITidal {
 
 
 	/**
-     Get multiple users.
-     
-     - returns: UsersMultiDataDocument
-     */
-	public static func usersGet(filterId: [String]? = nil) async throws -> UsersMultiDataDocument {
-		return try await RequestHelper.createRequest {
-			UsersAPI.usersGetWithRequestBuilder(filterId: filterId)
-		}
-	}
-
-
-	/**
-     Get single user.
-     
-     - returns: UsersSingleDataDocument
-     */
-	public static func usersIdGet(id: String) async throws -> UsersSingleDataDocument {
-		return try await RequestHelper.createRequest {
-			UsersAPI.usersIdGetWithRequestBuilder(id: id)
-		}
-	}
-
-
-	/**
      Get current user&#39;s user(s).
      
      - returns: UsersSingleDataDocument
