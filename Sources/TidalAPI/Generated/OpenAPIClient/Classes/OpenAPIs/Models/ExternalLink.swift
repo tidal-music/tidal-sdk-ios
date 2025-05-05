@@ -10,7 +10,6 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Playlist links external to TIDAL API */
 public struct ExternalLink: Codable, Hashable {
 
     public var href: String
@@ -34,4 +33,5 @@ public struct ExternalLink: Codable, Hashable {
         try container.encode(meta, forKey: .meta)
     }
 }
+
 

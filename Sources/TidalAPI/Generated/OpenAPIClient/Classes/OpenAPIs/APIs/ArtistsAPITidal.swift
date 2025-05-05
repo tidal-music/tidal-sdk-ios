@@ -63,6 +63,18 @@ public enum ArtistsAPITidal {
 
 
 	/**
+     Get profileArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: ArtistsMultiDataRelationshipDocument
+     */
+	public static func artistsIdRelationshipsProfileArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsProfileArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Get radio relationship (\&quot;to-many\&quot;).
      
      - returns: ArtistsMultiDataRelationshipDocument

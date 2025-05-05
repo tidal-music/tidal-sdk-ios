@@ -44,8 +44,10 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var availability: [Availability]?
     public var mediaTags: [String]
     /** Album image links and metadata */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var imageLinks: [ImageLink]?
     /** Album video links and metadata */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var videoLinks: [VideoLink]?
     /** Album links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
@@ -109,4 +111,5 @@ public struct AlbumsAttributes: Codable, Hashable {
         try container.encode(type, forKey: .type)
     }
 }
+
 

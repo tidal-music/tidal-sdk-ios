@@ -43,14 +43,13 @@ public enum UserCollectionsMultiDataDocumentIncludedInner: Codable, JSONEncodabl
 
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension UserCollectionsMultiDataDocumentIncludedInner: Identifiable {
-	public var id: some Hashable {
-		switch self {
-		case let .typeAlbumsResource(value):
-			value.id
-		case let .typeArtistsResource(value):
-			value.id
-		case let .typePlaylistsResource(value):
-			value.id
-		}
-	}
+    public var id: String {
+        switch self {
+        case .typeAlbumsResource(let value): return value.id
+        case .typeArtistsResource(let value): return value.id
+        case .typePlaylistsResource(let value): return value.id
+        }
+    }
 }
+
+

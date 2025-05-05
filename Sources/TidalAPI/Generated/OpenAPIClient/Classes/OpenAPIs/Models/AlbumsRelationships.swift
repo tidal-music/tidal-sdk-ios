@@ -14,12 +14,14 @@ public struct AlbumsRelationships: Codable, Hashable {
 
     public var artists: MultiDataRelationshipDoc
     public var similarAlbums: MultiDataRelationshipDoc
+    public var coverArt: MultiDataRelationshipDoc
     public var items: AlbumsItemsMultiDataRelationshipDocument
     public var providers: MultiDataRelationshipDoc
 
-    public init(artists: MultiDataRelationshipDoc, similarAlbums: MultiDataRelationshipDoc, items: AlbumsItemsMultiDataRelationshipDocument, providers: MultiDataRelationshipDoc) {
+    public init(artists: MultiDataRelationshipDoc, similarAlbums: MultiDataRelationshipDoc, coverArt: MultiDataRelationshipDoc, items: AlbumsItemsMultiDataRelationshipDocument, providers: MultiDataRelationshipDoc) {
         self.artists = artists
         self.similarAlbums = similarAlbums
+        self.coverArt = coverArt
         self.items = items
         self.providers = providers
     }
@@ -27,6 +29,7 @@ public struct AlbumsRelationships: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case artists
         case similarAlbums
+        case coverArt
         case items
         case providers
     }
@@ -37,8 +40,10 @@ public struct AlbumsRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(artists, forKey: .artists)
         try container.encode(similarAlbums, forKey: .similarAlbums)
+        try container.encode(coverArt, forKey: .coverArt)
         try container.encode(items, forKey: .items)
         try container.encode(providers, forKey: .providers)
     }
 }
+
 

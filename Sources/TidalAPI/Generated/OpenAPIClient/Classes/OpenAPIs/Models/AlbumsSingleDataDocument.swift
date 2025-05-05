@@ -38,3 +38,4 @@ public struct AlbumsSingleDataDocument: Codable, Hashable {
     }
 }
 
+

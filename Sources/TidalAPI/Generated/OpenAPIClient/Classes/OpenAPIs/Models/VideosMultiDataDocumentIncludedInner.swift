@@ -13,6 +13,7 @@ import AnyCodable
 public enum VideosMultiDataDocumentIncludedInner: Codable, JSONEncodable, Hashable {
     case typeAlbumsResource(AlbumsResource)
     case typeArtistsResource(ArtistsResource)
+    case typeArtworksResource(ArtworksResource)
     case typeProvidersResource(ProvidersResource)
 
     public func encode(to encoder: Encoder) throws {
@@ -21,6 +22,8 @@ public enum VideosMultiDataDocumentIncludedInner: Codable, JSONEncodable, Hashab
         case .typeAlbumsResource(let value):
             try container.encode(value)
         case .typeArtistsResource(let value):
+            try container.encode(value)
+        case .typeArtworksResource(let value):
             try container.encode(value)
         case .typeProvidersResource(let value):
             try container.encode(value)
@@ -33,6 +36,8 @@ public enum VideosMultiDataDocumentIncludedInner: Codable, JSONEncodable, Hashab
             self = .typeAlbumsResource(value)
         } else if let value = try? container.decode(ArtistsResource.self) {
             self = .typeArtistsResource(value)
+        } else if let value = try? container.decode(ArtworksResource.self) {
+            self = .typeArtworksResource(value)
         } else if let value = try? container.decode(ProvidersResource.self) {
             self = .typeProvidersResource(value)
         } else {
@@ -43,14 +48,14 @@ public enum VideosMultiDataDocumentIncludedInner: Codable, JSONEncodable, Hashab
 
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension VideosMultiDataDocumentIncludedInner: Identifiable {
-	public var id: some Hashable {
-		switch self {
-		case let .typeAlbumsResource(value):
-			value.id
-		case let .typeArtistsResource(value):
-			value.id
-		case let .typeProvidersResource(value):
-			value.id
-		}
-	}
+    public var id: String {
+        switch self {
+        case .typeAlbumsResource(let value): return value.id
+        case .typeArtistsResource(let value): return value.id
+        case .typeArtworksResource(let value): return value.id
+        case .typeProvidersResource(let value): return value.id
+        }
+    }
 }
+
+

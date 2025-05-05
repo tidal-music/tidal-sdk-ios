@@ -51,6 +51,18 @@ public enum AlbumsAPITidal {
 
 
 	/**
+     Get coverArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: AlbumsMultiDataRelationshipDocument
+     */
+	public static func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Get items relationship (\&quot;to-many\&quot;).
      
      - returns: AlbumsItemsResourceIdentifier

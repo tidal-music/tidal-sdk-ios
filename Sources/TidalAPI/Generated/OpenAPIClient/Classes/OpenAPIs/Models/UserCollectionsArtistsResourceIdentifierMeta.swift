@@ -34,3 +34,4 @@ public struct UserCollectionsArtistsResourceIdentifierMeta: Codable, Hashable {
     }
 }
 
+
