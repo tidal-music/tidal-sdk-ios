@@ -34,3 +34,4 @@ public struct UserCollectionsArtistsMultiDataRelationshipDocument: Codable, Hash
     }
 }
 
+

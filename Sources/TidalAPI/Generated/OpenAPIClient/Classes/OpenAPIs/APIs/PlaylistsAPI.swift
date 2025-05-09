@@ -16,14 +16,15 @@ internal class PlaylistsAPI {
      Get multiple playlists.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
+     - parameter filterROwnersId: (query) User id (optional)
      - parameter filterId: (query) Playlist id (optional)
      - returns: PlaylistsMultiDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsGet(countryCode: String, locale: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
-        return try await playlistsGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include, filterId: filterId).execute().body
+    internal class func playlistsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+        return try await playlistsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterROwnersId: filterROwnersId, filterId: filterId).execute().body
     }
 
     /**
@@ -37,12 +38,13 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
+     - parameter filterROwnersId: (query) User id (optional)
      - parameter filterId: (query) Playlist id (optional)
      - returns: RequestBuilder<PlaylistsMultiDataDocument> 
      */
-    internal class func playlistsGetWithRequestBuilder(countryCode: String, locale: String, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataDocument> {
+    internal class func playlistsGetWithRequestBuilder(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataDocument> {
         let localVariablePath = "/playlists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -50,8 +52,9 @@ internal class PlaylistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[r.owners.id]": (wrappedValue: filterROwnersId?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
         ])
 
@@ -113,13 +116,12 @@ internal class PlaylistsAPI {
      
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
      - returns: PlaylistsSingleDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsSingleDataDocument {
-        return try await playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
+    internal class func playlistsIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> PlaylistsSingleDataDocument {
+        return try await playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
     }
 
     /**
@@ -134,11 +136,10 @@ internal class PlaylistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
      - returns: RequestBuilder<PlaylistsSingleDataDocument> 
      */
-    internal class func playlistsIdGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil) -> RequestBuilder<PlaylistsSingleDataDocument> {
+    internal class func playlistsIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<PlaylistsSingleDataDocument> {
         var localVariablePath = "/playlists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -149,7 +150,6 @@ internal class PlaylistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -168,12 +168,13 @@ internal class PlaylistsAPI {
      Update single playlist.
      
      - parameter id: (path) Playlist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter playlistUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdPatch(id: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) async throws {
-        return try await playlistsIdPatchWithRequestBuilder(id: id, playlistUpdateOperationPayload: playlistUpdateOperationPayload).execute().body
+    internal class func playlistsIdPatch(id: String, countryCode: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) async throws {
+        return try await playlistsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, playlistUpdateOperationPayload: playlistUpdateOperationPayload).execute().body
     }
 
     /**
@@ -184,10 +185,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter playlistUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playlistsIdPatchWithRequestBuilder(id: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playlistsIdPatchWithRequestBuilder(id: String, countryCode: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playlists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -195,7 +197,10 @@ internal class PlaylistsAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playlistUpdateOperationPayload)
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -206,6 +211,62 @@ internal class PlaylistsAPI {
         let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get coverArt relationship (\"to-many\").
+     
+     - parameter id: (path) Playlist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: PlaylistsMultiDataRelationshipDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiDataRelationshipDocument {
+        return try await playlistsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+    }
+
+    /**
+     Get coverArt relationship (\"to-many\").
+     - GET /playlists/{id}/relationships/coverArt
+     - Retrieves coverArt relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) Playlist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<PlaylistsMultiDataRelationshipDocument> 
+     */
+    internal class func playlistsIdRelationshipsCoverArtGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsMultiDataRelationshipDocument> {
+        var localVariablePath = "/playlists/{id}/relationships/coverArt"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<PlaylistsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**
@@ -461,28 +522,30 @@ internal class PlaylistsAPI {
      Get current user's playlist(s).
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
      - returns: PlaylistsMultiDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsMeGet(countryCode: String, locale: String, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
-        return try await playlistsMeGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include).execute().body
+    internal class func playlistsMeGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
+        return try await playlistsMeGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
     }
 
     /**
      Get current user's playlist(s).
      - GET /playlists/me
-     - Retrieves current user's playlist(s).
+     - This operation is deprecated and will be removed shortly. Please switch to the filter endpoint: /playlists?filter[r.owners.id]=<userId>  Retrieves current user's playlist(s).
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
      - returns: RequestBuilder<PlaylistsMultiDataDocument> 
      */
-    internal class func playlistsMeGetWithRequestBuilder(countryCode: String, locale: String, include: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataDocument> {
+    @available(*, deprecated, message: "This operation is deprecated.")
+    internal class func playlistsMeGetWithRequestBuilder(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataDocument> {
         let localVariablePath = "/playlists/me"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -490,7 +553,7 @@ internal class PlaylistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -509,13 +572,12 @@ internal class PlaylistsAPI {
      Create single playlist.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
      - parameter playlistCreateOperationPayload: (body)  (optional)
      - returns: PlaylistsSingleDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsPost(countryCode: String, locale: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) async throws -> PlaylistsSingleDataDocument {
-        return try await playlistsPostWithRequestBuilder(countryCode: countryCode, locale: locale, playlistCreateOperationPayload: playlistCreateOperationPayload).execute().body
+    internal class func playlistsPost(countryCode: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) async throws -> PlaylistsSingleDataDocument {
+        return try await playlistsPostWithRequestBuilder(countryCode: countryCode, playlistCreateOperationPayload: playlistCreateOperationPayload).execute().body
     }
 
     /**
@@ -526,11 +588,10 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
      - parameter playlistCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlaylistsSingleDataDocument> 
      */
-    internal class func playlistsPostWithRequestBuilder(countryCode: String, locale: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) -> RequestBuilder<PlaylistsSingleDataDocument> {
+    internal class func playlistsPostWithRequestBuilder(countryCode: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) -> RequestBuilder<PlaylistsSingleDataDocument> {
         let localVariablePath = "/playlists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playlistCreateOperationPayload)
@@ -538,7 +599,6 @@ internal class PlaylistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

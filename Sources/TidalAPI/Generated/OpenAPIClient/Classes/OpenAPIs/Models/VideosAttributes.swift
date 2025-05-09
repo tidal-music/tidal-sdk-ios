@@ -36,6 +36,7 @@ public struct VideosAttributes: Codable, Hashable {
     /** Available usage for this video */
     public var availability: [Availability]?
     /** Video image links and metadata */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var imageLinks: [ImageLink]?
     /** Video links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
@@ -85,4 +86,5 @@ public struct VideosAttributes: Codable, Hashable {
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
     }
 }
+
 

@@ -38,3 +38,4 @@ public struct UserCollectionsSingleDataDocument: Codable, Hashable {
     }
 }
 
+

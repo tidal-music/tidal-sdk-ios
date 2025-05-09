@@ -32,9 +32,8 @@ public struct PlaylistsAttributes: Codable, Hashable {
     public var duration: String?
     /** Number of items in the playlist */
     public var numberOfItems: Int?
-    /** Playlist links external to TIDAL API */
     public var externalLinks: [ExternalLink]
-    /** Playlist image links and metadata */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var imageLinks: [ImageLink]
     /** Datetime of playlist creation (ISO 8601) */
     public var createdAt: Date
@@ -90,4 +89,5 @@ public struct PlaylistsAttributes: Codable, Hashable {
         try container.encode(playlistType, forKey: .playlistType)
     }
 }
+
 

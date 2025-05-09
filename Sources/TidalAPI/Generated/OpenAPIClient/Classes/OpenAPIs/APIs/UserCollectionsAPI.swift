@@ -16,14 +16,14 @@ internal class UserCollectionsAPI {
      Get single userCollection.
      
      - parameter id: (path) User id 
+     - parameter locale: (query) BCP 47 locale 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists (optional)
      - returns: UserCollectionsSingleDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserCollectionsSingleDataDocument {
-        return try await userCollectionsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
+    internal class func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil) async throws -> UserCollectionsSingleDataDocument {
+        return try await userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, countryCode: countryCode, include: include).execute().body
     }
 
     /**
@@ -34,12 +34,12 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
+     - parameter locale: (query) BCP 47 locale 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists (optional)
      - returns: RequestBuilder<UserCollectionsSingleDataDocument> 
      */
-    internal class func userCollectionsIdGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleDataDocument> {
+    internal class func userCollectionsIdGetWithRequestBuilder(id: String, locale: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleDataDocument> {
         var localVariablePath = "/userCollections/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -49,8 +49,8 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -68,7 +68,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from albums relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter userCollectionAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -84,7 +84,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter userCollectionAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -112,7 +112,7 @@ internal class UserCollectionsAPI {
     /**
      Get albums relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -131,7 +131,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -168,7 +168,7 @@ internal class UserCollectionsAPI {
     /**
      Add to albums relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter userCollectionAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -185,7 +185,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter userCollectionAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
@@ -217,7 +217,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from artists relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter userCollectionArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -233,7 +233,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter userCollectionArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -261,7 +261,7 @@ internal class UserCollectionsAPI {
     /**
      Get artists relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -280,7 +280,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -317,7 +317,7 @@ internal class UserCollectionsAPI {
     /**
      Add to artists relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter userCollectionArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -334,7 +334,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter userCollectionArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
@@ -366,7 +366,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from playlists relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -382,7 +382,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -410,7 +410,7 @@ internal class UserCollectionsAPI {
     /**
      Get playlists relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
@@ -428,7 +428,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
@@ -463,7 +463,7 @@ internal class UserCollectionsAPI {
     /**
      Add to playlists relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -479,7 +479,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) User id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */

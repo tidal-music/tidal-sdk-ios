@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**videosIdRelationshipsAlbumsGet**](VideosAPI.md#videosidrelationshipsalbumsget) | **GET** /videos/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
 [**videosIdRelationshipsArtistsGet**](VideosAPI.md#videosidrelationshipsartistsget) | **GET** /videos/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
 [**videosIdRelationshipsProvidersGet**](VideosAPI.md#videosidrelationshipsprovidersget) | **GET** /videos/{id}/relationships/providers | Get providers relationship (\&quot;to-many\&quot;).
+[**videosIdRelationshipsThumbnailArtGet**](VideosAPI.md#videosidrelationshipsthumbnailartget) | **GET** /videos/{id}/relationships/thumbnailArt | Get thumbnailArt relationship (\&quot;to-many\&quot;).
 
 
 # **videosGet**
@@ -26,7 +27,7 @@ Retrieves multiple videos by available filters, or without if applicable.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
 let filterIsrc = ["inner_example"] // [String] | Allows to filter the collection of resources based on isrc attribute value (optional)
 let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
 
@@ -48,7 +49,7 @@ VideosAPI.videosGet(countryCode: countryCode, include: include, filterIsrc: filt
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt | [optional] 
  **filterIsrc** | [**[String]**](String.md) | Allows to filter the collection of resources based on isrc attribute value | [optional] 
  **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
 
@@ -83,7 +84,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Video id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
 
 // Get single video.
 VideosAPI.videosIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
@@ -104,7 +105,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Video id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt | [optional] 
 
 ### Return type
 
@@ -272,6 +273,62 @@ Name | Type | Description  | Notes
  **id** | **String** | Video id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: providers | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**VideosMultiDataRelationshipDocument**](VideosMultiDataRelationshipDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **videosIdRelationshipsThumbnailArtGet**
+```swift
+    open class func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+```
+
+Get thumbnailArt relationship (\"to-many\").
+
+Retrieves thumbnailArt relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Video id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: thumbnailArt (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get thumbnailArt relationship (\"to-many\").
+VideosAPI.videosIdRelationshipsThumbnailArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Video id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: thumbnailArt | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
