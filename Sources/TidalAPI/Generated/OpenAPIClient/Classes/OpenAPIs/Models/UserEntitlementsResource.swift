@@ -12,38 +12,35 @@ import AnyCodable
 
 public struct UserEntitlementsResource: Codable, Hashable {
 
-    public var attributes: UserEntitlementsAttributes?
-    public var links: Links?
     /** resource unique identifier */
     public var id: String
     /** resource unique type */
     public var type: String
+    public var attributes: UserEntitlementsAttributes?
 
-    public init(attributes: UserEntitlementsAttributes? = nil, links: Links? = nil, id: String, type: String) {
-        self.attributes = attributes
-        self.links = links
+    public init(id: String, type: String, attributes: UserEntitlementsAttributes? = nil) {
         self.id = id
         self.type = type
+        self.attributes = attributes
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case attributes
-        case links
         case id
         case type
+        case attributes
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(attributes, forKey: .attributes)
-        try container.encodeIfPresent(links, forKey: .links)
         try container.encode(id, forKey: .id)
         try container.encode(type, forKey: .type)
+        try container.encodeIfPresent(attributes, forKey: .attributes)
     }
 }
 
 
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension UserEntitlementsResource: Identifiable {}
+

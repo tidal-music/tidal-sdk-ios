@@ -33,10 +33,11 @@ public enum UserRecommendationsMultiDataDocumentIncludedInner: Codable, JSONEnco
 
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension UserRecommendationsMultiDataDocumentIncludedInner: Identifiable {
-    public var id: some Hashable {
+    public var id: String {
         switch self {
-        case .typePlaylistsResource(let value):
-            return value.id
+        case .typePlaylistsResource(let value): return value.id
         }
     }
 }
+
+

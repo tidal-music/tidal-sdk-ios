@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+@available(*, deprecated, message: "This schema is deprecated.")
 public struct VideoLink: Codable, Hashable {
 
     public var href: String
@@ -33,4 +34,5 @@ public struct VideoLink: Codable, Hashable {
         try container.encode(meta, forKey: .meta)
     }
 }
+
 

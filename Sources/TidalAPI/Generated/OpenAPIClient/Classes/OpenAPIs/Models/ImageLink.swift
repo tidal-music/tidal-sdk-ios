@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Playlist image links and metadata */
+@available(*, deprecated, message: "This schema is deprecated.")
 public struct ImageLink: Codable, Hashable {
 
     public var href: String
@@ -34,4 +34,5 @@ public struct ImageLink: Codable, Hashable {
         try container.encode(meta, forKey: .meta)
     }
 }
+
 

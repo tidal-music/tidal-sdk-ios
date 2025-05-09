@@ -38,12 +38,12 @@ public enum UserRecommendationsMultiDataRelationshipDocumentIncludedInner: Codab
 
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension UserRecommendationsMultiDataRelationshipDocumentIncludedInner: Identifiable {
-	public var id: some Hashable {
-		switch self {
-		case let .typePlaylistsResource(value):
-			value.id
-		case let .typeUserRecommendationsResource(value):
-			value.id
-		}
-	}
+    public var id: String {
+        switch self {
+        case .typePlaylistsResource(let value): return value.id
+        case .typeUserRecommendationsResource(let value): return value.id
+        }
+    }
 }
+
+

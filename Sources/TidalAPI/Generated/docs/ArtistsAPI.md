@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**artistsIdGet**](ArtistsAPI.md#artistsidget) | **GET** /artists/{id} | Get single artist.
 [**artistsIdPatch**](ArtistsAPI.md#artistsidpatch) | **PATCH** /artists/{id} | Update single artist.
 [**artistsIdRelationshipsAlbumsGet**](ArtistsAPI.md#artistsidrelationshipsalbumsget) | **GET** /artists/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsProfileArtGet**](ArtistsAPI.md#artistsidrelationshipsprofileartget) | **GET** /artists/{id}/relationships/profileArt | Get profileArt relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsRadioGet**](ArtistsAPI.md#artistsidrelationshipsradioget) | **GET** /artists/{id}/relationships/radio | Get radio relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsRolesGet**](ArtistsAPI.md#artistsidrelationshipsrolesget) | **GET** /artists/{id}/relationships/roles | Get roles relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsSimilarArtistsGet**](ArtistsAPI.md#artistsidrelationshipssimilarartistsget) | **GET** /artists/{id}/relationships/similarArtists | Get similarArtists relationship (\&quot;to-many\&quot;).
@@ -31,7 +32,7 @@ Retrieves multiple artists by available filters, or without if applicable.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 let filterHandle = ["inner_example"] // [String] | Allows to filter the collection of resources based on handle attribute value (optional)
 let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
 
@@ -53,7 +54,7 @@ ArtistsAPI.artistsGet(countryCode: countryCode, include: include, filterHandle: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
  **filterHandle** | [**[String]**](String.md) | Allows to filter the collection of resources based on handle attribute value | [optional] 
  **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
 
@@ -88,7 +89,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 
 // Get single artist.
 ArtistsAPI.artistsIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
@@ -109,7 +110,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
 
 ### Return type
 
@@ -141,7 +142,7 @@ Updates existing artist.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(id: "id_example", type: "type_example", attributes: ArtistUpdateBody_Data_Attributes(name: "name_example", handle: "handle_example", imageLinks: [Image_Link(href: "href_example", meta: Image_Link_Meta(width: 123, height: 123))], externalLinks: [External_Link(href: "href_example", meta: External_Link_Meta(type: "type_example"))]))) // ArtistUpdateBody |  (optional)
+let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(id: "id_example", type: "type_example", attributes: ArtistUpdateBody_Data_Attributes(name: "name_example", handle: "handle_example", externalLinks: [External_Link(href: "href_example", meta: External_Link_Meta(type: "type_example"))])), meta: ArtistUpdateBody_Meta(dryRun: false)) // ArtistUpdateBody |  (optional)
 
 // Update single artist.
 ArtistsAPI.artistsIdPatch(id: id, artistUpdateBody: artistUpdateBody) { (response, error) in
@@ -217,6 +218,62 @@ Name | Type | Description  | Notes
  **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artistsIdRelationshipsProfileArtGet**
+```swift
+    open class func artistsIdRelationshipsProfileArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+```
+
+Get profileArt relationship (\"to-many\").
+
+Retrieves profileArt relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: profileArt (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get profileArt relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsProfileArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: profileArt | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

@@ -19,9 +19,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: UserCollectionsSingleDataDocument
      */
-	public static func userCollectionsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserCollectionsSingleDataDocument {
+	public static func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil) async throws -> UserCollectionsSingleDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionsAPI.userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, countryCode: countryCode, include: include)
 		}
 	}
 

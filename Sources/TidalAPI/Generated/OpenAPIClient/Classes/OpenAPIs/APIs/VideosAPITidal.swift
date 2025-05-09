@@ -72,4 +72,16 @@ public enum VideosAPITidal {
 			VideosAPI.videosIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
+
+
+	/**
+     Get thumbnailArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: VideosMultiDataRelationshipDocument
+     */
+	public static func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			VideosAPI.videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
 }

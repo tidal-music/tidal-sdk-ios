@@ -250,7 +250,7 @@ internal class UserRecommendationsAPI {
     /**
      Get current user's userRecommendation(s).
      - GET /userRecommendations/me
-     - Retrieves current user's userRecommendation(s).
+     - This operation is deprecated and will be removed shortly. Please switch to the equivalent /userRecommendations/{userId} endpoint. You can find your user id by calling /users/me.  Retrieves current user's userRecommendation(s).
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
