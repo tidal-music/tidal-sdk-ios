@@ -26,27 +26,36 @@ jobs:
             echo "FEATURE_BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_OUTPUT
         elif [ "${{ github.event_name }}" = "merge_group" ]; then
             echo "BASE_BRANCH=${{ github.event.merge_group.base_ref }}" >> $GITHUB_OUTPUT
-            echo "FEATURE_BRANCH=HEAD" >> $GITHUB_OUTPUT  # This is a synthetic merge commit
+            echo "FEATURE_BRANCH=" >> $GITHUB_OUTPUT  # Leave empty; already checked out
         else
             echo "Unsupported event: ${{ github.event_name }}"
             exit 1
         fi
 
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Fetch all history so git diff works
-        ref: ${{ steps.vars.outputs.FEATURE_BRANCH }}  # Ensure we checkout the PR head
+        fetch-depth: 0
+        # Only specify ref if FEATURE_BRANCH is set (e.g. on PRs)
+        ref: ${{ steps.vars.outputs.FEATURE_BRANCH != '' && steps.vars.outputs.FEATURE_BRANCH || null }}
 
     - name: Find modified Swift files and lint them
       run: |
         BASE_BRANCH="${{ steps.vars.outputs.BASE_BRANCH }}"
         FEATURE_BRANCH="${{ steps.vars.outputs.FEATURE_BRANCH }}"
 
-        # Get list of changed Swift files as an array
-        modified_files=($(git diff --name-only origin/$BASE_BRANCH...$FEATURE_BRANCH -- '*.swift'))
+        if [ -z "$FEATURE_BRANCH" ]; then
+          echo "Running in merge queue; using HEAD for diff."
+          git fetch origin "$BASE_BRANCH"
+          modified_files=($(git diff --name-only origin/$BASE_BRANCH -- '*.swift'))
+        else
+          git fetch origin "$BASE_BRANCH" "$FEATURE_BRANCH"
+          modified_files=($(git diff --name-only origin/$BASE_BRANCH...origin/$FEATURE_BRANCH -- '*.swift'))
+        fi
+
         readonly modified_files
 
-        if [ -z "$modified_files" ]; then
+        if [ ${#modified_files[@]} -eq 0 ]; then
             echo "No Swift files were changed. Linter won't run."
             exit 0
         fi
