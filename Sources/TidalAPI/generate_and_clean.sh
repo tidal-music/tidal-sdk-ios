@@ -11,7 +11,7 @@ mkdir -p "$input_dir"
 # Step 2: Download the JSON files and save them in the input directory
 echo "Dowloading API specs from developer.tidal.com"
 
-curl -o "$input_dir/tidal-api-oas-prod.json" https://developer.tidal.com/specs/tidal/tidal-api/tidal-api-oas-prod.json
+curl -o "$input_dir/tidal-api-oas-prod.json" https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
 
 # Step 3: Clear the contents of the output directory
 echo "Clear the contents of the output directory"
