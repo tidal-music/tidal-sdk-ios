@@ -41,8 +41,11 @@ jobs:
 
     - name: Find modified Swift files and lint them
       run: |
-        BASE_BRANCH="${{ steps.vars.outputs.BASE_BRANCH }}"
-        FEATURE_BRANCH="${{ steps.vars.outputs.FEATURE_BRANCH }}"
+        RAW_BASE_BRANCH="${{ steps.vars.outputs.BASE_BRANCH }}"
+        RAW_FEATURE_BRANCH="${{ steps.vars.outputs.FEATURE_BRANCH }}"
+
+        BASE_BRANCH="${RAW_BASE_BRANCH/refs\/heads\//}"
+        FEATURE_BRANCH="${RAW_FEATURE_BRANCH/refs\/heads\//}"
 
         if [ -z "$FEATURE_BRANCH" ]; then
           echo "Running in merge queue; using HEAD for diff."
