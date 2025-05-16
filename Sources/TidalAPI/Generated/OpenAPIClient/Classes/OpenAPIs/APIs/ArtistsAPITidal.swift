@@ -75,6 +75,18 @@ public enum ArtistsAPITidal {
 
 
 	/**
+     Update profileArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func artistsIdRelationshipsProfileArtPatch(artistProfileArtRelationshipUpdateOperationPayload: ArtistProfileArtRelationshipUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsProfileArtPatchWithRequestBuilder(artistProfileArtRelationshipUpdateOperationPayload: artistProfileArtRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get radio relationship (\&quot;to-many\&quot;).
      
      - returns: ArtistsMultiDataRelationshipDocument
