@@ -1,11 +1,9 @@
-# ArtworksAttributes
+# ArtworkCreateOperationPayload
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**mediaType** | **String** | Media type of artwork files | 
-**sourceFile** | [**ArtworkSourceFile**](ArtworkSourceFile.md) |  | [optional] 
-**files** | [ArtworkFile] | Artwork files | 
+**data** | [**ArtworkCreateOperationPayloadData**](ArtworkCreateOperationPayloadData.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
