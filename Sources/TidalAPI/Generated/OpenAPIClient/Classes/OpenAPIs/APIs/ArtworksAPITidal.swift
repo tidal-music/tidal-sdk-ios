@@ -36,4 +36,16 @@ public enum ArtworksAPITidal {
 			ArtworksAPI.artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode)
 		}
 	}
+
+
+	/**
+     Create single artwork.
+     
+     - returns: ArtworksSingleDataDocument
+     */
+	public static func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil) async throws -> ArtworksSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			ArtworksAPI.artworksPostWithRequestBuilder(artworkCreateOperationPayload: artworkCreateOperationPayload)
+		}
+	}
 }
