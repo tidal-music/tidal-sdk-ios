@@ -109,4 +109,43 @@ internal class ArtworksAPI {
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
+
+    /**
+     Create single artwork.
+     
+     - parameter artworkCreateOperationPayload: (body)  (optional)
+     - returns: ArtworksSingleDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil) async throws -> ArtworksSingleDataDocument {
+        return try await artworksPostWithRequestBuilder(artworkCreateOperationPayload: artworkCreateOperationPayload).execute().body
+    }
+
+    /**
+     Create single artwork.
+     - POST /artworks
+     - Creates a new artwork.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter artworkCreateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<ArtworksSingleDataDocument> 
+     */
+    internal class func artworksPostWithRequestBuilder(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil) -> RequestBuilder<ArtworksSingleDataDocument> {
+        let localVariablePath = "/artworks"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artworkCreateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ArtworksSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
 }

@@ -1,11 +1,12 @@
-# ArtworksAttributes
+# ArtworkSourceFile
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**mediaType** | **String** | Media type of artwork files | 
-**sourceFile** | [**ArtworkSourceFile**](ArtworkSourceFile.md) |  | [optional] 
-**files** | [ArtworkFile] | Artwork files | 
+**md5Hash** | **String** | MD5 hash of file to be uploaded | 
+**size** | **Int64** | File size of the artwork in bytes | 
+**uploadLink** | [**FileUploadLink**](FileUploadLink.md) |  | 
+**status** | [**FileStatus**](FileStatus.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

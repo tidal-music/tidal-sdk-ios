@@ -10,6 +10,9 @@ Name | Type | Description | Notes
 **copyright** | **String** | Copyright | [optional] 
 **explicit** | **Bool** | Explicit content | 
 **popularity** | **Double** | Popularity (0.0 - 1.0) | 
+**key** | **String** | Key | [optional] 
+**keyScale** | **String** | The scale of the key | [optional] 
+**bpm** | **Float** | Beats per minute | [optional] 
 **availability** | **[String]** | Available usage for this track | [optional] 
 **mediaTags** | **[String]** |  | 
 **externalLinks** | [ExternalLink] | Track links external to TIDAL API | [optional] 
