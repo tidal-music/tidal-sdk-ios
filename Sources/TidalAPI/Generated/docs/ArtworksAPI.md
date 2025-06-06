@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**artworksGet**](ArtworksAPI.md#artworksget) | **GET** /artworks | Get multiple artworks.
 [**artworksIdGet**](ArtworksAPI.md#artworksidget) | **GET** /artworks/{id} | Get single artwork.
+[**artworksPost**](ArtworksAPI.md#artworkspost) | **POST** /artworks | Create single artwork.
 
 
 # **artworksGet**
@@ -108,6 +109,56 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artworksPost**
+```swift
+    open class func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksSingleDataDocument?, _ error: Error?) -> Void)
+```
+
+Create single artwork.
+
+Creates a new artwork.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let artworkCreateOperationPayload = ArtworkCreateOperation_Payload(data: ArtworkCreateOperation_Payload_Data(type: "type_example", attributes: ArtworkCreateOperation_Payload_Data_Attributes(mediaType: "mediaType_example", sourceFile: ArtworkCreateOperation_Payload_Data_Attributes_SourceFile(md5Hash: "md5Hash_example", size: 123)))) // ArtworkCreateOperationPayload |  (optional)
+
+// Create single artwork.
+ArtworksAPI.artworksPost(artworkCreateOperationPayload: artworkCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **artworkCreateOperationPayload** | [**ArtworkCreateOperationPayload**](ArtworkCreateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**ArtworksSingleDataDocument**](ArtworksSingleDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

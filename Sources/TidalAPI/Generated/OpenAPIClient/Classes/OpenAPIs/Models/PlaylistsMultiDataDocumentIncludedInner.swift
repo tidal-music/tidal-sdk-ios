@@ -11,7 +11,6 @@ import AnyCodable
 #endif
 
 public enum PlaylistsMultiDataDocumentIncludedInner: Codable, JSONEncodable, Hashable {
-    case typeArtistsResource(ArtistsResource)
     case typeArtworksResource(ArtworksResource)
     case typeTracksResource(TracksResource)
     case typeUsersResource(UsersResource)
@@ -20,8 +19,6 @@ public enum PlaylistsMultiDataDocumentIncludedInner: Codable, JSONEncodable, Has
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
-        case .typeArtistsResource(let value):
-            try container.encode(value)
         case .typeArtworksResource(let value):
             try container.encode(value)
         case .typeTracksResource(let value):
@@ -35,9 +32,7 @@ public enum PlaylistsMultiDataDocumentIncludedInner: Codable, JSONEncodable, Has
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        if let value = try? container.decode(ArtistsResource.self) {
-            self = .typeArtistsResource(value)
-        } else if let value = try? container.decode(ArtworksResource.self) {
+        if let value = try? container.decode(ArtworksResource.self) {
             self = .typeArtworksResource(value)
         } else if let value = try? container.decode(TracksResource.self) {
             self = .typeTracksResource(value)
@@ -55,7 +50,6 @@ public enum PlaylistsMultiDataDocumentIncludedInner: Codable, JSONEncodable, Has
 extension PlaylistsMultiDataDocumentIncludedInner: Identifiable {
     public var id: String {
         switch self {
-        case .typeArtistsResource(let value): return value.id
         case .typeArtworksResource(let value): return value.id
         case .typeTracksResource(let value): return value.id
         case .typeUsersResource(let value): return value.id

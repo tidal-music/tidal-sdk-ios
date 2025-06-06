@@ -12,6 +12,19 @@ import AnyCodable
 
 public struct TracksAttributes: Codable, Hashable {
 
+    public enum Key: String, Codable, CaseIterable {
+        case a = "A"
+        case b = "B"
+        case c = "C"
+        case d = "D"
+        case e = "E"
+        case f = "F"
+        case g = "G"
+    }
+    public enum KeyScale: String, Codable, CaseIterable {
+        case major = "MAJOR"
+        case minor = "MINOR"
+    }
     public enum Availability: String, Codable, CaseIterable {
         case stream = "STREAM"
         case dj = "DJ"
@@ -31,13 +44,19 @@ public struct TracksAttributes: Codable, Hashable {
     public var explicit: Bool
     /** Popularity (0.0 - 1.0) */
     public var popularity: Double
+    /** Key */
+    public var key: Key?
+    /** The scale of the key */
+    public var keyScale: KeyScale?
+    /** Beats per minute */
+    public var bpm: Float?
     /** Available usage for this track */
     public var availability: [Availability]?
     public var mediaTags: [String]
     /** Track links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
 
-    public init(title: String, version: String? = nil, isrc: String, duration: String, copyright: String? = nil, explicit: Bool, popularity: Double, availability: [Availability]? = nil, mediaTags: [String], externalLinks: [ExternalLink]? = nil) {
+    public init(title: String, version: String? = nil, isrc: String, duration: String, copyright: String? = nil, explicit: Bool, popularity: Double, key: Key? = nil, keyScale: KeyScale? = nil, bpm: Float? = nil, availability: [Availability]? = nil, mediaTags: [String], externalLinks: [ExternalLink]? = nil) {
         self.title = title
         self.version = version
         self.isrc = isrc
@@ -45,6 +64,9 @@ public struct TracksAttributes: Codable, Hashable {
         self.copyright = copyright
         self.explicit = explicit
         self.popularity = popularity
+        self.key = key
+        self.keyScale = keyScale
+        self.bpm = bpm
         self.availability = availability
         self.mediaTags = mediaTags
         self.externalLinks = externalLinks
@@ -58,6 +80,9 @@ public struct TracksAttributes: Codable, Hashable {
         case copyright
         case explicit
         case popularity
+        case key
+        case keyScale
+        case bpm
         case availability
         case mediaTags
         case externalLinks
@@ -74,6 +99,9 @@ public struct TracksAttributes: Codable, Hashable {
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encode(explicit, forKey: .explicit)
         try container.encode(popularity, forKey: .popularity)
+        try container.encodeIfPresent(key, forKey: .key)
+        try container.encodeIfPresent(keyScale, forKey: .keyScale)
+        try container.encodeIfPresent(bpm, forKey: .bpm)
         try container.encodeIfPresent(availability, forKey: .availability)
         try container.encode(mediaTags, forKey: .mediaTags)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
