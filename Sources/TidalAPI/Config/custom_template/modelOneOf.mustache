@@ -19,25 +19,23 @@
         {{/oneOfUnknownDefaultCase}}
         }
     }
+    
+    private enum CodingKeys: String, CodingKey {
+        case {{discriminator.propertyName}}
+    }
 
     public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        {{#oneOf}}
-        {{#-first}}
-        if let value = try? container.decode({{.}}.self) {
-        {{/-first}}
-        {{^-first}}
-        } else if let value = try? container.decode({{.}}.self) {
-        {{/-first}}
-            self = .type{{.}}(value)
-        {{/oneOf}}
-        } else {
-            {{#oneOfUnknownDefaultCase}}
-            self = .unknownDefaultOpenApi
-            {{/oneOfUnknownDefaultCase}}
-            {{^oneOfUnknownDefaultCase}}
-            throw DecodingError.typeMismatch(Self.Type.self, .init(codingPath: decoder.codingPath, debugDescription: "Unable to decode instance of {{classname}}"))
-            {{/oneOfUnknownDefaultCase}}
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(String.self, forKey: .{{discriminator.propertyName}})
+
+        switch type {
+        {{#discriminator.mappedModels}}
+        case "{{mappingName}}":
+            let value = try {{modelName}}(from: decoder)
+            self = .type{{modelName}}(value)
+        {{/discriminator.mappedModels}}
+        default:
+            throw DecodingError.dataCorruptedError(forKey: .{{discriminator.propertyName}}, in: container, debugDescription: "Unknown type: \\(type)")
         }
     }
 }
