@@ -19,7 +19,11 @@ public struct TrackUpdateOperationPayloadData: Codable, Hashable {
     public var type: ModelType
     public var attributes: TrackUpdateOperationPayloadDataAttributes
 
-    public init(id: String, type: ModelType, attributes: TrackUpdateOperationPayloadDataAttributes) {
+    public init(
+        id: String,
+        type: ModelType,
+        attributes: TrackUpdateOperationPayloadDataAttributes
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

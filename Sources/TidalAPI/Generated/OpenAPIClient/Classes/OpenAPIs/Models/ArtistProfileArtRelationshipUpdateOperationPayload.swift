@@ -15,7 +15,9 @@ public struct ArtistProfileArtRelationshipUpdateOperationPayload: Codable, Hasha
     public static let dataRule = ArrayRule(minItems: 0, maxItems: 1, uniqueItems: false)
     public var data: [ArtistProfileArtRelationshipUpdateOperationPayloadData]
 
-    public init(data: [ArtistProfileArtRelationshipUpdateOperationPayloadData]) {
+    public init(
+        data: [ArtistProfileArtRelationshipUpdateOperationPayloadData]
+    ) {
         self.data = data
     }
 

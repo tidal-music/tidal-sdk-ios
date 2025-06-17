@@ -19,7 +19,14 @@ public struct SearchResultsRelationships: Codable, Hashable {
     public var topHits: MultiDataRelationshipDoc
     public var tracks: MultiDataRelationshipDoc
 
-    public init(albums: MultiDataRelationshipDoc, artists: MultiDataRelationshipDoc, playlists: MultiDataRelationshipDoc, videos: MultiDataRelationshipDoc, topHits: MultiDataRelationshipDoc, tracks: MultiDataRelationshipDoc) {
+    public init(
+        albums: MultiDataRelationshipDoc,
+        artists: MultiDataRelationshipDoc,
+        playlists: MultiDataRelationshipDoc,
+        videos: MultiDataRelationshipDoc,
+        topHits: MultiDataRelationshipDoc,
+        tracks: MultiDataRelationshipDoc
+    ) {
         self.albums = albums
         self.artists = artists
         self.playlists = playlists

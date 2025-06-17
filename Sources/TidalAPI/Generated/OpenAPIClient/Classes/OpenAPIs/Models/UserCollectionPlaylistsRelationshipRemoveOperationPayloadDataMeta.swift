@@ -14,7 +14,9 @@ public struct UserCollectionPlaylistsRelationshipRemoveOperationPayloadDataMeta:
 
     public var itemId: String
 
-    public init(itemId: String) {
+    public init(
+        itemId: String
+    ) {
         self.itemId = itemId
     }
 

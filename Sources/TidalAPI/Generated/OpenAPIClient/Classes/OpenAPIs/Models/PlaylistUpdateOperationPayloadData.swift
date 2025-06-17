@@ -19,7 +19,11 @@ public struct PlaylistUpdateOperationPayloadData: Codable, Hashable {
     public var type: ModelType
     public var attributes: PlaylistUpdateOperationPayloadDataAttributes
 
-    public init(id: String, type: ModelType, attributes: PlaylistUpdateOperationPayloadDataAttributes) {
+    public init(
+        id: String,
+        type: ModelType,
+        attributes: PlaylistUpdateOperationPayloadDataAttributes
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

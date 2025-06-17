@@ -14,7 +14,9 @@ public struct ArtistUpdateBodyMeta: Codable, Hashable {
 
     public var dryRun: Bool?
 
-    public init(dryRun: Bool? = nil) {
+    public init(
+        dryRun: Bool? = nil
+    ) {
         self.dryRun = dryRun
     }
 

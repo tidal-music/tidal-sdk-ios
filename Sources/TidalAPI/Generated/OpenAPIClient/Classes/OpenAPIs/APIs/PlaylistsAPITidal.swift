@@ -135,18 +135,6 @@ public enum PlaylistsAPITidal {
 
 
 	/**
-     Get current user&#39;s playlist(s).
-     
-     - returns: PlaylistsMultiDataDocument
-     */
-	public static func playlistsMeGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
-		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsMeGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include)
-		}
-	}
-
-
-	/**
      Create single playlist.
      
      - returns: PlaylistsSingleDataDocument

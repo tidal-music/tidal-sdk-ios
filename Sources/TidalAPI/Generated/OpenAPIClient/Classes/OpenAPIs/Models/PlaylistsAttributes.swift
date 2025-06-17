@@ -37,8 +37,6 @@ public struct PlaylistsAttributes: Codable, Hashable {
     /** Number of items in the playlist */
     public var numberOfItems: Int?
     public var externalLinks: [ExternalLink]
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var imageLinks: [ImageLink]
     /** Datetime of playlist creation (ISO 8601) */
     public var createdAt: Date
     /** Datetime of last modification of the playlist (ISO 8601) */
@@ -51,14 +49,25 @@ public struct PlaylistsAttributes: Codable, Hashable {
     /** The type of the playlist */
     public var playlistType: PlaylistType
 
-    public init(name: String, description: String? = nil, bounded: Bool, duration: String? = nil, numberOfItems: Int? = nil, externalLinks: [ExternalLink], imageLinks: [ImageLink], createdAt: Date, lastModifiedAt: Date, privacy: Privacy, accessType: AccessType, playlistType: PlaylistType) {
+    public init(
+        name: String,
+        description: String? = nil,
+        bounded: Bool,
+        duration: String? = nil,
+        numberOfItems: Int? = nil,
+        externalLinks: [ExternalLink],
+        createdAt: Date,
+        lastModifiedAt: Date,
+        privacy: Privacy,
+        accessType: AccessType,
+        playlistType: PlaylistType
+    ) {
         self.name = name
         self.description = description
         self.bounded = bounded
         self.duration = duration
         self.numberOfItems = numberOfItems
         self.externalLinks = externalLinks
-        self.imageLinks = imageLinks
         self.createdAt = createdAt
         self.lastModifiedAt = lastModifiedAt
         self.privacy = privacy
@@ -73,7 +82,6 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case duration
         case numberOfItems
         case externalLinks
-        case imageLinks
         case createdAt
         case lastModifiedAt
         case privacy
@@ -91,7 +99,6 @@ public struct PlaylistsAttributes: Codable, Hashable {
         try container.encodeIfPresent(duration, forKey: .duration)
         try container.encodeIfPresent(numberOfItems, forKey: .numberOfItems)
         try container.encode(externalLinks, forKey: .externalLinks)
-        try container.encode(imageLinks, forKey: .imageLinks)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(privacy, forKey: .privacy)

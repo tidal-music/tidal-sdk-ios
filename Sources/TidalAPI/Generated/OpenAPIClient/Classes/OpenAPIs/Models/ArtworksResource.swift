@@ -18,7 +18,11 @@ public struct ArtworksResource: Codable, Hashable {
     public var type: String
     public var attributes: ArtworksAttributes?
 
-    public init(id: String, type: String, attributes: ArtworksAttributes? = nil) {
+    public init(
+        id: String,
+        type: String,
+        attributes: ArtworksAttributes? = nil
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

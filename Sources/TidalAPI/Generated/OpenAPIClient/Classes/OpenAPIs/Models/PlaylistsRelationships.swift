@@ -16,7 +16,11 @@ public struct PlaylistsRelationships: Codable, Hashable {
     public var coverArt: MultiDataRelationshipDoc
     public var items: PlaylistsItemsMultiDataRelationshipDocument
 
-    public init(owners: MultiDataRelationshipDoc, coverArt: MultiDataRelationshipDoc, items: PlaylistsItemsMultiDataRelationshipDocument) {
+    public init(
+        owners: MultiDataRelationshipDoc,
+        coverArt: MultiDataRelationshipDoc,
+        items: PlaylistsItemsMultiDataRelationshipDocument
+    ) {
         self.owners = owners
         self.coverArt = coverArt
         self.items = items

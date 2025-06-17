@@ -19,7 +19,9 @@ public struct UserEntitlementsAttributes: Codable, Hashable {
     /** entitlements for user */
     public var entitlements: [Entitlements]
 
-    public init(entitlements: [Entitlements]) {
+    public init(
+        entitlements: [Entitlements]
+    ) {
         self.entitlements = entitlements
     }
 

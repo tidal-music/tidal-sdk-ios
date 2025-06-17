@@ -15,7 +15,10 @@ public struct ArtworkCreateOperationPayloadDataAttributesSourceFile: Codable, Ha
     public var md5Hash: String
     public var size: Int64
 
-    public init(md5Hash: String, size: Int64) {
+    public init(
+        md5Hash: String,
+        size: Int64
+    ) {
         self.md5Hash = md5Hash
         self.size = size
     }

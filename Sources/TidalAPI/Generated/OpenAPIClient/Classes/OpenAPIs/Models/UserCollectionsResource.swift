@@ -19,7 +19,12 @@ public struct UserCollectionsResource: Codable, Hashable {
     public var attributes: AnyCodable?
     public var relationships: UserCollectionsRelationships?
 
-    public init(id: String, type: String, attributes: AnyCodable? = nil, relationships: UserCollectionsRelationships? = nil) {
+    public init(
+        id: String,
+        type: String,
+        attributes: AnyCodable? = nil,
+        relationships: UserCollectionsRelationships? = nil
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

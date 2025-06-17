@@ -16,7 +16,11 @@ public struct SearchResultsMultiDataDocument: Codable, Hashable {
     public var links: Links?
     public var included: [IncludedInner]?
 
-    public init(data: [SearchResultsResource]? = nil, links: Links? = nil, included: [IncludedInner]? = nil) {
+    public init(
+        data: [SearchResultsResource]? = nil,
+        links: Links? = nil,
+        included: [IncludedInner]? = nil
+    ) {
         self.data = data
         self.links = links
         self.included = included

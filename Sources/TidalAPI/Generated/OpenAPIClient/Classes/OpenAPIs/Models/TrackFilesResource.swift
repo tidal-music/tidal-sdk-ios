@@ -18,7 +18,11 @@ public struct TrackFilesResource: Codable, Hashable {
     public var type: String
     public var attributes: TrackFilesAttributes?
 
-    public init(id: String, type: String, attributes: TrackFilesAttributes? = nil) {
+    public init(
+        id: String,
+        type: String,
+        attributes: TrackFilesAttributes? = nil
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

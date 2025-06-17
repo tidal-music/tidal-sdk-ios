@@ -19,7 +19,12 @@ public struct ResourceObjectObject: Codable, Hashable {
     public var attributes: AnyCodable?
     public var relationships: AnyCodable?
 
-    public init(id: String, type: String, attributes: AnyCodable? = nil, relationships: AnyCodable? = nil) {
+    public init(
+        id: String,
+        type: String,
+        attributes: AnyCodable? = nil,
+        relationships: AnyCodable? = nil
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

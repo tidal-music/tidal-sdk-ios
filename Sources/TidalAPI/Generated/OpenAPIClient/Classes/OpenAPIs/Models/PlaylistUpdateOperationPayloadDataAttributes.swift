@@ -21,7 +21,11 @@ public struct PlaylistUpdateOperationPayloadDataAttributes: Codable, Hashable {
     /** Access type */
     public var accessType: AccessType?
 
-    public init(name: String? = nil, description: String? = nil, accessType: AccessType? = nil) {
+    public init(
+        name: String? = nil,
+        description: String? = nil,
+        accessType: AccessType? = nil
+    ) {
         self.name = name
         self.description = description
         self.accessType = accessType

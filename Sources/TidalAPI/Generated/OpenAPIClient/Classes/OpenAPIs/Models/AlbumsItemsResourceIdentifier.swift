@@ -19,7 +19,11 @@ public struct AlbumsItemsResourceIdentifier: Codable, Hashable {
     public var type: String
     public var meta: AlbumsItemsResourceIdentifierMeta?
 
-    public init(id: String, type: String, meta: AlbumsItemsResourceIdentifierMeta? = nil) {
+    public init(
+        id: String,
+        type: String,
+        meta: AlbumsItemsResourceIdentifierMeta? = nil
+    ) {
         self.id = id
         self.type = type
         self.meta = meta

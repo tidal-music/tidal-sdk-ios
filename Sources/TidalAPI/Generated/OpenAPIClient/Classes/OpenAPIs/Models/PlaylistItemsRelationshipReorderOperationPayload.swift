@@ -16,7 +16,10 @@ public struct PlaylistItemsRelationshipReorderOperationPayload: Codable, Hashabl
     public var data: [PlaylistItemsRelationshipReorderOperationPayloadData]
     public var meta: PlaylistItemsRelationshipReorderOperationPayloadMeta?
 
-    public init(data: [PlaylistItemsRelationshipReorderOperationPayloadData], meta: PlaylistItemsRelationshipReorderOperationPayloadMeta? = nil) {
+    public init(
+        data: [PlaylistItemsRelationshipReorderOperationPayloadData],
+        meta: PlaylistItemsRelationshipReorderOperationPayloadMeta? = nil
+    ) {
         self.data = data
         self.meta = meta
     }

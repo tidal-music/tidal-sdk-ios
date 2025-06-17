@@ -50,7 +50,16 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
     /** Tone tags */
     public var toneTags: [String]?
 
-    public init(title: String? = nil, explicit: Bool? = nil, accessType: AccessType? = nil, bpm: Float? = nil, key: Key? = nil, keyScale: KeyScale? = nil, genreTags: [String]? = nil, toneTags: [String]? = nil) {
+    public init(
+        title: String? = nil,
+        explicit: Bool? = nil,
+        accessType: AccessType? = nil,
+        bpm: Float? = nil,
+        key: Key? = nil,
+        keyScale: KeyScale? = nil,
+        genreTags: [String]? = nil,
+        toneTags: [String]? = nil
+    ) {
         self.title = title
         self.explicit = explicit
         self.accessType = accessType

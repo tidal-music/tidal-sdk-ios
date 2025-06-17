@@ -15,7 +15,9 @@ public struct ProvidersAttributes: Codable, Hashable {
     /** Provider name */
     public var name: String
 
-    public init(name: String) {
+    public init(
+        name: String
+    ) {
         self.name = name
     }
 

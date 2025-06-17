@@ -15,7 +15,10 @@ public struct ArtistsTrackProvidersMultiDataRelationshipDocument: Codable, Hasha
     public var data: [ArtistsTrackProvidersResourceIdentifier]?
     public var links: Links?
 
-    public init(data: [ArtistsTrackProvidersResourceIdentifier]? = nil, links: Links? = nil) {
+    public init(
+        data: [ArtistsTrackProvidersResourceIdentifier]? = nil,
+        links: Links? = nil
+    ) {
         self.data = data
         self.links = links
     }

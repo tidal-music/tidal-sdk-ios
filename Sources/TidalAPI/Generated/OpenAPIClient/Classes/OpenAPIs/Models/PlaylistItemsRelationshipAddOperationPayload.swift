@@ -16,7 +16,10 @@ public struct PlaylistItemsRelationshipAddOperationPayload: Codable, Hashable {
     public var data: [PlaylistItemsRelationshipAddOperationPayloadData]
     public var meta: PlaylistItemsRelationshipAddOperationPayloadMeta?
 
-    public init(data: [PlaylistItemsRelationshipAddOperationPayloadData], meta: PlaylistItemsRelationshipAddOperationPayloadMeta? = nil) {
+    public init(
+        data: [PlaylistItemsRelationshipAddOperationPayloadData],
+        meta: PlaylistItemsRelationshipAddOperationPayloadMeta? = nil
+    ) {
         self.data = data
         self.meta = meta
     }

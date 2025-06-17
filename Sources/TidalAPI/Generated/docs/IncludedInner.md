@@ -5,8 +5,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** | resource unique identifier | 
 **type** | **String** | resource unique type | 
-**attributes** | [**AlbumsAttributes**](AlbumsAttributes.md) |  | [optional] 
-**relationships** | [**AlbumsRelationships**](AlbumsRelationships.md) |  | [optional] 
+**attributes** | [**VideosAttributes**](VideosAttributes.md) |  | [optional] 
+**relationships** | [**VideosRelationships**](VideosRelationships.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

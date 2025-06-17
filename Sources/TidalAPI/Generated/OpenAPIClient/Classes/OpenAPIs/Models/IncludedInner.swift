@@ -19,7 +19,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case typeProvidersResource(ProvidersResource)
     case typeSearchResultsResource(SearchResultsResource)
     case typeSearchSuggestionsResource(SearchSuggestionsResource)
-    case typeSearchresultsResource(SearchresultsResource)
     case typeTrackFilesResource(TrackFilesResource)
     case typeTrackManifestsResource(TrackManifestsResource)
     case typeTracksResource(TracksResource)
@@ -47,8 +46,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .typeSearchResultsResource(let value):
             try container.encode(value)
         case .typeSearchSuggestionsResource(let value):
-            try container.encode(value)
-        case .typeSearchresultsResource(let value):
             try container.encode(value)
         case .typeTrackFilesResource(let value):
             try container.encode(value)
@@ -102,9 +99,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "searchSuggestions":
             let value = try SearchSuggestionsResource(from: decoder)
             self = .typeSearchSuggestionsResource(value)
-        case "searchresults":
-            let value = try SearchresultsResource(from: decoder)
-            self = .typeSearchresultsResource(value)
         case "trackFiles":
             let value = try TrackFilesResource(from: decoder)
             self = .typeTrackFilesResource(value)
@@ -147,7 +141,6 @@ extension IncludedInner: Identifiable {
         case .typeProvidersResource(let value): return value.id
         case .typeSearchResultsResource(let value): return value.id
         case .typeSearchSuggestionsResource(let value): return value.id
-        case .typeSearchresultsResource(let value): return value.id
         case .typeTrackFilesResource(let value): return value.id
         case .typeTrackManifestsResource(let value): return value.id
         case .typeTracksResource(let value): return value.id

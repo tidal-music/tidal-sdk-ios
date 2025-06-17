@@ -18,7 +18,10 @@ public struct ArtworkFileMeta: Codable, Hashable {
     /** Height (in pixels) */
     public var height: Int
 
-    public init(width: Int, height: Int) {
+    public init(
+        width: Int,
+        height: Int
+    ) {
         self.width = width
         self.height = height
     }

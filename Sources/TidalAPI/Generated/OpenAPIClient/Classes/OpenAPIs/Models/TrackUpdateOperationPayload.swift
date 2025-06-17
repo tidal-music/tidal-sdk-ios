@@ -14,7 +14,9 @@ public struct TrackUpdateOperationPayload: Codable, Hashable {
 
     public var data: TrackUpdateOperationPayloadData
 
-    public init(data: TrackUpdateOperationPayloadData) {
+    public init(
+        data: TrackUpdateOperationPayloadData
+    ) {
         self.data = data
     }
 

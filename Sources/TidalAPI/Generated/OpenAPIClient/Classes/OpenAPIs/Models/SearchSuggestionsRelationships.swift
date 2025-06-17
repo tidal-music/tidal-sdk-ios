@@ -14,7 +14,9 @@ public struct SearchSuggestionsRelationships: Codable, Hashable {
 
     public var directHits: MultiDataRelationshipDoc
 
-    public init(directHits: MultiDataRelationshipDoc) {
+    public init(
+        directHits: MultiDataRelationshipDoc
+    ) {
         self.directHits = directHits
     }
 

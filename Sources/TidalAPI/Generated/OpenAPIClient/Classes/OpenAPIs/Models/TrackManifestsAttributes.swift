@@ -34,7 +34,15 @@ public struct TrackManifestsAttributes: Codable, Hashable {
     public var albumAudioNormalizationData: AudioNormalizationData?
     public var trackAudioNormalizationData: AudioNormalizationData?
 
-    public init(trackPresentation: TrackPresentation? = nil, uri: String? = nil, hash: String? = nil, formats: [Formats]? = nil, drmData: DrmData? = nil, albumAudioNormalizationData: AudioNormalizationData? = nil, trackAudioNormalizationData: AudioNormalizationData? = nil) {
+    public init(
+        trackPresentation: TrackPresentation? = nil,
+        uri: String? = nil,
+        hash: String? = nil,
+        formats: [Formats]? = nil,
+        drmData: DrmData? = nil,
+        albumAudioNormalizationData: AudioNormalizationData? = nil,
+        trackAudioNormalizationData: AudioNormalizationData? = nil
+    ) {
         self.trackPresentation = trackPresentation
         self.uri = uri
         self.hash = hash

@@ -12,7 +12,6 @@ Name | Type | Description | Notes
 **explicit** | **Bool** | Explicit content | 
 **popularity** | **Double** | Popularity (0.0 - 1.0) | 
 **availability** | **[String]** | Available usage for this video | [optional] 
-**imageLinks** | [ImageLink] | Video image links and metadata | [optional] 
 **externalLinks** | [ExternalLink] | Video links external to TIDAL API | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

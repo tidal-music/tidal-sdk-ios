@@ -17,7 +17,12 @@ public struct VideosRelationships: Codable, Hashable {
     public var thumbnailArt: MultiDataRelationshipDoc
     public var providers: MultiDataRelationshipDoc
 
-    public init(albums: MultiDataRelationshipDoc, artists: MultiDataRelationshipDoc, thumbnailArt: MultiDataRelationshipDoc, providers: MultiDataRelationshipDoc) {
+    public init(
+        albums: MultiDataRelationshipDoc,
+        artists: MultiDataRelationshipDoc,
+        thumbnailArt: MultiDataRelationshipDoc,
+        providers: MultiDataRelationshipDoc
+    ) {
         self.albums = albums
         self.artists = artists
         self.thumbnailArt = thumbnailArt

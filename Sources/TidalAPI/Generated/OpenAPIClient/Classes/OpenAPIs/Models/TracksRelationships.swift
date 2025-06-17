@@ -18,7 +18,13 @@ public struct TracksRelationships: Codable, Hashable {
     public var providers: MultiDataRelationshipDoc
     public var radio: MultiDataRelationshipDoc
 
-    public init(albums: MultiDataRelationshipDoc, artists: MultiDataRelationshipDoc, similarTracks: MultiDataRelationshipDoc, providers: MultiDataRelationshipDoc, radio: MultiDataRelationshipDoc) {
+    public init(
+        albums: MultiDataRelationshipDoc,
+        artists: MultiDataRelationshipDoc,
+        similarTracks: MultiDataRelationshipDoc,
+        providers: MultiDataRelationshipDoc,
+        radio: MultiDataRelationshipDoc
+    ) {
         self.albums = albums
         self.artists = artists
         self.similarTracks = similarTracks

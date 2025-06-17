@@ -14,7 +14,9 @@ public struct PlaylistItemsRelationshipReorderOperationPayloadMeta: Codable, Has
 
     public var positionBefore: String
 
-    public init(positionBefore: String) {
+    public init(
+        positionBefore: String
+    ) {
         self.positionBefore = positionBefore
     }
 

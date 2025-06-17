@@ -16,7 +16,11 @@ public struct UserCollectionsRelationships: Codable, Hashable {
     public var artists: UserCollectionsArtistsMultiDataRelationshipDocument
     public var playlists: UserCollectionsPlaylistsMultiDataRelationshipDocument
 
-    public init(albums: UserCollectionsAlbumsMultiDataRelationshipDocument, artists: UserCollectionsArtistsMultiDataRelationshipDocument, playlists: UserCollectionsPlaylistsMultiDataRelationshipDocument) {
+    public init(
+        albums: UserCollectionsAlbumsMultiDataRelationshipDocument,
+        artists: UserCollectionsArtistsMultiDataRelationshipDocument,
+        playlists: UserCollectionsPlaylistsMultiDataRelationshipDocument
+    ) {
         self.albums = albums
         self.artists = artists
         self.playlists = playlists

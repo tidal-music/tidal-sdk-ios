@@ -22,7 +22,11 @@ public struct ArtworksAttributes: Codable, Hashable {
     /** Artwork files */
     public var files: [ArtworkFile]
 
-    public init(mediaType: MediaType, sourceFile: ArtworkSourceFile? = nil, files: [ArtworkFile]) {
+    public init(
+        mediaType: MediaType,
+        sourceFile: ArtworkSourceFile? = nil,
+        files: [ArtworkFile]
+    ) {
         self.mediaType = mediaType
         self.sourceFile = sourceFile
         self.files = files

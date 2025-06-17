@@ -33,7 +33,10 @@ public struct FileStatus: Codable, Hashable {
     /** Moderation status for file */
     public var moderationFileStatus: ModerationFileStatus
 
-    public init(technicalFileStatus: TechnicalFileStatus, moderationFileStatus: ModerationFileStatus) {
+    public init(
+        technicalFileStatus: TechnicalFileStatus,
+        moderationFileStatus: ModerationFileStatus
+    ) {
         self.technicalFileStatus = technicalFileStatus
         self.moderationFileStatus = moderationFileStatus
     }

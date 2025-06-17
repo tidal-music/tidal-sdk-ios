@@ -19,7 +19,10 @@ public struct ArtworkCreateOperationPayloadDataAttributes: Codable, Hashable {
     public var mediaType: MediaType
     public var sourceFile: ArtworkCreateOperationPayloadDataAttributesSourceFile
 
-    public init(mediaType: MediaType, sourceFile: ArtworkCreateOperationPayloadDataAttributesSourceFile) {
+    public init(
+        mediaType: MediaType,
+        sourceFile: ArtworkCreateOperationPayloadDataAttributesSourceFile
+    ) {
         self.mediaType = mediaType
         self.sourceFile = sourceFile
     }

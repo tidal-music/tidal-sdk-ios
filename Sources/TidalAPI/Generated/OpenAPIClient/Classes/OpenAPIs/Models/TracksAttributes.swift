@@ -72,7 +72,24 @@ public struct TracksAttributes: Codable, Hashable {
     /** Track links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
 
-    public init(title: String, version: String? = nil, isrc: String, duration: String, copyright: String? = nil, explicit: Bool, popularity: Double, key: Key? = nil, keyScale: KeyScale? = nil, bpm: Float? = nil, accessType: AccessType? = nil, availability: [Availability]? = nil, mediaTags: [String], toneTags: [String]? = nil, genreTags: [String]? = nil, externalLinks: [ExternalLink]? = nil) {
+    public init(
+        title: String,
+        version: String? = nil,
+        isrc: String,
+        duration: String,
+        copyright: String? = nil,
+        explicit: Bool,
+        popularity: Double,
+        key: Key? = nil,
+        keyScale: KeyScale? = nil,
+        bpm: Float? = nil,
+        accessType: AccessType? = nil,
+        availability: [Availability]? = nil,
+        mediaTags: [String],
+        toneTags: [String]? = nil,
+        genreTags: [String]? = nil,
+        externalLinks: [ExternalLink]? = nil
+    ) {
         self.title = title
         self.version = version
         self.isrc = isrc

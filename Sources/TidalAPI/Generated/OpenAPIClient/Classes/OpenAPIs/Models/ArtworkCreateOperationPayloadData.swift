@@ -18,7 +18,10 @@ public struct ArtworkCreateOperationPayloadData: Codable, Hashable {
     public var type: ModelType
     public var attributes: ArtworkCreateOperationPayloadDataAttributes
 
-    public init(type: ModelType, attributes: ArtworkCreateOperationPayloadDataAttributes) {
+    public init(
+        type: ModelType,
+        attributes: ArtworkCreateOperationPayloadDataAttributes
+    ) {
         self.type = type
         self.attributes = attributes
     }

@@ -1,9 +1,9 @@
-# SearchresultsMultiDataDocument
+# SearchResultsMultiDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [SearchresultsResource] |  | [optional] 
+**data** | [SearchResultsResource] |  | [optional] 
 **links** | [**Links**](Links.md) |  | [optional] 
 **included** | [IncludedInner] |  | [optional] 
 

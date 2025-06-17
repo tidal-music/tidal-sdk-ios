@@ -20,7 +20,12 @@ public struct ArtworkSourceFile: Codable, Hashable {
     public var uploadLink: FileUploadLink
     public var status: FileStatus
 
-    public init(md5Hash: String, size: Int64, uploadLink: FileUploadLink, status: FileStatus) {
+    public init(
+        md5Hash: String,
+        size: Int64,
+        uploadLink: FileUploadLink,
+        status: FileStatus
+    ) {
         self.md5Hash = md5Hash
         self.size = size
         self.uploadLink = uploadLink

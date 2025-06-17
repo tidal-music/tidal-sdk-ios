@@ -5,7 +5,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **String** | Artist name | 
 **popularity** | **Double** | Artist popularity (0.0 - 1.0) | 
-**imageLinks** | [ImageLink] | Artist image links and metadata | [optional] 
 **externalLinks** | [ExternalLink] | Artist links external to TIDAL API | [optional] 
 **handle** | **String** | Artist handle | [optional] 
 

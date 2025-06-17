@@ -1,9 +1,9 @@
-# SearchresultsSingleDataDocument
+# SearchResultsSingleDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**SearchresultsResource**](SearchresultsResource.md) |  | [optional] 
+**data** | [**SearchResultsResource**](SearchResultsResource.md) |  | [optional] 
 **links** | [**Links**](Links.md) |  | [optional] 
 **included** | [IncludedInner] |  | [optional] 
 

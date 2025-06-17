@@ -519,56 +519,6 @@ internal class PlaylistsAPI {
     }
 
     /**
-     Get current user's playlist(s).
-     
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
-     - returns: PlaylistsMultiDataDocument
-     */
-    @available(*, deprecated, message: "This operation is deprecated.")
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsMeGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
-        return try await playlistsMeGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
-    }
-
-    /**
-     Get current user's playlist(s).
-     - GET /playlists/me
-     - This operation is deprecated and will be removed shortly. Please switch to the filter endpoint: /playlists?filter[r.owners.id]=<userId>  Retrieves current user's playlist(s).
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
-     - returns: RequestBuilder<PlaylistsMultiDataDocument> 
-     */
-    @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func playlistsMeGetWithRequestBuilder(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<PlaylistsMultiDataDocument> {
-        let localVariablePath = "/playlists/me"
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<PlaylistsMultiDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Create single playlist.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 

@@ -9,7 +9,6 @@ Name | Type | Description | Notes
 **duration** | **String** | Duration of playlist (ISO 8601) | [optional] 
 **numberOfItems** | **Int** | Number of items in the playlist | [optional] 
 **externalLinks** | [ExternalLink] |  | 
-**imageLinks** | [ImageLink] |  | 
 **createdAt** | **Date** | Datetime of playlist creation (ISO 8601) | 
 **lastModifiedAt** | **Date** | Datetime of last modification of the playlist (ISO 8601) | 
 **privacy** | **String** | Privacy setting of the playlist | 

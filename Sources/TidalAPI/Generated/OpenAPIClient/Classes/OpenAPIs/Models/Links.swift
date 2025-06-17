@@ -18,7 +18,10 @@ public struct Links: Codable, Hashable {
     /** the next page of data (pagination) */
     public var next: String?
 
-    public init(_self: String, next: String? = nil) {
+    public init(
+        _self: String,
+        next: String? = nil
+    ) {
         self._self = _self
         self.next = next
     }

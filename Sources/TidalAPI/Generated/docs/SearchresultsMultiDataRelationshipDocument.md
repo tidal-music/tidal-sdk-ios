@@ -1,4 +1,4 @@
-# SearchresultsMultiDataRelationshipDocument
+# SearchResultsMultiDataRelationshipDocument
 
 ## Properties
 Name | Type | Description | Notes

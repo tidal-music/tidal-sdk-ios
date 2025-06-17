@@ -17,7 +17,10 @@ public struct ArtworkFile: Codable, Hashable {
     public var href: String
     public var meta: ArtworkFileMeta?
 
-    public init(href: String, meta: ArtworkFileMeta? = nil) {
+    public init(
+        href: String,
+        meta: ArtworkFileMeta? = nil
+    ) {
         self.href = href
         self.meta = meta
     }
