@@ -196,7 +196,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let playlistUpdateOperationPayload = PlaylistUpdateOperation_Payload(data: PlaylistUpdateOperation_Payload_Data(id: "id_example", type: "type_example", attributes: PlaylistUpdateOperation_Payload_Data_Attributes(name: "name_example", description: "description_example", privacy: "privacy_example"))) // PlaylistUpdateOperationPayload |  (optional)
+let playlistUpdateOperationPayload = PlaylistUpdateOperation_Payload(data: PlaylistUpdateOperation_Payload_Data(id: "id_example", type: "type_example", attributes: PlaylistUpdateOperation_Payload_Data_Attributes(name: "name_example", description: "description_example", accessType: "accessType_example"))) // PlaylistUpdateOperationPayload |  (optional)
 
 // Update single playlist.
 PlaylistsAPI.playlistsIdPatch(id: id, countryCode: countryCode, playlistUpdateOperationPayload: playlistUpdateOperationPayload) { (response, error) in
@@ -629,7 +629,7 @@ Creates a new playlist.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let playlistCreateOperationPayload = PlaylistCreateOperation_Payload(data: PlaylistCreateOperation_Payload_Data(type: "type_example", attributes: PlaylistCreateOperation_Payload_Data_Attributes(name: "name_example", description: "description_example", privacy: "privacy_example"))) // PlaylistCreateOperationPayload |  (optional)
+let playlistCreateOperationPayload = PlaylistCreateOperation_Payload(data: PlaylistCreateOperation_Payload_Data(type: "type_example", attributes: PlaylistCreateOperation_Payload_Data_Attributes(name: "name_example", description: "description_example", accessType: "accessType_example"))) // PlaylistCreateOperationPayload |  (optional)
 
 // Create single playlist.
 PlaylistsAPI.playlistsPost(countryCode: countryCode, playlistCreateOperationPayload: playlistCreateOperationPayload) { (response, error) in

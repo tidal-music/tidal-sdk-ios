@@ -14,9 +14,9 @@ public struct ArtistsMultiDataRelationshipDocument: Codable, Hashable {
 
     public var data: [ResourceIdentifier]?
     public var links: Links?
-    public var included: [ArtistsMultiDataRelationshipDocumentIncludedInner]?
+    public var included: [IncludedInner]?
 
-    public init(data: [ResourceIdentifier]? = nil, links: Links? = nil, included: [ArtistsMultiDataRelationshipDocumentIncludedInner]? = nil) {
+    public init(data: [ResourceIdentifier]? = nil, links: Links? = nil, included: [IncludedInner]? = nil) {
         self.data = data
         self.links = links
         self.included = included

@@ -14,9 +14,9 @@ public struct UserRecommendationsMultiDataDocument: Codable, Hashable {
 
     public var data: [UserRecommendationsResource]?
     public var links: Links?
-    public var included: [UserRecommendationsMultiDataDocumentIncludedInner]?
+    public var included: [IncludedInner]?
 
-    public init(data: [UserRecommendationsResource]? = nil, links: Links? = nil, included: [UserRecommendationsMultiDataDocumentIncludedInner]? = nil) {
+    public init(data: [UserRecommendationsResource]? = nil, links: Links? = nil, included: [IncludedInner]? = nil) {
         self.data = data
         self.links = links
         self.included = included

@@ -16,6 +16,10 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case _public = "PUBLIC"
         case _private = "PRIVATE"
     }
+    public enum AccessType: String, Codable, CaseIterable {
+        case _public = "PUBLIC"
+        case unlisted = "UNLISTED"
+    }
     public enum PlaylistType: String, Codable, CaseIterable {
         case editorial = "EDITORIAL"
         case user = "USER"
@@ -40,11 +44,14 @@ public struct PlaylistsAttributes: Codable, Hashable {
     /** Datetime of last modification of the playlist (ISO 8601) */
     public var lastModifiedAt: Date
     /** Privacy setting of the playlist */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var privacy: Privacy
+    /** Access type */
+    public var accessType: AccessType
     /** The type of the playlist */
     public var playlistType: PlaylistType
 
-    public init(name: String, description: String? = nil, bounded: Bool, duration: String? = nil, numberOfItems: Int? = nil, externalLinks: [ExternalLink], imageLinks: [ImageLink], createdAt: Date, lastModifiedAt: Date, privacy: Privacy, playlistType: PlaylistType) {
+    public init(name: String, description: String? = nil, bounded: Bool, duration: String? = nil, numberOfItems: Int? = nil, externalLinks: [ExternalLink], imageLinks: [ImageLink], createdAt: Date, lastModifiedAt: Date, privacy: Privacy, accessType: AccessType, playlistType: PlaylistType) {
         self.name = name
         self.description = description
         self.bounded = bounded
@@ -55,6 +62,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         self.createdAt = createdAt
         self.lastModifiedAt = lastModifiedAt
         self.privacy = privacy
+        self.accessType = accessType
         self.playlistType = playlistType
     }
 
@@ -69,6 +77,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case createdAt
         case lastModifiedAt
         case privacy
+        case accessType
         case playlistType
     }
 
@@ -86,6 +95,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(privacy, forKey: .privacy)
+        try container.encode(accessType, forKey: .accessType)
         try container.encode(playlistType, forKey: .playlistType)
     }
 }

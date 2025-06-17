@@ -12,24 +12,25 @@ import AnyCodable
 
 public struct PlaylistCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Privacy: String, Codable, CaseIterable {
+    public enum AccessType: String, Codable, CaseIterable {
         case _public = "PUBLIC"
-        case _private = "PRIVATE"
+        case unlisted = "UNLISTED"
     }
     public var name: String
     public var description: String?
-    public var privacy: Privacy
+    /** Access type */
+    public var accessType: AccessType?
 
-    public init(name: String, description: String? = nil, privacy: Privacy) {
+    public init(name: String, description: String? = nil, accessType: AccessType? = nil) {
         self.name = name
         self.description = description
-        self.privacy = privacy
+        self.accessType = accessType
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case name
         case description
-        case privacy
+        case accessType
     }
 
     // Encodable protocol methods
@@ -38,7 +39,7 @@ public struct PlaylistCreateOperationPayloadDataAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(description, forKey: .description)
-        try container.encode(privacy, forKey: .privacy)
+        try container.encodeIfPresent(accessType, forKey: .accessType)
     }
 }
 

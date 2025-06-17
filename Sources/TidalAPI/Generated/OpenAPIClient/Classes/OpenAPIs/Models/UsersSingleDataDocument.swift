@@ -14,15 +14,18 @@ public struct UsersSingleDataDocument: Codable, Hashable {
 
     public var data: UsersResource?
     public var links: Links?
+    public var included: [IncludedInner]?
 
-    public init(data: UsersResource? = nil, links: Links? = nil) {
+    public init(data: UsersResource? = nil, links: Links? = nil, included: [IncludedInner]? = nil) {
         self.data = data
         self.links = links
+        self.included = included
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case data
         case links
+        case included
     }
 
     // Encodable protocol methods
@@ -31,6 +34,7 @@ public struct UsersSingleDataDocument: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(data, forKey: .data)
         try container.encodeIfPresent(links, forKey: .links)
+        try container.encodeIfPresent(included, forKey: .included)
     }
 }
 

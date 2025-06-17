@@ -8,7 +8,7 @@
       "name" : "TIDAL Developer - Discussions",
       "url" : "https://github.com/orgs/tidal-music/discussions"
     },
-    "version" : "0.1.8"
+    "version" : "0.1.12"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -11777,6 +11777,184 @@
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
         }
+      },
+      "patch" : {
+        "tags" : [ "tracks" ],
+        "summary" : "Update single track.",
+        "description" : "Updates existing track.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Track id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "251380837"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TrackUpdateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
       }
     },
     "/tracks" : {
@@ -17881,22 +18059,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -17913,24 +18076,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -17986,22 +18132,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -18051,6 +18182,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -18081,6 +18215,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -18187,26 +18324,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/ArtistRoles_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -18223,28 +18341,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/ArtistRoles_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -18309,26 +18406,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/ArtistRoles_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -18513,6 +18591,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -18543,6 +18624,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -18743,6 +18827,68 @@
         },
         "description" : "metadata about an image"
       },
+      "Included" : {
+        "type" : "array",
+        "items" : {
+          "discriminator" : {
+            "propertyName" : "type",
+            "mapping" : {
+              "albums" : "#/components/schemas/Albums_Resource",
+              "trackManifests" : "#/components/schemas/TrackManifests_Resource",
+              "userRecommendations" : "#/components/schemas/UserRecommendations_Resource",
+              "searchresults" : "#/components/schemas/Searchresults_Resource",
+              "artistRoles" : "#/components/schemas/ArtistRoles_Resource",
+              "playlists" : "#/components/schemas/Playlists_Resource",
+              "videos" : "#/components/schemas/Videos_Resource",
+              "userCollections" : "#/components/schemas/UserCollections_Resource",
+              "searchResults" : "#/components/schemas/SearchResults_Resource",
+              "users" : "#/components/schemas/Users_Resource",
+              "tracks" : "#/components/schemas/Tracks_Resource",
+              "trackFiles" : "#/components/schemas/TrackFiles_Resource",
+              "artworks" : "#/components/schemas/Artworks_Resource",
+              "artists" : "#/components/schemas/Artists_Resource",
+              "userEntitlements" : "#/components/schemas/UserEntitlements_Resource",
+              "providers" : "#/components/schemas/Providers_Resource",
+              "searchSuggestions" : "#/components/schemas/SearchSuggestions_Resource"
+            }
+          },
+          "oneOf" : [ {
+            "$ref" : "#/components/schemas/Artists_Resource"
+          }, {
+            "$ref" : "#/components/schemas/Videos_Resource"
+          }, {
+            "$ref" : "#/components/schemas/UserCollections_Resource"
+          }, {
+            "$ref" : "#/components/schemas/Providers_Resource"
+          }, {
+            "$ref" : "#/components/schemas/TrackFiles_Resource"
+          }, {
+            "$ref" : "#/components/schemas/ArtistRoles_Resource"
+          }, {
+            "$ref" : "#/components/schemas/UserRecommendations_Resource"
+          }, {
+            "$ref" : "#/components/schemas/SearchSuggestions_Resource"
+          }, {
+            "$ref" : "#/components/schemas/Users_Resource"
+          }, {
+            "$ref" : "#/components/schemas/Searchresults_Resource"
+          }, {
+            "$ref" : "#/components/schemas/SearchResults_Resource"
+          }, {
+            "$ref" : "#/components/schemas/Artworks_Resource"
+          }, {
+            "$ref" : "#/components/schemas/TrackManifests_Resource"
+          }, {
+            "$ref" : "#/components/schemas/UserEntitlements_Resource"
+          }, {
+            "$ref" : "#/components/schemas/Tracks_Resource"
+          }, {
+            "$ref" : "#/components/schemas/Playlists_Resource"
+          }, {
+            "$ref" : "#/components/schemas/Albums_Resource"
+          } ]
+        }
+      },
       "Links" : {
         "required" : [ "self" ],
         "type" : "object",
@@ -18797,7 +18943,7 @@
         }
       },
       "PlaylistCreateOperation_Payload_Data_Attributes" : {
-        "required" : [ "name", "privacy" ],
+        "required" : [ "name" ],
         "type" : "object",
         "properties" : {
           "name" : {
@@ -18806,9 +18952,11 @@
           "description" : {
             "type" : "string"
           },
-          "privacy" : {
+          "accessType" : {
             "type" : "string",
-            "enum" : [ "PUBLIC", "PRIVATE" ]
+            "description" : "Access type",
+            "example" : "PUBLIC",
+            "enum" : [ "PUBLIC", "UNLISTED" ]
           }
         }
       },
@@ -18975,14 +19123,16 @@
           "description" : {
             "type" : "string"
           },
-          "privacy" : {
+          "accessType" : {
             "type" : "string",
-            "enum" : [ "PUBLIC", "PRIVATE" ]
+            "description" : "Access type",
+            "example" : "PUBLIC",
+            "enum" : [ "PUBLIC", "UNLISTED" ]
           }
         }
       },
       "Playlists_Attributes" : {
-        "required" : [ "bounded", "createdAt", "externalLinks", "imageLinks", "lastModifiedAt", "name", "playlistType", "privacy" ],
+        "required" : [ "accessType", "bounded", "createdAt", "externalLinks", "imageLinks", "lastModifiedAt", "name", "playlistType", "privacy" ],
         "type" : "object",
         "properties" : {
           "name" : {
@@ -19033,7 +19183,14 @@
           "privacy" : {
             "type" : "string",
             "description" : "Privacy setting of the playlist",
+            "deprecated" : true,
             "enum" : [ "PUBLIC", "PRIVATE" ]
+          },
+          "accessType" : {
+            "type" : "string",
+            "description" : "Access type",
+            "example" : "PUBLIC",
+            "enum" : [ "PUBLIC", "UNLISTED" ]
           },
           "playlistType" : {
             "type" : "string",
@@ -19101,18 +19258,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Users_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19129,20 +19275,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Users_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19192,18 +19325,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Users_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19229,6 +19351,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19259,6 +19384,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19330,20 +19458,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19360,22 +19475,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/SearchResults_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19434,20 +19534,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19518,20 +19605,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19548,22 +19622,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/SearchSuggestions_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19607,20 +19666,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19669,20 +19715,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19699,22 +19732,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Searchresults_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19773,20 +19791,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19837,6 +19842,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19867,6 +19875,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19917,6 +19928,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -19947,6 +19961,93 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          }
+        }
+      },
+      "TrackUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/TrackUpdateOperation_Payload_Data"
+          }
+        }
+      },
+      "TrackUpdateOperation_Payload_Data" : {
+        "required" : [ "attributes", "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "tracks" ]
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/TrackUpdateOperation_Payload_Data_Attributes"
+          }
+        }
+      },
+      "TrackUpdateOperation_Payload_Data_Attributes" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string"
+          },
+          "explicit" : {
+            "type" : "boolean",
+            "description" : "Explicit content",
+            "example" : false
+          },
+          "accessType" : {
+            "type" : "string",
+            "description" : "Access type",
+            "example" : "PRIVATE",
+            "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
+          },
+          "bpm" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "key" : {
+            "type" : "string",
+            "enum" : [ "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
+          },
+          "keyScale" : {
+            "type" : "string",
+            "enum" : [ "MAJOR", "MINOR" ]
+          },
+          "genreTags" : {
+            "maxItems" : 5,
+            "minItems" : 0,
+            "type" : "array",
+            "description" : "Genre tags",
+            "example" : "pop,rock",
+            "items" : {
+              "maxLength" : 20,
+              "minLength" : 1,
+              "type" : "string",
+              "description" : "Genre tags",
+              "example" : "pop,rock"
+            }
+          },
+          "toneTags" : {
+            "maxItems" : 5,
+            "minItems" : 0,
+            "type" : "array",
+            "description" : "Tone tags",
+            "example" : "happy",
+            "items" : {
+              "maxLength" : 20,
+              "minLength" : 1,
+              "type" : "string",
+              "description" : "Tone tags",
+              "example" : "happy"
+            }
           }
         }
       },
@@ -19993,7 +20094,7 @@
           "key" : {
             "type" : "string",
             "description" : "Key",
-            "enum" : [ "A", "B", "C", "D", "E", "F", "G" ]
+            "enum" : [ "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
           },
           "keyScale" : {
             "type" : "string",
@@ -20005,6 +20106,12 @@
             "description" : "Beats per minute",
             "format" : "float",
             "example" : 60.0
+          },
+          "accessType" : {
+            "type" : "string",
+            "description" : "Access type",
+            "example" : "PRIVATE",
+            "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
           },
           "availability" : {
             "type" : "array",
@@ -20020,6 +20127,26 @@
               "type" : "string",
               "description" : "Media metadata tags",
               "example" : "HIRES_LOSSLESS ,LOSSLESS"
+            }
+          },
+          "toneTags" : {
+            "type" : "array",
+            "description" : "Tone tags",
+            "example" : "Happy",
+            "items" : {
+              "type" : "string",
+              "description" : "Tone tags",
+              "example" : "Happy"
+            }
+          },
+          "genreTags" : {
+            "type" : "array",
+            "description" : "Genre tags",
+            "example" : "Pop",
+            "items" : {
+              "type" : "string",
+              "description" : "Genre tags",
+              "example" : "Pop"
             }
           },
           "externalLinks" : {
@@ -20044,20 +20171,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20074,20 +20188,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20143,20 +20244,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20436,16 +20524,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20541,16 +20620,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20580,6 +20650,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20610,6 +20683,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20629,12 +20705,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20651,14 +20722,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/UserRecommendations_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20708,12 +20772,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Playlists_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20769,6 +20828,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20799,6 +20861,9 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20918,18 +20983,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -20946,20 +21000,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       },
@@ -21012,18 +21053,7 @@
             "$ref" : "#/components/schemas/Links"
           },
           "included" : {
-            "type" : "array",
-            "items" : {
-              "oneOf" : [ {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Providers_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Artworks_Resource"
-              } ]
-            }
+            "$ref" : "#/components/schemas/Included"
           }
         }
       }

@@ -14,9 +14,9 @@ public struct UserCollectionsSingleDataDocument: Codable, Hashable {
 
     public var data: UserCollectionsResource?
     public var links: Links?
-    public var included: [UserCollectionsMultiDataDocumentIncludedInner]?
+    public var included: [IncludedInner]?
 
-    public init(data: UserCollectionsResource? = nil, links: Links? = nil, included: [UserCollectionsMultiDataDocumentIncludedInner]? = nil) {
+    public init(data: UserCollectionsResource? = nil, links: Links? = nil, included: [IncludedInner]? = nil) {
         self.data = data
         self.links = links
         self.included = included

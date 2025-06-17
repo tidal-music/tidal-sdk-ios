@@ -120,6 +120,50 @@ internal class TracksAPI {
     }
 
     /**
+     Update single track.
+     
+     - parameter id: (path) Track id 
+     - parameter trackUpdateOperationPayload: (body)  (optional)
+     - returns: Void
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdPatch(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil) async throws {
+        return try await tracksIdPatchWithRequestBuilder(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload).execute().body
+    }
+
+    /**
+     Update single track.
+     - PATCH /tracks/{id}
+     - Updates existing track.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Track id 
+     - parameter trackUpdateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<Void> 
+     */
+    internal class func tracksIdPatchWithRequestBuilder(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+        var localVariablePath = "/tracks/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackUpdateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get albums relationship (\"to-many\").
      
      - parameter id: (path) Track id 

@@ -14,9 +14,9 @@ public struct VideosSingleDataDocument: Codable, Hashable {
 
     public var data: VideosResource?
     public var links: Links?
-    public var included: [VideosMultiDataDocumentIncludedInner]?
+    public var included: [IncludedInner]?
 
-    public init(data: VideosResource? = nil, links: Links? = nil, included: [VideosMultiDataDocumentIncludedInner]? = nil) {
+    public init(data: VideosResource? = nil, links: Links? = nil, included: [IncludedInner]? = nil) {
         self.data = data
         self.links = links
         self.included = included

@@ -39,6 +39,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Update single track.
+     
+     - returns: 
+     */
+	public static func tracksIdPatch(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdPatchWithRequestBuilder(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get albums relationship (\&quot;to-many\&quot;).
      
      - returns: TracksMultiDataRelationshipDocument
