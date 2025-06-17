@@ -27,6 +27,9 @@ jobs:
         elif [ "${{ github.event_name }}" = "merge_group" ]; then
             echo "BASE_BRANCH=${{ github.event.merge_group.base_ref }}" >> $GITHUB_OUTPUT
             echo "FEATURE_BRANCH=" >> $GITHUB_OUTPUT  # Leave empty; already checked out
+        elif [ "${{ github.event_name }}" = "push" ]; then
+            echo "BASE_BRANCH=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "FEATURE_BRANCH=" >> $GITHUB_OUTPUT
         else
             echo "Unsupported event: ${{ github.event_name }}"
             exit 1
