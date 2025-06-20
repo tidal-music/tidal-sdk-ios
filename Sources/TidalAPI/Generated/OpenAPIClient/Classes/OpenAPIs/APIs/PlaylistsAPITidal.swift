@@ -75,6 +75,18 @@ public enum PlaylistsAPITidal {
 
 
 	/**
+     Update coverArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func playlistsIdRelationshipsCoverArtPatch(id: String, playlistCoverArtRelationshipUpdateOperationPayload: PlaylistCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, playlistCoverArtRelationshipUpdateOperationPayload: playlistCoverArtRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Delete from items relationship (\&quot;to-many\&quot;).
      
      - returns: 

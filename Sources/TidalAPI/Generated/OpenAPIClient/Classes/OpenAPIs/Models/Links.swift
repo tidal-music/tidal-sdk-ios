@@ -13,9 +13,9 @@ import AnyCodable
 /** Links JSON:API object */
 public struct Links: Codable, Hashable {
 
-    /** the link that generated the current response document */
+    /** Link to self */
     public var _self: String
-    /** the next page of data (pagination) */
+    /** Link to next page */
     public var next: String?
 
     public init(

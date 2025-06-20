@@ -748,7 +748,7 @@ Creates a new artist.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let artistCreateOperationPayload = ArtistCreateOperation_Payload(data: ArtistCreateOperation_Payload_Data(type: "type_example", attributes: ArtistCreateOperation_Payload_Data_Attributes(name: "name_example", handle: "handle_example"))) // ArtistCreateOperationPayload |  (optional)
+let artistCreateOperationPayload = ArtistCreateOperation_Payload(data: ArtistCreateOperation_Payload_Data(type: "type_example", attributes: ArtistCreateOperation_Payload_Data_Attributes(name: "name_example", handle: "handle_example")), meta: ArtistCreateOperation_Meta(dryRun: false)) // ArtistCreateOperationPayload |  (optional)
 
 // Create single artist.
 ArtistsAPI.artistsPost(artistCreateOperationPayload: artistCreateOperationPayload) { (response, error) in
