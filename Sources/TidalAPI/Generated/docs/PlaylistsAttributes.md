@@ -9,10 +9,10 @@ Name | Type | Description | Notes
 **duration** | **String** | Duration of playlist (ISO 8601) | [optional] 
 **numberOfItems** | **Int** | Number of items in the playlist | [optional] 
 **externalLinks** | [ExternalLink] |  | 
-**imageLinks** | [ImageLink] |  | 
 **createdAt** | **Date** | Datetime of playlist creation (ISO 8601) | 
 **lastModifiedAt** | **Date** | Datetime of last modification of the playlist (ISO 8601) | 
 **privacy** | **String** | Privacy setting of the playlist | 
+**accessType** | **String** | Access type | 
 **playlistType** | **String** | The type of the playlist | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

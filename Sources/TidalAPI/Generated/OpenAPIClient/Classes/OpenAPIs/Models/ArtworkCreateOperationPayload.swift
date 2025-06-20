@@ -14,7 +14,9 @@ public struct ArtworkCreateOperationPayload: Codable, Hashable {
 
     public var data: ArtworkCreateOperationPayloadData
 
-    public init(data: ArtworkCreateOperationPayloadData) {
+    public init(
+        data: ArtworkCreateOperationPayloadData
+    ) {
         self.data = data
     }
 

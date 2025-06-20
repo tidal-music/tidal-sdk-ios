@@ -23,7 +23,13 @@ public struct ErrorObject: Codable, Hashable {
     public var detail: String?
     public var source: ErrorObjectSource?
 
-    public init(id: String? = nil, status: String? = nil, code: String? = nil, detail: String? = nil, source: ErrorObjectSource? = nil) {
+    public init(
+        id: String? = nil,
+        status: String? = nil,
+        code: String? = nil,
+        detail: String? = nil,
+        source: ErrorObjectSource? = nil
+    ) {
         self.id = id
         self.status = status
         self.code = code

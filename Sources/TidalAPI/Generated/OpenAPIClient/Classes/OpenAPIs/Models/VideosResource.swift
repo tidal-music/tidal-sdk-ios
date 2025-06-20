@@ -19,7 +19,12 @@ public struct VideosResource: Codable, Hashable {
     public var attributes: VideosAttributes?
     public var relationships: VideosRelationships?
 
-    public init(id: String, type: String, attributes: VideosAttributes? = nil, relationships: VideosRelationships? = nil) {
+    public init(
+        id: String,
+        type: String,
+        attributes: VideosAttributes? = nil,
+        relationships: VideosRelationships? = nil
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

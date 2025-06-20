@@ -15,7 +15,9 @@ public struct UserCollectionPlaylistsRelationshipRemoveOperationPayload: Codable
     public static let dataRule = ArrayRule(minItems: 1, maxItems: 20, uniqueItems: false)
     public var data: [UserCollectionPlaylistsRelationshipRemoveOperationPayloadData]
 
-    public init(data: [UserCollectionPlaylistsRelationshipRemoveOperationPayloadData]) {
+    public init(
+        data: [UserCollectionPlaylistsRelationshipRemoveOperationPayloadData]
+    ) {
         self.data = data
     }
 

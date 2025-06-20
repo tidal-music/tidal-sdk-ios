@@ -19,7 +19,12 @@ public struct ArtistsResource: Codable, Hashable {
     public var attributes: ArtistsAttributes?
     public var relationships: ArtistsRelationships?
 
-    public init(id: String, type: String, attributes: ArtistsAttributes? = nil, relationships: ArtistsRelationships? = nil) {
+    public init(
+        id: String,
+        type: String,
+        attributes: ArtistsAttributes? = nil,
+        relationships: ArtistsRelationships? = nil
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

@@ -16,7 +16,11 @@ public struct ArtistUpdateBodyDataAttributes: Codable, Hashable {
     public var handle: String?
     public var externalLinks: [ExternalLink]?
 
-    public init(name: String? = nil, handle: String? = nil, externalLinks: [ExternalLink]? = nil) {
+    public init(
+        name: String? = nil,
+        handle: String? = nil,
+        externalLinks: [ExternalLink]? = nil
+    ) {
         self.name = name
         self.handle = handle
         self.externalLinks = externalLinks

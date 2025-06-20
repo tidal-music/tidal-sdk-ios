@@ -1,4 +1,4 @@
-# SearchresultsAttributes
+# SearchResultsAttributes
 
 ## Properties
 Name | Type | Description | Notes

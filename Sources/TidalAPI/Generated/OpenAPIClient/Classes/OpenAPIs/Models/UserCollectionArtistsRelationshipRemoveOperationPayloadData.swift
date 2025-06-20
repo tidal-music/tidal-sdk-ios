@@ -19,7 +19,11 @@ public struct UserCollectionArtistsRelationshipRemoveOperationPayloadData: Codab
     public var type: ModelType
     public var meta: UserCollectionArtistsRelationshipRemoveOperationPayloadDataMeta
 
-    public init(id: String, type: ModelType, meta: UserCollectionArtistsRelationshipRemoveOperationPayloadDataMeta) {
+    public init(
+        id: String,
+        type: ModelType,
+        meta: UserCollectionArtistsRelationshipRemoveOperationPayloadDataMeta
+    ) {
         self.id = id
         self.type = type
         self.meta = meta

@@ -15,7 +15,10 @@ public struct AlbumsItemsMultiDataRelationshipDocument: Codable, Hashable {
     public var data: [AlbumsItemsResourceIdentifier]?
     public var links: Links?
 
-    public init(data: [AlbumsItemsResourceIdentifier]? = nil, links: Links? = nil) {
+    public init(
+        data: [AlbumsItemsResourceIdentifier]? = nil,
+        links: Links? = nil
+    ) {
         self.data = data
         self.links = links
     }

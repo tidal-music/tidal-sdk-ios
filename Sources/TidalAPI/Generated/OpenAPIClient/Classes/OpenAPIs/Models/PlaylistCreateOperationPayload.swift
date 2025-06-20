@@ -14,7 +14,9 @@ public struct PlaylistCreateOperationPayload: Codable, Hashable {
 
     public var data: PlaylistCreateOperationPayloadData
 
-    public init(data: PlaylistCreateOperationPayloadData) {
+    public init(
+        data: PlaylistCreateOperationPayloadData
+    ) {
         self.data = data
     }
 

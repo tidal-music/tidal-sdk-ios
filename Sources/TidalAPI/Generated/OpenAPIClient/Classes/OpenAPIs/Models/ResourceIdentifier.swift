@@ -18,7 +18,10 @@ public struct ResourceIdentifier: Codable, Hashable {
     /** resource unique type */
     public var type: String
 
-    public init(id: String, type: String) {
+    public init(
+        id: String,
+        type: String
+    ) {
         self.id = id
         self.type = type
     }

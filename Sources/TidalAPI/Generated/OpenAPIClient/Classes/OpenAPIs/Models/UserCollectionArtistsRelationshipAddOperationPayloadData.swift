@@ -18,7 +18,10 @@ public struct UserCollectionArtistsRelationshipAddOperationPayloadData: Codable,
     public var id: String
     public var type: ModelType
 
-    public init(id: String, type: ModelType) {
+    public init(
+        id: String,
+        type: ModelType
+    ) {
         self.id = id
         self.type = type
     }

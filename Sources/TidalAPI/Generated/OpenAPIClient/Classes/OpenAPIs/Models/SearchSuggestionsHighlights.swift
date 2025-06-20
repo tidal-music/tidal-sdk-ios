@@ -15,7 +15,10 @@ public struct SearchSuggestionsHighlights: Codable, Hashable {
     public var start: Int
     public var length: Int
 
-    public init(start: Int, length: Int) {
+    public init(
+        start: Int,
+        length: Int
+    ) {
         self.start = start
         self.length = length
     }

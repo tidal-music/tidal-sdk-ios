@@ -20,7 +20,11 @@ public struct PlaylistItemsRelationshipRemoveOperationPayloadData: Codable, Hash
     public var type: ModelType
     public var meta: PlaylistItemsRelationshipRemoveOperationPayloadDataMeta
 
-    public init(id: String, type: ModelType, meta: PlaylistItemsRelationshipRemoveOperationPayloadDataMeta) {
+    public init(
+        id: String,
+        type: ModelType,
+        meta: PlaylistItemsRelationshipRemoveOperationPayloadDataMeta
+    ) {
         self.id = id
         self.type = type
         self.meta = meta

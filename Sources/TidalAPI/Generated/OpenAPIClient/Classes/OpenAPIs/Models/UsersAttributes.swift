@@ -27,7 +27,15 @@ public struct UsersAttributes: Codable, Hashable {
     /** Users nostr public key */
     public var nostrPublicKey: String?
 
-    public init(username: String, country: String, email: String? = nil, emailVerified: Bool? = nil, firstName: String? = nil, lastName: String? = nil, nostrPublicKey: String? = nil) {
+    public init(
+        username: String,
+        country: String,
+        email: String? = nil,
+        emailVerified: Bool? = nil,
+        firstName: String? = nil,
+        lastName: String? = nil,
+        nostrPublicKey: String? = nil
+    ) {
         self.username = username
         self.country = country
         self.email = email

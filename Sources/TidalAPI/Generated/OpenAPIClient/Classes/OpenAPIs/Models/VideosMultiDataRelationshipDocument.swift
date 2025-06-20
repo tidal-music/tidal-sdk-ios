@@ -14,9 +14,13 @@ public struct VideosMultiDataRelationshipDocument: Codable, Hashable {
 
     public var data: [ResourceIdentifier]?
     public var links: Links?
-    public var included: [VideosMultiDataRelationshipDocumentIncludedInner]?
+    public var included: [IncludedInner]?
 
-    public init(data: [ResourceIdentifier]? = nil, links: Links? = nil, included: [VideosMultiDataRelationshipDocumentIncludedInner]? = nil) {
+    public init(
+        data: [ResourceIdentifier]? = nil,
+        links: Links? = nil,
+        included: [IncludedInner]? = nil
+    ) {
         self.data = data
         self.links = links
         self.included = included

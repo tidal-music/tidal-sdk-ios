@@ -15,7 +15,10 @@ public struct UserCollectionsArtistsResourceIdentifierMeta: Codable, Hashable {
     public var itemId: String?
     public var addedAt: Date?
 
-    public init(itemId: String? = nil, addedAt: Date? = nil) {
+    public init(
+        itemId: String? = nil,
+        addedAt: Date? = nil
+    ) {
         self.itemId = itemId
         self.addedAt = addedAt
     }

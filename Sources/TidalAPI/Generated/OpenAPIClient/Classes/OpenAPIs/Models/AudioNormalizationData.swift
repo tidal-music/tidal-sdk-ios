@@ -16,7 +16,10 @@ public struct AudioNormalizationData: Codable, Hashable {
     public var replayGain: Float?
     public var peakAmplitude: Float?
 
-    public init(replayGain: Float? = nil, peakAmplitude: Float? = nil) {
+    public init(
+        replayGain: Float? = nil,
+        peakAmplitude: Float? = nil
+    ) {
         self.replayGain = replayGain
         self.peakAmplitude = peakAmplitude
     }

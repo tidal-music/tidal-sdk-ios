@@ -14,8 +14,6 @@ Name | Type | Description | Notes
 **popularity** | **Double** | Popularity (0.0 - 1.0) | 
 **availability** | **[String]** | Available usage for this album | [optional] 
 **mediaTags** | **[String]** |  | 
-**imageLinks** | [ImageLink] | Album image links and metadata | [optional] 
-**videoLinks** | [VideoLink] | Album video links and metadata | [optional] 
 **externalLinks** | [ExternalLink] | Album links external to TIDAL API | [optional] 
 **type** | **String** | Album type | 
 

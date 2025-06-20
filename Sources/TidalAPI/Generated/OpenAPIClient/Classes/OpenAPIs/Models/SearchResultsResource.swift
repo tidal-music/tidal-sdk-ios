@@ -19,7 +19,12 @@ public struct SearchResultsResource: Codable, Hashable {
     public var attributes: SearchResultsAttributes?
     public var relationships: SearchResultsRelationships?
 
-    public init(id: String, type: String, attributes: SearchResultsAttributes? = nil, relationships: SearchResultsRelationships? = nil) {
+    public init(
+        id: String,
+        type: String,
+        attributes: SearchResultsAttributes? = nil,
+        relationships: SearchResultsRelationships? = nil
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

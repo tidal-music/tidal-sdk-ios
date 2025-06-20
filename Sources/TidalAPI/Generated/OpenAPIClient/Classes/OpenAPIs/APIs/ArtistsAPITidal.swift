@@ -55,9 +55,21 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsMultiDataRelationshipDocument
      */
-	public static func artistsIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
+	public static func artistsIdRelationshipsAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			ArtistsAPI.artistsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: ArtistsMultiDataRelationshipDocument
+     */
+	public static func artistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -91,9 +103,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsMultiDataRelationshipDocument
      */
-	public static func artistsIdRelationshipsRadioGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
+	public static func artistsIdRelationshipsRadioGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsRadioGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			ArtistsAPI.artistsIdRelationshipsRadioGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -115,9 +127,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsMultiDataRelationshipDocument
      */
-	public static func artistsIdRelationshipsSimilarArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
+	public static func artistsIdRelationshipsSimilarArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsSimilarArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			ArtistsAPI.artistsIdRelationshipsSimilarArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -125,11 +137,11 @@ public enum ArtistsAPITidal {
 	/**
      Get trackProviders relationship (\&quot;to-many\&quot;).
      
-     - returns: ArtistsTrackProvidersResourceIdentifier
+     - returns: ArtistsTrackProvidersMultiDataRelationshipDocument
      */
-	public static func artistsIdRelationshipsTrackProvidersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsTrackProvidersResourceIdentifier {
+	public static func artistsIdRelationshipsTrackProvidersGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsTrackProvidersMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsTrackProvidersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+			ArtistsAPI.artistsIdRelationshipsTrackProvidersGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -139,9 +151,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsMultiDataRelationshipDocument
      */
-	public static func artistsIdRelationshipsTracksGet(id: String, countryCode: String, collapseBy: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
+	public static func artistsIdRelationshipsTracksGet(id: String, countryCode: String, collapseBy: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, collapseBy: collapseBy, include: include, pageCursor: pageCursor)
+			ArtistsAPI.artistsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, collapseBy: collapseBy, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -151,9 +163,21 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsMultiDataRelationshipDocument
      */
-	public static func artistsIdRelationshipsVideosGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
+	public static func artistsIdRelationshipsVideosGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			ArtistsAPI.artistsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Create single artist.
+     
+     - returns: ArtistsSingleDataDocument
+     */
+	public static func artistsPost(artistCreateOperationPayload: ArtistCreateOperationPayload? = nil) async throws -> ArtistsSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsPostWithRequestBuilder(artistCreateOperationPayload: artistCreateOperationPayload)
 		}
 	}
 }

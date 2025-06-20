@@ -19,7 +19,11 @@ public struct ArtistUpdateBodyData: Codable, Hashable {
     public var type: ModelType
     public var attributes: ArtistUpdateBodyDataAttributes
 
-    public init(id: String, type: ModelType, attributes: ArtistUpdateBodyDataAttributes) {
+    public init(
+        id: String,
+        type: ModelType,
+        attributes: ArtistUpdateBodyDataAttributes
+    ) {
         self.id = id
         self.type = type
         self.attributes = attributes

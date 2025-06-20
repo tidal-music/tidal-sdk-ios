@@ -15,16 +15,28 @@ public struct ArtistsRelationships: Codable, Hashable {
     public var similarArtists: MultiDataRelationshipDoc
     public var albums: MultiDataRelationshipDoc
     public var roles: MultiDataRelationshipDoc
+    public var owners: MultiDataRelationshipDoc
     public var videos: MultiDataRelationshipDoc
     public var profileArt: MultiDataRelationshipDoc
     public var trackProviders: ArtistsTrackProvidersMultiDataRelationshipDocument
     public var tracks: MultiDataRelationshipDoc
     public var radio: MultiDataRelationshipDoc
 
-    public init(similarArtists: MultiDataRelationshipDoc, albums: MultiDataRelationshipDoc, roles: MultiDataRelationshipDoc, videos: MultiDataRelationshipDoc, profileArt: MultiDataRelationshipDoc, trackProviders: ArtistsTrackProvidersMultiDataRelationshipDocument, tracks: MultiDataRelationshipDoc, radio: MultiDataRelationshipDoc) {
+    public init(
+        similarArtists: MultiDataRelationshipDoc,
+        albums: MultiDataRelationshipDoc,
+        roles: MultiDataRelationshipDoc,
+        owners: MultiDataRelationshipDoc,
+        videos: MultiDataRelationshipDoc,
+        profileArt: MultiDataRelationshipDoc,
+        trackProviders: ArtistsTrackProvidersMultiDataRelationshipDocument,
+        tracks: MultiDataRelationshipDoc,
+        radio: MultiDataRelationshipDoc
+    ) {
         self.similarArtists = similarArtists
         self.albums = albums
         self.roles = roles
+        self.owners = owners
         self.videos = videos
         self.profileArt = profileArt
         self.trackProviders = trackProviders
@@ -36,6 +48,7 @@ public struct ArtistsRelationships: Codable, Hashable {
         case similarArtists
         case albums
         case roles
+        case owners
         case videos
         case profileArt
         case trackProviders
@@ -50,6 +63,7 @@ public struct ArtistsRelationships: Codable, Hashable {
         try container.encode(similarArtists, forKey: .similarArtists)
         try container.encode(albums, forKey: .albums)
         try container.encode(roles, forKey: .roles)
+        try container.encode(owners, forKey: .owners)
         try container.encode(videos, forKey: .videos)
         try container.encode(profileArt, forKey: .profileArt)
         try container.encode(trackProviders, forKey: .trackProviders)

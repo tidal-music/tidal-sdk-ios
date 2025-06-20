@@ -18,7 +18,10 @@ public struct FileUploadLinkMeta: Codable, Hashable {
     /** HTTP headers that must be added to the operation */
     public var headers: [String: String]?
 
-    public init(method: String, headers: [String: String]? = nil) {
+    public init(
+        method: String,
+        headers: [String: String]? = nil
+    ) {
         self.method = method
         self.headers = headers
     }

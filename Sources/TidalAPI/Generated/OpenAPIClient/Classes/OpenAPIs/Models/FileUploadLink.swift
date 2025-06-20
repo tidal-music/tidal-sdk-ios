@@ -17,7 +17,10 @@ public struct FileUploadLink: Codable, Hashable {
     public var href: String
     public var meta: FileUploadLinkMeta
 
-    public init(href: String, meta: FileUploadLinkMeta) {
+    public init(
+        href: String,
+        meta: FileUploadLinkMeta
+    ) {
         self.href = href
         self.meta = meta
     }

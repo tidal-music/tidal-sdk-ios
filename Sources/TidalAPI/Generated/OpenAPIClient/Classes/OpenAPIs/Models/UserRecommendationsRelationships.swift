@@ -16,7 +16,11 @@ public struct UserRecommendationsRelationships: Codable, Hashable {
     public var newArrivalMixes: MultiDataRelationshipDoc
     public var myMixes: MultiDataRelationshipDoc
 
-    public init(discoveryMixes: MultiDataRelationshipDoc, newArrivalMixes: MultiDataRelationshipDoc, myMixes: MultiDataRelationshipDoc) {
+    public init(
+        discoveryMixes: MultiDataRelationshipDoc,
+        newArrivalMixes: MultiDataRelationshipDoc,
+        myMixes: MultiDataRelationshipDoc
+    ) {
         self.discoveryMixes = discoveryMixes
         self.newArrivalMixes = newArrivalMixes
         self.myMixes = myMixes

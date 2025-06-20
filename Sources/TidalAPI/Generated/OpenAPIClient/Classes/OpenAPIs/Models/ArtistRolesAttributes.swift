@@ -14,7 +14,9 @@ public struct ArtistRolesAttributes: Codable, Hashable {
 
     public var name: String?
 
-    public init(name: String? = nil) {
+    public init(
+        name: String? = nil
+    ) {
         self.name = name
     }
 

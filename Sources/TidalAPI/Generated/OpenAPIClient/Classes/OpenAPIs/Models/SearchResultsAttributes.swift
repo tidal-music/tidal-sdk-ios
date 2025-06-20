@@ -17,7 +17,10 @@ public struct SearchResultsAttributes: Codable, Hashable {
     /** 'did you mean' prompt */
     public var didYouMean: String?
 
-    public init(trackingId: String, didYouMean: String? = nil) {
+    public init(
+        trackingId: String,
+        didYouMean: String? = nil
+    ) {
         self.trackingId = trackingId
         self.didYouMean = didYouMean
     }

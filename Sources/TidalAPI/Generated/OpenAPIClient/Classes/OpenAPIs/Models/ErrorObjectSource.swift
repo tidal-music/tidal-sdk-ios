@@ -20,7 +20,11 @@ public struct ErrorObjectSource: Codable, Hashable {
     /** string indicating the name of a single request header which caused the error */
     public var header: String?
 
-    public init(pointer: String? = nil, parameter: String? = nil, header: String? = nil) {
+    public init(
+        pointer: String? = nil,
+        parameter: String? = nil,
+        header: String? = nil
+    ) {
         self.pointer = pointer
         self.parameter = parameter
         self.header = header

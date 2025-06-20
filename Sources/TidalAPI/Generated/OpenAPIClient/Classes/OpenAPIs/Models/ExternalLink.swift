@@ -15,7 +15,10 @@ public struct ExternalLink: Codable, Hashable {
     public var href: String
     public var meta: ExternalLinkMeta
 
-    public init(href: String, meta: ExternalLinkMeta) {
+    public init(
+        href: String,
+        meta: ExternalLinkMeta
+    ) {
         self.href = href
         self.meta = meta
     }

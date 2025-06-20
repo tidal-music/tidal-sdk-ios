@@ -16,18 +16,19 @@ public struct ArtistsAttributes: Codable, Hashable {
     public var name: String
     /** Artist popularity (0.0 - 1.0) */
     public var popularity: Double
-    /** Artist image links and metadata */
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var imageLinks: [ImageLink]?
     /** Artist links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
     /** Artist handle */
     public var handle: String?
 
-    public init(name: String, popularity: Double, imageLinks: [ImageLink]? = nil, externalLinks: [ExternalLink]? = nil, handle: String? = nil) {
+    public init(
+        name: String,
+        popularity: Double,
+        externalLinks: [ExternalLink]? = nil,
+        handle: String? = nil
+    ) {
         self.name = name
         self.popularity = popularity
-        self.imageLinks = imageLinks
         self.externalLinks = externalLinks
         self.handle = handle
     }
@@ -35,7 +36,6 @@ public struct ArtistsAttributes: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case name
         case popularity
-        case imageLinks
         case externalLinks
         case handle
     }
@@ -46,7 +46,6 @@ public struct ArtistsAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(popularity, forKey: .popularity)
-        try container.encodeIfPresent(imageLinks, forKey: .imageLinks)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(handle, forKey: .handle)
     }

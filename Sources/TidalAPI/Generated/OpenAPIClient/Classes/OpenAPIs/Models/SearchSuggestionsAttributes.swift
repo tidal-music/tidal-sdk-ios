@@ -19,7 +19,11 @@ public struct SearchSuggestionsAttributes: Codable, Hashable {
     /** Suggested search queries */
     public var suggestions: [SearchSuggestionsSuggestions]?
 
-    public init(trackingId: String, history: [SearchSuggestionsHistory]? = nil, suggestions: [SearchSuggestionsSuggestions]? = nil) {
+    public init(
+        trackingId: String,
+        history: [SearchSuggestionsHistory]? = nil,
+        suggestions: [SearchSuggestionsSuggestions]? = nil
+    ) {
         self.trackingId = trackingId
         self.history = history
         self.suggestions = suggestions

@@ -16,7 +16,10 @@ public struct SearchSuggestionsHistory: Codable, Hashable {
     public var query: String
     public var highlights: [SearchSuggestionsHighlights]?
 
-    public init(query: String, highlights: [SearchSuggestionsHighlights]? = nil) {
+    public init(
+        query: String,
+        highlights: [SearchSuggestionsHighlights]? = nil
+    ) {
         self.query = query
         self.highlights = highlights
     }

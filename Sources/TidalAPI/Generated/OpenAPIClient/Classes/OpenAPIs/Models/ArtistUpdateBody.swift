@@ -15,7 +15,10 @@ public struct ArtistUpdateBody: Codable, Hashable {
     public var data: ArtistUpdateBodyData
     public var meta: ArtistUpdateBodyMeta?
 
-    public init(data: ArtistUpdateBodyData, meta: ArtistUpdateBodyMeta? = nil) {
+    public init(
+        data: ArtistUpdateBodyData,
+        meta: ArtistUpdateBodyMeta? = nil
+    ) {
         self.data = data
         self.meta = meta
     }

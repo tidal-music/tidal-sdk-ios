@@ -75,6 +75,18 @@ public enum PlaylistsAPITidal {
 
 
 	/**
+     Update coverArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func playlistsIdRelationshipsCoverArtPatch(id: String, playlistCoverArtRelationshipUpdateOperationPayload: PlaylistCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, playlistCoverArtRelationshipUpdateOperationPayload: playlistCoverArtRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Delete from items relationship (\&quot;to-many\&quot;).
      
      - returns: 
@@ -130,18 +142,6 @@ public enum PlaylistsAPITidal {
 	public static func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
-		}
-	}
-
-
-	/**
-     Get current user&#39;s playlist(s).
-     
-     - returns: PlaylistsMultiDataDocument
-     */
-	public static func playlistsMeGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlaylistsMultiDataDocument {
-		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsMeGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 

@@ -12,10 +12,12 @@ import AnyCodable
 
 public struct ArtistsTrackProvidersResourceIdentifierMeta: Codable, Hashable {
 
-    /** total number of tracks released together with the provider */
+    /** Total number of tracks released together with the provider */
     public var numberOfTracks: Int64
 
-    public init(numberOfTracks: Int64) {
+    public init(
+        numberOfTracks: Int64
+    ) {
         self.numberOfTracks = numberOfTracks
     }
 

@@ -43,18 +43,26 @@ public struct AlbumsAttributes: Codable, Hashable {
     /** Available usage for this album */
     public var availability: [Availability]?
     public var mediaTags: [String]
-    /** Album image links and metadata */
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var imageLinks: [ImageLink]?
-    /** Album video links and metadata */
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var videoLinks: [VideoLink]?
     /** Album links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
     /** Album type */
     public var type: ModelType
 
-    public init(title: String, barcodeId: String, numberOfVolumes: Int, numberOfItems: Int, duration: String, explicit: Bool, releaseDate: Date? = nil, copyright: String? = nil, popularity: Double, availability: [Availability]? = nil, mediaTags: [String], imageLinks: [ImageLink]? = nil, videoLinks: [VideoLink]? = nil, externalLinks: [ExternalLink]? = nil, type: ModelType) {
+    public init(
+        title: String,
+        barcodeId: String,
+        numberOfVolumes: Int,
+        numberOfItems: Int,
+        duration: String,
+        explicit: Bool,
+        releaseDate: Date? = nil,
+        copyright: String? = nil,
+        popularity: Double,
+        availability: [Availability]? = nil,
+        mediaTags: [String],
+        externalLinks: [ExternalLink]? = nil,
+        type: ModelType
+    ) {
         self.title = title
         self.barcodeId = barcodeId
         self.numberOfVolumes = numberOfVolumes
@@ -66,8 +74,6 @@ public struct AlbumsAttributes: Codable, Hashable {
         self.popularity = popularity
         self.availability = availability
         self.mediaTags = mediaTags
-        self.imageLinks = imageLinks
-        self.videoLinks = videoLinks
         self.externalLinks = externalLinks
         self.type = type
     }
@@ -84,8 +90,6 @@ public struct AlbumsAttributes: Codable, Hashable {
         case popularity
         case availability
         case mediaTags
-        case imageLinks
-        case videoLinks
         case externalLinks
         case type
     }
@@ -105,8 +109,6 @@ public struct AlbumsAttributes: Codable, Hashable {
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(availability, forKey: .availability)
         try container.encode(mediaTags, forKey: .mediaTags)
-        try container.encodeIfPresent(imageLinks, forKey: .imageLinks)
-        try container.encodeIfPresent(videoLinks, forKey: .videoLinks)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encode(type, forKey: .type)
     }

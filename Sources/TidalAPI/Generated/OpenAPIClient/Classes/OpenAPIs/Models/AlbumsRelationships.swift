@@ -18,7 +18,13 @@ public struct AlbumsRelationships: Codable, Hashable {
     public var items: AlbumsItemsMultiDataRelationshipDocument
     public var providers: MultiDataRelationshipDoc
 
-    public init(artists: MultiDataRelationshipDoc, similarAlbums: MultiDataRelationshipDoc, coverArt: MultiDataRelationshipDoc, items: AlbumsItemsMultiDataRelationshipDocument, providers: MultiDataRelationshipDoc) {
+    public init(
+        artists: MultiDataRelationshipDoc,
+        similarAlbums: MultiDataRelationshipDoc,
+        coverArt: MultiDataRelationshipDoc,
+        items: AlbumsItemsMultiDataRelationshipDocument,
+        providers: MultiDataRelationshipDoc
+    ) {
         self.artists = artists
         self.similarAlbums = similarAlbums
         self.coverArt = coverArt

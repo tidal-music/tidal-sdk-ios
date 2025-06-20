@@ -17,7 +17,10 @@ public struct AlbumsItemsResourceIdentifierMeta: Codable, Hashable {
     /** track number */
     public var trackNumber: Int
 
-    public init(volumeNumber: Int, trackNumber: Int) {
+    public init(
+        volumeNumber: Int,
+        trackNumber: Int
+    ) {
         self.volumeNumber = volumeNumber
         self.trackNumber = trackNumber
     }

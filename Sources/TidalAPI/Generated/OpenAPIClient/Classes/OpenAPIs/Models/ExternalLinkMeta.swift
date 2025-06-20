@@ -27,7 +27,9 @@ public struct ExternalLinkMeta: Codable, Hashable {
     }
     public var type: ModelType
 
-    public init(type: ModelType) {
+    public init(
+        type: ModelType
+    ) {
         self.type = type
     }
 

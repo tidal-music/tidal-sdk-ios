@@ -15,7 +15,10 @@ public struct UserCollectionsPlaylistsMultiDataRelationshipDocument: Codable, Ha
     public var data: [UserCollectionsPlaylistsResourceIdentifier]?
     public var links: Links?
 
-    public init(data: [UserCollectionsPlaylistsResourceIdentifier]? = nil, links: Links? = nil) {
+    public init(
+        data: [UserCollectionsPlaylistsResourceIdentifier]? = nil,
+        links: Links? = nil
+    ) {
         self.data = data
         self.links = links
     }

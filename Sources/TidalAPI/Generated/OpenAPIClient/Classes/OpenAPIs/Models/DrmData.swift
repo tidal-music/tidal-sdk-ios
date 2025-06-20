@@ -21,7 +21,11 @@ public struct DrmData: Codable, Hashable {
     public var licenseUrl: String?
     public var certificateUrl: String?
 
-    public init(drmSystem: DrmSystem? = nil, licenseUrl: String? = nil, certificateUrl: String? = nil) {
+    public init(
+        drmSystem: DrmSystem? = nil,
+        licenseUrl: String? = nil,
+        certificateUrl: String? = nil
+    ) {
         self.drmSystem = drmSystem
         self.licenseUrl = licenseUrl
         self.certificateUrl = certificateUrl

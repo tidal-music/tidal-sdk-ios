@@ -35,13 +35,21 @@ public struct VideosAttributes: Codable, Hashable {
     public var popularity: Double
     /** Available usage for this video */
     public var availability: [Availability]?
-    /** Video image links and metadata */
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var imageLinks: [ImageLink]?
     /** Video links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
 
-    public init(title: String, version: String? = nil, isrc: String, duration: String, copyright: String? = nil, releaseDate: Date? = nil, explicit: Bool, popularity: Double, availability: [Availability]? = nil, imageLinks: [ImageLink]? = nil, externalLinks: [ExternalLink]? = nil) {
+    public init(
+        title: String,
+        version: String? = nil,
+        isrc: String,
+        duration: String,
+        copyright: String? = nil,
+        releaseDate: Date? = nil,
+        explicit: Bool,
+        popularity: Double,
+        availability: [Availability]? = nil,
+        externalLinks: [ExternalLink]? = nil
+    ) {
         self.title = title
         self.version = version
         self.isrc = isrc
@@ -51,7 +59,6 @@ public struct VideosAttributes: Codable, Hashable {
         self.explicit = explicit
         self.popularity = popularity
         self.availability = availability
-        self.imageLinks = imageLinks
         self.externalLinks = externalLinks
     }
 
@@ -65,7 +72,6 @@ public struct VideosAttributes: Codable, Hashable {
         case explicit
         case popularity
         case availability
-        case imageLinks
         case externalLinks
     }
 
@@ -82,7 +88,6 @@ public struct VideosAttributes: Codable, Hashable {
         try container.encode(explicit, forKey: .explicit)
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(availability, forKey: .availability)
-        try container.encodeIfPresent(imageLinks, forKey: .imageLinks)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
     }
 }

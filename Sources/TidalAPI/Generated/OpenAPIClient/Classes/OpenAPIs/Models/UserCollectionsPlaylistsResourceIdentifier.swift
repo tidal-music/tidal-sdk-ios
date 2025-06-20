@@ -19,7 +19,11 @@ public struct UserCollectionsPlaylistsResourceIdentifier: Codable, Hashable {
     public var type: String
     public var meta: UserCollectionsPlaylistsResourceIdentifierMeta?
 
-    public init(id: String, type: String, meta: UserCollectionsPlaylistsResourceIdentifierMeta? = nil) {
+    public init(
+        id: String,
+        type: String,
+        meta: UserCollectionsPlaylistsResourceIdentifierMeta? = nil
+    ) {
         self.id = id
         self.type = type
         self.meta = meta

@@ -1,4 +1,4 @@
-# SearchresultsRelationships
+# SearchResultsRelationships
 
 ## Properties
 Name | Type | Description | Notes

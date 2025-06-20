@@ -17,7 +17,10 @@ public struct ErrorDocument: Codable, Hashable {
     public var errors: [ErrorObject]?
     public var links: Links?
 
-    public init(errors: [ErrorObject]? = nil, links: Links? = nil) {
+    public init(
+        errors: [ErrorObject]? = nil,
+        links: Links? = nil
+    ) {
         self.errors = errors
         self.links = links
     }

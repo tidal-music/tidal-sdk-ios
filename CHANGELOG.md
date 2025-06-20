@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.4.0] - 2025-06-20
+
+### Changed
+- Updated TidalAPI module with latest OpenAPI spec (Tidal API)
+
+### Fixed
+- Fixed TidalAPI generator to correctly use discrimiantors
+- Improved TidalAPI generator templates to have multi-line constructors
+
 ## [0.3.54] - 2025-06-12
 
 ### Fixed

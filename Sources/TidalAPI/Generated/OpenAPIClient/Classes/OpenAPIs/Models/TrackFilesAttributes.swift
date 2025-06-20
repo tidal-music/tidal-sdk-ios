@@ -31,7 +31,13 @@ public struct TrackFilesAttributes: Codable, Hashable {
     public var albumAudioNormalizationData: AudioNormalizationData?
     public var trackAudioNormalizationData: AudioNormalizationData?
 
-    public init(trackPresentation: TrackPresentation? = nil, url: String? = nil, format: Format? = nil, albumAudioNormalizationData: AudioNormalizationData? = nil, trackAudioNormalizationData: AudioNormalizationData? = nil) {
+    public init(
+        trackPresentation: TrackPresentation? = nil,
+        url: String? = nil,
+        format: Format? = nil,
+        albumAudioNormalizationData: AudioNormalizationData? = nil,
+        trackAudioNormalizationData: AudioNormalizationData? = nil
+    ) {
         self.trackPresentation = trackPresentation
         self.url = url
         self.format = format
