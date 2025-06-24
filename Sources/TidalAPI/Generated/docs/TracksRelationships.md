@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 **albums** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **artists** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **similarTracks** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
+**owners** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **providers** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **radio** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 

@@ -15,6 +15,7 @@ public struct TracksRelationships: Codable, Hashable {
     public var albums: MultiDataRelationshipDoc
     public var artists: MultiDataRelationshipDoc
     public var similarTracks: MultiDataRelationshipDoc
+    public var owners: MultiDataRelationshipDoc
     public var providers: MultiDataRelationshipDoc
     public var radio: MultiDataRelationshipDoc
 
@@ -22,12 +23,14 @@ public struct TracksRelationships: Codable, Hashable {
         albums: MultiDataRelationshipDoc,
         artists: MultiDataRelationshipDoc,
         similarTracks: MultiDataRelationshipDoc,
+        owners: MultiDataRelationshipDoc,
         providers: MultiDataRelationshipDoc,
         radio: MultiDataRelationshipDoc
     ) {
         self.albums = albums
         self.artists = artists
         self.similarTracks = similarTracks
+        self.owners = owners
         self.providers = providers
         self.radio = radio
     }
@@ -36,6 +39,7 @@ public struct TracksRelationships: Codable, Hashable {
         case albums
         case artists
         case similarTracks
+        case owners
         case providers
         case radio
     }
@@ -47,6 +51,7 @@ public struct TracksRelationships: Codable, Hashable {
         try container.encode(albums, forKey: .albums)
         try container.encode(artists, forKey: .artists)
         try container.encode(similarTracks, forKey: .similarTracks)
+        try container.encode(owners, forKey: .owners)
         try container.encode(providers, forKey: .providers)
         try container.encode(radio, forKey: .radio)
     }

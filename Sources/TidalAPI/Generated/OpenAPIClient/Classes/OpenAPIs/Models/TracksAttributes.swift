@@ -52,25 +52,25 @@ public struct TracksAttributes: Codable, Hashable {
     public var copyright: String?
     /** Explicit content */
     public var explicit: Bool
-    /** Popularity (0.0 - 1.0) */
-    public var popularity: Double
     /** Key */
     public var key: Key?
     /** The scale of the key */
     public var keyScale: KeyScale?
     /** Beats per minute */
     public var bpm: Float?
+    /** Popularity (0.0 - 1.0) */
+    public var popularity: Double
     /** Access type */
     public var accessType: AccessType?
     /** Available usage for this track */
     public var availability: [Availability]?
     public var mediaTags: [String]
-    /** Tone tags */
     public var toneTags: [String]?
-    /** Genre tags */
     public var genreTags: [String]?
     /** Track links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
+    /** Is the track spotlighted? */
+    public var spotlighted: Bool?
 
     public init(
         title: String,
@@ -79,16 +79,17 @@ public struct TracksAttributes: Codable, Hashable {
         duration: String,
         copyright: String? = nil,
         explicit: Bool,
-        popularity: Double,
         key: Key? = nil,
         keyScale: KeyScale? = nil,
         bpm: Float? = nil,
+        popularity: Double,
         accessType: AccessType? = nil,
         availability: [Availability]? = nil,
         mediaTags: [String],
         toneTags: [String]? = nil,
         genreTags: [String]? = nil,
-        externalLinks: [ExternalLink]? = nil
+        externalLinks: [ExternalLink]? = nil,
+        spotlighted: Bool? = nil
     ) {
         self.title = title
         self.version = version
@@ -96,16 +97,17 @@ public struct TracksAttributes: Codable, Hashable {
         self.duration = duration
         self.copyright = copyright
         self.explicit = explicit
-        self.popularity = popularity
         self.key = key
         self.keyScale = keyScale
         self.bpm = bpm
+        self.popularity = popularity
         self.accessType = accessType
         self.availability = availability
         self.mediaTags = mediaTags
         self.toneTags = toneTags
         self.genreTags = genreTags
         self.externalLinks = externalLinks
+        self.spotlighted = spotlighted
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -115,16 +117,17 @@ public struct TracksAttributes: Codable, Hashable {
         case duration
         case copyright
         case explicit
-        case popularity
         case key
         case keyScale
         case bpm
+        case popularity
         case accessType
         case availability
         case mediaTags
         case toneTags
         case genreTags
         case externalLinks
+        case spotlighted
     }
 
     // Encodable protocol methods
@@ -137,16 +140,17 @@ public struct TracksAttributes: Codable, Hashable {
         try container.encode(duration, forKey: .duration)
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encode(explicit, forKey: .explicit)
-        try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(key, forKey: .key)
         try container.encodeIfPresent(keyScale, forKey: .keyScale)
         try container.encodeIfPresent(bpm, forKey: .bpm)
+        try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(accessType, forKey: .accessType)
         try container.encodeIfPresent(availability, forKey: .availability)
         try container.encode(mediaTags, forKey: .mediaTags)
         try container.encodeIfPresent(toneTags, forKey: .toneTags)
         try container.encodeIfPresent(genreTags, forKey: .genreTags)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(spotlighted, forKey: .spotlighted)
     }
 }
 
