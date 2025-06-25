@@ -20,17 +20,25 @@ public struct ArtistsAttributes: Codable, Hashable {
     public var externalLinks: [ExternalLink]?
     /** Artist handle */
     public var handle: String?
+    /** Is the artist spotlighted? */
+    public var spotlighted: Bool?
+    /** Is the artist enabled for contributions? */
+    public var contributionsEnabled: Bool?
 
     public init(
         name: String,
         popularity: Double,
         externalLinks: [ExternalLink]? = nil,
-        handle: String? = nil
+        handle: String? = nil,
+        spotlighted: Bool? = nil,
+        contributionsEnabled: Bool? = nil
     ) {
         self.name = name
         self.popularity = popularity
         self.externalLinks = externalLinks
         self.handle = handle
+        self.spotlighted = spotlighted
+        self.contributionsEnabled = contributionsEnabled
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -38,6 +46,8 @@ public struct ArtistsAttributes: Codable, Hashable {
         case popularity
         case externalLinks
         case handle
+        case spotlighted
+        case contributionsEnabled
     }
 
     // Encodable protocol methods
@@ -48,6 +58,8 @@ public struct ArtistsAttributes: Codable, Hashable {
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(handle, forKey: .handle)
+        try container.encodeIfPresent(spotlighted, forKey: .spotlighted)
+        try container.encodeIfPresent(contributionsEnabled, forKey: .contributionsEnabled)
     }
 }
 

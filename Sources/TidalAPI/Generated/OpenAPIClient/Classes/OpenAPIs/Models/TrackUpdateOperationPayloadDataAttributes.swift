@@ -45,9 +45,7 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public var bpm: Float?
     public var key: Key?
     public var keyScale: KeyScale?
-    /** Genre tags */
     public var genreTags: [String]?
-    /** Tone tags */
     public var toneTags: [String]?
 
     public init(
