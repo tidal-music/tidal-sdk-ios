@@ -99,6 +99,18 @@ public enum UserCollectionsAPITidal {
 
 
 	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserCollectionsMultiDataRelationshipDocument
+     */
+	public static func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionsAPI.userCollectionsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Delete from playlists relationship (\&quot;to-many\&quot;).
      
      - returns: 

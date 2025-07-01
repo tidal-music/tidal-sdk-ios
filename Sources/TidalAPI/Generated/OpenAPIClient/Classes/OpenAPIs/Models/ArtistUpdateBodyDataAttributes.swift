@@ -15,21 +15,25 @@ public struct ArtistUpdateBodyDataAttributes: Codable, Hashable {
     public var name: String?
     public var handle: String?
     public var externalLinks: [ExternalLink]?
+    public var contributionsEnabled: Bool?
 
     public init(
         name: String? = nil,
         handle: String? = nil,
-        externalLinks: [ExternalLink]? = nil
+        externalLinks: [ExternalLink]? = nil,
+        contributionsEnabled: Bool? = nil
     ) {
         self.name = name
         self.handle = handle
         self.externalLinks = externalLinks
+        self.contributionsEnabled = contributionsEnabled
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case name
         case handle
         case externalLinks
+        case contributionsEnabled
     }
 
     // Encodable protocol methods
@@ -39,6 +43,7 @@ public struct ArtistUpdateBodyDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(handle, forKey: .handle)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(contributionsEnabled, forKey: .contributionsEnabled)
     }
 }
 

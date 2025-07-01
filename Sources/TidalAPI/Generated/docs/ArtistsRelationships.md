@@ -6,8 +6,8 @@ Name | Type | Description | Notes
 **similarArtists** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **albums** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **roles** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**owners** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **videos** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
+**owners** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **profileArt** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **trackProviders** | [**ArtistsTrackProvidersMultiDataRelationshipDocument**](ArtistsTrackProvidersMultiDataRelationshipDocument.md) |  | 
 **tracks** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
