@@ -24,6 +24,7 @@ public struct ExternalLinkMeta: Codable, Hashable {
         case tiktok = "TIKTOK"
         case snapchat = "SNAPCHAT"
         case homepage = "HOMEPAGE"
+        case cashappContributions = "CASHAPP_CONTRIBUTIONS"
     }
     public var type: ModelType
 

@@ -15,21 +15,25 @@ public struct UserCollectionsRelationships: Codable, Hashable {
     public var albums: UserCollectionsAlbumsMultiDataRelationshipDocument
     public var artists: UserCollectionsArtistsMultiDataRelationshipDocument
     public var playlists: UserCollectionsPlaylistsMultiDataRelationshipDocument
+    public var owners: MultiDataRelationshipDoc
 
     public init(
         albums: UserCollectionsAlbumsMultiDataRelationshipDocument,
         artists: UserCollectionsArtistsMultiDataRelationshipDocument,
-        playlists: UserCollectionsPlaylistsMultiDataRelationshipDocument
+        playlists: UserCollectionsPlaylistsMultiDataRelationshipDocument,
+        owners: MultiDataRelationshipDoc
     ) {
         self.albums = albums
         self.artists = artists
         self.playlists = playlists
+        self.owners = owners
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albums
         case artists
         case playlists
+        case owners
     }
 
     // Encodable protocol methods
@@ -39,6 +43,7 @@ public struct UserCollectionsRelationships: Codable, Hashable {
         try container.encode(albums, forKey: .albums)
         try container.encode(artists, forKey: .artists)
         try container.encode(playlists, forKey: .playlists)
+        try container.encode(owners, forKey: .owners)
     }
 }
 

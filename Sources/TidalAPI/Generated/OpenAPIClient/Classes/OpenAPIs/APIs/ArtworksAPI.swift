@@ -16,12 +16,13 @@ internal class ArtworksAPI {
      Get multiple artworks.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter filterId: (query) Artwork id (optional)
      - returns: ArtworksMultiDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artworksGet(countryCode: String, filterId: [String]? = nil) async throws -> ArtworksMultiDataDocument {
-        return try await artworksGetWithRequestBuilder(countryCode: countryCode, filterId: filterId).execute().body
+    internal class func artworksGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtworksMultiDataDocument {
+        return try await artworksGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId).execute().body
     }
 
     /**
@@ -35,10 +36,11 @@ internal class ArtworksAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter filterId: (query) Artwork id (optional)
      - returns: RequestBuilder<ArtworksMultiDataDocument> 
      */
-    internal class func artworksGetWithRequestBuilder(countryCode: String, filterId: [String]? = nil) -> RequestBuilder<ArtworksMultiDataDocument> {
+    internal class func artworksGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtworksMultiDataDocument> {
         let localVariablePath = "/artworks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -46,6 +48,7 @@ internal class ArtworksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
         ])
 
@@ -65,11 +68,12 @@ internal class ArtworksAPI {
      
      - parameter id: (path) Artwork id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: ArtworksSingleDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artworksIdGet(id: String, countryCode: String) async throws -> ArtworksSingleDataDocument {
-        return try await artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode).execute().body
+    internal class func artworksIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtworksSingleDataDocument {
+        return try await artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
     }
 
     /**
@@ -84,9 +88,10 @@ internal class ArtworksAPI {
        - name: Client_Credentials
      - parameter id: (path) Artwork id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: RequestBuilder<ArtworksSingleDataDocument> 
      */
-    internal class func artworksIdGetWithRequestBuilder(id: String, countryCode: String) -> RequestBuilder<ArtworksSingleDataDocument> {
+    internal class func artworksIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<ArtworksSingleDataDocument> {
         var localVariablePath = "/artworks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,6 +102,7 @@ internal class ArtworksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -106,6 +112,56 @@ internal class ArtworksAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ArtworksSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get owners relationship (\"to-many\").
+     
+     - parameter id: (path) Artwork id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: ArtworksMultiDataRelationshipDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtworksMultiDataRelationshipDocument {
+        return try await artworksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+    }
+
+    /**
+     Get owners relationship (\"to-many\").
+     - GET /artworks/{id}/relationships/owners
+     - Retrieves owners relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Artwork id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<ArtworksMultiDataRelationshipDocument> 
+     */
+    internal class func artworksIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ArtworksMultiDataRelationshipDocument> {
+        var localVariablePath = "/artworks/{id}/relationships/owners"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ArtworksMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

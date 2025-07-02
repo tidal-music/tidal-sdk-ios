@@ -19,9 +19,9 @@ public enum TracksAPITidal {
      
      - returns: TracksMultiDataDocument
      */
-	public static func tracksGet(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> TracksMultiDataDocument {
+	public static func tracksGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> TracksMultiDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksGetWithRequestBuilder(countryCode: countryCode, include: include, filterIsrc: filterIsrc, filterId: filterId)
+			TracksAPI.tracksGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterROwnersId: filterROwnersId, filterIsrc: filterIsrc, filterId: filterId)
 		}
 	}
 
@@ -118,6 +118,18 @@ public enum TracksAPITidal {
 	public static func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> TracksMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Create single track.
+     
+     - returns: TracksSingleDataDocument
+     */
+	public static func tracksPost(trackCreateOperationPayload: TrackCreateOperationPayload? = nil) async throws -> TracksSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksPostWithRequestBuilder(trackCreateOperationPayload: trackCreateOperationPayload)
 		}
 	}
 }

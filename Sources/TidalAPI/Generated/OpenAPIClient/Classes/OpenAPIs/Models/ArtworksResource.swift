@@ -17,21 +17,25 @@ public struct ArtworksResource: Codable, Hashable {
     /** resource unique type */
     public var type: String
     public var attributes: ArtworksAttributes?
+    public var relationships: ArtworksRelationships?
 
     public init(
         id: String,
         type: String,
-        attributes: ArtworksAttributes? = nil
+        attributes: ArtworksAttributes? = nil,
+        relationships: ArtworksRelationships? = nil
     ) {
         self.id = id
         self.type = type
         self.attributes = attributes
+        self.relationships = relationships
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case type
         case attributes
+        case relationships
     }
 
     // Encodable protocol methods
@@ -41,6 +45,7 @@ public struct ArtworksResource: Codable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(type, forKey: .type)
         try container.encodeIfPresent(attributes, forKey: .attributes)
+        try container.encodeIfPresent(relationships, forKey: .relationships)
     }
 }
 

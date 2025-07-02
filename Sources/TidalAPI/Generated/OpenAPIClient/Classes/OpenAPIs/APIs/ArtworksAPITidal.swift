@@ -19,9 +19,9 @@ public enum ArtworksAPITidal {
      
      - returns: ArtworksMultiDataDocument
      */
-	public static func artworksGet(countryCode: String, filterId: [String]? = nil) async throws -> ArtworksMultiDataDocument {
+	public static func artworksGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtworksMultiDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtworksAPI.artworksGetWithRequestBuilder(countryCode: countryCode, filterId: filterId)
+			ArtworksAPI.artworksGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId)
 		}
 	}
 
@@ -31,9 +31,21 @@ public enum ArtworksAPITidal {
      
      - returns: ArtworksSingleDataDocument
      */
-	public static func artworksIdGet(id: String, countryCode: String) async throws -> ArtworksSingleDataDocument {
+	public static func artworksIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtworksSingleDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtworksAPI.artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode)
+			ArtworksAPI.artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+		}
+	}
+
+
+	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: ArtworksMultiDataRelationshipDocument
+     */
+	public static func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtworksMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			ArtworksAPI.artworksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
