@@ -20,6 +20,7 @@ Name | Type | Description | Notes
 **genreTags** | **[String]** |  | [optional] 
 **externalLinks** | [ExternalLink] | Track links external to TIDAL API | [optional] 
 **spotlighted** | **Bool** | Is the track spotlighted? | [optional] 
+**createdAt** | **Date** | Datetime of track creation (ISO 8601) | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -13,6 +13,7 @@ import AnyCodable
 public struct TracksRelationships: Codable, Hashable {
 
     public var albums: MultiDataRelationshipDoc
+    public var trackStatistics: SingletonDataRelationshipDoc
     public var artists: MultiDataRelationshipDoc
     public var similarTracks: MultiDataRelationshipDoc
     public var owners: MultiDataRelationshipDoc
@@ -21,6 +22,7 @@ public struct TracksRelationships: Codable, Hashable {
 
     public init(
         albums: MultiDataRelationshipDoc,
+        trackStatistics: SingletonDataRelationshipDoc,
         artists: MultiDataRelationshipDoc,
         similarTracks: MultiDataRelationshipDoc,
         owners: MultiDataRelationshipDoc,
@@ -28,6 +30,7 @@ public struct TracksRelationships: Codable, Hashable {
         radio: MultiDataRelationshipDoc
     ) {
         self.albums = albums
+        self.trackStatistics = trackStatistics
         self.artists = artists
         self.similarTracks = similarTracks
         self.owners = owners
@@ -37,6 +40,7 @@ public struct TracksRelationships: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albums
+        case trackStatistics
         case artists
         case similarTracks
         case owners
@@ -49,6 +53,7 @@ public struct TracksRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(albums, forKey: .albums)
+        try container.encode(trackStatistics, forKey: .trackStatistics)
         try container.encode(artists, forKey: .artists)
         try container.encode(similarTracks, forKey: .similarTracks)
         try container.encode(owners, forKey: .owners)

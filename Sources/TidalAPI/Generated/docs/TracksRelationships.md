@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **albums** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
+**trackStatistics** | [**SingletonDataRelationshipDoc**](SingletonDataRelationshipDoc.md) |  | 
 **artists** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **similarTracks** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
 **owners** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 

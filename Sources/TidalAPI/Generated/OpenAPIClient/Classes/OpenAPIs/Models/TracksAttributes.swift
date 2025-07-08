@@ -71,6 +71,8 @@ public struct TracksAttributes: Codable, Hashable {
     public var externalLinks: [ExternalLink]?
     /** Is the track spotlighted? */
     public var spotlighted: Bool?
+    /** Datetime of track creation (ISO 8601) */
+    public var createdAt: Date?
 
     public init(
         title: String,
@@ -89,7 +91,8 @@ public struct TracksAttributes: Codable, Hashable {
         toneTags: [String]? = nil,
         genreTags: [String]? = nil,
         externalLinks: [ExternalLink]? = nil,
-        spotlighted: Bool? = nil
+        spotlighted: Bool? = nil,
+        createdAt: Date? = nil
     ) {
         self.title = title
         self.version = version
@@ -108,6 +111,7 @@ public struct TracksAttributes: Codable, Hashable {
         self.genreTags = genreTags
         self.externalLinks = externalLinks
         self.spotlighted = spotlighted
+        self.createdAt = createdAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -128,6 +132,7 @@ public struct TracksAttributes: Codable, Hashable {
         case genreTags
         case externalLinks
         case spotlighted
+        case createdAt
     }
 
     // Encodable protocol methods
@@ -151,6 +156,7 @@ public struct TracksAttributes: Codable, Hashable {
         try container.encodeIfPresent(genreTags, forKey: .genreTags)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(spotlighted, forKey: .spotlighted)
+        try container.encodeIfPresent(createdAt, forKey: .createdAt)
     }
 }
 
