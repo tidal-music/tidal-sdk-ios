@@ -47,13 +47,6 @@ jobs:
           name: api-spec
           path: /tmp/api-check
 
-      - name: Copy downloaded spec to input folder
-        if: ${{ inputs.use_downloaded_spec == 'true' }}
-        run: |
-          mkdir -p $API_FOLDER/$INPUT_FOLDER_NAME
-          cp /tmp/api-check/latest-api.json $API_FOLDER/$INPUT_FOLDER_NAME/tidal-api-oas.json
-          echo "Using downloaded API spec"
-
       # Step 2: Install OpenAPI Generator via Homebrew
       - name: Install OpenAPI Generator with Homebrew
         run: |
@@ -63,7 +56,13 @@ jobs:
         run: |
           cd $API_FOLDER
           chmod +x $SCRIPT_NAME
-          ./$SCRIPT_NAME
+          if [ "${{ inputs.use_downloaded_spec }}" == "true" ] && [ -f "/tmp/api-check/latest-api.json" ]; then
+            echo "Using downloaded API spec"
+            ./generate_and_clean.sh --local-file "/tmp/api-check/latest-api.json"
+          else
+            echo "Downloading API spec as part of generation"
+            ./generate_and_clean.sh
+          fi
 
       - name: Check for changes
         id: check_for_changes
