@@ -2,6 +2,16 @@ name: Generate API in the TidalAPI module and create a PR if there are changes
 
 on:
   workflow_dispatch: # manual triggering of this workflow
+  workflow_call:
+    inputs:
+      use_downloaded_spec:
+        description: 'Whether to use the downloaded spec from the artifacts'
+        required: false
+        type: string
+        default: 'false'
+    secrets:
+      token:
+        required: true
 
 permissions:
   contents: write
@@ -18,6 +28,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Download API spec artifact
+        if: ${{ inputs.use_downloaded_spec == 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: api-spec
+          path: /tmp/api-check
+
+      - name: Copy downloaded spec to input folder
+        if: ${{ inputs.use_downloaded_spec == 'true' }}
+        run: |
+          mkdir -p $API_FOLDER/$INPUT_FOLDER_NAME
+          cp /tmp/api-check/latest-api.json $API_FOLDER/$INPUT_FOLDER_NAME/tidal-api-oas.json
+          echo "Using downloaded API spec"
 
       # Step 2: Install OpenAPI Generator via Homebrew
       - name: Install OpenAPI Generator with Homebrew
