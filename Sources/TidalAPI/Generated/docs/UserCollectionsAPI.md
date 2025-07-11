@@ -88,7 +88,7 @@ Deletes item(s) from albums relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User id
-let userCollectionAlbumsRelationshipRemoveOperationPayload = UserCollectionAlbumsRelationshipRemoveOperation_Payload(data: [UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example", meta: UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"))]) // UserCollectionAlbumsRelationshipRemoveOperationPayload |  (optional)
+let userCollectionAlbumsRelationshipRemoveOperationPayload = UserCollectionAlbumsRelationshipRemoveOperation_Payload(data: [UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // UserCollectionAlbumsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from albums relationship (\"to-many\").
 UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDelete(id: id, userCollectionAlbumsRelationshipRemoveOperationPayload: userCollectionAlbumsRelationshipRemoveOperationPayload) { (response, error) in
@@ -252,7 +252,7 @@ Deletes item(s) from artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User id
-let userCollectionArtistsRelationshipRemoveOperationPayload = UserCollectionArtistsRelationshipRemoveOperation_Payload(data: [UserCollectionArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example", meta: UserCollectionArtistsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"))]) // UserCollectionArtistsRelationshipRemoveOperationPayload |  (optional)
+let userCollectionArtistsRelationshipRemoveOperationPayload = UserCollectionArtistsRelationshipRemoveOperation_Payload(data: [UserCollectionArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: UserCollectionArtistsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // UserCollectionArtistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from artists relationship (\"to-many\").
 UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDelete(id: id, userCollectionArtistsRelationshipRemoveOperationPayload: userCollectionArtistsRelationshipRemoveOperationPayload) { (response, error) in

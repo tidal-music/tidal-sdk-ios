@@ -21,7 +21,7 @@ Creates a new userReport.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let userReportCreateOperationPayload = UserReportCreateOperation_Payload(data: UserReportCreateOperation_Payload_Data(type: "type_example", attributes: UserReportCreateOperation_Payload_Data_Attributes(reason: "reason_example", description: "description_example"), relationships: UserReportsCreateOperation_Payload_Data_Relationships(reportedResources: UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources(data: [UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources_Data(id: "id_example", type: "type_example")])))) // UserReportCreateOperationPayload |  (optional)
+let userReportCreateOperationPayload = UserReportCreateOperation_Payload(data: UserReportCreateOperation_Payload_Data(attributes: UserReportCreateOperation_Payload_Data_Attributes(description: "description_example", reason: "reason_example"), relationships: UserReportsCreateOperation_Payload_Data_Relationships(reportedResources: UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources(data: [UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // UserReportCreateOperationPayload |  (optional)
 
 // Create single userReport.
 UserReportsAPI.userReportsPost(userReportCreateOperationPayload: userReportCreateOperationPayload) { (response, error) in

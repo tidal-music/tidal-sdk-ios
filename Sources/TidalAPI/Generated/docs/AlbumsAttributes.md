@@ -3,18 +3,18 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**title** | **String** | Album title | 
+**availability** | **[String]** | Available usage for this album | [optional] 
 **barcodeId** | **String** | Barcode id (EAN-13 or UPC-A) | 
-**numberOfVolumes** | **Int** | Number of volumes | 
-**numberOfItems** | **Int** | Number of items in album | 
+**copyright** | **String** | Copyright | [optional] 
 **duration** | **String** | Duration (ISO 8601) | 
 **explicit** | **Bool** | Explicit content | 
-**releaseDate** | **Date** | Release date (ISO-8601) | [optional] 
-**copyright** | **String** | Copyright | [optional] 
-**popularity** | **Double** | Popularity (0.0 - 1.0) | 
-**availability** | **[String]** | Available usage for this album | [optional] 
-**mediaTags** | **[String]** |  | 
 **externalLinks** | [ExternalLink] | Album links external to TIDAL API | [optional] 
+**mediaTags** | **[String]** |  | 
+**numberOfItems** | **Int** | Number of items in album | 
+**numberOfVolumes** | **Int** | Number of volumes | 
+**popularity** | **Double** | Popularity (0.0 - 1.0) | 
+**releaseDate** | **Date** | Release date (ISO-8601) | [optional] 
+**title** | **String** | Album title | 
 **type** | **String** | Album type | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

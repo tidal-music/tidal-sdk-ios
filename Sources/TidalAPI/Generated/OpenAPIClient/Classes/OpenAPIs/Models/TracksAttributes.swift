@@ -12,6 +12,16 @@ import AnyCodable
 
 public struct TracksAttributes: Codable, Hashable {
 
+    public enum AccessType: String, Codable, CaseIterable {
+        case _public = "PUBLIC"
+        case unlisted = "UNLISTED"
+        case _private = "PRIVATE"
+    }
+    public enum Availability: String, Codable, CaseIterable {
+        case stream = "STREAM"
+        case dj = "DJ"
+        case stem = "STEM"
+    }
     public enum Key: String, Codable, CaseIterable {
         case a = "A"
         case ab = "Ab"
@@ -30,133 +40,123 @@ public struct TracksAttributes: Codable, Hashable {
         case major = "MAJOR"
         case minor = "MINOR"
     }
-    public enum AccessType: String, Codable, CaseIterable {
-        case _public = "PUBLIC"
-        case unlisted = "UNLISTED"
-        case _private = "PRIVATE"
-    }
-    public enum Availability: String, Codable, CaseIterable {
-        case stream = "STREAM"
-        case dj = "DJ"
-        case stem = "STEM"
-    }
-    /** Track title */
-    public var title: String
-    /** Track version, complements title */
-    public var version: String?
-    /** International Standard Recording Code (ISRC) */
-    public var isrc: String
-    /** Duration (ISO 8601) */
-    public var duration: String
-    /** Copyright */
-    public var copyright: String?
-    /** Explicit content */
-    public var explicit: Bool
-    /** Key */
-    public var key: Key?
-    /** The scale of the key */
-    public var keyScale: KeyScale?
-    /** Beats per minute */
-    public var bpm: Float?
-    /** Popularity (0.0 - 1.0) */
-    public var popularity: Double
     /** Access type */
     public var accessType: AccessType?
     /** Available usage for this track */
     public var availability: [Availability]?
-    public var mediaTags: [String]
-    public var toneTags: [String]?
-    public var genreTags: [String]?
-    /** Track links external to TIDAL API */
-    public var externalLinks: [ExternalLink]?
-    /** Is the track spotlighted? */
-    public var spotlighted: Bool?
+    /** Beats per minute */
+    public var bpm: Float?
+    /** Copyright */
+    public var copyright: String?
     /** Datetime of track creation (ISO 8601) */
     public var createdAt: Date?
+    /** Duration (ISO 8601) */
+    public var duration: String
+    /** Explicit content */
+    public var explicit: Bool
+    /** Track links external to TIDAL API */
+    public var externalLinks: [ExternalLink]?
+    public var genreTags: [String]?
+    /** International Standard Recording Code (ISRC) */
+    public var isrc: String
+    /** Key */
+    public var key: Key?
+    /** The scale of the key */
+    public var keyScale: KeyScale?
+    public var mediaTags: [String]
+    /** Popularity (0.0 - 1.0) */
+    public var popularity: Double
+    /** Is the track spotlighted? */
+    public var spotlighted: Bool?
+    /** Track title */
+    public var title: String
+    public var toneTags: [String]?
+    /** Track version, complements title */
+    public var version: String?
 
     public init(
-        title: String,
-        version: String? = nil,
-        isrc: String,
-        duration: String,
-        copyright: String? = nil,
-        explicit: Bool,
-        key: Key? = nil,
-        keyScale: KeyScale? = nil,
-        bpm: Float? = nil,
-        popularity: Double,
         accessType: AccessType? = nil,
         availability: [Availability]? = nil,
-        mediaTags: [String],
-        toneTags: [String]? = nil,
-        genreTags: [String]? = nil,
+        bpm: Float? = nil,
+        copyright: String? = nil,
+        createdAt: Date? = nil,
+        duration: String,
+        explicit: Bool,
         externalLinks: [ExternalLink]? = nil,
+        genreTags: [String]? = nil,
+        isrc: String,
+        key: Key? = nil,
+        keyScale: KeyScale? = nil,
+        mediaTags: [String],
+        popularity: Double,
         spotlighted: Bool? = nil,
-        createdAt: Date? = nil
+        title: String,
+        toneTags: [String]? = nil,
+        version: String? = nil
     ) {
-        self.title = title
-        self.version = version
-        self.isrc = isrc
-        self.duration = duration
-        self.copyright = copyright
-        self.explicit = explicit
-        self.key = key
-        self.keyScale = keyScale
-        self.bpm = bpm
-        self.popularity = popularity
         self.accessType = accessType
         self.availability = availability
-        self.mediaTags = mediaTags
-        self.toneTags = toneTags
-        self.genreTags = genreTags
-        self.externalLinks = externalLinks
-        self.spotlighted = spotlighted
+        self.bpm = bpm
+        self.copyright = copyright
         self.createdAt = createdAt
+        self.duration = duration
+        self.explicit = explicit
+        self.externalLinks = externalLinks
+        self.genreTags = genreTags
+        self.isrc = isrc
+        self.key = key
+        self.keyScale = keyScale
+        self.mediaTags = mediaTags
+        self.popularity = popularity
+        self.spotlighted = spotlighted
+        self.title = title
+        self.toneTags = toneTags
+        self.version = version
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case title
-        case version
-        case isrc
-        case duration
-        case copyright
-        case explicit
-        case key
-        case keyScale
-        case bpm
-        case popularity
         case accessType
         case availability
-        case mediaTags
-        case toneTags
-        case genreTags
-        case externalLinks
-        case spotlighted
+        case bpm
+        case copyright
         case createdAt
+        case duration
+        case explicit
+        case externalLinks
+        case genreTags
+        case isrc
+        case key
+        case keyScale
+        case mediaTags
+        case popularity
+        case spotlighted
+        case title
+        case toneTags
+        case version
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(title, forKey: .title)
-        try container.encodeIfPresent(version, forKey: .version)
-        try container.encode(isrc, forKey: .isrc)
-        try container.encode(duration, forKey: .duration)
-        try container.encodeIfPresent(copyright, forKey: .copyright)
-        try container.encode(explicit, forKey: .explicit)
-        try container.encodeIfPresent(key, forKey: .key)
-        try container.encodeIfPresent(keyScale, forKey: .keyScale)
-        try container.encodeIfPresent(bpm, forKey: .bpm)
-        try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(accessType, forKey: .accessType)
         try container.encodeIfPresent(availability, forKey: .availability)
-        try container.encode(mediaTags, forKey: .mediaTags)
-        try container.encodeIfPresent(toneTags, forKey: .toneTags)
-        try container.encodeIfPresent(genreTags, forKey: .genreTags)
-        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
-        try container.encodeIfPresent(spotlighted, forKey: .spotlighted)
+        try container.encodeIfPresent(bpm, forKey: .bpm)
+        try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encodeIfPresent(createdAt, forKey: .createdAt)
+        try container.encode(duration, forKey: .duration)
+        try container.encode(explicit, forKey: .explicit)
+        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(genreTags, forKey: .genreTags)
+        try container.encode(isrc, forKey: .isrc)
+        try container.encodeIfPresent(key, forKey: .key)
+        try container.encodeIfPresent(keyScale, forKey: .keyScale)
+        try container.encode(mediaTags, forKey: .mediaTags)
+        try container.encode(popularity, forKey: .popularity)
+        try container.encodeIfPresent(spotlighted, forKey: .spotlighted)
+        try container.encode(title, forKey: .title)
+        try container.encodeIfPresent(toneTags, forKey: .toneTags)
+        try container.encodeIfPresent(version, forKey: .version)
     }
 }
 

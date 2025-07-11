@@ -145,7 +145,7 @@ Updates existing artist.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(id: "id_example", type: "type_example", attributes: ArtistUpdateBody_Data_Attributes(name: "name_example", handle: "handle_example", externalLinks: [External_Link(href: "href_example", meta: External_Link_Meta(type: "type_example"))], contributionsEnabled: false)), meta: ArtistUpdateBody_Meta(dryRun: false)) // ArtistUpdateBody |  (optional)
+let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(attributes: ArtistUpdateBody_Data_Attributes(contributionsEnabled: false, externalLinks: [External_Link(href: "href_example", meta: External_Link_Meta(type: "type_example"))], handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistUpdateBody_Meta(dryRun: false)) // ArtistUpdateBody |  (optional)
 
 // Update single artist.
 ArtistsAPI.artistsIdPatch(id: id, artistUpdateBody: artistUpdateBody) { (response, error) in
@@ -748,7 +748,7 @@ Creates a new artist.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let artistCreateOperationPayload = ArtistCreateOperation_Payload(data: ArtistCreateOperation_Payload_Data(type: "type_example", attributes: ArtistCreateOperation_Payload_Data_Attributes(name: "name_example", handle: "handle_example")), meta: ArtistCreateOperation_Meta(dryRun: false)) // ArtistCreateOperationPayload |  (optional)
+let artistCreateOperationPayload = ArtistCreateOperation_Payload(data: ArtistCreateOperation_Payload_Data(attributes: ArtistCreateOperation_Payload_Data_Attributes(handle: "handle_example", name: "name_example"), type: "type_example"), meta: ArtistCreateOperation_Meta(dryRun: false)) // ArtistCreateOperationPayload |  (optional)
 
 // Create single artist.
 ArtistsAPI.artistsPost(artistCreateOperationPayload: artistCreateOperationPayload) { (response, error) in

@@ -197,7 +197,7 @@ Updates existing track.
 import OpenAPIClient
 
 let id = "id_example" // String | A Tidal catalogue ID
-let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(id: "id_example", type: "type_example", attributes: TrackUpdateOperation_Payload_Data_Attributes(title: "title_example", explicit: false, accessType: "accessType_example", bpm: 123, key: "key_example", keyScale: "keyScale_example", genreTags: ["genreTags_example"], toneTags: ["toneTags_example"]))) // TrackUpdateOperationPayload |  (optional)
+let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, genreTags: ["genreTags_example"], key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", type: "type_example")) // TrackUpdateOperationPayload |  (optional)
 
 // Update single track.
 TracksAPI.tracksIdPatch(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload) { (response, error) in
@@ -632,7 +632,7 @@ Creates a new track.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let trackCreateOperationPayload = TrackCreateOperation_Payload(data: TrackCreateOperation_Payload_Data(type: "type_example", attributes: TrackCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", title: "title_example", explicit: false), relationships: TrackCreateOperation_Payload_Data_Relationships(albums: TrackCreateOperation_Payload_Data_Relationships_Albums(data: [TrackCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TrackCreateOperation_Payload_Data_Relationships_Artists(data: [TrackCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")])))) // TrackCreateOperationPayload |  (optional)
+let trackCreateOperationPayload = TrackCreateOperation_Payload(data: TrackCreateOperation_Payload_Data(attributes: TrackCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", explicit: false, title: "title_example"), relationships: TrackCreateOperation_Payload_Data_Relationships(albums: TrackCreateOperation_Payload_Data_Relationships_Albums(data: [TrackCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TrackCreateOperation_Payload_Data_Relationships_Artists(data: [TrackCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackCreateOperationPayload |  (optional)
 
 // Create single track.
 TracksAPI.tracksPost(trackCreateOperationPayload: trackCreateOperationPayload) { (response, error) in

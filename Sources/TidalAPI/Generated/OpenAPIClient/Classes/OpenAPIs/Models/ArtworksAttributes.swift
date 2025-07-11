@@ -16,35 +16,35 @@ public struct ArtworksAttributes: Codable, Hashable {
         case image = "IMAGE"
         case video = "VIDEO"
     }
+    /** Artwork files */
+    public var files: [ArtworkFile]
     /** Media type of artwork files */
     public var mediaType: MediaType
     public var sourceFile: ArtworkSourceFile?
-    /** Artwork files */
-    public var files: [ArtworkFile]
 
     public init(
+        files: [ArtworkFile],
         mediaType: MediaType,
-        sourceFile: ArtworkSourceFile? = nil,
-        files: [ArtworkFile]
+        sourceFile: ArtworkSourceFile? = nil
     ) {
+        self.files = files
         self.mediaType = mediaType
         self.sourceFile = sourceFile
-        self.files = files
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case files
         case mediaType
         case sourceFile
-        case files
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(files, forKey: .files)
         try container.encode(mediaType, forKey: .mediaType)
         try container.encodeIfPresent(sourceFile, forKey: .sourceFile)
-        try container.encode(files, forKey: .files)
     }
 }
 

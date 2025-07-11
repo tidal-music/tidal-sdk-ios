@@ -196,7 +196,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let playlistUpdateOperationPayload = PlaylistUpdateOperation_Payload(data: PlaylistUpdateOperation_Payload_Data(id: "id_example", type: "type_example", attributes: PlaylistUpdateOperation_Payload_Data_Attributes(name: "name_example", description: "description_example", accessType: "accessType_example"))) // PlaylistUpdateOperationPayload |  (optional)
+let playlistUpdateOperationPayload = PlaylistUpdateOperation_Payload(data: PlaylistUpdateOperation_Payload_Data(attributes: PlaylistUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), id: "id_example", type: "type_example")) // PlaylistUpdateOperationPayload |  (optional)
 
 // Update single playlist.
 PlaylistsAPI.playlistsIdPatch(id: id, countryCode: countryCode, playlistUpdateOperationPayload: playlistUpdateOperationPayload) { (response, error) in
@@ -357,7 +357,7 @@ Deletes item(s) from items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let playlistItemsRelationshipRemoveOperationPayload = PlaylistItemsRelationshipRemoveOperation_Payload(data: [PlaylistItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example", meta: PlaylistItemsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"))]) // PlaylistItemsRelationshipRemoveOperationPayload |  (optional)
+let playlistItemsRelationshipRemoveOperationPayload = PlaylistItemsRelationshipRemoveOperation_Payload(data: [PlaylistItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: PlaylistItemsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlaylistItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
 PlaylistsAPI.playlistsIdRelationshipsItemsDelete(id: id, playlistItemsRelationshipRemoveOperationPayload: playlistItemsRelationshipRemoveOperationPayload) { (response, error) in
@@ -465,7 +465,7 @@ Updates items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let playlistItemsRelationshipReorderOperationPayload = PlaylistItemsRelationshipReorderOperation_Payload(data: [PlaylistItemsRelationshipReorderOperation_Payload_Data(id: "id_example", type: "type_example", meta: PlaylistItemsRelationshipReorderOperation_Payload_Data_Meta(itemId: "itemId_example"))], meta: PlaylistItemsRelationshipReorderOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistItemsRelationshipReorderOperationPayload |  (optional)
+let playlistItemsRelationshipReorderOperationPayload = PlaylistItemsRelationshipReorderOperation_Payload(data: [PlaylistItemsRelationshipReorderOperation_Payload_Data(id: "id_example", meta: PlaylistItemsRelationshipReorderOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlaylistItemsRelationshipReorderOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistItemsRelationshipReorderOperationPayload |  (optional)
 
 // Update items relationship (\"to-many\").
 PlaylistsAPI.playlistsIdRelationshipsItemsPatch(id: id, playlistItemsRelationshipReorderOperationPayload: playlistItemsRelationshipReorderOperationPayload) { (response, error) in
@@ -627,7 +627,7 @@ Creates a new playlist.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let playlistCreateOperationPayload = PlaylistCreateOperation_Payload(data: PlaylistCreateOperation_Payload_Data(type: "type_example", attributes: PlaylistCreateOperation_Payload_Data_Attributes(name: "name_example", description: "description_example", accessType: "accessType_example"))) // PlaylistCreateOperationPayload |  (optional)
+let playlistCreateOperationPayload = PlaylistCreateOperation_Payload(data: PlaylistCreateOperation_Payload_Data(attributes: PlaylistCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), type: "type_example")) // PlaylistCreateOperationPayload |  (optional)
 
 // Create single playlist.
 PlaylistsAPI.playlistsPost(countryCode: countryCode, playlistCreateOperationPayload: playlistCreateOperationPayload) { (response, error) in
