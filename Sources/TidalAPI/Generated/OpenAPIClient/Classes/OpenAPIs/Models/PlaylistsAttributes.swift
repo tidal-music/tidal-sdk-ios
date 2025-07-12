@@ -12,10 +12,6 @@ import AnyCodable
 
 public struct PlaylistsAttributes: Codable, Hashable {
 
-    public enum Privacy: String, Codable, CaseIterable {
-        case _public = "PUBLIC"
-        case _private = "PRIVATE"
-    }
     public enum AccessType: String, Codable, CaseIterable {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
@@ -26,84 +22,88 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case mix = "MIX"
         case artist = "ARTIST"
     }
-    /** Playlist name */
-    public var name: String
-    /** Playlist description */
-    public var description: String?
+    public enum Privacy: String, Codable, CaseIterable {
+        case _public = "PUBLIC"
+        case _private = "PRIVATE"
+    }
+    /** Access type */
+    public var accessType: AccessType
     /** Indicates if the playlist has a duration and set number of tracks */
     public var bounded: Bool
-    /** Duration of playlist (ISO 8601) */
-    public var duration: String?
-    /** Number of items in the playlist */
-    public var numberOfItems: Int?
-    public var externalLinks: [ExternalLink]
     /** Datetime of playlist creation (ISO 8601) */
     public var createdAt: Date
+    /** Playlist description */
+    public var description: String?
+    /** Duration of playlist (ISO 8601) */
+    public var duration: String?
+    public var externalLinks: [ExternalLink]
     /** Datetime of last modification of the playlist (ISO 8601) */
     public var lastModifiedAt: Date
+    /** Playlist name */
+    public var name: String
+    /** Number of items in the playlist */
+    public var numberOfItems: Int?
+    /** The type of the playlist */
+    public var playlistType: PlaylistType
     /** Privacy setting of the playlist */
     @available(*, deprecated, message: "This property is deprecated.")
     public var privacy: Privacy
-    /** Access type */
-    public var accessType: AccessType
-    /** The type of the playlist */
-    public var playlistType: PlaylistType
 
     public init(
-        name: String,
-        description: String? = nil,
-        bounded: Bool,
-        duration: String? = nil,
-        numberOfItems: Int? = nil,
-        externalLinks: [ExternalLink],
-        createdAt: Date,
-        lastModifiedAt: Date,
-        privacy: Privacy,
         accessType: AccessType,
-        playlistType: PlaylistType
+        bounded: Bool,
+        createdAt: Date,
+        description: String? = nil,
+        duration: String? = nil,
+        externalLinks: [ExternalLink],
+        lastModifiedAt: Date,
+        name: String,
+        numberOfItems: Int? = nil,
+        playlistType: PlaylistType,
+        privacy: Privacy
     ) {
-        self.name = name
-        self.description = description
-        self.bounded = bounded
-        self.duration = duration
-        self.numberOfItems = numberOfItems
-        self.externalLinks = externalLinks
-        self.createdAt = createdAt
-        self.lastModifiedAt = lastModifiedAt
-        self.privacy = privacy
         self.accessType = accessType
+        self.bounded = bounded
+        self.createdAt = createdAt
+        self.description = description
+        self.duration = duration
+        self.externalLinks = externalLinks
+        self.lastModifiedAt = lastModifiedAt
+        self.name = name
+        self.numberOfItems = numberOfItems
         self.playlistType = playlistType
+        self.privacy = privacy
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case name
-        case description
-        case bounded
-        case duration
-        case numberOfItems
-        case externalLinks
-        case createdAt
-        case lastModifiedAt
-        case privacy
         case accessType
+        case bounded
+        case createdAt
+        case description
+        case duration
+        case externalLinks
+        case lastModifiedAt
+        case name
+        case numberOfItems
         case playlistType
+        case privacy
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
-        try container.encodeIfPresent(description, forKey: .description)
-        try container.encode(bounded, forKey: .bounded)
-        try container.encodeIfPresent(duration, forKey: .duration)
-        try container.encodeIfPresent(numberOfItems, forKey: .numberOfItems)
-        try container.encode(externalLinks, forKey: .externalLinks)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
-        try container.encode(privacy, forKey: .privacy)
         try container.encode(accessType, forKey: .accessType)
+        try container.encode(bounded, forKey: .bounded)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(description, forKey: .description)
+        try container.encodeIfPresent(duration, forKey: .duration)
+        try container.encode(externalLinks, forKey: .externalLinks)
+        try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
+        try container.encode(name, forKey: .name)
+        try container.encodeIfPresent(numberOfItems, forKey: .numberOfItems)
         try container.encode(playlistType, forKey: .playlistType)
+        try container.encode(privacy, forKey: .privacy)
     }
 }
 

@@ -12,36 +12,36 @@ import AnyCodable
 
 public struct SearchSuggestionsAttributes: Codable, Hashable {
 
-    /** Unique tracking id */
-    public var trackingId: String
     /** Suggestions from search history */
     public var history: [SearchSuggestionsHistory]?
     /** Suggested search queries */
     public var suggestions: [SearchSuggestionsSuggestions]?
+    /** Unique tracking id */
+    public var trackingId: String
 
     public init(
-        trackingId: String,
         history: [SearchSuggestionsHistory]? = nil,
-        suggestions: [SearchSuggestionsSuggestions]? = nil
+        suggestions: [SearchSuggestionsSuggestions]? = nil,
+        trackingId: String
     ) {
-        self.trackingId = trackingId
         self.history = history
         self.suggestions = suggestions
+        self.trackingId = trackingId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case trackingId
         case history
         case suggestions
+        case trackingId
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(trackingId, forKey: .trackingId)
         try container.encodeIfPresent(history, forKey: .history)
         try container.encodeIfPresent(suggestions, forKey: .suggestions)
+        try container.encode(trackingId, forKey: .trackingId)
     }
 }
 

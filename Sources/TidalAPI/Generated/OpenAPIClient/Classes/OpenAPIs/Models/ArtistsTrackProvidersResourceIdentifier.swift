@@ -15,24 +15,24 @@ public struct ArtistsTrackProvidersResourceIdentifier: Codable, Hashable {
 
     /** resource unique identifier */
     public var id: String
+    public var meta: ArtistsTrackProvidersResourceIdentifierMeta?
     /** resource unique type */
     public var type: String
-    public var meta: ArtistsTrackProvidersResourceIdentifierMeta?
 
     public init(
         id: String,
-        type: String,
-        meta: ArtistsTrackProvidersResourceIdentifierMeta? = nil
+        meta: ArtistsTrackProvidersResourceIdentifierMeta? = nil,
+        type: String
     ) {
         self.id = id
-        self.type = type
         self.meta = meta
+        self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case type
         case meta
+        case type
     }
 
     // Encodable protocol methods
@@ -40,8 +40,8 @@ public struct ArtistsTrackProvidersResourceIdentifier: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(type, forKey: .type)
         try container.encodeIfPresent(meta, forKey: .meta)
+        try container.encode(type, forKey: .type)
     }
 }
 

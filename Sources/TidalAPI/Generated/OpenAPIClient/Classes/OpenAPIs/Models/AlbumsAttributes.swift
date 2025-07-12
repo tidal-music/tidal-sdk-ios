@@ -22,75 +22,75 @@ public struct AlbumsAttributes: Codable, Hashable {
         case ep = "EP"
         case single = "SINGLE"
     }
-    /** Album title */
-    public var title: String
+    /** Available usage for this album */
+    public var availability: [Availability]?
     /** Barcode id (EAN-13 or UPC-A) */
     public var barcodeId: String
-    /** Number of volumes */
-    public var numberOfVolumes: Int
-    /** Number of items in album */
-    public var numberOfItems: Int
+    /** Copyright */
+    public var copyright: String?
     /** Duration (ISO 8601) */
     public var duration: String
     /** Explicit content */
     public var explicit: Bool
-    /** Release date (ISO-8601) */
-    public var releaseDate: Date?
-    /** Copyright */
-    public var copyright: String?
-    /** Popularity (0.0 - 1.0) */
-    public var popularity: Double
-    /** Available usage for this album */
-    public var availability: [Availability]?
-    public var mediaTags: [String]
     /** Album links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
+    public var mediaTags: [String]
+    /** Number of items in album */
+    public var numberOfItems: Int
+    /** Number of volumes */
+    public var numberOfVolumes: Int
+    /** Popularity (0.0 - 1.0) */
+    public var popularity: Double
+    /** Release date (ISO-8601) */
+    public var releaseDate: Date?
+    /** Album title */
+    public var title: String
     /** Album type */
     public var type: ModelType
 
     public init(
-        title: String,
+        availability: [Availability]? = nil,
         barcodeId: String,
-        numberOfVolumes: Int,
-        numberOfItems: Int,
+        copyright: String? = nil,
         duration: String,
         explicit: Bool,
-        releaseDate: Date? = nil,
-        copyright: String? = nil,
-        popularity: Double,
-        availability: [Availability]? = nil,
-        mediaTags: [String],
         externalLinks: [ExternalLink]? = nil,
+        mediaTags: [String],
+        numberOfItems: Int,
+        numberOfVolumes: Int,
+        popularity: Double,
+        releaseDate: Date? = nil,
+        title: String,
         type: ModelType
     ) {
-        self.title = title
+        self.availability = availability
         self.barcodeId = barcodeId
-        self.numberOfVolumes = numberOfVolumes
-        self.numberOfItems = numberOfItems
+        self.copyright = copyright
         self.duration = duration
         self.explicit = explicit
-        self.releaseDate = releaseDate
-        self.copyright = copyright
-        self.popularity = popularity
-        self.availability = availability
-        self.mediaTags = mediaTags
         self.externalLinks = externalLinks
+        self.mediaTags = mediaTags
+        self.numberOfItems = numberOfItems
+        self.numberOfVolumes = numberOfVolumes
+        self.popularity = popularity
+        self.releaseDate = releaseDate
+        self.title = title
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case title
+        case availability
         case barcodeId
-        case numberOfVolumes
-        case numberOfItems
+        case copyright
         case duration
         case explicit
-        case releaseDate
-        case copyright
-        case popularity
-        case availability
-        case mediaTags
         case externalLinks
+        case mediaTags
+        case numberOfItems
+        case numberOfVolumes
+        case popularity
+        case releaseDate
+        case title
         case type
     }
 
@@ -98,18 +98,18 @@ public struct AlbumsAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(title, forKey: .title)
+        try container.encodeIfPresent(availability, forKey: .availability)
         try container.encode(barcodeId, forKey: .barcodeId)
-        try container.encode(numberOfVolumes, forKey: .numberOfVolumes)
-        try container.encode(numberOfItems, forKey: .numberOfItems)
+        try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encode(duration, forKey: .duration)
         try container.encode(explicit, forKey: .explicit)
-        try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
-        try container.encodeIfPresent(copyright, forKey: .copyright)
-        try container.encode(popularity, forKey: .popularity)
-        try container.encodeIfPresent(availability, forKey: .availability)
-        try container.encode(mediaTags, forKey: .mediaTags)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encode(mediaTags, forKey: .mediaTags)
+        try container.encode(numberOfItems, forKey: .numberOfItems)
+        try container.encode(numberOfVolumes, forKey: .numberOfVolumes)
+        try container.encode(popularity, forKey: .popularity)
+        try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
+        try container.encode(title, forKey: .title)
         try container.encode(type, forKey: .type)
     }
 }

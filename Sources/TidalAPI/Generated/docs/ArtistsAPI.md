@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**artistsIdGet**](ArtistsAPI.md#artistsidget) | **GET** /artists/{id} | Get single artist.
 [**artistsIdPatch**](ArtistsAPI.md#artistsidpatch) | **PATCH** /artists/{id} | Update single artist.
 [**artistsIdRelationshipsAlbumsGet**](ArtistsAPI.md#artistsidrelationshipsalbumsget) | **GET** /artists/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsBiographyGet**](ArtistsAPI.md#artistsidrelationshipsbiographyget) | **GET** /artists/{id}/relationships/biography | Get biography relationship (\&quot;to-one\&quot;).
 [**artistsIdRelationshipsOwnersGet**](ArtistsAPI.md#artistsidrelationshipsownersget) | **GET** /artists/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsProfileArtGet**](ArtistsAPI.md#artistsidrelationshipsprofileartget) | **GET** /artists/{id}/relationships/profileArt | Get profileArt relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsProfileArtPatch**](ArtistsAPI.md#artistsidrelationshipsprofileartpatch) | **PATCH** /artists/{id}/relationships/profileArt | Update profileArt relationship (\&quot;to-many\&quot;).
@@ -35,7 +36,7 @@ Retrieves multiple artists by available filters, or without if applicable.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, biography, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 let filterHandle = ["inner_example"] // [String] | Artist handle (optional)
 let filterId = ["inner_example"] // [String] | Artist id (optional)
 
@@ -57,7 +58,7 @@ ArtistsAPI.artistsGet(countryCode: countryCode, include: include, filterHandle: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, biography, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
  **filterHandle** | [**[String]**](String.md) | Artist handle | [optional] 
  **filterId** | [**[String]**](String.md) | Artist id | [optional] 
 
@@ -92,7 +93,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, biography, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 
 // Get single artist.
 ArtistsAPI.artistsIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
@@ -113,7 +114,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, biography, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
 
 ### Return type
 
@@ -145,7 +146,7 @@ Updates existing artist.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(id: "id_example", type: "type_example", attributes: ArtistUpdateBody_Data_Attributes(name: "name_example", handle: "handle_example", externalLinks: [External_Link(href: "href_example", meta: External_Link_Meta(type: "type_example"))], contributionsEnabled: false)), meta: ArtistUpdateBody_Meta(dryRun: false)) // ArtistUpdateBody |  (optional)
+let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(attributes: ArtistUpdateBody_Data_Attributes(contributionsEnabled: false, externalLinks: [External_Link(href: "href_example", meta: External_Link_Meta(type: "type_example"))], handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistUpdateBody_Meta(dryRun: false)) // ArtistUpdateBody |  (optional)
 
 // Update single artist.
 ArtistsAPI.artistsIdPatch(id: id, artistUpdateBody: artistUpdateBody) { (response, error) in
@@ -226,6 +227,60 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artistsIdRelationshipsBiographyGet**
+```swift
+    open class func artistsIdRelationshipsBiographyGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistsSingletonDataRelationshipDocument?, _ error: Error?) -> Void)
+```
+
+Get biography relationship (\"to-one\").
+
+Retrieves biography relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: biography (optional)
+
+// Get biography relationship (\"to-one\").
+ArtistsAPI.artistsIdRelationshipsBiographyGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: biography | [optional] 
+
+### Return type
+
+[**ArtistsSingletonDataRelationshipDocument**](ArtistsSingletonDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -748,7 +803,7 @@ Creates a new artist.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let artistCreateOperationPayload = ArtistCreateOperation_Payload(data: ArtistCreateOperation_Payload_Data(type: "type_example", attributes: ArtistCreateOperation_Payload_Data_Attributes(name: "name_example", handle: "handle_example")), meta: ArtistCreateOperation_Meta(dryRun: false)) // ArtistCreateOperationPayload |  (optional)
+let artistCreateOperationPayload = ArtistCreateOperation_Payload(data: ArtistCreateOperation_Payload_Data(attributes: ArtistCreateOperation_Payload_Data_Attributes(handle: "handle_example", name: "name_example"), type: "type_example"), meta: ArtistCreateOperation_Meta(dryRun: false)) // ArtistCreateOperationPayload |  (optional)
 
 // Create single artist.
 ArtistsAPI.artistsPost(artistCreateOperationPayload: artistCreateOperationPayload) { (response, error) in

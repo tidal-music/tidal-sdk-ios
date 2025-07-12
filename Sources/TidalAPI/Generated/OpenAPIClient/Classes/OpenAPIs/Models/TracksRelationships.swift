@@ -14,34 +14,38 @@ public struct TracksRelationships: Codable, Hashable {
 
     public var albums: MultiDataRelationshipDoc
     public var artists: MultiDataRelationshipDoc
-    public var similarTracks: MultiDataRelationshipDoc
     public var owners: MultiDataRelationshipDoc
     public var providers: MultiDataRelationshipDoc
     public var radio: MultiDataRelationshipDoc
+    public var similarTracks: MultiDataRelationshipDoc
+    public var trackStatistics: SingletonDataRelationshipDoc
 
     public init(
         albums: MultiDataRelationshipDoc,
         artists: MultiDataRelationshipDoc,
-        similarTracks: MultiDataRelationshipDoc,
         owners: MultiDataRelationshipDoc,
         providers: MultiDataRelationshipDoc,
-        radio: MultiDataRelationshipDoc
+        radio: MultiDataRelationshipDoc,
+        similarTracks: MultiDataRelationshipDoc,
+        trackStatistics: SingletonDataRelationshipDoc
     ) {
         self.albums = albums
         self.artists = artists
-        self.similarTracks = similarTracks
         self.owners = owners
         self.providers = providers
         self.radio = radio
+        self.similarTracks = similarTracks
+        self.trackStatistics = trackStatistics
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albums
         case artists
-        case similarTracks
         case owners
         case providers
         case radio
+        case similarTracks
+        case trackStatistics
     }
 
     // Encodable protocol methods
@@ -50,10 +54,11 @@ public struct TracksRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(albums, forKey: .albums)
         try container.encode(artists, forKey: .artists)
-        try container.encode(similarTracks, forKey: .similarTracks)
         try container.encode(owners, forKey: .owners)
         try container.encode(providers, forKey: .providers)
         try container.encode(radio, forKey: .radio)
+        try container.encode(similarTracks, forKey: .similarTracks)
+        try container.encode(trackStatistics, forKey: .trackStatistics)
     }
 }
 
