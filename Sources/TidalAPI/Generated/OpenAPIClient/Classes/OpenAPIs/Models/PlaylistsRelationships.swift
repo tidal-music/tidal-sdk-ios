@@ -12,33 +12,33 @@ import AnyCodable
 
 public struct PlaylistsRelationships: Codable, Hashable {
 
-    public var owners: MultiDataRelationshipDoc
     public var coverArt: MultiDataRelationshipDoc
     public var items: PlaylistsItemsMultiDataRelationshipDocument
+    public var owners: MultiDataRelationshipDoc
 
     public init(
-        owners: MultiDataRelationshipDoc,
         coverArt: MultiDataRelationshipDoc,
-        items: PlaylistsItemsMultiDataRelationshipDocument
+        items: PlaylistsItemsMultiDataRelationshipDocument,
+        owners: MultiDataRelationshipDoc
     ) {
-        self.owners = owners
         self.coverArt = coverArt
         self.items = items
+        self.owners = owners
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case owners
         case coverArt
         case items
+        case owners
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(owners, forKey: .owners)
         try container.encode(coverArt, forKey: .coverArt)
         try container.encode(items, forKey: .items)
+        try container.encode(owners, forKey: .owners)
     }
 }
 

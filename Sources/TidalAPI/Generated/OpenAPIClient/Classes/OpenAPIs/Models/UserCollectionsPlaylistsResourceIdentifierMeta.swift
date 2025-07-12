@@ -12,28 +12,28 @@ import AnyCodable
 
 public struct UserCollectionsPlaylistsResourceIdentifierMeta: Codable, Hashable {
 
-    public var itemId: String?
     public var addedAt: Date?
+    public var itemId: String?
 
     public init(
-        itemId: String? = nil,
-        addedAt: Date? = nil
+        addedAt: Date? = nil,
+        itemId: String? = nil
     ) {
-        self.itemId = itemId
         self.addedAt = addedAt
+        self.itemId = itemId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case itemId
         case addedAt
+        case itemId
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(itemId, forKey: .itemId)
         try container.encodeIfPresent(addedAt, forKey: .addedAt)
+        try container.encodeIfPresent(itemId, forKey: .itemId)
     }
 }
 

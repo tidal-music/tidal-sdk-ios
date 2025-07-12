@@ -13,30 +13,30 @@ import AnyCodable
 /** Metadata about an artwork file */
 public struct ArtworkFileMeta: Codable, Hashable {
 
-    /** Width (in pixels) */
-    public var width: Int
     /** Height (in pixels) */
     public var height: Int
+    /** Width (in pixels) */
+    public var width: Int
 
     public init(
-        width: Int,
-        height: Int
+        height: Int,
+        width: Int
     ) {
-        self.width = width
         self.height = height
+        self.width = width
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case width
         case height
+        case width
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(width, forKey: .width)
         try container.encode(height, forKey: .height)
+        try container.encode(width, forKey: .width)
     }
 }
 

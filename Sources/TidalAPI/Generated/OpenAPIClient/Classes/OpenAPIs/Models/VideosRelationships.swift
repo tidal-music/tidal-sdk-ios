@@ -14,26 +14,26 @@ public struct VideosRelationships: Codable, Hashable {
 
     public var albums: MultiDataRelationshipDoc
     public var artists: MultiDataRelationshipDoc
-    public var thumbnailArt: MultiDataRelationshipDoc
     public var providers: MultiDataRelationshipDoc
+    public var thumbnailArt: MultiDataRelationshipDoc
 
     public init(
         albums: MultiDataRelationshipDoc,
         artists: MultiDataRelationshipDoc,
-        thumbnailArt: MultiDataRelationshipDoc,
-        providers: MultiDataRelationshipDoc
+        providers: MultiDataRelationshipDoc,
+        thumbnailArt: MultiDataRelationshipDoc
     ) {
         self.albums = albums
         self.artists = artists
-        self.thumbnailArt = thumbnailArt
         self.providers = providers
+        self.thumbnailArt = thumbnailArt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albums
         case artists
-        case thumbnailArt
         case providers
+        case thumbnailArt
     }
 
     // Encodable protocol methods
@@ -42,8 +42,8 @@ public struct VideosRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(albums, forKey: .albums)
         try container.encode(artists, forKey: .artists)
-        try container.encode(thumbnailArt, forKey: .thumbnailArt)
         try container.encode(providers, forKey: .providers)
+        try container.encode(thumbnailArt, forKey: .thumbnailArt)
     }
 }
 

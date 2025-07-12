@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **albumsGet**
 ```swift
-    open class func albumsGet(countryCode: String, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: AlbumsMultiDataDocument?, _ error: Error?) -> Void)
+    open class func albumsGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil, completion: @escaping (_ data: AlbumsMultiDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple albums.
@@ -29,11 +29,11 @@ import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, providers, similarAlbums (optional)
-let filterBarcodeId = ["inner_example"] // [String] | Allows to filter the collection of resources based on barcodeId attribute value (optional)
-let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
+let filterId = ["inner_example"] // [String] | Album id (optional)
+let filterBarcodeId = ["inner_example"] // [String] | Barcode Id (optional)
 
 // Get multiple albums.
-AlbumsAPI.albumsGet(countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId) { (response, error) in
+AlbumsAPI.albumsGet(countryCode: countryCode, include: include, filterId: filterId, filterBarcodeId: filterBarcodeId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -51,8 +51,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, providers, similarAlbums | [optional] 
- **filterBarcodeId** | [**[String]**](String.md) | Allows to filter the collection of resources based on barcodeId attribute value | [optional] 
- **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
+ **filterId** | [**[String]**](String.md) | Album id | [optional] 
+ **filterBarcodeId** | [**[String]**](String.md) | Barcode Id | [optional] 
 
 ### Return type
 
@@ -125,7 +125,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsArtistsGet**
 ```swift
-    open class func albumsIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -139,11 +139,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
 
 // Get artists relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsArtistsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -161,8 +161,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
 
 ### Return type
 
@@ -181,7 +181,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtGet**
 ```swift
-    open class func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Get coverArt relationship (\"to-many\").
@@ -195,11 +195,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: coverArt (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: coverArt (optional)
 
 // Get coverArt relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsCoverArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsCoverArtGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -217,8 +217,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: coverArt | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: coverArt | [optional] 
 
 ### Return type
 
@@ -237,7 +237,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsItemsGet**
 ```swift
-    open class func albumsIdRelationshipsItemsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsItemsResourceIdentifier?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsItemsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -251,11 +251,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
 
 // Get items relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsItemsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsItemsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -273,12 +273,12 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
 
 ### Return type
 
-[**AlbumsItemsResourceIdentifier**](AlbumsItemsResourceIdentifier.md)
+[**AlbumsItemsMultiDataRelationshipDocument**](AlbumsItemsMultiDataRelationshipDocument.md)
 
 ### Authorization
 
@@ -349,7 +349,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSimilarAlbumsGet**
 ```swift
-    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarAlbums relationship (\"to-many\").
@@ -363,11 +363,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarAlbums (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarAlbums (optional)
 
 // Get similarAlbums relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -385,8 +385,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: similarAlbums | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: similarAlbums | [optional] 
 
 ### Return type
 

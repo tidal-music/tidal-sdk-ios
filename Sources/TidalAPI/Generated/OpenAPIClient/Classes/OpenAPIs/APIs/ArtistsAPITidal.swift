@@ -63,6 +63,18 @@ public enum ArtistsAPITidal {
 
 
 	/**
+     Get biography relationship (\&quot;to-one\&quot;).
+     
+     - returns: ArtistsSingletonDataRelationshipDocument
+     */
+	public static func artistsIdRelationshipsBiographyGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtistsSingletonDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsBiographyGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: ArtistsMultiDataRelationshipDocument

@@ -12,40 +12,40 @@ import AnyCodable
 
 public struct ArtistsResource: Codable, Hashable {
 
+    public var attributes: ArtistsAttributes?
     /** resource unique identifier */
     public var id: String
+    public var relationships: ArtistsRelationships?
     /** resource unique type */
     public var type: String
-    public var attributes: ArtistsAttributes?
-    public var relationships: ArtistsRelationships?
 
     public init(
-        id: String,
-        type: String,
         attributes: ArtistsAttributes? = nil,
-        relationships: ArtistsRelationships? = nil
+        id: String,
+        relationships: ArtistsRelationships? = nil,
+        type: String
     ) {
-        self.id = id
-        self.type = type
         self.attributes = attributes
+        self.id = id
         self.relationships = relationships
+        self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case id
-        case type
         case attributes
+        case id
         case relationships
+        case type
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(type, forKey: .type)
         try container.encodeIfPresent(attributes, forKey: .attributes)
+        try container.encode(id, forKey: .id)
         try container.encodeIfPresent(relationships, forKey: .relationships)
+        try container.encode(type, forKey: .type)
     }
 }
 

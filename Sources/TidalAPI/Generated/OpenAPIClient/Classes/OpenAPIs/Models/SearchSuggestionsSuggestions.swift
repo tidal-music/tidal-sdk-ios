@@ -13,28 +13,28 @@ import AnyCodable
 /** Suggested search queries */
 public struct SearchSuggestionsSuggestions: Codable, Hashable {
 
-    public var query: String
     public var highlights: [SearchSuggestionsHighlights]?
+    public var query: String
 
     public init(
-        query: String,
-        highlights: [SearchSuggestionsHighlights]? = nil
+        highlights: [SearchSuggestionsHighlights]? = nil,
+        query: String
     ) {
-        self.query = query
         self.highlights = highlights
+        self.query = query
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case query
         case highlights
+        case query
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(query, forKey: .query)
         try container.encodeIfPresent(highlights, forKey: .highlights)
+        try container.encode(query, forKey: .query)
     }
 }
 

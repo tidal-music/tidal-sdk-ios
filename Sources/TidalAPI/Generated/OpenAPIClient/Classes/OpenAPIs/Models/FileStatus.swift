@@ -13,13 +13,6 @@ import AnyCodable
 /** File status */
 public struct FileStatus: Codable, Hashable {
 
-    public enum TechnicalFileStatus: String, Codable, CaseIterable {
-        case uploadRequested = "UPLOAD_REQUESTED"
-        case processing = "PROCESSING"
-        case failed = "FAILED"
-        case ok = "OK"
-        case error = "ERROR"
-    }
     public enum ModerationFileStatus: String, Codable, CaseIterable {
         case notModerated = "NOT_MODERATED"
         case scanning = "SCANNING"
@@ -28,30 +21,37 @@ public struct FileStatus: Codable, Hashable {
         case ok = "OK"
         case error = "ERROR"
     }
-    /** Technical status for file */
-    public var technicalFileStatus: TechnicalFileStatus
+    public enum TechnicalFileStatus: String, Codable, CaseIterable {
+        case uploadRequested = "UPLOAD_REQUESTED"
+        case processing = "PROCESSING"
+        case failed = "FAILED"
+        case ok = "OK"
+        case error = "ERROR"
+    }
     /** Moderation status for file */
     public var moderationFileStatus: ModerationFileStatus
+    /** Technical status for file */
+    public var technicalFileStatus: TechnicalFileStatus
 
     public init(
-        technicalFileStatus: TechnicalFileStatus,
-        moderationFileStatus: ModerationFileStatus
+        moderationFileStatus: ModerationFileStatus,
+        technicalFileStatus: TechnicalFileStatus
     ) {
-        self.technicalFileStatus = technicalFileStatus
         self.moderationFileStatus = moderationFileStatus
+        self.technicalFileStatus = technicalFileStatus
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case technicalFileStatus
         case moderationFileStatus
+        case technicalFileStatus
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(technicalFileStatus, forKey: .technicalFileStatus)
         try container.encode(moderationFileStatus, forKey: .moderationFileStatus)
+        try container.encode(technicalFileStatus, forKey: .technicalFileStatus)
     }
 }
 
