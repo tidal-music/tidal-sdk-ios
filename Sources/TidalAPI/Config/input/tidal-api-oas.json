@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.32"
+    "version" : "0.1.35"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -71,7 +71,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, providers, similarAlbums",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, owners, providers, similarAlbums",
           "example" : "artists",
           "in" : "query",
           "name" : "include",
@@ -81,6 +89,19 @@
             "items" : {
               "type" : "string",
               "example" : "artists"
+            }
+          }
+        }, {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "query",
+          "name" : "filter[r.owners.id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "123456"
             }
           }
         }, {
@@ -146,7 +167,7 @@
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
-          "Authorization_Code_PKCE" : [ ]
+          "Authorization_Code_PKCE" : [ "r_usr" ]
         } ],
         "summary" : "Get multiple albums.",
         "tags" : [ "albums" ],
@@ -177,7 +198,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, providers, similarAlbums",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, owners, providers, similarAlbums",
           "example" : "artists",
           "in" : "query",
           "name" : "include",
@@ -493,6 +514,83 @@
           "Authorization_Code_PKCE" : [ ]
         } ],
         "summary" : "Get items relationship (\"to-many\").",
+        "tags" : [ "albums" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/albums/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "description" : "Album id",
+          "example" : "251380836",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Albums_Multi_Data_Relationship_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
         "tags" : [ "albums" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -7592,38 +7690,10 @@
         "description" : "Not found - The requested resource could not be found"
       },
       "Too_Many_Requests_Response" : {
-        "content" : {
-          "application/vnd.api+json" : {
-            "schema" : {
-              "$ref" : "#/components/schemas/Error_Document"
-            }
-          }
-        },
         "description" : "Too many requests - The user has sent too many requests in a given amount of time",
         "headers" : {
-          "X-RateLimit-Burst-Capacity" : {
-            "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32"
-            }
-          },
-          "X-RateLimit-Remaining" : {
-            "description" : "The number of remaining tokens in the current period",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32"
-            }
-          },
-          "X-RateLimit-Replenish-Rate" : {
-            "description" : "The number of tokens replenished per second.",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32"
-            }
-          },
-          "X-RateLimit-Requested-Tokens" : {
-            "description" : "The request cost in tokens.",
+          "Retry-After" : {
+            "description" : "Time to wait before making a new request, in seconds.",
             "schema" : {
               "type" : "integer",
               "format" : "int32"
@@ -7814,7 +7884,7 @@
         }
       },
       "Albums_Relationships" : {
-        "required" : [ "artists", "coverArt", "items", "providers", "similarAlbums" ],
+        "required" : [ "artists", "coverArt", "items", "owners", "providers", "similarAlbums" ],
         "properties" : {
           "artists" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
@@ -7824,6 +7894,9 @@
           },
           "items" : {
             "$ref" : "#/components/schemas/Albums_Items_Multi_Data_Relationship_Document"
+          },
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           },
           "providers" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
@@ -10067,11 +10140,11 @@
           },
           "key" : {
             "type" : "string",
-            "enum" : [ "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
+            "enum" : [ "UNKNOWN", "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
           },
           "keyScale" : {
             "type" : "string",
-            "enum" : [ "MAJOR", "MINOR" ]
+            "enum" : [ "UNKNOWN", "MAJOR", "MINOR", "AEOLIAN", "BLUES", "DORIAN", "HARMONIC_MINOR", "LOCRIAN", "LYDIAN", "MIXOLYDIAN", "PENTATONIC_MAJOR", "PHRYGIAN", "MELODIC_MINOR", "PENTATONIC_MINOR" ]
           },
           "title" : {
             "type" : "string"
@@ -10091,7 +10164,7 @@
         }
       },
       "Tracks_Attributes" : {
-        "required" : [ "duration", "explicit", "isrc", "mediaTags", "popularity", "title" ],
+        "required" : [ "duration", "explicit", "isrc", "key", "keyScale", "mediaTags", "popularity", "title" ],
         "type" : "object",
         "properties" : {
           "accessType" : {
@@ -10157,12 +10230,12 @@
           "key" : {
             "type" : "string",
             "description" : "Key",
-            "enum" : [ "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
+            "enum" : [ "UNKNOWN", "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
           },
           "keyScale" : {
             "type" : "string",
             "description" : "The scale of the key",
-            "enum" : [ "MAJOR", "MINOR" ]
+            "enum" : [ "UNKNOWN", "MAJOR", "MINOR", "AEOLIAN", "BLUES", "DORIAN", "HARMONIC_MINOR", "LOCRIAN", "LYDIAN", "MIXOLYDIAN", "PENTATONIC_MAJOR", "PHRYGIAN", "MELODIC_MINOR", "PENTATONIC_MINOR" ]
           },
           "mediaTags" : {
             "type" : "array",

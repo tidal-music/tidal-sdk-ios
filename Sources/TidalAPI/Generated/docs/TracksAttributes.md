@@ -13,8 +13,8 @@ Name | Type | Description | Notes
 **externalLinks** | [ExternalLink] | Track links external to TIDAL API | [optional] 
 **genreTags** | **[String]** |  | [optional] 
 **isrc** | **String** | International Standard Recording Code (ISRC) | 
-**key** | **String** | Key | [optional] 
-**keyScale** | **String** | The scale of the key | [optional] 
+**key** | **String** | Key | 
+**keyScale** | **String** | The scale of the key | 
 **mediaTags** | **[String]** |  | 
 **popularity** | **Double** | Popularity (0.0 - 1.0) | 
 **spotlighted** | **Bool** | Is the track spotlighted? | [optional] 

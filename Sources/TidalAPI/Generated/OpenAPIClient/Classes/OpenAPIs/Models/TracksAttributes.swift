@@ -23,6 +23,7 @@ public struct TracksAttributes: Codable, Hashable {
         case stem = "STEM"
     }
     public enum Key: String, Codable, CaseIterable {
+        case unknown = "UNKNOWN"
         case a = "A"
         case ab = "Ab"
         case b = "B"
@@ -37,8 +38,20 @@ public struct TracksAttributes: Codable, Hashable {
         case g = "G"
     }
     public enum KeyScale: String, Codable, CaseIterable {
+        case unknown = "UNKNOWN"
         case major = "MAJOR"
         case minor = "MINOR"
+        case aeolian = "AEOLIAN"
+        case blues = "BLUES"
+        case dorian = "DORIAN"
+        case harmonicMinor = "HARMONIC_MINOR"
+        case locrian = "LOCRIAN"
+        case lydian = "LYDIAN"
+        case mixolydian = "MIXOLYDIAN"
+        case pentatonicMajor = "PENTATONIC_MAJOR"
+        case phrygian = "PHRYGIAN"
+        case melodicMinor = "MELODIC_MINOR"
+        case pentatonicMinor = "PENTATONIC_MINOR"
     }
     /** Access type */
     public var accessType: AccessType?
@@ -60,9 +73,9 @@ public struct TracksAttributes: Codable, Hashable {
     /** International Standard Recording Code (ISRC) */
     public var isrc: String
     /** Key */
-    public var key: Key?
+    public var key: Key
     /** The scale of the key */
-    public var keyScale: KeyScale?
+    public var keyScale: KeyScale
     public var mediaTags: [String]
     /** Popularity (0.0 - 1.0) */
     public var popularity: Double
@@ -85,8 +98,8 @@ public struct TracksAttributes: Codable, Hashable {
         externalLinks: [ExternalLink]? = nil,
         genreTags: [String]? = nil,
         isrc: String,
-        key: Key? = nil,
-        keyScale: KeyScale? = nil,
+        key: Key,
+        keyScale: KeyScale,
         mediaTags: [String],
         popularity: Double,
         spotlighted: Bool? = nil,
@@ -149,8 +162,8 @@ public struct TracksAttributes: Codable, Hashable {
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(genreTags, forKey: .genreTags)
         try container.encode(isrc, forKey: .isrc)
-        try container.encodeIfPresent(key, forKey: .key)
-        try container.encodeIfPresent(keyScale, forKey: .keyScale)
+        try container.encode(key, forKey: .key)
+        try container.encode(keyScale, forKey: .keyScale)
         try container.encode(mediaTags, forKey: .mediaTags)
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(spotlighted, forKey: .spotlighted)

@@ -19,9 +19,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiDataDocument
      */
-	public static func albumsGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil) async throws -> AlbumsMultiDataDocument {
+	public static func albumsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil) async throws -> AlbumsMultiDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId, filterBarcodeId: filterBarcodeId)
+			AlbumsAPI.albumsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterROwnersId: filterROwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId)
 		}
 	}
 
@@ -70,6 +70,18 @@ public enum AlbumsAPITidal {
 	public static func albumsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> AlbumsItemsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			AlbumsAPI.albumsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: AlbumsMultiDataRelationshipDocument
+     */
+	public static func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 

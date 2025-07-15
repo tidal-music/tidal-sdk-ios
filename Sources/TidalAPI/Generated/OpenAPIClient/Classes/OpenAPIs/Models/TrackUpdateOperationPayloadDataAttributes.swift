@@ -18,6 +18,7 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case _private = "PRIVATE"
     }
     public enum Key: String, Codable, CaseIterable {
+        case unknown = "UNKNOWN"
         case a = "A"
         case ab = "Ab"
         case b = "B"
@@ -32,8 +33,20 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case g = "G"
     }
     public enum KeyScale: String, Codable, CaseIterable {
+        case unknown = "UNKNOWN"
         case major = "MAJOR"
         case minor = "MINOR"
+        case aeolian = "AEOLIAN"
+        case blues = "BLUES"
+        case dorian = "DORIAN"
+        case harmonicMinor = "HARMONIC_MINOR"
+        case locrian = "LOCRIAN"
+        case lydian = "LYDIAN"
+        case mixolydian = "MIXOLYDIAN"
+        case pentatonicMajor = "PENTATONIC_MAJOR"
+        case phrygian = "PHRYGIAN"
+        case melodicMinor = "MELODIC_MINOR"
+        case pentatonicMinor = "PENTATONIC_MINOR"
     }
     public static let genreTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
     public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
