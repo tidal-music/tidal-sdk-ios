@@ -8,6 +8,7 @@ This is the repository for TIDAL SDK modules for iOS development.
 - [common](./Sources/Common/README.md)
 - [eventproducer](./Sources/EventProducer/README.md)
 - [player](./Sources/Player/README.md)
+- [tidalAPI](./Sources/TidalAPI/README.md)
 
 ## Getting started
 1. Clone the repository
