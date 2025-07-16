@@ -454,4 +454,43 @@ internal class AlbumsAPI {
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
+
+    /**
+     Create single album.
+     
+     - parameter albumCreateOperationPayload: (body)  (optional)
+     - returns: AlbumsSingleDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func albumsPost(albumCreateOperationPayload: AlbumCreateOperationPayload? = nil) async throws -> AlbumsSingleDataDocument {
+        return try await albumsPostWithRequestBuilder(albumCreateOperationPayload: albumCreateOperationPayload).execute().body
+    }
+
+    /**
+     Create single album.
+     - POST /albums
+     - Creates a new album.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter albumCreateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<AlbumsSingleDataDocument> 
+     */
+    internal class func albumsPostWithRequestBuilder(albumCreateOperationPayload: AlbumCreateOperationPayload? = nil) -> RequestBuilder<AlbumsSingleDataDocument> {
+        let localVariablePath = "/albums"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: albumCreateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AlbumsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
 }

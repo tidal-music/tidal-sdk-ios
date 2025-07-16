@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**albumsIdRelationshipsOwnersGet**](AlbumsAPI.md#albumsidrelationshipsownersget) | **GET** /albums/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsProvidersGet**](AlbumsAPI.md#albumsidrelationshipsprovidersget) | **GET** /albums/{id}/relationships/providers | Get providers relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsSimilarAlbumsGet**](AlbumsAPI.md#albumsidrelationshipssimilaralbumsget) | **GET** /albums/{id}/relationships/similarAlbums | Get similarAlbums relationship (\&quot;to-many\&quot;).
+[**albumsPost**](AlbumsAPI.md#albumspost) | **POST** /albums | Create single album.
 
 
 # **albumsGet**
@@ -458,6 +459,56 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **albumsPost**
+```swift
+    open class func albumsPost(albumCreateOperationPayload: AlbumCreateOperationPayload? = nil, completion: @escaping (_ data: AlbumsSingleDataDocument?, _ error: Error?) -> Void)
+```
+
+Create single album.
+
+Creates a new album.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let albumCreateOperationPayload = AlbumCreateOperation_Payload(data: AlbumCreateOperation_Payload_Data(attributes: AlbumCreateOperation_Payload_Data_Attributes(copyright: AlbumCreateOperation_Payload_Data_Attributes_Copyright(text: "text_example", year: 123), explicitLyrics: false, genres: ["genres_example"], releaseDate: Date(), title: "title_example", upc: "upc_example", version: "version_example"), relationships: AlbumCreateOperation_Payload_Data_Relationships(artists: AlbumCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumCreateOperationPayload |  (optional)
+
+// Create single album.
+AlbumsAPI.albumsPost(albumCreateOperationPayload: albumCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **albumCreateOperationPayload** | [**AlbumCreateOperationPayload**](AlbumCreateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**AlbumsSingleDataDocument**](AlbumsSingleDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

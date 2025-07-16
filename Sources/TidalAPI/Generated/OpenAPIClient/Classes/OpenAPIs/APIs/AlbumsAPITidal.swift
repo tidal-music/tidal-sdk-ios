@@ -108,4 +108,16 @@ public enum AlbumsAPITidal {
 			AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
+
+
+	/**
+     Create single album.
+     
+     - returns: AlbumsSingleDataDocument
+     */
+	public static func albumsPost(albumCreateOperationPayload: AlbumCreateOperationPayload? = nil) async throws -> AlbumsSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsPostWithRequestBuilder(albumCreateOperationPayload: albumCreateOperationPayload)
+		}
+	}
 }
