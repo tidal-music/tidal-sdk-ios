@@ -19,9 +19,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiDataDocument
      */
-	public static func albumsGet(countryCode: String, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil) async throws -> AlbumsMultiDataDocument {
+	public static func albumsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil) async throws -> AlbumsMultiDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsGetWithRequestBuilder(countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId)
+			AlbumsAPI.albumsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterROwnersId: filterROwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiDataRelationshipDocument
      */
-	public static func albumsIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsMultiDataRelationshipDocument {
+	public static func albumsIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> AlbumsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			AlbumsAPI.albumsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiDataRelationshipDocument
      */
-	public static func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsMultiDataRelationshipDocument {
+	public static func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> AlbumsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			AlbumsAPI.albumsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -65,11 +65,23 @@ public enum AlbumsAPITidal {
 	/**
      Get items relationship (\&quot;to-many\&quot;).
      
-     - returns: AlbumsItemsResourceIdentifier
+     - returns: AlbumsItemsMultiDataRelationshipDocument
      */
-	public static func albumsIdRelationshipsItemsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsItemsResourceIdentifier {
+	public static func albumsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> AlbumsItemsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			AlbumsAPI.albumsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: AlbumsMultiDataRelationshipDocument
+     */
+	public static func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -91,9 +103,21 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiDataRelationshipDocument
      */
-	public static func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsMultiDataRelationshipDocument {
+	public static func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> AlbumsMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Create single album.
+     
+     - returns: AlbumsSingleDataDocument
+     */
+	public static func albumsPost(albumCreateOperationPayload: AlbumCreateOperationPayload? = nil) async throws -> AlbumsSingleDataDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsPostWithRequestBuilder(albumCreateOperationPayload: albumCreateOperationPayload)
 		}
 	}
 }

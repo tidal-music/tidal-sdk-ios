@@ -12,38 +12,38 @@ import AnyCodable
 
 public struct ArtistUpdateBodyDataAttributes: Codable, Hashable {
 
-    public var name: String?
-    public var handle: String?
-    public var externalLinks: [ExternalLink]?
     public var contributionsEnabled: Bool?
+    public var externalLinks: [ExternalLink]?
+    public var handle: String?
+    public var name: String?
 
     public init(
-        name: String? = nil,
-        handle: String? = nil,
+        contributionsEnabled: Bool? = nil,
         externalLinks: [ExternalLink]? = nil,
-        contributionsEnabled: Bool? = nil
+        handle: String? = nil,
+        name: String? = nil
     ) {
-        self.name = name
-        self.handle = handle
-        self.externalLinks = externalLinks
         self.contributionsEnabled = contributionsEnabled
+        self.externalLinks = externalLinks
+        self.handle = handle
+        self.name = name
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case name
-        case handle
-        case externalLinks
         case contributionsEnabled
+        case externalLinks
+        case handle
+        case name
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(name, forKey: .name)
-        try container.encodeIfPresent(handle, forKey: .handle)
-        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(contributionsEnabled, forKey: .contributionsEnabled)
+        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(handle, forKey: .handle)
+        try container.encodeIfPresent(name, forKey: .name)
     }
 }
 

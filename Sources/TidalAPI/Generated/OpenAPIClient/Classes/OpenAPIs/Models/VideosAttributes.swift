@@ -17,78 +17,78 @@ public struct VideosAttributes: Codable, Hashable {
         case dj = "DJ"
         case stem = "STEM"
     }
+    /** Available usage for this video */
+    public var availability: [Availability]?
+    /** Copyright */
+    public var copyright: String?
+    /** Duration (ISO 8601) */
+    public var duration: String
+    /** Explicit content */
+    public var explicit: Bool
+    /** Video links external to TIDAL API */
+    public var externalLinks: [ExternalLink]?
+    /** International Standard Recording Code (ISRC) */
+    public var isrc: String
+    /** Popularity (0.0 - 1.0) */
+    public var popularity: Double
+    /** Release date (ISO-8601) */
+    public var releaseDate: Date?
     /** Video title */
     public var title: String
     /** Video version, complements title */
     public var version: String?
-    /** International Standard Recording Code (ISRC) */
-    public var isrc: String
-    /** Duration (ISO 8601) */
-    public var duration: String
-    /** Copyright */
-    public var copyright: String?
-    /** Release date (ISO-8601) */
-    public var releaseDate: Date?
-    /** Explicit content */
-    public var explicit: Bool
-    /** Popularity (0.0 - 1.0) */
-    public var popularity: Double
-    /** Available usage for this video */
-    public var availability: [Availability]?
-    /** Video links external to TIDAL API */
-    public var externalLinks: [ExternalLink]?
 
     public init(
-        title: String,
-        version: String? = nil,
-        isrc: String,
-        duration: String,
-        copyright: String? = nil,
-        releaseDate: Date? = nil,
-        explicit: Bool,
-        popularity: Double,
         availability: [Availability]? = nil,
-        externalLinks: [ExternalLink]? = nil
+        copyright: String? = nil,
+        duration: String,
+        explicit: Bool,
+        externalLinks: [ExternalLink]? = nil,
+        isrc: String,
+        popularity: Double,
+        releaseDate: Date? = nil,
+        title: String,
+        version: String? = nil
     ) {
+        self.availability = availability
+        self.copyright = copyright
+        self.duration = duration
+        self.explicit = explicit
+        self.externalLinks = externalLinks
+        self.isrc = isrc
+        self.popularity = popularity
+        self.releaseDate = releaseDate
         self.title = title
         self.version = version
-        self.isrc = isrc
-        self.duration = duration
-        self.copyright = copyright
-        self.releaseDate = releaseDate
-        self.explicit = explicit
-        self.popularity = popularity
-        self.availability = availability
-        self.externalLinks = externalLinks
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case availability
+        case copyright
+        case duration
+        case explicit
+        case externalLinks
+        case isrc
+        case popularity
+        case releaseDate
         case title
         case version
-        case isrc
-        case duration
-        case copyright
-        case releaseDate
-        case explicit
-        case popularity
-        case availability
-        case externalLinks
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(availability, forKey: .availability)
+        try container.encodeIfPresent(copyright, forKey: .copyright)
+        try container.encode(duration, forKey: .duration)
+        try container.encode(explicit, forKey: .explicit)
+        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encode(isrc, forKey: .isrc)
+        try container.encode(popularity, forKey: .popularity)
+        try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encode(title, forKey: .title)
         try container.encodeIfPresent(version, forKey: .version)
-        try container.encode(isrc, forKey: .isrc)
-        try container.encode(duration, forKey: .duration)
-        try container.encodeIfPresent(copyright, forKey: .copyright)
-        try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
-        try container.encode(explicit, forKey: .explicit)
-        try container.encode(popularity, forKey: .popularity)
-        try container.encodeIfPresent(availability, forKey: .availability)
-        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
     }
 }
 

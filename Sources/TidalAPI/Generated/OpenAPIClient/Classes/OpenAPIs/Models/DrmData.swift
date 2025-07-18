@@ -17,33 +17,33 @@ public struct DrmData: Codable, Hashable {
         case fairplay = "FAIRPLAY"
         case widevine = "WIDEVINE"
     }
+    public var certificateUrl: String?
     public var drmSystem: DrmSystem?
     public var licenseUrl: String?
-    public var certificateUrl: String?
 
     public init(
+        certificateUrl: String? = nil,
         drmSystem: DrmSystem? = nil,
-        licenseUrl: String? = nil,
-        certificateUrl: String? = nil
+        licenseUrl: String? = nil
     ) {
+        self.certificateUrl = certificateUrl
         self.drmSystem = drmSystem
         self.licenseUrl = licenseUrl
-        self.certificateUrl = certificateUrl
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case certificateUrl
         case drmSystem
         case licenseUrl
-        case certificateUrl
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(certificateUrl, forKey: .certificateUrl)
         try container.encodeIfPresent(drmSystem, forKey: .drmSystem)
         try container.encodeIfPresent(licenseUrl, forKey: .licenseUrl)
-        try container.encodeIfPresent(certificateUrl, forKey: .certificateUrl)
     }
 }
 

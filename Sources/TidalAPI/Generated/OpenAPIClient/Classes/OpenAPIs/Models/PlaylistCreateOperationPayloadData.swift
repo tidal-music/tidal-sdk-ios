@@ -15,28 +15,28 @@ public struct PlaylistCreateOperationPayloadData: Codable, Hashable {
     public enum ModelType: String, Codable, CaseIterable {
         case playlists = "playlists"
     }
-    public var type: ModelType
     public var attributes: PlaylistCreateOperationPayloadDataAttributes
+    public var type: ModelType
 
     public init(
-        type: ModelType,
-        attributes: PlaylistCreateOperationPayloadDataAttributes
+        attributes: PlaylistCreateOperationPayloadDataAttributes,
+        type: ModelType
     ) {
-        self.type = type
         self.attributes = attributes
+        self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case type
         case attributes
+        case type
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(type, forKey: .type)
         try container.encode(attributes, forKey: .attributes)
+        try container.encode(type, forKey: .type)
     }
 }
 
