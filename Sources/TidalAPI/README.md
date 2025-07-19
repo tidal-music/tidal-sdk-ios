@@ -12,6 +12,16 @@ This module provides easy access to the TIDAL Open API. Read more about it [here
 * Check the [API documentation](https://developer.tidal.com/apiref?spec=catalogue-v2&ref=get-single-album&at=THIRD_PARTY) for the list of available endpoints.
 * Visit our [TIDAL Developer Platform](https://developer.tidal.com/) for more information and getting started. 
 
+## API Code Regeneration
+
+The API client code is generated from the TIDAL OpenAPI specifications. A Github Action runs daily and creates a PR if there are changes to the specification.
+
+The generation can also be triggered manually by following the steps below.
+
+### Use Github Actions:
+1. Run [Regenerate TidalApi Code](https://github.com/tidal-music/tidal-sdk-ios/actions/workflows/generate-tidal-api.yml)
+2. This action will create a pull request. Test and verify the changes before merging!
+
 ## Usage
 
 ### Install via Swift Package file
