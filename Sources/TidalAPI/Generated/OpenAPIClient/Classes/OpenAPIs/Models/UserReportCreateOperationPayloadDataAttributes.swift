@@ -23,28 +23,28 @@ public struct UserReportCreateOperationPayloadDataAttributes: Codable, Hashable 
         case copyrightInfringement = "COPYRIGHT_INFRINGEMENT"
         case unknown = "UNKNOWN"
     }
-    public var reason: Reason
     public var description: String
+    public var reason: Reason
 
     public init(
-        reason: Reason,
-        description: String
+        description: String,
+        reason: Reason
     ) {
-        self.reason = reason
         self.description = description
+        self.reason = reason
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case reason
         case description
+        case reason
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(reason, forKey: .reason)
         try container.encode(description, forKey: .description)
+        try container.encode(reason, forKey: .reason)
     }
 }
 

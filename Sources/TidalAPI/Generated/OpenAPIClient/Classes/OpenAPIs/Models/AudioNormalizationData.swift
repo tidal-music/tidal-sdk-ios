@@ -13,28 +13,28 @@ import AnyCodable
 /** Track normalization data */
 public struct AudioNormalizationData: Codable, Hashable {
 
-    public var replayGain: Float?
     public var peakAmplitude: Float?
+    public var replayGain: Float?
 
     public init(
-        replayGain: Float? = nil,
-        peakAmplitude: Float? = nil
+        peakAmplitude: Float? = nil,
+        replayGain: Float? = nil
     ) {
-        self.replayGain = replayGain
         self.peakAmplitude = peakAmplitude
+        self.replayGain = replayGain
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case replayGain
         case peakAmplitude
+        case replayGain
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(replayGain, forKey: .replayGain)
         try container.encodeIfPresent(peakAmplitude, forKey: .peakAmplitude)
+        try container.encodeIfPresent(replayGain, forKey: .replayGain)
     }
 }
 

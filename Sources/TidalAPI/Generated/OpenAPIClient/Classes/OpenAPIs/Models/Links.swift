@@ -13,30 +13,30 @@ import AnyCodable
 /** Links JSON:API object */
 public struct Links: Codable, Hashable {
 
-    /** Link to self */
-    public var _self: String
     /** Link to next page */
     public var next: String?
+    /** Link to self */
+    public var _self: String
 
     public init(
-        _self: String,
-        next: String? = nil
+        next: String? = nil,
+        _self: String
     ) {
-        self._self = _self
         self.next = next
+        self._self = _self
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case _self = "self"
         case next
+        case _self = "self"
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(_self, forKey: ._self)
         try container.encodeIfPresent(next, forKey: .next)
+        try container.encode(_self, forKey: ._self)
     }
 }
 

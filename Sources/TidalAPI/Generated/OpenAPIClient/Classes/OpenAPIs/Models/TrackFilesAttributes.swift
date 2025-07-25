@@ -12,56 +12,56 @@ import AnyCodable
 
 public struct TrackFilesAttributes: Codable, Hashable {
 
-    public enum TrackPresentation: String, Codable, CaseIterable {
-        case full = "FULL"
-        case preview = "PREVIEW"
-    }
     public enum Format: String, Codable, CaseIterable {
         case heaacv1 = "HEAACV1"
         case aaclc = "AACLC"
         case flac = "FLAC"
         case flacHires = "FLAC_HIRES"
     }
+    public enum TrackPresentation: String, Codable, CaseIterable {
+        case full = "FULL"
+        case preview = "PREVIEW"
+    }
+    public var albumAudioNormalizationData: AudioNormalizationData?
+    /** File's audio format */
+    public var format: Format?
+    public var trackAudioNormalizationData: AudioNormalizationData?
     /** Track presentation */
     public var trackPresentation: TrackPresentation?
     /** File URL */
     public var url: String?
-    /** File's audio format */
-    public var format: Format?
-    public var albumAudioNormalizationData: AudioNormalizationData?
-    public var trackAudioNormalizationData: AudioNormalizationData?
 
     public init(
-        trackPresentation: TrackPresentation? = nil,
-        url: String? = nil,
-        format: Format? = nil,
         albumAudioNormalizationData: AudioNormalizationData? = nil,
-        trackAudioNormalizationData: AudioNormalizationData? = nil
+        format: Format? = nil,
+        trackAudioNormalizationData: AudioNormalizationData? = nil,
+        trackPresentation: TrackPresentation? = nil,
+        url: String? = nil
     ) {
+        self.albumAudioNormalizationData = albumAudioNormalizationData
+        self.format = format
+        self.trackAudioNormalizationData = trackAudioNormalizationData
         self.trackPresentation = trackPresentation
         self.url = url
-        self.format = format
-        self.albumAudioNormalizationData = albumAudioNormalizationData
-        self.trackAudioNormalizationData = trackAudioNormalizationData
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case albumAudioNormalizationData
+        case format
+        case trackAudioNormalizationData
         case trackPresentation
         case url
-        case format
-        case albumAudioNormalizationData
-        case trackAudioNormalizationData
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(albumAudioNormalizationData, forKey: .albumAudioNormalizationData)
+        try container.encodeIfPresent(format, forKey: .format)
+        try container.encodeIfPresent(trackAudioNormalizationData, forKey: .trackAudioNormalizationData)
         try container.encodeIfPresent(trackPresentation, forKey: .trackPresentation)
         try container.encodeIfPresent(url, forKey: .url)
-        try container.encodeIfPresent(format, forKey: .format)
-        try container.encodeIfPresent(albumAudioNormalizationData, forKey: .albumAudioNormalizationData)
-        try container.encodeIfPresent(trackAudioNormalizationData, forKey: .trackAudioNormalizationData)
     }
 }
 
