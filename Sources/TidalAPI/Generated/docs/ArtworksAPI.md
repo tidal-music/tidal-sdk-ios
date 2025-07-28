@@ -186,7 +186,7 @@ Creates a new artwork.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let artworkCreateOperationPayload = ArtworkCreateOperation_Payload(data: ArtworkCreateOperation_Payload_Data(type: "type_example", attributes: ArtworkCreateOperation_Payload_Data_Attributes(mediaType: "mediaType_example", sourceFile: ArtworkCreateOperation_Payload_Data_Attributes_SourceFile(md5Hash: "md5Hash_example", size: 123)))) // ArtworkCreateOperationPayload |  (optional)
+let artworkCreateOperationPayload = ArtworkCreateOperation_Payload(data: ArtworkCreateOperation_Payload_Data(attributes: ArtworkCreateOperation_Payload_Data_Attributes(mediaType: "mediaType_example", sourceFile: ArtworkCreateOperation_Payload_Data_Attributes_SourceFile(md5Hash: "md5Hash_example", size: 123)), type: "type_example")) // ArtworkCreateOperationPayload |  (optional)
 
 // Create single artwork.
 ArtworksAPI.artworksPost(artworkCreateOperationPayload: artworkCreateOperationPayload) { (response, error) in

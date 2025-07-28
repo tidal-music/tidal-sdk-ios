@@ -27,6 +27,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Delete single track.
+     
+     - returns: 
+     */
+	public static func tracksIdDelete(id: String) async throws {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdDeleteWithRequestBuilder(id: id)
+		}
+	}
+
+
+	/**
      Get single track.
      
      - returns: TracksSingleDataDocument
@@ -75,6 +87,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Get lyrics relationship (\&quot;to-many\&quot;).
+     
+     - returns: TracksMultiDataRelationshipDocument
+     */
+	public static func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsLyricsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: TracksMultiDataRelationshipDocument
@@ -118,6 +142,18 @@ public enum TracksAPITidal {
 	public static func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> TracksMultiDataRelationshipDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Get trackStatistics relationship (\&quot;to-one\&quot;).
+     
+     - returns: TracksSingletonDataRelationshipDocument
+     */
+	public static func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil) async throws -> TracksSingletonDataRelationshipDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsTrackStatisticsGetWithRequestBuilder(id: id, include: include)
 		}
 	}
 

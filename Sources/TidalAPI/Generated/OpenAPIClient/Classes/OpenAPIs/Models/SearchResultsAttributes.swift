@@ -12,30 +12,30 @@ import AnyCodable
 
 public struct SearchResultsAttributes: Codable, Hashable {
 
-    /** search request unique tracking number */
-    public var trackingId: String
     /** 'did you mean' prompt */
     public var didYouMean: String?
+    /** search request unique tracking number */
+    public var trackingId: String
 
     public init(
-        trackingId: String,
-        didYouMean: String? = nil
+        didYouMean: String? = nil,
+        trackingId: String
     ) {
-        self.trackingId = trackingId
         self.didYouMean = didYouMean
+        self.trackingId = trackingId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case trackingId
         case didYouMean
+        case trackingId
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(trackingId, forKey: .trackingId)
         try container.encodeIfPresent(didYouMean, forKey: .didYouMean)
+        try container.encode(trackingId, forKey: .trackingId)
     }
 }
 

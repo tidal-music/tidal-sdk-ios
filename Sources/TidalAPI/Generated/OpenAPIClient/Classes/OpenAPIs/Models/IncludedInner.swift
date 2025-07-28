@@ -12,15 +12,18 @@ import AnyCodable
 
 public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case typeAlbumsResource(AlbumsResource)
+    case typeArtistBiographiesResource(ArtistBiographiesResource)
     case typeArtistRolesResource(ArtistRolesResource)
     case typeArtistsResource(ArtistsResource)
     case typeArtworksResource(ArtworksResource)
+    case typeLyricsResource(LyricsResource)
     case typePlaylistsResource(PlaylistsResource)
     case typeProvidersResource(ProvidersResource)
     case typeSearchResultsResource(SearchResultsResource)
     case typeSearchSuggestionsResource(SearchSuggestionsResource)
     case typeTrackFilesResource(TrackFilesResource)
     case typeTrackManifestsResource(TrackManifestsResource)
+    case typeTrackStatisticsResource(TrackStatisticsResource)
     case typeTracksResource(TracksResource)
     case typeUserCollectionsResource(UserCollectionsResource)
     case typeUserEntitlementsResource(UserEntitlementsResource)
@@ -34,11 +37,15 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         switch self {
         case .typeAlbumsResource(let value):
             try container.encode(value)
+        case .typeArtistBiographiesResource(let value):
+            try container.encode(value)
         case .typeArtistRolesResource(let value):
             try container.encode(value)
         case .typeArtistsResource(let value):
             try container.encode(value)
         case .typeArtworksResource(let value):
+            try container.encode(value)
+        case .typeLyricsResource(let value):
             try container.encode(value)
         case .typePlaylistsResource(let value):
             try container.encode(value)
@@ -51,6 +58,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .typeTrackFilesResource(let value):
             try container.encode(value)
         case .typeTrackManifestsResource(let value):
+            try container.encode(value)
+        case .typeTrackStatisticsResource(let value):
             try container.encode(value)
         case .typeTracksResource(let value):
             try container.encode(value)
@@ -81,6 +90,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "albums":
             let value = try AlbumsResource(from: decoder)
             self = .typeAlbumsResource(value)
+        case "artistBiographies":
+            let value = try ArtistBiographiesResource(from: decoder)
+            self = .typeArtistBiographiesResource(value)
         case "artistRoles":
             let value = try ArtistRolesResource(from: decoder)
             self = .typeArtistRolesResource(value)
@@ -90,6 +102,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "artworks":
             let value = try ArtworksResource(from: decoder)
             self = .typeArtworksResource(value)
+        case "lyrics":
+            let value = try LyricsResource(from: decoder)
+            self = .typeLyricsResource(value)
         case "playlists":
             let value = try PlaylistsResource(from: decoder)
             self = .typePlaylistsResource(value)
@@ -108,6 +123,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "trackManifests":
             let value = try TrackManifestsResource(from: decoder)
             self = .typeTrackManifestsResource(value)
+        case "trackStatistics":
+            let value = try TrackStatisticsResource(from: decoder)
+            self = .typeTrackStatisticsResource(value)
         case "tracks":
             let value = try TracksResource(from: decoder)
             self = .typeTracksResource(value)
@@ -140,15 +158,18 @@ extension IncludedInner: Identifiable {
     public var id: String {
         switch self {
         case .typeAlbumsResource(let value): return value.id
+        case .typeArtistBiographiesResource(let value): return value.id
         case .typeArtistRolesResource(let value): return value.id
         case .typeArtistsResource(let value): return value.id
         case .typeArtworksResource(let value): return value.id
+        case .typeLyricsResource(let value): return value.id
         case .typePlaylistsResource(let value): return value.id
         case .typeProvidersResource(let value): return value.id
         case .typeSearchResultsResource(let value): return value.id
         case .typeSearchSuggestionsResource(let value): return value.id
         case .typeTrackFilesResource(let value): return value.id
         case .typeTrackManifestsResource(let value): return value.id
+        case .typeTrackStatisticsResource(let value): return value.id
         case .typeTracksResource(let value): return value.id
         case .typeUserCollectionsResource(let value): return value.id
         case .typeUserEntitlementsResource(let value): return value.id

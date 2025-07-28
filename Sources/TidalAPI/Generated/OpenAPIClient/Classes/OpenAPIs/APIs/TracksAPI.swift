@@ -17,7 +17,7 @@ internal class TracksAPI {
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, providers, radio, similarTracks (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics (optional)
      - parameter filterROwnersId: (query) User id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterId: (query) A Tidal catalogue ID (optional)
@@ -40,7 +40,7 @@ internal class TracksAPI {
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, providers, radio, similarTracks (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics (optional)
      - parameter filterROwnersId: (query) User id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterId: (query) A Tidal catalogue ID (optional)
@@ -73,11 +73,53 @@ internal class TracksAPI {
     }
 
     /**
+     Delete single track.
+     
+     - parameter id: (path) A Tidal catalogue ID 
+     - returns: Void
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdDelete(id: String) async throws {
+        return try await tracksIdDeleteWithRequestBuilder(id: id).execute().body
+    }
+
+    /**
+     Delete single track.
+     - DELETE /tracks/{id}
+     - Deletes existing track.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) A Tidal catalogue ID 
+     - returns: RequestBuilder<Void> 
+     */
+    internal class func tracksIdDeleteWithRequestBuilder(id: String) -> RequestBuilder<Void> {
+        var localVariablePath = "/tracks/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get single track.
      
      - parameter id: (path) A Tidal catalogue ID 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, providers, radio, similarTracks (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics (optional)
      - returns: TracksSingleDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -97,7 +139,7 @@ internal class TracksAPI {
        - name: Client_Credentials
      - parameter id: (path) A Tidal catalogue ID 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, providers, radio, similarTracks (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics (optional)
      - returns: RequestBuilder<TracksSingleDataDocument> 
      */
     internal class func tracksIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<TracksSingleDataDocument> {
@@ -268,6 +310,59 @@ internal class TracksAPI {
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TracksMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get lyrics relationship (\"to-many\").
+     
+     - parameter id: (path) A Tidal catalogue ID 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: lyrics (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: TracksMultiDataRelationshipDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiDataRelationshipDocument {
+        return try await tracksIdRelationshipsLyricsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+    }
+
+    /**
+     Get lyrics relationship (\"to-many\").
+     - GET /tracks/{id}/relationships/lyrics
+     - Retrieves lyrics relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) A Tidal catalogue ID 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: lyrics (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<TracksMultiDataRelationshipDocument> 
+     */
+    internal class func tracksIdRelationshipsLyricsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksMultiDataRelationshipDocument> {
+        var localVariablePath = "/tracks/{id}/relationships/lyrics"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -492,6 +587,56 @@ internal class TracksAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<TracksMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get trackStatistics relationship (\"to-one\").
+     
+     - parameter id: (path) A Tidal catalogue ID 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: trackStatistics (optional)
+     - returns: TracksSingletonDataRelationshipDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil) async throws -> TracksSingletonDataRelationshipDocument {
+        return try await tracksIdRelationshipsTrackStatisticsGetWithRequestBuilder(id: id, include: include).execute().body
+    }
+
+    /**
+     Get trackStatistics relationship (\"to-one\").
+     - GET /tracks/{id}/relationships/trackStatistics
+     - Retrieves trackStatistics relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) A Tidal catalogue ID 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: trackStatistics (optional)
+     - returns: RequestBuilder<TracksSingletonDataRelationshipDocument> 
+     */
+    internal class func tracksIdRelationshipsTrackStatisticsGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<TracksSingletonDataRelationshipDocument> {
+        var localVariablePath = "/tracks/{id}/relationships/trackStatistics"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TracksSingletonDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

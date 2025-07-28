@@ -18,64 +18,77 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case _private = "PRIVATE"
     }
     public enum Key: String, Codable, CaseIterable {
-        case a = "A"
-        case ab = "Ab"
-        case b = "B"
-        case bb = "Bb"
+        case unknown = "UNKNOWN"
         case c = "C"
         case csharp = "CSharp"
         case d = "D"
-        case e = "E"
         case eb = "Eb"
+        case e = "E"
         case f = "F"
         case fsharp = "FSharp"
         case g = "G"
+        case ab = "Ab"
+        case a = "A"
+        case bb = "Bb"
+        case b = "B"
     }
     public enum KeyScale: String, Codable, CaseIterable {
+        case unknown = "UNKNOWN"
         case major = "MAJOR"
         case minor = "MINOR"
+        case aeolian = "AEOLIAN"
+        case blues = "BLUES"
+        case dorian = "DORIAN"
+        case harmonicMinor = "HARMONIC_MINOR"
+        case locrian = "LOCRIAN"
+        case lydian = "LYDIAN"
+        case mixolydian = "MIXOLYDIAN"
+        case pentatonicMajor = "PENTATONIC_MAJOR"
+        case phrygian = "PHRYGIAN"
+        case melodicMinor = "MELODIC_MINOR"
+        case pentatonicMinor = "PENTATONIC_MINOR"
     }
     public static let genreTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
     public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
-    public var title: String?
-    /** Explicit content */
-    public var explicit: Bool?
     /** Access type */
     public var accessType: AccessType?
     public var bpm: Float?
+    /** Explicit content */
+    public var explicit: Bool?
+    public var genreTags: [String]?
     public var key: Key?
     public var keyScale: KeyScale?
-    public var genreTags: [String]?
+    public var title: String?
     public var toneTags: [String]?
 
     public init(
-        title: String? = nil,
-        explicit: Bool? = nil,
         accessType: AccessType? = nil,
         bpm: Float? = nil,
+        explicit: Bool? = nil,
+        genreTags: [String]? = nil,
         key: Key? = nil,
         keyScale: KeyScale? = nil,
-        genreTags: [String]? = nil,
+        title: String? = nil,
         toneTags: [String]? = nil
     ) {
-        self.title = title
-        self.explicit = explicit
         self.accessType = accessType
         self.bpm = bpm
+        self.explicit = explicit
+        self.genreTags = genreTags
         self.key = key
         self.keyScale = keyScale
-        self.genreTags = genreTags
+        self.title = title
         self.toneTags = toneTags
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case title
-        case explicit
         case accessType
         case bpm
+        case explicit
+        case genreTags
         case key
         case keyScale
-        case genreTags
+        case title
         case toneTags
     }
 
@@ -83,13 +96,13 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(title, forKey: .title)
-        try container.encodeIfPresent(explicit, forKey: .explicit)
         try container.encodeIfPresent(accessType, forKey: .accessType)
         try container.encodeIfPresent(bpm, forKey: .bpm)
+        try container.encodeIfPresent(explicit, forKey: .explicit)
+        try container.encodeIfPresent(genreTags, forKey: .genreTags)
         try container.encodeIfPresent(key, forKey: .key)
         try container.encodeIfPresent(keyScale, forKey: .keyScale)
-        try container.encodeIfPresent(genreTags, forKey: .genreTags)
+        try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(toneTags, forKey: .toneTags)
     }
 }
