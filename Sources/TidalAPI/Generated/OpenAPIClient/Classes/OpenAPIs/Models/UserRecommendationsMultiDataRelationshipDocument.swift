@@ -13,23 +13,23 @@ import AnyCodable
 public struct UserRecommendationsMultiDataRelationshipDocument: Codable, Hashable {
 
     public var data: [ResourceIdentifier]?
-    public var links: Links?
     public var included: [IncludedInner]?
+    public var links: Links?
 
     public init(
         data: [ResourceIdentifier]? = nil,
-        links: Links? = nil,
-        included: [IncludedInner]? = nil
+        included: [IncludedInner]? = nil,
+        links: Links? = nil
     ) {
         self.data = data
-        self.links = links
         self.included = included
+        self.links = links
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case data
-        case links
         case included
+        case links
     }
 
     // Encodable protocol methods
@@ -37,8 +37,8 @@ public struct UserRecommendationsMultiDataRelationshipDocument: Codable, Hashabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(data, forKey: .data)
-        try container.encodeIfPresent(links, forKey: .links)
         try container.encodeIfPresent(included, forKey: .included)
+        try container.encodeIfPresent(links, forKey: .links)
     }
 }
 

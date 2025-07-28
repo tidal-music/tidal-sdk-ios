@@ -13,30 +13,30 @@ import AnyCodable
 /** metadata for upload link */
 public struct FileUploadLinkMeta: Codable, Hashable {
 
-    /** HTTP method */
-    public var method: String
     /** HTTP headers that must be added to the operation */
     public var headers: [String: String]?
+    /** HTTP method */
+    public var method: String
 
     public init(
-        method: String,
-        headers: [String: String]? = nil
+        headers: [String: String]? = nil,
+        method: String
     ) {
-        self.method = method
         self.headers = headers
+        self.method = method
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case method
         case headers
+        case method
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(method, forKey: .method)
         try container.encodeIfPresent(headers, forKey: .headers)
+        try container.encode(method, forKey: .method)
     }
 }
 

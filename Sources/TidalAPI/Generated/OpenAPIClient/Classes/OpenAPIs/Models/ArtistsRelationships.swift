@@ -12,63 +12,68 @@ import AnyCodable
 
 public struct ArtistsRelationships: Codable, Hashable {
 
-    public var similarArtists: MultiDataRelationshipDoc
     public var albums: MultiDataRelationshipDoc
-    public var roles: MultiDataRelationshipDoc
-    public var videos: MultiDataRelationshipDoc
+    public var biography: SingletonDataRelationshipDoc
     public var owners: MultiDataRelationshipDoc
     public var profileArt: MultiDataRelationshipDoc
+    public var radio: MultiDataRelationshipDoc
+    public var roles: MultiDataRelationshipDoc
+    public var similarArtists: MultiDataRelationshipDoc
     public var trackProviders: ArtistsTrackProvidersMultiDataRelationshipDocument
     public var tracks: MultiDataRelationshipDoc
-    public var radio: MultiDataRelationshipDoc
+    public var videos: MultiDataRelationshipDoc
 
     public init(
-        similarArtists: MultiDataRelationshipDoc,
         albums: MultiDataRelationshipDoc,
-        roles: MultiDataRelationshipDoc,
-        videos: MultiDataRelationshipDoc,
+        biography: SingletonDataRelationshipDoc,
         owners: MultiDataRelationshipDoc,
         profileArt: MultiDataRelationshipDoc,
+        radio: MultiDataRelationshipDoc,
+        roles: MultiDataRelationshipDoc,
+        similarArtists: MultiDataRelationshipDoc,
         trackProviders: ArtistsTrackProvidersMultiDataRelationshipDocument,
         tracks: MultiDataRelationshipDoc,
-        radio: MultiDataRelationshipDoc
+        videos: MultiDataRelationshipDoc
     ) {
-        self.similarArtists = similarArtists
         self.albums = albums
-        self.roles = roles
-        self.videos = videos
+        self.biography = biography
         self.owners = owners
         self.profileArt = profileArt
+        self.radio = radio
+        self.roles = roles
+        self.similarArtists = similarArtists
         self.trackProviders = trackProviders
         self.tracks = tracks
-        self.radio = radio
+        self.videos = videos
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case similarArtists
         case albums
-        case roles
-        case videos
+        case biography
         case owners
         case profileArt
+        case radio
+        case roles
+        case similarArtists
         case trackProviders
         case tracks
-        case radio
+        case videos
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(similarArtists, forKey: .similarArtists)
         try container.encode(albums, forKey: .albums)
-        try container.encode(roles, forKey: .roles)
-        try container.encode(videos, forKey: .videos)
+        try container.encode(biography, forKey: .biography)
         try container.encode(owners, forKey: .owners)
         try container.encode(profileArt, forKey: .profileArt)
+        try container.encode(radio, forKey: .radio)
+        try container.encode(roles, forKey: .roles)
+        try container.encode(similarArtists, forKey: .similarArtists)
         try container.encode(trackProviders, forKey: .trackProviders)
         try container.encode(tracks, forKey: .tracks)
-        try container.encode(radio, forKey: .radio)
+        try container.encode(videos, forKey: .videos)
     }
 }
 

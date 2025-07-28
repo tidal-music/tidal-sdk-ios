@@ -12,54 +12,60 @@ import AnyCodable
 
 public struct ArtistsAttributes: Codable, Hashable {
 
-    /** Artist name */
-    public var name: String
-    /** Artist popularity (0.0 - 1.0) */
-    public var popularity: Double
+    /** Is the artist enabled for contributions? */
+    public var contributionsEnabled: Bool?
+    /** Contributions sales pitch */
+    public var contributionsSalesPitch: String?
     /** Artist links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
     /** Artist handle */
     public var handle: String?
+    /** Artist name */
+    public var name: String
+    /** Artist popularity (0.0 - 1.0) */
+    public var popularity: Double
     /** Is the artist spotlighted? */
     public var spotlighted: Bool?
-    /** Is the artist enabled for contributions? */
-    public var contributionsEnabled: Bool?
 
     public init(
-        name: String,
-        popularity: Double,
+        contributionsEnabled: Bool? = nil,
+        contributionsSalesPitch: String? = nil,
         externalLinks: [ExternalLink]? = nil,
         handle: String? = nil,
-        spotlighted: Bool? = nil,
-        contributionsEnabled: Bool? = nil
+        name: String,
+        popularity: Double,
+        spotlighted: Bool? = nil
     ) {
-        self.name = name
-        self.popularity = popularity
+        self.contributionsEnabled = contributionsEnabled
+        self.contributionsSalesPitch = contributionsSalesPitch
         self.externalLinks = externalLinks
         self.handle = handle
+        self.name = name
+        self.popularity = popularity
         self.spotlighted = spotlighted
-        self.contributionsEnabled = contributionsEnabled
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case name
-        case popularity
+        case contributionsEnabled
+        case contributionsSalesPitch
         case externalLinks
         case handle
+        case name
+        case popularity
         case spotlighted
-        case contributionsEnabled
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
-        try container.encode(popularity, forKey: .popularity)
+        try container.encodeIfPresent(contributionsEnabled, forKey: .contributionsEnabled)
+        try container.encodeIfPresent(contributionsSalesPitch, forKey: .contributionsSalesPitch)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(handle, forKey: .handle)
+        try container.encode(name, forKey: .name)
+        try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(spotlighted, forKey: .spotlighted)
-        try container.encodeIfPresent(contributionsEnabled, forKey: .contributionsEnabled)
     }
 }
 

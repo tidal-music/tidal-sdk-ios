@@ -19,24 +19,24 @@ public struct TrackCreateOperationPayloadDataAttributes: Codable, Hashable {
     }
     /** Access type */
     public var accessType: AccessType
-    public var title: String
     /** Explicit content */
     public var explicit: Bool?
+    public var title: String
 
     public init(
         accessType: AccessType,
-        title: String,
-        explicit: Bool? = nil
+        explicit: Bool? = nil,
+        title: String
     ) {
         self.accessType = accessType
-        self.title = title
         self.explicit = explicit
+        self.title = title
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case accessType
-        case title
         case explicit
+        case title
     }
 
     // Encodable protocol methods
@@ -44,8 +44,8 @@ public struct TrackCreateOperationPayloadDataAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(accessType, forKey: .accessType)
-        try container.encode(title, forKey: .title)
         try container.encodeIfPresent(explicit, forKey: .explicit)
+        try container.encode(title, forKey: .title)
     }
 }
 
