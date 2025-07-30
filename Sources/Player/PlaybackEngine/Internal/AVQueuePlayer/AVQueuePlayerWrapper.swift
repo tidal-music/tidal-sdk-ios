@@ -21,6 +21,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	@Atomic private var player: AVQueuePlayer
 	private var playerMonitor: AVPlayerMonitor?
 	private var isSeeking = false
+	@Atomic private var currentSeekTask: Task<Void, Never>?
 
 	private let contentKeyDelegateQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.contentkeydelegate.queue")
 	private let playbackTimeProgressQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.playbacktimeprogress.queue")
@@ -183,35 +184,65 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	}
 
 	func seek(to time: Double) {
+		// Cancel any previous seek operation
+		currentSeekTask?.cancel()
+		
+		let seekTask = Task {
+			await performSeek(to: time)
+		}
+		currentSeekTask = seekTask
+		
 		queue.dispatch {
-			guard let currentItem = self.player.currentItem, let asset = self.playerItemAssets[currentItem] else {
+			// Check if this task is still current (not cancelled)
+			guard !seekTask.isCancelled else { return }
+			
+			await seekTask.value
+		}
+	}
+	
+	private func performSeek(to time: Double) async {
+		// Check for cancellation early
+		guard !Task.isCancelled else { return }
+		
+		guard let currentItem = self.player.currentItem, let asset = self.playerItemAssets[currentItem] else {
+			return
+		}
+
+		self.delegates.seeking(in: asset)
+
+		if self.shouldPauseAndPlayAroundSeek {
+			if self.player.timeControlStatus == .playing {
+				self.isSeeking = true
+				await self.player.pause()
+			}
+
+			// Check for cancellation before expensive seek operation
+			guard !Task.isCancelled else {
+				self.isSeeking = false
 				return
 			}
 
-			self.delegates.seeking(in: asset)
+			let completed = await self.player.seek(to: time)
+			self.isSeeking = false
+			
+			// Check for cancellation and item validity after seek
+			guard !Task.isCancelled, completed, currentItem == self.player.currentItem else {
+				return
+			}
 
-			if self.shouldPauseAndPlayAroundSeek {
-				if self.player.timeControlStatus == .playing {
-					self.isSeeking = true
-					await self.player.pause()
-				}
+			await self.player.play()
+			asset.setAssetPosition(currentItem)
+		} else {
+			// Check for cancellation before seek
+			guard !Task.isCancelled else { return }
+			
+			let completed = await self.player.seek(to: time)
+			guard !Task.isCancelled, completed, currentItem == self.player.currentItem else {
+				return
+			}
 
-				let completed = await self.player.seek(to: time)
-				self.isSeeking = false
-				await self.player.play()
-
-				guard completed, currentItem == self.player.currentItem else {
-					return
-				}
-
-				asset.setAssetPosition(currentItem)
-			} else {
-				let completed = await self.player.seek(to: time)
-				guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
-					return
-				}
-
-				asset.setAssetPosition(currentItem)
+			asset.setAssetPosition(currentItem)
+			if self.player.timeControlStatus == .playing {
 				self.delegates.playing(asset: asset)
 			}
 		}
@@ -219,6 +250,8 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	func unload() {
 		queue.cancelAllOperations()
+		currentSeekTask?.cancel()
+		currentSeekTask = nil
 
 		playerMonitor = nil
 		delegates.removeAll()
@@ -233,6 +266,9 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	func reset() {
 		queue.cancelAllOperations()
+		currentSeekTask?.cancel()
+		currentSeekTask = nil
+		
 		queue.dispatch {
 			self.delegates.removeAll()
 			self.internalReset()
