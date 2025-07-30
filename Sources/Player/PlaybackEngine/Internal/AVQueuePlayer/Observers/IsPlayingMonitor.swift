@@ -12,4 +12,9 @@ final class IsPlayingMonitor {
 			}
 		}
 	}
+	
+	deinit {
+		observation?.invalidate()
+		observation = nil
+	}
 }

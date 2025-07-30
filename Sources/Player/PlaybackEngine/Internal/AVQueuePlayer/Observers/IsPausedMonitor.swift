@@ -12,4 +12,9 @@ final class IsPausedMonitor {
 			}
 		}
 	}
+	
+	deinit {
+		observation?.invalidate()
+		observation = nil
+	}
 }

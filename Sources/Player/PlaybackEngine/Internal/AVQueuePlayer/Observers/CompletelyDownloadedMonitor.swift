@@ -20,6 +20,11 @@ final class CompletelyDownloadedMonitor {
 		}
 	}
 
+	deinit {
+		observation?.invalidate()
+		observation = nil
+	}
+
 	func isCompletelyDownloaded() -> Bool {
 		completelyDownloaded
 	}
