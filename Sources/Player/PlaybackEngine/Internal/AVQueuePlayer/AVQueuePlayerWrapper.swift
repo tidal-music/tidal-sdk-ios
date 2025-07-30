@@ -514,7 +514,7 @@ private extension AVQueuePlayerWrapper {
 		do {
 			var formatDescriptions = [CMFormatDescription]()
 			for track in playerItem.tracks {
-				if let assetTrack = track.assetTrack {
+				if let assetTrack = await track.assetTrack {
 					try await formatDescriptions.append(contentsOf: assetTrack.load(.formatDescriptions))
 				}
 			}
@@ -665,7 +665,7 @@ private extension AVQueuePlayerWrapper {
 				PlayerWorld.logger?.log(loggable: PlayerLoggable.itemChangedWithoutQueuedItems)
 				
 				// Find the next available item that's ready to play
-				if let (nextPlayerItem, nextAsset) = self.findNextReadyAsset() {
+				if let (nextPlayerItem, _) = self.findNextReadyAsset() {
 					self.enqueue(playerItem: nextPlayerItem)
 					self.delegates.completed(asset: completedAsset)
 				} else {
