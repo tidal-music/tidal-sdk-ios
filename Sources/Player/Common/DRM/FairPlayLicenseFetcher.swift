@@ -46,14 +46,51 @@ final class FairPlayLicenseFetcher {
 	}
 
 	func getLicense(streamingSessionId: String, keyRequest: KeyRequest) async throws -> Data {
-		let spc = try await createSpc(keyRequest: keyRequest)
-		let license = try await getLicense(streamingSessionId: streamingSessionId, licenseChallenge: spc)
+		// Add timeout to prevent hanging DRM operations
+		return try await withThrowingTaskGroup(of: Data.self) { group in
+			// Main license fetch task
+			group.addTask {
+				let spc = try await self.createSpc(keyRequest: keyRequest)
+				let license = try await self.getLicense(streamingSessionId: streamingSessionId, licenseChallenge: spc)
 
-		if let persistableContentKeyRequest = keyRequest as? AVPersistableContentKeyRequest {
-			return try persistableContentKeyRequest.persistableContentKey(fromKeyVendorResponse: license)
-		} else {
-			return license
+				if let persistableContentKeyRequest = keyRequest as? AVPersistableContentKeyRequest {
+					return try persistableContentKeyRequest.persistableContentKey(fromKeyVendorResponse: license)
+				} else {
+					return license
+				}
+			}
+			
+			// Timeout task
+			group.addTask {
+				try await Task.sleep(nanoseconds: 30_000_000_000) // 30 second timeout
+				throw PlayerInternalError(
+					errorId: .PERetryable,
+					errorType: .drmLicenseError,
+					code: -4,
+					description: "License fetch timeout after 30 seconds"
+				)
+			}
+			
+			// Return the first completed task (either success or timeout)
+			guard let result = try await group.next() else {
+				throw PlayerInternalError(
+					errorId: .EUnexpected,
+					errorType: .drmLicenseError,
+					code: -5,
+					description: "License fetch task group failed unexpectedly"
+				)
+			}
+			
+			// Cancel remaining tasks
+			group.cancelAll()
+			
+			return result
 		}
+	}
+	
+	// Public method to access certificate for external callers
+	func preloadCertificate() async throws {
+		_ = try await getCertificate()
 	}
 }
 
@@ -65,14 +102,37 @@ private extension FairPlayLicenseFetcher {
 	}
 
 	func getCertificate() async throws -> Data {
-		if let certificate {
+		if let certificate = certificate {
 			return certificate
 		}
 
-		let certificate = try await httpClient.get(url: FairPlayLicenseFetcher.CERTIFICATE_URL, headers: [:])
-		self.certificate = certificate
-
-		return certificate
+		let maxRetries = 3
+		var lastError: Error?
+		
+		for attempt in 1...maxRetries {
+			do {
+				let certificate = try await httpClient.get(
+					url: FairPlayLicenseFetcher.CERTIFICATE_URL, 
+					headers: [:]
+				)
+				self.certificate = certificate
+				return certificate
+			} catch {
+				lastError = error
+				if attempt < maxRetries {
+					// Exponential backoff: 1s, 2s, 4s
+					let delay = UInt64(attempt * 1_000_000_000)
+					try await Task.sleep(nanoseconds: delay)
+				}
+			}
+		}
+		
+		throw lastError ?? PlayerInternalError(
+			errorId: .PERetryable,
+			errorType: .drmLicenseError,
+			code: -3,
+			description: "Certificate fetch failed after \(maxRetries) attempts"
+		)
 	}
 
 	func getLicense(
