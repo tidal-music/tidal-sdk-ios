@@ -31,7 +31,7 @@ jobs:
 
     - name: Run Player tests (xcodebuild)
       run: |-
-        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' test -skip-testing:PlayerTests/PlayLogTests -skip-testing:PlayerTests/PlayLogWithDeinitTests -skipPackagePluginValidation | xcbeautify --renderer github-actions
+        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test -skip-testing:PlayerTests/PlayLogTests -skip-testing:PlayerTests/PlayLogWithDeinitTests -skipPackagePluginValidation | xcbeautify --renderer github-actions
 
   build-test-apps:
     name: Build Test Apps
@@ -44,8 +44,8 @@ jobs:
 
     - name: Build Player test app
       run: |-
-        set -o pipefail && xcodebuild -project TestApps/Player/PlayerTestApp.xcodeproj -scheme PlayerTestApp -destination 'platform=iOS Simulator,name=iPhone 15' build -skipPackagePluginValidation | xcbeautify --renderer github-actions
+        set -o pipefail && xcodebuild -project TestApps/Player/PlayerTestApp.xcodeproj -scheme PlayerTestApp -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -skipPackagePluginValidation CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcbeautify --renderer github-actions
 
     - name: Build Auth test app
       run: |-
-        set -o pipefail && xcodebuild -project TestApps/Auth/AuthTestApp.xcodeproj -scheme AuthTestApp -destination 'platform=iOS Simulator,name=iPhone 15' build -skipPackagePluginValidation | xcbeautify --renderer github-actions
+        set -o pipefail && xcodebuild -project TestApps/Auth/AuthTestApp.xcodeproj -scheme AuthTestApp -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -skipPackagePluginValidation CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcbeautify --renderer github-actions
