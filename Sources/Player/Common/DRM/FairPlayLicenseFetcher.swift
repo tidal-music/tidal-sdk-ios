@@ -46,45 +46,13 @@ final class FairPlayLicenseFetcher {
 	}
 
 	func getLicense(streamingSessionId: String, keyRequest: KeyRequest) async throws -> Data {
-		// Add timeout to prevent hanging DRM operations
-		return try await withThrowingTaskGroup(of: Data.self) { group in
-			// Main license fetch task
-			group.addTask {
-				let spc = try await self.createSpc(keyRequest: keyRequest)
-				let license = try await self.getLicense(streamingSessionId: streamingSessionId, licenseChallenge: spc)
+		let spc = try await createSpc(keyRequest: keyRequest)
+		let license = try await getLicense(streamingSessionId: streamingSessionId, licenseChallenge: spc)
 
-				if let persistableContentKeyRequest = keyRequest as? AVPersistableContentKeyRequest {
-					return try persistableContentKeyRequest.persistableContentKey(fromKeyVendorResponse: license)
-				} else {
-					return license
-				}
-			}
-			
-			// Timeout task
-			group.addTask {
-				try await Task.sleep(nanoseconds: 30_000_000_000) // 30 second timeout
-				throw PlayerInternalError(
-					errorId: .PERetryable,
-					errorType: .drmLicenseError,
-					code: -4,
-					description: "License fetch timeout after 30 seconds"
-				)
-			}
-			
-			// Return the first completed task (either success or timeout)
-			guard let result = try await group.next() else {
-				throw PlayerInternalError(
-					errorId: .EUnexpected,
-					errorType: .drmLicenseError,
-					code: -5,
-					description: "License fetch task group failed unexpectedly"
-				)
-			}
-			
-			// Cancel remaining tasks
-			group.cancelAll()
-			
-			return result
+		if let persistableContentKeyRequest = keyRequest as? AVPersistableContentKeyRequest {
+			return try persistableContentKeyRequest.persistableContentKey(fromKeyVendorResponse: license)
+		} else {
+			return license
 		}
 	}
 	
