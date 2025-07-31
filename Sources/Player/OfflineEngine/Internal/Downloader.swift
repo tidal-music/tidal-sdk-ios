@@ -99,18 +99,34 @@ private extension Downloader {
 		let asset = AVURLAsset(url: playbackInfo.url)
 
 		if let licenseSecurityToken = playbackInfo.licenseSecurityToken {
+			// Create license downloader first
 			let licenseDownloader = LicenseDownloader(
 				fairPlayLicenseFetcher: fairPlayLicenseFetcher,
 				licenseSecurityToken: licenseSecurityToken,
 				downloadTask: downloadTask
 			)
 
-			downloadTask.contentKeySession.setDelegate(licenseDownloader, queue: DispatchQueue.global(qos: .default))
+			// Apple's requirement: Set up content key session BEFORE any asset operations
+			let drmQueue = DispatchQueue(label: "com.tidal.player.drm.download.\(downloadTask.id)", qos: .userInitiated)
+			downloadTask.contentKeySession.setDelegate(licenseDownloader, queue: drmQueue)
+			
+			// Add content key recipient before starting download
 			downloadTask.contentKeySession.addContentKeyRecipient(asset)
 			downloadTask.licenseDownloader = licenseDownloader
+			
+			// Preload certificate to avoid delays during download
+			Task {
+				do {
+					try await fairPlayLicenseFetcher.preloadCertificate()
+				} catch {
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.getLicenseFailed(error: error))
+				}
+			}
 		}
 
 		downloadTask.playbackInfo = playbackInfo
+		
+		// Start media download only after DRM setup is complete
 		mediaDownloader.download(asset: asset, for: downloadTask)
 	}
 

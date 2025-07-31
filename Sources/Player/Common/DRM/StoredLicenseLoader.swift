@@ -41,14 +41,31 @@ extension StoredLicenseLoader: AVContentKeySessionDelegate {
 		_ session: AVContentKeySession,
 		didProvide keyRequest: AVPersistableContentKeyRequest
 	) {
-		SafeTask {
-			do {
-				let license = try await getLicense()
-				keyRequest.processContentKeyResponse(AVContentKeyResponse(fairPlayStreamingKeyResponseData: license))
-			} catch {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseLoaderProcessContentKeyResponseFailed(error: error))
-				keyRequest.processContentKeyResponseError(error)
-			}
+		// Never block this method - it's called on AVFoundation's internal queue
+		Task {
+			await handlePersistableKeyRequest(keyRequest)
+		}
+	}
+	
+	func contentKeySession(_ session: AVContentKeySession, contentKeyRequest keyRequest: AVContentKeyRequest, didFailWithError error: Error) {
+		PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseLoaderProcessContentKeyResponseFailed(error: error))
+	}
+	
+	private func handlePersistableKeyRequest(_ keyRequest: AVPersistableContentKeyRequest) async {
+		do {
+			// Check if task was cancelled before processing
+			try Task.checkCancellation()
+			
+			let license = try await getLicense()
+			let response = AVContentKeyResponse(fairPlayStreamingKeyResponseData: license)
+			keyRequest.processContentKeyResponse(response)
+			
+		} catch is CancellationError {
+			// Don't call processContentKeyResponseError for cancellation
+			return
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseLoaderProcessContentKeyResponseFailed(error: error))
+			keyRequest.processContentKeyResponseError(error)
 		}
 	}
 }
