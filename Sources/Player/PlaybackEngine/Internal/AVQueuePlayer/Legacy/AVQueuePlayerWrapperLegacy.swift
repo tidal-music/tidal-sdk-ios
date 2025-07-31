@@ -406,7 +406,7 @@ private extension AVQueuePlayerWrapperLegacy {
 		do {
 			var formatDescriptions = [CMFormatDescription]()
 			for track in playerItem.tracks {
-				if let assetTrack = track.assetTrack {
+				if let assetTrack = await track.assetTrack {
 					try await formatDescriptions.append(contentsOf: assetTrack.load(.formatDescriptions))
 				}
 			}

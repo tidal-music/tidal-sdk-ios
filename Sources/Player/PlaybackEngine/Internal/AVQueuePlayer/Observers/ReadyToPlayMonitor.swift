@@ -12,4 +12,8 @@ final class ReadyToPlayMonitor {
 			}
 		}
 	}
+	
+	deinit {
+		observation.invalidate()
+	}
 }

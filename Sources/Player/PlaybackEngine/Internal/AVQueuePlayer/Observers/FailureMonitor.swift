@@ -20,4 +20,8 @@ final class FailureMonitor {
 			}
 		}
 	}
+	
+	deinit {
+		observation.invalidate()
+	}
 }

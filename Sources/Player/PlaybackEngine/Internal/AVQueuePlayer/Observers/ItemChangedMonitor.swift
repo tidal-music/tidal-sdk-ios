@@ -14,4 +14,9 @@ final class ItemChangedMonitor {
 			onCurrentItemChange(old)
 		}
 	}
+	
+	deinit {
+		observation?.invalidate()
+		observation = nil
+	}
 }

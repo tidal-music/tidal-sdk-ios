@@ -21,6 +21,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	@Atomic private var player: AVQueuePlayer
 	private var playerMonitor: AVPlayerMonitor?
 	private var isSeeking = false
+	@Atomic private var currentSeekTask: Task<Void, Never>?
 
 	private let contentKeyDelegateQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.contentkeydelegate.queue")
 	private let playbackTimeProgressQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.playbacktimeprogress.queue")
@@ -183,35 +184,65 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	}
 
 	func seek(to time: Double) {
+		// Cancel any previous seek operation
+		currentSeekTask?.cancel()
+		
+		let seekTask = Task {
+			await performSeek(to: time)
+		}
+		currentSeekTask = seekTask
+		
 		queue.dispatch {
-			guard let currentItem = self.player.currentItem, let asset = self.playerItemAssets[currentItem] else {
+			// Check if this task is still current (not cancelled)
+			guard !seekTask.isCancelled else { return }
+			
+			await seekTask.value
+		}
+	}
+	
+	private func performSeek(to time: Double) async {
+		// Check for cancellation early
+		guard !Task.isCancelled else { return }
+		
+		guard let currentItem = self.player.currentItem, let asset = self.playerItemAssets[currentItem] else {
+			return
+		}
+
+		self.delegates.seeking(in: asset)
+
+		if self.shouldPauseAndPlayAroundSeek {
+			if self.player.timeControlStatus == .playing {
+				self.isSeeking = true
+				await self.player.pause()
+			}
+
+			// Check for cancellation before expensive seek operation
+			guard !Task.isCancelled else {
+				self.isSeeking = false
 				return
 			}
 
-			self.delegates.seeking(in: asset)
+			let completed = await self.player.seek(to: time)
+			self.isSeeking = false
+			
+			// Check for cancellation and item validity after seek
+			guard !Task.isCancelled, completed, currentItem == self.player.currentItem else {
+				return
+			}
 
-			if self.shouldPauseAndPlayAroundSeek {
-				if self.player.timeControlStatus == .playing {
-					self.isSeeking = true
-					await self.player.pause()
-				}
+			await self.player.play()
+			asset.setAssetPosition(currentItem)
+		} else {
+			// Check for cancellation before seek
+			guard !Task.isCancelled else { return }
+			
+			let completed = await self.player.seek(to: time)
+			guard !Task.isCancelled, completed, currentItem == self.player.currentItem else {
+				return
+			}
 
-				let completed = await self.player.seek(to: time)
-				self.isSeeking = false
-				await self.player.play()
-
-				guard completed, currentItem == self.player.currentItem else {
-					return
-				}
-
-				asset.setAssetPosition(currentItem)
-			} else {
-				let completed = await self.player.seek(to: time)
-				guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
-					return
-				}
-
-				asset.setAssetPosition(currentItem)
+			asset.setAssetPosition(currentItem)
+			if self.player.timeControlStatus == .playing {
 				self.delegates.playing(asset: asset)
 			}
 		}
@@ -219,6 +250,8 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	func unload() {
 		queue.cancelAllOperations()
+		currentSeekTask?.cancel()
+		currentSeekTask = nil
 
 		playerMonitor = nil
 		delegates.removeAll()
@@ -233,6 +266,9 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	func reset() {
 		queue.cancelAllOperations()
+		currentSeekTask?.cancel()
+		currentSeekTask = nil
+		
 		queue.dispatch {
 			self.delegates.removeAll()
 			self.internalReset()
@@ -241,8 +277,13 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	func updateVolume(loudnessNormalizer: LoudnessNormalizer?) {
 		queue.dispatch {
-			self.player.volume = loudnessNormalizer?.getScaleFactor() ?? 1.0
+			self.setPlayerVolume(with: loudnessNormalizer)
 		}
+	}
+	
+	private func setPlayerVolume(with loudnessNormalizer: LoudnessNormalizer?) {
+		let volume = loudnessNormalizer?.getScaleFactor() ?? Constants.defaultVolume
+		self.player.volume = volume
 	}
 
 	func addMonitoringDelegate(monitoringDelegate: PlayerMonitoringDelegate) {
@@ -473,7 +514,7 @@ private extension AVQueuePlayerWrapper {
 		do {
 			var formatDescriptions = [CMFormatDescription]()
 			for track in playerItem.tracks {
-				if let assetTrack = track.assetTrack {
+				if let assetTrack = await track.assetTrack {
 					try await formatDescriptions.append(contentsOf: assetTrack.load(.formatDescriptions))
 				}
 			}
@@ -535,10 +576,8 @@ private extension AVQueuePlayerWrapper {
 
 			self.player.allowsExternalPlayback = playerItem.tracks.contains(where: { $0.assetTrack?.mediaType == .video })
 
-			let volume: Float = asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
-				.getScaleFactor() ?? Constants.defaultVolume
-
-			self.player.volume = volume
+			// Set volume using unified method
+			self.setPlayerVolume(with: asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer())
 
 			self.delegates.playing(asset: asset)
 		}
@@ -599,26 +638,60 @@ private extension AVQueuePlayerWrapper {
 
 	func playerItemChanged(oldPlayerItem: AVPlayerItem) {
 		queue.dispatch {
+			// Clean up the old item first
 			self.playerItemMonitors.removeValue(forKey: oldPlayerItem)
-			let asset = self.playerItemAssets.removeValue(forKey: oldPlayerItem)
+			let completedAsset = self.playerItemAssets.removeValue(forKey: oldPlayerItem)
 
-			// AVPlayer has moved to the next item in its queue
-			if let currentPlayerItem = self.player.currentItem {
-				self.delegates.completed(asset: asset)
-				if self.player.timeControlStatus == .playing {
-					self.playing(playerItem: currentPlayerItem)
+			// Check current state after cleanup
+			let hasCurrentItem = self.player.currentItem != nil
+			let hasQueuedItems = !self.player.items().isEmpty
+			let hasAvailableAssets = !self.playerItemAssets.isEmpty
+
+			if hasCurrentItem {
+				// Normal case: AVPlayer has moved to the next item in its queue
+				self.delegates.completed(asset: completedAsset)
+				if let currentPlayerItem = self.player.currentItem {
+					if self.player.timeControlStatus == .playing {
+						self.playing(playerItem: currentPlayerItem)
+					}
 				}
-			} else {
-				// AVPlayer had no other item in the queue (We might still be downloading the next one)`
+			} else if hasQueuedItems {
+				// Edge case: AVPlayer queue has items but no currentItem (shouldn't happen normally)
 				PlayerWorld.logger?.log(loggable: PlayerLoggable.itemChangedWithoutQueuedItems)
-				if let (nextPlayerItem, _) = self.playerItemAssets.first {
+				self.delegates.completed(asset: completedAsset)
+				// Let AVPlayer handle the queue naturally
+			} else if hasAvailableAssets {
+				// AVPlayer queue is empty but we have assets available (could be downloading/caching)
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.itemChangedWithoutQueuedItems)
+				
+				// Find the next available item that's ready to play
+				if let (nextPlayerItem, _) = self.findNextReadyAsset() {
 					self.enqueue(playerItem: nextPlayerItem)
+					self.delegates.completed(asset: completedAsset)
 				} else {
+					// No ready assets available, reset to clean state
+					self.delegates.completed(asset: completedAsset)
 					self.internalReset()
 				}
-				self.delegates.completed(asset: asset)
+			} else {
+				// No items available anywhere, clean reset
+				self.delegates.completed(asset: completedAsset)
+				self.internalReset()
 			}
 		}
+	}
+	
+	private func findNextReadyAsset() -> (AVPlayerItem, AVPlayerAsset)? {
+		// Look for the first asset that's ready to play
+		for (playerItem, asset) in playerItemAssets {
+			// Check if the player item is in a playable state
+			if playerItem.status == .readyToPlay {
+				return (playerItem, asset)
+			}
+		}
+		
+		// If no ready items, return the first available one
+		return playerItemAssets.first
 	}
 
 	func playbackProgressed(in playerItem: AVPlayerItem) {

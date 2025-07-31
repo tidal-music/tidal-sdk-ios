@@ -12,4 +12,9 @@ final class WaitingToPlayMonitor {
 			}
 		}
 	}
+	
+	deinit {
+		observation?.invalidate()
+		observation = nil
+	}
 }
