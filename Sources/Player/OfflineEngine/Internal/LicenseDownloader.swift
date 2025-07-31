@@ -107,17 +107,15 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 				return
 			}
 
-			// Get license from server
-			let licenseData = try await fairPlayLicenseFetcher.getLicense(
+			// Get persistable license data from server 
+			// Note: FairPlayLicenseFetcher.getLicense() already creates the persistable key for AVPersistableContentKeyRequest
+			let persistableKey = try await fairPlayLicenseFetcher.getLicense(
 				streamingSessionId: downloadTaskId,
 				keyRequest: keyRequest
 			)
 			
 			// Check if task was cancelled before processing response
 			try Task.checkCancellation()
-			
-			// Create persistable key - this can fail!
-			let persistableKey = try keyRequest.persistableContentKey(fromKeyVendorResponse: licenseData)
 			
 			// Store persistable key
 			try store(persistableKey, for: downloadTask)
