@@ -10,12 +10,11 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Resource identifier JSON:API object */
 public struct ResourceIdentifier: Codable, Hashable {
 
-    /** resource unique identifier */
+    /** Resource id */
     public var id: String
-    /** resource unique type */
+    /** Resource type */
     public var type: String
 
     public init(
@@ -40,7 +39,5 @@ public struct ResourceIdentifier: Codable, Hashable {
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension ResourceIdentifier: Identifiable {}
-

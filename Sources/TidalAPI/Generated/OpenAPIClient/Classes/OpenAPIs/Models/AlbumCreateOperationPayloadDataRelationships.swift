@@ -13,15 +13,19 @@ import AnyCodable
 public struct AlbumCreateOperationPayloadDataRelationships: Codable, Hashable {
 
     public var artists: AlbumCreateOperationPayloadDataRelationshipsArtists
+    public var genres: AlbumCreateOperationPayloadDataRelationshipsGenres?
 
     public init(
-        artists: AlbumCreateOperationPayloadDataRelationshipsArtists
+        artists: AlbumCreateOperationPayloadDataRelationshipsArtists,
+        genres: AlbumCreateOperationPayloadDataRelationshipsGenres? = nil
     ) {
         self.artists = artists
+        self.genres = genres
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case artists
+        case genres
     }
 
     // Encodable protocol methods
@@ -29,7 +33,6 @@ public struct AlbumCreateOperationPayloadDataRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(artists, forKey: .artists)
+        try container.encodeIfPresent(genres, forKey: .genres)
     }
 }
-
-

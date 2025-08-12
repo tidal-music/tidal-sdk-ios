@@ -16,10 +16,10 @@ internal class UserReportsAPI {
      Create single userReport.
      
      - parameter userReportCreateOperationPayload: (body)  (optional)
-     - returns: UserReportsSingleDataDocument
+     - returns: UserReportsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) async throws -> UserReportsSingleDataDocument {
+    internal class func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) async throws -> UserReportsSingleResourceDataDocument {
         return try await userReportsPostWithRequestBuilder(userReportCreateOperationPayload: userReportCreateOperationPayload).execute().body
     }
 
@@ -31,9 +31,9 @@ internal class UserReportsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter userReportCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserReportsSingleDataDocument> 
+     - returns: RequestBuilder<UserReportsSingleResourceDataDocument> 
      */
-    internal class func userReportsPostWithRequestBuilder(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) -> RequestBuilder<UserReportsSingleDataDocument> {
+    internal class func userReportsPostWithRequestBuilder(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) -> RequestBuilder<UserReportsSingleResourceDataDocument> {
         let localVariablePath = "/userReports"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userReportCreateOperationPayload)
@@ -46,7 +46,7 @@ internal class UserReportsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserReportsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserReportsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

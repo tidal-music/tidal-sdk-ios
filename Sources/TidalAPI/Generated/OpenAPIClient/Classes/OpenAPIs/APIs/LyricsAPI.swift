@@ -17,10 +17,10 @@ internal class LyricsAPI {
      
      - parameter id: (path)  
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
-     - returns: LyricsSingleDataDocument
+     - returns: LyricsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdGet(id: String, include: [String]? = nil) async throws -> LyricsSingleDataDocument {
+    internal class func lyricsIdGet(id: String, include: [String]? = nil) async throws -> LyricsSingleResourceDataDocument {
         return try await lyricsIdGetWithRequestBuilder(id: id, include: include).execute().body
     }
 
@@ -36,9 +36,9 @@ internal class LyricsAPI {
        - name: Client_Credentials
      - parameter id: (path)  
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
-     - returns: RequestBuilder<LyricsSingleDataDocument> 
+     - returns: RequestBuilder<LyricsSingleResourceDataDocument> 
      */
-    internal class func lyricsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<LyricsSingleDataDocument> {
+    internal class func lyricsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<LyricsSingleResourceDataDocument> {
         var localVariablePath = "/lyrics/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -57,7 +57,7 @@ internal class LyricsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<LyricsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<LyricsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -69,10 +69,10 @@ internal class LyricsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: LyricsMultiDataRelationshipDocument
+     - returns: LyricsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiDataRelationshipDocument {
+    internal class func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiRelationshipDataDocument {
         return try await lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -87,9 +87,9 @@ internal class LyricsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<LyricsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<LyricsMultiRelationshipDataDocument> 
      */
-    internal class func lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<LyricsMultiDataRelationshipDocument> {
+    internal class func lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<LyricsMultiRelationshipDataDocument> {
         var localVariablePath = "/lyrics/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -110,7 +110,7 @@ internal class LyricsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<LyricsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<LyricsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -121,10 +121,10 @@ internal class LyricsAPI {
      - parameter id: (path)  
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
-     - returns: LyricsSingletonDataRelationshipDocument
+     - returns: LyricsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil) async throws -> LyricsSingletonDataRelationshipDocument {
+    internal class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
         return try await lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
     }
 
@@ -141,9 +141,9 @@ internal class LyricsAPI {
      - parameter id: (path)  
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
-     - returns: RequestBuilder<LyricsSingletonDataRelationshipDocument> 
+     - returns: RequestBuilder<LyricsSingleRelationshipDataDocument> 
      */
-    internal class func lyricsIdRelationshipsTrackGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<LyricsSingletonDataRelationshipDocument> {
+    internal class func lyricsIdRelationshipsTrackGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<LyricsSingleRelationshipDataDocument> {
         var localVariablePath = "/lyrics/{id}/relationships/track"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -163,7 +163,7 @@ internal class LyricsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<LyricsSingletonDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<LyricsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

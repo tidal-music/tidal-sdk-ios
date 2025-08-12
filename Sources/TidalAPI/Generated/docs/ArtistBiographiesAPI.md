@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **artistBiographiesGet**
 ```swift
-    open class func artistBiographiesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistBiographiesMultiDataDocument?, _ error: Error?) -> Void)
+    open class func artistBiographiesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistBiographiesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artistBiographies.
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistBiographiesMultiDataDocument**](ArtistBiographiesMultiDataDocument.md)
+[**ArtistBiographiesMultiResourceDataDocument**](ArtistBiographiesMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **artistBiographiesIdGet**
 ```swift
-    open class func artistBiographiesIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistBiographiesSingleDataDocument?, _ error: Error?) -> Void)
+    open class func artistBiographiesIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistBiographiesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artistBiographie.
@@ -105,7 +105,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistBiographiesSingleDataDocument**](ArtistBiographiesSingleDataDocument.md)
+[**ArtistBiographiesSingleResourceDataDocument**](ArtistBiographiesSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -172,7 +172,7 @@ Void (empty response body)
 
 # **artistBiographiesIdRelationshipsOwnersGet**
 ```swift
-    open class func artistBiographiesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistBiographiesMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistBiographiesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistBiographiesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -211,7 +211,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistBiographiesMultiDataRelationshipDocument**](ArtistBiographiesMultiDataRelationshipDocument.md)
+[**ArtistBiographiesMultiRelationshipDataDocument**](ArtistBiographiesMultiRelationshipDataDocument.md)
 
 ### Authorization
 

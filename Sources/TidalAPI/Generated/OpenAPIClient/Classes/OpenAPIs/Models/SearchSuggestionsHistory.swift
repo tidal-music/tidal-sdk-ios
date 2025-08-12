@@ -13,6 +13,7 @@ import AnyCodable
 /** Suggestions from search history */
 public struct SearchSuggestionsHistory: Codable, Hashable {
 
+    public static let queryRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var highlights: [SearchSuggestionsHighlights]?
     public var query: String
 
@@ -37,5 +38,3 @@ public struct SearchSuggestionsHistory: Codable, Hashable {
         try container.encode(query, forKey: .query)
     }
 }
-
-

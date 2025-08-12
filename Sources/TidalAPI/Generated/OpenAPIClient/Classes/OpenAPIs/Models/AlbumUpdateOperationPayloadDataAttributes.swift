@@ -12,12 +12,10 @@ import AnyCodable
 
 public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public static let genresRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
     public static let titleRule = StringRule(minLength: 1, maxLength: 300, pattern: nil)
     public static let versionRule = StringRule(minLength: 0, maxLength: 300, pattern: nil)
     public var copyright: AlbumUpdateOperationPayloadDataAttributesCopyright?
     public var explicitLyrics: Bool?
-    public var genres: [String]?
     public var releaseDate: Date?
     public var title: String
     public var version: String?
@@ -25,14 +23,12 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public init(
         copyright: AlbumUpdateOperationPayloadDataAttributesCopyright? = nil,
         explicitLyrics: Bool? = nil,
-        genres: [String]? = nil,
         releaseDate: Date? = nil,
         title: String,
         version: String? = nil
     ) {
         self.copyright = copyright
         self.explicitLyrics = explicitLyrics
-        self.genres = genres
         self.releaseDate = releaseDate
         self.title = title
         self.version = version
@@ -41,7 +37,6 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case copyright
         case explicitLyrics
-        case genres
         case releaseDate
         case title
         case version
@@ -53,11 +48,8 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)
-        try container.encodeIfPresent(genres, forKey: .genres)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encode(title, forKey: .title)
         try container.encodeIfPresent(version, forKey: .version)
     }
 }
-
-

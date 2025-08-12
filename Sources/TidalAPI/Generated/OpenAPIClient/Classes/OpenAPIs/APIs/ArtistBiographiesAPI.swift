@@ -18,10 +18,10 @@ internal class ArtistBiographiesAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter filterId: (query) Artist id (optional)
-     - returns: ArtistBiographiesMultiDataDocument
+     - returns: ArtistBiographiesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistBiographiesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistBiographiesMultiDataDocument {
+    internal class func artistBiographiesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistBiographiesMultiResourceDataDocument {
         return try await artistBiographiesGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId).execute().body
     }
 
@@ -38,9 +38,9 @@ internal class ArtistBiographiesAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter filterId: (query) Artist id (optional)
-     - returns: RequestBuilder<ArtistBiographiesMultiDataDocument> 
+     - returns: RequestBuilder<ArtistBiographiesMultiResourceDataDocument> 
      */
-    internal class func artistBiographiesGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtistBiographiesMultiDataDocument> {
+    internal class func artistBiographiesGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtistBiographiesMultiResourceDataDocument> {
         let localVariablePath = "/artistBiographies"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -58,7 +58,7 @@ internal class ArtistBiographiesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ArtistBiographiesMultiDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ArtistBiographiesMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -69,10 +69,10 @@ internal class ArtistBiographiesAPI {
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - returns: ArtistBiographiesSingleDataDocument
+     - returns: ArtistBiographiesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistBiographiesIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtistBiographiesSingleDataDocument {
+    internal class func artistBiographiesIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
         return try await artistBiographiesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
     }
 
@@ -89,9 +89,9 @@ internal class ArtistBiographiesAPI {
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - returns: RequestBuilder<ArtistBiographiesSingleDataDocument> 
+     - returns: RequestBuilder<ArtistBiographiesSingleResourceDataDocument> 
      */
-    internal class func artistBiographiesIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<ArtistBiographiesSingleDataDocument> {
+    internal class func artistBiographiesIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<ArtistBiographiesSingleResourceDataDocument> {
         var localVariablePath = "/artistBiographies/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -111,7 +111,7 @@ internal class ArtistBiographiesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ArtistBiographiesSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ArtistBiographiesSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -166,10 +166,10 @@ internal class ArtistBiographiesAPI {
      - parameter id: (path) Artist id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: ArtistBiographiesMultiDataRelationshipDocument
+     - returns: ArtistBiographiesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistBiographiesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistBiographiesMultiDataRelationshipDocument {
+    internal class func artistBiographiesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistBiographiesMultiRelationshipDataDocument {
         return try await artistBiographiesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -183,9 +183,9 @@ internal class ArtistBiographiesAPI {
      - parameter id: (path) Artist id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<ArtistBiographiesMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<ArtistBiographiesMultiRelationshipDataDocument> 
      */
-    internal class func artistBiographiesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ArtistBiographiesMultiDataRelationshipDocument> {
+    internal class func artistBiographiesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ArtistBiographiesMultiRelationshipDataDocument> {
         var localVariablePath = "/artistBiographies/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -205,7 +205,7 @@ internal class ArtistBiographiesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ArtistBiographiesMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ArtistBiographiesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

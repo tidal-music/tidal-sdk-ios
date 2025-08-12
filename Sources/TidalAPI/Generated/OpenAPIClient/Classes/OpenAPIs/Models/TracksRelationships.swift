@@ -12,27 +12,30 @@ import AnyCodable
 
 public struct TracksRelationships: Codable, Hashable {
 
-    public var albums: MultiDataRelationshipDoc
-    public var artists: MultiDataRelationshipDoc
-    public var lyrics: MultiDataRelationshipDoc
-    public var owners: MultiDataRelationshipDoc
-    public var providers: MultiDataRelationshipDoc
-    public var radio: MultiDataRelationshipDoc
-    public var similarTracks: MultiDataRelationshipDoc
-    public var trackStatistics: SingletonDataRelationshipDoc
+    public var albums: MultiRelationshipDataDocument
+    public var artists: MultiRelationshipDataDocument
+    public var genres: MultiRelationshipDataDocument
+    public var lyrics: MultiRelationshipDataDocument
+    public var owners: MultiRelationshipDataDocument
+    public var providers: MultiRelationshipDataDocument
+    public var radio: MultiRelationshipDataDocument
+    public var similarTracks: MultiRelationshipDataDocument
+    public var trackStatistics: SingleRelationshipDataDocument
 
     public init(
-        albums: MultiDataRelationshipDoc,
-        artists: MultiDataRelationshipDoc,
-        lyrics: MultiDataRelationshipDoc,
-        owners: MultiDataRelationshipDoc,
-        providers: MultiDataRelationshipDoc,
-        radio: MultiDataRelationshipDoc,
-        similarTracks: MultiDataRelationshipDoc,
-        trackStatistics: SingletonDataRelationshipDoc
+        albums: MultiRelationshipDataDocument,
+        artists: MultiRelationshipDataDocument,
+        genres: MultiRelationshipDataDocument,
+        lyrics: MultiRelationshipDataDocument,
+        owners: MultiRelationshipDataDocument,
+        providers: MultiRelationshipDataDocument,
+        radio: MultiRelationshipDataDocument,
+        similarTracks: MultiRelationshipDataDocument,
+        trackStatistics: SingleRelationshipDataDocument
     ) {
         self.albums = albums
         self.artists = artists
+        self.genres = genres
         self.lyrics = lyrics
         self.owners = owners
         self.providers = providers
@@ -44,6 +47,7 @@ public struct TracksRelationships: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albums
         case artists
+        case genres
         case lyrics
         case owners
         case providers
@@ -58,6 +62,7 @@ public struct TracksRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(albums, forKey: .albums)
         try container.encode(artists, forKey: .artists)
+        try container.encode(genres, forKey: .genres)
         try container.encode(lyrics, forKey: .lyrics)
         try container.encode(owners, forKey: .owners)
         try container.encode(providers, forKey: .providers)
@@ -66,5 +71,3 @@ public struct TracksRelationships: Codable, Hashable {
         try container.encode(trackStatistics, forKey: .trackStatistics)
     }
 }
-
-

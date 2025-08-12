@@ -19,10 +19,10 @@ internal class SearchSuggestionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter explicitFilter: (query) Explicit filter (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
-     - returns: SearchSuggestionsSingleDataDocument
+     - returns: SearchSuggestionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchSuggestionsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) async throws -> SearchSuggestionsSingleDataDocument {
+    internal class func searchSuggestionsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
         return try await searchSuggestionsIdGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include).execute().body
     }
 
@@ -40,9 +40,9 @@ internal class SearchSuggestionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter explicitFilter: (query) Explicit filter (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
-     - returns: RequestBuilder<SearchSuggestionsSingleDataDocument> 
+     - returns: RequestBuilder<SearchSuggestionsSingleResourceDataDocument> 
      */
-    internal class func searchSuggestionsIdGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchSuggestionsSingleDataDocument> {
+    internal class func searchSuggestionsIdGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchSuggestionsSingleResourceDataDocument> {
         var localVariablePath = "/searchSuggestions/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -63,7 +63,7 @@ internal class SearchSuggestionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SearchSuggestionsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchSuggestionsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -76,10 +76,10 @@ internal class SearchSuggestionsAPI {
      - parameter explicitFilter: (query) Explicit filter (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: SearchSuggestionsMultiDataRelationshipDocument
+     - returns: SearchSuggestionsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiDataRelationshipDocument {
+    internal class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
         return try await searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -98,9 +98,9 @@ internal class SearchSuggestionsAPI {
      - parameter explicitFilter: (query) Explicit filter (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<SearchSuggestionsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument> 
      */
-    internal class func searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchSuggestionsMultiDataRelationshipDocument> {
+    internal class func searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchSuggestions/{id}/relationships/directHits"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -122,7 +122,7 @@ internal class SearchSuggestionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SearchSuggestionsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

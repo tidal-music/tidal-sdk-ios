@@ -13,13 +13,12 @@ import AnyCodable
 /// ```
 public enum UserReportsAPITidal {
 
-
 	/**
      Create single userReport.
      
-     - returns: UserReportsSingleDataDocument
+     - returns: UserReportsSingleResourceDataDocument
      */
-	public static func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) async throws -> UserReportsSingleDataDocument {
+	public static func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) async throws -> UserReportsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UserReportsAPI.userReportsPostWithRequestBuilder(userReportCreateOperationPayload: userReportCreateOperationPayload)
 		}

@@ -13,49 +13,45 @@ import AnyCodable
 /// ```
 public enum ArtworksAPITidal {
 
-
 	/**
      Get multiple artworks.
      
-     - returns: ArtworksMultiDataDocument
+     - returns: ArtworksMultiResourceDataDocument
      */
-	public static func artworksGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtworksMultiDataDocument {
+	public static func artworksGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtworksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtworksAPI.artworksGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId)
 		}
 	}
 
-
 	/**
      Get single artwork.
      
-     - returns: ArtworksSingleDataDocument
+     - returns: ArtworksSingleResourceDataDocument
      */
-	public static func artworksIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtworksSingleDataDocument {
+	public static func artworksIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtworksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtworksAPI.artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
 	}
 
-
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: ArtworksMultiDataRelationshipDocument
+     - returns: ArtworksMultiRelationshipDataDocument
      */
-	public static func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtworksMultiDataRelationshipDocument {
+	public static func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtworksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtworksAPI.artworksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
-
 	/**
      Create single artwork.
      
-     - returns: ArtworksSingleDataDocument
+     - returns: ArtworksSingleResourceDataDocument
      */
-	public static func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil) async throws -> ArtworksSingleDataDocument {
+	public static func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil) async throws -> ArtworksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtworksAPI.artworksPostWithRequestBuilder(artworkCreateOperationPayload: artworkCreateOperationPayload)
 		}

@@ -5,7 +5,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **copyright** | [**AlbumCreateOperationPayloadDataAttributesCopyright**](AlbumCreateOperationPayloadDataAttributesCopyright.md) |  | [optional] 
 **explicitLyrics** | **Bool** |  | [optional] 
-**genres** | **[String]** |  | [optional] 
 **releaseDate** | **Date** |  | [optional] 
 **title** | **String** |  | 
 **upc** | **String** |  | [optional] 

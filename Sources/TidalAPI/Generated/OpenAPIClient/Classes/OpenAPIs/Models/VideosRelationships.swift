@@ -12,16 +12,16 @@ import AnyCodable
 
 public struct VideosRelationships: Codable, Hashable {
 
-    public var albums: MultiDataRelationshipDoc
-    public var artists: MultiDataRelationshipDoc
-    public var providers: MultiDataRelationshipDoc
-    public var thumbnailArt: MultiDataRelationshipDoc
+    public var albums: MultiRelationshipDataDocument
+    public var artists: MultiRelationshipDataDocument
+    public var providers: MultiRelationshipDataDocument
+    public var thumbnailArt: MultiRelationshipDataDocument
 
     public init(
-        albums: MultiDataRelationshipDoc,
-        artists: MultiDataRelationshipDoc,
-        providers: MultiDataRelationshipDoc,
-        thumbnailArt: MultiDataRelationshipDoc
+        albums: MultiRelationshipDataDocument,
+        artists: MultiRelationshipDataDocument,
+        providers: MultiRelationshipDataDocument,
+        thumbnailArt: MultiRelationshipDataDocument
     ) {
         self.albums = albums
         self.artists = artists
@@ -46,5 +46,3 @@ public struct VideosRelationships: Codable, Hashable {
         try container.encode(thumbnailArt, forKey: .thumbnailArt)
     }
 }
-
-

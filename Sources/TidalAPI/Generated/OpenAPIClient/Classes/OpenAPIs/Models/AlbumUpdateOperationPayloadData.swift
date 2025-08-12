@@ -17,21 +17,25 @@ public struct AlbumUpdateOperationPayloadData: Codable, Hashable {
     }
     public var attributes: AlbumUpdateOperationPayloadDataAttributes
     public var id: String
+    public var relationships: AlbumUpdateOperationPayloadDataRelationships
     public var type: ModelType
 
     public init(
         attributes: AlbumUpdateOperationPayloadDataAttributes,
         id: String,
+        relationships: AlbumUpdateOperationPayloadDataRelationships,
         type: ModelType
     ) {
         self.attributes = attributes
         self.id = id
+        self.relationships = relationships
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case attributes
         case id
+        case relationships
         case type
     }
 
@@ -41,11 +45,10 @@ public struct AlbumUpdateOperationPayloadData: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(attributes, forKey: .attributes)
         try container.encode(id, forKey: .id)
+        try container.encode(relationships, forKey: .relationships)
         try container.encode(type, forKey: .type)
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension AlbumUpdateOperationPayloadData: Identifiable {}
-

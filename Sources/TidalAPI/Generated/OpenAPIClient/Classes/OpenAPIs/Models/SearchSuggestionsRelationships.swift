@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct SearchSuggestionsRelationships: Codable, Hashable {
 
-    public var directHits: MultiDataRelationshipDoc
+    public var directHits: MultiRelationshipDataDocument
 
     public init(
-        directHits: MultiDataRelationshipDoc
+        directHits: MultiRelationshipDataDocument
     ) {
         self.directHits = directHits
     }
@@ -31,5 +31,3 @@ public struct SearchSuggestionsRelationships: Codable, Hashable {
         try container.encode(directHits, forKey: .directHits)
     }
 }
-
-

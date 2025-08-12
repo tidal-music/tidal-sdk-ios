@@ -15,10 +15,10 @@ internal class UsersAPI {
     /**
      Get current user's user(s).
      
-     - returns: UsersSingleDataDocument
+     - returns: UsersSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func usersMeGet() async throws -> UsersSingleDataDocument {
+    internal class func usersMeGet() async throws -> UsersSingleResourceDataDocument {
         return try await usersMeGetWithRequestBuilder().execute().body
     }
 
@@ -29,9 +29,9 @@ internal class UsersAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - returns: RequestBuilder<UsersSingleDataDocument> 
+     - returns: RequestBuilder<UsersSingleResourceDataDocument> 
      */
-    internal class func usersMeGetWithRequestBuilder() -> RequestBuilder<UsersSingleDataDocument> {
+    internal class func usersMeGetWithRequestBuilder() -> RequestBuilder<UsersSingleResourceDataDocument> {
         let localVariablePath = "/users/me"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -44,7 +44,7 @@ internal class UsersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UsersSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UsersSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

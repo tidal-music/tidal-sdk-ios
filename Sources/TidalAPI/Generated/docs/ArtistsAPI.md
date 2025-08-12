@@ -23,7 +23,7 @@ Method | HTTP request | Description
 
 # **artistsGet**
 ```swift
-    open class func artistsGet(countryCode: String, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistsMultiDataDocument?, _ error: Error?) -> Void)
+    open class func artistsGet(countryCode: String, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artists.
@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsMultiDataDocument**](ArtistsMultiDataDocument.md)
+[**ArtistsMultiResourceDataDocument**](ArtistsMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -79,7 +79,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdGet**
 ```swift
-    open class func artistsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artist.
@@ -118,7 +118,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsSingleDataDocument**](ArtistsSingleDataDocument.md)
+[**ArtistsSingleResourceDataDocument**](ArtistsSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -185,7 +185,7 @@ Void (empty response body)
 
 # **artistsIdRelationshipsAlbumsGet**
 ```swift
-    open class func artistsIdRelationshipsAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -226,7 +226,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+[**ArtistsMultiRelationshipDataDocument**](ArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -241,7 +241,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsBiographyGet**
 ```swift
-    open class func artistsIdRelationshipsBiographyGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistsSingletonDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsBiographyGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get biography relationship (\"to-one\").
@@ -280,7 +280,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsSingletonDataRelationshipDocument**](ArtistsSingletonDataRelationshipDocument.md)
+[**ArtistsSingleRelationshipDataDocument**](ArtistsSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -295,7 +295,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsOwnersGet**
 ```swift
-    open class func artistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -334,7 +334,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+[**ArtistsMultiRelationshipDataDocument**](ArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -349,7 +349,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsProfileArtGet**
 ```swift
-    open class func artistsIdRelationshipsProfileArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsProfileArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get profileArt relationship (\"to-many\").
@@ -390,7 +390,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+[**ArtistsMultiRelationshipDataDocument**](ArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -457,7 +457,7 @@ Void (empty response body)
 
 # **artistsIdRelationshipsRadioGet**
 ```swift
-    open class func artistsIdRelationshipsRadioGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsRadioGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get radio relationship (\"to-many\").
@@ -498,7 +498,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+[**ArtistsMultiRelationshipDataDocument**](ArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -513,7 +513,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsRolesGet**
 ```swift
-    open class func artistsIdRelationshipsRolesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsRolesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get roles relationship (\"to-many\").
@@ -552,7 +552,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+[**ArtistsMultiRelationshipDataDocument**](ArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -567,7 +567,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsSimilarArtistsGet**
 ```swift
-    open class func artistsIdRelationshipsSimilarArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsSimilarArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarArtists relationship (\"to-many\").
@@ -608,7 +608,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+[**ArtistsMultiRelationshipDataDocument**](ArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -623,7 +623,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsTrackProvidersGet**
 ```swift
-    open class func artistsIdRelationshipsTrackProvidersGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsTrackProvidersMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsTrackProvidersGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsTrackProvidersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get trackProviders relationship (\"to-many\").
@@ -662,7 +662,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsTrackProvidersMultiDataRelationshipDocument**](ArtistsTrackProvidersMultiDataRelationshipDocument.md)
+[**ArtistsTrackProvidersMultiRelationshipDataDocument**](ArtistsTrackProvidersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -677,7 +677,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsTracksGet**
 ```swift
-    open class func artistsIdRelationshipsTracksGet(id: String, countryCode: String, collapseBy: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsTracksGet(id: String, countryCode: String, collapseBy: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get tracks relationship (\"to-many\").
@@ -720,7 +720,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+[**ArtistsMultiRelationshipDataDocument**](ArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -735,7 +735,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsVideosGet**
 ```swift
-    open class func artistsIdRelationshipsVideosGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsVideosGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get videos relationship (\"to-many\").
@@ -776,7 +776,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsMultiDataRelationshipDocument**](ArtistsMultiDataRelationshipDocument.md)
+[**ArtistsMultiRelationshipDataDocument**](ArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -791,7 +791,7 @@ Name | Type | Description  | Notes
 
 # **artistsPost**
 ```swift
-    open class func artistsPost(artistCreateOperationPayload: ArtistCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func artistsPost(artistCreateOperationPayload: ArtistCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artist.
@@ -826,7 +826,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsSingleDataDocument**](ArtistsSingleDataDocument.md)
+[**ArtistsSingleResourceDataDocument**](ArtistsSingleResourceDataDocument.md)
 
 ### Authorization
 

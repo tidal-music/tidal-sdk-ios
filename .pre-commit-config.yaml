@@ -3,24 +3,24 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/nicklockwood/SwiftFormat.git
-    rev: 0.54.6
+    rev: 0.57.2
     hooks:
       - id: swiftformat
         alias: format
         entry: swiftformat --config ./.swiftformat
         stages: [pre-commit]
   - repo: https://github.com/realm/SwiftLint
-    rev: 0.57.0
+    rev: 0.59.1
     hooks:
       - id: swiftlint
         entry: swiftlint --config ./.swiftlint.yml --fix --quiet
   - repo: https://github.com/realm/SwiftLint
-    rev: 0.57.0
+    rev: 0.59.1
     hooks:
       - id: swiftlint
         entry: swiftlint --config ./.swiftlint.yml --strict --quiet
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.0
+    rev: 0.33.2
     hooks:
       # Specifically checks Github Action action.yml files against Github Action schema
       - id: check-github-actions

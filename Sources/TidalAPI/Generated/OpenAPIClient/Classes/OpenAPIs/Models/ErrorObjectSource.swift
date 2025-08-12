@@ -10,7 +10,6 @@ import Foundation
 import AnyCodable
 #endif
 
-/** object containing references to the primary source of the error */
 public struct ErrorObjectSource: Codable, Hashable {
 
     /** string indicating the name of a single request header which caused the error */
@@ -45,5 +44,3 @@ public struct ErrorObjectSource: Codable, Hashable {
         try container.encodeIfPresent(pointer, forKey: .pointer)
     }
 }
-
-

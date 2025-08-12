@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **searchSuggestionsIdGet**
 ```swift
-    open class func searchSuggestionsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchSuggestionsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchSuggestionsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single searchSuggestion.
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchSuggestionsSingleDataDocument**](SearchSuggestionsSingleDataDocument.md)
+[**SearchSuggestionsSingleResourceDataDocument**](SearchSuggestionsSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **searchSuggestionsIdRelationshipsDirectHitsGet**
 ```swift
-    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get directHits relationship (\"to-many\").
@@ -109,7 +109,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchSuggestionsMultiDataRelationshipDocument**](SearchSuggestionsMultiDataRelationshipDocument.md)
+[**SearchSuggestionsMultiRelationshipDataDocument**](SearchSuggestionsMultiRelationshipDataDocument.md)
 
 ### Authorization
 

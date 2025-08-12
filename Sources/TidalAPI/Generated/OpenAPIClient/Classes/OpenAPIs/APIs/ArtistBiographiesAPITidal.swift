@@ -13,30 +13,27 @@ import AnyCodable
 /// ```
 public enum ArtistBiographiesAPITidal {
 
-
 	/**
      Get multiple artistBiographies.
      
-     - returns: ArtistBiographiesMultiDataDocument
+     - returns: ArtistBiographiesMultiResourceDataDocument
      */
-	public static func artistBiographiesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistBiographiesMultiDataDocument {
+	public static func artistBiographiesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistBiographiesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistBiographiesAPI.artistBiographiesGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId)
 		}
 	}
 
-
 	/**
      Get single artistBiographie.
      
-     - returns: ArtistBiographiesSingleDataDocument
+     - returns: ArtistBiographiesSingleResourceDataDocument
      */
-	public static func artistBiographiesIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtistBiographiesSingleDataDocument {
+	public static func artistBiographiesIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistBiographiesAPI.artistBiographiesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
 	}
-
 
 	/**
      Update single artistBiographie.
@@ -49,13 +46,12 @@ public enum ArtistBiographiesAPITidal {
 		}
 	}
 
-
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: ArtistBiographiesMultiDataRelationshipDocument
+     - returns: ArtistBiographiesMultiRelationshipDataDocument
      */
-	public static func artistBiographiesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistBiographiesMultiDataRelationshipDocument {
+	public static func artistBiographiesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistBiographiesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistBiographiesAPI.artistBiographiesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

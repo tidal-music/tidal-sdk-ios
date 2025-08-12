@@ -12,23 +12,26 @@ import AnyCodable
 
 public struct AlbumsRelationships: Codable, Hashable {
 
-    public var artists: MultiDataRelationshipDoc
-    public var coverArt: MultiDataRelationshipDoc
-    public var items: AlbumsItemsMultiDataRelationshipDocument
-    public var owners: MultiDataRelationshipDoc
-    public var providers: MultiDataRelationshipDoc
-    public var similarAlbums: MultiDataRelationshipDoc
+    public var artists: MultiRelationshipDataDocument
+    public var coverArt: MultiRelationshipDataDocument
+    public var genres: MultiRelationshipDataDocument
+    public var items: AlbumsItemsMultiRelationshipDataDocument
+    public var owners: MultiRelationshipDataDocument
+    public var providers: MultiRelationshipDataDocument
+    public var similarAlbums: MultiRelationshipDataDocument
 
     public init(
-        artists: MultiDataRelationshipDoc,
-        coverArt: MultiDataRelationshipDoc,
-        items: AlbumsItemsMultiDataRelationshipDocument,
-        owners: MultiDataRelationshipDoc,
-        providers: MultiDataRelationshipDoc,
-        similarAlbums: MultiDataRelationshipDoc
+        artists: MultiRelationshipDataDocument,
+        coverArt: MultiRelationshipDataDocument,
+        genres: MultiRelationshipDataDocument,
+        items: AlbumsItemsMultiRelationshipDataDocument,
+        owners: MultiRelationshipDataDocument,
+        providers: MultiRelationshipDataDocument,
+        similarAlbums: MultiRelationshipDataDocument
     ) {
         self.artists = artists
         self.coverArt = coverArt
+        self.genres = genres
         self.items = items
         self.owners = owners
         self.providers = providers
@@ -38,6 +41,7 @@ public struct AlbumsRelationships: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case artists
         case coverArt
+        case genres
         case items
         case owners
         case providers
@@ -50,11 +54,10 @@ public struct AlbumsRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(artists, forKey: .artists)
         try container.encode(coverArt, forKey: .coverArt)
+        try container.encode(genres, forKey: .genres)
         try container.encode(items, forKey: .items)
         try container.encode(owners, forKey: .owners)
         try container.encode(providers, forKey: .providers)
         try container.encode(similarAlbums, forKey: .similarAlbums)
     }
 }
-
-

@@ -10,13 +10,12 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Resource identifier JSON:API object */
 public struct UserCollectionsAlbumsResourceIdentifier: Codable, Hashable {
 
-    /** resource unique identifier */
+    /** Resource id */
     public var id: String
     public var meta: UserCollectionsAlbumsResourceIdentifierMeta?
-    /** resource unique type */
+    /** Resource type */
     public var type: String
 
     public init(
@@ -45,7 +44,5 @@ public struct UserCollectionsAlbumsResourceIdentifier: Codable, Hashable {
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension UserCollectionsAlbumsResourceIdentifier: Identifiable {}
-

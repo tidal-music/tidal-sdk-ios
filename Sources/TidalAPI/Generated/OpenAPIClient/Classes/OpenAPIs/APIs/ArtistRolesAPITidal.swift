@@ -13,25 +13,23 @@ import AnyCodable
 /// ```
 public enum ArtistRolesAPITidal {
 
-
 	/**
      Get multiple artistRoles.
      
-     - returns: ArtistRolesMultiDataDocument
+     - returns: ArtistRolesMultiResourceDataDocument
      */
-	public static func artistRolesGet(filterId: [String]? = nil) async throws -> ArtistRolesMultiDataDocument {
+	public static func artistRolesGet(filterId: [String]? = nil) async throws -> ArtistRolesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistRolesAPI.artistRolesGetWithRequestBuilder(filterId: filterId)
 		}
 	}
 
-
 	/**
      Get single artistRole.
      
-     - returns: ArtistRolesSingleDataDocument
+     - returns: ArtistRolesSingleResourceDataDocument
      */
-	public static func artistRolesIdGet(id: String) async throws -> ArtistRolesSingleDataDocument {
+	public static func artistRolesIdGet(id: String) async throws -> ArtistRolesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistRolesAPI.artistRolesIdGetWithRequestBuilder(id: id)
 		}

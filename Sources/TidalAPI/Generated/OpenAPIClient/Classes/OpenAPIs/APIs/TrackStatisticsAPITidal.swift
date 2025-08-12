@@ -13,25 +13,23 @@ import AnyCodable
 /// ```
 public enum TrackStatisticsAPITidal {
 
-
 	/**
      Get single trackStatistic.
      
-     - returns: TrackStatisticsSingleDataDocument
+     - returns: TrackStatisticsSingleResourceDataDocument
      */
-	public static func trackStatisticsIdGet(id: String, include: [String]? = nil) async throws -> TrackStatisticsSingleDataDocument {
+	public static func trackStatisticsIdGet(id: String, include: [String]? = nil) async throws -> TrackStatisticsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			TrackStatisticsAPI.trackStatisticsIdGetWithRequestBuilder(id: id, include: include)
 		}
 	}
 
-
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: TrackStatisticsMultiDataRelationshipDocument
+     - returns: TrackStatisticsMultiRelationshipDataDocument
      */
-	public static func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackStatisticsMultiDataRelationshipDocument {
+	public static func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackStatisticsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

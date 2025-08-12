@@ -11,69 +11,75 @@ import AnyCodable
 #endif
 
 public enum IncludedInner: Codable, JSONEncodable, Hashable {
-    case typeAlbumsResource(AlbumsResource)
-    case typeArtistBiographiesResource(ArtistBiographiesResource)
-    case typeArtistRolesResource(ArtistRolesResource)
-    case typeArtistsResource(ArtistsResource)
-    case typeArtworksResource(ArtworksResource)
-    case typeLyricsResource(LyricsResource)
-    case typePlaylistsResource(PlaylistsResource)
-    case typeProvidersResource(ProvidersResource)
-    case typeSearchResultsResource(SearchResultsResource)
-    case typeSearchSuggestionsResource(SearchSuggestionsResource)
-    case typeTrackFilesResource(TrackFilesResource)
-    case typeTrackManifestsResource(TrackManifestsResource)
-    case typeTrackStatisticsResource(TrackStatisticsResource)
-    case typeTracksResource(TracksResource)
-    case typeUserCollectionsResource(UserCollectionsResource)
-    case typeUserEntitlementsResource(UserEntitlementsResource)
-    case typeUserRecommendationsResource(UserRecommendationsResource)
-    case typeUserReportsResource(UserReportsResource)
-    case typeUsersResource(UsersResource)
-    case typeVideosResource(VideosResource)
+    case typeAlbumsResourceObject(AlbumsResourceObject)
+    case typeArtistBiographiesResourceObject(ArtistBiographiesResourceObject)
+    case typeArtistRolesResourceObject(ArtistRolesResourceObject)
+    case typeArtistsResourceObject(ArtistsResourceObject)
+    case typeArtworksResourceObject(ArtworksResourceObject)
+    case typeGenresResourceObject(GenresResourceObject)
+    case typeLyricsResourceObject(LyricsResourceObject)
+    case typePlaylistsResourceObject(PlaylistsResourceObject)
+    case typeProvidersResourceObject(ProvidersResourceObject)
+    case typeSearchResultsResourceObject(SearchResultsResourceObject)
+    case typeSearchSuggestionsResourceObject(SearchSuggestionsResourceObject)
+    case typeTrackFilesResourceObject(TrackFilesResourceObject)
+    case typeTrackManifestsResourceObject(TrackManifestsResourceObject)
+    case typeTrackSourceFilesResourceObject(TrackSourceFilesResourceObject)
+    case typeTrackStatisticsResourceObject(TrackStatisticsResourceObject)
+    case typeTracksResourceObject(TracksResourceObject)
+    case typeUserCollectionsResourceObject(UserCollectionsResourceObject)
+    case typeUserEntitlementsResourceObject(UserEntitlementsResourceObject)
+    case typeUserRecommendationsResourceObject(UserRecommendationsResourceObject)
+    case typeUserReportsResourceObject(UserReportsResourceObject)
+    case typeUsersResourceObject(UsersResourceObject)
+    case typeVideosResourceObject(VideosResourceObject)
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
-        case .typeAlbumsResource(let value):
+        case .typeAlbumsResourceObject(let value):
             try container.encode(value)
-        case .typeArtistBiographiesResource(let value):
+        case .typeArtistBiographiesResourceObject(let value):
             try container.encode(value)
-        case .typeArtistRolesResource(let value):
+        case .typeArtistRolesResourceObject(let value):
             try container.encode(value)
-        case .typeArtistsResource(let value):
+        case .typeArtistsResourceObject(let value):
             try container.encode(value)
-        case .typeArtworksResource(let value):
+        case .typeArtworksResourceObject(let value):
             try container.encode(value)
-        case .typeLyricsResource(let value):
+        case .typeGenresResourceObject(let value):
             try container.encode(value)
-        case .typePlaylistsResource(let value):
+        case .typeLyricsResourceObject(let value):
             try container.encode(value)
-        case .typeProvidersResource(let value):
+        case .typePlaylistsResourceObject(let value):
             try container.encode(value)
-        case .typeSearchResultsResource(let value):
+        case .typeProvidersResourceObject(let value):
             try container.encode(value)
-        case .typeSearchSuggestionsResource(let value):
+        case .typeSearchResultsResourceObject(let value):
             try container.encode(value)
-        case .typeTrackFilesResource(let value):
+        case .typeSearchSuggestionsResourceObject(let value):
             try container.encode(value)
-        case .typeTrackManifestsResource(let value):
+        case .typeTrackFilesResourceObject(let value):
             try container.encode(value)
-        case .typeTrackStatisticsResource(let value):
+        case .typeTrackManifestsResourceObject(let value):
             try container.encode(value)
-        case .typeTracksResource(let value):
+        case .typeTrackSourceFilesResourceObject(let value):
             try container.encode(value)
-        case .typeUserCollectionsResource(let value):
+        case .typeTrackStatisticsResourceObject(let value):
             try container.encode(value)
-        case .typeUserEntitlementsResource(let value):
+        case .typeTracksResourceObject(let value):
             try container.encode(value)
-        case .typeUserRecommendationsResource(let value):
+        case .typeUserCollectionsResourceObject(let value):
             try container.encode(value)
-        case .typeUserReportsResource(let value):
+        case .typeUserEntitlementsResourceObject(let value):
             try container.encode(value)
-        case .typeUsersResource(let value):
+        case .typeUserRecommendationsResourceObject(let value):
             try container.encode(value)
-        case .typeVideosResource(let value):
+        case .typeUserReportsResourceObject(let value):
+            try container.encode(value)
+        case .typeUsersResourceObject(let value):
+            try container.encode(value)
+        case .typeVideosResourceObject(let value):
             try container.encode(value)
         }
     }
@@ -88,65 +94,71 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
 
         switch type {
         case "albums":
-            let value = try AlbumsResource(from: decoder)
-            self = .typeAlbumsResource(value)
+            let value = try AlbumsResourceObject(from: decoder)
+            self = .typeAlbumsResourceObject(value)
         case "artistBiographies":
-            let value = try ArtistBiographiesResource(from: decoder)
-            self = .typeArtistBiographiesResource(value)
+            let value = try ArtistBiographiesResourceObject(from: decoder)
+            self = .typeArtistBiographiesResourceObject(value)
         case "artistRoles":
-            let value = try ArtistRolesResource(from: decoder)
-            self = .typeArtistRolesResource(value)
+            let value = try ArtistRolesResourceObject(from: decoder)
+            self = .typeArtistRolesResourceObject(value)
         case "artists":
-            let value = try ArtistsResource(from: decoder)
-            self = .typeArtistsResource(value)
+            let value = try ArtistsResourceObject(from: decoder)
+            self = .typeArtistsResourceObject(value)
         case "artworks":
-            let value = try ArtworksResource(from: decoder)
-            self = .typeArtworksResource(value)
+            let value = try ArtworksResourceObject(from: decoder)
+            self = .typeArtworksResourceObject(value)
+        case "genres":
+            let value = try GenresResourceObject(from: decoder)
+            self = .typeGenresResourceObject(value)
         case "lyrics":
-            let value = try LyricsResource(from: decoder)
-            self = .typeLyricsResource(value)
+            let value = try LyricsResourceObject(from: decoder)
+            self = .typeLyricsResourceObject(value)
         case "playlists":
-            let value = try PlaylistsResource(from: decoder)
-            self = .typePlaylistsResource(value)
+            let value = try PlaylistsResourceObject(from: decoder)
+            self = .typePlaylistsResourceObject(value)
         case "providers":
-            let value = try ProvidersResource(from: decoder)
-            self = .typeProvidersResource(value)
+            let value = try ProvidersResourceObject(from: decoder)
+            self = .typeProvidersResourceObject(value)
         case "searchResults":
-            let value = try SearchResultsResource(from: decoder)
-            self = .typeSearchResultsResource(value)
+            let value = try SearchResultsResourceObject(from: decoder)
+            self = .typeSearchResultsResourceObject(value)
         case "searchSuggestions":
-            let value = try SearchSuggestionsResource(from: decoder)
-            self = .typeSearchSuggestionsResource(value)
+            let value = try SearchSuggestionsResourceObject(from: decoder)
+            self = .typeSearchSuggestionsResourceObject(value)
         case "trackFiles":
-            let value = try TrackFilesResource(from: decoder)
-            self = .typeTrackFilesResource(value)
+            let value = try TrackFilesResourceObject(from: decoder)
+            self = .typeTrackFilesResourceObject(value)
         case "trackManifests":
-            let value = try TrackManifestsResource(from: decoder)
-            self = .typeTrackManifestsResource(value)
+            let value = try TrackManifestsResourceObject(from: decoder)
+            self = .typeTrackManifestsResourceObject(value)
+        case "trackSourceFiles":
+            let value = try TrackSourceFilesResourceObject(from: decoder)
+            self = .typeTrackSourceFilesResourceObject(value)
         case "trackStatistics":
-            let value = try TrackStatisticsResource(from: decoder)
-            self = .typeTrackStatisticsResource(value)
+            let value = try TrackStatisticsResourceObject(from: decoder)
+            self = .typeTrackStatisticsResourceObject(value)
         case "tracks":
-            let value = try TracksResource(from: decoder)
-            self = .typeTracksResource(value)
+            let value = try TracksResourceObject(from: decoder)
+            self = .typeTracksResourceObject(value)
         case "userCollections":
-            let value = try UserCollectionsResource(from: decoder)
-            self = .typeUserCollectionsResource(value)
+            let value = try UserCollectionsResourceObject(from: decoder)
+            self = .typeUserCollectionsResourceObject(value)
         case "userEntitlements":
-            let value = try UserEntitlementsResource(from: decoder)
-            self = .typeUserEntitlementsResource(value)
+            let value = try UserEntitlementsResourceObject(from: decoder)
+            self = .typeUserEntitlementsResourceObject(value)
         case "userRecommendations":
-            let value = try UserRecommendationsResource(from: decoder)
-            self = .typeUserRecommendationsResource(value)
+            let value = try UserRecommendationsResourceObject(from: decoder)
+            self = .typeUserRecommendationsResourceObject(value)
         case "userReports":
-            let value = try UserReportsResource(from: decoder)
-            self = .typeUserReportsResource(value)
+            let value = try UserReportsResourceObject(from: decoder)
+            self = .typeUserReportsResourceObject(value)
         case "users":
-            let value = try UsersResource(from: decoder)
-            self = .typeUsersResource(value)
+            let value = try UsersResourceObject(from: decoder)
+            self = .typeUsersResourceObject(value)
         case "videos":
-            let value = try VideosResource(from: decoder)
-            self = .typeVideosResource(value)
+            let value = try VideosResourceObject(from: decoder)
+            self = .typeVideosResourceObject(value)
         default:
             throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Unknown type: \\(type)")
         }
@@ -157,28 +169,28 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
 extension IncludedInner: Identifiable {
     public var id: String {
         switch self {
-        case .typeAlbumsResource(let value): return value.id
-        case .typeArtistBiographiesResource(let value): return value.id
-        case .typeArtistRolesResource(let value): return value.id
-        case .typeArtistsResource(let value): return value.id
-        case .typeArtworksResource(let value): return value.id
-        case .typeLyricsResource(let value): return value.id
-        case .typePlaylistsResource(let value): return value.id
-        case .typeProvidersResource(let value): return value.id
-        case .typeSearchResultsResource(let value): return value.id
-        case .typeSearchSuggestionsResource(let value): return value.id
-        case .typeTrackFilesResource(let value): return value.id
-        case .typeTrackManifestsResource(let value): return value.id
-        case .typeTrackStatisticsResource(let value): return value.id
-        case .typeTracksResource(let value): return value.id
-        case .typeUserCollectionsResource(let value): return value.id
-        case .typeUserEntitlementsResource(let value): return value.id
-        case .typeUserRecommendationsResource(let value): return value.id
-        case .typeUserReportsResource(let value): return value.id
-        case .typeUsersResource(let value): return value.id
-        case .typeVideosResource(let value): return value.id
+        case .typeAlbumsResourceObject(let value): return value.id
+        case .typeArtistBiographiesResourceObject(let value): return value.id
+        case .typeArtistRolesResourceObject(let value): return value.id
+        case .typeArtistsResourceObject(let value): return value.id
+        case .typeArtworksResourceObject(let value): return value.id
+        case .typeGenresResourceObject(let value): return value.id
+        case .typeLyricsResourceObject(let value): return value.id
+        case .typePlaylistsResourceObject(let value): return value.id
+        case .typeProvidersResourceObject(let value): return value.id
+        case .typeSearchResultsResourceObject(let value): return value.id
+        case .typeSearchSuggestionsResourceObject(let value): return value.id
+        case .typeTrackFilesResourceObject(let value): return value.id
+        case .typeTrackManifestsResourceObject(let value): return value.id
+        case .typeTrackSourceFilesResourceObject(let value): return value.id
+        case .typeTrackStatisticsResourceObject(let value): return value.id
+        case .typeTracksResourceObject(let value): return value.id
+        case .typeUserCollectionsResourceObject(let value): return value.id
+        case .typeUserEntitlementsResourceObject(let value): return value.id
+        case .typeUserRecommendationsResourceObject(let value): return value.id
+        case .typeUserReportsResourceObject(let value): return value.id
+        case .typeUsersResourceObject(let value): return value.id
+        case .typeVideosResourceObject(let value): return value.id
         }
     }
 }
-
-

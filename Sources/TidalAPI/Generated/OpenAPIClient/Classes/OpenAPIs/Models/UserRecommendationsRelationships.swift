@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct UserRecommendationsRelationships: Codable, Hashable {
 
-    public var discoveryMixes: MultiDataRelationshipDoc
-    public var myMixes: MultiDataRelationshipDoc
-    public var newArrivalMixes: MultiDataRelationshipDoc
+    public var discoveryMixes: MultiRelationshipDataDocument
+    public var myMixes: MultiRelationshipDataDocument
+    public var newArrivalMixes: MultiRelationshipDataDocument
 
     public init(
-        discoveryMixes: MultiDataRelationshipDoc,
-        myMixes: MultiDataRelationshipDoc,
-        newArrivalMixes: MultiDataRelationshipDoc
+        discoveryMixes: MultiRelationshipDataDocument,
+        myMixes: MultiRelationshipDataDocument,
+        newArrivalMixes: MultiRelationshipDataDocument
     ) {
         self.discoveryMixes = discoveryMixes
         self.myMixes = myMixes
@@ -41,5 +41,3 @@ public struct UserRecommendationsRelationships: Codable, Hashable {
         try container.encode(newArrivalMixes, forKey: .newArrivalMixes)
     }
 }
-
-

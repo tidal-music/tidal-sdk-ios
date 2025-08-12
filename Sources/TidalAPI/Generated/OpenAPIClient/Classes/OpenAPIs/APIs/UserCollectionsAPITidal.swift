@@ -13,18 +13,16 @@ import AnyCodable
 /// ```
 public enum UserCollectionsAPITidal {
 
-
 	/**
      Get single userCollection.
      
-     - returns: UserCollectionsSingleDataDocument
+     - returns: UserCollectionsSingleResourceDataDocument
      */
-	public static func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil) async throws -> UserCollectionsSingleDataDocument {
+	public static func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, countryCode: countryCode, include: include)
 		}
 	}
-
 
 	/**
      Delete from albums relationship (\&quot;to-many\&quot;).
@@ -37,18 +35,16 @@ public enum UserCollectionsAPITidal {
 		}
 	}
 
-
 	/**
      Get albums relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionsAlbumsMultiDataRelationshipDocument
+     - returns: UserCollectionsAlbumsMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsAlbumsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiDataRelationshipDocument {
+	public static func userCollectionsIdRelationshipsAlbumsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include)
 		}
 	}
-
 
 	/**
      Add to albums relationship (\&quot;to-many\&quot;).
@@ -61,7 +57,6 @@ public enum UserCollectionsAPITidal {
 		}
 	}
 
-
 	/**
      Delete from artists relationship (\&quot;to-many\&quot;).
      
@@ -73,18 +68,16 @@ public enum UserCollectionsAPITidal {
 		}
 	}
 
-
 	/**
      Get artists relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionsArtistsMultiDataRelationshipDocument
+     - returns: UserCollectionsArtistsMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsArtistsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiDataRelationshipDocument {
+	public static func userCollectionsIdRelationshipsArtistsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include)
 		}
 	}
-
 
 	/**
      Add to artists relationship (\&quot;to-many\&quot;).
@@ -97,18 +90,16 @@ public enum UserCollectionsAPITidal {
 		}
 	}
 
-
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionsMultiDataRelationshipDocument
+     - returns: UserCollectionsMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionsMultiDataRelationshipDocument {
+	public static func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
-
 
 	/**
      Delete from playlists relationship (\&quot;to-many\&quot;).
@@ -121,18 +112,16 @@ public enum UserCollectionsAPITidal {
 		}
 	}
 
-
 	/**
      Get playlists relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionsPlaylistsMultiDataRelationshipDocument
+     - returns: UserCollectionsPlaylistsMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsPlaylistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiDataRelationshipDocument {
+	public static func userCollectionsIdRelationshipsPlaylistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
-
 
 	/**
      Add to playlists relationship (\&quot;to-many\&quot;).

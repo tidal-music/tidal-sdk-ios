@@ -13,61 +13,56 @@ import AnyCodable
 /// ```
 public enum UserRecommendationsAPITidal {
 
-
 	/**
      Get single userRecommendation.
      
-     - returns: UserRecommendationsSingleDataDocument
+     - returns: UserRecommendationsSingleResourceDataDocument
      */
-	public static func userRecommendationsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleDataDocument {
+	public static func userRecommendationsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationsAPI.userRecommendationsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 
-
 	/**
      Get discoveryMixes relationship (\&quot;to-many\&quot;).
      
-     - returns: UserRecommendationsMultiDataRelationshipDocument
+     - returns: UserRecommendationsMultiRelationshipDataDocument
      */
-	public static func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+	public static func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor)
 		}
 	}
 
-
 	/**
      Get myMixes relationship (\&quot;to-many\&quot;).
      
-     - returns: UserRecommendationsMultiDataRelationshipDocument
+     - returns: UserRecommendationsMultiRelationshipDataDocument
      */
-	public static func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+	public static func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor)
 		}
 	}
 
-
 	/**
      Get newArrivalMixes relationship (\&quot;to-many\&quot;).
      
-     - returns: UserRecommendationsMultiDataRelationshipDocument
+     - returns: UserRecommendationsMultiRelationshipDataDocument
      */
-	public static func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+	public static func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor)
 		}
 	}
 
-
 	/**
      Get current user&#39;s userRecommendation(s).
      
-     - returns: UserRecommendationsSingleDataDocument
+     - returns: UserRecommendationsSingleResourceDataDocument
      */
-	public static func userRecommendationsMeGet(countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleDataDocument {
+	public static func userRecommendationsMeGet(countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationsAPI.userRecommendationsMeGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include)
 		}

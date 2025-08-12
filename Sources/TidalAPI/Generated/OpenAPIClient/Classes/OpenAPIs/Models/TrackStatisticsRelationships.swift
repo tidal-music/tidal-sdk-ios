@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct TrackStatisticsRelationships: Codable, Hashable {
 
-    public var owners: MultiDataRelationshipDoc
+    public var owners: MultiRelationshipDataDocument
 
     public init(
-        owners: MultiDataRelationshipDoc
+        owners: MultiRelationshipDataDocument
     ) {
         self.owners = owners
     }
@@ -31,5 +31,3 @@ public struct TrackStatisticsRelationships: Codable, Hashable {
         try container.encode(owners, forKey: .owners)
     }
 }
-
-

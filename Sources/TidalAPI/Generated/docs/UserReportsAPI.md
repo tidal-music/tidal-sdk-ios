@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **userReportsPost**
 ```swift
-    open class func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil, completion: @escaping (_ data: UserReportsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil, completion: @escaping (_ data: UserReportsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single userReport.
@@ -44,7 +44,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserReportsSingleDataDocument**](UserReportsSingleDataDocument.md)
+[**UserReportsSingleResourceDataDocument**](UserReportsSingleResourceDataDocument.md)
 
 ### Authorization
 
