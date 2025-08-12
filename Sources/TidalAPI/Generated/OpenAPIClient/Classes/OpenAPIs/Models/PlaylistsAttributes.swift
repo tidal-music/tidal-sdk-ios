@@ -26,6 +26,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case _public = "PUBLIC"
         case _private = "PRIVATE"
     }
+    public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Access type */
     public var accessType: AccessType
     /** Indicates if the playlist has a duration and set number of tracks */

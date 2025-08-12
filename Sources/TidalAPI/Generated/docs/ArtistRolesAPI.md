@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **artistRolesGet**
 ```swift
-    open class func artistRolesGet(filterId: [String]? = nil, completion: @escaping (_ data: ArtistRolesMultiDataDocument?, _ error: Error?) -> Void)
+    open class func artistRolesGet(filterId: [String]? = nil, completion: @escaping (_ data: ArtistRolesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artistRoles.
@@ -45,7 +45,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistRolesMultiDataDocument**](ArtistRolesMultiDataDocument.md)
+[**ArtistRolesMultiResourceDataDocument**](ArtistRolesMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -60,7 +60,7 @@ Name | Type | Description  | Notes
 
 # **artistRolesIdGet**
 ```swift
-    open class func artistRolesIdGet(id: String, completion: @escaping (_ data: ArtistRolesSingleDataDocument?, _ error: Error?) -> Void)
+    open class func artistRolesIdGet(id: String, completion: @escaping (_ data: ArtistRolesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artistRole.
@@ -95,7 +95,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistRolesSingleDataDocument**](ArtistRolesSingleDataDocument.md)
+[**ArtistRolesSingleResourceDataDocument**](ArtistRolesSingleResourceDataDocument.md)
 
 ### Authorization
 

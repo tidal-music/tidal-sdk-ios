@@ -21,10 +21,10 @@ internal class TrackManifestsAPI {
      - parameter uriScheme: (query)  
      - parameter usage: (query)  
      - parameter adaptive: (query)  
-     - returns: TrackManifestsSingleDataDocument
+     - returns: TrackManifestsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackManifestsIdGet(id: String, manifestType: String, formats: String, uriScheme: String, usage: String, adaptive: String) async throws -> TrackManifestsSingleDataDocument {
+    internal class func trackManifestsIdGet(id: String, manifestType: String, formats: String, uriScheme: String, usage: String, adaptive: String) async throws -> TrackManifestsSingleResourceDataDocument {
         return try await trackManifestsIdGetWithRequestBuilder(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive).execute().body
     }
 
@@ -44,9 +44,9 @@ internal class TrackManifestsAPI {
      - parameter uriScheme: (query)  
      - parameter usage: (query)  
      - parameter adaptive: (query)  
-     - returns: RequestBuilder<TrackManifestsSingleDataDocument> 
+     - returns: RequestBuilder<TrackManifestsSingleResourceDataDocument> 
      */
-    internal class func trackManifestsIdGetWithRequestBuilder(id: String, manifestType: String, formats: String, uriScheme: String, usage: String, adaptive: String) -> RequestBuilder<TrackManifestsSingleDataDocument> {
+    internal class func trackManifestsIdGetWithRequestBuilder(id: String, manifestType: String, formats: String, uriScheme: String, usage: String, adaptive: String) -> RequestBuilder<TrackManifestsSingleResourceDataDocument> {
         var localVariablePath = "/trackManifests/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -69,7 +69,7 @@ internal class TrackManifestsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<TrackManifestsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TrackManifestsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**tracksIdPatch**](TracksAPI.md#tracksidpatch) | **PATCH** /tracks/{id} | Update single track.
 [**tracksIdRelationshipsAlbumsGet**](TracksAPI.md#tracksidrelationshipsalbumsget) | **GET** /tracks/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsArtistsGet**](TracksAPI.md#tracksidrelationshipsartistsget) | **GET** /tracks/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
+[**tracksIdRelationshipsGenresGet**](TracksAPI.md#tracksidrelationshipsgenresget) | **GET** /tracks/{id}/relationships/genres | Get genres relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsLyricsGet**](TracksAPI.md#tracksidrelationshipslyricsget) | **GET** /tracks/{id}/relationships/lyrics | Get lyrics relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsOwnersGet**](TracksAPI.md#tracksidrelationshipsownersget) | **GET** /tracks/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsProvidersGet**](TracksAPI.md#tracksidrelationshipsprovidersget) | **GET** /tracks/{id}/relationships/providers | Get providers relationship (\&quot;to-many\&quot;).
@@ -21,7 +22,7 @@ Method | HTTP request | Description
 
 # **tracksGet**
 ```swift
-    open class func tracksGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: TracksMultiDataDocument?, _ error: Error?) -> Void)
+    open class func tracksGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple tracks.
@@ -35,7 +36,7 @@ import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, trackStatistics (optional)
 let filterROwnersId = ["inner_example"] // [String] | User id (optional)
 let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 let filterId = ["inner_example"] // [String] | A Tidal catalogue ID (optional)
@@ -59,14 +60,14 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, trackStatistics | [optional] 
  **filterROwnersId** | [**[String]**](String.md) | User id | [optional] 
  **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
  **filterId** | [**[String]**](String.md) | A Tidal catalogue ID | [optional] 
 
 ### Return type
 
-[**TracksMultiDataDocument**](TracksMultiDataDocument.md)
+[**TracksMultiResourceDataDocument**](TracksMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -131,7 +132,7 @@ Void (empty response body)
 
 # **tracksIdGet**
 ```swift
-    open class func tracksIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: TracksSingleDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single track.
@@ -145,7 +146,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | A Tidal catalogue ID
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, trackStatistics (optional)
 
 // Get single track.
 TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
@@ -166,11 +167,11 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | A Tidal catalogue ID | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, trackStatistics | [optional] 
 
 ### Return type
 
-[**TracksSingleDataDocument**](TracksSingleDataDocument.md)
+[**TracksSingleResourceDataDocument**](TracksSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -198,7 +199,7 @@ Updates existing track.
 import OpenAPIClient
 
 let id = "id_example" // String | A Tidal catalogue ID
-let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, genreTags: ["genreTags_example"], key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", type: "type_example")) // TrackUpdateOperationPayload |  (optional)
+let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, genreTags: ["genreTags_example"], key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TrackUpdateOperation_Payload_Data_Relationships(genres: TrackUpdateOperation_Payload_Data_Relationships_Genres(data: [TrackUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackUpdateOperationPayload |  (optional)
 
 // Update single track.
 TracksAPI.tracksIdPatch(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload) { (response, error) in
@@ -237,7 +238,7 @@ Void (empty response body)
 
 # **tracksIdRelationshipsAlbumsGet**
 ```swift
-    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -278,7 +279,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
+[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -293,7 +294,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsArtistsGet**
 ```swift
-    open class func tracksIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -334,7 +335,63 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
+[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **tracksIdRelationshipsGenresGet**
+```swift
+    open class func tracksIdRelationshipsGenresGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get genres relationship (\"to-many\").
+
+Retrieves genres relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | A Tidal catalogue ID
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: genres (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get genres relationship (\"to-many\").
+TracksAPI.tracksIdRelationshipsGenresGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | A Tidal catalogue ID | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: genres | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -349,7 +406,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsLyricsGet**
 ```swift
-    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get lyrics relationship (\"to-many\").
@@ -388,7 +445,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
+[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -403,7 +460,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsOwnersGet**
 ```swift
-    open class func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -442,7 +499,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
+[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -457,7 +514,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsProvidersGet**
 ```swift
-    open class func tracksIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get providers relationship (\"to-many\").
@@ -498,7 +555,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
+[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -513,7 +570,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsRadioGet**
 ```swift
-    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get radio relationship (\"to-many\").
@@ -552,7 +609,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
+[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -567,7 +624,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSimilarTracksGet**
 ```swift
-    open class func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: TracksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarTracks relationship (\"to-many\").
@@ -608,7 +665,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiDataRelationshipDocument**](TracksMultiDataRelationshipDocument.md)
+[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -623,7 +680,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsTrackStatisticsGet**
 ```swift
-    open class func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil, completion: @escaping (_ data: TracksSingletonDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get trackStatistics relationship (\"to-one\").
@@ -660,7 +717,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingletonDataRelationshipDocument**](TracksSingletonDataRelationshipDocument.md)
+[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -675,7 +732,7 @@ Name | Type | Description  | Notes
 
 # **tracksPost**
 ```swift
-    open class func tracksPost(trackCreateOperationPayload: TrackCreateOperationPayload? = nil, completion: @escaping (_ data: TracksSingleDataDocument?, _ error: Error?) -> Void)
+    open class func tracksPost(trackCreateOperationPayload: TrackCreateOperationPayload? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single track.
@@ -687,7 +744,7 @@ Creates a new track.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let trackCreateOperationPayload = TrackCreateOperation_Payload(data: TrackCreateOperation_Payload_Data(attributes: TrackCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", explicit: false, title: "title_example"), relationships: TrackCreateOperation_Payload_Data_Relationships(albums: TrackCreateOperation_Payload_Data_Relationships_Albums(data: [TrackCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TrackCreateOperation_Payload_Data_Relationships_Artists(data: [TrackCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackCreateOperationPayload |  (optional)
+let trackCreateOperationPayload = TrackCreateOperation_Payload(data: TrackCreateOperation_Payload_Data(attributes: TrackCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", explicit: false, title: "title_example"), relationships: TrackCreateOperation_Payload_Data_Relationships(albums: TrackCreateOperation_Payload_Data_Relationships_Albums(data: [TrackCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TrackCreateOperation_Payload_Data_Relationships_Artists(data: [TrackCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: TrackCreateOperation_Payload_Data_Relationships_Genres(data: [TrackCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackCreateOperationPayload |  (optional)
 
 // Create single track.
 TracksAPI.tracksPost(trackCreateOperationPayload: trackCreateOperationPayload) { (response, error) in
@@ -710,7 +767,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingleDataDocument**](TracksSingleDataDocument.md)
+[**TracksSingleResourceDataDocument**](TracksSingleResourceDataDocument.md)
 
 ### Authorization
 

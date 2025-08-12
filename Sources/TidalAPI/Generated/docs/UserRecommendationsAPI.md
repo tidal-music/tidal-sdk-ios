@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userRecommendationsIdGet**
 ```swift
-    open class func userRecommendationsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userRecommendation.
@@ -54,7 +54,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserRecommendationsSingleDataDocument**](UserRecommendationsSingleDataDocument.md)
+[**UserRecommendationsSingleResourceDataDocument**](UserRecommendationsSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsDiscoveryMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get discoveryMixes relationship (\"to-many\").
@@ -112,7 +112,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserRecommendationsMultiDataRelationshipDocument**](UserRecommendationsMultiDataRelationshipDocument.md)
+[**UserRecommendationsMultiRelationshipDataDocument**](UserRecommendationsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -127,7 +127,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsMyMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get myMixes relationship (\"to-many\").
@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserRecommendationsMultiDataRelationshipDocument**](UserRecommendationsMultiDataRelationshipDocument.md)
+[**UserRecommendationsMultiRelationshipDataDocument**](UserRecommendationsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -185,7 +185,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsNewArrivalMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get newArrivalMixes relationship (\"to-many\").
@@ -228,7 +228,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserRecommendationsMultiDataRelationshipDocument**](UserRecommendationsMultiDataRelationshipDocument.md)
+[**UserRecommendationsMultiRelationshipDataDocument**](UserRecommendationsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -243,7 +243,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsMeGet**
 ```swift
-    open class func userRecommendationsMeGet(countryCode: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsMeGet(countryCode: String, locale: String, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get current user's userRecommendation(s).
@@ -282,7 +282,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserRecommendationsSingleDataDocument**](UserRecommendationsSingleDataDocument.md)
+[**UserRecommendationsSingleResourceDataDocument**](UserRecommendationsSingleResourceDataDocument.md)
 
 ### Authorization
 

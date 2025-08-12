@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct ArtworksRelationships: Codable, Hashable {
 
-    public var owners: MultiDataRelationshipDoc
+    public var owners: MultiRelationshipDataDocument
 
     public init(
-        owners: MultiDataRelationshipDoc
+        owners: MultiRelationshipDataDocument
     ) {
         self.owners = owners
     }

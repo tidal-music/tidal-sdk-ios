@@ -17,10 +17,10 @@ internal class TrackStatisticsAPI {
      
      - parameter id: (path) A Tidal catalogue ID 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - returns: TrackStatisticsSingleDataDocument
+     - returns: TrackStatisticsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackStatisticsIdGet(id: String, include: [String]? = nil) async throws -> TrackStatisticsSingleDataDocument {
+    internal class func trackStatisticsIdGet(id: String, include: [String]? = nil) async throws -> TrackStatisticsSingleResourceDataDocument {
         return try await trackStatisticsIdGetWithRequestBuilder(id: id, include: include).execute().body
     }
 
@@ -33,9 +33,9 @@ internal class TrackStatisticsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) A Tidal catalogue ID 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - returns: RequestBuilder<TrackStatisticsSingleDataDocument> 
+     - returns: RequestBuilder<TrackStatisticsSingleResourceDataDocument> 
      */
-    internal class func trackStatisticsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<TrackStatisticsSingleDataDocument> {
+    internal class func trackStatisticsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<TrackStatisticsSingleResourceDataDocument> {
         var localVariablePath = "/trackStatistics/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -54,7 +54,7 @@ internal class TrackStatisticsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<TrackStatisticsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TrackStatisticsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -65,10 +65,10 @@ internal class TrackStatisticsAPI {
      - parameter id: (path) A Tidal catalogue ID 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: TrackStatisticsMultiDataRelationshipDocument
+     - returns: TrackStatisticsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackStatisticsMultiDataRelationshipDocument {
+    internal class func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackStatisticsMultiRelationshipDataDocument {
         return try await trackStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -82,9 +82,9 @@ internal class TrackStatisticsAPI {
      - parameter id: (path) A Tidal catalogue ID 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<TrackStatisticsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<TrackStatisticsMultiRelationshipDataDocument> 
      */
-    internal class func trackStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TrackStatisticsMultiDataRelationshipDocument> {
+    internal class func trackStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TrackStatisticsMultiRelationshipDataDocument> {
         var localVariablePath = "/trackStatistics/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -104,7 +104,7 @@ internal class TrackStatisticsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<TrackStatisticsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TrackStatisticsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **videosGet**
 ```swift
-    open class func videosGet(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: VideosMultiDataDocument?, _ error: Error?) -> Void)
+    open class func videosGet(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: VideosMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple videos.
@@ -55,7 +55,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**VideosMultiDataDocument**](VideosMultiDataDocument.md)
+[**VideosMultiResourceDataDocument**](VideosMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -70,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **videosIdGet**
 ```swift
-    open class func videosIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: VideosSingleDataDocument?, _ error: Error?) -> Void)
+    open class func videosIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: VideosSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single video.
@@ -109,7 +109,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**VideosSingleDataDocument**](VideosSingleDataDocument.md)
+[**VideosSingleResourceDataDocument**](VideosSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -124,7 +124,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsAlbumsGet**
 ```swift
-    open class func videosIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func videosIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -165,7 +165,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**VideosMultiDataRelationshipDocument**](VideosMultiDataRelationshipDocument.md)
+[**VideosMultiRelationshipDataDocument**](VideosMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -180,7 +180,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsArtistsGet**
 ```swift
-    open class func videosIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func videosIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -221,7 +221,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**VideosMultiDataRelationshipDocument**](VideosMultiDataRelationshipDocument.md)
+[**VideosMultiRelationshipDataDocument**](VideosMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -236,7 +236,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsProvidersGet**
 ```swift
-    open class func videosIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func videosIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get providers relationship (\"to-many\").
@@ -277,7 +277,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**VideosMultiDataRelationshipDocument**](VideosMultiDataRelationshipDocument.md)
+[**VideosMultiRelationshipDataDocument**](VideosMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -292,7 +292,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsThumbnailArtGet**
 ```swift
-    open class func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get thumbnailArt relationship (\"to-many\").
@@ -333,7 +333,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**VideosMultiDataRelationshipDocument**](VideosMultiDataRelationshipDocument.md)
+[**VideosMultiRelationshipDataDocument**](VideosMultiRelationshipDataDocument.md)
 
 ### Authorization
 

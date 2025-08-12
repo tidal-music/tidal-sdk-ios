@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **usersMeGet**
 ```swift
-    open class func usersMeGet(completion: @escaping (_ data: UsersSingleDataDocument?, _ error: Error?) -> Void)
+    open class func usersMeGet(completion: @escaping (_ data: UsersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get current user's user(s).
@@ -40,7 +40,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**UsersSingleDataDocument**](UsersSingleDataDocument.md)
+[**UsersSingleResourceDataDocument**](UsersSingleResourceDataDocument.md)
 
 ### Authorization
 

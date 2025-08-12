@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **trackManifestsIdGet**
 ```swift
-    open class func trackManifestsIdGet(id: String, manifestType: String, formats: String, uriScheme: String, usage: String, adaptive: String, completion: @escaping (_ data: TrackManifestsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func trackManifestsIdGet(id: String, manifestType: String, formats: String, uriScheme: String, usage: String, adaptive: String, completion: @escaping (_ data: TrackManifestsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single trackManifest.
@@ -54,7 +54,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TrackManifestsSingleDataDocument**](TrackManifestsSingleDataDocument.md)
+[**TrackManifestsSingleResourceDataDocument**](TrackManifestsSingleResourceDataDocument.md)
 
 ### Authorization
 

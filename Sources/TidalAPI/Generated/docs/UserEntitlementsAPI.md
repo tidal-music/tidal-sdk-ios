@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **userEntitlementsIdGet**
 ```swift
-    open class func userEntitlementsIdGet(id: String, completion: @escaping (_ data: UserEntitlementsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userEntitlementsIdGet(id: String, completion: @escaping (_ data: UserEntitlementsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userEntitlement.
@@ -44,7 +44,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserEntitlementsSingleDataDocument**](UserEntitlementsSingleDataDocument.md)
+[**UserEntitlementsSingleResourceDataDocument**](UserEntitlementsSingleResourceDataDocument.md)
 
 ### Authorization
 

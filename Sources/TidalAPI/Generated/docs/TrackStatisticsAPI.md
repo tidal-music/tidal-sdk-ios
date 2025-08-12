@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **trackStatisticsIdGet**
 ```swift
-    open class func trackStatisticsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: TrackStatisticsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func trackStatisticsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: TrackStatisticsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single trackStatistic.
@@ -47,7 +47,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TrackStatisticsSingleDataDocument**](TrackStatisticsSingleDataDocument.md)
+[**TrackStatisticsSingleResourceDataDocument**](TrackStatisticsSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 
 # **trackStatisticsIdRelationshipsOwnersGet**
 ```swift
-    open class func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TrackStatisticsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TrackStatisticsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -101,7 +101,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TrackStatisticsMultiDataRelationshipDocument**](TrackStatisticsMultiDataRelationshipDocument.md)
+[**TrackStatisticsMultiRelationshipDataDocument**](TrackStatisticsMultiRelationshipDataDocument.md)
 
 ### Authorization
 

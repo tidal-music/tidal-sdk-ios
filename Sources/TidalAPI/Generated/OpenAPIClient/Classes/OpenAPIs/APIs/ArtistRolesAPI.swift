@@ -16,10 +16,10 @@ internal class ArtistRolesAPI {
      Get multiple artistRoles.
      
      - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
-     - returns: ArtistRolesMultiDataDocument
+     - returns: ArtistRolesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistRolesGet(filterId: [String]? = nil) async throws -> ArtistRolesMultiDataDocument {
+    internal class func artistRolesGet(filterId: [String]? = nil) async throws -> ArtistRolesMultiResourceDataDocument {
         return try await artistRolesGetWithRequestBuilder(filterId: filterId).execute().body
     }
 
@@ -34,9 +34,9 @@ internal class ArtistRolesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
-     - returns: RequestBuilder<ArtistRolesMultiDataDocument> 
+     - returns: RequestBuilder<ArtistRolesMultiResourceDataDocument> 
      */
-    internal class func artistRolesGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<ArtistRolesMultiDataDocument> {
+    internal class func artistRolesGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<ArtistRolesMultiResourceDataDocument> {
         let localVariablePath = "/artistRoles"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -52,7 +52,7 @@ internal class ArtistRolesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ArtistRolesMultiDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ArtistRolesMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -61,10 +61,10 @@ internal class ArtistRolesAPI {
      Get single artistRole.
      
      - parameter id: (path) Artist role id 
-     - returns: ArtistRolesSingleDataDocument
+     - returns: ArtistRolesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistRolesIdGet(id: String) async throws -> ArtistRolesSingleDataDocument {
+    internal class func artistRolesIdGet(id: String) async throws -> ArtistRolesSingleResourceDataDocument {
         return try await artistRolesIdGetWithRequestBuilder(id: id).execute().body
     }
 
@@ -79,9 +79,9 @@ internal class ArtistRolesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artist role id 
-     - returns: RequestBuilder<ArtistRolesSingleDataDocument> 
+     - returns: RequestBuilder<ArtistRolesSingleResourceDataDocument> 
      */
-    internal class func artistRolesIdGetWithRequestBuilder(id: String) -> RequestBuilder<ArtistRolesSingleDataDocument> {
+    internal class func artistRolesIdGetWithRequestBuilder(id: String) -> RequestBuilder<ArtistRolesSingleResourceDataDocument> {
         var localVariablePath = "/artistRoles/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,7 +97,7 @@ internal class ArtistRolesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ArtistRolesSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ArtistRolesSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

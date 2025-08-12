@@ -13,6 +13,7 @@ import AnyCodable
 /** Suggested search queries */
 public struct SearchSuggestionsSuggestions: Codable, Hashable {
 
+    public static let queryRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var highlights: [SearchSuggestionsHighlights]?
     public var query: String
 

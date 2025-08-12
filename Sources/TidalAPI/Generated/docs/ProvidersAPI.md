@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **providersGet**
 ```swift
-    open class func providersGet(filterId: [String]? = nil, completion: @escaping (_ data: ProvidersMultiDataDocument?, _ error: Error?) -> Void)
+    open class func providersGet(filterId: [String]? = nil, completion: @escaping (_ data: ProvidersMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple providers.
@@ -45,7 +45,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ProvidersMultiDataDocument**](ProvidersMultiDataDocument.md)
+[**ProvidersMultiResourceDataDocument**](ProvidersMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -60,7 +60,7 @@ Name | Type | Description  | Notes
 
 # **providersIdGet**
 ```swift
-    open class func providersIdGet(id: String, completion: @escaping (_ data: ProvidersSingleDataDocument?, _ error: Error?) -> Void)
+    open class func providersIdGet(id: String, completion: @escaping (_ data: ProvidersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single provider.
@@ -95,7 +95,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ProvidersSingleDataDocument**](ProvidersSingleDataDocument.md)
+[**ProvidersSingleResourceDataDocument**](ProvidersSingleResourceDataDocument.md)
 
 ### Authorization
 
