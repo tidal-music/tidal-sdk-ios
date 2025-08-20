@@ -16,10 +16,10 @@ internal class ProvidersAPI {
      Get multiple providers.
      
      - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
-     - returns: ProvidersMultiDataDocument
+     - returns: ProvidersMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providersGet(filterId: [String]? = nil) async throws -> ProvidersMultiDataDocument {
+    internal class func providersGet(filterId: [String]? = nil) async throws -> ProvidersMultiResourceDataDocument {
         return try await providersGetWithRequestBuilder(filterId: filterId).execute().body
     }
 
@@ -34,9 +34,9 @@ internal class ProvidersAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
-     - returns: RequestBuilder<ProvidersMultiDataDocument> 
+     - returns: RequestBuilder<ProvidersMultiResourceDataDocument> 
      */
-    internal class func providersGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<ProvidersMultiDataDocument> {
+    internal class func providersGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<ProvidersMultiResourceDataDocument> {
         let localVariablePath = "/providers"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -52,7 +52,7 @@ internal class ProvidersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ProvidersMultiDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ProvidersMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -61,10 +61,10 @@ internal class ProvidersAPI {
      Get single provider.
      
      - parameter id: (path) Provider id 
-     - returns: ProvidersSingleDataDocument
+     - returns: ProvidersSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providersIdGet(id: String) async throws -> ProvidersSingleDataDocument {
+    internal class func providersIdGet(id: String) async throws -> ProvidersSingleResourceDataDocument {
         return try await providersIdGetWithRequestBuilder(id: id).execute().body
     }
 
@@ -79,9 +79,9 @@ internal class ProvidersAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Provider id 
-     - returns: RequestBuilder<ProvidersSingleDataDocument> 
+     - returns: RequestBuilder<ProvidersSingleResourceDataDocument> 
      */
-    internal class func providersIdGetWithRequestBuilder(id: String) -> RequestBuilder<ProvidersSingleDataDocument> {
+    internal class func providersIdGetWithRequestBuilder(id: String) -> RequestBuilder<ProvidersSingleResourceDataDocument> {
         var localVariablePath = "/providers/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,7 +97,7 @@ internal class ProvidersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ProvidersSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ProvidersSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -13,7 +13,6 @@ Name | Type | Description | Notes
 **name** | **String** | Playlist name | 
 **numberOfItems** | **Int** | Number of items in the playlist | [optional] 
 **playlistType** | **String** | The type of the playlist | 
-**privacy** | **String** | Privacy setting of the playlist | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

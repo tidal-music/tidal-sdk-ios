@@ -3,10 +3,10 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**albums** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**artists** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**providers** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**thumbnailArt** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
+**albums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**artists** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**thumbnailArt** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

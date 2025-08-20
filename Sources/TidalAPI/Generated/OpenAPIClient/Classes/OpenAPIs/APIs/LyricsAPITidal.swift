@@ -17,9 +17,9 @@ public enum LyricsAPITidal {
 	/**
      Get single lyric.
      
-     - returns: LyricsSingleDataDocument
+     - returns: LyricsSingleResourceDataDocument
      */
-	public static func lyricsIdGet(id: String, include: [String]? = nil) async throws -> LyricsSingleDataDocument {
+	public static func lyricsIdGet(id: String, include: [String]? = nil) async throws -> LyricsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdGetWithRequestBuilder(id: id, include: include)
 		}
@@ -29,9 +29,9 @@ public enum LyricsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: LyricsMultiDataRelationshipDocument
+     - returns: LyricsMultiRelationshipDataDocument
      */
-	public static func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiDataRelationshipDocument {
+	public static func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -41,9 +41,9 @@ public enum LyricsAPITidal {
 	/**
      Get track relationship (\&quot;to-one\&quot;).
      
-     - returns: LyricsSingletonDataRelationshipDocument
+     - returns: LyricsSingleRelationshipDataDocument
      */
-	public static func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil) async throws -> LyricsSingletonDataRelationshipDocument {
+	public static func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}

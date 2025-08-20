@@ -18,10 +18,10 @@ internal class TrackFilesAPI {
      - parameter id: (path)  
      - parameter formats: (query)  
      - parameter usage: (query)  
-     - returns: TrackFilesSingleDataDocument
+     - returns: TrackFilesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackFilesIdGet(id: String, formats: String, usage: String) async throws -> TrackFilesSingleDataDocument {
+    internal class func trackFilesIdGet(id: String, formats: String, usage: String) async throws -> TrackFilesSingleResourceDataDocument {
         return try await trackFilesIdGetWithRequestBuilder(id: id, formats: formats, usage: usage).execute().body
     }
 
@@ -38,9 +38,9 @@ internal class TrackFilesAPI {
      - parameter id: (path)  
      - parameter formats: (query)  
      - parameter usage: (query)  
-     - returns: RequestBuilder<TrackFilesSingleDataDocument> 
+     - returns: RequestBuilder<TrackFilesSingleResourceDataDocument> 
      */
-    internal class func trackFilesIdGetWithRequestBuilder(id: String, formats: String, usage: String) -> RequestBuilder<TrackFilesSingleDataDocument> {
+    internal class func trackFilesIdGetWithRequestBuilder(id: String, formats: String, usage: String) -> RequestBuilder<TrackFilesSingleResourceDataDocument> {
         var localVariablePath = "/trackFiles/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -60,7 +60,7 @@ internal class TrackFilesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<TrackFilesSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TrackFilesSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

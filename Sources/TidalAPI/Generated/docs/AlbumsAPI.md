@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**albumsIdRelationshipsArtistsGet**](AlbumsAPI.md#albumsidrelationshipsartistsget) | **GET** /albums/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsCoverArtGet**](AlbumsAPI.md#albumsidrelationshipscoverartget) | **GET** /albums/{id}/relationships/coverArt | Get coverArt relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsCoverArtPatch**](AlbumsAPI.md#albumsidrelationshipscoverartpatch) | **PATCH** /albums/{id}/relationships/coverArt | Update coverArt relationship (\&quot;to-many\&quot;).
+[**albumsIdRelationshipsGenresGet**](AlbumsAPI.md#albumsidrelationshipsgenresget) | **GET** /albums/{id}/relationships/genres | Get genres relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsItemsGet**](AlbumsAPI.md#albumsidrelationshipsitemsget) | **GET** /albums/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsOwnersGet**](AlbumsAPI.md#albumsidrelationshipsownersget) | **GET** /albums/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsProvidersGet**](AlbumsAPI.md#albumsidrelationshipsprovidersget) | **GET** /albums/{id}/relationships/providers | Get providers relationship (\&quot;to-many\&quot;).
@@ -20,7 +21,7 @@ Method | HTTP request | Description
 
 # **albumsGet**
 ```swift
-    open class func albumsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil, completion: @escaping (_ data: AlbumsMultiDataDocument?, _ error: Error?) -> Void)
+    open class func albumsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil, completion: @escaping (_ data: AlbumsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple albums.
@@ -34,7 +35,7 @@ import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, owners, providers, similarAlbums (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums (optional)
 let filterROwnersId = ["inner_example"] // [String] | User id (optional)
 let filterId = ["inner_example"] // [String] | Album id (optional)
 let filterBarcodeId = ["inner_example"] // [String] | Barcode Id (optional)
@@ -58,14 +59,14 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, owners, providers, similarAlbums | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums | [optional] 
  **filterROwnersId** | [**[String]**](String.md) | User id | [optional] 
  **filterId** | [**[String]**](String.md) | Album id | [optional] 
  **filterBarcodeId** | [**[String]**](String.md) | Barcode Id | [optional] 
 
 ### Return type
 
-[**AlbumsMultiDataDocument**](AlbumsMultiDataDocument.md)
+[**AlbumsMultiResourceDataDocument**](AlbumsMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -130,7 +131,7 @@ Void (empty response body)
 
 # **albumsIdGet**
 ```swift
-    open class func albumsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: AlbumsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: AlbumsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single album.
@@ -144,7 +145,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, owners, providers, similarAlbums (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums (optional)
 
 // Get single album.
 AlbumsAPI.albumsIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
@@ -165,11 +166,11 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, owners, providers, similarAlbums | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums | [optional] 
 
 ### Return type
 
-[**AlbumsSingleDataDocument**](AlbumsSingleDataDocument.md)
+[**AlbumsSingleResourceDataDocument**](AlbumsSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -197,7 +198,7 @@ Updates existing album.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let albumUpdateOperationPayload = AlbumUpdateOperation_Payload(data: AlbumUpdateOperation_Payload_Data(attributes: AlbumUpdateOperation_Payload_Data_Attributes(copyright: AlbumUpdateOperation_Payload_Data_Attributes_Copyright(text: "text_example", year: 123), explicitLyrics: false, genres: ["genres_example"], releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", type: "type_example")) // AlbumUpdateOperationPayload |  (optional)
+let albumUpdateOperationPayload = AlbumUpdateOperation_Payload(data: AlbumUpdateOperation_Payload_Data(attributes: AlbumUpdateOperation_Payload_Data_Attributes(copyright: AlbumUpdateOperation_Payload_Data_Attributes_Copyright(text: "text_example", year: 123), explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumUpdateOperation_Payload_Data_Relationships(genres: AlbumUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumUpdateOperationPayload |  (optional)
 
 // Update single album.
 AlbumsAPI.albumsIdPatch(id: id, albumUpdateOperationPayload: albumUpdateOperationPayload) { (response, error) in
@@ -236,7 +237,7 @@ Void (empty response body)
 
 # **albumsIdRelationshipsArtistsGet**
 ```swift
-    open class func albumsIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -277,7 +278,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiDataRelationshipDocument**](AlbumsMultiDataRelationshipDocument.md)
+[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -292,7 +293,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtGet**
 ```swift
-    open class func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get coverArt relationship (\"to-many\").
@@ -333,7 +334,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiDataRelationshipDocument**](AlbumsMultiDataRelationshipDocument.md)
+[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -398,9 +399,65 @@ Void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **albumsIdRelationshipsGenresGet**
+```swift
+    open class func albumsIdRelationshipsGenresGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get genres relationship (\"to-many\").
+
+Retrieves genres relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Album id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: genres (optional)
+
+// Get genres relationship (\"to-many\").
+AlbumsAPI.albumsIdRelationshipsGenresGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Album id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: genres | [optional] 
+
+### Return type
+
+[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **albumsIdRelationshipsItemsGet**
 ```swift
-    open class func albumsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsItemsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -441,7 +498,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsItemsMultiDataRelationshipDocument**](AlbumsItemsMultiDataRelationshipDocument.md)
+[**AlbumsItemsMultiRelationshipDataDocument**](AlbumsItemsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -456,7 +513,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsOwnersGet**
 ```swift
-    open class func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -495,7 +552,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiDataRelationshipDocument**](AlbumsMultiDataRelationshipDocument.md)
+[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -510,7 +567,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsProvidersGet**
 ```swift
-    open class func albumsIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get providers relationship (\"to-many\").
@@ -551,7 +608,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiDataRelationshipDocument**](AlbumsMultiDataRelationshipDocument.md)
+[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -566,7 +623,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSimilarAlbumsGet**
 ```swift
-    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarAlbums relationship (\"to-many\").
@@ -607,7 +664,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiDataRelationshipDocument**](AlbumsMultiDataRelationshipDocument.md)
+[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -622,7 +679,7 @@ Name | Type | Description  | Notes
 
 # **albumsPost**
 ```swift
-    open class func albumsPost(albumCreateOperationPayload: AlbumCreateOperationPayload? = nil, completion: @escaping (_ data: AlbumsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func albumsPost(albumCreateOperationPayload: AlbumCreateOperationPayload? = nil, completion: @escaping (_ data: AlbumsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single album.
@@ -634,7 +691,7 @@ Creates a new album.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let albumCreateOperationPayload = AlbumCreateOperation_Payload(data: AlbumCreateOperation_Payload_Data(attributes: AlbumCreateOperation_Payload_Data_Attributes(copyright: AlbumCreateOperation_Payload_Data_Attributes_Copyright(text: "text_example", year: 123), explicitLyrics: false, genres: ["genres_example"], releaseDate: Date(), title: "title_example", upc: "upc_example", version: "version_example"), relationships: AlbumCreateOperation_Payload_Data_Relationships(artists: AlbumCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumCreateOperationPayload |  (optional)
+let albumCreateOperationPayload = AlbumCreateOperation_Payload(data: AlbumCreateOperation_Payload_Data(attributes: AlbumCreateOperation_Payload_Data_Attributes(copyright: AlbumCreateOperation_Payload_Data_Attributes_Copyright(text: "text_example", year: 123), explicitLyrics: false, releaseDate: Date(), title: "title_example", upc: "upc_example", version: "version_example"), relationships: AlbumCreateOperation_Payload_Data_Relationships(artists: AlbumCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumCreateOperationPayload |  (optional)
 
 // Create single album.
 AlbumsAPI.albumsPost(albumCreateOperationPayload: albumCreateOperationPayload) { (response, error) in
@@ -657,7 +714,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsSingleDataDocument**](AlbumsSingleDataDocument.md)
+[**AlbumsSingleResourceDataDocument**](AlbumsSingleResourceDataDocument.md)
 
 ### Authorization
 

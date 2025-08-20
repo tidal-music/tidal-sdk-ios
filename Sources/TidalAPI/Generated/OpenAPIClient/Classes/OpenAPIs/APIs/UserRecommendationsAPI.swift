@@ -19,10 +19,10 @@ internal class UserRecommendationsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
-     - returns: UserRecommendationsSingleDataDocument
+     - returns: UserRecommendationsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleDataDocument {
+    internal class func userRecommendationsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
         return try await userRecommendationsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
     }
 
@@ -37,9 +37,9 @@ internal class UserRecommendationsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
-     - returns: RequestBuilder<UserRecommendationsSingleDataDocument> 
+     - returns: RequestBuilder<UserRecommendationsSingleResourceDataDocument> 
      */
-    internal class func userRecommendationsIdGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil) -> RequestBuilder<UserRecommendationsSingleDataDocument> {
+    internal class func userRecommendationsIdGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil) -> RequestBuilder<UserRecommendationsSingleResourceDataDocument> {
         var localVariablePath = "/userRecommendations/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -60,7 +60,7 @@ internal class UserRecommendationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -73,10 +73,10 @@ internal class UserRecommendationsAPI {
      - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: UserRecommendationsMultiDataRelationshipDocument
+     - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         return try await userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -92,9 +92,9 @@ internal class UserRecommendationsAPI {
      - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> {
+    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/discoveryMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -116,7 +116,7 @@ internal class UserRecommendationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -129,10 +129,10 @@ internal class UserRecommendationsAPI {
      - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: UserRecommendationsMultiDataRelationshipDocument
+     - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+    internal class func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         return try await userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -148,9 +148,9 @@ internal class UserRecommendationsAPI {
      - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> {
+    internal class func userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/myMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -172,7 +172,7 @@ internal class UserRecommendationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -185,10 +185,10 @@ internal class UserRecommendationsAPI {
      - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: UserRecommendationsMultiDataRelationshipDocument
+     - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiDataRelationshipDocument {
+    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         return try await userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -204,9 +204,9 @@ internal class UserRecommendationsAPI {
      - parameter locale: (query) BCP47 locale code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserRecommendationsMultiDataRelationshipDocument> {
+    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/newArrivalMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -228,57 +228,7 @@ internal class UserRecommendationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
-     Get current user's userRecommendation(s).
-     
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
-     - returns: UserRecommendationsSingleDataDocument
-     */
-    @available(*, deprecated, message: "This operation is deprecated.")
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsMeGet(countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleDataDocument {
-        return try await userRecommendationsMeGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include).execute().body
-    }
-
-    /**
-     Get current user's userRecommendation(s).
-     - GET /userRecommendations/me
-     - This operation is deprecated and will be removed shortly. Please switch to the equivalent /userRecommendations/{userId} endpoint. You can find your user id by calling /users/me.  Retrieves current user's userRecommendation(s).
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter locale: (query) BCP47 locale code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
-     - returns: RequestBuilder<UserRecommendationsSingleDataDocument> 
-     */
-    @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userRecommendationsMeGetWithRequestBuilder(countryCode: String, locale: String, include: [String]? = nil) -> RequestBuilder<UserRecommendationsSingleDataDocument> {
-        let localVariablePath = "/userRecommendations/me"
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -3,14 +3,16 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**albums** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**artists** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**lyrics** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**owners** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**providers** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**radio** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**similarTracks** | [**MultiDataRelationshipDoc**](MultiDataRelationshipDoc.md) |  | 
-**trackStatistics** | [**SingletonDataRelationshipDoc**](SingletonDataRelationshipDoc.md) |  | 
+**albums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**artists** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**genres** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**lyrics** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**radio** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**similarTracks** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**sourceFile** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
+**trackStatistics** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

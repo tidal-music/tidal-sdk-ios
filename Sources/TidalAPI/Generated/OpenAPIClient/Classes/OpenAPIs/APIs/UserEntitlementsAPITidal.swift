@@ -17,9 +17,9 @@ public enum UserEntitlementsAPITidal {
 	/**
      Get single userEntitlement.
      
-     - returns: UserEntitlementsSingleDataDocument
+     - returns: UserEntitlementsSingleResourceDataDocument
      */
-	public static func userEntitlementsIdGet(id: String) async throws -> UserEntitlementsSingleDataDocument {
+	public static func userEntitlementsIdGet(id: String) async throws -> UserEntitlementsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UserEntitlementsAPI.userEntitlementsIdGetWithRequestBuilder(id: id)
 		}
