@@ -73,7 +73,7 @@ class GRDBOfflineStorage {
 
 extension GRDBOfflineStorage: OfflineStorage {
 	// MARK: - OfflineEntry Management (Completed downloads)
-
+	
 	func save(_ entry: OfflineEntry) throws {
 		let entity = OfflineEntryGRDBEntity(from: entry)
 		try dbQueue.write { db in
