@@ -1,6 +1,8 @@
 name: Check API Spec Changes
 
 on:
+  push:
+    branches:
   schedule:
     # Runs at 00:00 UTC every day
     - cron: '0 0 * * *'
@@ -73,7 +75,6 @@ jobs:
 
   regenerate-api:
     needs: check-api-spec
-    if: needs.check-api-spec.outputs.changes_found == 'true'
     uses: ./.github/workflows/generate-tidal-api.yml
     permissions:
       contents: write
