@@ -17,13 +17,13 @@ public struct AlbumUpdateOperationPayloadData: Codable, Hashable {
     }
     public var attributes: AlbumUpdateOperationPayloadDataAttributes
     public var id: String
-    public var relationships: AlbumUpdateOperationPayloadDataRelationships
+    public var relationships: AlbumUpdateOperationPayloadDataRelationships?
     public var type: ModelType
 
     public init(
         attributes: AlbumUpdateOperationPayloadDataAttributes,
         id: String,
-        relationships: AlbumUpdateOperationPayloadDataRelationships,
+        relationships: AlbumUpdateOperationPayloadDataRelationships? = nil,
         type: ModelType
     ) {
         self.attributes = attributes
@@ -45,7 +45,7 @@ public struct AlbumUpdateOperationPayloadData: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(attributes, forKey: .attributes)
         try container.encode(id, forKey: .id)
-        try container.encode(relationships, forKey: .relationships)
+        try container.encodeIfPresent(relationships, forKey: .relationships)
         try container.encode(type, forKey: .type)
     }
 }
