@@ -489,11 +489,15 @@ private extension Player {
 			and: playerEventSender,
 			featureFlagProvider: featureFlagProvider
 		)
+        // Create DownloadStateManager for persistence
+        let downloadStateManager = DefaultDownloadStateManager(offlineStorage: storage)
+        
 		let downloader = Downloader(
 			playbackInfoFetcher: offlinerPlaybackInfoFetcher,
 			fairPlayLicenseFetcher: fairplayLicenseFetcher,
 			networkMonitor: networkMonitor,
-			featureFlagProvider: featureFlagProvider
+			featureFlagProvider: featureFlagProvider,
+            stateManager: downloadStateManager
 		)
 		return OfflineEngine(
 			downloader: downloader,

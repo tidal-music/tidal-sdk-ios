@@ -2,66 +2,70 @@ import Foundation
 @testable import Player
 
 extension OfflineEntry {
-	static func mock(
-		productId: String,
-		productType: ProductType = ProductType.TRACK,
-		size: Int = 0,
-		URL: URL
-	) -> OfflineEntry {
-		OfflineEntry(
-			productId: productId,
-			actualProductId: productId,
-			productType: productType,
-			assetPresentation: .FULL,
-			audioMode: .STEREO,
-			audioQuality: .HIGH,
-			audioCodec: .FLAC,
-			audioSampleRate: 44100,
-			audioBitDepth: 16,
-			videoQuality: nil,
-			revalidateAt: nil,
-			expiry: nil,
-			mediaType: MediaTypes.HLS,
-			albumReplayGain: nil,
-			albumPeakAmplitude: nil,
-			trackReplayGain: nil,
-			trackPeakAmplitude: nil,
-			licenseSecurityToken: nil,
-			size: size,
-			mediaURL: URL,
-			licenseURL: nil
-		)
-	}
-
-	static func mock(
-		for mediaProduct: MediaProduct = .mock(),
-		from playbackInfo: PlaybackInfo = .mock(),
-		assetURL: URL? = URL(string: "https://www.tidal.com")!,
-		licenseURL: URL? = URL(string: "https://www.tidal.com/license")!,
-		size: Int = 0
-	) -> OfflineEntry {
-		OfflineEntry(
-			productId: mediaProduct.productId,
-			actualProductId: playbackInfo.productId,
-			productType: playbackInfo.productType,
-			assetPresentation: playbackInfo.assetPresentation,
-			audioMode: playbackInfo.audioMode,
-			audioQuality: playbackInfo.audioQuality,
-			audioCodec: playbackInfo.audioCodec,
-			audioSampleRate: playbackInfo.audioSampleRate,
-			audioBitDepth: playbackInfo.audioBitDepth,
-			videoQuality: playbackInfo.videoQuality,
-			revalidateAt: playbackInfo.offlineRevalidateAt,
-			expiry: playbackInfo.offlineValidUntil,
-			mediaType: playbackInfo.mediaType,
-			albumReplayGain: playbackInfo.albumReplayGain,
-			albumPeakAmplitude: playbackInfo.albumPeakAmplitude,
-			trackReplayGain: playbackInfo.trackReplayGain,
-			trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
-			licenseSecurityToken: playbackInfo.licenseSecurityToken,
-			size: size,
-			mediaURL: assetURL,
-			licenseURL: licenseURL
-		)
-	}
+    static func mock(
+        productId: String = "mock-product-id",
+        productType: ProductType = .TRACK,
+        assetPresentation: AssetPresentation = .FULL,
+        audioMode: AudioMode? = .STEREO,
+        audioQuality: AudioQuality? = .HIGH,
+        audioCodec: AudioCodec? = .AAC,
+        mediaType: String? = "audio/mp4",
+        size: Int = 100,
+        mediaURL: URL? = URL(string: "file:///mock/path"),
+        licenseURL: URL? = nil
+    ) -> OfflineEntry {
+        OfflineEntry(
+            productId: productId,
+            actualProductId: productId,
+            productType: productType,
+            assetPresentation: assetPresentation,
+            audioMode: audioMode,
+            audioQuality: audioQuality,
+            audioCodec: audioCodec,
+            audioSampleRate: nil,
+            audioBitDepth: nil,
+            videoQuality: nil,
+            revalidateAt: nil,
+            expiry: nil,
+            mediaType: mediaType,
+            albumReplayGain: nil,
+            albumPeakAmplitude: nil,
+            trackReplayGain: nil,
+            trackPeakAmplitude: nil,
+            licenseSecurityToken: licenseURL != nil ? "mock-token" : nil,
+            size: size,
+            mediaURL: mediaURL,
+            licenseURL: licenseURL
+        )
+    }
+    
+    static func mock(
+        from playbackInfo: PlaybackInfo,
+        assetURL: URL? = URL(string: "file:///mock/path"),
+        licenseURL: URL? = nil
+    ) -> OfflineEntry {
+        OfflineEntry(
+            productId: playbackInfo.productId,
+            actualProductId: playbackInfo.productId,
+            productType: playbackInfo.productType,
+            assetPresentation: playbackInfo.assetPresentation,
+            audioMode: playbackInfo.audioMode,
+            audioQuality: playbackInfo.audioQuality,
+            audioCodec: playbackInfo.audioCodec,
+            audioSampleRate: playbackInfo.audioSampleRate,
+            audioBitDepth: playbackInfo.audioBitDepth,
+            videoQuality: playbackInfo.videoQuality,
+            revalidateAt: playbackInfo.offlineRevalidateAt,
+            expiry: playbackInfo.offlineValidUntil,
+            mediaType: playbackInfo.mediaType,
+            albumReplayGain: playbackInfo.albumReplayGain,
+            albumPeakAmplitude: playbackInfo.albumPeakAmplitude,
+            trackReplayGain: playbackInfo.trackReplayGain,
+            trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
+            licenseSecurityToken: playbackInfo.licenseSecurityToken,
+            size: 100,
+            mediaURL: assetURL,
+            licenseURL: licenseURL ?? (playbackInfo.licenseSecurityToken != nil ? URL(string: "file:///mock/license") : nil)
+        )
+    }
 }

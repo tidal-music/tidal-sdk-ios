@@ -10,6 +10,7 @@ final class DownloadStateManagerMock: DownloadStateManager {
     var recordedErrors: [(id: String, error: Error)] = []
     var deletedDownloads: [String] = []
     var clearedStaleDownloads: Bool = false
+    var cleanupStaleDownloadsCall: (threshold: TimeInterval, deletedCount: Int)?
     
     // Mock behavior configuration
     var mockDownloads: [String: DownloadEntry] = [:]
@@ -129,6 +130,7 @@ final class DownloadStateManagerMock: DownloadStateManager {
     func cleanupStaleDownloads(threshold: TimeInterval) throws -> Int {
         if let error = errorToThrow { throw error }
         clearedStaleDownloads = true
+        cleanupStaleDownloadsCall = (threshold: threshold, deletedCount: mockDeletedCount)
         return mockDeletedCount
     }
     
@@ -141,6 +143,7 @@ final class DownloadStateManagerMock: DownloadStateManager {
         recordedErrors = []
         deletedDownloads = []
         clearedStaleDownloads = false
+        cleanupStaleDownloadsCall = nil
         
         mockDownloads = [:]
         mockDownloadsByProductId = [:]

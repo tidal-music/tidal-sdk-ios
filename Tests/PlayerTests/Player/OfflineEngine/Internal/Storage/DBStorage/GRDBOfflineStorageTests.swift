@@ -9,7 +9,7 @@ private enum Constants {
 	static let offlineEntry1 = OfflineEntry.mock(
 		productId: "1",
 		size: 500,
-		URL: URL(
+		mediaURL: URL(
 			string: "www.example.com/track1"
 		)!
 	)
@@ -17,7 +17,7 @@ private enum Constants {
 	static let offlineEntry2 = OfflineEntry.mock(
 		productId: "2",
 		size: 300,
-		URL: URL(
+		mediaURL: URL(
 			string: "www.example.com/track2"
 		)!
 	)

@@ -15,7 +15,7 @@ protocol DownloadObserver: AnyObject {
 
 class Downloader {
 	private let playbackInfoFetcher: PlaybackInfoFetcher
-	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
+	private let fairPlayLicenseFetcher: FairPlayLicenseFetcherProtocol
 	private let mediaDownloader: MediaDownloader
 	private let networkMonitor: NetworkMonitor
 	private let featureFlagProvider: FeatureFlagProvider
@@ -26,13 +26,13 @@ class Downloader {
 	private weak var observer: DownloadObserver?
 
 	init(
-		playbackInfoFetcher: PlaybackInfoFetcher,
-		fairPlayLicenseFetcher: FairPlayLicenseFetcher,
+		playbackInfoFetcher: PlaybackInfoFetcherProtocol,
+		fairPlayLicenseFetcher: FairPlayLicenseFetcherProtocol,
 		networkMonitor: NetworkMonitor,
 		featureFlagProvider: FeatureFlagProvider,
         stateManager: DownloadStateManager
 	) {
-		self.playbackInfoFetcher = playbackInfoFetcher
+		self.playbackInfoFetcher = playbackInfoFetcher as! PlaybackInfoFetcher
 		self.fairPlayLicenseFetcher = fairPlayLicenseFetcher
         self.stateManager = stateManager
 		mediaDownloader = MediaDownloader()
@@ -49,7 +49,7 @@ class Downloader {
 		let task = SafeTask {
             do {
                 // Create or retrieve download entry from state manager
-                let downloadEntry = try await self.stateManager.createDownload(
+                let downloadEntry = try self.stateManager.createDownload(
                     productId: mediaProduct.productId,
                     productType: mediaProduct.productType
                 )
@@ -254,34 +254,4 @@ extension Downloader: DownloadTaskMonitor {
 	}
 }
 
-// MARK: - PlayerLoggable Extension for Download State Management
-
-extension PlayerLoggable {
-    static func downloadEntryCreationFailed(error: Error) -> PlayerLoggable {
-        PlayerLoggable(message: "Failed to create download entry", technicalMessage: error.localizedDescription)
-    }
-    
-    static func updateDownloadStateFailed(error: Error) -> PlayerLoggable {
-        PlayerLoggable(message: "Failed to update download state", technicalMessage: error.localizedDescription)
-    }
-    
-    static func updateDownloadProgressFailed(error: Error) -> PlayerLoggable {
-        PlayerLoggable(message: "Failed to update download progress", technicalMessage: error.localizedDescription)
-    }
-    
-    static func recordDownloadErrorFailed(originalError: Error, stateError: Error) -> PlayerLoggable {
-        PlayerLoggable(message: "Failed to record download error", technicalMessage: "Original error: \(originalError.localizedDescription), State error: \(stateError.localizedDescription)")
-    }
-    
-    static func cancelDownloadStateFailed(error: Error) -> PlayerLoggable {
-        PlayerLoggable(message: "Failed to cancel download state", technicalMessage: error.localizedDescription)
-    }
-    
-    static func cleanupStaleDownloads(count: Int) -> PlayerLoggable {
-        PlayerLoggable(message: "Cleaned up stale downloads", technicalMessage: "Deleted \(count) stale downloads")
-    }
-    
-    static func cleanupStaleDownloadsFailed(error: Error) -> PlayerLoggable {
-        PlayerLoggable(message: "Failed to cleanup stale downloads", technicalMessage: error.localizedDescription)
-    }
-}
+// The PlayerLoggable cases for download state management have been moved to the PlayerLoggable enum

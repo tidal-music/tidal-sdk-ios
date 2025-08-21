@@ -206,6 +206,16 @@ enum PlayerLoggable: TidalLoggable {
 	// MARK: Player
 
 	case alreadyInitialized
+    
+    // MARK: - Download State Manager
+    
+    case downloadEntryCreationFailed(error: Error)
+    case updateDownloadStateFailed(error: Error)
+    case updateDownloadProgressFailed(error: Error)
+    case recordDownloadErrorFailed(originalError: Error, stateError: Error)
+    case cancelDownloadStateFailed(error: Error)
+    case cleanupStaleDownloads(count: Int)
+    case cleanupStaleDownloadsFailed(error: Error)
 }
 
 // swiftlint:enable identifier_name
@@ -215,6 +225,22 @@ enum PlayerLoggable: TidalLoggable {
 extension PlayerLoggable {
 	var loggingMessage: Logger.Message {
 		switch self {
+		// Download State Manager
+        case .downloadEntryCreationFailed:
+            "DownloadStateManager-downloadEntryCreationFailed"
+        case .updateDownloadStateFailed:
+            "DownloadStateManager-updateDownloadStateFailed"
+        case .updateDownloadProgressFailed:
+            "DownloadStateManager-updateDownloadProgressFailed"
+        case .recordDownloadErrorFailed:
+            "DownloadStateManager-recordDownloadErrorFailed"
+        case .cancelDownloadStateFailed:
+            "DownloadStateManager-cancelDownloadStateFailed"
+        case .cleanupStaleDownloads:
+            "DownloadStateManager-cleanupStaleDownloads"
+        case .cleanupStaleDownloadsFailed:
+            "DownloadStateManager-cleanupStaleDownloadsFailed"
+            
 		// Event Sender
 		case .sendEventOfflinePlayFailed:
 			"EventSender-sendEventOfflinePlayFailed"
@@ -514,8 +540,19 @@ extension PlayerLoggable {
 		     let .djSessionStartFailed(error),
 		     let .djSessionSendCommandFailed(error),
 		     let .loadUCFailed(error),
+             let .downloadEntryCreationFailed(error),
+             let .updateDownloadStateFailed(error),
+             let .updateDownloadProgressFailed(error),
+             let .cancelDownloadStateFailed(error),
+             let .cleanupStaleDownloadsFailed(error),
 		     let .loadPlayerItemFailed(error):
 			metadata[Logger.Metadata.errorKey] = "\(String(describing: error))"
+            
+        case let .recordDownloadErrorFailed(originalError, stateError):
+            metadata[Logger.Metadata.errorKey] = "Original error: \(String(describing: originalError)), State error: \(String(describing: stateError))"
+            
+        case let .cleanupStaleDownloads(count):
+            metadata["count"] = "\(count)"
 		case let .backoffHandleResponseFailed(error, retryStrategy):
 			metadata[Logger.Metadata.errorKey] = "\(String(describing: error))"
 			metadata[Constants.metadataRetryStrategyKey] = "\(String(describing: retryStrategy))"
@@ -631,8 +668,17 @@ extension PlayerLoggable {
 		     .djSessionSendCommandFailed,
 		     .loadUCFailed,
 		     .loadPlayerItemFailed,
+             .downloadEntryCreationFailed,
+             .updateDownloadStateFailed, 
+             .updateDownloadProgressFailed,
+             .recordDownloadErrorFailed,
+             .cancelDownloadStateFailed,
+             .cleanupStaleDownloadsFailed,
 		     .alreadyInitialized:
 			.error
+            
+        case .cleanupStaleDownloads:
+            .info
 		case .streamingNotifyGetCredentialFailed,
 		     .streamingConnectOfflineMode,
 		     .streamingConnectNoToken,

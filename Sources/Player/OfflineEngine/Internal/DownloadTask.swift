@@ -19,8 +19,8 @@ final class DownloadTask {
 	let contentKeySession: AVContentKeySession
 	var licenseDownloader: LicenseDownloader?
     
-    /// Optional download entry for state persistence
-    let downloadEntry: DownloadEntry?
+    /// Download entry for state persistence
+    private(set) var downloadEntry: DownloadEntry?
 
 	private weak var monitor: DownloadTaskMonitor?
 
@@ -129,11 +129,13 @@ final class DownloadTask {
 		queue.dispatch {
 			self.localLicenseUrl = url
             
-            // Store the partial license path in the download entry
-            if let downloadEntry = self.downloadEntry {
-                // We store the path in the task itself; the download state manager
-                // is responsible for persisting this information
+            // Store the partial license path 
+            if var downloadEntry = self.downloadEntry {
+                // Update the local copy with the path
                 downloadEntry.partialLicensePath = url.path
+                
+                // Create a new updated instance since downloadEntry is a struct
+                self.downloadEntry = downloadEntry
             }
             
 			self.finalize()
@@ -145,11 +147,13 @@ final class DownloadTask {
 			self.localAssetUrl = url
 			self.localAssetSize = self.calculateSize()
             
-            // Store the partial media path in the download entry
-            if let downloadEntry = self.downloadEntry {
-                // We store the path in the task itself; the download state manager
-                // is responsible for persisting this information
+            // Store the partial media path
+            if var downloadEntry = self.downloadEntry {
+                // Update the local copy with the path
                 downloadEntry.partialMediaPath = url.path
+                
+                // Create a new updated instance since downloadEntry is a struct
+                self.downloadEntry = downloadEntry
             }
             
 			self.finalize()

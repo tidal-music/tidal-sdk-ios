@@ -63,7 +63,8 @@ extension DownloaderMock: DownloadTaskMonitor {
     }
 }
 
-extension DownloaderMock: Downloader {
+// Implement Downloader methods
+extension DownloaderMock {
     func download(mediaProduct: MediaProduct, sessionType: SessionType, outputDevice: String? = nil) {
         downloadCalls.append((mediaProduct: mediaProduct, sessionType: sessionType, outputDevice: outputDevice))
         onDownload?(mediaProduct, sessionType, outputDevice)

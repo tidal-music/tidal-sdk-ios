@@ -11,9 +11,6 @@ extension DownloadEntry {
         attemptCount: Int = 0,
         lastError: String? = nil,
         createdAt: UInt64 = 1000,
-        updatedAt: UInt64 = 1000,
-        pausedAt: UInt64? = nil,
-        backgroundTaskIdentifier: String? = nil,
         partialMediaPath: String? = nil,
         partialLicensePath: String? = nil
     ) -> DownloadEntry {
@@ -24,13 +21,24 @@ extension DownloadEntry {
             createdAt: createdAt
         )
         
-        entry.state = state
-        entry.progress = progress
-        entry.attemptCount = attemptCount
-        entry.lastError = lastError
-        entry.updatedAt = updatedAt
-        entry.pausedAt = pausedAt
-        entry.backgroundTaskIdentifier = backgroundTaskIdentifier
+        if state != .PENDING {
+            entry.updateState(state)
+        }
+        
+        if progress > 0 {
+            entry.updateProgress(progress)
+        }
+        
+        if attemptCount > 0 {
+            for _ in 0..<attemptCount {
+                entry.incrementAttemptCount()
+            }
+        }
+        
+        if let error = lastError {
+            entry.lastError = error
+        }
+        
         entry.partialMediaPath = partialMediaPath
         entry.partialLicensePath = partialLicensePath
         

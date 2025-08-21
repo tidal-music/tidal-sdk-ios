@@ -6,13 +6,15 @@ extension Downloader {
 		playbackInfoFetcher: PlaybackInfoFetcher = .mock(),
 		fairPlayLicenseFetcher: FairPlayLicenseFetcher = .mock(),
 		networkMonitor: NetworkMonitor = NetworkMonitorMock(),
-		featureFlagProvider: FeatureFlagProvider = .mock
+		featureFlagProvider: FeatureFlagProvider = .mock,
+		stateManager: DownloadStateManager = DownloadStateManagerMock()
 	) -> Downloader {
 		Downloader(
 			playbackInfoFetcher: playbackInfoFetcher,
 			fairPlayLicenseFetcher: fairPlayLicenseFetcher,
 			networkMonitor: networkMonitor,
-			featureFlagProvider: featureFlagProvider
+			featureFlagProvider: featureFlagProvider,
+			stateManager: stateManager
 		)
 	}
 }

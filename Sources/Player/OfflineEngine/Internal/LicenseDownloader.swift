@@ -4,7 +4,7 @@ import Foundation
 // MARK: - LicenseDownloader
 
 final class LicenseDownloader: NSObject {
-	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
+	private let fairPlayLicenseFetcher: FairPlayLicenseFetcherProtocol
 	private let featureFlagProvider: FeatureFlagProvider
 	private let licenseSecurityToken: String
 	private let downloadTaskId: String
@@ -16,7 +16,7 @@ final class LicenseDownloader: NSObject {
 	private let serialQueue = DispatchQueue(label: "com.tidal.player.drm.offline.state", qos: .userInitiated)
 
 	init(
-		fairPlayLicenseFetcher: FairPlayLicenseFetcher,
+		fairPlayLicenseFetcher: FairPlayLicenseFetcherProtocol,
 		licenseSecurityToken: String,
 		downloadTask: DownloadTask,
 		featureFlagProvider: FeatureFlagProvider
