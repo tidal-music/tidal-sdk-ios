@@ -186,7 +186,7 @@ jobs:
           fi
           
           # Create PR body with current date and note about automatic updates
-          pr_body="**Changes in Input folder:**\n\n${{ steps.check_for_changes.outputs.CHANGES_IN_INPUT }}\n\n**Changes in Generated folder:**\n\n${{ steps.check_for_changes.outputs.CHANGES_IN_GENERATED }}\n\nAutomatically generated on $current_date, using API spec version $api_version\n\nThis PR is automatically updated when API changes are detected."
+          pr_body="**Automatically generated on $current_date, using API spec version $api_version\n\nThis PR is automatically updated when API changes are detected.**\n\nChanges in Input folder:**\n\n${{ steps.check_for_changes.outputs.CHANGES_IN_INPUT }}\n\n*Changes in Generated folder:*\n\n${{ steps.check_for_changes.outputs.CHANGES_IN_GENERATED }}\n\n"
           pr_body=$(echo -e "$pr_body")
           
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
