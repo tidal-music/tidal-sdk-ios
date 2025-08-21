@@ -10,13 +10,12 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Resource identifier JSON:API object */
 public struct UserCollectionsPlaylistsResourceIdentifier: Codable, Hashable {
 
-    /** resource unique identifier */
+    /** Resource id */
     public var id: String
     public var meta: UserCollectionsPlaylistsResourceIdentifierMeta?
-    /** resource unique type */
+    /** Resource type */
     public var type: String
 
     public init(

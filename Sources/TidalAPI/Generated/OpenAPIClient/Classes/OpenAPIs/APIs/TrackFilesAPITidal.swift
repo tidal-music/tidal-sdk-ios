@@ -17,9 +17,9 @@ public enum TrackFilesAPITidal {
 	/**
      Get single trackFile.
      
-     - returns: TrackFilesSingleDataDocument
+     - returns: TrackFilesSingleResourceDataDocument
      */
-	public static func trackFilesIdGet(id: String, formats: String, usage: String) async throws -> TrackFilesSingleDataDocument {
+	public static func trackFilesIdGet(id: String, formats: String, usage: String) async throws -> TrackFilesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			TrackFilesAPI.trackFilesIdGetWithRequestBuilder(id: id, formats: formats, usage: usage)
 		}

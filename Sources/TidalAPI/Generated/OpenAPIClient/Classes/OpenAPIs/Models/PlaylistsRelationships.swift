@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct PlaylistsRelationships: Codable, Hashable {
 
-    public var coverArt: MultiDataRelationshipDoc
-    public var items: PlaylistsItemsMultiDataRelationshipDocument
-    public var owners: MultiDataRelationshipDoc
+    public var coverArt: MultiRelationshipDataDocument
+    public var items: PlaylistsItemsMultiRelationshipDataDocument
+    public var owners: MultiRelationshipDataDocument
 
     public init(
-        coverArt: MultiDataRelationshipDoc,
-        items: PlaylistsItemsMultiDataRelationshipDocument,
-        owners: MultiDataRelationshipDoc
+        coverArt: MultiRelationshipDataDocument,
+        items: PlaylistsItemsMultiRelationshipDataDocument,
+        owners: MultiRelationshipDataDocument
     ) {
         self.coverArt = coverArt
         self.items = items

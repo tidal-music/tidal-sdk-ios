@@ -12,28 +12,28 @@ import AnyCodable
 
 public struct ArtistsRelationships: Codable, Hashable {
 
-    public var albums: MultiDataRelationshipDoc
-    public var biography: SingletonDataRelationshipDoc
-    public var owners: MultiDataRelationshipDoc
-    public var profileArt: MultiDataRelationshipDoc
-    public var radio: MultiDataRelationshipDoc
-    public var roles: MultiDataRelationshipDoc
-    public var similarArtists: MultiDataRelationshipDoc
-    public var trackProviders: ArtistsTrackProvidersMultiDataRelationshipDocument
-    public var tracks: MultiDataRelationshipDoc
-    public var videos: MultiDataRelationshipDoc
+    public var albums: MultiRelationshipDataDocument
+    public var biography: SingleRelationshipDataDocument
+    public var owners: MultiRelationshipDataDocument
+    public var profileArt: MultiRelationshipDataDocument
+    public var radio: MultiRelationshipDataDocument
+    public var roles: MultiRelationshipDataDocument
+    public var similarArtists: MultiRelationshipDataDocument
+    public var trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument
+    public var tracks: MultiRelationshipDataDocument
+    public var videos: MultiRelationshipDataDocument
 
     public init(
-        albums: MultiDataRelationshipDoc,
-        biography: SingletonDataRelationshipDoc,
-        owners: MultiDataRelationshipDoc,
-        profileArt: MultiDataRelationshipDoc,
-        radio: MultiDataRelationshipDoc,
-        roles: MultiDataRelationshipDoc,
-        similarArtists: MultiDataRelationshipDoc,
-        trackProviders: ArtistsTrackProvidersMultiDataRelationshipDocument,
-        tracks: MultiDataRelationshipDoc,
-        videos: MultiDataRelationshipDoc
+        albums: MultiRelationshipDataDocument,
+        biography: SingleRelationshipDataDocument,
+        owners: MultiRelationshipDataDocument,
+        profileArt: MultiRelationshipDataDocument,
+        radio: MultiRelationshipDataDocument,
+        roles: MultiRelationshipDataDocument,
+        similarArtists: MultiRelationshipDataDocument,
+        trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument,
+        tracks: MultiRelationshipDataDocument,
+        videos: MultiRelationshipDataDocument
     ) {
         self.albums = albums
         self.biography = biography

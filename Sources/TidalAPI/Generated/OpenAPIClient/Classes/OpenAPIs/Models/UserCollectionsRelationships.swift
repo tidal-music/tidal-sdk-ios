@@ -12,16 +12,16 @@ import AnyCodable
 
 public struct UserCollectionsRelationships: Codable, Hashable {
 
-    public var albums: UserCollectionsAlbumsMultiDataRelationshipDocument
-    public var artists: UserCollectionsArtistsMultiDataRelationshipDocument
-    public var owners: MultiDataRelationshipDoc
-    public var playlists: UserCollectionsPlaylistsMultiDataRelationshipDocument
+    public var albums: UserCollectionsAlbumsMultiRelationshipDataDocument
+    public var artists: UserCollectionsArtistsMultiRelationshipDataDocument
+    public var owners: MultiRelationshipDataDocument
+    public var playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument
 
     public init(
-        albums: UserCollectionsAlbumsMultiDataRelationshipDocument,
-        artists: UserCollectionsArtistsMultiDataRelationshipDocument,
-        owners: MultiDataRelationshipDoc,
-        playlists: UserCollectionsPlaylistsMultiDataRelationshipDocument
+        albums: UserCollectionsAlbumsMultiRelationshipDataDocument,
+        artists: UserCollectionsArtistsMultiRelationshipDataDocument,
+        owners: MultiRelationshipDataDocument,
+        playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument
     ) {
         self.albums = albums
         self.artists = artists

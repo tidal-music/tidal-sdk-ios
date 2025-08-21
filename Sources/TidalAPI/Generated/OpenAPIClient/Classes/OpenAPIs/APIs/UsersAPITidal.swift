@@ -17,9 +17,9 @@ public enum UsersAPITidal {
 	/**
      Get current user&#39;s user(s).
      
-     - returns: UsersSingleDataDocument
+     - returns: UsersSingleResourceDataDocument
      */
-	public static func usersMeGet() async throws -> UsersSingleDataDocument {
+	public static func usersMeGet() async throws -> UsersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UsersAPI.usersMeGetWithRequestBuilder()
 		}

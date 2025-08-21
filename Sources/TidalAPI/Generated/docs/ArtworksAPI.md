@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **artworksGet**
 ```swift
-    open class func artworksGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtworksMultiDataDocument?, _ error: Error?) -> Void)
+    open class func artworksGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtworksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artworks.
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtworksMultiDataDocument**](ArtworksMultiDataDocument.md)
+[**ArtworksMultiResourceDataDocument**](ArtworksMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **artworksIdGet**
 ```swift
-    open class func artworksIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtworksSingleDataDocument?, _ error: Error?) -> Void)
+    open class func artworksIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artwork.
@@ -105,7 +105,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtworksSingleDataDocument**](ArtworksSingleDataDocument.md)
+[**ArtworksSingleResourceDataDocument**](ArtworksSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -120,7 +120,7 @@ Name | Type | Description  | Notes
 
 # **artworksIdRelationshipsOwnersGet**
 ```swift
-    open class func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtworksMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtworksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -159,7 +159,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtworksMultiDataRelationshipDocument**](ArtworksMultiDataRelationshipDocument.md)
+[**ArtworksMultiRelationshipDataDocument**](ArtworksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 
 # **artworksPost**
 ```swift
-    open class func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksSingleDataDocument?, _ error: Error?) -> Void)
+    open class func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artwork.
@@ -209,7 +209,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtworksSingleDataDocument**](ArtworksSingleDataDocument.md)
+[**ArtworksSingleResourceDataDocument**](ArtworksSingleResourceDataDocument.md)
 
 ### Authorization
 

@@ -17,21 +17,25 @@ public struct TrackUpdateOperationPayloadData: Codable, Hashable {
     }
     public var attributes: TrackUpdateOperationPayloadDataAttributes
     public var id: String
+    public var relationships: TrackUpdateOperationPayloadDataRelationships?
     public var type: ModelType
 
     public init(
         attributes: TrackUpdateOperationPayloadDataAttributes,
         id: String,
+        relationships: TrackUpdateOperationPayloadDataRelationships? = nil,
         type: ModelType
     ) {
         self.attributes = attributes
         self.id = id
+        self.relationships = relationships
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case attributes
         case id
+        case relationships
         case type
     }
 
@@ -41,6 +45,7 @@ public struct TrackUpdateOperationPayloadData: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(attributes, forKey: .attributes)
         try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(relationships, forKey: .relationships)
         try container.encode(type, forKey: .type)
     }
 }

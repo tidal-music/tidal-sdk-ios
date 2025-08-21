@@ -22,10 +22,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case mix = "MIX"
         case artist = "ARTIST"
     }
-    public enum Privacy: String, Codable, CaseIterable {
-        case _public = "PUBLIC"
-        case _private = "PRIVATE"
-    }
+    public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Access type */
     public var accessType: AccessType
     /** Indicates if the playlist has a duration and set number of tracks */
@@ -45,9 +42,6 @@ public struct PlaylistsAttributes: Codable, Hashable {
     public var numberOfItems: Int?
     /** The type of the playlist */
     public var playlistType: PlaylistType
-    /** Privacy setting of the playlist */
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var privacy: Privacy
 
     public init(
         accessType: AccessType,
@@ -59,8 +53,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         lastModifiedAt: Date,
         name: String,
         numberOfItems: Int? = nil,
-        playlistType: PlaylistType,
-        privacy: Privacy
+        playlistType: PlaylistType
     ) {
         self.accessType = accessType
         self.bounded = bounded
@@ -72,7 +65,6 @@ public struct PlaylistsAttributes: Codable, Hashable {
         self.name = name
         self.numberOfItems = numberOfItems
         self.playlistType = playlistType
-        self.privacy = privacy
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -86,7 +78,6 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case name
         case numberOfItems
         case playlistType
-        case privacy
     }
 
     // Encodable protocol methods
@@ -103,7 +94,6 @@ public struct PlaylistsAttributes: Codable, Hashable {
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(numberOfItems, forKey: .numberOfItems)
         try container.encode(playlistType, forKey: .playlistType)
-        try container.encode(privacy, forKey: .privacy)
     }
 }
 

@@ -19,10 +19,10 @@ internal class UserCollectionsAPI {
      - parameter locale: (query) BCP 47 locale 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists (optional)
-     - returns: UserCollectionsSingleDataDocument
+     - returns: UserCollectionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil) async throws -> UserCollectionsSingleDataDocument {
+    internal class func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
         return try await userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, countryCode: countryCode, include: include).execute().body
     }
 
@@ -37,9 +37,9 @@ internal class UserCollectionsAPI {
      - parameter locale: (query) BCP 47 locale 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists (optional)
-     - returns: RequestBuilder<UserCollectionsSingleDataDocument> 
+     - returns: RequestBuilder<UserCollectionsSingleResourceDataDocument> 
      */
-    internal class func userCollectionsIdGetWithRequestBuilder(id: String, locale: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleDataDocument> {
+    internal class func userCollectionsIdGetWithRequestBuilder(id: String, locale: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
         var localVariablePath = "/userCollections/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -60,7 +60,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -117,10 +117,10 @@ internal class UserCollectionsAPI {
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
-     - returns: UserCollectionsAlbumsMultiDataRelationshipDocument
+     - returns: UserCollectionsAlbumsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiDataRelationshipDocument {
+    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
         return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include).execute().body
     }
 
@@ -136,9 +136,9 @@ internal class UserCollectionsAPI {
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
-     - returns: RequestBuilder<UserCollectionsAlbumsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiDataRelationshipDocument> {
+    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -160,7 +160,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionsAlbumsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -266,10 +266,10 @@ internal class UserCollectionsAPI {
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
-     - returns: UserCollectionsArtistsMultiDataRelationshipDocument
+     - returns: UserCollectionsArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiDataRelationshipDocument {
+    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
         return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include).execute().body
     }
 
@@ -285,9 +285,9 @@ internal class UserCollectionsAPI {
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
-     - returns: RequestBuilder<UserCollectionsArtistsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiDataRelationshipDocument> {
+    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -309,7 +309,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionsArtistsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -369,10 +369,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: UserCollectionsMultiDataRelationshipDocument
+     - returns: UserCollectionsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionsMultiDataRelationshipDocument {
+    internal class func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionsMultiRelationshipDataDocument {
         return try await userCollectionsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -386,9 +386,9 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<UserCollectionsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<UserCollectionsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserCollectionsMultiDataRelationshipDocument> {
+    internal class func userCollectionsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserCollectionsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -408,7 +408,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -464,10 +464,10 @@ internal class UserCollectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
-     - returns: UserCollectionsPlaylistsMultiDataRelationshipDocument
+     - returns: UserCollectionsPlaylistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiDataRelationshipDocument {
+    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
         return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
     }
 
@@ -482,9 +482,9 @@ internal class UserCollectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
-     - returns: RequestBuilder<UserCollectionsPlaylistsMultiDataRelationshipDocument> 
+     - returns: RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiDataRelationshipDocument> {
+    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -505,7 +505,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionsPlaylistsMultiDataRelationshipDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

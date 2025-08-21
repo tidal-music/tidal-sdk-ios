@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **lyricsIdGet**
 ```swift
-    open class func lyricsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: LyricsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single lyric.
@@ -48,7 +48,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**LyricsSingleDataDocument**](LyricsSingleDataDocument.md)
+[**LyricsSingleResourceDataDocument**](LyricsSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdRelationshipsOwnersGet**
 ```swift
-    open class func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: LyricsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: LyricsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -104,7 +104,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**LyricsMultiDataRelationshipDocument**](LyricsMultiDataRelationshipDocument.md)
+[**LyricsMultiRelationshipDataDocument**](LyricsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -119,7 +119,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdRelationshipsTrackGet**
 ```swift
-    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: LyricsSingletonDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: LyricsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get track relationship (\"to-one\").
@@ -158,7 +158,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**LyricsSingletonDataRelationshipDocument**](LyricsSingletonDataRelationshipDocument.md)
+[**LyricsSingleRelationshipDataDocument**](LyricsSingleRelationshipDataDocument.md)
 
 ### Authorization
 

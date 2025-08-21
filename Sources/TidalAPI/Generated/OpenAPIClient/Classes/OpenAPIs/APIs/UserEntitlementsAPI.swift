@@ -16,10 +16,10 @@ internal class UserEntitlementsAPI {
      Get single userEntitlement.
      
      - parameter id: (path) User id 
-     - returns: UserEntitlementsSingleDataDocument
+     - returns: UserEntitlementsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userEntitlementsIdGet(id: String) async throws -> UserEntitlementsSingleDataDocument {
+    internal class func userEntitlementsIdGet(id: String) async throws -> UserEntitlementsSingleResourceDataDocument {
         return try await userEntitlementsIdGetWithRequestBuilder(id: id).execute().body
     }
 
@@ -31,9 +31,9 @@ internal class UserEntitlementsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
-     - returns: RequestBuilder<UserEntitlementsSingleDataDocument> 
+     - returns: RequestBuilder<UserEntitlementsSingleResourceDataDocument> 
      */
-    internal class func userEntitlementsIdGetWithRequestBuilder(id: String) -> RequestBuilder<UserEntitlementsSingleDataDocument> {
+    internal class func userEntitlementsIdGetWithRequestBuilder(id: String) -> RequestBuilder<UserEntitlementsSingleResourceDataDocument> {
         var localVariablePath = "/userEntitlements/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -49,7 +49,7 @@ internal class UserEntitlementsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserEntitlementsSingleDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserEntitlementsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

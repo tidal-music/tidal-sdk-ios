@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**meta** | [**LinksMeta**](LinksMeta.md) |  | [optional] 
 **next** | **String** | Link to next page | [optional] 
 **_self** | **String** | Link to self | 
 

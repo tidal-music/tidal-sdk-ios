@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 # **userCollectionsIdGet**
 ```swift
-    open class func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsSingleDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollection.
@@ -60,7 +60,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionsSingleDataDocument**](UserCollectionsSingleDataDocument.md)
+[**UserCollectionsSingleResourceDataDocument**](UserCollectionsSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -127,7 +127,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsAlbumsGet**
 ```swift
-    open class func userCollectionsIdRelationshipsAlbumsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsAlbumsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsAlbumsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionsAlbumsMultiDataRelationshipDocument**](UserCollectionsAlbumsMultiDataRelationshipDocument.md)
+[**UserCollectionsAlbumsMultiRelationshipDataDocument**](UserCollectionsAlbumsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -291,7 +291,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsArtistsGet**
 ```swift
-    open class func userCollectionsIdRelationshipsArtistsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsArtistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsArtistsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -334,7 +334,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionsArtistsMultiDataRelationshipDocument**](UserCollectionsArtistsMultiDataRelationshipDocument.md)
+[**UserCollectionsArtistsMultiRelationshipDataDocument**](UserCollectionsArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -403,7 +403,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -442,7 +442,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionsMultiDataRelationshipDocument**](UserCollectionsMultiDataRelationshipDocument.md)
+[**UserCollectionsMultiRelationshipDataDocument**](UserCollectionsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -509,7 +509,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsPlaylistsGet**
 ```swift
-    open class func userCollectionsIdRelationshipsPlaylistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsPlaylistsMultiDataRelationshipDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsPlaylistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsPlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get playlists relationship (\"to-many\").
@@ -550,7 +550,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionsPlaylistsMultiDataRelationshipDocument**](UserCollectionsPlaylistsMultiDataRelationshipDocument.md)
+[**UserCollectionsPlaylistsMultiRelationshipDataDocument**](UserCollectionsPlaylistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 

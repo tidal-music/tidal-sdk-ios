@@ -10,23 +10,26 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Links JSON:API object */
 public struct Links: Codable, Hashable {
 
+    public var meta: LinksMeta?
     /** Link to next page */
     public var next: String?
     /** Link to self */
     public var _self: String
 
     public init(
+        meta: LinksMeta? = nil,
         next: String? = nil,
         _self: String
     ) {
+        self.meta = meta
         self.next = next
         self._self = _self
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case meta
         case next
         case _self = "self"
     }
@@ -35,6 +38,7 @@ public struct Links: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(meta, forKey: .meta)
         try container.encodeIfPresent(next, forKey: .next)
         try container.encode(_self, forKey: ._self)
     }

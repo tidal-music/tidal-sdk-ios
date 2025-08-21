@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct SearchSuggestionsAttributes: Codable, Hashable {
 
+    public static let trackingIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Suggestions from search history */
     public var history: [SearchSuggestionsHistory]?
     /** Suggested search queries */

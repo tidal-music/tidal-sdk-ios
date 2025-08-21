@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **trackFilesIdGet**
 ```swift
-    open class func trackFilesIdGet(id: String, formats: String, usage: String, completion: @escaping (_ data: TrackFilesSingleDataDocument?, _ error: Error?) -> Void)
+    open class func trackFilesIdGet(id: String, formats: String, usage: String, completion: @escaping (_ data: TrackFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single trackFile.
@@ -48,7 +48,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TrackFilesSingleDataDocument**](TrackFilesSingleDataDocument.md)
+[**TrackFilesSingleResourceDataDocument**](TrackFilesSingleResourceDataDocument.md)
 
 ### Authorization
 
