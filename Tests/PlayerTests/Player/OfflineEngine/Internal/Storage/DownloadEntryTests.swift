@@ -7,7 +7,7 @@ final class DownloadEntryTests: XCTestCase {
 
     override func setUp() {
         PlayerWorld = PlayerWorldClient.mock(
-            timeProvider: TimeProviderMock(timestamp: mockTimestamp)
+            timeProvider: TimeProvider.mock(timestamp: { self.mockTimestamp })
         )
     }
 
@@ -43,7 +43,9 @@ final class DownloadEntryTests: XCTestCase {
     func testUpdateState() {
         // Arrange
         let updatedTimestamp: UInt64 = 2000000
-        (PlayerWorld.timeProvider as! TimeProviderMock).timestamp = updatedTimestamp
+        PlayerWorld = PlayerWorldClient.mock(
+            timeProvider: TimeProvider.mock(timestamp: { updatedTimestamp })
+        )
         
         var downloadEntry = DownloadEntry(
             id: "test-id",
@@ -72,7 +74,9 @@ final class DownloadEntryTests: XCTestCase {
     func testUpdateProgress() {
         // Arrange
         let updatedTimestamp: UInt64 = 2000000
-        (PlayerWorld.timeProvider as! TimeProviderMock).timestamp = updatedTimestamp
+        PlayerWorld = PlayerWorldClient.mock(
+            timeProvider: TimeProvider.mock(timestamp: { updatedTimestamp })
+        )
         
         var downloadEntry = DownloadEntry(
             id: "test-id",
@@ -92,7 +96,9 @@ final class DownloadEntryTests: XCTestCase {
     func testIncrementAttemptCount() {
         // Arrange
         let updatedTimestamp: UInt64 = 2000000
-        (PlayerWorld.timeProvider as! TimeProviderMock).timestamp = updatedTimestamp
+        PlayerWorld = PlayerWorldClient.mock(
+            timeProvider: TimeProvider.mock(timestamp: { updatedTimestamp })
+        )
         
         var downloadEntry = DownloadEntry(
             id: "test-id",
@@ -118,7 +124,9 @@ final class DownloadEntryTests: XCTestCase {
     func testRecordError() {
         // Arrange
         let updatedTimestamp: UInt64 = 2000000
-        (PlayerWorld.timeProvider as! TimeProviderMock).timestamp = updatedTimestamp
+        PlayerWorld = PlayerWorldClient.mock(
+            timeProvider: TimeProvider.mock(timestamp: { updatedTimestamp })
+        )
         
         var downloadEntry = DownloadEntry(
             id: "test-id",
@@ -139,8 +147,10 @@ final class DownloadEntryTests: XCTestCase {
 
     func testIsStale() {
         // Arrange
-        let currentTimestamp: UInt64 = 90_000_000 // 90 seconds in milliseconds
-        (PlayerWorld.timeProvider as! TimeProviderMock).timestamp = currentTimestamp
+        let currentTimestamp: UInt64 = 200_000_000 // 200 seconds in milliseconds
+        PlayerWorld = PlayerWorldClient.mock(
+            timeProvider: TimeProvider.mock(timestamp: { currentTimestamp })
+        )
         
         // Create a failed download from 1 day + 1 hour ago (should be stale)
         let staleEntry = DownloadEntry.mock(

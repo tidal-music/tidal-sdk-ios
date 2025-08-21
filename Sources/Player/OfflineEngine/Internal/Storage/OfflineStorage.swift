@@ -45,5 +45,7 @@ protocol OfflineStorage {
 	func updateDownloadEntry(_ entry: DownloadEntry) throws
 	
 	/// Clean up old failed or cancelled downloads older than the specified threshold
-	func cleanupStaleDownloadEntries(threshold: TimeInterval) throws
+	/// - Parameter threshold: Time interval in seconds to determine which entries are stale
+	/// - Returns: Number of entries deleted
+	func cleanupStaleDownloadEntries(threshold: TimeInterval) throws -> Int
 }

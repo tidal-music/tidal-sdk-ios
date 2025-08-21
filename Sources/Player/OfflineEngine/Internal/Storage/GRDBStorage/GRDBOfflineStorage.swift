@@ -173,7 +173,7 @@ extension GRDBOfflineStorage: OfflineStorage {
         }
     }
     
-    func cleanupStaleDownloadEntries(threshold: TimeInterval) throws {
+    func cleanupStaleDownloadEntries(threshold: TimeInterval) throws -> Int {
         // Calculate timestamp threshold for stale downloads
         let now = PlayerWorld.timeProvider.timestamp()
         let thresholdTimestamp = now - UInt64(threshold * 1000)
@@ -188,7 +188,7 @@ extension GRDBOfflineStorage: OfflineStorage {
         }
         
         // We'll add proper logging in a later phase
-        // deleted will contain the number of deleted entries
+        return deleted // Return the count for potential future usage
     }
 }
 

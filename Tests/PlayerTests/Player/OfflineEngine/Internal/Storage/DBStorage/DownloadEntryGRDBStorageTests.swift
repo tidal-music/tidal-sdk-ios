@@ -155,8 +155,9 @@ final class DownloadEntryGRDBStorageTests: XCTestCase {
         // in Phase 2. The test will be enabled once we have the complete implementation.
         // This is a temporary placeholder for the test structure.
         
-        // For now, just verify that the method doesn't crash
-        try offlineStorage.cleanupStaleDownloadEntries(threshold: 50.0)
+        // For now, just verify that the method doesn't crash and returns a value
+        let deletedCount = try offlineStorage.cleanupStaleDownloadEntries(threshold: 50.0)
+        XCTAssertGreaterThanOrEqual(deletedCount, 0, "Deleted count should be zero or positive")
         
         // Reset PlayerWorld
         PlayerWorld = PlayerWorldClient.live

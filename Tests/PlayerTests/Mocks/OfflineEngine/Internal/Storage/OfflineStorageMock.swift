@@ -100,9 +100,10 @@ final class OfflineStorageMock: OfflineStorage {
         mockDownloadEntriesByProductId[entry.productId] = entry
     }
     
-    func cleanupStaleDownloadEntries(threshold: TimeInterval) throws {
+    func cleanupStaleDownloadEntries(threshold: TimeInterval) throws -> Int {
         if let error = errorToThrow { throw error }
         clearedStaleDownloads = true
+        return 0 // Mock implementation returns 0 entries deleted
     }
     
     // MARK: - Reset for testing
