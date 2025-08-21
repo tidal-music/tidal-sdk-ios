@@ -68,6 +68,9 @@ final class PlayerItem {
 		if featureFlagProvider.shouldUseImprovedCaching() {
 			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_V2)
 		}
+		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			sessionTags.append(StreamingSessionStart.SessionTag.IMPROVED_DRM)
+		}
 		if mediaProduct.extras?[MediaProduct.Extras.Constants.UploadsDictKey] != nil {
 			sessionTags.append(StreamingSessionStart.SessionTag.UPLOAD)
 		}
@@ -378,6 +381,9 @@ private extension PlayerItem {
 		}
 		if metadata.playbackSource == .LOCAL_STORAGE {
 			tags.append(PlaybackStatistics.EventTag.OFFLINER_V2)
+		}
+		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			tags.append(PlaybackStatistics.EventTag.IMPROVED_DRM)
 		}
 
 		let endInfo = metrics.endInfo

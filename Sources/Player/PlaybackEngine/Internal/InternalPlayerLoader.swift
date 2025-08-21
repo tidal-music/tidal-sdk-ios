@@ -126,7 +126,8 @@ final class InternalPlayerLoader: PlayerLoader {
 		if playbackInfo.licenseSecurityToken != nil {
 			licenseLoader = StreamingLicenseLoader(
 				fairPlayLicenseFetcher: fairPlayLicenseFetcher,
-				streamingSessionId: streamingSessionId
+				streamingSessionId: streamingSessionId,
+				featureFlagProvider: featureFlagProvider
 			)
 		}
 

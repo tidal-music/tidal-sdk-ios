@@ -6,6 +6,7 @@ public extension FeatureFlagProvider {
 		isContentCachingEnabled: { true },
 		shouldUseImprovedCaching: { false },
 		shouldPauseAndPlayAroundSeek: { false },
-		shouldNotPerformActionAtItemEnd: { false }
+		shouldNotPerformActionAtItemEnd: { false },
+		shouldUseImprovedDRMHandling: { false }
 	)
 }
