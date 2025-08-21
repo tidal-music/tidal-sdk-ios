@@ -49,6 +49,25 @@ This document tracks the implementation of improvements to the OfflineEngine to 
   - `Tests/PlayerTests/Player/OfflineEngine/Internal/Storage/DownloadEntryTests.swift`
   - `Tests/PlayerTests/Player/OfflineEngine/Internal/Storage/DBStorage/DownloadEntryGRDBStorageTests.swift`
 
+### Bug Fixes for Phase 1
+- **Commit**: [`36da2de`](https://github.com/yourusername/tidal-sdk-ios/commit/36da2de) - Fix compilation and test issues in Phase 1
+- **Description**: Fixed ProductType initialization and property initialization order, plus test improvements
+- **Files**: 
+  - `Sources/Player/OfflineEngine/Internal/Storage/GRDBStorage/DownloadEntryGRDBEntity.swift`
+  - `Tests/PlayerTests/Player/OfflineEngine/Internal/Storage/DownloadEntryTests.swift`
+
+- **Commit**: [`6359b26`](https://github.com/yourusername/tidal-sdk-ios/commit/6359b26) - Fix warnings in Phase 1 of offline download resilience implementation
+- **Description**: Fixed return type for cleanupStaleDownloadEntries, improved TimeProvider mock usage, removed redundant enum values, added missing trailing newlines
+- **Files**:
+  - `Sources/Player/OfflineEngine/Data/DownloadState.swift`
+  - `Sources/Player/OfflineEngine/Internal/Storage/DownloadEntry.swift`
+  - `Sources/Player/OfflineEngine/Internal/Storage/GRDBStorage/DownloadEntryGRDBEntity.swift`
+  - `Sources/Player/OfflineEngine/Internal/Storage/GRDBStorage/GRDBOfflineStorage.swift`
+  - `Sources/Player/OfflineEngine/Internal/Storage/OfflineStorage.swift`
+  - `Tests/PlayerTests/Mocks/OfflineEngine/Internal/Storage/OfflineStorageMock.swift`
+  - `Tests/PlayerTests/Player/OfflineEngine/Internal/Storage/DBStorage/DownloadEntryGRDBStorageTests.swift`
+  - `Tests/PlayerTests/Player/OfflineEngine/Internal/Storage/DownloadEntryTests.swift`
+
 ## Phase 2: Download State Management (Coming Next)
 
 - [ ] Step 2.1: Create Download State Manager
