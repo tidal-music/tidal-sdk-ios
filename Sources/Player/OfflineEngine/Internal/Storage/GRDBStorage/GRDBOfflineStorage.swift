@@ -178,13 +178,17 @@ extension GRDBOfflineStorage: OfflineStorage {
         let now = PlayerWorld.timeProvider.timestamp()
         let thresholdTimestamp = now - UInt64(threshold * 1000)
         
-        try dbQueue.write { db in
+        // For test robustness, we need to capture the result of the operation
+        let deleted = try dbQueue.write { db -> Int in
             try DownloadEntryGRDBEntity
                 .filter(DownloadEntryGRDBEntity.Columns.state == DownloadState.FAILED.rawValue || 
                         DownloadEntryGRDBEntity.Columns.state == DownloadState.CANCELLED.rawValue)
                 .filter(DownloadEntryGRDBEntity.Columns.updatedAt < thresholdTimestamp)
                 .deleteAll(db)
         }
+        
+        // We'll add proper logging in a later phase
+        // deleted will contain the number of deleted entries
     }
 }
 
