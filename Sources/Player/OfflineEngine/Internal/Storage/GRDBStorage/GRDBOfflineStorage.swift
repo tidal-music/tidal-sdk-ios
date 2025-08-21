@@ -12,6 +12,7 @@ class GRDBOfflineStorage {
 
 	static func initializeDatabase(dbQueue: DatabaseQueue) throws {
 		try dbQueue.write { db in
+			// Create/Migrate OfflineEntry table
 			if try !db.tableExists(OfflineEntryGRDBEntity.databaseTableName) {
 				try db.create(table: OfflineEntryGRDBEntity.databaseTableName) { t in
 					t.column("productId", .text).primaryKey()
@@ -35,6 +36,25 @@ class GRDBOfflineStorage {
 					t.column("size", .integer)
 					t.column("mediaBookmark", .blob)
 					t.column("licenseBookmark", .blob)
+				}
+			}
+			
+			// Create DownloadEntry table for tracking downloads in progress
+			if try !db.tableExists(DownloadEntryGRDBEntity.databaseTableName) {
+				try db.create(table: DownloadEntryGRDBEntity.databaseTableName) { t in
+					t.column("id", .text).primaryKey()
+					t.column("productId", .text).notNull().indexed()
+					t.column("productType", .text).notNull()
+					t.column("state", .text).notNull().indexed()
+					t.column("progress", .double).notNull()
+					t.column("attemptCount", .integer).notNull()
+					t.column("lastError", .text)
+					t.column("createdAt", .integer).notNull()
+					t.column("updatedAt", .integer).notNull().indexed()
+					t.column("pausedAt", .integer)
+					t.column("backgroundTaskIdentifier", .text)
+					t.column("partialMediaPathBookmark", .blob)
+					t.column("partialLicensePathBookmark", .blob)
 				}
 			}
 		}
