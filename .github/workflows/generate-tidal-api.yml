@@ -164,9 +164,9 @@ jobs:
             echo "Force pushing changes to existing PR branch: ${{env.BRANCH_NAME}}"
             git push origin HEAD:"${{env.BRANCH_NAME}}" --force
           else
-            # Push new branch
-            echo "Pushing new branch: ${{env.BRANCH_NAME}}"
-            git push --set-upstream origin "${{env.BRANCH_NAME}}"
+            # Force push new branch
+            echo "Force pushing new branch: ${{env.BRANCH_NAME}}"
+            git push --set-upstream origin "${{env.BRANCH_NAME}}" --force
           fi
 
       - name: Create or Update Pull Request
