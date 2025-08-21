@@ -138,31 +138,20 @@ jobs:
           standard_branch_name="tidal-music-tools/auto-update-tidal-api"
           
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
-            # Use the branch name from the existing PR
+            # We're already on the PR branch, just use it
             branch_name="${{ steps.check_pr.outputs.pr_branch }}"
-            
-            # Fetch the existing PR branch to compare against
-            git fetch origin "$branch_name" || true
-            
-            # Check if current changes are different from existing PR branch
-            if git diff --quiet "origin/$branch_name" HEAD -- $API_FOLDER; then
-              echo "No new changes compared to existing PR branch - skipping update"
-              echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
-              echo "commit_made=false" >> $GITHUB_OUTPUT
-            else
-              echo "Changes detected compared to existing PR branch - updating"
-              git commit -m "$commit_title"$'\n\n'"$commit_body"
-              echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
-              echo "commit_made=true" >> $GITHUB_OUTPUT
-            fi
+            echo "Updated existing PR branch with new changes"
           else
             # Create new branch for new PR
             git checkout -b "$standard_branch_name"
-            git commit -m "$commit_title"$'\n\n'"$commit_body"
             branch_name="$standard_branch_name"
-            echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
-            echo "commit_made=true" >> $GITHUB_OUTPUT
+            echo "Created new PR branch for generated code changes"
           fi
+          
+          # Commit the changes
+          git commit -m "$commit_title"$'\n\n'"$commit_body"
+          echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+          echo "commit_made=true" >> $GITHUB_OUTPUT
   
       - name: Push changes
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' && steps.commit_changes.outputs.commit_made == 'true' }}
