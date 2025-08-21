@@ -14,7 +14,7 @@ protocol DownloadObserver: AnyObject {
 // MARK: - Downloader
 
 class Downloader {
-	private let playbackInfoFetcher: PlaybackInfoFetcher
+	private let playbackInfoFetcher: PlaybackInfoFetcherProtocol
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcherProtocol
 	private let mediaDownloader: MediaDownloader
 	private let networkMonitor: NetworkMonitor
@@ -32,7 +32,7 @@ class Downloader {
 		featureFlagProvider: FeatureFlagProvider,
         stateManager: DownloadStateManager
 	) {
-		self.playbackInfoFetcher = playbackInfoFetcher as! PlaybackInfoFetcher
+		self.playbackInfoFetcher = playbackInfoFetcher
 		self.fairPlayLicenseFetcher = fairPlayLicenseFetcher
         self.stateManager = stateManager
 		mediaDownloader = MediaDownloader()

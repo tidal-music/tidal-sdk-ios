@@ -251,8 +251,15 @@ extension MediaProduct {
 
 // Mock implementation of MediaProduct for testing
 private class MockMediaProduct: MediaProduct {
-    convenience init(productType: ProductType, productId: String) {
-        self.init(productType: productType, productId: productId)
+    init(productType: ProductType, productId: String) {
+        super.init(
+            productType: productType,
+            productId: productId,
+            referenceId: nil,
+            progressSource: nil,
+            playLogSource: nil,
+            extras: nil
+        )
     }
     
     required init(from decoder: Decoder) throws {
