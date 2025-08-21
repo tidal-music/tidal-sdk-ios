@@ -72,7 +72,7 @@ class GRDBOfflineStorage {
 // MARK: OfflineStorage
 
 extension GRDBOfflineStorage: OfflineStorage {
-	// MARK: - Save OfflineEntry
+	// MARK: - OfflineEntry Management (Completed downloads)
 
 	func save(_ entry: OfflineEntry) throws {
 		let entity = OfflineEntryGRDBEntity(from: entry)
@@ -81,8 +81,6 @@ extension GRDBOfflineStorage: OfflineStorage {
 		}
 	}
 
-	// MARK: - Get OfflineEntry by MediaProduct
-
 	func get(key: String) throws -> OfflineEntry? {
 		let entity = try dbQueue.read { db in
 			try OfflineEntryGRDBEntity.filter(OfflineEntryGRDBEntity.Columns.productId == key).fetchOne(db)
@@ -90,15 +88,11 @@ extension GRDBOfflineStorage: OfflineStorage {
 		return entity?.offlineEntry
 	}
 
-	// MARK: - Delete OfflineEntry by MediaProduct
-
 	func delete(key: String) throws {
 		_ = try dbQueue.write { db in
 			try OfflineEntryGRDBEntity.filter(OfflineEntryGRDBEntity.Columns.productId == key).deleteAll(db)
 		}
 	}
-
-	// MARK: - Update OfflineEntry
 
 	func update(_ entry: OfflineEntry) throws {
 		let entity = OfflineEntryGRDBEntity(from: entry)
@@ -107,8 +101,6 @@ extension GRDBOfflineStorage: OfflineStorage {
 		}
 	}
 
-	// MARK: - Get All Offline Entries
-
 	func getAll() throws -> [OfflineEntry] {
 		let entities = try dbQueue.read { db in
 			try OfflineEntryGRDBEntity.fetchAll(db)
@@ -116,21 +108,84 @@ extension GRDBOfflineStorage: OfflineStorage {
 		return entities.map { $0.offlineEntry }
 	}
 
-	// MARK: - Clear OfflineEntries
-
 	func clear() throws {
 		_ = try dbQueue.write { db in
 			try OfflineEntryGRDBEntity.deleteAll(db)
 		}
 	}
 
-	// MARK: - Total size of all entries
-
 	func totalSize() throws -> Int {
 		try dbQueue.read { db in
 			try calculateTotalSize(db)
 		}
 	}
+    
+    // MARK: - DownloadEntry Management (In-progress downloads)
+    
+    func saveDownloadEntry(_ entry: DownloadEntry) throws {
+        let entity = DownloadEntryGRDBEntity(from: entry)
+        try dbQueue.write { db in
+            try entity.insert(db)
+        }
+    }
+    
+    func getDownloadEntry(id: String) throws -> DownloadEntry? {
+        let entity = try dbQueue.read { db in
+            try DownloadEntryGRDBEntity.filter(DownloadEntryGRDBEntity.Columns.id == id).fetchOne(db)
+        }
+        return entity?.downloadEntry
+    }
+    
+    func getDownloadEntryByProductId(productId: String) throws -> DownloadEntry? {
+        let entity = try dbQueue.read { db in
+            try DownloadEntryGRDBEntity.filter(DownloadEntryGRDBEntity.Columns.productId == productId).order(DownloadEntryGRDBEntity.Columns.updatedAt.desc).fetchOne(db)
+        }
+        return entity?.downloadEntry
+    }
+    
+    func getAllDownloadEntries() throws -> [DownloadEntry] {
+        let entities = try dbQueue.read { db in
+            try DownloadEntryGRDBEntity.order(DownloadEntryGRDBEntity.Columns.updatedAt.desc).fetchAll(db)
+        }
+        return entities.map { $0.downloadEntry }
+    }
+    
+    func getDownloadEntriesByState(state: DownloadState) throws -> [DownloadEntry] {
+        let entities = try dbQueue.read { db in
+            try DownloadEntryGRDBEntity
+                .filter(DownloadEntryGRDBEntity.Columns.state == state.rawValue)
+                .order(DownloadEntryGRDBEntity.Columns.updatedAt.desc)
+                .fetchAll(db)
+        }
+        return entities.map { $0.downloadEntry }
+    }
+    
+    func deleteDownloadEntry(id: String) throws {
+        _ = try dbQueue.write { db in
+            try DownloadEntryGRDBEntity.filter(DownloadEntryGRDBEntity.Columns.id == id).deleteAll(db)
+        }
+    }
+    
+    func updateDownloadEntry(_ entry: DownloadEntry) throws {
+        let entity = DownloadEntryGRDBEntity(from: entry)
+        try dbQueue.write { db in
+            try entity.update(db)
+        }
+    }
+    
+    func cleanupStaleDownloadEntries(threshold: TimeInterval) throws {
+        // Calculate timestamp threshold for stale downloads
+        let now = PlayerWorld.timeProvider.timestamp()
+        let thresholdTimestamp = now - UInt64(threshold * 1000)
+        
+        try dbQueue.write { db in
+            try DownloadEntryGRDBEntity
+                .filter(DownloadEntryGRDBEntity.Columns.state == DownloadState.FAILED.rawValue || 
+                        DownloadEntryGRDBEntity.Columns.state == DownloadState.CANCELLED.rawValue)
+                .filter(DownloadEntryGRDBEntity.Columns.updatedAt < thresholdTimestamp)
+                .deleteAll(db)
+        }
+    }
 }
 
 private extension GRDBOfflineStorage {
