@@ -18,6 +18,9 @@ final class DownloadTask {
 	let mediaProduct: MediaProduct
 	let contentKeySession: AVContentKeySession
 	var licenseDownloader: LicenseDownloader?
+    
+    /// Optional download entry for state persistence
+    let downloadEntry: DownloadEntry?
 
 	private weak var monitor: DownloadTaskMonitor?
 
@@ -32,17 +35,19 @@ final class DownloadTask {
 	private var localAssetUrl: URL?
 	private var localLicenseUrl: URL?
 	private var localAssetSize: Int?
-
+    
+    /// Initialize the download task with optional download entry for state persistence
 	init(
 		mediaProduct: MediaProduct,
+        downloadEntry: DownloadEntry? = nil,
 		networkType: NetworkType,
 		outputDevice: String?,
 		sessionType: SessionType,
 		monitor: DownloadTaskMonitor
 	) {
 		id = PlayerWorld.uuidProvider.uuidString()
-
 		self.mediaProduct = mediaProduct
+        self.downloadEntry = downloadEntry
 		self.monitor = monitor
 
 		queue = OperationQueue()
@@ -62,6 +67,9 @@ final class DownloadTask {
 			sessionProductType: mediaProduct.productType.rawValue,
 			sessionProductId: mediaProduct.productId
 		))
+        
+        // Notify that download has started
+        monitor.started(downloadTask: self)
 	}
 
 	deinit {
@@ -91,10 +99,43 @@ final class DownloadTask {
 		let now = PlayerWorld.timeProvider.timestamp()
 		monitor?.emit(event: StreamingSessionEnd(streamingSessionId: id, timestamp: now))
 	}
+    
+    /// Returns the current progress of the download
+    var progress: Double {
+        return downloadEntry?.progress ?? 0.0
+    }
+    
+    /// Returns the current state of the download
+    var state: DownloadState? {
+        return downloadEntry?.state
+    }
+    
+    /// Returns true if this download has been attempted before
+    var isRetry: Bool {
+        return downloadEntry != nil && downloadEntry!.attemptCount > 0
+    }
+    
+    /// Returns the number of download attempts
+    var attemptCount: Int {
+        return downloadEntry?.attemptCount ?? 0
+    }
+    
+    /// Returns the last error encountered during download
+    var lastError: String? {
+        return downloadEntry?.lastError
+    }
 
 	func setLicenseUrl(_ url: URL) {
 		queue.dispatch {
 			self.localLicenseUrl = url
+            
+            // Store the partial license path in the download entry
+            if let downloadEntry = self.downloadEntry {
+                // We store the path in the task itself; the download state manager
+                // is responsible for persisting this information
+                downloadEntry.partialLicensePath = url.path
+            }
+            
 			self.finalize()
 		}
 	}
@@ -103,6 +144,14 @@ final class DownloadTask {
 		queue.dispatch {
 			self.localAssetUrl = url
 			self.localAssetSize = self.calculateSize()
+            
+            // Store the partial media path in the download entry
+            if let downloadEntry = self.downloadEntry {
+                // We store the path in the task itself; the download state manager
+                // is responsible for persisting this information
+                downloadEntry.partialMediaPath = url.path
+            }
+            
 			self.finalize()
 		}
 	}
@@ -130,6 +179,25 @@ final class DownloadTask {
 			self.monitor?.failed(downloadTask: self, with: error)
 		}
 	}
+    
+    /// Cancels the download
+    func cancel() {
+        queue.dispatch {
+            // We don't need to delete partial files here since they'll be cleaned up 
+            // during state cleanup or when the download is restarted
+            self.monitor?.failed(downloadTask: self, with: DownloadError.cancelled)
+        }
+    }
+    
+    /// Pauses the download (for future implementation)
+    func pause() {
+        // This is a placeholder for future implementation
+        // We'll need to update the state manager and handle partial downloads
+        queue.dispatch {
+            // For now, treat pause as cancel
+            self.cancel()
+        }
+    }
 }
 
 private extension DownloadTask {
@@ -205,4 +273,30 @@ private extension DownloadTask {
 			failed(with: error)
 		}
 	}
+}
+
+/// Errors specific to the download process
+enum DownloadError: Error {
+    case cancelled
+    case paused
+    case networkUnavailable
+    case insufficientSpace
+    case invalidState
+}
+
+extension DownloadError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .cancelled:
+            return "Download was cancelled by the user"
+        case .paused:
+            return "Download was paused"
+        case .networkUnavailable:
+            return "Network is unavailable"
+        case .insufficientSpace:
+            return "Insufficient storage space"
+        case .invalidState:
+            return "Invalid download state"
+        }
+    }
 }

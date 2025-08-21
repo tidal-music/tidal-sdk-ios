@@ -19,6 +19,7 @@ class Downloader {
 	private let mediaDownloader: MediaDownloader
 	private let networkMonitor: NetworkMonitor
 	private let featureFlagProvider: FeatureFlagProvider
+    private let stateManager: DownloadStateManager
 
 	private var activeTasks: [String: SafeTask] = [:]
 
@@ -28,10 +29,12 @@ class Downloader {
 		playbackInfoFetcher: PlaybackInfoFetcher,
 		fairPlayLicenseFetcher: FairPlayLicenseFetcher,
 		networkMonitor: NetworkMonitor,
-		featureFlagProvider: FeatureFlagProvider
+		featureFlagProvider: FeatureFlagProvider,
+        stateManager: DownloadStateManager
 	) {
 		self.playbackInfoFetcher = playbackInfoFetcher
 		self.fairPlayLicenseFetcher = fairPlayLicenseFetcher
+        self.stateManager = stateManager
 		mediaDownloader = MediaDownloader()
 		self.networkMonitor = networkMonitor
 		self.featureFlagProvider = featureFlagProvider
@@ -44,13 +47,34 @@ class Downloader {
 	) {
 		let taskID = mediaProduct.productId
 		let task = SafeTask {
-			await start(DownloadTask(
-				mediaProduct: mediaProduct,
-				networkType: self.networkMonitor.getNetworkType(),
-				outputDevice: outputDevice,
-				sessionType: sessionType,
-				monitor: self
-			))
+            do {
+                // Create or retrieve download entry from state manager
+                let downloadEntry = try await self.stateManager.createDownload(
+                    productId: mediaProduct.productId,
+                    productType: mediaProduct.productType
+                )
+                
+                // Start the download task with the download entry
+                await self.start(DownloadTask(
+                    mediaProduct: mediaProduct,
+                    downloadEntry: downloadEntry,
+                    networkType: self.networkMonitor.getNetworkType(),
+                    outputDevice: outputDevice,
+                    sessionType: sessionType,
+                    monitor: self
+                ))
+            } catch {
+                PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadEntryCreationFailed(error: error))
+                // We'll still try to start the download without state management
+                await self.start(DownloadTask(
+                    mediaProduct: mediaProduct,
+                    downloadEntry: nil,
+                    networkType: self.networkMonitor.getNetworkType(),
+                    outputDevice: outputDevice,
+                    sessionType: sessionType,
+                    monitor: self
+                ))
+            }
 		}
 		activeTasks[taskID] = task
 	}
@@ -62,6 +86,35 @@ class Downloader {
 		activeTasks.removeAll()
 		mediaDownloader.cancelAll()
 	}
+    
+    func cancelDownload(for productId: String) {
+        // Cancel the active task if it exists
+        if let task = activeTasks[productId] {
+            task.cancel()
+            activeTasks.removeValue(forKey: productId)
+        }
+        
+        // Update the download state to cancelled
+        do {
+            if let downloadEntry = try stateManager.getDownloadByProductId(productId: productId) {
+                _ = try stateManager.updateDownloadState(id: downloadEntry.id, state: .CANCELLED)
+            }
+        } catch {
+            PlayerWorld.logger?.log(loggable: PlayerLoggable.cancelDownloadStateFailed(error: error))
+        }
+    }
+    
+    func cleanupStaleDownloads(olderThan days: Int = 7) {
+        do {
+            let threshold = TimeInterval(days * 24 * 60 * 60) // Convert days to seconds
+            let deletedCount = try stateManager.cleanupStaleDownloads(threshold: threshold)
+            if deletedCount > 0 {
+                PlayerWorld.logger?.log(loggable: PlayerLoggable.cleanupStaleDownloads(count: deletedCount))
+            }
+        } catch {
+            PlayerWorld.logger?.log(loggable: PlayerLoggable.cleanupStaleDownloadsFailed(error: error))
+        }
+    }
 
 	func setObserver(observer: DownloadObserver) {
 		self.observer = observer
@@ -89,6 +142,16 @@ private extension Downloader {
 
 	func downloadMedia(for downloadTask: DownloadTask, using playbackInfo: PlaybackInfo) {
 		downloadTask.startTimestamp = PlayerWorld.timeProvider.timestamp()
+        
+        // Update download state to IN_PROGRESS
+        if let downloadEntry = downloadTask.downloadEntry {
+            do {
+                _ = try stateManager.updateDownloadState(id: downloadEntry.id, state: .IN_PROGRESS)
+            } catch {
+                PlayerWorld.logger?.log(loggable: PlayerLoggable.updateDownloadStateFailed(error: error))
+            }
+        }
+        
 		if playbackInfo.mediaType == MediaTypes.HLS ||
 			(playbackInfo.productType == .VIDEO && playbackInfo.mediaType == MediaTypes.EMU)
 		{
@@ -152,14 +215,73 @@ extension Downloader: DownloadTaskMonitor {
 	}
 
 	func progress(downloadTask: DownloadTask, progress: Double) {
+        // Update download progress in state manager
+        if let downloadEntry = downloadTask.downloadEntry {
+            do {
+                _ = try stateManager.updateDownloadProgress(id: downloadEntry.id, progress: progress)
+            } catch {
+                PlayerWorld.logger?.log(loggable: PlayerLoggable.updateDownloadProgressFailed(error: error))
+            }
+        }
+        
 		observer?.downloadProgress(for: downloadTask.mediaProduct, is: progress)
 	}
 
 	func completed(downloadTask: DownloadTask, offlineEntry: OfflineEntry) {
+        // Update download state to COMPLETED
+        if let downloadEntry = downloadTask.downloadEntry {
+            do {
+                _ = try stateManager.updateDownloadState(id: downloadEntry.id, state: .COMPLETED)
+            } catch {
+                PlayerWorld.logger?.log(loggable: PlayerLoggable.updateDownloadStateFailed(error: error))
+            }
+        }
+        
 		observer?.downloadCompleted(for: downloadTask.mediaProduct, offlineEntry: offlineEntry)
 	}
 
 	func failed(downloadTask: DownloadTask, with error: Error) {
+        // Record error and update state to FAILED
+        if let downloadEntry = downloadTask.downloadEntry {
+            do {
+                _ = try stateManager.recordDownloadError(id: downloadEntry.id, error: error)
+            } catch {
+                PlayerWorld.logger?.log(loggable: PlayerLoggable.recordDownloadErrorFailed(originalError: error, stateError: error))
+            }
+        }
+        
 		observer?.downloadFailed(for: downloadTask.mediaProduct, with: error)
 	}
+}
+
+// MARK: - PlayerLoggable Extension for Download State Management
+
+extension PlayerLoggable {
+    static func downloadEntryCreationFailed(error: Error) -> PlayerLoggable {
+        PlayerLoggable(message: "Failed to create download entry", technicalMessage: error.localizedDescription)
+    }
+    
+    static func updateDownloadStateFailed(error: Error) -> PlayerLoggable {
+        PlayerLoggable(message: "Failed to update download state", technicalMessage: error.localizedDescription)
+    }
+    
+    static func updateDownloadProgressFailed(error: Error) -> PlayerLoggable {
+        PlayerLoggable(message: "Failed to update download progress", technicalMessage: error.localizedDescription)
+    }
+    
+    static func recordDownloadErrorFailed(originalError: Error, stateError: Error) -> PlayerLoggable {
+        PlayerLoggable(message: "Failed to record download error", technicalMessage: "Original error: \(originalError.localizedDescription), State error: \(stateError.localizedDescription)")
+    }
+    
+    static func cancelDownloadStateFailed(error: Error) -> PlayerLoggable {
+        PlayerLoggable(message: "Failed to cancel download state", technicalMessage: error.localizedDescription)
+    }
+    
+    static func cleanupStaleDownloads(count: Int) -> PlayerLoggable {
+        PlayerLoggable(message: "Cleaned up stale downloads", technicalMessage: "Deleted \(count) stale downloads")
+    }
+    
+    static func cleanupStaleDownloadsFailed(error: Error) -> PlayerLoggable {
+        PlayerLoggable(message: "Failed to cleanup stale downloads", technicalMessage: error.localizedDescription)
+    }
 }
