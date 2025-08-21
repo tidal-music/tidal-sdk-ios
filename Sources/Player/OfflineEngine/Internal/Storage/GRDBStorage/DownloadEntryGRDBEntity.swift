@@ -31,7 +31,7 @@ struct DownloadEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
         var entry = DownloadEntry(
             id: id,
             productId: productId,
-            productType: ProductType(rawValue: productType) ?? .TRACK,
+            productType: productTypeFromString(productType),
             createdAt: createdAt
         )
         
@@ -61,8 +61,19 @@ struct DownloadEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
         updatedAt = entry.updatedAt
         pausedAt = entry.pausedAt
         backgroundTaskIdentifier = entry.backgroundTaskIdentifier
-        partialMediaPathBookmark = createBookmark(from: entry.partialMediaPath)
-        partialLicensePathBookmark = createBookmark(from: entry.partialLicensePath)
+        
+        // Initialize these separately since they require method calls
+        if let mediaPath = entry.partialMediaPath {
+            partialMediaPathBookmark = URL(fileURLWithPath: mediaPath).bookmarkDataOrNil
+        } else {
+            partialMediaPathBookmark = nil
+        }
+        
+        if let licensePath = entry.partialLicensePath {
+            partialLicensePathBookmark = URL(fileURLWithPath: licensePath).bookmarkDataOrNil
+        } else {
+            partialLicensePathBookmark = nil
+        }
     }
     
     private func resolveBookmark(_ bookmark: Data?) -> String? {
@@ -88,5 +99,22 @@ struct DownloadEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
         
         let url = URL(fileURLWithPath: path)
         return try? url.bookmarkData()
+    }
+    
+    private func productTypeFromString(_ typeString: String) -> ProductType {
+        switch typeString {
+        case "TRACK": return .TRACK
+        case "VIDEO": return .VIDEO
+        case "BROADCAST": return .BROADCAST
+        default: return .TRACK // Default to TRACK for safety
+        }
+    }
+}
+
+// MARK: - URL Extension for Bookmark Safety
+
+private extension URL {
+    var bookmarkDataOrNil: Data? {
+        try? bookmarkData()
     }
 }
