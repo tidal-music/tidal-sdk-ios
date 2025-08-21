@@ -21,8 +21,8 @@ This document tracks the implementation of improvements to the OfflineEngine to 
 - **Commit**: [`7118d0a`](https://github.com/yourusername/tidal-sdk-ios/commit/7118d0a) - Add DownloadEntryGRDBEntity for database persistence
 - **Description**: Created GRDB entity for download entry persistence including URL bookmark handling
 - **Files**: `Sources/Player/OfflineEngine/Internal/Storage/GRDBStorage/DownloadEntryGRDBEntity.swift`
-- **Fix**: [`713f194`](https://github.com/yourusername/tidal-sdk-ios/commit/713f194) - Fix compilation issues in DownloadEntryGRDBEntity
-- **Description**: Fixed ProductType initialization and property initialization order
+- **Fix**: [`36da2de`](https://github.com/yourusername/tidal-sdk-ios/commit/36da2de) - Fix compilation and test issues in Phase 1
+- **Description**: Fixed ProductType initialization and property initialization order, plus test improvements
 
 ### Step 1.4: Add Migration for Download Entries Table
 - **Commit**: [`e14e4fa`](https://github.com/yourusername/tidal-sdk-ios/commit/e14e4fa) - Add database migration for DownloadEntries table
