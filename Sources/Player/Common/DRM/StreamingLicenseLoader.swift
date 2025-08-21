@@ -5,19 +5,32 @@ import Foundation
 
 final class StreamingLicenseLoader: NSObject, LicenseLoader {
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
+	private let featureFlagProvider: FeatureFlagProvider
 	let streamingSessionId: String
 
+	// Improved DRM handling properties (only used when feature flag is enabled)
 	private let drmQueue = DispatchQueue(label: "com.tidal.player.drm.streaming", qos: .userInitiated)
-	private var pendingKeyRequest: AVContentKeyRequest?
 	private var pendingTasks: [AVContentKeyRequest: Task<Void, Never>] = [:]
 	private let serialQueue = DispatchQueue(label: "com.tidal.player.drm.streaming.state", qos: .userInitiated)
+	
+	// Legacy property
+	private var pendingKeyRequest: AVContentKeyRequest?
 
-	init(fairPlayLicenseFetcher: FairPlayLicenseFetcher, streamingSessionId: String) {
+	init(fairPlayLicenseFetcher: FairPlayLicenseFetcher, streamingSessionId: String, featureFlagProvider: FeatureFlagProvider) {
 		self.fairPlayLicenseFetcher = fairPlayLicenseFetcher
 		self.streamingSessionId = streamingSessionId
+		self.featureFlagProvider = featureFlagProvider
 	}
 
 	func getLicense() async throws -> Data {
+		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			return try await getLicenseImproved()
+		} else {
+			return try await getLicenseLegacy()
+		}
+	}
+	
+	private func getLicenseImproved() async throws -> Data {
 		return try await withCheckedThrowingContinuation { continuation in
 			serialQueue.async {
 				guard let pendingKeyRequest = self.pendingKeyRequest else {
@@ -40,6 +53,17 @@ final class StreamingLicenseLoader: NSObject, LicenseLoader {
 		}
 	}
 	
+	private func getLicenseLegacy() async throws -> Data {
+		guard let pendingKeyRequest else {
+			throw LicenseLoaderError.missingLicense
+		}
+
+		return try await fairPlayLicenseFetcher.getLicense(
+			streamingSessionId: streamingSessionId,
+			keyRequest: pendingKeyRequest
+		)
+	}
+	
 	private func cleanupTask(for keyRequest: AVContentKeyRequest) {
 		serialQueue.async {
 			self.pendingTasks.removeValue(forKey: keyRequest)
@@ -57,26 +81,57 @@ final class StreamingLicenseLoader: NSObject, LicenseLoader {
 
 extension StreamingLicenseLoader: AVContentKeySessionDelegate {
 	func contentKeySession(_ session: AVContentKeySession, didProvide keyRequest: AVContentKeyRequest) {
-		// Never block this method - it's called on AVFoundation's internal queue
-		let task = Task {
-			await handleKeyRequest(keyRequest)
-		}
-		
-		serialQueue.async {
-			self.pendingTasks[keyRequest] = task
+		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			// Never block this method - it's called on AVFoundation's internal queue
+			let task = Task {
+				await handleKeyRequest(keyRequest)
+			}
+			
+			serialQueue.async {
+				self.pendingTasks[keyRequest] = task
+			}
+		} else {
+			// Legacy behavior with semaphore
+			contentKeySessionLegacy(session, didProvide: keyRequest)
 		}
 	}
 	
 	func contentKeySession(_ session: AVContentKeySession, contentKeyRequest keyRequest: AVContentKeyRequest, didFailWithError error: Error) {
 		PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingGetLicenseFailed(error: error))
-		cleanupTask(for: keyRequest)
 		
-		// Check if this is a retryable error
-		if shouldRetryDRMError(error) {
-			Task {
-				await retryKeyRequestAfterDelay(keyRequest, session: session)
+		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			cleanupTask(for: keyRequest)
+			
+			// Check if this is a retryable error
+			if shouldRetryDRMError(error) {
+				Task {
+					await retryKeyRequestAfterDelay(keyRequest, session: session)
+				}
 			}
 		}
+		// For legacy mode, no special handling needed
+	}
+	
+	private func contentKeySessionLegacy(_ session: AVContentKeySession, didProvide keyRequest: AVContentKeyRequest) {
+		let semaphore = DispatchSemaphore(value: 0)
+
+		SafeTask {
+			defer {
+				self.pendingKeyRequest = nil
+				semaphore.signal()
+			}
+
+			do {
+				self.pendingKeyRequest = keyRequest
+				let license = try await getLicense()
+				keyRequest.processContentKeyResponse(AVContentKeyResponse(fairPlayStreamingKeyResponseData: license))
+			} catch {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingGetLicenseFailed(error: error))
+				keyRequest.processContentKeyResponseError(error)
+			}
+		}
+		
+		semaphore.wait()
 	}
 	
 	private func handleKeyRequest(_ keyRequest: AVContentKeyRequest) async {

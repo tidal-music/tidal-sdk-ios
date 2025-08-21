@@ -5,10 +5,12 @@ import Foundation
 
 final class LicenseDownloader: NSObject {
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
+	private let featureFlagProvider: FeatureFlagProvider
 	private let licenseSecurityToken: String
 	private let downloadTaskId: String
 	private weak var downloadTask: DownloadTask?
 
+	// Improved DRM handling properties (only used when feature flag is enabled)
 	private let drmQueue = DispatchQueue(label: "com.tidal.player.drm.offline", qos: .userInitiated)
 	private var pendingTasks: [AVContentKeyRequest: Task<Void, Never>] = [:]
 	private let serialQueue = DispatchQueue(label: "com.tidal.player.drm.offline.state", qos: .userInitiated)
@@ -16,9 +18,11 @@ final class LicenseDownloader: NSObject {
 	init(
 		fairPlayLicenseFetcher: FairPlayLicenseFetcher,
 		licenseSecurityToken: String,
-		downloadTask: DownloadTask
+		downloadTask: DownloadTask,
+		featureFlagProvider: FeatureFlagProvider
 	) {
 		self.fairPlayLicenseFetcher = fairPlayLicenseFetcher
+		self.featureFlagProvider = featureFlagProvider
 		self.licenseSecurityToken = licenseSecurityToken
 		self.downloadTaskId = downloadTask.id
 		self.downloadTask = downloadTask
@@ -45,6 +49,14 @@ final class LicenseDownloader: NSObject {
 
 extension LicenseDownloader: AVContentKeySessionDelegate {
 	func contentKeySession(_ session: AVContentKeySession, didProvide keyRequest: AVContentKeyRequest) {
+		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			contentKeySessionImproved(session, didProvide: keyRequest)
+		} else {
+			contentKeySessionLegacy(session, didProvide: keyRequest)
+		}
+	}
+	
+	private func contentKeySessionImproved(_ session: AVContentKeySession, didProvide keyRequest: AVContentKeyRequest) {
 		// Capture strong reference early to avoid weak reference becoming nil
 		guard let downloadTask = self.downloadTask else {
 			let error = PlayerInternalError(
@@ -69,24 +81,68 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 			downloadTask.failed(with: error)
 		}
 	}
+	
+	private func contentKeySessionLegacy(_ session: AVContentKeySession, didProvide keyRequest: AVContentKeyRequest) {
+		guard let downloadTask else {
+			return
+		}
+		do {
+			#if os(iOS)
+				try keyRequest.respondByRequestingPersistableContentKeyRequestAndReturnError()
+			#else
+				try keyRequest.respondByRequestingPersistableContentKeyRequest()
+			#endif
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderContentKeyRequestFailed(error: error))
+			downloadTask.failed(with: error)
+		}
+	}
 
 	func contentKeySession(_ session: AVContentKeySession, didProvide keyRequest: AVPersistableContentKeyRequest) {
-		// Never block this method - it's called on AVFoundation's internal queue
-		let task = Task {
-			await handlePersistableKeyRequest(keyRequest)
-		}
-		
-		serialQueue.async {
-			self.pendingTasks[keyRequest] = task
+		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			// Never block this method - it's called on AVFoundation's internal queue
+			let task = Task {
+				await handlePersistableKeyRequest(keyRequest)
+			}
+			
+			serialQueue.async {
+				self.pendingTasks[keyRequest] = task
+			}
+		} else {
+			contentKeySessionLegacy(session, didProvide: keyRequest)
 		}
 	}
 	
 	func contentKeySession(_ session: AVContentKeySession, contentKeyRequest keyRequest: AVContentKeyRequest, didFailWithError error: Error) {
 		PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderGetLicenseFailed(error: error))
-		cleanupTask(for: keyRequest)
+		
+		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			cleanupTask(for: keyRequest)
+		}
 		
 		// Notify download task of failure
 		downloadTask?.failed(with: error)
+	}
+	
+	private func contentKeySessionLegacy(_ session: AVContentKeySession, didProvide keyRequest: AVPersistableContentKeyRequest) {
+		SafeTask {
+			do {
+				guard let downloadTask = self.downloadTask else {
+					return
+				}
+
+				let license = try await self.fairPlayLicenseFetcher.getLicense(
+					streamingSessionId: downloadTask.id,
+					keyRequest: keyRequest
+				)
+
+				try self.store(license, for: downloadTask)
+
+			} catch {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderGetLicenseFailed(error: error))
+				downloadTask?.failed(with: error)
+			}
+		}
 	}
 	
 	private func handlePersistableKeyRequest(_ keyRequest: AVPersistableContentKeyRequest) async {

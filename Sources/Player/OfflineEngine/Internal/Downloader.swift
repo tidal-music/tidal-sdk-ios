@@ -18,6 +18,7 @@ class Downloader {
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
 	private let mediaDownloader: MediaDownloader
 	private let networkMonitor: NetworkMonitor
+	private let featureFlagProvider: FeatureFlagProvider
 
 	private var activeTasks: [String: SafeTask] = [:]
 
@@ -26,12 +27,14 @@ class Downloader {
 	init(
 		playbackInfoFetcher: PlaybackInfoFetcher,
 		fairPlayLicenseFetcher: FairPlayLicenseFetcher,
-		networkMonitor: NetworkMonitor
+		networkMonitor: NetworkMonitor,
+		featureFlagProvider: FeatureFlagProvider
 	) {
 		self.playbackInfoFetcher = playbackInfoFetcher
 		self.fairPlayLicenseFetcher = fairPlayLicenseFetcher
 		mediaDownloader = MediaDownloader()
 		self.networkMonitor = networkMonitor
+		self.featureFlagProvider = featureFlagProvider
 	}
 
 	func download(
@@ -103,7 +106,8 @@ private extension Downloader {
 			let licenseDownloader = LicenseDownloader(
 				fairPlayLicenseFetcher: fairPlayLicenseFetcher,
 				licenseSecurityToken: licenseSecurityToken,
-				downloadTask: downloadTask
+				downloadTask: downloadTask,
+				featureFlagProvider: featureFlagProvider
 			)
 
 			// Apple's requirement: Set up content key session BEFORE any asset operations
