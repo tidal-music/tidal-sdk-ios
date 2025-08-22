@@ -2,6 +2,10 @@
 
 This document tracks the implementation of improvements to the OfflineEngine to address issues with network interruptions and partial downloads.
 
+## Branch Structure
+- **Phase 1**: `alberto/claude/offline-engine-phase1` - Database schema and state persistence foundation (PR #237)
+- **Phase 2**: `alberto/claude/offline-engine-phase2` - Download state management (PR #234, based on Phase 1)
+
 ## Implementation Plan
 - **Initial Plan**: [`1d1a662`](https://github.com/yourusername/tidal-sdk-ios/commit/1d1a662) - Add comprehensive plan for OfflineEngine resilience improvements
 
@@ -68,11 +72,28 @@ This document tracks the implementation of improvements to the OfflineEngine to 
   - `Tests/PlayerTests/Player/OfflineEngine/Internal/Storage/DBStorage/DownloadEntryGRDBStorageTests.swift`
   - `Tests/PlayerTests/Player/OfflineEngine/Internal/Storage/DownloadEntryTests.swift`
 
-## Phase 2: Download State Management (Coming Next)
+## Phase 2: Download State Management
 
-- [ ] Step 2.1: Create Download State Manager
-- [ ] Step 2.2: Add State Manager to Downloader
-- [ ] Step 2.3: Update DownloadTask with State Management
+### Step 2.1: Create Download State Manager
+- **Commit**: [`c8d04ed`](https://github.com/yourusername/tidal-sdk-ios/commit/c8d04ed) - Implement DownloadStateManager for Phase 2 of offline download resilience
+- **Description**: Created protocol and implementation for managing download state persistence
+- **Files**:
+  - `Sources/Player/OfflineEngine/Internal/DownloadStateManager/DownloadStateManager.swift`
+  - `Sources/Player/OfflineEngine/Internal/DownloadStateManager/DefaultDownloadStateManager.swift`
+  - `Tests/PlayerTests/Mocks/OfflineEngine/Internal/DownloadStateManager/DownloadStateManagerMock.swift`
+  - `Tests/PlayerTests/Player/OfflineEngine/Internal/DownloadStateManager/DefaultDownloadStateManagerTests.swift`
+
+### Step 2.2: Add State Manager to Downloader
+- **Description**: Integrated DownloadStateManager with Downloader to persist download state
+- **Files**:
+  - `Sources/Player/OfflineEngine/Internal/Downloader.swift`
+  - `Tests/PlayerTests/Mocks/OfflineEngine/Internal/DownloaderMock.swift`
+  - `Tests/PlayerTests/Player/OfflineEngine/Internal/DownloaderWithStateManagerTests.swift`
+
+### Step 2.3: Update DownloadTask with State Management
+- **Description**: Enhanced DownloadTask to work with DownloadStateManager and track state transitions
+- **Files**:
+  - `Sources/Player/OfflineEngine/Internal/DownloadTask.swift`
 
 ## Upcoming Phases
 
