@@ -102,8 +102,12 @@ final class DefaultDownloadStateManager: DownloadStateManager {
         
         // Calculate the timestamp for N days ago
         let now = PlayerWorld.timeProvider.timestamp()
-        let millisecondsPerDay: UInt64 = 24 * 60 * 60 * 1000
-        let cutoffTimestamp = now - (UInt64(days) * millisecondsPerDay)
+        // Handle potential overflow by using Int64 for calculation
+        let millisecondsPerDay: Int64 = 24 * 60 * 60 * 1000
+        // Use Int64 for safe calculation, then convert back to UInt64 with a safe default
+        let daysInMs = Int64(days) * millisecondsPerDay
+        // Make sure we don't have an underflow when now < daysInMs
+        let cutoffTimestamp: UInt64 = (Int64(now) > daysInMs) ? UInt64(Int64(now) - daysInMs) : 0
         
         // Filter for downloads created within the period
         let recentDownloads = allDownloads.filter { $0.createdAt >= cutoffTimestamp }
