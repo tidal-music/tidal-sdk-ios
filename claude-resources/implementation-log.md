@@ -5,6 +5,7 @@ This document tracks the implementation of improvements to the OfflineEngine to 
 ## Branch Structure
 - **Phase 1**: `alberto/claude/offline-engine-phase1` - Database schema and state persistence foundation (PR #237)
 - **Phase 2**: `alberto/claude/offline-engine-phase2` - Download state management (PR #234, based on Phase 1)
+- **Phase 3**: `alberto/claude/offline-engine-phase3` - Download metrics and summary APIs (PR #236, based on Phase 2)
 
 ## Implementation Plan
 - **Initial Plan**: [`1d1a662`](https://github.com/yourusername/tidal-sdk-ios/commit/1d1a662) - Add comprehensive plan for OfflineEngine resilience improvements
@@ -97,10 +98,12 @@ This document tracks the implementation of improvements to the OfflineEngine to 
 
 ## Upcoming Phases
 
-### Phase 3: Error Handling & Retry Logic
-### Phase 4: Comprehensive Cleanup System
-### Phase 5: Network Monitoring & Adaptive Downloads
-### Phase 6: Coordinated License/Media Downloads
-### Phase 7: Enhanced Monitoring & Observability
-### Phase 8: Integration & Feature Flags
-### Phase 9: Testing & Validation
+### Phase 2: Download State Management (In Progress - PR #234)
+### Phase 3: Download Metrics and Summary APIs (In Progress - PR #236)
+### Phase 4: Error Handling & Retry Logic
+### Phase 5: Comprehensive Cleanup System
+### Phase 6: Network Monitoring & Adaptive Downloads
+### Phase 7: Coordinated License/Media Downloads
+### Phase 8: Enhanced Monitoring & Observability
+### Phase 9: Integration & Feature Flags
+### Phase 10: Testing & Validation
