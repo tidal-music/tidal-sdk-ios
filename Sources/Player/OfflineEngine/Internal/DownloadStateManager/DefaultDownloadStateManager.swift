@@ -91,6 +91,52 @@ final class DefaultDownloadStateManager: DownloadStateManager {
         return try offlineStorage.cleanupStaleDownloadEntries(threshold: threshold)
     }
     
+    func getDownloadSummary() throws -> DownloadSummary {
+        let entries = try getAllDownloads()
+        return DownloadSummary(entries: entries)
+    }
+    
+    func getDownloadMetrics(days: Int) throws -> DownloadMetrics {
+        // Get all downloads from the past N days
+        let allDownloads = try getAllDownloads()
+        
+        // Calculate the timestamp for N days ago
+        let now = PlayerWorld.timeProvider.timestamp()
+        let millisecondsPerDay: UInt64 = 24 * 60 * 60 * 1000
+        let cutoffTimestamp = now - (UInt64(days) * millisecondsPerDay)
+        
+        // Filter for downloads created within the period
+        let recentDownloads = allDownloads.filter { $0.createdAt >= cutoffTimestamp }
+        
+        // Count downloads by final state
+        let successfulDownloads = recentDownloads.filter { $0.state == .COMPLETED }.count
+        let failedDownloads = recentDownloads.filter { $0.state == .FAILED }.count
+        let cancelledDownloads = recentDownloads.filter { $0.state == .CANCELLED }.count
+        
+        // Calculate average completion time for successful downloads
+        let completedDownloads = recentDownloads.filter { $0.state == .COMPLETED }
+        var totalCompletionTime: Double = 0
+        
+        for download in completedDownloads {
+            // Calculate time difference in seconds
+            let startTime = Double(download.createdAt) / 1000.0
+            let endTime = Double(download.updatedAt) / 1000.0
+            totalCompletionTime += (endTime - startTime)
+        }
+        
+        let averageCompletionTime = completedDownloads.isEmpty ? 
+            0.0 : totalCompletionTime / Double(completedDownloads.count)
+        
+        return DownloadMetrics(
+            periodDays: days,
+            totalDownloads: recentDownloads.count,
+            successfulDownloads: successfulDownloads,
+            failedDownloads: failedDownloads,
+            cancelledDownloads: cancelledDownloads,
+            averageCompletionTimeSeconds: averageCompletionTime
+        )
+    }
+    
     // MARK: - Private Helpers
     
     private func generateDownloadId() -> String {

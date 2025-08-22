@@ -11,12 +11,17 @@ final class DownloadStateManagerMock: DownloadStateManager {
     var deletedDownloads: [String] = []
     var clearedStaleDownloads: Bool = false
     var cleanupStaleDownloadsCall: (threshold: TimeInterval, deletedCount: Int)?
+    var getDownloadSummaryCalled = false
+    var getDownloadMetricsCalled = false
+    var getDownloadMetricsCallParameter: Int?
     
     // Mock behavior configuration
     var mockDownloads: [String: DownloadEntry] = [:]
     var mockDownloadsByProductId: [String: DownloadEntry] = [:]
     var mockDownloadsByState: [DownloadState: [DownloadEntry]] = [:]
     var mockAllDownloads: [DownloadEntry] = []
+    var mockDownloadSummary: DownloadSummary?
+    var mockDownloadMetrics: DownloadMetrics?
     
     // Error control
     var errorToThrow: Error?
@@ -134,6 +139,38 @@ final class DownloadStateManagerMock: DownloadStateManager {
         return mockDeletedCount
     }
     
+    func getDownloadSummary() throws -> DownloadSummary {
+        if let error = errorToThrow { throw error }
+        getDownloadSummaryCalled = true
+        
+        if let mockSummary = mockDownloadSummary {
+            return mockSummary
+        }
+        
+        // Create a summary from the mock downloads if no mock summary provided
+        return DownloadSummary(entries: mockAllDownloads)
+    }
+    
+    func getDownloadMetrics(days: Int) throws -> DownloadMetrics {
+        if let error = errorToThrow { throw error }
+        getDownloadMetricsCalled = true
+        getDownloadMetricsCallParameter = days
+        
+        if let mockMetrics = mockDownloadMetrics {
+            return mockMetrics
+        }
+        
+        // Create default metrics if no mock provided
+        return DownloadMetrics(
+            periodDays: days,
+            totalDownloads: mockAllDownloads.count,
+            successfulDownloads: mockAllDownloads.filter { $0.state == .COMPLETED }.count,
+            failedDownloads: mockAllDownloads.filter { $0.state == .FAILED }.count,
+            cancelledDownloads: mockAllDownloads.filter { $0.state == .CANCELLED }.count,
+            averageCompletionTimeSeconds: 0.0
+        )
+    }
+    
     // MARK: - Reset for testing
     
     func reset() {
@@ -144,6 +181,9 @@ final class DownloadStateManagerMock: DownloadStateManager {
         deletedDownloads = []
         clearedStaleDownloads = false
         cleanupStaleDownloadsCall = nil
+        getDownloadSummaryCalled = false
+        getDownloadMetricsCalled = false
+        getDownloadMetricsCallParameter = nil
         
         mockDownloads = [:]
         mockDownloadsByProductId = [:]

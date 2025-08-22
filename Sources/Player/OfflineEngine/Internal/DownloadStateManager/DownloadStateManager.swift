@@ -1,7 +1,10 @@
 import Foundation
 
 /// Protocol defining the interface for managing download state persistence
-protocol DownloadStateManager {
+protocol DownloadStateManager {    
+    /// Get a summary of all downloads in the system
+    /// - Returns: A summary containing counts and metrics of downloads
+    func getDownloadSummary() throws -> DownloadSummary
     /// Create a new download entry to track a download
     /// - Parameters:
     ///   - productId: The product ID for the content being downloaded
@@ -57,4 +60,9 @@ protocol DownloadStateManager {
     /// - Parameter threshold: Time threshold in seconds
     /// - Returns: Number of entries deleted
     func cleanupStaleDownloads(threshold: TimeInterval) throws -> Int
+    
+    /// Get download metrics including success rate and average completion time
+    /// - Parameter days: Number of days to include in the calculation (default: 7)
+    /// - Returns: Metrics about download performance
+    func getDownloadMetrics(days: Int) throws -> DownloadMetrics
 }

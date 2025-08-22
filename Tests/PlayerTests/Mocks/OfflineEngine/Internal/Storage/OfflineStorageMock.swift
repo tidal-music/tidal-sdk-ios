@@ -11,6 +11,7 @@ final class OfflineStorageMock: OfflineStorage {
     var updatedDownloadEntries: [DownloadEntry] = []
     var clearedStorage: Bool = false
     var clearedStaleDownloads: Bool = false
+    var cleanupStaleThreshold: TimeInterval?
     
     // Custom behavior setup
     var mockOfflineEntries: [String: OfflineEntry] = [:]
@@ -19,6 +20,7 @@ final class OfflineStorageMock: OfflineStorage {
     var mockDownloadEntriesByState: [DownloadState: [DownloadEntry]] = [:]
     var mockAllDownloadEntries: [DownloadEntry] = []
     var mockTotalSize: Int = 0
+    var mockStaleDeletedCount: Int = 0
     
     // Return values for throwing functions
     var errorToThrow: Error?
@@ -103,7 +105,8 @@ final class OfflineStorageMock: OfflineStorage {
     func cleanupStaleDownloadEntries(threshold: TimeInterval) throws -> Int {
         if let error = errorToThrow { throw error }
         clearedStaleDownloads = true
-        return 0 // Mock implementation returns 0 entries deleted
+        cleanupStaleThreshold = threshold
+        return mockStaleDeletedCount
     }
     
     // MARK: - Reset for testing
@@ -116,6 +119,7 @@ final class OfflineStorageMock: OfflineStorage {
         updatedDownloadEntries = []
         clearedStorage = false
         clearedStaleDownloads = false
+        cleanupStaleThreshold = nil
         
         mockOfflineEntries = [:]
         mockDownloadEntries = [:]
@@ -123,6 +127,7 @@ final class OfflineStorageMock: OfflineStorage {
         mockDownloadEntriesByState = [:]
         mockAllDownloadEntries = []
         mockTotalSize = 0
+        mockStaleDeletedCount = 0
         
         errorToThrow = nil
     }
