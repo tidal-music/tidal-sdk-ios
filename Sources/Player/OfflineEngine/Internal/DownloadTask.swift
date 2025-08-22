@@ -54,7 +54,18 @@ final class DownloadTask {
 		queue.maxConcurrentOperationCount = 1
 		queue.qualityOfService = .userInitiated
 
+		#if targetEnvironment(simulator)
+		// FairPlay Streaming is not supported on simulators
+		if #available(iOS 13.0, macOS 10.15, tvOS 13.0, *) {
+			// Use a dummy key session for simulator - this won't actually work with DRM
+			contentKeySession = AVContentKeySession(keySystem: .init(rawValue: "com.dummy.simulator"))
+		} else {
+			// Fallback for older simulator versions
+			contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming) // Will crash but required for compilation
+		}
+		#else
 		contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
+		#endif
 
 		let now = PlayerWorld.timeProvider.timestamp()
 		monitor.emit(event: StreamingSessionStart(

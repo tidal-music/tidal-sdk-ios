@@ -164,6 +164,7 @@ private extension Downloader {
 	func downloadHls(for downloadTask: DownloadTask, using playbackInfo: PlaybackInfo) {
 		let asset = AVURLAsset(url: playbackInfo.url)
 
+		#if !targetEnvironment(simulator)
 		if let licenseSecurityToken = playbackInfo.licenseSecurityToken {
 			// Create license downloader first
 			let licenseDownloader = LicenseDownloader(
@@ -190,6 +191,10 @@ private extension Downloader {
 				}
 			}
 		}
+		#else
+		// Skip DRM setup on simulator
+		PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadInfo(message: "Skipping DRM setup on simulator"))
+		#endif
 
 		downloadTask.playbackInfo = playbackInfo
 		

@@ -72,6 +72,7 @@ enum PlayerLoggable: TidalLoggable {
 
 	case downloadFailed(error: Error)
 	case downloadFinalizeFailed(error: Error)
+	case downloadInfo(message: String)
 
 	// MARK: Offline Storage
 
@@ -226,6 +227,8 @@ extension PlayerLoggable {
 	var loggingMessage: Logger.Message {
 		switch self {
 		// Download State Manager
+        case .downloadInfo(let message):
+            "\(message)"
         case .downloadEntryCreationFailed:
             "DownloadStateManager-downloadEntryCreationFailed"
         case .updateDownloadStateFailed:
@@ -499,6 +502,8 @@ extension PlayerLoggable {
 		var metadata = [String: Logger.MetadataValue]()
 
 		switch self {
+		case .downloadInfo:
+			break
 		case let .sendEventOfflinePlayFailed(error),
 		     let .sendLegacyEventFailed(error),
 		     let .migrateLegacyDirectoryFailed(error),
@@ -671,13 +676,14 @@ extension PlayerLoggable {
              .downloadEntryCreationFailed,
              .updateDownloadStateFailed, 
              .updateDownloadProgressFailed,
-             .recordDownloadErrorFailed,
+             .recordDownloadErrorFailed(originalError:stateError:),
              .cancelDownloadStateFailed,
              .cleanupStaleDownloadsFailed,
 		     .alreadyInitialized:
 			.error
             
-        case .cleanupStaleDownloads:
+        case .cleanupStaleDownloads,
+             .downloadInfo:
             .info
 		case .streamingNotifyGetCredentialFailed,
 		     .streamingConnectOfflineMode,
