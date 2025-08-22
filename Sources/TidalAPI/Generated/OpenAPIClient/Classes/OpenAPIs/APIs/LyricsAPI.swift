@@ -15,7 +15,7 @@ internal class LyricsAPI {
     /**
      Get single lyric.
      
-     - parameter id: (path)  
+     - parameter id: (path) Lyrics Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
      - returns: LyricsSingleResourceDataDocument
      */
@@ -34,7 +34,7 @@ internal class LyricsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path)  
+     - parameter id: (path) Lyrics Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
      - returns: RequestBuilder<LyricsSingleResourceDataDocument> 
      */
@@ -63,9 +63,53 @@ internal class LyricsAPI {
     }
 
     /**
+     Update single lyric.
+     
+     - parameter id: (path) Lyrics Id 
+     - parameter lyricsUpdateOperationPayload: (body)  (optional)
+     - returns: Void
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func lyricsIdPatch(id: String, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws {
+        return try await lyricsIdPatchWithRequestBuilder(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload).execute().body
+    }
+
+    /**
+     Update single lyric.
+     - PATCH /lyrics/{id}
+     - Updates existing lyric.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Lyrics Id 
+     - parameter lyricsUpdateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<Void> 
+     */
+    internal class func lyricsIdPatchWithRequestBuilder(id: String, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+        var localVariablePath = "/lyrics/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: lyricsUpdateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get owners relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) Lyrics Id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -83,7 +127,7 @@ internal class LyricsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path)  
+     - parameter id: (path) Lyrics Id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -118,7 +162,7 @@ internal class LyricsAPI {
     /**
      Get track relationship (\"to-one\").
      
-     - parameter id: (path)  
+     - parameter id: (path) Lyrics Id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
      - returns: LyricsSingleRelationshipDataDocument
@@ -138,7 +182,7 @@ internal class LyricsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path)  
+     - parameter id: (path) Lyrics Id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
      - returns: RequestBuilder<LyricsSingleRelationshipDataDocument> 
@@ -166,5 +210,44 @@ internal class LyricsAPI {
         let localVariableRequestBuilder: RequestBuilder<LyricsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Create single lyric.
+     
+     - parameter lyricsCreateOperationPayload: (body)  (optional)
+     - returns: LyricsSingleResourceDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func lyricsPost(lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsSingleResourceDataDocument {
+        return try await lyricsPostWithRequestBuilder(lyricsCreateOperationPayload: lyricsCreateOperationPayload).execute().body
+    }
+
+    /**
+     Create single lyric.
+     - POST /lyrics
+     - Creates a new lyric.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter lyricsCreateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<LyricsSingleResourceDataDocument> 
+     */
+    internal class func lyricsPostWithRequestBuilder(lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) -> RequestBuilder<LyricsSingleResourceDataDocument> {
+        let localVariablePath = "/lyrics"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: lyricsCreateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<LyricsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 }

@@ -27,6 +27,18 @@ public enum LyricsAPITidal {
 
 
 	/**
+     Update single lyric.
+     
+     - returns: 
+     */
+	public static func lyricsIdPatch(id: String, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			LyricsAPI.lyricsIdPatchWithRequestBuilder(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: LyricsMultiRelationshipDataDocument
@@ -46,6 +58,18 @@ public enum LyricsAPITidal {
 	public static func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+		}
+	}
+
+
+	/**
+     Create single lyric.
+     
+     - returns: LyricsSingleResourceDataDocument
+     */
+	public static func lyricsPost(lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			LyricsAPI.lyricsPostWithRequestBuilder(lyricsCreateOperationPayload: lyricsCreateOperationPayload)
 		}
 	}
 }

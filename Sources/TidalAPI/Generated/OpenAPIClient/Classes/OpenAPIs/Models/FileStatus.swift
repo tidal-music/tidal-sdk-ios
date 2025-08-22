@@ -24,7 +24,6 @@ public struct FileStatus: Codable, Hashable {
     public enum TechnicalFileStatus: String, Codable, CaseIterable {
         case uploadRequested = "UPLOAD_REQUESTED"
         case processing = "PROCESSING"
-        case failed = "FAILED"
         case ok = "OK"
         case error = "ERROR"
     }
