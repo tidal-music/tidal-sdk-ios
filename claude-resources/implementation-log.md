@@ -94,9 +94,34 @@ This document tracks the implementation of improvements to the OfflineEngine to 
 - **Files**:
   - `Sources/Player/OfflineEngine/Internal/DownloadTask.swift`
 
+## Phase 3: Download Metrics and Summary APIs
+
+### Step 3.1: Add Download Summary Model
+- **Commit**: [`7f944bb`](https://github.com/yourusername/tidal-sdk-ios/commit/7f944bb) - Phase 3: Add download metrics and summary APIs
+- **Description**: Created DownloadSummary model for aggregating download state information
+- **Files**:
+  - `Sources/Player/OfflineEngine/Data/DownloadSummary.swift`
+  - `Tests/PlayerTests/Player/OfflineEngine/Data/DownloadSummaryTests.swift`
+
+### Step 3.2: Add Download Metrics Model
+- **Description**: Created DownloadMetrics model for tracking historical download performance
+- **Files**:
+  - `Sources/Player/OfflineEngine/Data/DownloadMetrics.swift`
+  - `Tests/PlayerTests/Player/OfflineEngine/Data/DownloadMetricsTests.swift`
+
+### Step 3.3: Extend DownloadStateManager with Metrics
+- **Description**: Extended DownloadStateManager protocol and implementation with metrics collection capabilities
+- **Files**:
+  - `Sources/Player/OfflineEngine/Internal/DownloadStateManager/DownloadStateManager.swift`
+  - `Sources/Player/OfflineEngine/Internal/DownloadStateManager/DefaultDownloadStateManager.swift`
+  - `Tests/PlayerTests/Mocks/OfflineEngine/Internal/DownloadStateManager/DownloadStateManagerMock.swift`
+
+### Bug Fixes for Phase 3
+- **Commit**: [`cdf6bad`](https://github.com/yourusername/tidal-sdk-ios/commit/cdf6bad) - Fix arithmetic overflow in getDownloadMetrics timestamp calculation
+- **Description**: Fixed potential integer overflow in timestamp calculations for download metrics
+
 ## Upcoming Phases
 
-### Phase 3: Download Metrics and Summary APIs (In Progress - PR #236)
 ### Phase 4: Error Handling & Retry Logic
 ### Phase 5: Comprehensive Cleanup System
 ### Phase 6: Network Monitoring & Adaptive Downloads
