@@ -74,6 +74,7 @@ jobs:
   regenerate-api:
     needs: check-api-spec
     if: needs.check-api-spec.outputs.changes_found == 'true'
+
     uses: ./.github/workflows/generate-tidal-api.yml
     permissions:
       contents: write
