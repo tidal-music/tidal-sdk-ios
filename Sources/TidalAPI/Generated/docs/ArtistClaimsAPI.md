@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdPatch**
 ```swift
-    open class func artistClaimsIdPatch(artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdPatch(id: String, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single artistClaim.
@@ -79,10 +79,11 @@ Updates existing artistClaim.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let id = "id_example" // String | Artist claim id
 let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: ArtistClaimId(value: "value_example"), type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
 
 // Update single artistClaim.
-ArtistClaimsAPI.artistClaimsIdPatch(artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdPatch(id: id, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -98,6 +99,7 @@ ArtistClaimsAPI.artistClaimsIdPatch(artistClaimsUpdateOperationPayload: artistCl
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist claim id | 
  **artistClaimsUpdateOperationPayload** | [**ArtistClaimsUpdateOperationPayload**](ArtistClaimsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type

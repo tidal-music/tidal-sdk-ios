@@ -5,8 +5,10 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**lyricsIdGet**](LyricsAPI.md#lyricsidget) | **GET** /lyrics/{id} | Get single lyric.
+[**lyricsIdPatch**](LyricsAPI.md#lyricsidpatch) | **PATCH** /lyrics/{id} | Update single lyric.
 [**lyricsIdRelationshipsOwnersGet**](LyricsAPI.md#lyricsidrelationshipsownersget) | **GET** /lyrics/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**lyricsIdRelationshipsTrackGet**](LyricsAPI.md#lyricsidrelationshipstrackget) | **GET** /lyrics/{id}/relationships/track | Get track relationship (\&quot;to-one\&quot;).
+[**lyricsPost**](LyricsAPI.md#lyricspost) | **POST** /lyrics | Create single lyric.
 
 
 # **lyricsIdGet**
@@ -23,7 +25,7 @@ Retrieves single lyric by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | Lyrics Id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
 
 // Get single lyric.
@@ -43,7 +45,7 @@ LyricsAPI.lyricsIdGet(id: id, include: include) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | Lyrics Id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, track | [optional] 
 
 ### Return type
@@ -57,6 +59,58 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **lyricsIdPatch**
+```swift
+    open class func lyricsIdPatch(id: String, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Update single lyric.
+
+Updates existing lyric.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Lyrics Id
+let lyricsUpdateOperationPayload = LyricsUpdateOperation_Payload(data: LyricsUpdateOperation_Payload_Data(attributes: LyricsUpdateOperation_Payload_Data_Attributes(text: "text_example"), id: "id_example", type: "type_example")) // LyricsUpdateOperationPayload |  (optional)
+
+// Update single lyric.
+LyricsAPI.lyricsIdPatch(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Lyrics Id | 
+ **lyricsUpdateOperationPayload** | [**LyricsUpdateOperationPayload**](LyricsUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -75,7 +129,7 @@ Retrieves owners relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | Lyrics Id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -97,7 +151,7 @@ LyricsAPI.lyricsIdRelationshipsOwnersGet(id: id, countryCode: countryCode, inclu
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | Lyrics Id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -131,7 +185,7 @@ Retrieves track relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | Lyrics Id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: track (optional)
 
@@ -152,7 +206,7 @@ LyricsAPI.lyricsIdRelationshipsTrackGet(id: id, countryCode: countryCode, includ
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | Lyrics Id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: track | [optional] 
 
@@ -167,6 +221,56 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **lyricsPost**
+```swift
+    open class func lyricsPost(lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
+```
+
+Create single lyric.
+
+Creates a new lyric.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let lyricsCreateOperationPayload = LyricsCreateOperation_Payload(data: LyricsCreateOperation_Payload_Data(attributes: LyricsCreateOperation_Payload_Data_Attributes(text: "text_example"), relationships: LyricsCreateOperation_Payload_Data_Relationships(track: LyricsCreateOperation_Payload_Data_Relationships_Track(id: "id_example", type: "type_example")), type: "type_example"), meta: LyricsCreateOperation_Payload_Meta(generate: false)) // LyricsCreateOperationPayload |  (optional)
+
+// Create single lyric.
+LyricsAPI.lyricsPost(lyricsCreateOperationPayload: lyricsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **lyricsCreateOperationPayload** | [**LyricsCreateOperationPayload**](LyricsCreateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**LyricsSingleResourceDataDocument**](LyricsSingleResourceDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
