@@ -146,7 +146,7 @@ Updates existing artist.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(attributes: ArtistUpdateBody_Data_Attributes(contributionsEnabled: false, contributionsSalesPitch: "contributionsSalesPitch_example", externalLinks: [External_Link(href: "href_example", meta: External_Link_Meta(type: "type_example"))], handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistUpdateBody_Meta(dryRun: false)) // ArtistUpdateBody |  (optional)
+let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(attributes: ArtistUpdateBody_Data_Attributes(contributionsEnabled: false, contributionsSalesPitch: "contributionsSalesPitch_example", externalLinks: [External_Link_Payload(forDelete: false, href: "href_example", meta: External_Link_Meta(type: "type_example"), mutable: false)], handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistUpdateBody_Meta(dryRun: false)) // ArtistUpdateBody |  (optional)
 
 // Update single artist.
 ArtistsAPI.artistsIdPatch(id: id, artistUpdateBody: artistUpdateBody) { (response, error) in
