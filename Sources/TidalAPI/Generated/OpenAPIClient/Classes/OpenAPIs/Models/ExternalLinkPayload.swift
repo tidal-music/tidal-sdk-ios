@@ -12,38 +12,28 @@ import AnyCodable
 
 public struct ExternalLinkPayload: Codable, Hashable {
 
-    public var forDelete: Bool?
     public var href: String?
     public var meta: ExternalLinkMeta
-    public var mutable: Bool?
 
     public init(
-        forDelete: Bool? = nil,
         href: String? = nil,
-        meta: ExternalLinkMeta,
-        mutable: Bool? = nil
+        meta: ExternalLinkMeta
     ) {
-        self.forDelete = forDelete
         self.href = href
         self.meta = meta
-        self.mutable = mutable
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case forDelete
         case href
         case meta
-        case mutable
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(forDelete, forKey: .forDelete)
         try container.encodeIfPresent(href, forKey: .href)
         try container.encode(meta, forKey: .meta)
-        try container.encodeIfPresent(mutable, forKey: .mutable)
     }
 }
 

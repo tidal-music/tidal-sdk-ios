@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.60"
+    "version" : "0.1.61"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -11073,17 +11073,11 @@
         "required" : [ "meta" ],
         "type" : "object",
         "properties" : {
-          "forDelete" : {
-            "type" : "boolean"
-          },
           "href" : {
             "type" : "string"
           },
           "meta" : {
             "$ref" : "#/components/schemas/External_Link_Meta"
-          },
-          "mutable" : {
-            "type" : "boolean"
           }
         }
       },
