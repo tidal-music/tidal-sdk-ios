@@ -14,14 +14,14 @@ public struct ArtistUpdateBodyDataAttributes: Codable, Hashable {
 
     public var contributionsEnabled: Bool?
     public var contributionsSalesPitch: String?
-    public var externalLinks: [ExternalLink]?
+    public var externalLinks: [ExternalLinkPayload]?
     public var handle: String?
     public var name: String?
 
     public init(
         contributionsEnabled: Bool? = nil,
         contributionsSalesPitch: String? = nil,
-        externalLinks: [ExternalLink]? = nil,
+        externalLinks: [ExternalLinkPayload]? = nil,
         handle: String? = nil,
         name: String? = nil
     ) {
