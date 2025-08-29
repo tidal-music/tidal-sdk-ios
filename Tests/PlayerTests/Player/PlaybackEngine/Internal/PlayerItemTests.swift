@@ -36,6 +36,7 @@ final class PlayerItemTests: XCTestCase {
 	private var timestamp: UInt64 = 1
 	private var isContentCachingEnabled: Bool = true
 	private var shouldUseCachingV2: Bool = false
+	private var shouldUseImprovedDRMHandling: Bool = false
 
 	override func setUp() {
 		// Set up time and uuid provider
@@ -54,6 +55,7 @@ final class PlayerItemTests: XCTestCase {
 		featureFlagProvider = FeatureFlagProvider.mock
 		featureFlagProvider.isContentCachingEnabled = { self.isContentCachingEnabled }
 		featureFlagProvider.shouldUseImprovedCaching = { self.shouldUseCachingV2 }
+		featureFlagProvider.shouldUseImprovedDRMHandling = { self.shouldUseImprovedDRMHandling }
 
 		monitor = PlayerItemMonitorMock()
 		dataWriter = DataWriterMock()
@@ -197,6 +199,74 @@ final class PlayerItemTests: XCTestCase {
 			sessionProductType: mediaProduct.productType,
 			sessionProductId: mediaProduct.productId,
 			sessionTags: [StreamingSessionStart.SessionTag.CACHING_V2]
+		)
+
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+	}
+
+	func test_init_improvedDRMHandling_enabled() {
+		// GIVEN
+		shouldUseImprovedDRMHandling = true
+
+		let mediaProduct = MediaProduct.mock()
+		_ = PlayerItem.mock(
+			startReason: .EXPLICIT,
+			mediaProduct: mediaProduct,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
+			isPreload: false
+		)
+
+		let streamingSessionStart = StreamingSessionStart.mock(
+			streamingSessionId: Constants.uuid,
+			startReason: .EXPLICIT,
+			timestamp: timestamp,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			sessionProductType: mediaProduct.productType,
+			sessionProductId: mediaProduct.productId,
+			sessionTags: [StreamingSessionStart.SessionTag.IMPROVED_DRM]
+		)
+
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+	}
+
+	func test_init_improvedDRMHandling_disabled() {
+		// GIVEN
+		shouldUseImprovedDRMHandling = false
+
+		let mediaProduct = MediaProduct.mock()
+		_ = PlayerItem.mock(
+			startReason: .EXPLICIT,
+			mediaProduct: mediaProduct,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
+			isPreload: false
+		)
+
+		let streamingSessionStart = StreamingSessionStart.mock(
+			streamingSessionId: Constants.uuid,
+			startReason: .EXPLICIT,
+			timestamp: timestamp,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			sessionProductType: mediaProduct.productType,
+			sessionProductId: mediaProduct.productId,
+			sessionTags: nil // No IMPROVED_DRM tag when disabled
 		)
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
@@ -509,5 +579,113 @@ final class PlayerItemTests: XCTestCase {
 
 		// THEN
 		XCTAssertEqual(player.seekCallCount, 1)
+	}
+
+	// MARK: - DRM Feature Flag Tests
+
+	func test_playbackStatistics_improvedDRMHandling_enabled() {
+		// GIVEN
+		shouldUseImprovedDRMHandling = true
+
+		let mediaProduct = MediaProduct.mock()
+		let startReason: StartReason = .EXPLICIT
+		let playerItem: PlayerItem? = PlayerItem.mock(
+			startReason: startReason,
+			mediaProduct: mediaProduct,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
+			isPreload: false
+		)
+
+		// Have both metadata and asset set up
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration.mock()
+		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
+		playerItem?.set(asset)
+
+		let audioQuality = AudioQuality.LOSSLESS
+		let metadata = Metadata.mock(productId: mediaProduct.productId, audioQuality: audioQuality)
+		playerItem?.set(metadata)
+
+		let startTimestamp: UInt64 = 2
+		timestamp = startTimestamp
+
+		// WHEN - simulate playback flow
+		let duration: Double = 2
+		playerItem?.loaded(asset: asset, with: duration)
+		playerItem?.play(timestamp: startTimestamp)
+		playerItem?.playing(asset: asset)
+
+		let endTimestamp: UInt64 = 5
+		timestamp = endTimestamp
+		playerItem?.completed(asset: asset)
+
+		// Emit events
+		playerItem?.emitEvents()
+
+		// THEN
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
+
+		// Check PlaybackStatistics has IMPROVED_DRM tag
+		let playbackStatistics = playerEventSender.streamingMetricsEvents[1] as? PlaybackStatistics
+		XCTAssertNotNil(playbackStatistics)
+		XCTAssertTrue(playbackStatistics?.tags?.contains(.IMPROVED_DRM) == true)
+	}
+
+	func test_playbackStatistics_improvedDRMHandling_disabled() {
+		// GIVEN
+		shouldUseImprovedDRMHandling = false
+
+		let mediaProduct = MediaProduct.mock()
+		let startReason: StartReason = .EXPLICIT
+		let playerItem: PlayerItem? = PlayerItem.mock(
+			startReason: startReason,
+			mediaProduct: mediaProduct,
+			networkType: .MOBILE,
+			outputDevice: nil,
+			sessionType: .PLAYBACK,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider,
+			isPreload: false
+		)
+
+		// Have both metadata and asset set up
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration.mock()
+		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
+		playerItem?.set(asset)
+
+		let audioQuality = AudioQuality.LOSSLESS
+		let metadata = Metadata.mock(productId: mediaProduct.productId, audioQuality: audioQuality)
+		playerItem?.set(metadata)
+
+		let startTimestamp: UInt64 = 2
+		timestamp = startTimestamp
+
+		// WHEN - simulate playback flow
+		let duration: Double = 2
+		playerItem?.loaded(asset: asset, with: duration)
+		playerItem?.play(timestamp: startTimestamp)
+		playerItem?.playing(asset: asset)
+
+		let endTimestamp: UInt64 = 5
+		timestamp = endTimestamp
+		playerItem?.completed(asset: asset)
+
+		// Emit events
+		playerItem?.emitEvents()
+
+		// THEN
+		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
+
+		// Check PlaybackStatistics does NOT have IMPROVED_DRM tag
+		let playbackStatistics = playerEventSender.streamingMetricsEvents[1] as? PlaybackStatistics
+		XCTAssertNotNil(playbackStatistics)
+		XCTAssertFalse(playbackStatistics?.tags?.contains(.IMPROVED_DRM) == true)
 	}
 }
