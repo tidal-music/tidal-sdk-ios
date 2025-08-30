@@ -16,13 +16,11 @@ public struct TracksAttributes: Codable, Hashable {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
-    }
-    public enum Availability: String, Codable, CaseIterable {
+    }    public enum Availability: String, Codable, CaseIterable {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
-    }
-    public enum Key: String, Codable, CaseIterable {
+    }    public enum Key: String, Codable, CaseIterable {
         case unknown = "UNKNOWN"
         case c = "C"
         case csharp = "CSharp"
@@ -36,8 +34,7 @@ public struct TracksAttributes: Codable, Hashable {
         case a = "A"
         case bb = "Bb"
         case b = "B"
-    }
-    public enum KeyScale: String, Codable, CaseIterable {
+    }    public enum KeyScale: String, Codable, CaseIterable {
         case unknown = "UNKNOWN"
         case major = "MAJOR"
         case minor = "MINOR"
@@ -52,8 +49,7 @@ public struct TracksAttributes: Codable, Hashable {
         case phrygian = "PHRYGIAN"
         case melodicMinor = "MELODIC_MINOR"
         case pentatonicMinor = "PENTATONIC_MINOR"
-    }
-    /** Access type */
+    }    /** Access type */
     public var accessType: AccessType?
     /** Available usage for this track */
     public var availability: [Availability]?
@@ -69,7 +65,6 @@ public struct TracksAttributes: Codable, Hashable {
     public var explicit: Bool
     /** Track links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
-    public var genreTags: [String]?
     /** International Standard Recording Code (ISRC) */
     public var isrc: String
     /** Key */
@@ -96,7 +91,6 @@ public struct TracksAttributes: Codable, Hashable {
         duration: String,
         explicit: Bool,
         externalLinks: [ExternalLink]? = nil,
-        genreTags: [String]? = nil,
         isrc: String,
         key: Key,
         keyScale: KeyScale,
@@ -115,7 +109,6 @@ public struct TracksAttributes: Codable, Hashable {
         self.duration = duration
         self.explicit = explicit
         self.externalLinks = externalLinks
-        self.genreTags = genreTags
         self.isrc = isrc
         self.key = key
         self.keyScale = keyScale
@@ -136,7 +129,6 @@ public struct TracksAttributes: Codable, Hashable {
         case duration
         case explicit
         case externalLinks
-        case genreTags
         case isrc
         case key
         case keyScale
@@ -160,7 +152,6 @@ public struct TracksAttributes: Codable, Hashable {
         try container.encode(duration, forKey: .duration)
         try container.encode(explicit, forKey: .explicit)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
-        try container.encodeIfPresent(genreTags, forKey: .genreTags)
         try container.encode(isrc, forKey: .isrc)
         try container.encode(key, forKey: .key)
         try container.encode(keyScale, forKey: .keyScale)

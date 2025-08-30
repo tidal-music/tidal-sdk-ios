@@ -14,8 +14,7 @@ public struct UserCollectionAlbumsRelationshipRemoveOperationPayloadData: Codabl
 
     public enum ModelType: String, Codable, CaseIterable {
         case albums = "albums"
-    }
-    public var id: String
+    }    public var id: String
     public var meta: UserCollectionAlbumsRelationshipRemoveOperationPayloadDataMeta
     public var type: ModelType
 

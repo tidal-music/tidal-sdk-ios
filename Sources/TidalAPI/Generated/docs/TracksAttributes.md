@@ -11,7 +11,6 @@ Name | Type | Description | Notes
 **duration** | **String** | Duration (ISO 8601) | 
 **explicit** | **Bool** | Explicit content | 
 **externalLinks** | [ExternalLink] | Track links external to TIDAL API | [optional] 
-**genreTags** | **[String]** |  | [optional] 
 **isrc** | **String** | International Standard Recording Code (ISRC) | 
 **key** | **String** | Key | 
 **keyScale** | **String** | The scale of the key | 

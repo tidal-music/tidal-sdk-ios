@@ -15,8 +15,7 @@ public struct PlaylistUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public enum AccessType: String, Codable, CaseIterable {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
-    }
-    /** Access type */
+    }    /** Access type */
     public var accessType: AccessType?
     public var description: String?
     public var name: String?

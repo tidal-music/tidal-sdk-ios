@@ -200,7 +200,7 @@ Updates existing track.
 import OpenAPIClient
 
 let id = "id_example" // String | A Tidal catalogue ID
-let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, genreTags: ["genreTags_example"], key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TrackUpdateOperation_Payload_Data_Relationships(genres: TrackUpdateOperation_Payload_Data_Relationships_Genres(data: [TrackUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackUpdateOperationPayload |  (optional)
+let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TrackUpdateOperation_Payload_Data_Relationships(genres: TrackUpdateOperation_Payload_Data_Relationships_Genres(data: [TrackUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackUpdateOperationPayload |  (optional)
 
 // Update single track.
 TracksAPI.tracksIdPatch(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload) { (response, error) in

@@ -16,8 +16,7 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
-    }
-    public enum Key: String, Codable, CaseIterable {
+    }    public enum Key: String, Codable, CaseIterable {
         case unknown = "UNKNOWN"
         case c = "C"
         case csharp = "CSharp"
@@ -31,8 +30,7 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case a = "A"
         case bb = "Bb"
         case b = "B"
-    }
-    public enum KeyScale: String, Codable, CaseIterable {
+    }    public enum KeyScale: String, Codable, CaseIterable {
         case unknown = "UNKNOWN"
         case major = "MAJOR"
         case minor = "MINOR"
@@ -47,15 +45,12 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case phrygian = "PHRYGIAN"
         case melodicMinor = "MELODIC_MINOR"
         case pentatonicMinor = "PENTATONIC_MINOR"
-    }
-    public static let genreTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
-    public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
+    }    public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
     /** Access type */
     public var accessType: AccessType?
     public var bpm: Float?
     /** Explicit content */
     public var explicit: Bool?
-    public var genreTags: [String]?
     public var key: Key?
     public var keyScale: KeyScale?
     public var title: String?
@@ -65,7 +60,6 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         accessType: AccessType? = nil,
         bpm: Float? = nil,
         explicit: Bool? = nil,
-        genreTags: [String]? = nil,
         key: Key? = nil,
         keyScale: KeyScale? = nil,
         title: String? = nil,
@@ -74,7 +68,6 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         self.accessType = accessType
         self.bpm = bpm
         self.explicit = explicit
-        self.genreTags = genreTags
         self.key = key
         self.keyScale = keyScale
         self.title = title
@@ -85,7 +78,6 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case accessType
         case bpm
         case explicit
-        case genreTags
         case key
         case keyScale
         case title
@@ -99,7 +91,6 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(accessType, forKey: .accessType)
         try container.encodeIfPresent(bpm, forKey: .bpm)
         try container.encodeIfPresent(explicit, forKey: .explicit)
-        try container.encodeIfPresent(genreTags, forKey: .genreTags)
         try container.encodeIfPresent(key, forKey: .key)
         try container.encodeIfPresent(keyScale, forKey: .keyScale)
         try container.encodeIfPresent(title, forKey: .title)
