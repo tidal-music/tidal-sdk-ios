@@ -21,7 +21,7 @@ Method | HTTP request | Description
 
 # **albumsGet**
 ```swift
-    open class func albumsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil, completion: @escaping (_ data: AlbumsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil, completion: @escaping (_ data: AlbumsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple albums.
@@ -36,12 +36,12 @@ import OpenAPIClient
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums (optional)
-let filterROwnersId = ["inner_example"] // [String] | User id (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 let filterId = ["inner_example"] // [String] | Album id (optional)
 let filterBarcodeId = ["inner_example"] // [String] | Barcode Id (optional)
 
 // Get multiple albums.
-AlbumsAPI.albumsGet(countryCode: countryCode, pageCursor: pageCursor, include: include, filterROwnersId: filterROwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId) { (response, error) in
+AlbumsAPI.albumsGet(countryCode: countryCode, pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -60,7 +60,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums | [optional] 
- **filterROwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
  **filterId** | [**[String]**](String.md) | Album id | [optional] 
  **filterBarcodeId** | [**[String]**](String.md) | Barcode Id | [optional] 
 
