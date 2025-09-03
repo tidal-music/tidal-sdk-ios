@@ -123,7 +123,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		)
 
 		var licenseLoader: StreamingLicenseLoader?
-		if playbackInfo.licenseSecurityToken != nil {
+		if playbackInfo.licenseSecurityToken != nil || (playbackInfo.productType == .TRACK && featureFlagProvider.shouldUseNewPlaybackEndpoints()) {
 			licenseLoader = StreamingLicenseLoader(
 				fairPlayLicenseFetcher: fairPlayLicenseFetcher,
 				streamingSessionId: streamingSessionId,
