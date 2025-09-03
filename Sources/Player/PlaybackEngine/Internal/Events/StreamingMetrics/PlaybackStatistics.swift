@@ -7,6 +7,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		case CACHED
 		case OFFLINER_V2
 		case IMPROVED_DRM
+		case NEW_PLAYBACK_ENDPOINTS
 	}
 
 	// MARK: - StreamingMetricsEvent
