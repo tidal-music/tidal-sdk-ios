@@ -146,7 +146,6 @@ private extension PlaybackInfoFetcher {
 		do {
 			let audioQuality = getAudioQuality(given: playbackMode)
 			let formats = getFormatsForAudioQuality(audioQuality)
-			let usage = playbackMode == .OFFLINE ? "DOWNLOAD" : "PLAYBACK"
 
 			// Ensure credentials provider is set
 			if OpenAPIClientAPI.credentialsProvider == nil {
@@ -155,11 +154,11 @@ private extension PlaybackInfoFetcher {
 
 			let manifestResponse = try await TrackManifestsAPITidal.trackManifestsIdGet(
 				id: trackId,
-				manifestType: "HLS",
+				manifestType: .hls,
 				formats: formats,
-				uriScheme: "DATA",
-				usage: usage,
-				adaptive: "false",
+				uriScheme: .data,
+				usage: playbackMode == .OFFLINE ? .download : .playback,
+				adaptive: .false,
 				customHeaders: ["x-playback-session-id": streamingSessionId]
 			)
 
@@ -449,16 +448,20 @@ private extension PlaybackInfoFetcher {
 	// MARK: - New API Helper Methods
 	
 	private func getFormatsForAudioQuality(_ audioQuality: AudioQuality) -> String {
+		let formats: [TrackManifestsAttributes.Formats]
+		
 		switch audioQuality {
 		case .HI_RES, .HI_RES_LOSSLESS:
-			return "HEAACV1,AACLC,FLAC,FLAC_HIRES"
+			formats = [.heaacv1, .aaclc, .flac, .flacHires]
 		case .LOSSLESS:
-			return "HEAACV1,AACLC,FLAC"
+			formats = [.heaacv1, .aaclc, .flac]
 		case .HIGH:
-			return "HEAACV1,AACLC"
+			formats = [.heaacv1, .aaclc]
 		case .LOW:
-			return "HEAACV1"
+			formats = [.heaacv1]
 		}
+		
+		return formats.map(\.rawValue).joined(separator: ",")
 	}
 	
 	private func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
@@ -477,15 +480,19 @@ private extension PlaybackInfoFetcher {
 			return nil
 		}
 		
+		// Define priority order (highest quality first)
+		let codecPriority: [(TrackManifestsAttributes.Formats, AudioCodec)] = [
+			(.flacHires, .FLAC),
+			(.flac, .FLAC),
+			(.aaclc, .AAC_LC),
+			(.heaacv1, .HE_AAC_V1)
+		]
+		
 		// Return the highest quality codec available
-		if formats.contains(.flacHires) {
-			return .FLAC
-		} else if formats.contains(.flac) {
-			return .FLAC
-		} else if formats.contains(.aaclc) {
-			return .AAC_LC
-		} else if formats.contains(.heaacv1) {
-			return .HE_AAC_V1
+		for (format, codec) in codecPriority {
+			if formats.contains(format) {
+				return codec
+			}
 		}
 		
 		return nil
