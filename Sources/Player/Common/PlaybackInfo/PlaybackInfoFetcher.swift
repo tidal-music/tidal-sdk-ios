@@ -91,7 +91,7 @@ private extension PlaybackInfoFetcher {
 		}
 	}
 
-	func getTrackPlaybackInfoFromLegacyEndpoint(
+	private func getTrackPlaybackInfoFromLegacyEndpoint(
 		trackId: String,
 		playbackMode: PlaybackMode,
 		streamingSessionId: String
@@ -137,7 +137,7 @@ private extension PlaybackInfoFetcher {
 		)
 	}
 
-	func getTrackPlaybackInfoFromManifestEndpoint(
+	private func getTrackPlaybackInfoFromManifestEndpoint(
 		trackId: String,
 		playbackMode: PlaybackMode,
 		streamingSessionId: String
@@ -448,7 +448,7 @@ private extension PlaybackInfoFetcher {
 
 	// MARK: - New API Helper Methods
 	
-	func getFormatsForAudioQuality(_ audioQuality: AudioQuality) -> String {
+	private func getFormatsForAudioQuality(_ audioQuality: AudioQuality) -> String {
 		switch audioQuality {
 		case .HI_RES, .HI_RES_LOSSLESS:
 			return "HEAACV1,AACLC,FLAC,FLAC_HIRES"
@@ -461,7 +461,7 @@ private extension PlaybackInfoFetcher {
 		}
 	}
 	
-	func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
+	private func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
 		switch presentation {
 		case .full:
 			return .FULL
@@ -472,7 +472,7 @@ private extension PlaybackInfoFetcher {
 		}
 	}
 	
-	func getAudioCodecFromFormats(_ formats: [TrackManifestsAttributes.Formats]?) -> AudioCodec? {
+	private func getAudioCodecFromFormats(_ formats: [TrackManifestsAttributes.Formats]?) -> AudioCodec? {
 		guard let formats = formats, !formats.isEmpty else {
 			return nil
 		}
