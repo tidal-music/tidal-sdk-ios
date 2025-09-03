@@ -117,6 +117,7 @@ let package = Package(
 				.auth,
 				.eventProducer,
 				.GRDB,
+				.tidalAPI,
 			],
 			resources: [
 				.process("README.md"),

@@ -1,5 +1,6 @@
 import Auth
 import Foundation
+import TidalAPI
 
 // MARK: - PlaybackInfoFetcher
 
@@ -75,6 +76,26 @@ private extension PlaybackInfoFetcher {
 		playbackMode: PlaybackMode,
 		streamingSessionId: String
 	) async throws -> PlaybackInfo {
+		if featureFlagProvider.shouldUseNewPlaybackEndpoints() {
+			return try await getTrackPlaybackInfoFromManifestEndpoint(
+				trackId: trackId,
+				playbackMode: playbackMode,
+				streamingSessionId: streamingSessionId
+			)
+		} else {
+			return try await getTrackPlaybackInfoFromLegacyEndpoint(
+				trackId: trackId,
+				playbackMode: playbackMode,
+				streamingSessionId: streamingSessionId
+			)
+		}
+	}
+
+	func getTrackPlaybackInfoFromLegacyEndpoint(
+		trackId: String,
+		playbackMode: PlaybackMode,
+		streamingSessionId: String
+	) async throws -> PlaybackInfo {
 		let playbackInfo: TrackPlaybackInfo = try await getPlaybackInfo(
 			url: getTrackPlaybackInfoUrl(trackId: trackId, playbackMode: playbackMode),
 			streamingSessionId: streamingSessionId,
@@ -114,6 +135,104 @@ private extension PlaybackInfoFetcher {
 			offlineRevalidateAt: playbackInfo.offlineRevalidateAt,
 			offlineValidUntil: playbackInfo.offlineValidUntil
 		)
+	}
+
+	func getTrackPlaybackInfoFromManifestEndpoint(
+		trackId: String,
+		playbackMode: PlaybackMode,
+		streamingSessionId: String
+	) async throws -> PlaybackInfo {
+		let start = PlayerWorld.timeProvider.timestamp()
+		do {
+			let audioQuality = getAudioQuality(given: playbackMode)
+			let formats = getFormatsForAudioQuality(audioQuality)
+			let usage = playbackMode == .OFFLINE ? "DOWNLOAD" : "PLAYBACK"
+			
+			// Initialize credentials
+			OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
+			// Configure custom headers
+			OpenAPIClientAPI.customHeaders["x-playback-session-id"] = streamingSessionId
+
+			defer {
+				OpenAPIClientAPI.customHeaders.removeValue(forKey: "x-playback-session-id")
+			}
+
+			let manifestResponse = try await TrackManifestsAPITidal.trackManifestsIdGet(
+				id: trackId,
+				manifestType: "HLS",
+				formats: formats,
+				uriScheme: "DATA",
+				usage: usage,
+				adaptive: "false"
+			)
+			
+			let manifestData = manifestResponse.data
+			let attributes = manifestData.attributes
+			
+			guard let manifestUri = attributes?.uri else {
+				throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
+			}
+			
+			guard let manifestUrl = URL(string: manifestUri) else {
+				throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
+			}
+			
+			let endTimestamp = PlayerWorld.timeProvider.timestamp()
+			playerEventSender.send(
+				PlaybackInfoFetch(
+					streamingSessionId: streamingSessionId,
+					startTimestamp: start,
+					endTimestamp: endTimestamp,
+					endReason: .COMPLETE,
+					errorMessage: nil,
+					errorCode: nil
+				)
+			)
+			
+			return PlaybackInfo(
+				productType: .TRACK,
+				productId: trackId,
+				streamType: .ON_DEMAND,
+				assetPresentation: convertTrackPresentation(attributes?.trackPresentation),
+				audioMode: .STEREO, // Default value, may need refinement
+				audioQuality: audioQuality,
+				audioCodec: getAudioCodecFromFormats(attributes?.formats),
+				audioSampleRate: nil, // Not available in new API
+				audioBitDepth: nil, // Not available in new API
+				videoQuality: nil,
+				streamingSessionId: streamingSessionId,
+				contentHash: attributes?.hash ?? "NA",
+				mediaType: "application/vnd.apple.mpegurl", // HLS MIME type
+				url: manifestUrl,
+				licenseSecurityToken: nil, // License data format differs in new API
+				albumReplayGain: attributes?.albumAudioNormalizationData?.replayGain,
+				albumPeakAmplitude: attributes?.albumAudioNormalizationData?.peakAmplitude,
+				trackReplayGain: attributes?.trackAudioNormalizationData?.replayGain,
+				trackPeakAmplitude: attributes?.trackAudioNormalizationData?.peakAmplitude,
+				offlineRevalidateAt: nil, // May need to be derived from DRM data
+				offlineValidUntil: nil // May need to be derived from DRM data
+			)
+			
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.getPlaybackInfoFailed(error: error))
+			
+			let convertedError = PlaybackInfoErrorResponseConverter.convert(error)
+			let playerError = PlayerInternalError.from(convertedError)
+			
+			let endTimestamp = PlayerWorld.timeProvider.timestamp()
+			playerEventSender.send(
+				PlaybackInfoFetch(
+					streamingSessionId: streamingSessionId,
+					startTimestamp: start,
+					endTimestamp: endTimestamp,
+					endReason: error is CancellationError ? .OTHER : .ERROR,
+					errorMessage: playerError.technicalDescription,
+					errorCode: playerError.code
+				)
+			)
+			
+			throw convertedError
+		}
 	}
 
 	func getTrackPlaybackInfoUrl(trackId: String, playbackMode: PlaybackMode) throws -> URL {
@@ -328,6 +447,51 @@ private extension PlaybackInfoFetcher {
 
 			throw error
 		}
+	}
+
+	// MARK: - New API Helper Methods
+	
+	func getFormatsForAudioQuality(_ audioQuality: AudioQuality) -> String {
+		switch audioQuality {
+		case .HI_RES, .HI_RES_LOSSLESS:
+			return "HEAACV1,AACLC,FLAC,FLAC_HIRES"
+		case .LOSSLESS:
+			return "HEAACV1,AACLC,FLAC"
+		case .HIGH:
+			return "HEAACV1,AACLC"
+		case .LOW:
+			return "HEAACV1"
+		}
+	}
+	
+	func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
+		switch presentation {
+		case .full:
+			return .FULL
+		case .preview:
+			return .PREVIEW
+		case nil:
+			return .FULL // Default fallback
+		}
+	}
+	
+	func getAudioCodecFromFormats(_ formats: [TrackManifestsAttributes.Formats]?) -> AudioCodec? {
+		guard let formats = formats, !formats.isEmpty else {
+			return nil
+		}
+		
+		// Return the highest quality codec available
+		if formats.contains(.flacHires) {
+			return .FLAC
+		} else if formats.contains(.flac) {
+			return .FLAC
+		} else if formats.contains(.aaclc) {
+			return .AAC_LC
+		} else if formats.contains(.heaacv1) {
+			return .HE_AAC_V1
+		}
+		
+		return nil
 	}
 
 	static func extractUrl(manifestMimeType: String, manifest: String) -> URL? {
