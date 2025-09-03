@@ -201,7 +201,7 @@ private extension PlaybackInfoFetcher {
 				contentHash: attributes?.hash ?? "NA",
 				mediaType: "application/vnd.apple.mpegurl", // HLS MIME type
 				url: manifestUrl,
-				licenseSecurityToken: nil, // License data format differs in new API
+				licenseSecurityToken: extractLicenseTokenFromDrmData(attributes?.drmData),
 				albumReplayGain: attributes?.albumAudioNormalizationData?.replayGain,
 				albumPeakAmplitude: attributes?.albumAudioNormalizationData?.peakAmplitude,
 				trackReplayGain: attributes?.trackAudioNormalizationData?.replayGain,
@@ -488,6 +488,23 @@ private extension PlaybackInfoFetcher {
 			return .HE_AAC_V1
 		}
 		
+		return nil
+	}
+	
+	/// Extracts license security token from new DRM data format
+	/// Note: Current DRM system doesn't actually use licenseSecurityToken - it uses dynamic URLs
+	private func extractLicenseTokenFromDrmData(_ drmData: DrmData?) -> String? {
+		// The current FairPlayLicenseFetcher doesn't use licenseSecurityToken at all
+		// It makes direct requests to licenseUrl with Authorization header
+		// For compatibility, we could return the licenseUrl itself or extract token from it
+		guard let drmData = drmData,
+		      let _ = drmData.licenseUrl else {
+			return nil
+		}
+		
+		// For now, return nil since licenseSecurityToken is not used in current DRM implementation
+		// Future enhancement: Parse token from licenseUrl or use licenseUrl as token
+		// TODO: Verify with backend team if token extraction is needed from licenseUrl
 		return nil
 	}
 
