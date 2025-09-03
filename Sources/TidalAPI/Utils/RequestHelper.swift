@@ -41,6 +41,54 @@ enum RequestHelper {
 		}
 	}
 
+	static func createRequest<T>(
+		customHeaders: [String: String] = [:],
+		requestBuilder: @escaping () async throws -> RequestBuilder<T>
+	) async throws -> T {
+		guard let credentialsProvider = OpenAPIClientAPI.credentialsProvider else {
+			throw TidalAPIError(message: "NO_CREDENTIALS_PROVIDER", url: "Not available")
+		}
+
+		let credentials = try await credentialsProvider.getCredentials()
+		let builder = try await requestBuilder()
+		let requestURL = builder.URLString
+		guard let token = credentials.token else {
+			throw TidalAPIError(
+				message: "NO_TOKEN",
+				url: requestURL
+			)
+		}
+
+		var request = builder
+			.addHeader(name: "Authorization", value: "Bearer \(token)")
+		
+		// Add custom headers
+		for (key, value) in customHeaders {
+			request = request.addHeader(name: key, value: value)
+		}
+
+		do {
+			let result = try await request.execute().body
+			// Clear the retry count for the URL on success
+			retries[requestURL] = nil
+			return result
+		} catch let error as ErrorResponse {
+			return try await handleErrorResult(
+				error,
+				urlAttachedToError: requestURL,
+				requestBuilder: { 
+					var builder = try await requestBuilder()
+					for (key, value) in customHeaders {
+						builder = builder.addHeader(name: key, value: value)
+					}
+					return builder
+				}
+			)
+		} catch {
+			throw TidalError(code: error.localizedDescription)
+		}
+	}
+
 	static func handleErrorResult<T>(
 		_ error: ErrorResponse,
 		urlAttachedToError url: String,

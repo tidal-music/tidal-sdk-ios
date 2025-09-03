@@ -147,14 +147,10 @@ private extension PlaybackInfoFetcher {
 			let audioQuality = getAudioQuality(given: playbackMode)
 			let formats = getFormatsForAudioQuality(audioQuality)
 			let usage = playbackMode == .OFFLINE ? "DOWNLOAD" : "PLAYBACK"
-			
-			// Initialize credentials
-			OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
-			// Configure custom headers
-			OpenAPIClientAPI.customHeaders["x-playback-session-id"] = streamingSessionId
 
-			defer {
-				OpenAPIClientAPI.customHeaders.removeValue(forKey: "x-playback-session-id")
+			// Ensure credentials provider is set
+			if OpenAPIClientAPI.credentialsProvider == nil {
+				OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
 			}
 
 			let manifestResponse = try await TrackManifestsAPITidal.trackManifestsIdGet(
@@ -163,20 +159,21 @@ private extension PlaybackInfoFetcher {
 				formats: formats,
 				uriScheme: "DATA",
 				usage: usage,
-				adaptive: "false"
+				adaptive: "false",
+				customHeaders: ["x-playback-session-id": streamingSessionId]
 			)
-			
+
 			let manifestData = manifestResponse.data
 			let attributes = manifestData.attributes
-			
+
 			guard let manifestUri = attributes?.uri else {
 				throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
 			}
-			
+
 			guard let manifestUrl = URL(string: manifestUri) else {
 				throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
 			}
-			
+
 			let endTimestamp = PlayerWorld.timeProvider.timestamp()
 			playerEventSender.send(
 				PlaybackInfoFetch(
@@ -188,7 +185,7 @@ private extension PlaybackInfoFetcher {
 					errorCode: nil
 				)
 			)
-			
+
 			return PlaybackInfo(
 				productType: .TRACK,
 				productId: trackId,
