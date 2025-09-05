@@ -127,9 +127,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: UserCollectionsPlaylistsMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsPlaylistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
+	public static func userCollectionsIdRelationshipsPlaylistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -142,6 +142,78 @@ public enum UserCollectionsAPITidal {
 	public static func userCollectionsIdRelationshipsPlaylistsPost(id: String, userCollectionPlaylistsRelationshipRemoveOperationPayload: UserCollectionPlaylistsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPostWithRequestBuilder(id: id, userCollectionPlaylistsRelationshipRemoveOperationPayload: userCollectionPlaylistsRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+     Delete from tracks relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func userCollectionsIdRelationshipsTracksDelete(id: String, userCollectionTracksRelationshipRemoveOperationPayload: UserCollectionTracksRelationshipRemoveOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			UserCollectionsAPI.userCollectionsIdRelationshipsTracksDeleteWithRequestBuilder(id: id, userCollectionTracksRelationshipRemoveOperationPayload: userCollectionTracksRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+     Get tracks relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserCollectionsTracksMultiRelationshipDataDocument
+     */
+	public static func userCollectionsIdRelationshipsTracksGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionsAPI.userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Add to tracks relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String, userCollectionTracksRelationshipAddOperationPayload: UserCollectionTracksRelationshipAddOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			UserCollectionsAPI.userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionTracksRelationshipAddOperationPayload: userCollectionTracksRelationshipAddOperationPayload)
+		}
+	}
+
+
+	/**
+     Delete from videos relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func userCollectionsIdRelationshipsVideosDelete(id: String, userCollectionVideosRelationshipRemoveOperationPayload: UserCollectionVideosRelationshipRemoveOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			UserCollectionsAPI.userCollectionsIdRelationshipsVideosDeleteWithRequestBuilder(id: id, userCollectionVideosRelationshipRemoveOperationPayload: userCollectionVideosRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+     Get videos relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserCollectionsVideosMultiRelationshipDataDocument
+     */
+	public static func userCollectionsIdRelationshipsVideosGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionsAPI.userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Add to videos relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String, userCollectionVideosRelationshipAddOperationPayload: UserCollectionVideosRelationshipAddOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			UserCollectionsAPI.userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionVideosRelationshipAddOperationPayload: userCollectionVideosRelationshipAddOperationPayload)
 		}
 	}
 }

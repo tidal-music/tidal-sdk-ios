@@ -1,4 +1,4 @@
-# UserCollectionAlbumsRelationshipRemoveOperationPayloadData
+# UserCollectionVideosRelationshipRemoveOperationPayloadData
 
 ## Properties
 Name | Type | Description | Notes
