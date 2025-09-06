@@ -24,8 +24,7 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var availability: [Availability]?
     /** Barcode id (EAN-13 or UPC-A) */
     public var barcodeId: String
-    /** Copyright */
-    public var copyright: String?
+    public var copyright: AlbumCopyright?
     /** Duration (ISO 8601) */
     public var duration: String
     /** Explicit content */
@@ -45,11 +44,13 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var title: String
     /** Album type */
     public var type: ModelType
+    /** Album version */
+    public var version: String?
 
     public init(
         availability: [Availability]? = nil,
         barcodeId: String,
-        copyright: String? = nil,
+        copyright: AlbumCopyright? = nil,
         duration: String,
         explicit: Bool,
         externalLinks: [ExternalLink]? = nil,
@@ -59,7 +60,8 @@ public struct AlbumsAttributes: Codable, Hashable {
         popularity: Double,
         releaseDate: Date? = nil,
         title: String,
-        type: ModelType
+        type: ModelType,
+        version: String? = nil
     ) {
         self.availability = availability
         self.barcodeId = barcodeId
@@ -74,6 +76,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         self.releaseDate = releaseDate
         self.title = title
         self.type = type
+        self.version = version
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -90,6 +93,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         case releaseDate
         case title
         case type
+        case version
     }
 
     // Encodable protocol methods
@@ -109,6 +113,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encode(title, forKey: .title)
         try container.encode(type, forKey: .type)
+        try container.encodeIfPresent(version, forKey: .version)
     }
 }
 

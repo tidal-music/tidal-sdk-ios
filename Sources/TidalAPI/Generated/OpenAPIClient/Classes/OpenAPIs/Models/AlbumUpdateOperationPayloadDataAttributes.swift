@@ -12,19 +12,17 @@ import AnyCodable
 
 public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public static let titleRule = StringRule(minLength: 1, maxLength: 300, pattern: nil)
-    public static let versionRule = StringRule(minLength: 0, maxLength: 300, pattern: nil)
-    public var copyright: AlbumUpdateOperationPayloadDataAttributesCopyright?
+    public var copyright: AlbumCopyright?
     public var explicitLyrics: Bool?
     public var releaseDate: Date?
-    public var title: String
+    public var title: String?
     public var version: String?
 
     public init(
-        copyright: AlbumUpdateOperationPayloadDataAttributesCopyright? = nil,
+        copyright: AlbumCopyright? = nil,
         explicitLyrics: Bool? = nil,
         releaseDate: Date? = nil,
-        title: String,
+        title: String? = nil,
         version: String? = nil
     ) {
         self.copyright = copyright
@@ -49,7 +47,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
-        try container.encode(title, forKey: .title)
+        try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(version, forKey: .version)
     }
 }

@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**copyright** | [**AlbumCreateOperationPayloadDataAttributesCopyright**](AlbumCreateOperationPayloadDataAttributesCopyright.md) |  | [optional] 
+**copyright** | [**AlbumCopyright**](AlbumCopyright.md) |  | [optional] 
 **explicitLyrics** | **Bool** |  | [optional] 
 **releaseDate** | **Date** |  | [optional] 
 **title** | **String** |  | 
