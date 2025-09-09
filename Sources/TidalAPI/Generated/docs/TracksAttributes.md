@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 **accessType** | **String** | Access type | [optional] 
 **availability** | **[String]** | Available usage for this track | [optional] 
 **bpm** | **Float** | Beats per minute | [optional] 
-**copyright** | **String** | Copyright | [optional] 
+**copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **createdAt** | **Date** | Datetime of track creation (ISO 8601) | [optional] 
 **duration** | **String** | Duration (ISO 8601) | 
 **explicit** | **Bool** | Explicit content | 

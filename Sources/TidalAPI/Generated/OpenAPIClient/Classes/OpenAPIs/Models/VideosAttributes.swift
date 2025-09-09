@@ -18,8 +18,7 @@ public struct VideosAttributes: Codable, Hashable {
         case stem = "STEM"
     }    /** Available usage for this video */
     public var availability: [Availability]?
-    /** Copyright */
-    public var copyright: String?
+    public var copyright: Copyright?
     /** Duration (ISO 8601) */
     public var duration: String
     /** Explicit content */
@@ -39,7 +38,7 @@ public struct VideosAttributes: Codable, Hashable {
 
     public init(
         availability: [Availability]? = nil,
-        copyright: String? = nil,
+        copyright: Copyright? = nil,
         duration: String,
         explicit: Bool,
         externalLinks: [ExternalLink]? = nil,

@@ -55,8 +55,7 @@ public struct TracksAttributes: Codable, Hashable {
     public var availability: [Availability]?
     /** Beats per minute */
     public var bpm: Float?
-    /** Copyright */
-    public var copyright: String?
+    public var copyright: Copyright?
     /** Datetime of track creation (ISO 8601) */
     public var createdAt: Date?
     /** Duration (ISO 8601) */
@@ -86,7 +85,7 @@ public struct TracksAttributes: Codable, Hashable {
         accessType: AccessType? = nil,
         availability: [Availability]? = nil,
         bpm: Float? = nil,
-        copyright: String? = nil,
+        copyright: Copyright? = nil,
         createdAt: Date? = nil,
         duration: String,
         explicit: Bool,

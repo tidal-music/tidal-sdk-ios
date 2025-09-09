@@ -1,4 +1,4 @@
-# AlbumCopyright
+# Copyright
 
 ## Properties
 Name | Type | Description | Notes

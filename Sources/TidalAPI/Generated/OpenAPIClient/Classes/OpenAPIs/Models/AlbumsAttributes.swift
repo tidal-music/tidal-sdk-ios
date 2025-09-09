@@ -24,7 +24,7 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var availability: [Availability]?
     /** Barcode id (EAN-13 or UPC-A) */
     public var barcodeId: String
-    public var copyright: AlbumCopyright?
+    public var copyright: Copyright?
     /** Duration (ISO 8601) */
     public var duration: String
     /** Explicit content */
@@ -50,7 +50,7 @@ public struct AlbumsAttributes: Codable, Hashable {
     public init(
         availability: [Availability]? = nil,
         barcodeId: String,
-        copyright: AlbumCopyright? = nil,
+        copyright: Copyright? = nil,
         duration: String,
         explicit: Bool,
         externalLinks: [ExternalLink]? = nil,

@@ -5,7 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **availability** | **[String]** | Available usage for this album | [optional] 
 **barcodeId** | **String** | Barcode id (EAN-13 or UPC-A) | 
-**copyright** | [**AlbumCopyright**](AlbumCopyright.md) |  | [optional] 
+**copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **duration** | **String** | Duration (ISO 8601) | 
 **explicit** | **Bool** | Explicit content | 
 **externalLinks** | [ExternalLink] | Album links external to TIDAL API | [optional] 

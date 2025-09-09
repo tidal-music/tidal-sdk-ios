@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public var copyright: AlbumCopyright?
+    public var copyright: Copyright?
     public var explicitLyrics: Bool?
     public var releaseDate: Date?
     public var title: String?
     public var version: String?
 
     public init(
-        copyright: AlbumCopyright? = nil,
+        copyright: Copyright? = nil,
         explicitLyrics: Bool? = nil,
         releaseDate: Date? = nil,
         title: String? = nil,
