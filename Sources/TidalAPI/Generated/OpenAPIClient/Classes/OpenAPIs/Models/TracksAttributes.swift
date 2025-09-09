@@ -16,11 +16,15 @@ public struct TracksAttributes: Codable, Hashable {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
-    }    public enum Availability: String, Codable, CaseIterable {
+    }
+
+    public enum Availability: String, Codable, CaseIterable {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
-    }    public enum Key: String, Codable, CaseIterable {
+    }
+
+    public enum Key: String, Codable, CaseIterable {
         case unknown = "UNKNOWN"
         case c = "C"
         case csharp = "CSharp"
@@ -34,7 +38,9 @@ public struct TracksAttributes: Codable, Hashable {
         case a = "A"
         case bb = "Bb"
         case b = "B"
-    }    public enum KeyScale: String, Codable, CaseIterable {
+    }
+
+    public enum KeyScale: String, Codable, CaseIterable {
         case unknown = "UNKNOWN"
         case major = "MAJOR"
         case minor = "MINOR"

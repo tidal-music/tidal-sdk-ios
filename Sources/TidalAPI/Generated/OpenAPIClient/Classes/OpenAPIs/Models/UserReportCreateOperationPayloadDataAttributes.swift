@@ -22,7 +22,9 @@ public struct UserReportCreateOperationPayloadDataAttributes: Codable, Hashable 
         case spam = "SPAM"
         case copyrightInfringement = "COPYRIGHT_INFRINGEMENT"
         case unknown = "UNKNOWN"
-    }    public var description: String
+    }
+
+    public var description: String
     public var reason: Reason
 
     public init(

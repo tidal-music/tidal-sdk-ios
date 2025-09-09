@@ -30,7 +30,9 @@ public struct UserCollectionVideosRelationshipAddOperationPayloadData: Codable, 
         case userreports = "userReports"
         case users = "users"
         case videos = "videos"
-    }    public var id: String
+    }
+
+    public var id: String
     public var type: ModelType
 
     public init(
