@@ -15,6 +15,7 @@ public struct ExternalLinkMeta: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
         case tidalSharing = "TIDAL_SHARING"
+        case tidalUserSharing = "TIDAL_USER_SHARING"
         case tidalAutoplayAndroid = "TIDAL_AUTOPLAY_ANDROID"
         case tidalAutoplayIos = "TIDAL_AUTOPLAY_IOS"
         case tidalAutoplayWeb = "TIDAL_AUTOPLAY_WEB"
