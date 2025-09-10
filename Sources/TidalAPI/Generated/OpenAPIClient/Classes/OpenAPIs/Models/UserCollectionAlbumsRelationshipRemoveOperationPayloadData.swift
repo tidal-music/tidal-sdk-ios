@@ -15,23 +15,20 @@ public struct UserCollectionAlbumsRelationshipRemoveOperationPayloadData: Codabl
     public enum ModelType: String, Codable, CaseIterable {
         case albums = "albums"
     }
+
     public var id: String
-    public var meta: UserCollectionAlbumsRelationshipRemoveOperationPayloadDataMeta
     public var type: ModelType
 
     public init(
         id: String,
-        meta: UserCollectionAlbumsRelationshipRemoveOperationPayloadDataMeta,
         type: ModelType
     ) {
         self.id = id
-        self.meta = meta
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case meta
         case type
     }
 
@@ -40,7 +37,6 @@ public struct UserCollectionAlbumsRelationshipRemoveOperationPayloadData: Codabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(meta, forKey: .meta)
         try container.encode(type, forKey: .type)
     }
 }

@@ -6,12 +6,11 @@ Name | Type | Description | Notes
 **accessType** | **String** | Access type | [optional] 
 **availability** | **[String]** | Available usage for this track | [optional] 
 **bpm** | **Float** | Beats per minute | [optional] 
-**copyright** | **String** | Copyright | [optional] 
+**copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **createdAt** | **Date** | Datetime of track creation (ISO 8601) | [optional] 
 **duration** | **String** | Duration (ISO 8601) | 
 **explicit** | **Bool** | Explicit content | 
 **externalLinks** | [ExternalLink] | Track links external to TIDAL API | [optional] 
-**genreTags** | **[String]** |  | [optional] 
 **isrc** | **String** | International Standard Recording Code (ISRC) | 
 **key** | **String** | Key | 
 **keyScale** | **String** | The scale of the key | 

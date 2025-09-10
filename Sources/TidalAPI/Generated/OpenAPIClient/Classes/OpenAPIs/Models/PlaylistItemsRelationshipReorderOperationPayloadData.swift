@@ -16,6 +16,7 @@ public struct PlaylistItemsRelationshipReorderOperationPayloadData: Codable, Has
         case tracks = "tracks"
         case videos = "videos"
     }
+
     public var id: String
     public var meta: PlaylistItemsRelationshipReorderOperationPayloadDataMeta
     public var type: ModelType

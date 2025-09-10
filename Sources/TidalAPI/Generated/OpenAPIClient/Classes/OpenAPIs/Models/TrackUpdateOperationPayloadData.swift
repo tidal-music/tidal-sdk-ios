@@ -15,13 +15,14 @@ public struct TrackUpdateOperationPayloadData: Codable, Hashable {
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
     }
-    public var attributes: TrackUpdateOperationPayloadDataAttributes
+
+    public var attributes: TrackUpdateOperationPayloadDataAttributes?
     public var id: String
     public var relationships: TrackUpdateOperationPayloadDataRelationships?
     public var type: ModelType
 
     public init(
-        attributes: TrackUpdateOperationPayloadDataAttributes,
+        attributes: TrackUpdateOperationPayloadDataAttributes? = nil,
         id: String,
         relationships: TrackUpdateOperationPayloadDataRelationships? = nil,
         type: ModelType
@@ -43,7 +44,7 @@ public struct TrackUpdateOperationPayloadData: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(attributes, forKey: .attributes)
+        try container.encodeIfPresent(attributes, forKey: .attributes)
         try container.encode(id, forKey: .id)
         try container.encodeIfPresent(relationships, forKey: .relationships)
         try container.encode(type, forKey: .type)

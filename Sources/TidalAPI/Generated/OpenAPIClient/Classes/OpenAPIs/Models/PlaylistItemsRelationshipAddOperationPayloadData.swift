@@ -16,6 +16,7 @@ public struct PlaylistItemsRelationshipAddOperationPayloadData: Codable, Hashabl
         case tracks = "tracks"
         case videos = "videos"
     }
+
     public var id: String
     public var type: ModelType
 

@@ -18,10 +18,12 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         case flac = "FLAC"
         case flacHires = "FLAC_HIRES"
     }
+
     public enum TrackPresentation: String, Codable, CaseIterable {
         case full = "FULL"
         case preview = "PREVIEW"
     }
+
     public var albumAudioNormalizationData: AudioNormalizationData?
     public var drmData: DrmData?
     /** Formats present in manifest */

@@ -17,6 +17,7 @@ public struct UserReportsCreateOperationPayloadDataRelationshipsReportedResource
         case artists = "artists"
         case playlists = "playlists"
     }
+
     public var id: String
     public var type: ModelType
 

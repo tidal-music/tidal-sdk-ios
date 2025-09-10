@@ -6,7 +6,6 @@ Name | Type | Description | Notes
 **accessType** | **String** | Access type | [optional] 
 **bpm** | **Float** |  | [optional] 
 **explicit** | **Bool** | Explicit content | [optional] 
-**genreTags** | **[String]** |  | [optional] 
 **key** | **String** |  | [optional] 
 **keyScale** | **String** |  | [optional] 
 **title** | **String** |  | [optional] 

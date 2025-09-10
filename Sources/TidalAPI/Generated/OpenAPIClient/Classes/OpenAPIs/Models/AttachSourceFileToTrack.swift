@@ -15,6 +15,7 @@ public struct AttachSourceFileToTrack: Codable, Hashable {
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
     }
+
     public var id: String
     public var type: ModelType
 

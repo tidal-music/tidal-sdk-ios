@@ -12,10 +12,8 @@ import AnyCodable
 
 public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public static let titleRule = StringRule(minLength: 1, maxLength: 300, pattern: nil)
     public static let upcRule = StringRule(minLength: 12, maxLength: 13, pattern: nil)
-    public static let versionRule = StringRule(minLength: 0, maxLength: 300, pattern: nil)
-    public var copyright: AlbumCreateOperationPayloadDataAttributesCopyright?
+    public var copyright: Copyright?
     public var explicitLyrics: Bool?
     public var releaseDate: Date?
     public var title: String
@@ -23,7 +21,7 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
     public var version: String?
 
     public init(
-        copyright: AlbumCreateOperationPayloadDataAttributesCopyright? = nil,
+        copyright: Copyright? = nil,
         explicitLyrics: Bool? = nil,
         releaseDate: Date? = nil,
         title: String,

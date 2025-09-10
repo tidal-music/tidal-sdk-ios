@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | [**AlbumUpdateOperationPayloadDataAttributes**](AlbumUpdateOperationPayloadDataAttributes.md) |  | 
+**attributes** | [**AlbumUpdateOperationPayloadDataAttributes**](AlbumUpdateOperationPayloadDataAttributes.md) |  | [optional] 
 **id** | **String** |  | 
 **relationships** | [**AlbumUpdateOperationPayloadDataRelationships**](AlbumUpdateOperationPayloadDataRelationships.md) |  | [optional] 
 **type** | **String** |  | 

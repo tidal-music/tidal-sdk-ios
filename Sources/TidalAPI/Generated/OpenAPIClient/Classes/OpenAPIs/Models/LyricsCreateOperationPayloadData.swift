@@ -15,6 +15,7 @@ public struct LyricsCreateOperationPayloadData: Codable, Hashable {
     public enum ModelType: String, Codable, CaseIterable {
         case lyrics = "lyrics"
     }
+
     public var attributes: LyricsCreateOperationPayloadDataAttributes?
     public var relationships: LyricsCreateOperationPayloadDataRelationships
     public var type: ModelType

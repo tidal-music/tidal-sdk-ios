@@ -13,6 +13,54 @@ import AnyCodable
 internal class LyricsAPI {
 
     /**
+     Get multiple lyrics.
+     
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
+     - parameter filterId: (query) Lyrics Id (optional)
+     - returns: LyricsMultiResourceDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func lyricsGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> LyricsMultiResourceDataDocument {
+        return try await lyricsGetWithRequestBuilder(include: include, filterId: filterId).execute().body
+    }
+
+    /**
+     Get multiple lyrics.
+     - GET /lyrics
+     - Retrieves multiple lyrics by available filters, or without if applicable.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
+     - parameter filterId: (query) Lyrics Id (optional)
+     - returns: RequestBuilder<LyricsMultiResourceDataDocument> 
+     */
+    internal class func lyricsGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<LyricsMultiResourceDataDocument> {
+        let localVariablePath = "/lyrics"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<LyricsMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get single lyric.
      
      - parameter id: (path) Lyrics Id 

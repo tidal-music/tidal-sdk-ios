@@ -17,11 +17,13 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         case cdbaby = "CDBABY"
         case tunecore = "TUNECORE"
     }
+
     public enum Recommendation: String, Codable, CaseIterable {
         case dspProfileClaimed = "DSP_PROFILE_CLAIMED"
         case contentMigratedToUploads = "CONTENT_MIGRATED_TO_UPLOADS"
         case noContentMatched = "NO_CONTENT_MATCHED"
     }
+
     public enum Status: String, Codable, CaseIterable {
         case awaitingOauth = "AWAITING_OAUTH"
         case fetchingContent = "FETCHING_CONTENT"
@@ -33,6 +35,7 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         case failed = "FAILED"
         case cancelled = "CANCELLED"
     }
+
     public static let providerRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** The DSP used for authentication */
     public var provider: Provider
