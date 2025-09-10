@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | [**TrackUpdateOperationPayloadDataAttributes**](TrackUpdateOperationPayloadDataAttributes.md) |  | [optional] 
+**attributes** | [**TrackUpdateOperationPayloadDataAttributes**](TrackUpdateOperationPayloadDataAttributes.md) |  | 
 **id** | **String** |  | 
 **relationships** | [**TrackUpdateOperationPayloadDataRelationships**](TrackUpdateOperationPayloadDataRelationships.md) |  | [optional] 
 **type** | **String** |  | 

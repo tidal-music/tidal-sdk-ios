@@ -15,7 +15,6 @@ public struct TrackCreateOperationPayloadDataRelationshipsArtistsData: Codable, 
     public enum ModelType: String, Codable, CaseIterable {
         case artists = "artists"
     }
-
     public var id: String
     public var type: ModelType
 

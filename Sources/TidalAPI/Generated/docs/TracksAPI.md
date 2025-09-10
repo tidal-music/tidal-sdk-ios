@@ -23,7 +23,7 @@ Method | HTTP request | Description
 
 # **tracksGet**
 ```swift
-    open class func tracksGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple tracks.
@@ -38,12 +38,12 @@ import OpenAPIClient
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, sourceFile, trackStatistics (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+let filterROwnersId = ["inner_example"] // [String] | User id (optional)
 let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 let filterId = ["inner_example"] // [String] | A Tidal catalogue ID (optional)
 
 // Get multiple tracks.
-TracksAPI.tracksGet(countryCode: countryCode, pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterIsrc: filterIsrc, filterId: filterId) { (response, error) in
+TracksAPI.tracksGet(countryCode: countryCode, pageCursor: pageCursor, include: include, filterROwnersId: filterROwnersId, filterIsrc: filterIsrc, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, sourceFile, trackStatistics | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **filterROwnersId** | [**[String]**](String.md) | User id | [optional] 
  **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
  **filterId** | [**[String]**](String.md) | A Tidal catalogue ID | [optional] 
 
@@ -200,7 +200,7 @@ Updates existing track.
 import OpenAPIClient
 
 let id = "id_example" // String | A Tidal catalogue ID
-let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TrackUpdateOperation_Payload_Data_Relationships(genres: TrackUpdateOperation_Payload_Data_Relationships_Genres(data: [TrackUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackUpdateOperationPayload |  (optional)
+let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, genreTags: ["genreTags_example"], key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TrackUpdateOperation_Payload_Data_Relationships(genres: TrackUpdateOperation_Payload_Data_Relationships_Genres(data: [TrackUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackUpdateOperationPayload |  (optional)
 
 // Update single track.
 TracksAPI.tracksIdPatch(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload) { (response, error) in

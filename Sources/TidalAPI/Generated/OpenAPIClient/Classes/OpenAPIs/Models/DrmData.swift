@@ -17,7 +17,6 @@ public struct DrmData: Codable, Hashable {
         case fairplay = "FAIRPLAY"
         case widevine = "WIDEVINE"
     }
-
     public var certificateUrl: String?
     public var drmSystem: DrmSystem?
     public var licenseUrl: String?

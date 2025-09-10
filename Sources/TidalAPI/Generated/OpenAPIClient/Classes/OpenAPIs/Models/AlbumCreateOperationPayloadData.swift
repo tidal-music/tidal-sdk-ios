@@ -15,7 +15,6 @@ public struct AlbumCreateOperationPayloadData: Codable, Hashable {
     public enum ModelType: String, Codable, CaseIterable {
         case albums = "albums"
     }
-
     public var attributes: AlbumCreateOperationPayloadDataAttributes
     public var relationships: AlbumCreateOperationPayloadDataRelationships
     public var type: ModelType

@@ -18,7 +18,6 @@ public struct LyricsAttributes: Codable, Hashable {
         case error = "ERROR"
         case ok = "OK"
     }
-
     public var technicalStatus: TechnicalStatus
     public var text: String?
 

@@ -15,18 +15,6 @@ public enum LyricsAPITidal {
 
 
 	/**
-     Get multiple lyrics.
-     
-     - returns: LyricsMultiResourceDataDocument
-     */
-	public static func lyricsGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> LyricsMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			LyricsAPI.lyricsGetWithRequestBuilder(include: include, filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single lyric.
      
      - returns: LyricsSingleResourceDataDocument

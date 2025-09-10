@@ -18,14 +18,14 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, sourceFile, trackStatistics (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterROwnersId: (query) User id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterId: (query) A Tidal catalogue ID (optional)
      - returns: TracksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> TracksMultiResourceDataDocument {
-        return try await tracksGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterIsrc: filterIsrc, filterId: filterId).execute().body
+    internal class func tracksGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> TracksMultiResourceDataDocument {
+        return try await tracksGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterROwnersId: filterROwnersId, filterIsrc: filterIsrc, filterId: filterId).execute().body
     }
 
     /**
@@ -41,12 +41,12 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, sourceFile, trackStatistics (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterROwnersId: (query) User id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterId: (query) A Tidal catalogue ID (optional)
      - returns: RequestBuilder<TracksMultiResourceDataDocument> 
      */
-    internal class func tracksGetWithRequestBuilder(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<TracksMultiResourceDataDocument> {
+    internal class func tracksGetWithRequestBuilder(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterROwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<TracksMultiResourceDataDocument> {
         let localVariablePath = "/tracks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -56,7 +56,7 @@ internal class TracksAPI {
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "filter[r.owners.id]": (wrappedValue: filterROwnersId?.encodeToJSON(), isExplode: true),
             "filter[isrc]": (wrappedValue: filterIsrc?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
         ])

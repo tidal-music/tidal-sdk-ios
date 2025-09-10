@@ -17,16 +17,17 @@ public struct AlbumsAttributes: Codable, Hashable {
         case dj = "DJ"
         case stem = "STEM"
     }
-
     public enum ModelType: String, Codable, CaseIterable {
         case album = "ALBUM"
         case ep = "EP"
         case single = "SINGLE"
-    }    /** Available usage for this album */
+    }
+    /** Available usage for this album */
     public var availability: [Availability]?
     /** Barcode id (EAN-13 or UPC-A) */
     public var barcodeId: String
-    public var copyright: Copyright?
+    /** Copyright */
+    public var copyright: String?
     /** Duration (ISO 8601) */
     public var duration: String
     /** Explicit content */
@@ -46,13 +47,11 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var title: String
     /** Album type */
     public var type: ModelType
-    /** Album version */
-    public var version: String?
 
     public init(
         availability: [Availability]? = nil,
         barcodeId: String,
-        copyright: Copyright? = nil,
+        copyright: String? = nil,
         duration: String,
         explicit: Bool,
         externalLinks: [ExternalLink]? = nil,
@@ -62,8 +61,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         popularity: Double,
         releaseDate: Date? = nil,
         title: String,
-        type: ModelType,
-        version: String? = nil
+        type: ModelType
     ) {
         self.availability = availability
         self.barcodeId = barcodeId
@@ -78,7 +76,6 @@ public struct AlbumsAttributes: Codable, Hashable {
         self.releaseDate = releaseDate
         self.title = title
         self.type = type
-        self.version = version
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -95,7 +92,6 @@ public struct AlbumsAttributes: Codable, Hashable {
         case releaseDate
         case title
         case type
-        case version
     }
 
     // Encodable protocol methods
@@ -115,7 +111,6 @@ public struct AlbumsAttributes: Codable, Hashable {
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encode(title, forKey: .title)
         try container.encode(type, forKey: .type)
-        try container.encodeIfPresent(version, forKey: .version)
     }
 }
 

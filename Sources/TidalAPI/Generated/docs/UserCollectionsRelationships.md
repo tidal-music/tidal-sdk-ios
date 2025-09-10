@@ -7,8 +7,6 @@ Name | Type | Description | Notes
 **artists** | [**UserCollectionsArtistsMultiRelationshipDataDocument**](UserCollectionsArtistsMultiRelationshipDataDocument.md) |  | 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **playlists** | [**UserCollectionsPlaylistsMultiRelationshipDataDocument**](UserCollectionsPlaylistsMultiRelationshipDataDocument.md) |  | 
-**tracks** | [**UserCollectionsTracksMultiRelationshipDataDocument**](UserCollectionsTracksMultiRelationshipDataDocument.md) |  | 
-**videos** | [**UserCollectionsVideosMultiRelationshipDataDocument**](UserCollectionsVideosMultiRelationshipDataDocument.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

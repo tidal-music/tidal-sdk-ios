@@ -16,14 +16,12 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
     }
-
     public enum PlaylistType: String, Codable, CaseIterable {
         case editorial = "EDITORIAL"
         case user = "USER"
         case mix = "MIX"
         case artist = "ARTIST"
     }
-
     public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Access type */
     public var accessType: AccessType

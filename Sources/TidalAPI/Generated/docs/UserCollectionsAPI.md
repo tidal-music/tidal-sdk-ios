@@ -15,12 +15,6 @@ Method | HTTP request | Description
 [**userCollectionsIdRelationshipsPlaylistsDelete**](UserCollectionsAPI.md#usercollectionsidrelationshipsplaylistsdelete) | **DELETE** /userCollections/{id}/relationships/playlists | Delete from playlists relationship (\&quot;to-many\&quot;).
 [**userCollectionsIdRelationshipsPlaylistsGet**](UserCollectionsAPI.md#usercollectionsidrelationshipsplaylistsget) | **GET** /userCollections/{id}/relationships/playlists | Get playlists relationship (\&quot;to-many\&quot;).
 [**userCollectionsIdRelationshipsPlaylistsPost**](UserCollectionsAPI.md#usercollectionsidrelationshipsplaylistspost) | **POST** /userCollections/{id}/relationships/playlists | Add to playlists relationship (\&quot;to-many\&quot;).
-[**userCollectionsIdRelationshipsTracksDelete**](UserCollectionsAPI.md#usercollectionsidrelationshipstracksdelete) | **DELETE** /userCollections/{id}/relationships/tracks | Delete from tracks relationship (\&quot;to-many\&quot;).
-[**userCollectionsIdRelationshipsTracksGet**](UserCollectionsAPI.md#usercollectionsidrelationshipstracksget) | **GET** /userCollections/{id}/relationships/tracks | Get tracks relationship (\&quot;to-many\&quot;).
-[**userCollectionsIdRelationshipsTracksPost**](UserCollectionsAPI.md#usercollectionsidrelationshipstrackspost) | **POST** /userCollections/{id}/relationships/tracks | Add to tracks relationship (\&quot;to-many\&quot;).
-[**userCollectionsIdRelationshipsVideosDelete**](UserCollectionsAPI.md#usercollectionsidrelationshipsvideosdelete) | **DELETE** /userCollections/{id}/relationships/videos | Delete from videos relationship (\&quot;to-many\&quot;).
-[**userCollectionsIdRelationshipsVideosGet**](UserCollectionsAPI.md#usercollectionsidrelationshipsvideosget) | **GET** /userCollections/{id}/relationships/videos | Get videos relationship (\&quot;to-many\&quot;).
-[**userCollectionsIdRelationshipsVideosPost**](UserCollectionsAPI.md#usercollectionsidrelationshipsvideospost) | **POST** /userCollections/{id}/relationships/videos | Add to videos relationship (\&quot;to-many\&quot;).
 
 
 # **userCollectionsIdGet**
@@ -40,7 +34,7 @@ import OpenAPIClient
 let id = "id_example" // String | User id
 let locale = "locale_example" // String | BCP 47 locale
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists (optional)
 
 // Get single userCollection.
 UserCollectionsAPI.userCollectionsIdGet(id: id, locale: locale, countryCode: countryCode, include: include) { (response, error) in
@@ -62,7 +56,7 @@ Name | Type | Description  | Notes
  **id** | **String** | User id | 
  **locale** | **String** | BCP 47 locale | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists | [optional] 
 
 ### Return type
 
@@ -94,7 +88,7 @@ Deletes item(s) from albums relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User id
-let userCollectionAlbumsRelationshipRemoveOperationPayload = UserCollectionAlbumsRelationshipRemoveOperation_Payload(data: [UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionAlbumsRelationshipRemoveOperationPayload |  (optional)
+let userCollectionAlbumsRelationshipRemoveOperationPayload = UserCollectionAlbumsRelationshipRemoveOperation_Payload(data: [UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // UserCollectionAlbumsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from albums relationship (\"to-many\").
 UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDelete(id: id, userCollectionAlbumsRelationshipRemoveOperationPayload: userCollectionAlbumsRelationshipRemoveOperationPayload) { (response, error) in
@@ -258,7 +252,7 @@ Deletes item(s) from artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User id
-let userCollectionArtistsRelationshipRemoveOperationPayload = UserCollectionArtistsRelationshipRemoveOperation_Payload(data: [UserCollectionArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionArtistsRelationshipRemoveOperationPayload |  (optional)
+let userCollectionArtistsRelationshipRemoveOperationPayload = UserCollectionArtistsRelationshipRemoveOperation_Payload(data: [UserCollectionArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: UserCollectionArtistsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // UserCollectionArtistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from artists relationship (\"to-many\").
 UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDelete(id: id, userCollectionArtistsRelationshipRemoveOperationPayload: userCollectionArtistsRelationshipRemoveOperationPayload) { (response, error) in
@@ -515,7 +509,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsPlaylistsGet**
 ```swift
-    open class func userCollectionsIdRelationshipsPlaylistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsPlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsPlaylistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsPlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get playlists relationship (\"to-many\").
@@ -528,11 +522,12 @@ Retrieves playlists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlists (optional)
 
 // Get playlists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGet(id: id, pageCursor: pageCursor, include: include) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -549,6 +544,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGet(id: id, pageCursor
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlists | [optional] 
 
@@ -603,334 +599,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User id | 
  **userCollectionPlaylistsRelationshipRemoveOperationPayload** | [**UserCollectionPlaylistsRelationshipRemoveOperationPayload**](UserCollectionPlaylistsRelationshipRemoveOperationPayload.md) |  | [optional] 
-
-### Return type
-
-Void (empty response body)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: application/vnd.api+json
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **userCollectionsIdRelationshipsTracksDelete**
-```swift
-    open class func userCollectionsIdRelationshipsTracksDelete(id: String, userCollectionTracksRelationshipRemoveOperationPayload: UserCollectionTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
-```
-
-Delete from tracks relationship (\"to-many\").
-
-Deletes item(s) from tracks relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | User id
-let userCollectionTracksRelationshipRemoveOperationPayload = UserCollectionTracksRelationshipRemoveOperation_Payload(data: [UserCollectionTracksRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionTracksRelationshipRemoveOperationPayload |  (optional)
-
-// Delete from tracks relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsTracksDelete(id: id, userCollectionTracksRelationshipRemoveOperationPayload: userCollectionTracksRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | User id | 
- **userCollectionTracksRelationshipRemoveOperationPayload** | [**UserCollectionTracksRelationshipRemoveOperationPayload**](UserCollectionTracksRelationshipRemoveOperationPayload.md) |  | [optional] 
-
-### Return type
-
-Void (empty response body)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: application/vnd.api+json
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **userCollectionsIdRelationshipsTracksGet**
-```swift
-    open class func userCollectionsIdRelationshipsTracksGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
-```
-
-Get tracks relationship (\"to-many\").
-
-Retrieves tracks relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | User id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let locale = "locale_example" // String | BCP 47 locale
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
-
-// Get tracks relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsTracksGet(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | User id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **locale** | **String** | BCP 47 locale | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
-
-### Return type
-
-[**UserCollectionsTracksMultiRelationshipDataDocument**](UserCollectionsTracksMultiRelationshipDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **userCollectionsIdRelationshipsTracksPost**
-```swift
-    open class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String, userCollectionTracksRelationshipAddOperationPayload: UserCollectionTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
-```
-
-Add to tracks relationship (\"to-many\").
-
-Adds item(s) to tracks relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | User id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let userCollectionTracksRelationshipAddOperationPayload = UserCollectionTracksRelationshipAddOperation_Payload(data: [UserCollectionTracksRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionTracksRelationshipAddOperationPayload |  (optional)
-
-// Add to tracks relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, countryCode: countryCode, userCollectionTracksRelationshipAddOperationPayload: userCollectionTracksRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | User id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **userCollectionTracksRelationshipAddOperationPayload** | [**UserCollectionTracksRelationshipAddOperationPayload**](UserCollectionTracksRelationshipAddOperationPayload.md) |  | [optional] 
-
-### Return type
-
-Void (empty response body)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: application/vnd.api+json
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **userCollectionsIdRelationshipsVideosDelete**
-```swift
-    open class func userCollectionsIdRelationshipsVideosDelete(id: String, userCollectionVideosRelationshipRemoveOperationPayload: UserCollectionVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
-```
-
-Delete from videos relationship (\"to-many\").
-
-Deletes item(s) from videos relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | User id
-let userCollectionVideosRelationshipRemoveOperationPayload = UserCollectionVideosRelationshipRemoveOperation_Payload(data: [UserCollectionVideosRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionVideosRelationshipRemoveOperationPayload |  (optional)
-
-// Delete from videos relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsVideosDelete(id: id, userCollectionVideosRelationshipRemoveOperationPayload: userCollectionVideosRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | User id | 
- **userCollectionVideosRelationshipRemoveOperationPayload** | [**UserCollectionVideosRelationshipRemoveOperationPayload**](UserCollectionVideosRelationshipRemoveOperationPayload.md) |  | [optional] 
-
-### Return type
-
-Void (empty response body)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: application/vnd.api+json
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **userCollectionsIdRelationshipsVideosGet**
-```swift
-    open class func userCollectionsIdRelationshipsVideosGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
-```
-
-Get videos relationship (\"to-many\").
-
-Retrieves videos relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | User id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let locale = "locale_example" // String | BCP 47 locale
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
-
-// Get videos relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsVideosGet(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | User id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **locale** | **String** | BCP 47 locale | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
-
-### Return type
-
-[**UserCollectionsVideosMultiRelationshipDataDocument**](UserCollectionsVideosMultiRelationshipDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **userCollectionsIdRelationshipsVideosPost**
-```swift
-    open class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String, userCollectionVideosRelationshipAddOperationPayload: UserCollectionVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
-```
-
-Add to videos relationship (\"to-many\").
-
-Adds item(s) to videos relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | User id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let userCollectionVideosRelationshipAddOperationPayload = UserCollectionVideosRelationshipAddOperation_Payload(data: [UserCollectionVideosRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionVideosRelationshipAddOperationPayload |  (optional)
-
-// Add to videos relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsVideosPost(id: id, countryCode: countryCode, userCollectionVideosRelationshipAddOperationPayload: userCollectionVideosRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | User id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **userCollectionVideosRelationshipAddOperationPayload** | [**UserCollectionVideosRelationshipAddOperationPayload**](UserCollectionVideosRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 

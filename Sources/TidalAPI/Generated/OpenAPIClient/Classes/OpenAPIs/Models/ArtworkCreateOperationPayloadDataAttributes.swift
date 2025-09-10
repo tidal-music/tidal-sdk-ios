@@ -16,7 +16,6 @@ public struct ArtworkCreateOperationPayloadDataAttributes: Codable, Hashable {
         case image = "IMAGE"
         case video = "VIDEO"
     }
-
     public var mediaType: MediaType
     public var sourceFile: ArtworkCreateOperationPayloadDataAttributesSourceFile
 

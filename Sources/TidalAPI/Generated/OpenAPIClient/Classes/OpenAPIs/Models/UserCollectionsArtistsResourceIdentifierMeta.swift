@@ -12,23 +12,28 @@ import AnyCodable
 
 public struct UserCollectionsArtistsResourceIdentifierMeta: Codable, Hashable {
 
-    public var addedAt: Date
+    public var addedAt: Date?
+    public var itemId: String?
 
     public init(
-        addedAt: Date
+        addedAt: Date? = nil,
+        itemId: String? = nil
     ) {
         self.addedAt = addedAt
+        self.itemId = itemId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case addedAt
+        case itemId
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(addedAt, forKey: .addedAt)
+        try container.encodeIfPresent(addedAt, forKey: .addedAt)
+        try container.encodeIfPresent(itemId, forKey: .itemId)
     }
 }
 

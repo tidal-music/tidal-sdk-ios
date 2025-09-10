@@ -17,7 +17,6 @@ public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashabl
         case cdbaby = "CDBABY"
         case tunecore = "TUNECORE"
     }
-
     public var provider: Provider
 
     public init(
