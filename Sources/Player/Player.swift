@@ -492,7 +492,8 @@ private extension Player {
 		let downloader = Downloader(
 			playbackInfoFetcher: offlinerPlaybackInfoFetcher,
 			fairPlayLicenseFetcher: fairplayLicenseFetcher,
-			networkMonitor: networkMonitor
+			networkMonitor: networkMonitor,
+			featureFlagProvider: featureFlagProvider
 		)
 		return OfflineEngine(
 			downloader: downloader,

@@ -42,7 +42,8 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		let sessionId = "1"
 		let expectedLicenseLoader = StreamingLicenseLoader(
 			fairPlayLicenseFetcher: fairPlayLicenseFetcher,
-			streamingSessionId: sessionId
+			streamingSessionId: sessionId,
+			featureFlagProvider: .mock
 		)
 
 		// WHEN

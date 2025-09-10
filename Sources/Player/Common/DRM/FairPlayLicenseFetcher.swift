@@ -55,6 +55,15 @@ final class FairPlayLicenseFetcher {
 			return license
 		}
 	}
+	
+	// Public method to access certificate for external callers (only available with improved DRM handling)
+	func preloadCertificate() async throws {
+		guard featureFlagProvider.shouldUseImprovedDRMHandling() else {
+			// No-op when not using improved DRM handling
+			return
+		}
+		_ = try await getCertificate()
+	}
 }
 
 private extension FairPlayLicenseFetcher {
@@ -65,13 +74,50 @@ private extension FairPlayLicenseFetcher {
 	}
 
 	func getCertificate() async throws -> Data {
-		if let certificate {
+		if let certificate = certificate {
 			return certificate
 		}
 
+		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			return try await getCertificateWithRetry()
+		} else {
+			return try await getCertificateLegacy()
+		}
+	}
+	
+	private func getCertificateWithRetry() async throws -> Data {
+		let maxRetries = 3
+		var lastError: Error?
+		
+		for attempt in 1...maxRetries {
+			do {
+				let certificate = try await httpClient.get(
+					url: FairPlayLicenseFetcher.CERTIFICATE_URL, 
+					headers: [:]
+				)
+				self.certificate = certificate
+				return certificate
+			} catch {
+				lastError = error
+				if attempt < maxRetries {
+					// Exponential backoff: 1s, 2s, 4s
+					let delay = UInt64(attempt * 1_000_000_000)
+					try await Task.sleep(nanoseconds: delay)
+				}
+			}
+		}
+		
+		throw lastError ?? PlayerInternalError(
+			errorId: .PERetryable,
+			errorType: .drmLicenseError,
+			code: -3,
+			description: "Certificate fetch failed after \(maxRetries) attempts"
+		)
+	}
+	
+	private func getCertificateLegacy() async throws -> Data {
 		let certificate = try await httpClient.get(url: FairPlayLicenseFetcher.CERTIFICATE_URL, headers: [:])
 		self.certificate = certificate
-
 		return certificate
 	}
 
