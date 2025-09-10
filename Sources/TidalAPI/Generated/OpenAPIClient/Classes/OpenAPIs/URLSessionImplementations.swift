@@ -202,8 +202,10 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
 
         switch T.self {
         case is Void.Type:
-
-            completion(.success(Response(response: httpResponse, body: () as! T, bodyData: data)))
+            guard let voidBody = () as? T else {
+                return
+            }
+            completion(.success(Response(response: httpResponse, body: voidBody, bodyData: data)))
 
         default:
             fatalError("Unsupported Response Body Type - \(String(describing: T.self))")
@@ -297,8 +299,10 @@ open class URLSessionDecodableRequestBuilder<T: Decodable>: URLSessionRequestBui
         case is String.Type:
 
             let body = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
-
-            completion(.success(Response<T>(response: httpResponse, body: body as! T, bodyData: data)))
+            guard let stringBody = body as? T else {
+                return
+            }
+            completion(.success(Response<T>(response: httpResponse, body: stringBody, bodyData: data)))
 
         case is URL.Type:
             do {
@@ -329,7 +333,10 @@ open class URLSessionDecodableRequestBuilder<T: Decodable>: URLSessionRequestBui
                 try fileManager.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
                 try data.write(to: filePath, options: .atomic)
 
-                completion(.success(Response(response: httpResponse, body: filePath as! T, bodyData: data)))
+                guard let urlBody = filePath as? T else {
+                    return
+                }
+                completion(.success(Response(response: httpResponse, body: urlBody, bodyData: data)))
 
             } catch let requestParserError as DownloadException {
                 completion(.failure(ErrorResponse.error(400, data, response, requestParserError)))
@@ -339,17 +346,27 @@ open class URLSessionDecodableRequestBuilder<T: Decodable>: URLSessionRequestBui
 
         case is Void.Type:
 
-            completion(.success(Response(response: httpResponse, body: () as! T, bodyData: data)))
+            guard let voidBody = () as? T else {
+                return
+            }
+            completion(.success(Response(response: httpResponse, body: voidBody, bodyData: data)))
 
         case is Data.Type:
 
-            completion(.success(Response(response: httpResponse, body: data as! T, bodyData: data)))
+            guard let dataBody = data as? T else {
+                return
+            }
+            completion(.success(Response(response: httpResponse, body: dataBody, bodyData: data)))
 
         default:
 
             guard let unwrappedData = data, !unwrappedData.isEmpty else {
                 if let expressibleByNilLiteralType = T.self as? ExpressibleByNilLiteral.Type {
-                    completion(.success(Response(response: httpResponse, body: expressibleByNilLiteralType.init(nilLiteral: ()) as! T, bodyData: data)))
+                    let nilLiteralBody = expressibleByNilLiteralType.init(nilLiteral: ())
+                    guard let typedNilBody = nilLiteralBody as? T else {
+                        return
+                    }
+                    completion(.success(Response(response: httpResponse, body: typedNilBody, bodyData: data)))
                 } else {
                     completion(.failure(ErrorResponse.error(httpResponse.statusCode, nil, response, DecodableRequestBuilderError.emptyDataResponse)))
                 }
