@@ -15,7 +15,9 @@ public struct PlaylistItemsRelationshipRemoveOperationPayloadData: Codable, Hash
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
         case videos = "videos"
-    }    public var id: String
+    }
+
+    public var id: String
     public var meta: PlaylistItemsRelationshipRemoveOperationPayloadDataMeta
     public var type: ModelType
 

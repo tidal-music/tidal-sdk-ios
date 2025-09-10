@@ -14,7 +14,9 @@ public struct ArtworkCreateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
         case artworks = "artworks"
-    }    public var attributes: ArtworkCreateOperationPayloadDataAttributes
+    }
+
+    public var attributes: ArtworkCreateOperationPayloadDataAttributes
     public var type: ModelType
 
     public init(

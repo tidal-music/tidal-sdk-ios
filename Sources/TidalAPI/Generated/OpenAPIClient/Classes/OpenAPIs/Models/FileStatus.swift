@@ -20,7 +20,9 @@ public struct FileStatus: Codable, Hashable {
         case takenDown = "TAKEN_DOWN"
         case ok = "OK"
         case error = "ERROR"
-    }    public enum TechnicalFileStatus: String, Codable, CaseIterable {
+    }
+
+    public enum TechnicalFileStatus: String, Codable, CaseIterable {
         case uploadRequested = "UPLOAD_REQUESTED"
         case processing = "PROCESSING"
         case ok = "OK"
