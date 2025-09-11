@@ -1,5 +1,6 @@
 import Auth
 import Foundation
+import TidalAPI
 
 // MARK: - PlaybackInfoFetcher
 
@@ -75,6 +76,26 @@ private extension PlaybackInfoFetcher {
 		playbackMode: PlaybackMode,
 		streamingSessionId: String
 	) async throws -> PlaybackInfo {
+		if featureFlagProvider.shouldUseNewPlaybackEndpoints() {
+			return try await getTrackPlaybackInfoFromManifestEndpoint(
+				trackId: trackId,
+				playbackMode: playbackMode,
+				streamingSessionId: streamingSessionId
+			)
+		} else {
+			return try await getTrackPlaybackInfoFromLegacyEndpoint(
+				trackId: trackId,
+				playbackMode: playbackMode,
+				streamingSessionId: streamingSessionId
+			)
+		}
+	}
+
+	private func getTrackPlaybackInfoFromLegacyEndpoint(
+		trackId: String,
+		playbackMode: PlaybackMode,
+		streamingSessionId: String
+	) async throws -> PlaybackInfo {
 		let playbackInfo: TrackPlaybackInfo = try await getPlaybackInfo(
 			url: getTrackPlaybackInfoUrl(trackId: trackId, playbackMode: playbackMode),
 			streamingSessionId: streamingSessionId,
@@ -114,6 +135,100 @@ private extension PlaybackInfoFetcher {
 			offlineRevalidateAt: playbackInfo.offlineRevalidateAt,
 			offlineValidUntil: playbackInfo.offlineValidUntil
 		)
+	}
+
+	private func getTrackPlaybackInfoFromManifestEndpoint(
+		trackId: String,
+		playbackMode: PlaybackMode,
+		streamingSessionId: String
+	) async throws -> PlaybackInfo {
+		let start = PlayerWorld.timeProvider.timestamp()
+		do {
+			let audioQuality = getAudioQuality(given: playbackMode)
+			let formats = getFormatsForAudioQuality(audioQuality)
+
+			// Ensure credentials provider is set
+			if OpenAPIClientAPI.credentialsProvider == nil {
+				OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
+			}
+
+			let manifestResponse = try await TrackManifestsAPITidal.trackManifestsIdGet(
+				id: trackId,
+				manifestType: .hls,
+				formats: formats,
+				uriScheme: .data,
+				usage: playbackMode == .OFFLINE ? .download : .playback,
+				adaptive: .false,
+				customHeaders: ["x-playback-session-id": streamingSessionId]
+			)
+
+			let manifestData = manifestResponse.data
+			let attributes = manifestData.attributes
+
+			guard let manifestUri = attributes?.uri else {
+				throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
+			}
+
+			guard let manifestUrl = URL(string: manifestUri) else {
+				throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
+			}
+
+			let endTimestamp = PlayerWorld.timeProvider.timestamp()
+			playerEventSender.send(
+				PlaybackInfoFetch(
+					streamingSessionId: streamingSessionId,
+					startTimestamp: start,
+					endTimestamp: endTimestamp,
+					endReason: .COMPLETE,
+					errorMessage: nil,
+					errorCode: nil
+				)
+			)
+
+			return PlaybackInfo(
+				productType: .TRACK,
+				productId: trackId,
+				streamType: .ON_DEMAND,
+				assetPresentation: convertTrackPresentation(attributes?.trackPresentation),
+				audioMode: .STEREO, // Default value, may need refinement
+				audioQuality: audioQuality,
+				audioCodec: getAudioCodecFromFormats(attributes?.formats),
+				audioSampleRate: nil, // Not available in new API
+				audioBitDepth: nil, // Not available in new API
+				videoQuality: nil,
+				streamingSessionId: streamingSessionId,
+				contentHash: attributes?.hash ?? "NA",
+				mediaType: "application/vnd.apple.mpegurl", // HLS MIME type
+				url: manifestUrl,
+				licenseSecurityToken: extractLicenseTokenFromDrmData(attributes?.drmData),
+				albumReplayGain: attributes?.albumAudioNormalizationData?.replayGain,
+				albumPeakAmplitude: attributes?.albumAudioNormalizationData?.peakAmplitude,
+				trackReplayGain: attributes?.trackAudioNormalizationData?.replayGain,
+				trackPeakAmplitude: attributes?.trackAudioNormalizationData?.peakAmplitude,
+				offlineRevalidateAt: nil, // May need to be derived from DRM data
+				offlineValidUntil: nil // May need to be derived from DRM data
+			)
+			
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.getPlaybackInfoFailed(error: error))
+			
+			let convertedError = PlaybackInfoErrorResponseConverter.convert(error)
+			let playerError = PlayerInternalError.from(convertedError)
+			
+			let endTimestamp = PlayerWorld.timeProvider.timestamp()
+			playerEventSender.send(
+				PlaybackInfoFetch(
+					streamingSessionId: streamingSessionId,
+					startTimestamp: start,
+					endTimestamp: endTimestamp,
+					endReason: error is CancellationError ? .OTHER : .ERROR,
+					errorMessage: playerError.technicalDescription,
+					errorCode: playerError.code
+				)
+			)
+			
+			throw convertedError
+		}
 	}
 
 	func getTrackPlaybackInfoUrl(trackId: String, playbackMode: PlaybackMode) throws -> URL {
@@ -328,6 +443,76 @@ private extension PlaybackInfoFetcher {
 
 			throw error
 		}
+	}
+
+	// MARK: - New API Helper Methods
+	
+	private func getFormatsForAudioQuality(_ audioQuality: AudioQuality) -> String {
+		let formats: [TrackManifestsAttributes.Formats]
+		
+		switch audioQuality {
+		case .HI_RES, .HI_RES_LOSSLESS:
+			formats = [.heaacv1, .aaclc, .flac, .flacHires]
+		case .LOSSLESS:
+			formats = [.heaacv1, .aaclc, .flac]
+		case .HIGH:
+			formats = [.heaacv1, .aaclc]
+		case .LOW:
+			formats = [.heaacv1]
+		}
+		
+		return formats.map(\.rawValue).joined(separator: ",")
+	}
+	
+	private func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
+		switch presentation {
+		case .full:
+			return .FULL
+		case .preview:
+			return .PREVIEW
+		case nil:
+			return .FULL // Default fallback
+		}
+	}
+	
+	private func getAudioCodecFromFormats(_ formats: [TrackManifestsAttributes.Formats]?) -> AudioCodec? {
+		guard let formats = formats, !formats.isEmpty else {
+			return nil
+		}
+		
+		// Define priority order (highest quality first)
+		let codecPriority: [(TrackManifestsAttributes.Formats, AudioCodec)] = [
+			(.flacHires, .FLAC),
+			(.flac, .FLAC),
+			(.aaclc, .AAC_LC),
+			(.heaacv1, .HE_AAC_V1)
+		]
+		
+		// Return the highest quality codec available
+		for (format, codec) in codecPriority {
+			if formats.contains(format) {
+				return codec
+			}
+		}
+		
+		return nil
+	}
+	
+	/// Extracts license security token from new DRM data format
+	/// Note: Current DRM system doesn't actually use licenseSecurityToken - it uses dynamic URLs
+	private func extractLicenseTokenFromDrmData(_ drmData: DrmData?) -> String? {
+		// The current FairPlayLicenseFetcher doesn't use licenseSecurityToken at all
+		// It makes direct requests to licenseUrl with Authorization header
+		// For compatibility, we could return the licenseUrl itself or extract token from it
+		guard let drmData = drmData,
+		      let _ = drmData.licenseUrl else {
+			return nil
+		}
+		
+		// For now, return nil since licenseSecurityToken is not used in current DRM implementation
+		// Future enhancement: Parse token from licenseUrl or use licenseUrl as token
+		// TODO: Verify with backend team if token extraction is needed from licenseUrl
+		return nil
 	}
 
 	static func extractUrl(manifestMimeType: String, manifest: String) -> URL? {

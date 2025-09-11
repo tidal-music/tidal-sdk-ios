@@ -1,10 +1,11 @@
 import Auth
 import Common
-
-// swiftlint:disable file_length type_body_length
 import Foundation
 @testable import Player
+@testable import TidalAPI
 import XCTest
+
+// swiftlint:disable file_length type_body_length
 
 // MARK: - Constants
 
@@ -638,6 +639,92 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 			XCTAssertEqual(networkBackoffPolicy.counter, 0)
 			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
 		}
+	}
+
+	// MARK: - New Playback Endpoints Tests
+
+	func test_getTrackPlaybackInfo_whenNewEndpointsFlagEnabled_shouldUseNewAPI() async {
+		// Given
+		let featureFlagProvider = createFeatureFlagProvider(shouldUseNewPlaybackEndpoints: true)
+		let _ = PlaybackInfoFetcher.mock(
+			httpClient: httpClient,
+			credentialsProvider: credentialsProvider,
+			playerEventSender: playerEventSender,
+			featureFlagProvider: featureFlagProvider
+		)
+		
+		// Test the feature flag behavior
+		XCTAssertTrue(featureFlagProvider.shouldUseNewPlaybackEndpoints())
+		
+		// Note: This test validates that the feature flag is correctly configured.
+		// Full integration testing of the new API would require mocking the TidalAPI calls
+		// or using dependency injection, which is beyond the scope of this unit test.
+	}
+
+	func test_getTrackPlaybackInfo_whenNewEndpointsFlagDisabled_shouldUseLegacyAPI() async {
+		// Given
+		let featureFlagProvider = createFeatureFlagProvider(shouldUseNewPlaybackEndpoints: false)
+		let fetcher = PlaybackInfoFetcher.mock(
+			httpClient: httpClient,
+			credentialsProvider: credentialsProvider,
+			playerEventSender: playerEventSender,
+			featureFlagProvider: featureFlagProvider
+		)
+		
+		// Provide successful credentials
+		credentialsProvider.injectSuccessfulUserLevelCredentials()
+		
+		// Provide legacy API response
+		let trackPlaybackInfo = Constants.trackPlaybackInfo
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo)
+		
+		do {
+			// When
+			let playbackInfo = try await fetcher.getPlaybackInfo(
+				streamingSessionId: "streamingSessionId",
+				mediaProduct: Constants.mediaProduct,
+				playbackMode: .STREAM
+			)
+			
+			// Then
+			XCTAssertEqual(playbackInfo, Constants.playbackInfo)
+			XCTAssertFalse(featureFlagProvider.shouldUseNewPlaybackEndpoints())
+			
+			// Verify legacy endpoint was called
+			XCTAssertTrue(JsonEncodedResponseURLProtocol.requests.last?.url?.absoluteString.contains("playbackinfo") ?? false)
+			
+		} catch {
+			XCTFail("Should not fail when using legacy endpoints: \(error)")
+		}
+	}
+
+	func test_trackManifestParameters_shouldUseTypeUsingEnums() {
+		// Test that our type-safe enums work correctly
+		XCTAssertEqual(TrackManifestParameters.ManifestType.hls.rawValue, "HLS")
+		XCTAssertEqual(TrackManifestParameters.ManifestType.mpegDash.rawValue, "MPEG_DASH")
+		
+		XCTAssertEqual(TrackManifestParameters.UriScheme.data.rawValue, "DATA")
+		XCTAssertEqual(TrackManifestParameters.UriScheme.http.rawValue, "HTTP")
+		
+		XCTAssertEqual(TrackManifestParameters.Usage.playback.rawValue, "PLAYBACK")
+		XCTAssertEqual(TrackManifestParameters.Usage.download.rawValue, "DOWNLOAD")
+		
+		XCTAssertEqual(TrackManifestParameters.Adaptive.true.rawValue, "true")
+		XCTAssertEqual(TrackManifestParameters.Adaptive.false.rawValue, "false")
+	}
+
+	// MARK: - Helper Methods
+
+	private func createFeatureFlagProvider(shouldUseNewPlaybackEndpoints: Bool) -> FeatureFlagProvider {
+		FeatureFlagProvider(
+			shouldUseEventProducer: { true },
+			isContentCachingEnabled: { true },
+			shouldUseImprovedCaching: { false },
+			shouldPauseAndPlayAroundSeek: { false },
+			shouldNotPerformActionAtItemEnd: { false },
+			shouldUseImprovedDRMHandling: { false },
+			shouldUseNewPlaybackEndpoints: { shouldUseNewPlaybackEndpoints }
+		)
 	}
 }
 

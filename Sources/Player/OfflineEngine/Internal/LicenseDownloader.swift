@@ -6,7 +6,6 @@ import Foundation
 final class LicenseDownloader: NSObject {
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
 	private let featureFlagProvider: FeatureFlagProvider
-	private let licenseSecurityToken: String
 	private let downloadTaskId: String
 	private weak var downloadTask: DownloadTask?
 
@@ -17,13 +16,11 @@ final class LicenseDownloader: NSObject {
 
 	init(
 		fairPlayLicenseFetcher: FairPlayLicenseFetcher,
-		licenseSecurityToken: String,
 		downloadTask: DownloadTask,
 		featureFlagProvider: FeatureFlagProvider
 	) {
 		self.fairPlayLicenseFetcher = fairPlayLicenseFetcher
 		self.featureFlagProvider = featureFlagProvider
-		self.licenseSecurityToken = licenseSecurityToken
 		self.downloadTaskId = downloadTask.id
 		self.downloadTask = downloadTask
 	}

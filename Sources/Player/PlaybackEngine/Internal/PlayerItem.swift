@@ -385,6 +385,9 @@ private extension PlayerItem {
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
 			tags.append(PlaybackStatistics.EventTag.IMPROVED_DRM)
 		}
+		if featureFlagProvider.shouldUseNewPlaybackEndpoints() {
+			tags.append(PlaybackStatistics.EventTag.NEW_PLAYBACK_ENDPOINTS)
+		}
 
 		let endInfo = metrics.endInfo
 		playerEventSender.send(PlaybackStatistics(
