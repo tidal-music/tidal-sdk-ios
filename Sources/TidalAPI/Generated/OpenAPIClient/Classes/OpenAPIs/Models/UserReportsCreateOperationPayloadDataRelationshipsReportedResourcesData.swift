@@ -13,10 +13,11 @@ import AnyCodable
 public struct UserReportsCreateOperationPayloadDataRelationshipsReportedResourcesData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case tracks = "tracks"
-        case artists = "artists"
-        case playlists = "playlists"
-    }    public var id: String
+        case tracks
+        case artists
+        case playlists
+    }
+    public var id: String
     public var type: ModelType
 
     public init(

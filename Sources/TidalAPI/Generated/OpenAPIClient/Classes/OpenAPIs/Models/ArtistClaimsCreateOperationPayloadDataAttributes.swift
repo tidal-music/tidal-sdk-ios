@@ -13,10 +13,11 @@ import AnyCodable
 public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum Provider: String, Codable, CaseIterable {
-        case distrokid = "DISTROKID"
-        case cdbaby = "CDBABY"
-        case tunecore = "TUNECORE"
-    }    public var provider: Provider
+        case distrokid
+        case cdbaby
+        case tunecore
+    }
+    public var provider: Provider
 
     public init(
         provider: Provider

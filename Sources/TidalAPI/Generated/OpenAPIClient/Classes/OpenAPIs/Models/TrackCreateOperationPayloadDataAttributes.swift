@@ -13,10 +13,11 @@ import AnyCodable
 public struct TrackCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum AccessType: String, Codable, CaseIterable {
-        case _public = "PUBLIC"
-        case unlisted = "UNLISTED"
-        case _private = "PRIVATE"
-    }    /** Access type */
+        case _public
+        case unlisted
+        case _private
+    }
+    /** Access type */
     public var accessType: AccessType
     /** Explicit content */
     public var explicit: Bool?

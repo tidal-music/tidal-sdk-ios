@@ -13,10 +13,11 @@ import AnyCodable
 public struct VideosAttributes: Codable, Hashable {
 
     public enum Availability: String, Codable, CaseIterable {
-        case stream = "STREAM"
-        case dj = "DJ"
-        case stem = "STEM"
-    }    /** Available usage for this video */
+        case stream
+        case dj
+        case stem
+    }
+    /** Available usage for this video */
     public var availability: [Availability]?
     public var copyright: Copyright?
     /** Duration (ISO 8601) */

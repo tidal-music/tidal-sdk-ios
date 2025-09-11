@@ -13,39 +13,42 @@ import AnyCodable
 public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum AccessType: String, Codable, CaseIterable {
-        case _public = "PUBLIC"
-        case unlisted = "UNLISTED"
-        case _private = "PRIVATE"
-    }    public enum Key: String, Codable, CaseIterable {
-        case unknown = "UNKNOWN"
-        case c = "C"
-        case csharp = "CSharp"
-        case d = "D"
-        case eb = "Eb"
-        case e = "E"
-        case f = "F"
-        case fsharp = "FSharp"
-        case g = "G"
-        case ab = "Ab"
-        case a = "A"
-        case bb = "Bb"
-        case b = "B"
-    }    public enum KeyScale: String, Codable, CaseIterable {
-        case unknown = "UNKNOWN"
-        case major = "MAJOR"
-        case minor = "MINOR"
-        case aeolian = "AEOLIAN"
-        case blues = "BLUES"
-        case dorian = "DORIAN"
-        case harmonicMinor = "HARMONIC_MINOR"
-        case locrian = "LOCRIAN"
-        case lydian = "LYDIAN"
-        case mixolydian = "MIXOLYDIAN"
-        case pentatonicMajor = "PENTATONIC_MAJOR"
-        case phrygian = "PHRYGIAN"
-        case melodicMinor = "MELODIC_MINOR"
-        case pentatonicMinor = "PENTATONIC_MINOR"
-    }    public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
+        case _public
+        case unlisted
+        case _private
+    }
+    public enum Key: String, Codable, CaseIterable {
+        case unknown
+        case c
+        case csharp
+        case d
+        case eb
+        case e
+        case f
+        case fsharp
+        case g
+        case ab
+        case a
+        case bb
+        case b
+    }
+    public enum KeyScale: String, Codable, CaseIterable {
+        case unknown
+        case major
+        case minor
+        case aeolian
+        case blues
+        case dorian
+        case harmonicMinor
+        case locrian
+        case lydian
+        case mixolydian
+        case pentatonicMajor
+        case phrygian
+        case melodicMinor
+        case pentatonicMinor
+    }
+    public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
     /** Access type */
     public var accessType: AccessType?
     public var bpm: Float?

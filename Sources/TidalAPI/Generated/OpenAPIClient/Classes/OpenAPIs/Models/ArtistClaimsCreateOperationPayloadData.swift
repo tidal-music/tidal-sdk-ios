@@ -13,8 +13,9 @@ import AnyCodable
 public struct ArtistClaimsCreateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case artistclaims = "artistClaims"
-    }    public var attributes: ArtistClaimsCreateOperationPayloadDataAttributes
+        case artistclaims
+    }
+    public var attributes: ArtistClaimsCreateOperationPayloadDataAttributes
     public var type: ModelType
 
     public init(

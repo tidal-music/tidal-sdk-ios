@@ -13,14 +13,16 @@ import AnyCodable
 public struct AlbumsAttributes: Codable, Hashable {
 
     public enum Availability: String, Codable, CaseIterable {
-        case stream = "STREAM"
-        case dj = "DJ"
-        case stem = "STEM"
-    }    public enum ModelType: String, Codable, CaseIterable {
-        case album = "ALBUM"
-        case ep = "EP"
-        case single = "SINGLE"
-    }    /** Available usage for this album */
+        case stream
+        case dj
+        case stem
+    }
+    public enum ModelType: String, Codable, CaseIterable {
+        case album
+        case ep
+        case single
+    }
+    /** Available usage for this album */
     public var availability: [Availability]?
     /** Barcode id (EAN-13 or UPC-A) */
     public var barcodeId: String

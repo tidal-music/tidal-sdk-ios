@@ -13,9 +13,10 @@ import AnyCodable
 public struct PlaylistItemsRelationshipRemoveOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case tracks = "tracks"
-        case videos = "videos"
-    }    public var id: String
+        case tracks
+        case videos
+    }
+    public var id: String
     public var meta: PlaylistItemsRelationshipRemoveOperationPayloadDataMeta
     public var type: ModelType
 

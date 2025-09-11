@@ -13,8 +13,9 @@ import AnyCodable
 public struct UserCollectionArtistsRelationshipRemoveOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case artists = "artists"
-    }    public var id: String
+        case artists
+    }
+    public var id: String
     public var type: ModelType
 
     public init(

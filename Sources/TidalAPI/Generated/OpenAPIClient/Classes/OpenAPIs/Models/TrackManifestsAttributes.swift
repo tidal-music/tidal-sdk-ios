@@ -13,14 +13,16 @@ import AnyCodable
 public struct TrackManifestsAttributes: Codable, Hashable {
 
     public enum Formats: String, Codable, CaseIterable {
-        case heaacv1 = "HEAACV1"
-        case aaclc = "AACLC"
-        case flac = "FLAC"
-        case flacHires = "FLAC_HIRES"
-    }    public enum TrackPresentation: String, Codable, CaseIterable {
-        case full = "FULL"
-        case preview = "PREVIEW"
-    }    public var albumAudioNormalizationData: AudioNormalizationData?
+        case heaacv1
+        case aaclc
+        case flac
+        case flacHires
+    }
+    public enum TrackPresentation: String, Codable, CaseIterable {
+        case full
+        case preview
+    }
+    public var albumAudioNormalizationData: AudioNormalizationData?
     public var drmData: DrmData?
     /** Formats present in manifest */
     public var formats: [Formats]?

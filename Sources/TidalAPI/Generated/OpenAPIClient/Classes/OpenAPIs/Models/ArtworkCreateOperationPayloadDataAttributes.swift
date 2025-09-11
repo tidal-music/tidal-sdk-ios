@@ -13,9 +13,10 @@ import AnyCodable
 public struct ArtworkCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum MediaType: String, Codable, CaseIterable {
-        case image = "IMAGE"
-        case video = "VIDEO"
-    }    public var mediaType: MediaType
+        case image
+        case video
+    }
+    public var mediaType: MediaType
     public var sourceFile: ArtworkCreateOperationPayloadDataAttributesSourceFile
 
     public init(

@@ -13,8 +13,9 @@ import AnyCodable
 public struct AlbumUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case albums = "albums"
-    }    public var attributes: AlbumUpdateOperationPayloadDataAttributes?
+        case albums
+    }
+    public var attributes: AlbumUpdateOperationPayloadDataAttributes?
     public var id: String
     public var relationships: AlbumUpdateOperationPayloadDataRelationships?
     public var type: ModelType

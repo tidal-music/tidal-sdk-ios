@@ -13,43 +13,47 @@ import AnyCodable
 public struct TracksAttributes: Codable, Hashable {
 
     public enum AccessType: String, Codable, CaseIterable {
-        case _public = "PUBLIC"
-        case unlisted = "UNLISTED"
-        case _private = "PRIVATE"
-    }    public enum Availability: String, Codable, CaseIterable {
-        case stream = "STREAM"
-        case dj = "DJ"
-        case stem = "STEM"
-    }    public enum Key: String, Codable, CaseIterable {
-        case unknown = "UNKNOWN"
-        case c = "C"
-        case csharp = "CSharp"
-        case d = "D"
-        case eb = "Eb"
-        case e = "E"
-        case f = "F"
-        case fsharp = "FSharp"
-        case g = "G"
-        case ab = "Ab"
-        case a = "A"
-        case bb = "Bb"
-        case b = "B"
-    }    public enum KeyScale: String, Codable, CaseIterable {
-        case unknown = "UNKNOWN"
-        case major = "MAJOR"
-        case minor = "MINOR"
-        case aeolian = "AEOLIAN"
-        case blues = "BLUES"
-        case dorian = "DORIAN"
-        case harmonicMinor = "HARMONIC_MINOR"
-        case locrian = "LOCRIAN"
-        case lydian = "LYDIAN"
-        case mixolydian = "MIXOLYDIAN"
-        case pentatonicMajor = "PENTATONIC_MAJOR"
-        case phrygian = "PHRYGIAN"
-        case melodicMinor = "MELODIC_MINOR"
-        case pentatonicMinor = "PENTATONIC_MINOR"
-    }    /** Access type */
+        case _public
+        case unlisted
+        case _private
+    }
+    public enum Availability: String, Codable, CaseIterable {
+        case stream
+        case dj
+        case stem
+    }
+    public enum Key: String, Codable, CaseIterable {
+        case unknown
+        case c
+        case csharp
+        case d
+        case eb
+        case e
+        case f
+        case fsharp
+        case g
+        case ab
+        case a
+        case bb
+        case b
+    }
+    public enum KeyScale: String, Codable, CaseIterable {
+        case unknown
+        case major
+        case minor
+        case aeolian
+        case blues
+        case dorian
+        case harmonicMinor
+        case locrian
+        case lydian
+        case mixolydian
+        case pentatonicMajor
+        case phrygian
+        case melodicMinor
+        case pentatonicMinor
+    }
+    /** Access type */
     public var accessType: AccessType?
     /** Available usage for this track */
     public var availability: [Availability]?

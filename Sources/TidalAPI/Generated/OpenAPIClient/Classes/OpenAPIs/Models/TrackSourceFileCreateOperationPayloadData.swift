@@ -13,8 +13,9 @@ import AnyCodable
 public struct TrackSourceFileCreateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case tracksourcefiles = "trackSourceFiles"
-    }    public var attributes: TrackSourceFileCreateOperationPayloadDataAttributes
+        case tracksourcefiles
+    }
+    public var attributes: TrackSourceFileCreateOperationPayloadDataAttributes
     public var relationships: TrackSourceFileCreateOperationPayloadDataRelationships
     public var type: ModelType
 
