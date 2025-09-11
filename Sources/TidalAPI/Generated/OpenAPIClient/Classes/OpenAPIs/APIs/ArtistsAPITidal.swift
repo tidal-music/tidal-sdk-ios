@@ -75,6 +75,54 @@ public enum ArtistsAPITidal {
 
 
 	/**
+     Get followers relationship (\&quot;to-many\&quot;).
+     
+     - returns: ArtistsFollowersMultiRelationshipDataDocument
+     */
+	public static func artistsIdRelationshipsFollowersGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowersMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsFollowersGetWithRequestBuilder(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Delete from following relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func artistsIdRelationshipsFollowingDelete(id: String, artistFollowingRelationshipRemoveOperationPayload: ArtistFollowingRelationshipRemoveOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: id, artistFollowingRelationshipRemoveOperationPayload: artistFollowingRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+     Get following relationship (\&quot;to-many\&quot;).
+     
+     - returns: ArtistsFollowingMultiRelationshipDataDocument
+     */
+	public static func artistsIdRelationshipsFollowingGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowingMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsFollowingGetWithRequestBuilder(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Add to following relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func artistsIdRelationshipsFollowingPost(id: String, countryCode: String, artistFollowingRelationshipAddOperationPayload: ArtistFollowingRelationshipAddOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, artistFollowingRelationshipAddOperationPayload: artistFollowingRelationshipAddOperationPayload)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: ArtistsMultiRelationshipDataDocument

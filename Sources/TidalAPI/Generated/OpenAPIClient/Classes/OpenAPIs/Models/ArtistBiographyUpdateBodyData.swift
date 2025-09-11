@@ -14,9 +14,7 @@ public struct ArtistBiographyUpdateBodyData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
         case artistbiographies = "artistBiographies"
-    }
-
-    public var attributes: ArtistBiographyUpdateBodyDataAttributes
+    }    public var attributes: ArtistBiographyUpdateBodyDataAttributes
     public var id: String
     public var type: ModelType
 

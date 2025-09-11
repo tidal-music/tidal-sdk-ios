@@ -14,6 +14,8 @@ public struct ArtistsRelationships: Codable, Hashable {
 
     public var albums: MultiRelationshipDataDocument
     public var biography: SingleRelationshipDataDocument
+    public var followers: ArtistsFollowersMultiRelationshipDataDocument
+    public var following: ArtistsFollowingMultiRelationshipDataDocument
     public var owners: MultiRelationshipDataDocument
     public var profileArt: MultiRelationshipDataDocument
     public var radio: MultiRelationshipDataDocument
@@ -26,6 +28,8 @@ public struct ArtistsRelationships: Codable, Hashable {
     public init(
         albums: MultiRelationshipDataDocument,
         biography: SingleRelationshipDataDocument,
+        followers: ArtistsFollowersMultiRelationshipDataDocument,
+        following: ArtistsFollowingMultiRelationshipDataDocument,
         owners: MultiRelationshipDataDocument,
         profileArt: MultiRelationshipDataDocument,
         radio: MultiRelationshipDataDocument,
@@ -37,6 +41,8 @@ public struct ArtistsRelationships: Codable, Hashable {
     ) {
         self.albums = albums
         self.biography = biography
+        self.followers = followers
+        self.following = following
         self.owners = owners
         self.profileArt = profileArt
         self.radio = radio
@@ -50,6 +56,8 @@ public struct ArtistsRelationships: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albums
         case biography
+        case followers
+        case following
         case owners
         case profileArt
         case radio
@@ -66,6 +74,8 @@ public struct ArtistsRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(albums, forKey: .albums)
         try container.encode(biography, forKey: .biography)
+        try container.encode(followers, forKey: .followers)
+        try container.encode(following, forKey: .following)
         try container.encode(owners, forKey: .owners)
         try container.encode(profileArt, forKey: .profileArt)
         try container.encode(radio, forKey: .radio)

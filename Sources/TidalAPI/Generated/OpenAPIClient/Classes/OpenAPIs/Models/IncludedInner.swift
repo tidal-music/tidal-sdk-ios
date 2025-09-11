@@ -12,6 +12,7 @@ import AnyCodable
 
 public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case typeAlbumsResourceObject(AlbumsResourceObject)
+    case typeAppreciationsResourceObject(AppreciationsResourceObject)
     case typeArtistBiographiesResourceObject(ArtistBiographiesResourceObject)
     case typeArtistClaimsResourceObject(ArtistClaimsResourceObject)
     case typeArtistRolesResourceObject(ArtistRolesResourceObject)
@@ -40,6 +41,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         var container = encoder.singleValueContainer()
         switch self {
         case .typeAlbumsResourceObject(let value):
+            try container.encode(value)
+        case .typeAppreciationsResourceObject(let value):
             try container.encode(value)
         case .typeArtistBiographiesResourceObject(let value):
             try container.encode(value)
@@ -102,6 +105,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "albums":
             let value = try AlbumsResourceObject(from: decoder)
             self = .typeAlbumsResourceObject(value)
+        case "appreciations":
+            let value = try AppreciationsResourceObject(from: decoder)
+            self = .typeAppreciationsResourceObject(value)
         case "artistBiographies":
             let value = try ArtistBiographiesResourceObject(from: decoder)
             self = .typeArtistBiographiesResourceObject(value)
@@ -182,6 +188,7 @@ extension IncludedInner: Identifiable {
     public var id: String {
         switch self {
         case .typeAlbumsResourceObject(let value): return value.id
+        case .typeAppreciationsResourceObject(let value): return value.id
         case .typeArtistBiographiesResourceObject(let value): return value.id
         case .typeArtistClaimsResourceObject(let value): return value.id
         case .typeArtistRolesResourceObject(let value): return value.id

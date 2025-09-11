@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.71"
+    "version" : "0.1.73"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -20,6 +20,8 @@
   } ],
   "tags" : [ {
     "name" : "albums"
+  }, {
+    "name" : "appreciations"
   }, {
     "name" : "artistBiographies"
   }, {
@@ -1075,6 +1077,62 @@
         }
       }
     },
+    "/appreciations" : {
+      "post" : {
+        "description" : "Creates a new appreciation.",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AppreciationsCreateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Appreciations_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Create single appreciation.",
+        "tags" : [ "appreciations" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
     "/artistBiographies" : {
       "get" : {
         "description" : "Retrieves multiple artistBiographies by available filters, or without if applicable.",
@@ -1372,7 +1430,16 @@
     "/artistClaims" : {
       "post" : {
         "description" : "Creates a new artistClaim.",
-        "parameters" : [ ],
+        "parameters" : [ {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
         "requestBody" : {
           "content" : {
             "application/vnd.api+json" : {
@@ -1964,7 +2031,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -2124,7 +2191,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -2400,6 +2467,289 @@
         "tags" : [ "artists" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/artists/{id}/relationships/followers" : {
+      "get" : {
+        "description" : "Retrieves followers relationship.",
+        "parameters" : [ {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "viewerContext",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: followers",
+          "example" : "followers",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "followers"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Artists_Followers_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get followers relationship (\"to-many\").",
+        "tags" : [ "artists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/artists/{id}/relationships/following" : {
+      "delete" : {
+        "description" : "Deletes item(s) from following relationship.",
+        "parameters" : [ {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ArtistFollowingRelationshipRemoveOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Delete from following relationship (\"to-many\").",
+        "tags" : [ "artists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "get" : {
+        "description" : "Retrieves following relationship.",
+        "parameters" : [ {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "viewerContext",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: following",
+          "example" : "following",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "following"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Artists_Following_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get following relationship (\"to-many\").",
+        "tags" : [ "artists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "post" : {
+        "description" : "Adds item(s) to following relationship.",
+        "parameters" : [ {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ArtistFollowingRelationshipAddOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Add to following relationship (\"to-many\").",
+        "tags" : [ "artists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -10777,6 +11127,132 @@
           }
         }
       },
+      "AppreciationsCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/AppreciationsCreateOperation_Payload_Data"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/ArtistCreateOperation_Meta"
+          }
+        }
+      },
+      "AppreciationsCreateOperation_Payload_Data" : {
+        "required" : [ "relationships", "type" ],
+        "type" : "object",
+        "properties" : {
+          "relationships" : {
+            "$ref" : "#/components/schemas/AppreciationsCreateOperation_Payload_Data_Relationships"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "appreciations" ]
+          }
+        }
+      },
+      "AppreciationsCreateOperation_Payload_Data_Relationships" : {
+        "required" : [ "appreciatedItems" ],
+        "type" : "object",
+        "properties" : {
+          "appreciatedItems" : {
+            "$ref" : "#/components/schemas/AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem"
+          }
+        }
+      },
+      "AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem_Data"
+            }
+          }
+        }
+      },
+      "AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "Appreciations_Attributes" : {
+        "required" : [ "createdAt" ],
+        "type" : "object",
+        "properties" : {
+          "createdAt" : {
+            "type" : "string",
+            "description" : "Time when the appreciation was created",
+            "format" : "date-time",
+            "example" : "2025-09-09T13:07:35.734Z"
+          }
+        }
+      },
+      "Appreciations_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Appreciations_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Appreciations_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/Appreciations_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "Appreciations_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Appreciations_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
       "ArtistBiographies_Attributes" : {
         "required" : [ "editable", "text" ],
         "type" : "object",
@@ -10935,16 +11411,6 @@
           }
         }
       },
-      "ArtistClaimId" : {
-        "type" : "object",
-        "properties" : {
-          "value" : {
-            "type" : "string"
-          }
-        },
-        "description" : "Artist claim id",
-        "example" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-      },
       "ArtistClaimsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -10997,7 +11463,7 @@
             "$ref" : "#/components/schemas/ArtistClaimsUpdateOperation_Payload_Data_Attributes"
           },
           "id" : {
-            "$ref" : "#/components/schemas/ArtistClaimId"
+            "type" : "string"
           },
           "type" : {
             "type" : "string",
@@ -11180,6 +11646,60 @@
           },
           "name" : {
             "type" : "string"
+          }
+        }
+      },
+      "ArtistFollowingRelationshipAddOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ArtistFollowingRelationshipAddOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "ArtistFollowingRelationshipAddOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "ArtistFollowingRelationshipRemoveOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ArtistFollowingRelationshipRemoveOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "ArtistFollowingRelationshipRemoveOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
           }
         }
       },
@@ -11374,6 +11894,106 @@
           }
         }
       },
+      "Artists_Followers_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Artists_Followers_Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Artists_Followers_Resource_Identifier" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Artists_Followers_Resource_Identifier_Meta"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "Artists_Followers_Resource_Identifier_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "viewer" : {
+            "$ref" : "#/components/schemas/Artists_Followers_Resource_Meta_ViewerContext"
+          }
+        }
+      },
+      "Artists_Followers_Resource_Meta_ViewerContext" : {
+        "type" : "object",
+        "properties" : {
+          "followsMyArtist" : {
+            "type" : "boolean",
+            "description" : "Boolean to indicate if the artist is following my artist",
+            "default" : false
+          },
+          "myArtistFollows" : {
+            "type" : "boolean",
+            "description" : "Boolean to indicate if my artist is following the artist",
+            "default" : false
+          }
+        },
+        "description" : "Optional context about the relationship"
+      },
+      "Artists_Following_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Artists_Following_Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Artists_Following_Resource_Identifier" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Artists_Following_Resource_Identifier_Meta"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "Artists_Following_Resource_Identifier_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "viewer" : {
+            "$ref" : "#/components/schemas/Artists_Followers_Resource_Meta_ViewerContext"
+          }
+        }
+      },
       "Artists_Multi_Relationship_Data_Document" : {
         "required" : [ "links" ],
         "type" : "object",
@@ -11411,13 +12031,19 @@
         }
       },
       "Artists_Relationships" : {
-        "required" : [ "albums", "biography", "owners", "profileArt", "radio", "roles", "similarArtists", "trackProviders", "tracks", "videos" ],
+        "required" : [ "albums", "biography", "followers", "following", "owners", "profileArt", "radio", "roles", "similarArtists", "trackProviders", "tracks", "videos" ],
         "properties" : {
           "albums" : {
             "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
           },
           "biography" : {
             "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
+          },
+          "followers" : {
+            "$ref" : "#/components/schemas/Artists_Followers_Multi_Relationship_Data_Document"
+          },
+          "following" : {
+            "$ref" : "#/components/schemas/Artists_Following_Multi_Relationship_Data_Document"
           },
           "owners" : {
             "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
@@ -12032,6 +12658,7 @@
           "discriminator" : {
             "mapping" : {
               "albums" : "#/components/schemas/Albums_Resource_Object",
+              "appreciations" : "#/components/schemas/Appreciations_Resource_Object",
               "artistBiographies" : "#/components/schemas/ArtistBiographies_Resource_Object",
               "artistClaims" : "#/components/schemas/ArtistClaims_Resource_Object",
               "artistRoles" : "#/components/schemas/ArtistRoles_Resource_Object",
@@ -12060,6 +12687,8 @@
           },
           "oneOf" : [ {
             "$ref" : "#/components/schemas/Albums_Resource_Object"
+          }, {
+            "$ref" : "#/components/schemas/Appreciations_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/ArtistBiographies_Resource_Object"
           }, {
@@ -14284,7 +14913,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "albums", "artistClaims", "artistRoles", "artists", "artworks", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
+            "enum" : [ "albums", "appreciations", "artistClaims", "artistRoles", "artists", "artworks", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
           }
         }
       },
@@ -14311,7 +14940,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "albums", "artistClaims", "artistRoles", "artists", "artworks", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
+            "enum" : [ "albums", "appreciations", "artistClaims", "artistRoles", "artists", "artworks", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
           }
         }
       },

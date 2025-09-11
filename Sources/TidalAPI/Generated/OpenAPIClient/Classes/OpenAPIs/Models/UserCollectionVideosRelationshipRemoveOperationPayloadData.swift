@@ -14,6 +14,7 @@ public struct UserCollectionVideosRelationshipRemoveOperationPayloadData: Codabl
 
     public enum ModelType: String, Codable, CaseIterable {
         case albums = "albums"
+        case appreciations = "appreciations"
         case artistclaims = "artistClaims"
         case artistroles = "artistRoles"
         case artists = "artists"
@@ -30,9 +31,7 @@ public struct UserCollectionVideosRelationshipRemoveOperationPayloadData: Codabl
         case userreports = "userReports"
         case users = "users"
         case videos = "videos"
-    }
-
-    public var id: String
+    }    public var id: String
     public var type: ModelType
 
     public init(

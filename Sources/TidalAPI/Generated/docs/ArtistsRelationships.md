@@ -5,6 +5,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **albums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **biography** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
+**followers** | [**ArtistsFollowersMultiRelationshipDataDocument**](ArtistsFollowersMultiRelationshipDataDocument.md) |  | 
+**following** | [**ArtistsFollowingMultiRelationshipDataDocument**](ArtistsFollowingMultiRelationshipDataDocument.md) |  | 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **profileArt** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **radio** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 

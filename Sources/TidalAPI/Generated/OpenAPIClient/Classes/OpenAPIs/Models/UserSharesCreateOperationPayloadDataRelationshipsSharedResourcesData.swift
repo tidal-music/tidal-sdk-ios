@@ -14,8 +14,7 @@ public struct UserSharesCreateOperationPayloadDataRelationshipsSharedResourcesDa
 
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
-    }
-    public var id: String
+    }    public var id: String
     public var type: ModelType
 
     public init(

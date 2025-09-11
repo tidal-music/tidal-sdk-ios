@@ -16,9 +16,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
-    }
-
-    public enum ModelType: String, Codable, CaseIterable {
+    }    public enum ModelType: String, Codable, CaseIterable {
         case album = "ALBUM"
         case ep = "EP"
         case single = "SINGLE"
