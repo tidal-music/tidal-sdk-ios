@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2025-09-11
+
+### Added
+- **Appreciations API**: New endpoint for creating user appreciations of artists (TidalAPI)
+- **Artist Following System**: Complete follower/following relationship management (TidalAPI)
+  - Get artist followers and following lists
+  - Follow/unfollow artists with proper authentication
+  - Viewer context metadata for relationship states
+- Enhanced Artists API with follower/following relationship support (TidalAPI)
+
+### Changed
+- Updated TidalAPI module with latest OpenAPI spec version 0.1.71 to 0.1.73 (TidalAPI)
+- Artist Claims API now requires `countryCode` parameter (TidalAPI)
+- Artists include parameter now supports `followers` and `following` options (TidalAPI)
+
+### Removed
+- Deprecated `ArtistClaimId` model (replaced with string type) (TidalAPI)
+
 ## [0.5.2] - 2025-09-10
 
 ### Changed
