@@ -13,9 +13,8 @@ import AnyCodable
 public struct TrackCreateOperationPayloadDataRelationshipsAlbumsData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case albums = "albums"
+        case albums
     }
-
     public var id: String
     public var type: ModelType
 

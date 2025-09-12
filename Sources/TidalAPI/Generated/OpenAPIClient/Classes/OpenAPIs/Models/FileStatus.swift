@@ -14,20 +14,20 @@ import AnyCodable
 public struct FileStatus: Codable, Hashable {
 
     public enum ModerationFileStatus: String, Codable, CaseIterable {
-        case notModerated = "NOT_MODERATED"
-        case scanning = "SCANNING"
-        case flagged = "FLAGGED"
-        case takenDown = "TAKEN_DOWN"
-        case ok = "OK"
-        case error = "ERROR"
+        case notModerated
+        case scanning
+        case flagged
+        case takenDown
+        case ok
+        case error
     }
-
     public enum TechnicalFileStatus: String, Codable, CaseIterable {
-        case uploadRequested = "UPLOAD_REQUESTED"
-        case processing = "PROCESSING"
-        case ok = "OK"
-        case error = "ERROR"
-    }    /** Moderation status for file */
+        case uploadRequested
+        case processing
+        case ok
+        case error
+    }
+    /** Moderation status for file */
     public var moderationFileStatus: ModerationFileStatus
     /** Technical status for file */
     public var technicalFileStatus: TechnicalFileStatus

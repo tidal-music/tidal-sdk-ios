@@ -13,7 +13,7 @@ import AnyCodable
 public struct UserSharesCreateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case usershares = "userShares"
+        case usershares
     }
     public var relationships: UserSharesCreateOperationPayloadDataRelationships
     public var type: ModelType

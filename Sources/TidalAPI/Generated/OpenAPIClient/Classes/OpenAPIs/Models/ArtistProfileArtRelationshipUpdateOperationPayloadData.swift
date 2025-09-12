@@ -13,9 +13,8 @@ import AnyCodable
 public struct ArtistProfileArtRelationshipUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case artworks = "artworks"
+        case artworks
     }
-
     public var id: String
     public var type: ModelType
 

@@ -13,12 +13,11 @@ import AnyCodable
 public struct LyricsAttributes: Codable, Hashable {
 
     public enum TechnicalStatus: String, Codable, CaseIterable {
-        case pending = "PENDING"
-        case processing = "PROCESSING"
-        case error = "ERROR"
-        case ok = "OK"
+        case pending
+        case processing
+        case error
+        case ok
     }
-
     public var technicalStatus: TechnicalStatus
     public var text: String?
 

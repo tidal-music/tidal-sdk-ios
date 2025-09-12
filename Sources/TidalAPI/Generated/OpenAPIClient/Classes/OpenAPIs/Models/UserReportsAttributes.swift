@@ -13,16 +13,17 @@ import AnyCodable
 public struct UserReportsAttributes: Codable, Hashable {
 
     public enum Reason: String, Codable, CaseIterable {
-        case sexualContentOrNudity = "SEXUAL_CONTENT_OR_NUDITY"
-        case violentOrDangerousContent = "VIOLENT_OR_DANGEROUS_CONTENT"
-        case hatefulOrAbusiveContent = "HATEFUL_OR_ABUSIVE_CONTENT"
-        case harassment = "HARASSMENT"
-        case privacyViolation = "PRIVACY_VIOLATION"
-        case scamsOrFraud = "SCAMS_OR_FRAUD"
-        case spam = "SPAM"
-        case copyrightInfringement = "COPYRIGHT_INFRINGEMENT"
-        case unknown = "UNKNOWN"
-    }    /** Description */
+        case sexualContentOrNudity
+        case violentOrDangerousContent
+        case hatefulOrAbusiveContent
+        case harassment
+        case privacyViolation
+        case scamsOrFraud
+        case spam
+        case copyrightInfringement
+        case unknown
+    }
+    /** Description */
     public var description: String
     /** Reason */
     public var reason: Reason

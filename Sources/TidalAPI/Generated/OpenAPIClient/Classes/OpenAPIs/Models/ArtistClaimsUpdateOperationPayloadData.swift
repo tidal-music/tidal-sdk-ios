@@ -13,16 +13,15 @@ import AnyCodable
 public struct ArtistClaimsUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case artistclaims = "artistClaims"
+        case artistclaims
     }
-
     public var attributes: AnyCodable?
-    public var id: ArtistClaimId?
+    public var id: String?
     public var type: ModelType
 
     public init(
         attributes: AnyCodable? = nil,
-        id: ArtistClaimId? = nil,
+        id: String? = nil,
         type: ModelType
     ) {
         self.attributes = attributes
@@ -46,4 +45,7 @@ public struct ArtistClaimsUpdateOperationPayloadData: Codable, Hashable {
     }
 }
 
+
+@available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
+extension ArtistClaimsUpdateOperationPayloadData: Identifiable {}
 

@@ -13,9 +13,8 @@ import AnyCodable
 public struct ArtistBiographyUpdateBodyData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case artistbiographies = "artistBiographies"
+        case artistbiographies
     }
-
     public var attributes: ArtistBiographyUpdateBodyDataAttributes
     public var id: String
     public var type: ModelType

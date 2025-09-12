@@ -80,7 +80,7 @@ Updates existing artistClaim.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
-let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: ArtistClaimId(value: "value_example"), type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
+let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
 
 // Update single artistClaim.
 ArtistClaimsAPI.artistClaimsIdPatch(id: id, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
@@ -333,7 +333,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsPost**
 ```swift
-    open class func artistClaimsPost(artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsPost(countryCode: String, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artistClaim.
@@ -345,10 +345,11 @@ Creates a new artistClaim.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let artistClaimsCreateOperationPayload = ArtistClaimsCreateOperation_Payload(data: ArtistClaimsCreateOperation_Payload_Data(attributes: ArtistClaimsCreateOperation_Payload_Data_Attributes(provider: "provider_example"), type: "type_example")) // ArtistClaimsCreateOperationPayload |  (optional)
 
 // Create single artistClaim.
-ArtistClaimsAPI.artistClaimsPost(artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsPost(countryCode: countryCode, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -364,6 +365,7 @@ ArtistClaimsAPI.artistClaimsPost(artistClaimsCreateOperationPayload: artistClaim
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **artistClaimsCreateOperationPayload** | [**ArtistClaimsCreateOperationPayload**](ArtistClaimsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

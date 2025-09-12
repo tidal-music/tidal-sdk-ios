@@ -13,9 +13,8 @@ import AnyCodable
 public struct TrackUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case tracks = "tracks"
+        case tracks
     }
-
     public var attributes: TrackUpdateOperationPayloadDataAttributes?
     public var id: String
     public var relationships: TrackUpdateOperationPayloadDataRelationships?
