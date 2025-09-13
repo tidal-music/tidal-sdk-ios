@@ -14,8 +14,7 @@ public struct ArtistClaimsUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
         case artistclaims
-    }
-    public var attributes: AnyCodable?
+    }    public var attributes: AnyCodable?
     public var id: String?
     public var type: ModelType
 

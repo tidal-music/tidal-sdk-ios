@@ -15,8 +15,7 @@ public struct PlaylistItemsRelationshipReorderOperationPayloadData: Codable, Has
     public enum ModelType: String, Codable, CaseIterable {
         case tracks
         case videos
-    }
-    public var id: String
+    }    public var id: String
     public var meta: PlaylistItemsRelationshipReorderOperationPayloadDataMeta
     public var type: ModelType
 

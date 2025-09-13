@@ -16,13 +16,11 @@ public struct TracksAttributes: Codable, Hashable {
         case _public
         case unlisted
         case _private
-    }
-    public enum Availability: String, Codable, CaseIterable {
+    }    public enum Availability: String, Codable, CaseIterable {
         case stream
         case dj
         case stem
-    }
-    public enum Key: String, Codable, CaseIterable {
+    }    public enum Key: String, Codable, CaseIterable {
         case unknown
         case c
         case csharp
@@ -36,8 +34,7 @@ public struct TracksAttributes: Codable, Hashable {
         case a
         case bb
         case b
-    }
-    public enum KeyScale: String, Codable, CaseIterable {
+    }    public enum KeyScale: String, Codable, CaseIterable {
         case unknown
         case major
         case minor
@@ -52,8 +49,7 @@ public struct TracksAttributes: Codable, Hashable {
         case phrygian
         case melodicMinor
         case pentatonicMinor
-    }
-    /** Access type */
+    }    /** Access type */
     public var accessType: AccessType?
     /** Available usage for this track */
     public var availability: [Availability]?

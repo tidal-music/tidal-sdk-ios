@@ -16,8 +16,7 @@ public struct UserReportsCreateOperationPayloadDataRelationshipsReportedResource
         case tracks
         case artists
         case playlists
-    }
-    public var id: String
+    }    public var id: String
     public var type: ModelType
 
     public init(

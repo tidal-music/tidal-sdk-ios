@@ -110,18 +110,33 @@ internal class UserCollectionsAPI {
     }
 
     /**
+     * enum for parameter sort
+     */
+    public enum Sort_userCollectionsIdRelationshipsAlbumsGet: String, CaseIterable {
+        case albumsPeriodAddedat = "albums.addedAt"
+        case albumsPeriodAddedat2 = "-albums.addedAt"
+        case albumsPeriodArtistsPeriodName = "albums.artists.name"
+        case albumsPeriodArtistsPeriodName2 = "-albums.artists.name"
+        case albumsPeriodReleasedate = "albums.releaseDate"
+        case albumsPeriodReleasedate2 = "-albums.releaseDate"
+        case albumsPeriodTitle = "albums.title"
+        case albumsPeriodTitle2 = "-albums.title"
+    }
+
+    /**
      Get albums relationship (\"to-many\").
      
      - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: UserCollectionsAlbumsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
-        return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include).execute().body
+    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
+        return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
     }
 
     /**
@@ -135,10 +150,11 @@ internal class UserCollectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -151,6 +167,7 @@ internal class UserCollectionsAPI {
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -259,18 +276,29 @@ internal class UserCollectionsAPI {
     }
 
     /**
+     * enum for parameter sort
+     */
+    public enum Sort_userCollectionsIdRelationshipsArtistsGet: String, CaseIterable {
+        case artistsPeriodAddedat = "artists.addedAt"
+        case artistsPeriodAddedat2 = "-artists.addedAt"
+        case artistsPeriodName = "artists.name"
+        case artistsPeriodName2 = "-artists.name"
+    }
+
+    /**
      Get artists relationship (\"to-many\").
      
      - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: UserCollectionsArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
-        return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include).execute().body
+    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
+        return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
     }
 
     /**
@@ -284,10 +312,11 @@ internal class UserCollectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -300,6 +329,7 @@ internal class UserCollectionsAPI {
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -458,16 +488,29 @@ internal class UserCollectionsAPI {
     }
 
     /**
+     * enum for parameter sort
+     */
+    public enum Sort_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
+        case playlistsPeriodAddedat = "playlists.addedAt"
+        case playlistsPeriodAddedat2 = "-playlists.addedAt"
+        case playlistsPeriodLastupdatedat = "playlists.lastUpdatedAt"
+        case playlistsPeriodLastupdatedat2 = "-playlists.lastUpdatedAt"
+        case playlistsPeriodName = "playlists.name"
+        case playlistsPeriodName2 = "-playlists.name"
+    }
+
+    /**
      Get playlists relationship (\"to-many\").
      
      - parameter id: (path) User id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: UserCollectionsPlaylistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
-        return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
+        return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, include: include).execute().body
     }
 
     /**
@@ -479,10 +522,11 @@ internal class UserCollectionsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -493,6 +537,7 @@ internal class UserCollectionsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -596,18 +641,35 @@ internal class UserCollectionsAPI {
     }
 
     /**
+     * enum for parameter sort
+     */
+    public enum Sort_userCollectionsIdRelationshipsTracksGet: String, CaseIterable {
+        case tracksPeriodAddedat = "tracks.addedAt"
+        case tracksPeriodAddedat2 = "-tracks.addedAt"
+        case tracksPeriodAlbumsPeriodTitle = "tracks.albums.title"
+        case tracksPeriodAlbumsPeriodTitle2 = "-tracks.albums.title"
+        case tracksPeriodArtistsPeriodName = "tracks.artists.name"
+        case tracksPeriodArtistsPeriodName2 = "-tracks.artists.name"
+        case tracksPeriodDuration = "tracks.duration"
+        case tracksPeriodDuration2 = "-tracks.duration"
+        case tracksPeriodTitle = "tracks.title"
+        case tracksPeriodTitle2 = "-tracks.title"
+    }
+
+    /**
      Get tracks relationship (\"to-many\").
      
      - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: UserCollectionsTracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsTracksGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
-        return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include).execute().body
+    internal class func userCollectionsIdRelationshipsTracksGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
+        return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
     }
 
     /**
@@ -621,10 +683,11 @@ internal class UserCollectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -637,6 +700,7 @@ internal class UserCollectionsAPI {
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -745,18 +809,33 @@ internal class UserCollectionsAPI {
     }
 
     /**
+     * enum for parameter sort
+     */
+    public enum Sort_userCollectionsIdRelationshipsVideosGet: String, CaseIterable {
+        case videosPeriodAddedat = "videos.addedAt"
+        case videosPeriodAddedat2 = "-videos.addedAt"
+        case videosPeriodArtistsPeriodName = "videos.artists.name"
+        case videosPeriodArtistsPeriodName2 = "-videos.artists.name"
+        case videosPeriodDuration = "videos.duration"
+        case videosPeriodDuration2 = "-videos.duration"
+        case videosPeriodTitle = "videos.title"
+        case videosPeriodTitle2 = "-videos.title"
+    }
+
+    /**
      Get videos relationship (\"to-many\").
      
      - parameter id: (path) User id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: UserCollectionsVideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsVideosGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
-        return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, include: include).execute().body
+    internal class func userCollectionsIdRelationshipsVideosGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
+        return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
     }
 
     /**
@@ -770,10 +849,11 @@ internal class UserCollectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -786,6 +866,7 @@ internal class UserCollectionsAPI {
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 

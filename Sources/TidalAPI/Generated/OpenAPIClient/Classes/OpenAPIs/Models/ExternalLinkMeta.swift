@@ -26,8 +26,7 @@ public struct ExternalLinkMeta: Codable, Hashable {
         case snapchat
         case officialHomepage
         case cashappContributions
-    }
-    public var type: ModelType
+    }    public var type: ModelType
 
     public init(
         type: ModelType

@@ -258,7 +258,7 @@ Retrieves biography relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: biography (optional)
 
 // Get biography relationship (\"to-one\").
@@ -279,7 +279,7 @@ ArtistsAPI.artistsIdRelationshipsBiographyGet(id: id, countryCode: countryCode, 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: biography | [optional] 
 
 ### Return type
@@ -476,7 +476,7 @@ Adds item(s) to following relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
 let artistFollowingRelationshipAddOperationPayload = ArtistFollowingRelationshipAddOperation_Payload(data: [ArtistFollowingRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistFollowingRelationshipAddOperationPayload |  (optional)
 
 // Add to following relationship (\"to-many\").
@@ -497,7 +497,7 @@ ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, countryCode: countryCode,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
  **artistFollowingRelationshipAddOperationPayload** | [**ArtistFollowingRelationshipAddOperationPayload**](ArtistFollowingRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -584,7 +584,7 @@ Retrieves profileArt relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: profileArt (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -606,7 +606,7 @@ ArtistsAPI.artistsIdRelationshipsProfileArtGet(id: id, countryCode: countryCode,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: profileArt | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 

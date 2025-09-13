@@ -15,8 +15,7 @@ public struct PlaylistItemsRelationshipAddOperationPayloadData: Codable, Hashabl
     public enum ModelType: String, Codable, CaseIterable {
         case tracks
         case videos
-    }
-    public var id: String
+    }    public var id: String
     public var type: ModelType
 
     public init(

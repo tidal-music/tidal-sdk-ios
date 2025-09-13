@@ -16,8 +16,7 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case _public
         case unlisted
         case _private
-    }
-    public enum Key: String, Codable, CaseIterable {
+    }    public enum Key: String, Codable, CaseIterable {
         case unknown
         case c
         case csharp
@@ -31,8 +30,7 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case a
         case bb
         case b
-    }
-    public enum KeyScale: String, Codable, CaseIterable {
+    }    public enum KeyScale: String, Codable, CaseIterable {
         case unknown
         case major
         case minor
@@ -47,8 +45,7 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case phrygian
         case melodicMinor
         case pentatonicMinor
-    }
-    public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
+    }    public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
     /** Access type */
     public var accessType: AccessType?
     public var bpm: Float?

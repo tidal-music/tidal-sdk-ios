@@ -14,8 +14,7 @@ public struct PlaylistCoverArtRelationshipUpdateOperationPayloadData: Codable, H
 
     public enum ModelType: String, Codable, CaseIterable {
         case artworks
-    }
-    public var id: String
+    }    public var id: String
     public var type: ModelType
 
     public init(

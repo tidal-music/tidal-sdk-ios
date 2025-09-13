@@ -15,8 +15,7 @@ public struct ArtworksAttributes: Codable, Hashable {
     public enum MediaType: String, Codable, CaseIterable {
         case image
         case video
-    }
-    public static let mediaTypeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    }    public static let mediaTypeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Artwork files */
     public var files: [ArtworkFile]
     /** Media type of artwork files */

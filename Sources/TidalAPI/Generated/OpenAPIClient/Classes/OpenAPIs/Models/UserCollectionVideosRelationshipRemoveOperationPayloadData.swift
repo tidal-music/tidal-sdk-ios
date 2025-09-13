@@ -31,8 +31,7 @@ public struct UserCollectionVideosRelationshipRemoveOperationPayloadData: Codabl
         case userreports
         case users
         case videos
-    }
-    public var id: String
+    }    public var id: String
     public var type: ModelType
 
     public init(

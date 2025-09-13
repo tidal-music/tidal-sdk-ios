@@ -16,8 +16,7 @@ public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashabl
         case distrokid
         case cdbaby
         case tunecore
-    }
-    public var provider: Provider
+    }    public var provider: Provider
 
     public init(
         provider: Provider
