@@ -16,13 +16,11 @@ public struct AlbumsAttributes: Codable, Hashable {
         case stream
         case dj
         case stem
-    }
-    public enum ModelType: String, Codable, CaseIterable {
+    }    public enum ModelType: String, Codable, CaseIterable {
         case album
         case ep
         case single
-    }
-    /** Available usage for this album */
+    }    /** Available usage for this album */
     public var availability: [Availability]?
     /** Barcode id (EAN-13 or UPC-A) */
     public var barcodeId: String

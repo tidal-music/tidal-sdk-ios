@@ -20,14 +20,12 @@ public struct FileStatus: Codable, Hashable {
         case takenDown
         case ok
         case error
-    }
-    public enum TechnicalFileStatus: String, Codable, CaseIterable {
+    }    public enum TechnicalFileStatus: String, Codable, CaseIterable {
         case uploadRequested
         case processing
         case ok
         case error
-    }
-    /** Moderation status for file */
+    }    /** Moderation status for file */
     public var moderationFileStatus: ModerationFileStatus
     /** Technical status for file */
     public var technicalFileStatus: TechnicalFileStatus

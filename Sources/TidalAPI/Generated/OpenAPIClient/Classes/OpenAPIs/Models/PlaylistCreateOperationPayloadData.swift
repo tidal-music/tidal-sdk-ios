@@ -14,8 +14,7 @@ public struct PlaylistCreateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
         case playlists
-    }
-    public var attributes: PlaylistCreateOperationPayloadDataAttributes
+    }    public var attributes: PlaylistCreateOperationPayloadDataAttributes
     public var type: ModelType
 
     public init(

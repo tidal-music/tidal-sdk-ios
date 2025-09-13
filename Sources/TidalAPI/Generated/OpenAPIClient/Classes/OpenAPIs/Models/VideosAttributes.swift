@@ -16,8 +16,7 @@ public struct VideosAttributes: Codable, Hashable {
         case stream
         case dj
         case stem
-    }
-    /** Available usage for this video */
+    }    /** Available usage for this video */
     public var availability: [Availability]?
     public var copyright: Copyright?
     /** Duration (ISO 8601) */

@@ -16,8 +16,7 @@ public struct TrackCreateOperationPayloadDataAttributes: Codable, Hashable {
         case _public
         case unlisted
         case _private
-    }
-    /** Access type */
+    }    /** Access type */
     public var accessType: AccessType
     /** Explicit content */
     public var explicit: Bool?

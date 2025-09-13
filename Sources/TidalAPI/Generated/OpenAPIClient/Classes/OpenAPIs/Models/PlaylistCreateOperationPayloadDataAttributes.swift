@@ -15,8 +15,7 @@ public struct PlaylistCreateOperationPayloadDataAttributes: Codable, Hashable {
     public enum AccessType: String, Codable, CaseIterable {
         case _public
         case unlisted
-    }
-    /** Access type */
+    }    /** Access type */
     public var accessType: AccessType?
     public var description: String?
     public var name: String

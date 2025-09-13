@@ -17,8 +17,7 @@ public struct LyricsAttributes: Codable, Hashable {
         case processing
         case error
         case ok
-    }
-    public var technicalStatus: TechnicalStatus
+    }    public var technicalStatus: TechnicalStatus
     public var text: String?
 
     public init(

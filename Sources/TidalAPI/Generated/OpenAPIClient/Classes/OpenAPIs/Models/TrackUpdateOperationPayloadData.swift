@@ -14,8 +14,7 @@ public struct TrackUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
         case tracks
-    }
-    public var attributes: TrackUpdateOperationPayloadDataAttributes?
+    }    public var attributes: TrackUpdateOperationPayloadDataAttributes?
     public var id: String
     public var relationships: TrackUpdateOperationPayloadDataRelationships?
     public var type: ModelType

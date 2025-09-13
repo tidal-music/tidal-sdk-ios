@@ -14,8 +14,7 @@ public struct ArtistFollowingRelationshipAddOperationPayloadData: Codable, Hasha
 
     public enum ModelType: String, Codable, CaseIterable {
         case artists
-    }
-    public var id: String
+    }    public var id: String
     public var type: ModelType
 
     public init(

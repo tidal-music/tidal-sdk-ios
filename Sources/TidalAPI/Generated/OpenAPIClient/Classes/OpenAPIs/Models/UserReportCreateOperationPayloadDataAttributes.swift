@@ -22,8 +22,7 @@ public struct UserReportCreateOperationPayloadDataAttributes: Codable, Hashable 
         case spam
         case copyrightInfringement
         case unknown
-    }
-    public var description: String
+    }    public var description: String
     public var reason: Reason
 
     public init(

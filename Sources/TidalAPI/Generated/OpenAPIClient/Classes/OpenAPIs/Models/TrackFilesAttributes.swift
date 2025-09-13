@@ -17,12 +17,10 @@ public struct TrackFilesAttributes: Codable, Hashable {
         case aaclc
         case flac
         case flacHires
-    }
-    public enum TrackPresentation: String, Codable, CaseIterable {
+    }    public enum TrackPresentation: String, Codable, CaseIterable {
         case full
         case preview
-    }
-    public var albumAudioNormalizationData: AudioNormalizationData?
+    }    public var albumAudioNormalizationData: AudioNormalizationData?
     /** File's audio format */
     public var format: Format?
     public var trackAudioNormalizationData: AudioNormalizationData?

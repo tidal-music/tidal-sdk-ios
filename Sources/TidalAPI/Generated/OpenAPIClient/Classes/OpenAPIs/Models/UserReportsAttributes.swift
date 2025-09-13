@@ -22,8 +22,7 @@ public struct UserReportsAttributes: Codable, Hashable {
         case spam
         case copyrightInfringement
         case unknown
-    }
-    /** Description */
+    }    /** Description */
     public var description: String
     /** Reason */
     public var reason: Reason

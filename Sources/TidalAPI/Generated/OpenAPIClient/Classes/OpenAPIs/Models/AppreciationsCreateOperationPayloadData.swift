@@ -14,8 +14,7 @@ public struct AppreciationsCreateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
         case appreciations
-    }
-    public var relationships: AppreciationsCreateOperationPayloadDataRelationships
+    }    public var relationships: AppreciationsCreateOperationPayloadDataRelationships
     public var type: ModelType
 
     public init(

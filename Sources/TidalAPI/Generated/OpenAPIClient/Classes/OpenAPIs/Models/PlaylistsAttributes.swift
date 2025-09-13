@@ -15,14 +15,12 @@ public struct PlaylistsAttributes: Codable, Hashable {
     public enum AccessType: String, Codable, CaseIterable {
         case _public
         case unlisted
-    }
-    public enum PlaylistType: String, Codable, CaseIterable {
+    }    public enum PlaylistType: String, Codable, CaseIterable {
         case editorial
         case user
         case mix
         case artist
-    }
-    public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    }    public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Access type */
     public var accessType: AccessType
     /** Indicates if the playlist has a duration and set number of tracks */
