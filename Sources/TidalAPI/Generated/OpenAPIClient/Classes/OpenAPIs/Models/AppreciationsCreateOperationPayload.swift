@@ -13,11 +13,11 @@ import AnyCodable
 public struct AppreciationsCreateOperationPayload: Codable, Hashable {
 
     public var data: AppreciationsCreateOperationPayloadData
-    public var meta: ArtistCreateOperationMeta?
+    public var meta: AppreciationsCreateOperationMeta?
 
     public init(
         data: AppreciationsCreateOperationPayloadData,
-        meta: ArtistCreateOperationMeta? = nil
+        meta: AppreciationsCreateOperationMeta? = nil
     ) {
         self.data = data
         self.meta = meta
