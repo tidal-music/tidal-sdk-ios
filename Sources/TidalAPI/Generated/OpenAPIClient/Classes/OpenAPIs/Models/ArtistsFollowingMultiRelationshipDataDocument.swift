@@ -13,18 +13,22 @@ import AnyCodable
 public struct ArtistsFollowingMultiRelationshipDataDocument: Codable, Hashable {
 
     public var data: [ArtistsFollowingResourceIdentifier]?
+    public var included: [IncludedInner]?
     public var links: Links
 
     public init(
         data: [ArtistsFollowingResourceIdentifier]? = nil,
+        included: [IncludedInner]? = nil,
         links: Links
     ) {
         self.data = data
+        self.included = included
         self.links = links
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case data
+        case included
         case links
     }
 
@@ -33,6 +37,7 @@ public struct ArtistsFollowingMultiRelationshipDataDocument: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(data, forKey: .data)
+        try container.encodeIfPresent(included, forKey: .included)
         try container.encode(links, forKey: .links)
     }
 }
