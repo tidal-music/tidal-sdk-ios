@@ -73,7 +73,7 @@ public enum {{classname}}Tidal {
      */
 	public static func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}[{{classname}}Tidal.{{enumName}}_{{operationId}}]{{/isContainer}}{{^isContainer}}{{classname}}Tidal.{{enumName}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) async throws{{#returnType}} -> {{{returnType}}}{{#returnType}}{{#isResponseOptional}}?{{/isResponseOptional}}{{/returnType}}{{/returnType}} {
 		return try await RequestHelper.createRequest {
-			{{classname}}.{{operationId}}WithRequestBuilder({{#allParams}}{{paramName}}: {{#isEnum}}{{paramName}}{{^required}}?{{/required}}.to{{classname}}Enum(){{/isEnum}}{{^isEnum}}{{paramName}}{{/isEnum}}{{^-last}}, {{/-last}}{{/allParams}})
+			{{classname}}.{{operationId}}WithRequestBuilder({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{paramName}}{{^required}}?{{/required}}.compactMap { $0.to{{classname}}Enum() }{{/isContainer}}{{^isContainer}}{{paramName}}{{^required}}?{{/required}}.to{{classname}}Enum(){{/isContainer}}{{/isEnum}}{{^isEnum}}{{paramName}}{{/isEnum}}{{^-last}}, {{/-last}}{{/allParams}})
 		}
 	}
 {{/operation}}
