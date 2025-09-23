@@ -17,7 +17,7 @@ internal class SearchSuggestionsAPI {
      
      - parameter id: (path)  
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to "INCLUDE")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - returns: SearchSuggestionsSingleResourceDataDocument
      */
@@ -38,7 +38,7 @@ internal class SearchSuggestionsAPI {
        - name: Client_Credentials
      - parameter id: (path)  
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to "INCLUDE")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - returns: RequestBuilder<SearchSuggestionsSingleResourceDataDocument> 
      */
@@ -73,7 +73,7 @@ internal class SearchSuggestionsAPI {
      
      - parameter id: (path)  
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to "INCLUDE")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SearchSuggestionsMultiRelationshipDataDocument
@@ -95,7 +95,7 @@ internal class SearchSuggestionsAPI {
        - name: Client_Credentials
      - parameter id: (path)  
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to "INCLUDE")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument> 
