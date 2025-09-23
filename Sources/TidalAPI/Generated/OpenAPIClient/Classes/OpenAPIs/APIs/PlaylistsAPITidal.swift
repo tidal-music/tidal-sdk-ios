@@ -15,13 +15,36 @@ public enum PlaylistsAPITidal {
 
 
 	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_playlistsGet: String, CaseIterable {
+		case createdat = "createdAt"
+		case createdat2 = "-createdAt"
+		case lastmodifiedat = "lastModifiedAt"
+		case lastmodifiedat2 = "-lastModifiedAt"
+		case name = "name"
+		case name2 = "-name"
+
+		func toPlaylistsAPIEnum() -> PlaylistsAPI.Sort_playlistsGet {
+			switch self {
+			case .createdat: return .createdat
+			case .createdat2: return .createdat2
+			case .lastmodifiedat: return .lastmodifiedat
+			case .lastmodifiedat2: return .lastmodifiedat2
+			case .name: return .name
+			case .name2: return .name2
+			}
+		}
+	}
+
+	/**
      Get multiple playlists.
      
      - returns: PlaylistsMultiResourceDataDocument
      */
-	public static func playlistsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiResourceDataDocument {
+	public static func playlistsGet(countryCode: String, pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterId: filterId)
+			PlaylistsAPI.playlistsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, include: include, filterOwnersId: filterOwnersId, filterId: filterId)
 		}
 	}
 

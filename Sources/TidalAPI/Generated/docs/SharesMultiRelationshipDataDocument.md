@@ -1,4 +1,4 @@
-# UserSharesMultiRelationshipDataDocument
+# SharesMultiRelationshipDataDocument
 
 ## Properties
 Name | Type | Description | Notes

@@ -24,6 +24,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case typeProvidersResourceObject(ProvidersResourceObject)
     case typeSearchResultsResourceObject(SearchResultsResourceObject)
     case typeSearchSuggestionsResourceObject(SearchSuggestionsResourceObject)
+    case typeSharesResourceObject(SharesResourceObject)
     case typeTrackFilesResourceObject(TrackFilesResourceObject)
     case typeTrackManifestsResourceObject(TrackManifestsResourceObject)
     case typeTrackSourceFilesResourceObject(TrackSourceFilesResourceObject)
@@ -33,7 +34,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case typeUserEntitlementsResourceObject(UserEntitlementsResourceObject)
     case typeUserRecommendationsResourceObject(UserRecommendationsResourceObject)
     case typeUserReportsResourceObject(UserReportsResourceObject)
-    case typeUserSharesResourceObject(UserSharesResourceObject)
     case typeUsersResourceObject(UsersResourceObject)
     case typeVideosResourceObject(VideosResourceObject)
 
@@ -66,6 +66,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .typeSearchSuggestionsResourceObject(let value):
             try container.encode(value)
+        case .typeSharesResourceObject(let value):
+            try container.encode(value)
         case .typeTrackFilesResourceObject(let value):
             try container.encode(value)
         case .typeTrackManifestsResourceObject(let value):
@@ -83,8 +85,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .typeUserRecommendationsResourceObject(let value):
             try container.encode(value)
         case .typeUserReportsResourceObject(let value):
-            try container.encode(value)
-        case .typeUserSharesResourceObject(let value):
             try container.encode(value)
         case .typeUsersResourceObject(let value):
             try container.encode(value)
@@ -141,6 +141,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "searchSuggestions":
             let value = try SearchSuggestionsResourceObject(from: decoder)
             self = .typeSearchSuggestionsResourceObject(value)
+        case "shares":
+            let value = try SharesResourceObject(from: decoder)
+            self = .typeSharesResourceObject(value)
         case "trackFiles":
             let value = try TrackFilesResourceObject(from: decoder)
             self = .typeTrackFilesResourceObject(value)
@@ -168,9 +171,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userReports":
             let value = try UserReportsResourceObject(from: decoder)
             self = .typeUserReportsResourceObject(value)
-        case "userShares":
-            let value = try UserSharesResourceObject(from: decoder)
-            self = .typeUserSharesResourceObject(value)
         case "users":
             let value = try UsersResourceObject(from: decoder)
             self = .typeUsersResourceObject(value)
@@ -200,6 +200,7 @@ extension IncludedInner: Identifiable {
         case .typeProvidersResourceObject(let value): return value.id
         case .typeSearchResultsResourceObject(let value): return value.id
         case .typeSearchSuggestionsResourceObject(let value): return value.id
+        case .typeSharesResourceObject(let value): return value.id
         case .typeTrackFilesResourceObject(let value): return value.id
         case .typeTrackManifestsResourceObject(let value): return value.id
         case .typeTrackSourceFilesResourceObject(let value): return value.id
@@ -209,7 +210,6 @@ extension IncludedInner: Identifiable {
         case .typeUserEntitlementsResourceObject(let value): return value.id
         case .typeUserRecommendationsResourceObject(let value): return value.id
         case .typeUserReportsResourceObject(let value): return value.id
-        case .typeUserSharesResourceObject(let value): return value.id
         case .typeUsersResourceObject(let value): return value.id
         case .typeVideosResourceObject(let value): return value.id
         }

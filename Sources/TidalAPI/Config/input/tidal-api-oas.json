@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.73"
+    "version" : "0.1.79"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -45,6 +45,8 @@
   }, {
     "name" : "searchSuggestions"
   }, {
+    "name" : "shares"
+  }, {
     "name" : "trackFiles"
   }, {
     "name" : "trackManifests"
@@ -63,8 +65,6 @@
   }, {
     "name" : "userReports"
   }, {
-    "name" : "userShares"
-  }, {
     "name" : "users"
   }, {
     "name" : "videos"
@@ -80,7 +80,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -1437,7 +1438,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -2409,7 +2411,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: biography",
@@ -2708,7 +2711,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -2849,7 +2853,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: profileArt",
@@ -4185,7 +4190,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
@@ -4271,7 +4277,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: track",
@@ -4342,7 +4349,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -4351,6 +4359,20 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending.",
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "createdAt",
+              "default" : "-createdAt",
+              "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ]
+            }
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners",
@@ -4445,7 +4467,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -4563,7 +4586,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners",
@@ -4641,7 +4665,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -4705,7 +4730,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: coverArt",
@@ -4899,7 +4925,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -5038,7 +5065,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -5102,7 +5130,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
@@ -5977,16 +6006,18 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Explicit filter",
-          "example" : "include, exclude",
+          "example" : "INCLUDE/EXCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: directHits",
@@ -6064,16 +6095,18 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Explicit filter",
-          "example" : "include, exclude",
+          "example" : "INCLUDE/EXCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: directHits",
@@ -6139,6 +6172,375 @@
         "tags" : [ "searchSuggestions" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/shares" : {
+      "get" : {
+        "description" : "Retrieves multiple shares by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners, sharedResources",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Share code",
+          "example" : "xyz",
+          "in" : "query",
+          "name" : "filter[code]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "xyz"
+            }
+          }
+        }, {
+          "description" : "User share id",
+          "example" : "a468bee88def",
+          "in" : "query",
+          "name" : "filter[id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "a468bee88def"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Shares_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get multiple shares.",
+        "tags" : [ "shares" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "post" : {
+        "description" : "Creates a new share.",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SharesCreateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Shares_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Create single share.",
+        "tags" : [ "shares" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/shares/{id}" : {
+      "get" : {
+        "description" : "Retrieves single share by id.",
+        "parameters" : [ {
+          "description" : "User share id",
+          "example" : "a468bee88def",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners, sharedResources",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Shares_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get single share.",
+        "tags" : [ "shares" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/shares/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "description" : "User share id",
+          "example" : "a468bee88def",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Shares_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "tags" : [ "shares" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/shares/{id}/relationships/sharedResources" : {
+      "get" : {
+        "description" : "Retrieves sharedResources relationship.",
+        "parameters" : [ {
+          "description" : "User share id",
+          "example" : "a468bee88def",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: sharedResources",
+          "example" : "sharedResources",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "sharedResources"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Shares_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get sharedResources relationship (\"to-many\").",
+        "tags" : [ "shares" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -6805,7 +7207,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -7030,7 +7433,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, sourceFile, trackStatistics",
@@ -7950,14 +8354,12 @@
           }
         },
         "security" : [ {
-          "Client_Credentials" : [ ]
-        }, {
           "Authorization_Code_PKCE" : [ ]
         } ],
         "summary" : "Get trackStatistics relationship (\"to-one\").",
         "tags" : [ "tracks" ],
         "x-path-item-properties" : {
-          "required-access-tier" : "THIRD_PARTY"
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -7980,7 +8382,8 @@
           "name" : "locale",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -7989,7 +8392,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos",
@@ -8120,7 +8524,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "BCP 47 locale",
@@ -8129,7 +8534,8 @@
           "name" : "locale",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -8138,6 +8544,20 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending.",
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "albums.addedAt",
+              "default" : "-albums.addedAt",
+              "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ]
+            }
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: albums",
@@ -8213,7 +8633,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -8330,7 +8751,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "BCP 47 locale",
@@ -8339,7 +8761,8 @@
           "name" : "locale",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -8348,6 +8771,20 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending.",
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "artists.addedAt",
+              "default" : "-artists.addedAt",
+              "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ]
+            }
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: artists",
@@ -8423,7 +8860,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -8619,6 +9057,20 @@
             "type" : "string"
           }
         }, {
+          "description" : "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending.",
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "playlists.addedAt",
+              "default" : "-playlists.addedAt",
+              "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ]
+            }
+          }
+        }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: playlists",
           "example" : "playlists",
           "in" : "query",
@@ -8800,7 +9252,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "BCP 47 locale",
@@ -8809,7 +9262,8 @@
           "name" : "locale",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -8818,6 +9272,20 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending.",
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "tracks.addedAt",
+              "default" : "-tracks.addedAt",
+              "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ]
+            }
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: tracks",
@@ -8893,7 +9361,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -9010,7 +9479,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "BCP 47 locale",
@@ -9019,7 +9489,8 @@
           "name" : "locale",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -9028,6 +9499,20 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending.",
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "videos.addedAt",
+              "default" : "-videos.addedAt",
+              "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ]
+            }
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: videos",
@@ -9103,7 +9588,8 @@
           "name" : "countryCode",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -9627,375 +10113,6 @@
         } ],
         "summary" : "Create single userReport.",
         "tags" : [ "userReports" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      }
-    },
-    "/userShares" : {
-      "get" : {
-        "description" : "Retrieves multiple userShares by available filters, or without if applicable.",
-        "parameters" : [ {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: owners, sharedResources",
-          "example" : "owners",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "owners"
-            }
-          }
-        }, {
-          "description" : "Share code",
-          "example" : "xyz",
-          "in" : "query",
-          "name" : "filter[code]",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "xyz"
-            }
-          }
-        }, {
-          "description" : "User share id",
-          "example" : "a468bee88def",
-          "in" : "query",
-          "name" : "filter[id]",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "a468bee88def"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserShares_Multi_Resource_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Client_Credentials" : [ ]
-        }, {
-          "Authorization_Code_PKCE" : [ ]
-        } ],
-        "summary" : "Get multiple userShares.",
-        "tags" : [ "userShares" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      },
-      "post" : {
-        "description" : "Creates a new userShare.",
-        "parameters" : [ ],
-        "requestBody" : {
-          "content" : {
-            "application/vnd.api+json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/UserSharesCreateOperation_Payload"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "201" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserShares_Single_Resource_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "w_usr" ]
-        } ],
-        "summary" : "Create single userShare.",
-        "tags" : [ "userShares" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      }
-    },
-    "/userShares/{id}" : {
-      "get" : {
-        "description" : "Retrieves single userShare by id.",
-        "parameters" : [ {
-          "description" : "User share id",
-          "example" : "a468bee88def",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: owners, sharedResources",
-          "example" : "owners",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "owners"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserShares_Single_Resource_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Client_Credentials" : [ ]
-        }, {
-          "Authorization_Code_PKCE" : [ ]
-        } ],
-        "summary" : "Get single userShare.",
-        "tags" : [ "userShares" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      }
-    },
-    "/userShares/{id}/relationships/owners" : {
-      "get" : {
-        "description" : "Retrieves owners relationship.",
-        "parameters" : [ {
-          "description" : "User share id",
-          "example" : "a468bee88def",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
-          "example" : "owners",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "owners"
-            }
-          }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserShares_Multi_Relationship_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "r_usr" ]
-        } ],
-        "summary" : "Get owners relationship (\"to-many\").",
-        "tags" : [ "userShares" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      }
-    },
-    "/userShares/{id}/relationships/sharedResources" : {
-      "get" : {
-        "description" : "Retrieves sharedResources relationship.",
-        "parameters" : [ {
-          "description" : "User share id",
-          "example" : "a468bee88def",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: sharedResources",
-          "example" : "sharedResources",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "sharedResources"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserShares_Multi_Relationship_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Client_Credentials" : [ ]
-        }, {
-          "Authorization_Code_PKCE" : [ ]
-        } ],
-        "summary" : "Get sharedResources relationship (\"to-many\").",
-        "tags" : [ "userShares" ],
         "x-path-item-properties" : {
           "required-access-tier" : "INTERNAL"
         }
@@ -10985,6 +11102,9 @@
               "$ref" : "#/components/schemas/Albums_Items_Resource_Identifier"
             }
           },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
           "links" : {
             "$ref" : "#/components/schemas/Links"
           }
@@ -11127,6 +11247,14 @@
           }
         }
       },
+      "AppreciationsCreateOperation_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "dryRun" : {
+            "type" : "boolean"
+          }
+        }
+      },
       "AppreciationsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -11135,7 +11263,7 @@
             "$ref" : "#/components/schemas/AppreciationsCreateOperation_Payload_Data"
           },
           "meta" : {
-            "$ref" : "#/components/schemas/ArtistCreateOperation_Meta"
+            "$ref" : "#/components/schemas/AppreciationsCreateOperation_Meta"
           }
         }
       },
@@ -11904,6 +12032,9 @@
               "$ref" : "#/components/schemas/Artists_Followers_Resource_Identifier"
             }
           },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
           "links" : {
             "$ref" : "#/components/schemas/Links"
           }
@@ -11961,6 +12092,9 @@
             "items" : {
               "$ref" : "#/components/schemas/Artists_Following_Resource_Identifier"
             }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
@@ -12133,6 +12267,9 @@
             "items" : {
               "$ref" : "#/components/schemas/Artists_TrackProviders_Resource_Identifier"
             }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
@@ -12670,6 +12807,7 @@
               "providers" : "#/components/schemas/Providers_Resource_Object",
               "searchResults" : "#/components/schemas/SearchResults_Resource_Object",
               "searchSuggestions" : "#/components/schemas/SearchSuggestions_Resource_Object",
+              "shares" : "#/components/schemas/Shares_Resource_Object",
               "trackFiles" : "#/components/schemas/TrackFiles_Resource_Object",
               "trackManifests" : "#/components/schemas/TrackManifests_Resource_Object",
               "trackSourceFiles" : "#/components/schemas/TrackSourceFiles_Resource_Object",
@@ -12679,7 +12817,6 @@
               "userEntitlements" : "#/components/schemas/UserEntitlements_Resource_Object",
               "userRecommendations" : "#/components/schemas/UserRecommendations_Resource_Object",
               "userReports" : "#/components/schemas/UserReports_Resource_Object",
-              "userShares" : "#/components/schemas/UserShares_Resource_Object",
               "users" : "#/components/schemas/Users_Resource_Object",
               "videos" : "#/components/schemas/Videos_Resource_Object"
             },
@@ -12712,6 +12849,8 @@
           }, {
             "$ref" : "#/components/schemas/SearchSuggestions_Resource_Object"
           }, {
+            "$ref" : "#/components/schemas/Shares_Resource_Object"
+          }, {
             "$ref" : "#/components/schemas/TrackFiles_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/TrackManifests_Resource_Object"
@@ -12729,8 +12868,6 @@
             "$ref" : "#/components/schemas/UserRecommendations_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/UserReports_Resource_Object"
-          }, {
-            "$ref" : "#/components/schemas/UserShares_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/Users_Resource_Object"
           }, {
@@ -13305,6 +13442,9 @@
               "$ref" : "#/components/schemas/Playlists_Items_Resource_Identifier"
             }
           },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
           "links" : {
             "$ref" : "#/components/schemas/Links"
           }
@@ -13799,6 +13939,171 @@
           }
         },
         "description" : "Suggested search queries"
+      },
+      "SharesCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/SharesCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "SharesCreateOperation_Payload_Data" : {
+        "required" : [ "relationships", "type" ],
+        "type" : "object",
+        "properties" : {
+          "relationships" : {
+            "$ref" : "#/components/schemas/SharesCreateOperation_Payload_Data_Relationships"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "shares" ]
+          }
+        }
+      },
+      "SharesCreateOperation_Payload_Data_Relationships" : {
+        "required" : [ "sharedResources" ],
+        "type" : "object",
+        "properties" : {
+          "sharedResources" : {
+            "$ref" : "#/components/schemas/SharesCreateOperation_Payload_Data_Relationships_SharedResources"
+          }
+        }
+      },
+      "SharesCreateOperation_Payload_Data_Relationships_SharedResources" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data"
+            }
+          }
+        }
+      },
+      "SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "tracks" ]
+          }
+        }
+      },
+      "Shares_Attributes" : {
+        "required" : [ "code", "createdAt" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "Share code"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "description" : "Datetime of share creation (ISO 8601)",
+            "format" : "date-time"
+          },
+          "externalLinks" : {
+            "type" : "array",
+            "description" : "Links external to TIDAL API",
+            "items" : {
+              "$ref" : "#/components/schemas/External_Link"
+            }
+          }
+        }
+      },
+      "Shares_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Shares_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Shares_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Shares_Relationships" : {
+        "required" : [ "owners", "sharedResources" ],
+        "properties" : {
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          },
+          "sharedResources" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          }
+        }
+      },
+      "Shares_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/Shares_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Shares_Relationships"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "Shares_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Shares_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
       },
       "Single_Relationship_Data_Document" : {
         "required" : [ "links" ],
@@ -14954,6 +15259,9 @@
               "$ref" : "#/components/schemas/UserCollections_Albums_Resource_Identifier"
             }
           },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
           "links" : {
             "$ref" : "#/components/schemas/Links"
           }
@@ -14997,6 +15305,9 @@
             "items" : {
               "$ref" : "#/components/schemas/UserCollections_Artists_Resource_Identifier"
             }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
@@ -15080,6 +15391,9 @@
             "items" : {
               "$ref" : "#/components/schemas/UserCollections_Playlists_Resource_Identifier"
             }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
@@ -15186,6 +15500,9 @@
               "$ref" : "#/components/schemas/UserCollections_Tracks_Resource_Identifier"
             }
           },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
           "links" : {
             "$ref" : "#/components/schemas/Links"
           }
@@ -15229,6 +15546,9 @@
             "items" : {
               "$ref" : "#/components/schemas/UserCollections_Videos_Resource_Identifier"
             }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
@@ -15556,171 +15876,6 @@
         "properties" : {
           "data" : {
             "$ref" : "#/components/schemas/UserReports_Resource_Object"
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "UserSharesCreateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/UserSharesCreateOperation_Payload_Data"
-          }
-        }
-      },
-      "UserSharesCreateOperation_Payload_Data" : {
-        "required" : [ "relationships", "type" ],
-        "type" : "object",
-        "properties" : {
-          "relationships" : {
-            "$ref" : "#/components/schemas/UserSharesCreateOperation_Payload_Data_Relationships"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "userShares" ]
-          }
-        }
-      },
-      "UserSharesCreateOperation_Payload_Data_Relationships" : {
-        "required" : [ "sharedResources" ],
-        "type" : "object",
-        "properties" : {
-          "sharedResources" : {
-            "$ref" : "#/components/schemas/UserSharesCreateOperation_Payload_Data_Relationships_SharedResources"
-          }
-        }
-      },
-      "UserSharesCreateOperation_Payload_Data_Relationships_SharedResources" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 1,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UserSharesCreateOperation_Payload_Data_Relationships_SharedResources_Data"
-            }
-          }
-        }
-      },
-      "UserSharesCreateOperation_Payload_Data_Relationships_SharedResources_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "tracks" ]
-          }
-        }
-      },
-      "UserShares_Attributes" : {
-        "required" : [ "code", "createdAt" ],
-        "type" : "object",
-        "properties" : {
-          "code" : {
-            "type" : "string",
-            "description" : "Share code"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "description" : "Datetime of userShare creation (ISO 8601)",
-            "format" : "date-time"
-          },
-          "externalLinks" : {
-            "type" : "array",
-            "description" : "Links external to TIDAL API",
-            "items" : {
-              "$ref" : "#/components/schemas/External_Link"
-            }
-          }
-        }
-      },
-      "UserShares_Multi_Relationship_Data_Document" : {
-        "required" : [ "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Resource_Identifier"
-            }
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "UserShares_Multi_Resource_Data_Document" : {
-        "required" : [ "data", "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UserShares_Resource_Object"
-            }
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "UserShares_Relationships" : {
-        "required" : [ "owners", "sharedResources" ],
-        "properties" : {
-          "owners" : {
-            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
-          },
-          "sharedResources" : {
-            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
-          }
-        }
-      },
-      "UserShares_Resource_Object" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/UserShares_Attributes"
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "Resource id",
-            "example" : "12345"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/UserShares_Relationships"
-          },
-          "type" : {
-            "minLength" : 1,
-            "type" : "string",
-            "description" : "Resource type",
-            "example" : "tracks"
-          }
-        }
-      },
-      "UserShares_Single_Resource_Data_Document" : {
-        "required" : [ "data", "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/UserShares_Resource_Object"
           },
           "included" : {
             "$ref" : "#/components/schemas/Included"
