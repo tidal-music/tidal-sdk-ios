@@ -13,7 +13,7 @@ import AnyCodable
 public struct ArtistClaimsCreateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case artistclaims
+        case artistclaims = "artistClaims"
     }
     public var attributes: ArtistClaimsCreateOperationPayloadDataAttributes
     public var type: ModelType
@@ -39,5 +39,3 @@ public struct ArtistClaimsCreateOperationPayloadData: Codable, Hashable {
         try container.encode(type, forKey: .type)
     }
 }
-
-

@@ -5,6 +5,7 @@ disabled_rules:
   - file_length
   - large_tuple
   - opening_brace  # Swiftformat conflicts with this one
+  - redundant_string_enum_value  # Required for API decoding with explicit raw values
   - todo
   - trailing_comma  # Swiftformat takes care of this
   - trailing_whitespace  # Swiftformat takes care of this
@@ -34,4 +35,5 @@ nesting:
 excluded:
   - '**/.build'
   - '**/Generated/**'
+  - 'Sources/TidalAPI/Generated/**'
   - bin

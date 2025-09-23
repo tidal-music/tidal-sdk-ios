@@ -13,9 +13,9 @@ import AnyCodable
 public struct VideosAttributes: Codable, Hashable {
 
     public enum Availability: String, Codable, CaseIterable {
-        case stream
-        case dj
-        case stem
+        case stream = "STREAM"
+        case dj = "DJ"
+        case stem = "STEM"
     }
     /** Available usage for this video */
     public var availability: [Availability]?
@@ -90,5 +90,3 @@ public struct VideosAttributes: Codable, Hashable {
         try container.encodeIfPresent(version, forKey: .version)
     }
 }
-
-

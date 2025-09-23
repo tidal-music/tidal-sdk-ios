@@ -13,25 +13,25 @@ import AnyCodable
 public struct ArtistClaimsAttributes: Codable, Hashable {
 
     public enum Provider: String, Codable, CaseIterable {
-        case distrokid
-        case cdbaby
-        case tunecore
+        case distrokid = "DISTROKID"
+        case cdbaby = "CDBABY"
+        case tunecore = "TUNECORE"
     }
     public enum Recommendation: String, Codable, CaseIterable {
-        case dspProfileClaimed
-        case contentMigratedToUploads
-        case noContentMatched
+        case dspProfileClaimed = "DSP_PROFILE_CLAIMED"
+        case contentMigratedToUploads = "CONTENT_MIGRATED_TO_UPLOADS"
+        case noContentMatched = "NO_CONTENT_MATCHED"
     }
     public enum Status: String, Codable, CaseIterable {
-        case awaitingOauth
-        case fetchingContent
-        case verified
-        case noMatches
-        case authenticationFailed
-        case processing
-        case completed
-        case failed
-        case cancelled
+        case awaitingOauth = "AWAITING_OAUTH"
+        case fetchingContent = "FETCHING_CONTENT"
+        case verified = "VERIFIED"
+        case noMatches = "NO_MATCHES"
+        case authenticationFailed = "AUTHENTICATION_FAILED"
+        case processing = "PROCESSING"
+        case completed = "COMPLETED"
+        case failed = "FAILED"
+        case cancelled = "CANCELLED"
     }
     public static let providerRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** The DSP used for authentication */
@@ -78,5 +78,3 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         try container.encodeIfPresent(status, forKey: .status)
     }
 }
-
-

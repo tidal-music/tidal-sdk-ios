@@ -13,7 +13,7 @@ import AnyCodable
 public struct ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case artists
+        case artists = "artists"
     }
     public var id: String
     public var type: ModelType
@@ -40,7 +40,5 @@ public struct ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayloadData: 
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayloadData: Identifiable {}
-

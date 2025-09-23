@@ -13,15 +13,15 @@ import AnyCodable
 public struct UserReportCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum Reason: String, Codable, CaseIterable {
-        case sexualContentOrNudity
-        case violentOrDangerousContent
-        case hatefulOrAbusiveContent
-        case harassment
-        case privacyViolation
-        case scamsOrFraud
-        case spam
-        case copyrightInfringement
-        case unknown
+        case sexualContentOrNudity = "SEXUAL_CONTENT_OR_NUDITY"
+        case violentOrDangerousContent = "VIOLENT_OR_DANGEROUS_CONTENT"
+        case hatefulOrAbusiveContent = "HATEFUL_OR_ABUSIVE_CONTENT"
+        case harassment = "HARASSMENT"
+        case privacyViolation = "PRIVACY_VIOLATION"
+        case scamsOrFraud = "SCAMS_OR_FRAUD"
+        case spam = "SPAM"
+        case copyrightInfringement = "COPYRIGHT_INFRINGEMENT"
+        case unknown = "UNKNOWN"
     }
     public var description: String
     public var reason: Reason
@@ -47,5 +47,3 @@ public struct UserReportCreateOperationPayloadDataAttributes: Codable, Hashable 
         try container.encode(reason, forKey: .reason)
     }
 }
-
-

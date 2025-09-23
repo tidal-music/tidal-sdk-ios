@@ -14,18 +14,18 @@ import AnyCodable
 public struct ExternalLinkMeta: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case tidalSharing
-        case tidalUserSharing
-        case tidalAutoplayAndroid
-        case tidalAutoplayIos
-        case tidalAutoplayWeb
-        case twitter
-        case facebook
-        case instagram
-        case tiktok
-        case snapchat
-        case officialHomepage
-        case cashappContributions
+        case tidalSharing = "TIDAL_SHARING"
+        case tidalUserSharing = "TIDAL_USER_SHARING"
+        case tidalAutoplayAndroid = "TIDAL_AUTOPLAY_ANDROID"
+        case tidalAutoplayIos = "TIDAL_AUTOPLAY_IOS"
+        case tidalAutoplayWeb = "TIDAL_AUTOPLAY_WEB"
+        case twitter = "TWITTER"
+        case facebook = "FACEBOOK"
+        case instagram = "INSTAGRAM"
+        case tiktok = "TIKTOK"
+        case snapchat = "SNAPCHAT"
+        case officialHomepage = "OFFICIAL_HOMEPAGE"
+        case cashappContributions = "CASHAPP_CONTRIBUTIONS"
     }
     public var type: ModelType
 
@@ -46,5 +46,3 @@ public struct ExternalLinkMeta: Codable, Hashable {
         try container.encode(type, forKey: .type)
     }
 }
-
-

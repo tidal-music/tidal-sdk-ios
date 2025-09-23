@@ -13,8 +13,8 @@ import AnyCodable
 public struct PlaylistUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum AccessType: String, Codable, CaseIterable {
-        case _public
-        case unlisted
+        case _public = "PUBLIC"
+        case unlisted = "UNLISTED"
     }
     /** Access type */
     public var accessType: AccessType?
@@ -46,5 +46,3 @@ public struct PlaylistUpdateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(name, forKey: .name)
     }
 }
-
-

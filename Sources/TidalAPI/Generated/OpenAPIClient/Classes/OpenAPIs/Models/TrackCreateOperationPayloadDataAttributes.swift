@@ -13,9 +13,9 @@ import AnyCodable
 public struct TrackCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum AccessType: String, Codable, CaseIterable {
-        case _public
-        case unlisted
-        case _private
+        case _public = "PUBLIC"
+        case unlisted = "UNLISTED"
+        case _private = "PRIVATE"
     }
     /** Access type */
     public var accessType: AccessType
@@ -48,5 +48,3 @@ public struct TrackCreateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encode(title, forKey: .title)
     }
 }
-
-

@@ -13,8 +13,8 @@ import AnyCodable
 public struct PlaylistItemsRelationshipAddOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case tracks
-        case videos
+        case tracks = "tracks"
+        case videos = "videos"
     }
     public var id: String
     public var type: ModelType
@@ -41,7 +41,5 @@ public struct PlaylistItemsRelationshipAddOperationPayloadData: Codable, Hashabl
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension PlaylistItemsRelationshipAddOperationPayloadData: Identifiable {}
-

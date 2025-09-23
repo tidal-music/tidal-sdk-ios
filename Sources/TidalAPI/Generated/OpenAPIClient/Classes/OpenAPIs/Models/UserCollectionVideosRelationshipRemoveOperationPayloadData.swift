@@ -13,24 +13,24 @@ import AnyCodable
 public struct UserCollectionVideosRelationshipRemoveOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case albums
-        case appreciations
-        case artistclaims
-        case artistroles
-        case artists
-        case artworks
-        case playlists
-        case providers
-        case searchresults
-        case searchsuggestions
-        case tracks
-        case trackstatistics
-        case usercollections
-        case userentitlements
-        case userrecommendations
-        case userreports
-        case users
-        case videos
+        case albums = "albums"
+        case appreciations = "appreciations"
+        case artistclaims = "artistClaims"
+        case artistroles = "artistRoles"
+        case artists = "artists"
+        case artworks = "artworks"
+        case playlists = "playlists"
+        case providers = "providers"
+        case searchresults = "searchResults"
+        case searchsuggestions = "searchSuggestions"
+        case tracks = "tracks"
+        case trackstatistics = "trackStatistics"
+        case usercollections = "userCollections"
+        case userentitlements = "userEntitlements"
+        case userrecommendations = "userRecommendations"
+        case userreports = "userReports"
+        case users = "users"
+        case videos = "videos"
     }
     public var id: String
     public var type: ModelType
@@ -57,7 +57,5 @@ public struct UserCollectionVideosRelationshipRemoveOperationPayloadData: Codabl
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension UserCollectionVideosRelationshipRemoveOperationPayloadData: Identifiable {}
-

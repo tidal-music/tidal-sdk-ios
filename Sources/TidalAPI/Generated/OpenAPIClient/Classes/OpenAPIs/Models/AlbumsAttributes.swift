@@ -13,14 +13,14 @@ import AnyCodable
 public struct AlbumsAttributes: Codable, Hashable {
 
     public enum Availability: String, Codable, CaseIterable {
-        case stream
-        case dj
-        case stem
+        case stream = "STREAM"
+        case dj = "DJ"
+        case stem = "STEM"
     }
     public enum ModelType: String, Codable, CaseIterable {
-        case album
-        case ep
-        case single
+        case album = "ALBUM"
+        case ep = "EP"
+        case single = "SINGLE"
     }
     /** Available usage for this album */
     public var availability: [Availability]?
@@ -118,5 +118,3 @@ public struct AlbumsAttributes: Codable, Hashable {
         try container.encodeIfPresent(version, forKey: .version)
     }
 }
-
-
