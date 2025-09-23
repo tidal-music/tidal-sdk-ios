@@ -35,5 +35,4 @@ nesting:
 excluded:
   - '**/.build'
   - '**/Generated/**'
-  - 'Sources/TidalAPI/Generated/**'
   - bin
