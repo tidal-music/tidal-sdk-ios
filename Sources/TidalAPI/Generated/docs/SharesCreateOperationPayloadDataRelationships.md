@@ -1,11 +1,9 @@
-# UserSharesAttributes
+# SharesCreateOperationPayloadDataRelationships
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**code** | **String** | Share code | 
-**createdAt** | **Date** | Datetime of userShare creation (ISO 8601) | 
-**externalLinks** | [ExternalLink] | Links external to TIDAL API | [optional] 
+**sharedResources** | [**SharesCreateOperationPayloadDataRelationshipsSharedResources**](SharesCreateOperationPayloadDataRelationshipsSharedResources.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -1,4 +1,4 @@
-# UserSharesRelationships
+# SharesRelationships
 
 ## Properties
 Name | Type | Description | Notes
