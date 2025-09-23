@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2025-09-23
+
+### Added
+- **Appreciations API**: New `AppreciationsCreateOperationMeta` model for enhanced creation operations (TidalAPI)
+
+### Changed
+- **Shares API**: Renamed "UserShares" related classes and endpoints to "Shares" (TidalAPI)
+  - `UserSharesAPI` → `SharesAPI`
+  - `UserSharesAPITidal` → `SharesAPITidal`
+  - Updated related model classes and endpoints accordingly
+- Updated TidalAPI module with latest OpenAPI spec version 0.1.79 (TidalAPI)
+- Enhanced API specifications for Playlists, Search Suggestions, Tracks, and User Collections (TidalAPI)
+
 ## [0.6.0] - 2025-09-11
 
 ### Added
