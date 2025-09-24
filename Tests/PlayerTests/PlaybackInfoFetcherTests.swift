@@ -739,3 +739,41 @@ extension PlaybackInfoFetcherTests {
 }
 
 // swiftlint:enable file_length type_body_length
+
+// MARK: - New Playback Endpoints: Audio Quality Mapping Tests
+
+extension PlaybackInfoFetcherTests {
+	func test_formatsToAudioQuality_hiResLossless() {
+		let result = PlaybackInfoFetcher.getAudioQualityFromFormats([.flacHires], fallback: .LOW)
+		XCTAssertEqual(result, .HI_RES_LOSSLESS)
+	}
+
+	func test_formatsToAudioQuality_lossless() {
+		let result = PlaybackInfoFetcher.getAudioQualityFromFormats([.flac], fallback: .LOW)
+		XCTAssertEqual(result, .LOSSLESS)
+	}
+
+	func test_formatsToAudioQuality_high() {
+		let result = PlaybackInfoFetcher.getAudioQualityFromFormats([.aaclc], fallback: .LOW)
+		XCTAssertEqual(result, .HIGH)
+	}
+
+	func test_formatsToAudioQuality_low() {
+		let result = PlaybackInfoFetcher.getAudioQualityFromFormats([.heaacv1], fallback: .HIGH)
+		XCTAssertEqual(result, .LOW)
+	}
+
+	func test_formatsToAudioQuality_priorityOrdering() {
+		// If multiple formats are present, prefer the highest quality in order
+		let result1 = PlaybackInfoFetcher.getAudioQualityFromFormats([.aaclc, .flac], fallback: .LOW)
+		XCTAssertEqual(result1, .LOSSLESS)
+
+		let result2 = PlaybackInfoFetcher.getAudioQualityFromFormats([.heaacv1, .aaclc, .flacHires], fallback: .LOW)
+		XCTAssertEqual(result2, .HI_RES_LOSSLESS)
+	}
+
+	func test_formatsToAudioQuality_emptyOrNilFallsBack() {
+		XCTAssertEqual(PlaybackInfoFetcher.getAudioQualityFromFormats([], fallback: .HIGH), .HIGH)
+		XCTAssertEqual(PlaybackInfoFetcher.getAudioQualityFromFormats(nil, fallback: .LOW), .LOW)
+	}
+}

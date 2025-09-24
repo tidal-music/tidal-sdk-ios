@@ -5,12 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.7.1] - 2025-09-24
+## [0.7.2] - 2025-09-24
 
 ### Fixed
 - **TidalAPI Code Generation**: Fixed missing enum default cases (TidalAPI)
 - **SwiftLint Violations**: Resolved redundant string enum value violations in generated code (TidalAPI)
 - **Code Generation Issues**: Fixed multiple template formatting and compilation issues (TidalAPI)
+- Fixed actual AudioQuality calculation returned on the new Playback endpoints (Player)
 
 ## [0.7.0] - 2025-09-23
 
