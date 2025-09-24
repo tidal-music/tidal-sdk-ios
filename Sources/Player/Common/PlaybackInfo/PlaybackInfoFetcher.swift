@@ -144,8 +144,9 @@ private extension PlaybackInfoFetcher {
 	) async throws -> PlaybackInfo {
 		let start = PlayerWorld.timeProvider.timestamp()
 		do {
-			let audioQuality = getAudioQuality(given: playbackMode)
-			let formats = getFormatsForAudioQuality(audioQuality)
+			// Determine requested quality and corresponding acceptable formats
+			let requestedAudioQuality = getAudioQuality(given: playbackMode)
+			let formats = getFormatsForAudioQuality(requestedAudioQuality)
 
 			// Ensure credentials provider is set
 			if OpenAPIClientAPI.credentialsProvider == nil {
@@ -185,13 +186,16 @@ private extension PlaybackInfoFetcher {
 				)
 			)
 
+			// Determine actual audio quality from the returned formats (inverse mapping)
+			let actualAudioQuality = PlaybackInfoFetcher.getAudioQualityFromFormats(attributes?.formats, fallback: requestedAudioQuality)
+
 			return PlaybackInfo(
 				productType: .TRACK,
 				productId: trackId,
 				streamType: .ON_DEMAND,
 				assetPresentation: convertTrackPresentation(attributes?.trackPresentation),
 				audioMode: .STEREO, // Default value, may need refinement
-				audioQuality: audioQuality,
+				audioQuality: actualAudioQuality,
 				audioCodec: getAudioCodecFromFormats(attributes?.formats),
 				audioSampleRate: nil, // Not available in new API
 				audioBitDepth: nil, // Not available in new API
@@ -463,7 +467,7 @@ private extension PlaybackInfoFetcher {
 		
 		return formats.map(\.rawValue).joined(separator: ",")
 	}
-	
+
 	private func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
 		switch presentation {
 		case .full:
@@ -564,5 +568,22 @@ private extension PlaybackInfoFetcher {
 		}
 
 		return url
+	}
+}
+
+extension PlaybackInfoFetcher {
+	/// Inverse mapping: derive AudioQuality from returned manifest formats
+	static func getAudioQualityFromFormats(
+		_ formats: [TrackManifestsAttributes.Formats]?,
+		fallback: AudioQuality
+	) -> AudioQuality {
+		guard let formats, formats.isEmpty == false else {
+			return fallback
+		}
+		if formats.contains(.flacHires) { return .HI_RES_LOSSLESS }
+		if formats.contains(.flac) { return .LOSSLESS }
+		if formats.contains(.aaclc) { return .HIGH }
+		if formats.contains(.heaacv1) { return .LOW }
+		return fallback
 	}
 }
