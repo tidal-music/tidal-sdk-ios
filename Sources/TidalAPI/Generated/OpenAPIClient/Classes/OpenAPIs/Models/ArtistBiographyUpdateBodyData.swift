@@ -13,7 +13,7 @@ import AnyCodable
 public struct ArtistBiographyUpdateBodyData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case artistbiographies
+        case artistbiographies = "artistBiographies"
     }
     public var attributes: ArtistBiographyUpdateBodyDataAttributes
     public var id: String
@@ -45,7 +45,5 @@ public struct ArtistBiographyUpdateBodyData: Codable, Hashable {
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension ArtistBiographyUpdateBodyData: Identifiable {}
-

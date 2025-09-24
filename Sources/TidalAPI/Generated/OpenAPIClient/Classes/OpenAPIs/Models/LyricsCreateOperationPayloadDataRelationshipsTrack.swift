@@ -13,7 +13,7 @@ import AnyCodable
 public struct LyricsCreateOperationPayloadDataRelationshipsTrack: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case tracks
+        case tracks = "tracks"
     }
     public var id: String
     public var type: ModelType
@@ -40,7 +40,5 @@ public struct LyricsCreateOperationPayloadDataRelationshipsTrack: Codable, Hasha
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension LyricsCreateOperationPayloadDataRelationshipsTrack: Identifiable {}
-

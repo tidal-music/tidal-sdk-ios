@@ -13,14 +13,14 @@ import AnyCodable
 public struct TrackFilesAttributes: Codable, Hashable {
 
     public enum Format: String, Codable, CaseIterable {
-        case heaacv1
-        case aaclc
-        case flac
-        case flacHires
+        case heaacv1 = "HEAACV1"
+        case aaclc = "AACLC"
+        case flac = "FLAC"
+        case flacHires = "FLAC_HIRES"
     }
     public enum TrackPresentation: String, Codable, CaseIterable {
-        case full
-        case preview
+        case full = "FULL"
+        case preview = "PREVIEW"
     }
     public var albumAudioNormalizationData: AudioNormalizationData?
     /** File's audio format */
@@ -64,5 +64,3 @@ public struct TrackFilesAttributes: Codable, Hashable {
         try container.encodeIfPresent(url, forKey: .url)
     }
 }
-
-

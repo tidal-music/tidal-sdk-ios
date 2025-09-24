@@ -13,14 +13,14 @@ import AnyCodable
 public struct PlaylistsAttributes: Codable, Hashable {
 
     public enum AccessType: String, Codable, CaseIterable {
-        case _public
-        case unlisted
+        case _public = "PUBLIC"
+        case unlisted = "UNLISTED"
     }
     public enum PlaylistType: String, Codable, CaseIterable {
-        case editorial
-        case user
-        case mix
-        case artist
+        case editorial = "EDITORIAL"
+        case user = "USER"
+        case mix = "MIX"
+        case artist = "ARTIST"
     }
     public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Access type */
@@ -96,5 +96,3 @@ public struct PlaylistsAttributes: Codable, Hashable {
         try container.encode(playlistType, forKey: .playlistType)
     }
 }
-
-

@@ -13,8 +13,8 @@ import AnyCodable
 public struct ArtworksAttributes: Codable, Hashable {
 
     public enum MediaType: String, Codable, CaseIterable {
-        case image
-        case video
+        case image = "IMAGE"
+        case video = "VIDEO"
     }
     public static let mediaTypeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Artwork files */
@@ -48,5 +48,3 @@ public struct ArtworksAttributes: Codable, Hashable {
         try container.encodeIfPresent(sourceFile, forKey: .sourceFile)
     }
 }
-
-

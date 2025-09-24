@@ -13,7 +13,7 @@ import AnyCodable
 public struct LyricsUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case lyrics
+        case lyrics = "lyrics"
     }
     public var attributes: LyricsUpdateOperationPayloadDataAttributes
     public var id: String
@@ -45,7 +45,5 @@ public struct LyricsUpdateOperationPayloadData: Codable, Hashable {
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension LyricsUpdateOperationPayloadData: Identifiable {}
-

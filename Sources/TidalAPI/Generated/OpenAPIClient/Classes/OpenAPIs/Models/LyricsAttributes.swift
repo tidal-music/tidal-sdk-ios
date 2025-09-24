@@ -13,10 +13,10 @@ import AnyCodable
 public struct LyricsAttributes: Codable, Hashable {
 
     public enum TechnicalStatus: String, Codable, CaseIterable {
-        case pending
-        case processing
-        case error
-        case ok
+        case pending = "PENDING"
+        case processing = "PROCESSING"
+        case error = "ERROR"
+        case ok = "OK"
     }
     public var technicalStatus: TechnicalStatus
     public var text: String?
@@ -42,5 +42,3 @@ public struct LyricsAttributes: Codable, Hashable {
         try container.encodeIfPresent(text, forKey: .text)
     }
 }
-
-

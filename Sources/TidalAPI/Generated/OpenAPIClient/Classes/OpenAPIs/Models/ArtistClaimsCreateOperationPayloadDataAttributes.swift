@@ -13,9 +13,9 @@ import AnyCodable
 public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum Provider: String, Codable, CaseIterable {
-        case distrokid
-        case cdbaby
-        case tunecore
+        case distrokid = "DISTROKID"
+        case cdbaby = "CDBABY"
+        case tunecore = "TUNECORE"
     }
     public var provider: Provider
 
@@ -36,5 +36,3 @@ public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashabl
         try container.encode(provider, forKey: .provider)
     }
 }
-
-
