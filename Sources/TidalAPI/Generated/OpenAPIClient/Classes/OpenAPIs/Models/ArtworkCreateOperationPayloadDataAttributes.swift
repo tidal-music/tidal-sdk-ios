@@ -13,8 +13,8 @@ import AnyCodable
 public struct ArtworkCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum MediaType: String, Codable, CaseIterable {
-        case image
-        case video
+        case image = "IMAGE"
+        case video = "VIDEO"
     }
     public var mediaType: MediaType
     public var sourceFile: ArtworkCreateOperationPayloadDataAttributesSourceFile
@@ -40,5 +40,3 @@ public struct ArtworkCreateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encode(sourceFile, forKey: .sourceFile)
     }
 }
-
-

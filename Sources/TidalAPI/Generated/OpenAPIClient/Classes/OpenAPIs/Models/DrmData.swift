@@ -14,8 +14,8 @@ import AnyCodable
 public struct DrmData: Codable, Hashable {
 
     public enum DrmSystem: String, Codable, CaseIterable {
-        case fairplay
-        case widevine
+        case fairplay = "FAIRPLAY"
+        case widevine = "WIDEVINE"
     }
     public var certificateUrl: String?
     public var drmSystem: DrmSystem?
@@ -46,5 +46,3 @@ public struct DrmData: Codable, Hashable {
         try container.encodeIfPresent(licenseUrl, forKey: .licenseUrl)
     }
 }
-
-

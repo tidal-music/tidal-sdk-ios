@@ -13,8 +13,8 @@ import AnyCodable
 public struct UserEntitlementsAttributes: Codable, Hashable {
 
     public enum Entitlements: String, Codable, CaseIterable {
-        case music
-        case dj
+        case music = "MUSIC"
+        case dj = "DJ"
     }
     /** entitlements for user */
     public var entitlements: [Entitlements]
@@ -36,5 +36,3 @@ public struct UserEntitlementsAttributes: Codable, Hashable {
         try container.encode(entitlements, forKey: .entitlements)
     }
 }
-
-

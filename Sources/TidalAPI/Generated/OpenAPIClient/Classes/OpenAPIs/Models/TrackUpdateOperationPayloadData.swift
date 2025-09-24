@@ -13,7 +13,7 @@ import AnyCodable
 public struct TrackUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case tracks
+        case tracks = "tracks"
     }
     public var attributes: TrackUpdateOperationPayloadDataAttributes?
     public var id: String
@@ -50,7 +50,5 @@ public struct TrackUpdateOperationPayloadData: Codable, Hashable {
     }
 }
 
-
 @available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
 extension TrackUpdateOperationPayloadData: Identifiable {}
-
