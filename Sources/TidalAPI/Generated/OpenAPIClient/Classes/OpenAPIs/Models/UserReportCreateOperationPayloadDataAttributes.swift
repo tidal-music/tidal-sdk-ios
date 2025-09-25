@@ -47,3 +47,5 @@ public struct UserReportCreateOperationPayloadDataAttributes: Codable, Hashable 
         try container.encode(reason, forKey: .reason)
     }
 }
+
+

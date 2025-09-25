@@ -48,3 +48,5 @@ public struct ArtworksAttributes: Codable, Hashable {
         try container.encodeIfPresent(sourceFile, forKey: .sourceFile)
     }
 }
+
+

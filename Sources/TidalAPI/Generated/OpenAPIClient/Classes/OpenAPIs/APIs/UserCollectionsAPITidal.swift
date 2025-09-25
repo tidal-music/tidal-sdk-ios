@@ -42,25 +42,25 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsAlbumsGet: String, CaseIterable {
-		case albumsPeriodAddedat = "albums.addedAt"
-		case albumsPeriodAddedat2 = "-albums.addedAt"
-		case albumsPeriodArtistsPeriodName = "albums.artists.name"
-		case albumsPeriodArtistsPeriodName2 = "-albums.artists.name"
-		case albumsPeriodReleasedate = "albums.releaseDate"
-		case albumsPeriodReleasedate2 = "-albums.releaseDate"
-		case albumsPeriodTitle = "albums.title"
-		case albumsPeriodTitle2 = "-albums.title"
+		case AlbumsAddedAtAsc = "albums.addedAt"
+		case AlbumsAddedAtDesc = "-albums.addedAt"
+		case AlbumsArtistsNameAsc = "albums.artists.name"
+		case AlbumsArtistsNameDesc = "-albums.artists.name"
+		case AlbumsReleaseDateAsc = "albums.releaseDate"
+		case AlbumsReleaseDateDesc = "-albums.releaseDate"
+		case AlbumsTitleAsc = "albums.title"
+		case AlbumsTitleDesc = "-albums.title"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsAlbumsGet {
 			switch self {
-			case .albumsPeriodAddedat: return .albumsPeriodAddedat
-			case .albumsPeriodAddedat2: return .albumsPeriodAddedat2
-			case .albumsPeriodArtistsPeriodName: return .albumsPeriodArtistsPeriodName
-			case .albumsPeriodArtistsPeriodName2: return .albumsPeriodArtistsPeriodName2
-			case .albumsPeriodReleasedate: return .albumsPeriodReleasedate
-			case .albumsPeriodReleasedate2: return .albumsPeriodReleasedate2
-			case .albumsPeriodTitle: return .albumsPeriodTitle
-			case .albumsPeriodTitle2: return .albumsPeriodTitle2
+			case .AlbumsAddedAtAsc: return .AlbumsAddedAtAsc
+			case .AlbumsAddedAtDesc: return .AlbumsAddedAtDesc
+			case .AlbumsArtistsNameAsc: return .AlbumsArtistsNameAsc
+			case .AlbumsArtistsNameDesc: return .AlbumsArtistsNameDesc
+			case .AlbumsReleaseDateAsc: return .AlbumsReleaseDateAsc
+			case .AlbumsReleaseDateDesc: return .AlbumsReleaseDateDesc
+			case .AlbumsTitleAsc: return .AlbumsTitleAsc
+			case .AlbumsTitleDesc: return .AlbumsTitleDesc
 			}
 		}
 	}
@@ -105,17 +105,17 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsArtistsGet: String, CaseIterable {
-		case artistsPeriodAddedat = "artists.addedAt"
-		case artistsPeriodAddedat2 = "-artists.addedAt"
-		case artistsPeriodName = "artists.name"
-		case artistsPeriodName2 = "-artists.name"
+		case ArtistsAddedAtAsc = "artists.addedAt"
+		case ArtistsAddedAtDesc = "-artists.addedAt"
+		case ArtistsNameAsc = "artists.name"
+		case ArtistsNameDesc = "-artists.name"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsArtistsGet {
 			switch self {
-			case .artistsPeriodAddedat: return .artistsPeriodAddedat
-			case .artistsPeriodAddedat2: return .artistsPeriodAddedat2
-			case .artistsPeriodName: return .artistsPeriodName
-			case .artistsPeriodName2: return .artistsPeriodName2
+			case .ArtistsAddedAtAsc: return .ArtistsAddedAtAsc
+			case .ArtistsAddedAtDesc: return .ArtistsAddedAtDesc
+			case .ArtistsNameAsc: return .ArtistsNameAsc
+			case .ArtistsNameDesc: return .ArtistsNameDesc
 			}
 		}
 	}
@@ -172,21 +172,21 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
-		case playlistsPeriodAddedat = "playlists.addedAt"
-		case playlistsPeriodAddedat2 = "-playlists.addedAt"
-		case playlistsPeriodLastupdatedat = "playlists.lastUpdatedAt"
-		case playlistsPeriodLastupdatedat2 = "-playlists.lastUpdatedAt"
-		case playlistsPeriodName = "playlists.name"
-		case playlistsPeriodName2 = "-playlists.name"
+		case PlaylistsAddedAtAsc = "playlists.addedAt"
+		case PlaylistsAddedAtDesc = "-playlists.addedAt"
+		case PlaylistsLastUpdatedAtAsc = "playlists.lastUpdatedAt"
+		case PlaylistsLastUpdatedAtDesc = "-playlists.lastUpdatedAt"
+		case PlaylistsNameAsc = "playlists.name"
+		case PlaylistsNameDesc = "-playlists.name"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsPlaylistsGet {
 			switch self {
-			case .playlistsPeriodAddedat: return .playlistsPeriodAddedat
-			case .playlistsPeriodAddedat2: return .playlistsPeriodAddedat2
-			case .playlistsPeriodLastupdatedat: return .playlistsPeriodLastupdatedat
-			case .playlistsPeriodLastupdatedat2: return .playlistsPeriodLastupdatedat2
-			case .playlistsPeriodName: return .playlistsPeriodName
-			case .playlistsPeriodName2: return .playlistsPeriodName2
+			case .PlaylistsAddedAtAsc: return .PlaylistsAddedAtAsc
+			case .PlaylistsAddedAtDesc: return .PlaylistsAddedAtDesc
+			case .PlaylistsLastUpdatedAtAsc: return .PlaylistsLastUpdatedAtAsc
+			case .PlaylistsLastUpdatedAtDesc: return .PlaylistsLastUpdatedAtDesc
+			case .PlaylistsNameAsc: return .PlaylistsNameAsc
+			case .PlaylistsNameDesc: return .PlaylistsNameDesc
 			}
 		}
 	}
@@ -231,29 +231,29 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsTracksGet: String, CaseIterable {
-		case tracksPeriodAddedat = "tracks.addedAt"
-		case tracksPeriodAddedat2 = "-tracks.addedAt"
-		case tracksPeriodAlbumsPeriodTitle = "tracks.albums.title"
-		case tracksPeriodAlbumsPeriodTitle2 = "-tracks.albums.title"
-		case tracksPeriodArtistsPeriodName = "tracks.artists.name"
-		case tracksPeriodArtistsPeriodName2 = "-tracks.artists.name"
-		case tracksPeriodDuration = "tracks.duration"
-		case tracksPeriodDuration2 = "-tracks.duration"
-		case tracksPeriodTitle = "tracks.title"
-		case tracksPeriodTitle2 = "-tracks.title"
+		case TracksAddedAtAsc = "tracks.addedAt"
+		case TracksAddedAtDesc = "-tracks.addedAt"
+		case TracksAlbumsTitleAsc = "tracks.albums.title"
+		case TracksAlbumsTitleDesc = "-tracks.albums.title"
+		case TracksArtistsNameAsc = "tracks.artists.name"
+		case TracksArtistsNameDesc = "-tracks.artists.name"
+		case TracksDurationAsc = "tracks.duration"
+		case TracksDurationDesc = "-tracks.duration"
+		case TracksTitleAsc = "tracks.title"
+		case TracksTitleDesc = "-tracks.title"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsTracksGet {
 			switch self {
-			case .tracksPeriodAddedat: return .tracksPeriodAddedat
-			case .tracksPeriodAddedat2: return .tracksPeriodAddedat2
-			case .tracksPeriodAlbumsPeriodTitle: return .tracksPeriodAlbumsPeriodTitle
-			case .tracksPeriodAlbumsPeriodTitle2: return .tracksPeriodAlbumsPeriodTitle2
-			case .tracksPeriodArtistsPeriodName: return .tracksPeriodArtistsPeriodName
-			case .tracksPeriodArtistsPeriodName2: return .tracksPeriodArtistsPeriodName2
-			case .tracksPeriodDuration: return .tracksPeriodDuration
-			case .tracksPeriodDuration2: return .tracksPeriodDuration2
-			case .tracksPeriodTitle: return .tracksPeriodTitle
-			case .tracksPeriodTitle2: return .tracksPeriodTitle2
+			case .TracksAddedAtAsc: return .TracksAddedAtAsc
+			case .TracksAddedAtDesc: return .TracksAddedAtDesc
+			case .TracksAlbumsTitleAsc: return .TracksAlbumsTitleAsc
+			case .TracksAlbumsTitleDesc: return .TracksAlbumsTitleDesc
+			case .TracksArtistsNameAsc: return .TracksArtistsNameAsc
+			case .TracksArtistsNameDesc: return .TracksArtistsNameDesc
+			case .TracksDurationAsc: return .TracksDurationAsc
+			case .TracksDurationDesc: return .TracksDurationDesc
+			case .TracksTitleAsc: return .TracksTitleAsc
+			case .TracksTitleDesc: return .TracksTitleDesc
 			}
 		}
 	}
@@ -298,25 +298,25 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsVideosGet: String, CaseIterable {
-		case videosPeriodAddedat = "videos.addedAt"
-		case videosPeriodAddedat2 = "-videos.addedAt"
-		case videosPeriodArtistsPeriodName = "videos.artists.name"
-		case videosPeriodArtistsPeriodName2 = "-videos.artists.name"
-		case videosPeriodDuration = "videos.duration"
-		case videosPeriodDuration2 = "-videos.duration"
-		case videosPeriodTitle = "videos.title"
-		case videosPeriodTitle2 = "-videos.title"
+		case VideosAddedAtAsc = "videos.addedAt"
+		case VideosAddedAtDesc = "-videos.addedAt"
+		case VideosArtistsNameAsc = "videos.artists.name"
+		case VideosArtistsNameDesc = "-videos.artists.name"
+		case VideosDurationAsc = "videos.duration"
+		case VideosDurationDesc = "-videos.duration"
+		case VideosTitleAsc = "videos.title"
+		case VideosTitleDesc = "-videos.title"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsVideosGet {
 			switch self {
-			case .videosPeriodAddedat: return .videosPeriodAddedat
-			case .videosPeriodAddedat2: return .videosPeriodAddedat2
-			case .videosPeriodArtistsPeriodName: return .videosPeriodArtistsPeriodName
-			case .videosPeriodArtistsPeriodName2: return .videosPeriodArtistsPeriodName2
-			case .videosPeriodDuration: return .videosPeriodDuration
-			case .videosPeriodDuration2: return .videosPeriodDuration2
-			case .videosPeriodTitle: return .videosPeriodTitle
-			case .videosPeriodTitle2: return .videosPeriodTitle2
+			case .VideosAddedAtAsc: return .VideosAddedAtAsc
+			case .VideosAddedAtDesc: return .VideosAddedAtDesc
+			case .VideosArtistsNameAsc: return .VideosArtistsNameAsc
+			case .VideosArtistsNameDesc: return .VideosArtistsNameDesc
+			case .VideosDurationAsc: return .VideosDurationAsc
+			case .VideosDurationDesc: return .VideosDurationDesc
+			case .VideosTitleAsc: return .VideosTitleAsc
+			case .VideosTitleDesc: return .VideosTitleDesc
 			}
 		}
 	}

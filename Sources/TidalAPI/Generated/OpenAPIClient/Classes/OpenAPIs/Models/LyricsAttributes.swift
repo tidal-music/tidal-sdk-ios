@@ -42,3 +42,5 @@ public struct LyricsAttributes: Codable, Hashable {
         try container.encodeIfPresent(text, forKey: .text)
     }
 }
+
+

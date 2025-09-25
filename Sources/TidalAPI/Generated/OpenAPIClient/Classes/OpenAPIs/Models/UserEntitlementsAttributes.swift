@@ -36,3 +36,5 @@ public struct UserEntitlementsAttributes: Codable, Hashable {
         try container.encode(entitlements, forKey: .entitlements)
     }
 }
+
+

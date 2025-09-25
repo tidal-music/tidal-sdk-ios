@@ -40,3 +40,5 @@ public struct ArtworkCreateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encode(sourceFile, forKey: .sourceFile)
     }
 }
+
+

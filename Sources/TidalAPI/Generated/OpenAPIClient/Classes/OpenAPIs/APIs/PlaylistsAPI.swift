@@ -16,12 +16,12 @@ internal class PlaylistsAPI {
      * enum for parameter sort
      */
     public enum Sort_playlistsGet: String, CaseIterable {
-        case createdat = "createdAt"
-        case createdat2 = "-createdAt"
-        case lastmodifiedat = "lastModifiedAt"
-        case lastmodifiedat2 = "-lastModifiedAt"
-        case name = "name"
-        case name2 = "-name"
+        case CreatedAtAsc = "createdAt"
+        case CreatedAtDesc = "-createdAt"
+        case LastModifiedAtAsc = "lastModifiedAt"
+        case LastModifiedAtDesc = "-lastModifiedAt"
+        case NameAsc = "name"
+        case NameDesc = "-name"
     }
 
     /**

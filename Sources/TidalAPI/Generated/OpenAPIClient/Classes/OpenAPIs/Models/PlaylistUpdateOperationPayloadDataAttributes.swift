@@ -46,3 +46,5 @@ public struct PlaylistUpdateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(name, forKey: .name)
     }
 }
+
+

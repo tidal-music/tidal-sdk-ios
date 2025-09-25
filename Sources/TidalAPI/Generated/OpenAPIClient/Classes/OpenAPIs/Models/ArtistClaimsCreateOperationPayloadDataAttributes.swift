@@ -17,15 +17,19 @@ public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashabl
         case cdbaby = "CDBABY"
         case tunecore = "TUNECORE"
     }
+    public var artistId: String
     public var provider: Provider
 
     public init(
+        artistId: String,
         provider: Provider
     ) {
+        self.artistId = artistId
         self.provider = provider
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case artistId
         case provider
     }
 
@@ -33,6 +37,9 @@ public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashabl
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(artistId, forKey: .artistId)
         try container.encode(provider, forKey: .provider)
     }
 }
+
+

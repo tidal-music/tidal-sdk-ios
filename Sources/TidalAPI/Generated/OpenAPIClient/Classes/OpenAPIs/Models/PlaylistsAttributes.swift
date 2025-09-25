@@ -96,3 +96,5 @@ public struct PlaylistsAttributes: Codable, Hashable {
         try container.encode(playlistType, forKey: .playlistType)
     }
 }
+
+
