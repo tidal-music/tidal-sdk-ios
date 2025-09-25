@@ -46,3 +46,5 @@ public struct PlaylistCreateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encode(name, forKey: .name)
     }
 }
+
+

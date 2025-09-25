@@ -34,6 +34,9 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         case cancelled = "CANCELLED"
     }
     public static let providerRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let statusRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    /** The artist id which is being claimed */
+    public var artistId: String
     /** The DSP used for authentication */
     public var provider: Provider
     /** The recommended claim resolution */
@@ -43,15 +46,17 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
     /** List of UPCs retrieved from the DSP */
     public var retrievedUpcs: [BarcodeId]?
     /** Current status of this claim */
-    public var status: Status?
+    public var status: Status
 
     public init(
+        artistId: String,
         provider: Provider,
         recommendation: Recommendation? = nil,
         redirectUrl: String? = nil,
         retrievedUpcs: [BarcodeId]? = nil,
-        status: Status? = nil
+        status: Status
     ) {
+        self.artistId = artistId
         self.provider = provider
         self.recommendation = recommendation
         self.redirectUrl = redirectUrl
@@ -60,6 +65,7 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case artistId
         case provider
         case recommendation
         case redirectUrl
@@ -71,10 +77,13 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(artistId, forKey: .artistId)
         try container.encode(provider, forKey: .provider)
         try container.encodeIfPresent(recommendation, forKey: .recommendation)
         try container.encodeIfPresent(redirectUrl, forKey: .redirectUrl)
         try container.encodeIfPresent(retrievedUpcs, forKey: .retrievedUpcs)
-        try container.encodeIfPresent(status, forKey: .status)
+        try container.encode(status, forKey: .status)
     }
 }
+
+
