@@ -109,6 +109,12 @@ jobs:
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'false' }}
         run: |
             echo "No changes found. Good bye"
+
+      - name: Bump version
+        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
+        run: |
+          chmod +x ./bin/bump-version.sh
+          ./bin/bump-version.sh patch
       
       - name: Prepare git and define a branch name
         id: prepare_git_and_define_branch_name
