@@ -114,7 +114,13 @@ jobs:
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
         run: |
           chmod +x ./bin/bump-version.sh
-          ./bin/bump-version.sh patch
+
+          # Extract API spec version for changelog entry
+          api_spec_file="$API_FOLDER/$INPUT_FOLDER_NAME/tidal-api-oas.json"
+          api_version=$(jq -r '.info.version' "$api_spec_file")
+          changelog_entry="Generated API code using spec version $api_version"
+
+          ./bin/bump-version.sh patch "$changelog_entry"
       
       - name: Prepare git and define a branch name
         id: prepare_git_and_define_branch_name
@@ -134,10 +140,10 @@ jobs:
         run: |
           # Generate commit message with the number of changed files in the title and the list in the body
           commit_title="Update Tidal API - ${{ steps.check_for_changes.outputs.CHANGED_FILE_COUNT }} files changed"
-          
+
           # Create commit message with changes in input and generated folders
           commit_body="Changes in Input folder:\n${{ steps.check_for_changes.outputs.CHANGES_IN_INPUT }}\n\nChanges in Generated folder:\n${{ steps.check_for_changes.outputs.CHANGES_IN_GENERATED }}"
-          
+
           git add .
           
           # Use a consistent branch name for API updates, so we can edit the PR later
