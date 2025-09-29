@@ -1,3 +1,4 @@
+import Auth
 @testable import Player
 import XCTest
 import AVFoundation
@@ -13,6 +14,7 @@ final class AudioSessionRouteChangeMonitorTests: XCTestCase {
     private var networkMonitor: NetworkMonitorMock!
     private var featureFlagProvider: FeatureFlagProvider!
     private var playerLoader: PlayerLoaderMock!
+    private var listenerQueue: DispatchQueue!
     private var notificationsHandler: NotificationsHandler!
     private var playerEngine: PlayerEngine!
     private var player: PlayerMock! { playerLoader.player }
@@ -33,13 +35,19 @@ final class AudioSessionRouteChangeMonitorTests: XCTestCase {
         )
 
         configuration = Configuration.mock()
-        httpClient = HttpClient()
+        // Configure URLSession to use our stub URLProtocol so loads complete synchronously
+        let sessionConfiguration = URLSessionConfiguration.default
+        sessionConfiguration.protocolClasses = [JsonEncodedResponseURLProtocol.self]
+        let urlSession = URLSession(configuration: sessionConfiguration)
+        httpClient = HttpClient.mock(urlSession: urlSession)
         credentialsProvider = CredentialsProviderMock()
+        credentialsProvider.injectSuccessfulUserLevelCredentials()
         playerEventSender = PlayerEventSenderMock()
         networkMonitor = NetworkMonitorMock()
         featureFlagProvider = .mock
         playerLoader = PlayerLoaderMock()
-        notificationsHandler = .mock(queue: DispatchQueue(label: "route-change-tests"))
+        listenerQueue = DispatchQueue(label: "route-change-tests")
+        notificationsHandler = .mock(queue: listenerQueue)
 
         playerEngine = PlayerEngine.mock(
             queue: OperationQueueMock(),
@@ -65,8 +73,13 @@ final class AudioSessionRouteChangeMonitorTests: XCTestCase {
         JsonEncodedResponseURLProtocol.succeed(with: TrackPlaybackInfo.mock())
         playerEngine.load(MediaProduct.mock(), timestamp: timestamp)
         player.loaded()
-        player.playing() // transitions engine state to PLAYING
-        XCTAssertEqual(player.playCallCount, 0)
+        XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
+		
+        playerEngine.play(timestamp: timestamp)
+        player.playing()
+        listenerQueue.sync {}
+        XCTAssertEqual(playerEngine.getState(), .PLAYING)
+        XCTAssertEqual(player.playCallCount, 1)
 
         // WHEN: simulate BT route loss
         postRouteChange(reason: .oldDeviceUnavailable)
@@ -77,7 +90,7 @@ final class AudioSessionRouteChangeMonitorTests: XCTestCase {
         postRouteChange(reason: .newDeviceAvailable)
 
         // THEN: playback resumes automatically
-        XCTAssertEqual(player.playCallCount, 1)
+        XCTAssertEqual(player.playCallCount, 2)
     }
 
     func test_doesNotResumeAfterLongBluetoothDropout() {
@@ -85,8 +98,14 @@ final class AudioSessionRouteChangeMonitorTests: XCTestCase {
         JsonEncodedResponseURLProtocol.succeed(with: TrackPlaybackInfo.mock())
         playerEngine.load(MediaProduct.mock(), timestamp: timestamp)
         player.loaded()
-        player.playing()
+		XCTAssertEqual(playerEngine.getState(), .NOT_PLAYING)
 
+        playerEngine.play(timestamp: timestamp)
+        player.playing()
+        listenerQueue.sync {}
+		XCTAssertEqual(playerEngine.getState(), .PLAYING)
+        XCTAssertEqual(player.playCallCount, 1)
+		
         // WHEN: simulate BT route loss
         postRouteChange(reason: .oldDeviceUnavailable)
         XCTAssertEqual(player.pauseCallCount, 1)
@@ -96,7 +115,7 @@ final class AudioSessionRouteChangeMonitorTests: XCTestCase {
         postRouteChange(reason: .newDeviceAvailable)
 
         // THEN: no auto-resume
-        XCTAssertEqual(player.playCallCount, 0)
+        XCTAssertEqual(player.playCallCount, 1)
     }
 
     // Helpers
@@ -107,8 +126,7 @@ final class AudioSessionRouteChangeMonitorTests: XCTestCase {
             object: AVAudioSession.sharedInstance(),
             userInfo: userInfo
         )
-        // Allow notifications/queues to process quickly
-        RunLoop.current.run(until: Date().addingTimeInterval(0.01))
+        listenerQueue.sync {}
     }
 }
 #endif
