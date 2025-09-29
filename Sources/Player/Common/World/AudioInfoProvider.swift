@@ -3,32 +3,42 @@ import AVFAudio
 // MARK: - AudioInfoProvider
 
 struct AudioInfoProvider {
-	var isAirPlayOutputRoute: () -> Bool
-	var isCarPlayOutputRoute: () -> Bool
-	var currentOutputPortName: () -> String?
+    var isBluetoothOutputRoute: () -> Bool
+    var isAirPlayOutputRoute: () -> Bool
+    var isCarPlayOutputRoute: () -> Bool
+    var currentOutputPortName: () -> String?
 }
 
 extension AudioInfoProvider {
 	#if !os(macOS)
-		static let live = AudioInfoProvider(
-			isAirPlayOutputRoute: {
-				!AVAudioSession.sharedInstance().currentRoute.outputs.filter { $0.portType == .airPlay }.isEmpty
-			},
-			isCarPlayOutputRoute: {
-				!AVAudioSession.sharedInstance().currentRoute.outputs.filter { $0.portType == .carAudio }.isEmpty
-			},
-			currentOutputPortName: {
-				let audioSession = AVAudioSession.sharedInstance()
-				return audioSession.standarisedNameForPortType(audioSession.currentRoute.outputs.first?.portType)
-			}
-		)
-	#else
-		static let live = AudioInfoProvider(
-			isAirPlayOutputRoute: { false },
-			isCarPlayOutputRoute: { false },
-			currentOutputPortName: { "" }
-		)
-	#endif
+    static let live = AudioInfoProvider(
+        isBluetoothOutputRoute: {
+            let outputs = AVAudioSession.sharedInstance().currentRoute.outputs
+            return outputs.contains { output in
+                output.portType == .bluetoothA2DP ||
+                output.portType == .bluetoothLE ||
+                output.portType == .bluetoothHFP
+            }
+        },
+        isAirPlayOutputRoute: {
+            !AVAudioSession.sharedInstance().currentRoute.outputs.filter { $0.portType == .airPlay }.isEmpty
+        },
+        isCarPlayOutputRoute: {
+            !AVAudioSession.sharedInstance().currentRoute.outputs.filter { $0.portType == .carAudio }.isEmpty
+        },
+        currentOutputPortName: {
+            let audioSession = AVAudioSession.sharedInstance()
+            return audioSession.standarisedNameForPortType(audioSession.currentRoute.outputs.first?.portType)
+        }
+    )
+#else
+    static let live = AudioInfoProvider(
+        isBluetoothOutputRoute: { false },
+        isAirPlayOutputRoute: { false },
+        isCarPlayOutputRoute: { false },
+        currentOutputPortName: { "" }
+    )
+#endif
 }
 
 #if !os(macOS)

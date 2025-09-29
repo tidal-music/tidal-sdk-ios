@@ -49,12 +49,12 @@ final class AudioSessionRouteChangeMonitor {
         switch reason {
         case .oldDeviceUnavailable:
             // Pause on device loss and remember if we were playing on BT to auto-resume shortly after.
-            wasPlayingBeforeRouteLoss = playerEngine?.getState() == .PLAYING && isBluetoothOutputActive(in: audioSession)
+            wasPlayingBeforeRouteLoss = playerEngine?.getState() == .PLAYING && isBluetoothOutputActive()
             lastRouteLossAt = PlayerWorld.timeProvider.timestamp()
             playerEngine?.pause()
         case .newDeviceAvailable, .categoryChange, .override, .wakeFromSleep:
             // If we recently lost a BT route while playing, and BT is back quickly, resume playback.
-            if shouldAttemptAutoResume() && isBluetoothOutputActive(in: audioSession) {
+            if shouldAttemptAutoResume() && isBluetoothOutputActive() {
                 wasPlayingBeforeRouteLoss = false
                 lastRouteLossAt = nil
                 playerEngine?.play(timestamp: PlayerWorld.timeProvider.timestamp())
@@ -86,14 +86,8 @@ final class AudioSessionRouteChangeMonitor {
 #endif
 
 private extension AudioSessionRouteChangeMonitor {
-    func isBluetoothOutputActive(in session: AVAudioSession?) -> Bool {
-        guard let session else { return false }
-        let outputs = session.currentRoute.outputs
-        return outputs.contains { output in
-            output.portType == .bluetoothA2DP ||
-            output.portType == .bluetoothLE ||
-            output.portType == .bluetoothHFP
-        }
+    func isBluetoothOutputActive() -> Bool {
+        PlayerWorld.audioInfoProvider.isBluetoothOutputRoute()
     }
 
     func shouldAttemptAutoResume() -> Bool {
