@@ -11,7 +11,8 @@ final class AudioSessionRouteChangeMonitor {
 
     // Track short-lived Bluetooth dropouts to auto-resume playback when possible.
     private var wasPlayingBeforeRouteLoss: Bool = false
-    private var lastRouteLossAt: TimeInterval?
+    // Timestamp in ms (wall-clock via TimeProvider)
+    private var lastRouteLossAt: UInt64?
     private let autoResumeWindowSeconds: TimeInterval = 10 // Only auto-resume if BT returns quickly
 
 		init(_ playerEngine: PlayerEngine, configuration: Configuration) {
@@ -48,7 +49,7 @@ final class AudioSessionRouteChangeMonitor {
         case .oldDeviceUnavailable:
             // Pause on device loss and remember if we were playing on BT to auto-resume shortly after.
             wasPlayingBeforeRouteLoss = playerEngine?.getState() == .PLAYING && isBluetoothOutputActive(in: audioSession)
-            lastRouteLossAt = ProcessInfo.processInfo.systemUptime
+            lastRouteLossAt = PlayerWorld.timeProvider.timestamp()
             playerEngine?.pause()
         case .newDeviceAvailable, .categoryChange, .override, .wakeFromSleep:
             // If we recently lost a BT route while playing, and BT is back quickly, resume playback.
@@ -96,8 +97,9 @@ private extension AudioSessionRouteChangeMonitor {
 
     func shouldAttemptAutoResume() -> Bool {
         guard wasPlayingBeforeRouteLoss, let lostAt = lastRouteLossAt else { return false }
-        // Use system uptime to avoid clock changes affecting the window check.
-        let now = ProcessInfo.processInfo.systemUptime
-        return (now - lostAt) <= autoResumeWindowSeconds
+        // Use TimeProvider (NTP-backed wall clock) to compute an interval.
+        let now = PlayerWorld.timeProvider.timestamp()
+        let elapsedMs = now &- lostAt
+        return elapsedMs <= UInt64(autoResumeWindowSeconds * 1000)
     }
 }
