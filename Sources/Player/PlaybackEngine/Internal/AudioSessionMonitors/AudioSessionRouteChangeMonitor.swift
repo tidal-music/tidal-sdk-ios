@@ -85,6 +85,7 @@ final class AudioSessionRouteChangeMonitor {
 }
 #endif
 
+#if !os(macOS)
 private extension AudioSessionRouteChangeMonitor {
     func isBluetoothOutputActive() -> Bool {
         PlayerWorld.audioInfoProvider.isBluetoothOutputRoute()
@@ -98,3 +99,4 @@ private extension AudioSessionRouteChangeMonitor {
         return elapsedMs <= UInt64(autoResumeWindowSeconds * 1000)
     }
 }
+#endif
