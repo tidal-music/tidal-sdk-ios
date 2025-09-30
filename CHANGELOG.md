@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Auto-resume playback after short conenction drops over Bluetooth. (Player)
+
 ## [0.7.2] - 2025-09-24
 
 ### Fixed
