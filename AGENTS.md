@@ -41,3 +41,20 @@
 - Never commit secrets or tokens. Auth stores credentials via Keychain.
 - Auth supports certificate pinning via `AuthConfig`; configure in app code.
 - Only set `INCLUDE_DOCC_PLUGIN` when generating docs locally.
+
+## Agent Quickstart
+
+**Prerequisites:** macOS, Xcode 15.x, Swift 5.8+, iOS Simulator.
+**Setup:** `make setup` or `./local-setup.sh`
+**All commands:** `make help`
+
+**Common workflows:**
+- Build & test: `make build` → `make test` (SPM only) or `make test-all` (SPM + Player)
+- Module tests: `make test-module MODULE=Auth`
+- Lint & format: `make lint-file FILE=path.swift` → `make format`
+- Quick validation: `make quick-check` (lint + build + tests)
+- Docs: `make docs MODULE=Player`
+- Regenerate API: `make api-generate` (never edit `Sources/TidalAPI/Generated/**`)
+
+**Player tests:** Use xcodebuild (not SPM). Override simulator: `DESTINATION="..." make test-all`
+**Pre-commit:** Auto-runs SwiftFormat + SwiftLint on staged files.
