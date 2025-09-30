@@ -1,6 +1,6 @@
 {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} enum {{classname}}: {{#useVapor}}Content{{/useVapor}}{{^useVapor}}Codable, JSONEncodable{{#vendorExtensions.x-swift-hashable}}, Hashable{{/vendorExtensions.x-swift-hashable}}{{/useVapor}} {
     {{#oneOf}}
-    case type{{.}}({{.}})
+    case {{#lambda.camelcase}}{{.}}{{/lambda.camelcase}}({{.}})
     {{/oneOf}}
     {{#oneOfUnknownDefaultCase}}
     case unknownDefaultOpenApi
@@ -10,7 +10,7 @@
         var container = encoder.singleValueContainer()
         switch self {
         {{#oneOf}}
-        case .type{{.}}(let value):
+        case .{{#lambda.camelcase}}{{.}}{{/lambda.camelcase}}(let value):
             try container.encode(value)
         {{/oneOf}}
         {{#oneOfUnknownDefaultCase}}
@@ -20,24 +20,54 @@
         }
     }
     
+    {{#discriminator}}
+    {{#propertyName}}
     private enum CodingKeys: String, CodingKey {
-        case {{discriminator.propertyName}}
+        case {{propertyName}}
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decode(String.self, forKey: .{{discriminator.propertyName}})
+        let type = try container.decode(String.self, forKey: .{{propertyName}})
 
         switch type {
-        {{#discriminator.mappedModels}}
+        {{#mappedModels}}
         case "{{mappingName}}":
             let value = try {{modelName}}(from: decoder)
-            self = .type{{modelName}}(value)
-        {{/discriminator.mappedModels}}
+            self = .{{#lambda.camelcase}}{{modelName}}{{/lambda.camelcase}}(value)
+        {{/mappedModels}}
         default:
-            throw DecodingError.dataCorruptedError(forKey: .{{discriminator.propertyName}}, in: container, debugDescription: "Unknown type: \\(type)")
+            throw DecodingError.dataCorruptedError(forKey: .{{propertyName}}, in: container, debugDescription: "Unknown type: \\(type)")
         }
     }
+    {{/propertyName}}
+    {{^propertyName}}
+    public init(from decoder: Decoder) throws {
+        {{#oneOf}}
+        if let value = try? {{.}}(from: decoder) {
+            self = .{{#lambda.camelcase}}{{.}}{{/lambda.camelcase}}(value)
+            return
+        }
+        {{/oneOf}}
+        
+        let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode {{classname}}")
+        throw DecodingError.dataCorrupted(context)
+    }
+    {{/propertyName}}
+    {{/discriminator}}
+    {{^discriminator}}
+    public init(from decoder: Decoder) throws {
+        {{#oneOf}}
+        if let value = try? {{.}}(from: decoder) {
+            self = .{{#lambda.camelcase}}{{.}}{{/lambda.camelcase}}(value)
+            return
+        }
+        {{/oneOf}}
+        
+        let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode {{classname}}")
+        throw DecodingError.dataCorrupted(context)
+    }
+    {{/discriminator}}
 }
 
 {{#vendorExtensions.x-swift-identifiable}}@available(iOS 13, tvOS 13, watchOS 6, macOS 10.15, *)
@@ -45,7 +75,7 @@ extension {{classname}}: Identifiable {
     public var id: String {
         switch self {
         {{#oneOf}}
-        case .type{{.}}(let value): return value.id
+        case .{{#lambda.camelcase}}{{.}}{{/lambda.camelcase}}(let value): return value.id
         {{/oneOf}}
         {{#oneOfUnknownDefaultCase}}
         case .unknownDefaultOpenApi: return "unknown"
