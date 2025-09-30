@@ -48,5 +48,3 @@ public struct TrackSourceFilesAttributes: Codable, Hashable {
         try container.encode(uploadLink, forKey: .uploadLink)
     }
 }
-
-

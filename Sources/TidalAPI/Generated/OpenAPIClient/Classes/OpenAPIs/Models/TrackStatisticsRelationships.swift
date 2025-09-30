@@ -31,5 +31,3 @@ public struct TrackStatisticsRelationships: Codable, Hashable {
         try container.encode(owners, forKey: .owners)
     }
 }
-
-

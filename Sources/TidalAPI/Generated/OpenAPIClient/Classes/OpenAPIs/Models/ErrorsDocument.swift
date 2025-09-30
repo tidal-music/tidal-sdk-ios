@@ -37,5 +37,3 @@ public struct ErrorsDocument: Codable, Hashable {
         try container.encodeIfPresent(links, forKey: .links)
     }
 }
-
-

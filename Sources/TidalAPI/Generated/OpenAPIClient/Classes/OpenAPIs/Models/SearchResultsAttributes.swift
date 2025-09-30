@@ -38,5 +38,3 @@ public struct SearchResultsAttributes: Codable, Hashable {
         try container.encode(trackingId, forKey: .trackingId)
     }
 }
-
-

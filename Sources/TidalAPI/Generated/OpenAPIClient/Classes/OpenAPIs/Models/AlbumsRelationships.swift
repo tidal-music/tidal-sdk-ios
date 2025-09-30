@@ -61,5 +61,3 @@ public struct AlbumsRelationships: Codable, Hashable {
         try container.encode(similarAlbums, forKey: .similarAlbums)
     }
 }
-
-

@@ -32,5 +32,3 @@ public struct ArtistsTrackProvidersResourceIdentifierMeta: Codable, Hashable {
         try container.encode(numberOfTracks, forKey: .numberOfTracks)
     }
 }
-
-

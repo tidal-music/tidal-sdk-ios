@@ -46,5 +46,3 @@ public struct DrmData: Codable, Hashable {
         try container.encodeIfPresent(licenseUrl, forKey: .licenseUrl)
     }
 }
-
-

@@ -32,5 +32,3 @@ public struct Tidal: Codable, Hashable {
         try container.encodeIfPresent(source, forKey: .source)
     }
 }
-
-

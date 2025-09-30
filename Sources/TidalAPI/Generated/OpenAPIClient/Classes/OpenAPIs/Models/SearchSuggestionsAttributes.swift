@@ -45,5 +45,3 @@ public struct SearchSuggestionsAttributes: Codable, Hashable {
         try container.encode(trackingId, forKey: .trackingId)
     }
 }
-
-

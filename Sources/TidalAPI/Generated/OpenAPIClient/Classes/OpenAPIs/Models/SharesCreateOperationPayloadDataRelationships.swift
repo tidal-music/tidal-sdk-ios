@@ -31,5 +31,3 @@ public struct SharesCreateOperationPayloadDataRelationships: Codable, Hashable {
         try container.encode(sharedResources, forKey: .sharedResources)
     }
 }
-
-

@@ -31,5 +31,3 @@ public struct SearchSuggestionsRelationships: Codable, Hashable {
         try container.encode(directHits, forKey: .directHits)
     }
 }
-
-

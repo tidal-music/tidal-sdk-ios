@@ -85,5 +85,3 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         try container.encode(status, forKey: .status)
     }
 }
-
-

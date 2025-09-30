@@ -31,5 +31,3 @@ public struct UserCollectionsVideosResourceIdentifierMeta: Codable, Hashable {
         try container.encode(addedAt, forKey: .addedAt)
     }
 }
-
-

@@ -41,5 +41,3 @@ public struct TrackManifestsSingleResourceDataDocument: Codable, Hashable {
         try container.encode(links, forKey: .links)
     }
 }
-
-

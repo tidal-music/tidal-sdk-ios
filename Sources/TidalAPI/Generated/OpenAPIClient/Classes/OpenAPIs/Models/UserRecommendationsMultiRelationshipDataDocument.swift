@@ -41,5 +41,3 @@ public struct UserRecommendationsMultiRelationshipDataDocument: Codable, Hashabl
         try container.encode(links, forKey: .links)
     }
 }
-
-

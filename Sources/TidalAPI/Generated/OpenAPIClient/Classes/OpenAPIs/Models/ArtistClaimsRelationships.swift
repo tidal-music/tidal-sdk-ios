@@ -41,5 +41,3 @@ public struct ArtistClaimsRelationships: Codable, Hashable {
         try container.encode(recommendedArtists, forKey: .recommendedArtists)
     }
 }
-
-

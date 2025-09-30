@@ -36,5 +36,3 @@ public struct AppreciationsCreateOperationPayload: Codable, Hashable {
         try container.encodeIfPresent(meta, forKey: .meta)
     }
 }
-
-

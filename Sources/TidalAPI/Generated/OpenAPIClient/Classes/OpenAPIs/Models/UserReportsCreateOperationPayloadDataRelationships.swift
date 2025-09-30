@@ -31,5 +31,3 @@ public struct UserReportsCreateOperationPayloadDataRelationships: Codable, Hasha
         try container.encode(reportedResources, forKey: .reportedResources)
     }
 }
-
-

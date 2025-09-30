@@ -31,5 +31,3 @@ public struct AlbumCreateOperationPayload: Codable, Hashable {
         try container.encode(data, forKey: .data)
     }
 }
-
-

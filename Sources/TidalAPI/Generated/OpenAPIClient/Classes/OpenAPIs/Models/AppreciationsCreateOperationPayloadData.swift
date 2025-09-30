@@ -39,5 +39,3 @@ public struct AppreciationsCreateOperationPayloadData: Codable, Hashable {
         try container.encode(type, forKey: .type)
     }
 }
-
-

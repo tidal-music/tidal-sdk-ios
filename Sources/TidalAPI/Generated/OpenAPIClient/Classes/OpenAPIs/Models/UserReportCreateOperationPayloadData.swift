@@ -44,5 +44,3 @@ public struct UserReportCreateOperationPayloadData: Codable, Hashable {
         try container.encode(type, forKey: .type)
     }
 }
-
-

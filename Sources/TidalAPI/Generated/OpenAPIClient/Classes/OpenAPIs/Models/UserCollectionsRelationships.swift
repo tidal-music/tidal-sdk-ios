@@ -56,5 +56,3 @@ public struct UserCollectionsRelationships: Codable, Hashable {
         try container.encode(videos, forKey: .videos)
     }
 }
-
-

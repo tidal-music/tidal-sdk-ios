@@ -36,5 +36,3 @@ public struct ArtworkCreateOperationPayloadDataAttributesSourceFile: Codable, Ha
         try container.encode(size, forKey: .size)
     }
 }
-
-

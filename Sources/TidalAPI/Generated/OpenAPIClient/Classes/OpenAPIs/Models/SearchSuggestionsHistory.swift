@@ -38,5 +38,3 @@ public struct SearchSuggestionsHistory: Codable, Hashable {
         try container.encode(query, forKey: .query)
     }
 }
-
-

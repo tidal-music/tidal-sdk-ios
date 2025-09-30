@@ -31,5 +31,3 @@ public struct AppreciationsCreateOperationMeta: Codable, Hashable {
         try container.encodeIfPresent(dryRun, forKey: .dryRun)
     }
 }
-
-

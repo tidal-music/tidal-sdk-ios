@@ -36,5 +36,3 @@ public struct SingleRelationshipDataDocument: Codable, Hashable {
         try container.encode(links, forKey: .links)
     }
 }
-
-

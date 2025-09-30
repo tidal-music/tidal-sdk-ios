@@ -32,5 +32,3 @@ public struct AlbumCreateOperationPayloadDataRelationshipsArtists: Codable, Hash
         try container.encode(data, forKey: .data)
     }
 }
-
-

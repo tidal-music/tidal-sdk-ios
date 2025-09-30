@@ -31,5 +31,3 @@ public struct PlaylistItemsRelationshipReorderOperationPayloadDataMeta: Codable,
         try container.encode(itemId, forKey: .itemId)
     }
 }
-
-

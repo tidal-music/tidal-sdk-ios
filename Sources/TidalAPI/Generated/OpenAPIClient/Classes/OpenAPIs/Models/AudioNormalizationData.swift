@@ -37,5 +37,3 @@ public struct AudioNormalizationData: Codable, Hashable {
         try container.encodeIfPresent(replayGain, forKey: .replayGain)
     }
 }
-
-

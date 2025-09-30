@@ -32,5 +32,3 @@ public struct UserCollectionVideosRelationshipRemoveOperationPayload: Codable, H
         try container.encode(data, forKey: .data)
     }
 }
-
-

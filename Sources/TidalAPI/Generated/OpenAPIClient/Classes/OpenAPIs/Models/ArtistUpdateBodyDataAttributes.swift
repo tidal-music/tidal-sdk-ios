@@ -51,5 +51,3 @@ public struct ArtistUpdateBodyDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(name, forKey: .name)
     }
 }
-
-

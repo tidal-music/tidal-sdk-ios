@@ -32,5 +32,3 @@ public struct ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload: Coda
         try container.encode(data, forKey: .data)
     }
 }
-
-

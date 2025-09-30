@@ -31,5 +31,3 @@ public struct ArtworkCreateOperationPayload: Codable, Hashable {
         try container.encode(data, forKey: .data)
     }
 }
-
-

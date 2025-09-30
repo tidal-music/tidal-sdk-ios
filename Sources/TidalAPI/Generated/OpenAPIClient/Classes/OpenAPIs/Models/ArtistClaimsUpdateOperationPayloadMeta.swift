@@ -31,5 +31,3 @@ public struct ArtistClaimsUpdateOperationPayloadMeta: Codable, Hashable {
         try container.encode(authorizationCode, forKey: .authorizationCode)
     }
 }
-
-

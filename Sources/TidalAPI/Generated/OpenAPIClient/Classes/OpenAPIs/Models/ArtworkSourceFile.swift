@@ -49,5 +49,3 @@ public struct ArtworkSourceFile: Codable, Hashable {
         try container.encode(uploadLink, forKey: .uploadLink)
     }
 }
-
-

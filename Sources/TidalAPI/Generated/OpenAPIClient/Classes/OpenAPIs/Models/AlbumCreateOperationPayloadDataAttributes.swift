@@ -57,5 +57,3 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(version, forKey: .version)
     }
 }
-
-

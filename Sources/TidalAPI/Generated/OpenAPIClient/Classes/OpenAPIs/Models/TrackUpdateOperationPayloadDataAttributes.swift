@@ -100,5 +100,3 @@ public struct TrackUpdateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(toneTags, forKey: .toneTags)
     }
 }
-
-

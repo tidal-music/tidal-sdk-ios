@@ -32,5 +32,3 @@ public struct AppreciationsAttributes: Codable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
     }
 }
-
-

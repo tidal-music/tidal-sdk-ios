@@ -41,5 +41,3 @@ public struct TracksMultiRelationshipDataDocument: Codable, Hashable {
         try container.encode(links, forKey: .links)
     }
 }
-
-

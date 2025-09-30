@@ -36,5 +36,3 @@ public struct PlaylistsItemsResourceIdentifierMeta: Codable, Hashable {
         try container.encodeIfPresent(itemId, forKey: .itemId)
     }
 }
-
-

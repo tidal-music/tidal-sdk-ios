@@ -46,5 +46,3 @@ public struct VideosRelationships: Codable, Hashable {
         try container.encode(thumbnailArt, forKey: .thumbnailArt)
     }
 }
-
-

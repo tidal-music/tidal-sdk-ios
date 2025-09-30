@@ -41,5 +41,3 @@ public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashabl
         try container.encode(provider, forKey: .provider)
     }
 }
-
-

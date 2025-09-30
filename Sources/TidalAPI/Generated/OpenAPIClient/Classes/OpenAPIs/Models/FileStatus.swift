@@ -53,5 +53,3 @@ public struct FileStatus: Codable, Hashable {
         try container.encode(technicalFileStatus, forKey: .technicalFileStatus)
     }
 }
-
-

@@ -38,5 +38,3 @@ public struct ArtworkFile: Codable, Hashable {
         try container.encodeIfPresent(meta, forKey: .meta)
     }
 }
-
-

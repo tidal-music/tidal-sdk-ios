@@ -32,5 +32,3 @@ public struct SharesCreateOperationPayloadDataRelationshipsSharedResources: Coda
         try container.encode(data, forKey: .data)
     }
 }
-
-

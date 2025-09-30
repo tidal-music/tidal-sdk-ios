@@ -49,5 +49,3 @@ public struct UserReportsAttributes: Codable, Hashable {
         try container.encode(reason, forKey: .reason)
     }
 }
-
-

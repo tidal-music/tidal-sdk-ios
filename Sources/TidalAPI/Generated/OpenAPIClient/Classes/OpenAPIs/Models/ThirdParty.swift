@@ -50,5 +50,3 @@ public struct ThirdParty: Codable, Hashable {
         try container.encode(lyricsId, forKey: .lyricsId)
     }
 }
-
-

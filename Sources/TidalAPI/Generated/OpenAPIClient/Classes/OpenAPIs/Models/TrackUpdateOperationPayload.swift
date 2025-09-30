@@ -31,5 +31,3 @@ public struct TrackUpdateOperationPayload: Codable, Hashable {
         try container.encode(data, forKey: .data)
     }
 }
-
-
