@@ -64,4 +64,3 @@ swift package --disable-sandbox preview-documentation --target Module
 5. Check in with your teammates, lead, the module's owner etc. to make sure the release is ready to go.
 
 6. Click `Publish` at the bottom of your draft release. This will trigger a workflow to tag the release commit.
-
