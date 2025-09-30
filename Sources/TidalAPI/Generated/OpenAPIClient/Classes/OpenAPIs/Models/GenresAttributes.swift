@@ -32,5 +32,3 @@ public struct GenresAttributes: Codable, Hashable {
         try container.encode(genreName, forKey: .genreName)
     }
 }
-
-

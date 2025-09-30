@@ -41,5 +41,3 @@ public struct LyricsMultiRelationshipDataDocument: Codable, Hashable {
         try container.encode(links, forKey: .links)
     }
 }
-
-

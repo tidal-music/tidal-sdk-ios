@@ -44,5 +44,3 @@ public struct ErrorObjectSource: Codable, Hashable {
         try container.encodeIfPresent(pointer, forKey: .pointer)
     }
 }
-
-

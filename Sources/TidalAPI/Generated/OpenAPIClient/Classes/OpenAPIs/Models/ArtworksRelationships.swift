@@ -31,5 +31,3 @@ public struct ArtworksRelationships: Codable, Hashable {
         try container.encode(owners, forKey: .owners)
     }
 }
-
-

@@ -32,5 +32,3 @@ public struct UserCollectionAlbumsRelationshipAddOperationPayload: Codable, Hash
         try container.encode(data, forKey: .data)
     }
 }
-
-

@@ -44,5 +44,3 @@ public struct SharesAttributes: Codable, Hashable {
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
     }
 }
-
-

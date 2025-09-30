@@ -32,5 +32,3 @@ public struct ArtistFollowingRelationshipAddOperationPayload: Codable, Hashable 
         try container.encode(data, forKey: .data)
     }
 }
-
-

@@ -41,5 +41,3 @@ public struct AppreciationsSingleResourceDataDocument: Codable, Hashable {
         try container.encode(links, forKey: .links)
     }
 }
-
-

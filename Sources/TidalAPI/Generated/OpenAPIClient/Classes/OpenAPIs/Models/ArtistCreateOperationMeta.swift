@@ -31,5 +31,3 @@ public struct ArtistCreateOperationMeta: Codable, Hashable {
         try container.encodeIfPresent(dryRun, forKey: .dryRun)
     }
 }
-
-

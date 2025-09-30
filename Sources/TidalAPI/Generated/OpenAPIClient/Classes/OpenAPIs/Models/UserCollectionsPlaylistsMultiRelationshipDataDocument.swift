@@ -41,5 +41,3 @@ public struct UserCollectionsPlaylistsMultiRelationshipDataDocument: Codable, Ha
         try container.encode(links, forKey: .links)
     }
 }
-
-

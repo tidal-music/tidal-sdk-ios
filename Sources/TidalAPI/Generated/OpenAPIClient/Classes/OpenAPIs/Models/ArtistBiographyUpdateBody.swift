@@ -31,5 +31,3 @@ public struct ArtistBiographyUpdateBody: Codable, Hashable {
         try container.encode(data, forKey: .data)
     }
 }
-
-

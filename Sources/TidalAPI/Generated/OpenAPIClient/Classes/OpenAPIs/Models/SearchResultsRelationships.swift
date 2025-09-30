@@ -56,5 +56,3 @@ public struct SearchResultsRelationships: Codable, Hashable {
         try container.encode(videos, forKey: .videos)
     }
 }
-
-

@@ -32,5 +32,3 @@ public struct AlbumUpdateOperationPayloadDataRelationshipsGenres: Codable, Hasha
         try container.encode(data, forKey: .data)
     }
 }
-
-

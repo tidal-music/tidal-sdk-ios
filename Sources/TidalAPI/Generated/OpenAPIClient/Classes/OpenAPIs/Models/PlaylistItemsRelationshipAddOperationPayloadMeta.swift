@@ -31,5 +31,3 @@ public struct PlaylistItemsRelationshipAddOperationPayloadMeta: Codable, Hashabl
         try container.encode(positionBefore, forKey: .positionBefore)
     }
 }
-
-

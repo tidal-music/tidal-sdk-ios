@@ -41,5 +41,3 @@ public struct UserCollectionsTracksMultiRelationshipDataDocument: Codable, Hasha
         try container.encode(links, forKey: .links)
     }
 }
-
-

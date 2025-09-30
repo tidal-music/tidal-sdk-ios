@@ -41,5 +41,3 @@ public struct TrackCreateOperationPayloadDataRelationships: Codable, Hashable {
         try container.encodeIfPresent(genres, forKey: .genres)
     }
 }
-
-

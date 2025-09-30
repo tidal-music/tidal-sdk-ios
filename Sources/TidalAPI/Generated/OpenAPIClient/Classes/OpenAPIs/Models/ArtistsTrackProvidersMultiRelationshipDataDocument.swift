@@ -41,5 +41,3 @@ public struct ArtistsTrackProvidersMultiRelationshipDataDocument: Codable, Hasha
         try container.encode(links, forKey: .links)
     }
 }
-
-

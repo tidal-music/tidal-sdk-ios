@@ -41,5 +41,3 @@ public struct VideosSingleResourceDataDocument: Codable, Hashable {
         try container.encode(links, forKey: .links)
     }
 }
-
-

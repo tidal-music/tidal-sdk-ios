@@ -36,5 +36,3 @@ public struct ExternalLink: Codable, Hashable {
         try container.encode(meta, forKey: .meta)
     }
 }
-
-

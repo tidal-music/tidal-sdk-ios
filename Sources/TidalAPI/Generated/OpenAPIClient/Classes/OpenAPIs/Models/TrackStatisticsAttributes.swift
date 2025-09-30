@@ -38,5 +38,3 @@ public struct TrackStatisticsAttributes: Codable, Hashable {
         try container.encode(uniqueListeners, forKey: .uniqueListeners)
     }
 }
-
-

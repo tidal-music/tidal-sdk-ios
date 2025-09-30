@@ -33,5 +33,3 @@ public struct BarcodeId: Codable, Hashable {
         try container.encode(value, forKey: .value)
     }
 }
-
-

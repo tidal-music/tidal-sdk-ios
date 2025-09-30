@@ -39,5 +39,3 @@ public struct ArtworkFileMeta: Codable, Hashable {
         try container.encode(width, forKey: .width)
     }
 }
-
-

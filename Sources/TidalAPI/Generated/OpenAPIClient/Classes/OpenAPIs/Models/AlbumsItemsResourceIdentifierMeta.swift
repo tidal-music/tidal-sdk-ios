@@ -38,5 +38,3 @@ public struct AlbumsItemsResourceIdentifierMeta: Codable, Hashable {
         try container.encode(volumeNumber, forKey: .volumeNumber)
     }
 }
-
-

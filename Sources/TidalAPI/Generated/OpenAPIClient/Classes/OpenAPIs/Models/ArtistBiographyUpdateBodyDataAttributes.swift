@@ -31,5 +31,3 @@ public struct ArtistBiographyUpdateBodyDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(text, forKey: .text)
     }
 }
-
-

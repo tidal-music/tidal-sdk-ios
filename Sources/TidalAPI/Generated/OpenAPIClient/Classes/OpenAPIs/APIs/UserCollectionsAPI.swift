@@ -113,14 +113,14 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsAlbumsGet: String, CaseIterable {
-        case albumsPeriodAddedat = "albums.addedAt"
-        case albumsPeriodAddedat2 = "-albums.addedAt"
-        case albumsPeriodArtistsPeriodName = "albums.artists.name"
-        case albumsPeriodArtistsPeriodName2 = "-albums.artists.name"
-        case albumsPeriodReleasedate = "albums.releaseDate"
-        case albumsPeriodReleasedate2 = "-albums.releaseDate"
-        case albumsPeriodTitle = "albums.title"
-        case albumsPeriodTitle2 = "-albums.title"
+        case AlbumsAddedAtAsc = "albums.addedAt"
+        case AlbumsAddedAtDesc = "-albums.addedAt"
+        case AlbumsArtistsNameAsc = "albums.artists.name"
+        case AlbumsArtistsNameDesc = "-albums.artists.name"
+        case AlbumsReleaseDateAsc = "albums.releaseDate"
+        case AlbumsReleaseDateDesc = "-albums.releaseDate"
+        case AlbumsTitleAsc = "albums.title"
+        case AlbumsTitleDesc = "-albums.title"
     }
 
     /**
@@ -279,10 +279,10 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsArtistsGet: String, CaseIterable {
-        case artistsPeriodAddedat = "artists.addedAt"
-        case artistsPeriodAddedat2 = "-artists.addedAt"
-        case artistsPeriodName = "artists.name"
-        case artistsPeriodName2 = "-artists.name"
+        case ArtistsAddedAtAsc = "artists.addedAt"
+        case ArtistsAddedAtDesc = "-artists.addedAt"
+        case ArtistsNameAsc = "artists.name"
+        case ArtistsNameDesc = "-artists.name"
     }
 
     /**
@@ -491,12 +491,12 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
-        case playlistsPeriodAddedat = "playlists.addedAt"
-        case playlistsPeriodAddedat2 = "-playlists.addedAt"
-        case playlistsPeriodLastupdatedat = "playlists.lastUpdatedAt"
-        case playlistsPeriodLastupdatedat2 = "-playlists.lastUpdatedAt"
-        case playlistsPeriodName = "playlists.name"
-        case playlistsPeriodName2 = "-playlists.name"
+        case PlaylistsAddedAtAsc = "playlists.addedAt"
+        case PlaylistsAddedAtDesc = "-playlists.addedAt"
+        case PlaylistsLastUpdatedAtAsc = "playlists.lastUpdatedAt"
+        case PlaylistsLastUpdatedAtDesc = "-playlists.lastUpdatedAt"
+        case PlaylistsNameAsc = "playlists.name"
+        case PlaylistsNameDesc = "-playlists.name"
     }
 
     /**
@@ -644,16 +644,16 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsTracksGet: String, CaseIterable {
-        case tracksPeriodAddedat = "tracks.addedAt"
-        case tracksPeriodAddedat2 = "-tracks.addedAt"
-        case tracksPeriodAlbumsPeriodTitle = "tracks.albums.title"
-        case tracksPeriodAlbumsPeriodTitle2 = "-tracks.albums.title"
-        case tracksPeriodArtistsPeriodName = "tracks.artists.name"
-        case tracksPeriodArtistsPeriodName2 = "-tracks.artists.name"
-        case tracksPeriodDuration = "tracks.duration"
-        case tracksPeriodDuration2 = "-tracks.duration"
-        case tracksPeriodTitle = "tracks.title"
-        case tracksPeriodTitle2 = "-tracks.title"
+        case TracksAddedAtAsc = "tracks.addedAt"
+        case TracksAddedAtDesc = "-tracks.addedAt"
+        case TracksAlbumsTitleAsc = "tracks.albums.title"
+        case TracksAlbumsTitleDesc = "-tracks.albums.title"
+        case TracksArtistsNameAsc = "tracks.artists.name"
+        case TracksArtistsNameDesc = "-tracks.artists.name"
+        case TracksDurationAsc = "tracks.duration"
+        case TracksDurationDesc = "-tracks.duration"
+        case TracksTitleAsc = "tracks.title"
+        case TracksTitleDesc = "-tracks.title"
     }
 
     /**
@@ -812,14 +812,14 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsVideosGet: String, CaseIterable {
-        case videosPeriodAddedat = "videos.addedAt"
-        case videosPeriodAddedat2 = "-videos.addedAt"
-        case videosPeriodArtistsPeriodName = "videos.artists.name"
-        case videosPeriodArtistsPeriodName2 = "-videos.artists.name"
-        case videosPeriodDuration = "videos.duration"
-        case videosPeriodDuration2 = "-videos.duration"
-        case videosPeriodTitle = "videos.title"
-        case videosPeriodTitle2 = "-videos.title"
+        case VideosAddedAtAsc = "videos.addedAt"
+        case VideosAddedAtDesc = "-videos.addedAt"
+        case VideosArtistsNameAsc = "videos.artists.name"
+        case VideosArtistsNameDesc = "-videos.artists.name"
+        case VideosDurationAsc = "videos.duration"
+        case VideosDurationDesc = "-videos.duration"
+        case VideosTitleAsc = "videos.title"
+        case VideosTitleDesc = "-videos.title"
     }
 
     /**

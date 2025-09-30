@@ -31,5 +31,3 @@ public struct ArtistsFollowingResourceIdentifierMeta: Codable, Hashable {
         try container.encodeIfPresent(viewer, forKey: .viewer)
     }
 }
-
-

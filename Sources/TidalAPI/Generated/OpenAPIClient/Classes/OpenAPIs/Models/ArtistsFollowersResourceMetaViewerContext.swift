@@ -39,5 +39,3 @@ public struct ArtistsFollowersResourceMetaViewerContext: Codable, Hashable {
         try container.encodeIfPresent(myArtistFollows, forKey: .myArtistFollows)
     }
 }
-
-

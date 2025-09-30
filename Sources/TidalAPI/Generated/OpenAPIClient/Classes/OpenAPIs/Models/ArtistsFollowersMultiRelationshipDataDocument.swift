@@ -41,5 +41,3 @@ public struct ArtistsFollowersMultiRelationshipDataDocument: Codable, Hashable {
         try container.encode(links, forKey: .links)
     }
 }
-
-

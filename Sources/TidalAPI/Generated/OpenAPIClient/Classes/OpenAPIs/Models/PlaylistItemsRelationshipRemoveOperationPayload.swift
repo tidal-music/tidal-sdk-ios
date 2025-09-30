@@ -32,5 +32,3 @@ public struct PlaylistItemsRelationshipRemoveOperationPayload: Codable, Hashable
         try container.encode(data, forKey: .data)
     }
 }
-
-

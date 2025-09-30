@@ -31,5 +31,3 @@ public struct TrackSourceFileCreateOperationPayloadDataRelationships: Codable, H
         try container.encode(track, forKey: .track)
     }
 }
-
-

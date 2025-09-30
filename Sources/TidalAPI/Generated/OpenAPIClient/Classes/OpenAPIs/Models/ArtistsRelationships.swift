@@ -86,5 +86,3 @@ public struct ArtistsRelationships: Codable, Hashable {
         try container.encode(videos, forKey: .videos)
     }
 }
-
-

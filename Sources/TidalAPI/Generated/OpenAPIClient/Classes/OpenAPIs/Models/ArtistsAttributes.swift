@@ -68,5 +68,3 @@ public struct ArtistsAttributes: Codable, Hashable {
         try container.encodeIfPresent(spotlighted, forKey: .spotlighted)
     }
 }
-
-

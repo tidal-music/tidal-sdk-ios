@@ -32,5 +32,3 @@ public struct UserReportsCreateOperationPayloadDataRelationshipsReportedResource
         try container.encode(data, forKey: .data)
     }
 }
-
-

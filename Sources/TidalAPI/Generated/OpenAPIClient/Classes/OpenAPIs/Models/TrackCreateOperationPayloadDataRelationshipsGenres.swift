@@ -32,5 +32,3 @@ public struct TrackCreateOperationPayloadDataRelationshipsGenres: Codable, Hasha
         try container.encode(data, forKey: .data)
     }
 }
-
-

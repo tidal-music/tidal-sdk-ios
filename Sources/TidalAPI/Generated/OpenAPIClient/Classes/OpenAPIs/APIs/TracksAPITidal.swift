@@ -147,6 +147,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Get shares relationship (\&quot;to-many\&quot;).
+     
+     - returns: TracksMultiRelationshipDataDocument
+     */
+	public static func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsSharesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Get similarTracks relationship (\&quot;to-many\&quot;).
      
      - returns: TracksMultiRelationshipDataDocument

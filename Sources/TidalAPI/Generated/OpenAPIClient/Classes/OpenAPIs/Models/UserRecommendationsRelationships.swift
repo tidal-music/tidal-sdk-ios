@@ -41,5 +41,3 @@ public struct UserRecommendationsRelationships: Codable, Hashable {
         try container.encode(newArrivalMixes, forKey: .newArrivalMixes)
     }
 }
-
-

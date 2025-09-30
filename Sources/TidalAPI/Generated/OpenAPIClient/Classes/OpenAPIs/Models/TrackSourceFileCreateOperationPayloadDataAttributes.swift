@@ -36,5 +36,3 @@ public struct TrackSourceFileCreateOperationPayloadDataAttributes: Codable, Hash
         try container.encode(size, forKey: .size)
     }
 }
-
-

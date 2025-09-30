@@ -41,5 +41,3 @@ public struct VideosMultiRelationshipDataDocument: Codable, Hashable {
         try container.encode(links, forKey: .links)
     }
 }
-
-

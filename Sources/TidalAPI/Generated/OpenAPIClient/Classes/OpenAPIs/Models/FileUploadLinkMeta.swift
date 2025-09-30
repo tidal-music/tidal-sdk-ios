@@ -39,5 +39,3 @@ public struct FileUploadLinkMeta: Codable, Hashable {
         try container.encode(method, forKey: .method)
     }
 }
-
-

@@ -32,5 +32,3 @@ public struct LyricsCreateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(text, forKey: .text)
     }
 }
-
-

@@ -31,5 +31,3 @@ public struct LyricsCreateOperationPayloadDataRelationships: Codable, Hashable {
         try container.encode(track, forKey: .track)
     }
 }
-
-

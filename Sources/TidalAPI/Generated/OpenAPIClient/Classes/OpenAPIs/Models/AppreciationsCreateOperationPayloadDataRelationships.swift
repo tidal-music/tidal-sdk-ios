@@ -31,5 +31,3 @@ public struct AppreciationsCreateOperationPayloadDataRelationships: Codable, Has
         try container.encode(appreciatedItems, forKey: .appreciatedItems)
     }
 }
-
-

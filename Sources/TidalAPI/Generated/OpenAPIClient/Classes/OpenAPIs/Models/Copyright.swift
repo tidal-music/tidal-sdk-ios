@@ -33,5 +33,3 @@ public struct Copyright: Codable, Hashable {
         try container.encode(text, forKey: .text)
     }
 }
-
-

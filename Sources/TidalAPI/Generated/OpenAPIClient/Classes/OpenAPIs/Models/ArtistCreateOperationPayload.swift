@@ -36,5 +36,3 @@ public struct ArtistCreateOperationPayload: Codable, Hashable {
         try container.encodeIfPresent(meta, forKey: .meta)
     }
 }
-
-

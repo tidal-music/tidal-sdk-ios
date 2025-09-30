@@ -31,5 +31,3 @@ public struct AlbumUpdateOperationPayloadDataRelationships: Codable, Hashable {
         try container.encodeIfPresent(genres, forKey: .genres)
     }
 }
-
-

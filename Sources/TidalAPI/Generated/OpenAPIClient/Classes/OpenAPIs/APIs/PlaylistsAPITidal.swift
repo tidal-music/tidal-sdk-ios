@@ -18,21 +18,21 @@ public enum PlaylistsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_playlistsGet: String, CaseIterable {
-		case createdat = "createdAt"
-		case createdat2 = "-createdAt"
-		case lastmodifiedat = "lastModifiedAt"
-		case lastmodifiedat2 = "-lastModifiedAt"
-		case name = "name"
-		case name2 = "-name"
+		case CreatedAtAsc = "createdAt"
+		case CreatedAtDesc = "-createdAt"
+		case LastModifiedAtAsc = "lastModifiedAt"
+		case LastModifiedAtDesc = "-lastModifiedAt"
+		case NameAsc = "name"
+		case NameDesc = "-name"
 
 		func toPlaylistsAPIEnum() -> PlaylistsAPI.Sort_playlistsGet {
 			switch self {
-			case .createdat: return .createdat
-			case .createdat2: return .createdat2
-			case .lastmodifiedat: return .lastmodifiedat
-			case .lastmodifiedat2: return .lastmodifiedat2
-			case .name: return .name
-			case .name2: return .name2
+			case .CreatedAtAsc: return .CreatedAtAsc
+			case .CreatedAtDesc: return .CreatedAtDesc
+			case .LastModifiedAtAsc: return .LastModifiedAtAsc
+			case .LastModifiedAtDesc: return .LastModifiedAtDesc
+			case .NameAsc: return .NameAsc
+			case .NameDesc: return .NameDesc
 			}
 		}
 	}

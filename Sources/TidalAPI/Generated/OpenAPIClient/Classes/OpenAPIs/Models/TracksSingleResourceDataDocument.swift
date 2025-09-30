@@ -41,5 +41,3 @@ public struct TracksSingleResourceDataDocument: Codable, Hashable {
         try container.encode(links, forKey: .links)
     }
 }
-
-

@@ -31,5 +31,3 @@ public struct UserCollectionsTracksResourceIdentifierMeta: Codable, Hashable {
         try container.encode(addedAt, forKey: .addedAt)
     }
 }
-
-

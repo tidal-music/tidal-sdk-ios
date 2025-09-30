@@ -68,5 +68,3 @@ public struct UsersAttributes: Codable, Hashable {
         try container.encode(username, forKey: .username)
     }
 }
-
-

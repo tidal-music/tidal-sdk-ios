@@ -43,5 +43,3 @@ public struct Links: Codable, Hashable {
         try container.encode(_self, forKey: ._self)
     }
 }
-
-

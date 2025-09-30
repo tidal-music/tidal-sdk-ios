@@ -33,5 +33,3 @@ public struct LinksMeta: Codable, Hashable {
         try container.encode(nextCursor, forKey: .nextCursor)
     }
 }
-
-

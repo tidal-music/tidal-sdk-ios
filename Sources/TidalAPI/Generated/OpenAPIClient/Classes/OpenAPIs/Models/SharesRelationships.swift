@@ -36,5 +36,3 @@ public struct SharesRelationships: Codable, Hashable {
         try container.encode(sharedResources, forKey: .sharedResources)
     }
 }
-
-

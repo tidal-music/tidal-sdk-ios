@@ -37,5 +37,3 @@ public struct PlaylistItemsRelationshipReorderOperationPayload: Codable, Hashabl
         try container.encodeIfPresent(meta, forKey: .meta)
     }
 }
-
-

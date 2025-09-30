@@ -3,6 +3,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**direction** | **String** |  | [optional] 
+**lrcText** | **String** |  | [optional] 
+**provider** | [**LyricsAttributesProvider**](LyricsAttributesProvider.md) |  | [optional] 
 **technicalStatus** | **String** |  | 
 **text** | **String** |  | [optional] 
 

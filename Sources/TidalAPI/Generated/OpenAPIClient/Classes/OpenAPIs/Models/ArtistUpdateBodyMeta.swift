@@ -31,5 +31,3 @@ public struct ArtistUpdateBodyMeta: Codable, Hashable {
         try container.encodeIfPresent(dryRun, forKey: .dryRun)
     }
 }
-
-
