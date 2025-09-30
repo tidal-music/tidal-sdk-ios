@@ -14,7 +14,7 @@ final class AudioSessionRouteChangeMonitor {
     // Timestamp in ms (wall-clock via TimeProvider)
     private var lastRouteLossAt: UInt64?
     // Only auto-resume if BT returns quickly. Adjust here as needed.
-    private let autoResumeWindowSeconds: TimeInterval = 10
+    private let autoResumeWindowSeconds: TimeInterval = 5
 
 		init(_ playerEngine: PlayerEngine, configuration: Configuration) {
 			self.playerEngine = playerEngine
