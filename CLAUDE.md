@@ -314,3 +314,12 @@ TidalEventSender.shared.setBlockedConsentCategories([.targeting])
 - Integration tests use real audio files stored in Tests/PlayerTests/Resources/AudioFiles/
 - PlayerTests.xctestplan provides organized test execution at Tests/PlayerTests/PlayerTests.xctestplan
 - Test apps available in TestApps/ directory demonstrating real usage patterns
+
+### PlayerEngine Testing Tips
+
+- Drive state via engine APIs: call `playerEngine.play(timestamp:)`; use `player.playing()` only to simulate callbacks.
+- Always wait before asserting: `listenerQueue.sync {}`.
+- Standard play flow: `load` → `player.loaded()` → `playerEngine.play()` → `player.playing()` → `listenerQueue.sync {}` → expect `.PLAYING`.
+- Route changes: mock `AudioInfoProvider` (e.g., Bluetooth), post `AVAudioSession.routeChangeNotification` with `AVAudioSessionRouteChangeReasonKey`.
+- Network/creds: stub with `JsonEncodedResponseURLProtocol`; call `credentialsProvider.injectSuccessfulUserLevelCredentials()`.
+- Time/world: use `TimeProvider.mock` and set `PlayerWorld` in test setup.
