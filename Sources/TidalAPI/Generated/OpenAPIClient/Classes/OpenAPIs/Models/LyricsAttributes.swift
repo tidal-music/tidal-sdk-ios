@@ -12,24 +12,40 @@ import AnyCodable
 
 public struct LyricsAttributes: Codable, Hashable {
 
+    public enum Direction: String, Codable, CaseIterable {
+        case leftToRight = "LEFT_TO_RIGHT"
+        case rightToLeft = "RIGHT_TO_LEFT"
+    }
     public enum TechnicalStatus: String, Codable, CaseIterable {
         case pending = "PENDING"
         case processing = "PROCESSING"
         case error = "ERROR"
         case ok = "OK"
     }
+    public var direction: Direction?
+    public var lrcText: String?
+    public var provider: LyricsAttributesProvider?
     public var technicalStatus: TechnicalStatus
     public var text: String?
 
     public init(
+        direction: Direction? = nil,
+        lrcText: String? = nil,
+        provider: LyricsAttributesProvider? = nil,
         technicalStatus: TechnicalStatus,
         text: String? = nil
     ) {
+        self.direction = direction
+        self.lrcText = lrcText
+        self.provider = provider
         self.technicalStatus = technicalStatus
         self.text = text
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case direction
+        case lrcText
+        case provider
         case technicalStatus
         case text
     }
@@ -38,6 +54,9 @@ public struct LyricsAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(direction, forKey: .direction)
+        try container.encodeIfPresent(lrcText, forKey: .lrcText)
+        try container.encodeIfPresent(provider, forKey: .provider)
         try container.encode(technicalStatus, forKey: .technicalStatus)
         try container.encodeIfPresent(text, forKey: .text)
     }

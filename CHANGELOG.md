@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-- Auto-resume playback after short conenction drops over Bluetooth. (Player)
+## [0.7.3] - 2025-09-30
 
-## [0.7.2] - 2025-09-24
+### Changed
+- Generated API code using spec version 0.1.82 (TidalAPI)
+
+### Changed
+- Auto-resume playback after short conenction drops over Bluetooth. (Player)## [0.7.2] - 2025-09-24
 
 ### Fixed
 - **TidalAPI Code Generation**: Fixed missing enum default cases (TidalAPI)
