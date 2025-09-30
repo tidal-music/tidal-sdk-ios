@@ -2,6 +2,17 @@
 
 This is the repository for TIDAL SDK modules for iOS development.
 
+## Quick Start
+
+```bash
+make setup      # Install git hooks
+make build      # Build all targets
+make test       # Run tests
+make help       # See all available commands
+```
+
+For comprehensive build, test, and contribution guidelines see [AGENTS.md](./AGENTS.md).
+
 ## Available modules
 
 - [auth](./Sources/Auth/README.md)

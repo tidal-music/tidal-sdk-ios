@@ -66,15 +66,11 @@ jobs:
             exit 0
         fi
 
-        files_argument=""
-        for i in "${modified_files[@]}"; do
-            files_argument="$files_argument $i"
-        done
-
         echo "Base branch: $BASE_BRANCH"
         echo "Feature branch: $FEATURE_BRANCH"
-        echo "Modified files: $files_argument"
+        echo "Modified Swift files found: ${#modified_files[@]}"
+        printf '%s\n' "${modified_files[@]}"
 
-        # Run SwiftLint on the changed files
-        echo "Executing: ./bin/swiftlint/run-swiftlint.sh -i $files_argument"
-        ./bin/swiftlint/run-swiftlint.sh -i "$files_argument"
+        # Run SwiftLint normally - it will respect exclusion rules in .swiftlint.yml
+        echo "Executing: ./bin/swiftlint/run-swiftlint.sh"
+        ./bin/swiftlint/run-swiftlint.sh
