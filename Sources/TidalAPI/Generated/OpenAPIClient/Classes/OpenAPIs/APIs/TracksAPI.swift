@@ -17,7 +17,7 @@ internal class TracksAPI {
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
      - parameter filterOwnersId: (query) User id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterId: (query) A Tidal catalogue ID (optional)
@@ -40,7 +40,7 @@ internal class TracksAPI {
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
      - parameter filterOwnersId: (query) User id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterId: (query) A Tidal catalogue ID (optional)
@@ -119,7 +119,7 @@ internal class TracksAPI {
      
      - parameter id: (path) A Tidal catalogue ID 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
      - returns: TracksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -139,7 +139,7 @@ internal class TracksAPI {
        - name: Client_Credentials
      - parameter id: (path) A Tidal catalogue ID 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
      - returns: RequestBuilder<TracksSingleResourceDataDocument> 
      */
     internal class func tracksIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<TracksSingleResourceDataDocument> {
@@ -568,6 +568,56 @@ internal class TracksAPI {
      */
     internal class func tracksIdRelationshipsRadioGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/radio"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TracksMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get shares relationship (\"to-many\").
+     
+     - parameter id: (path) A Tidal catalogue ID 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: shares (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: TracksMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+        return try await tracksIdRelationshipsSharesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+    }
+
+    /**
+     Get shares relationship (\"to-many\").
+     - GET /tracks/{id}/relationships/shares
+     - Retrieves shares relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) A Tidal catalogue ID 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: shares (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
+     */
+    internal class func tracksIdRelationshipsSharesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+        var localVariablePath = "/tracks/{id}/relationships/shares"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)

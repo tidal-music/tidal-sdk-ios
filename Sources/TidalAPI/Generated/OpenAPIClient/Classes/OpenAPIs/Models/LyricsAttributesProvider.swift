@@ -11,31 +11,31 @@ import AnyCodable
 #endif
 
 public enum LyricsAttributesProvider: Codable, JSONEncodable, Hashable {
-    case typeThirdParty(ThirdParty)
-    case typeTidal(Tidal)
+    case thirdParty(ThirdParty)
+    case tidal(Tidal)
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
-        case .typeThirdParty(let value):
+        case .thirdParty(let value):
             try container.encode(value)
-        case .typeTidal(let value):
+        case .tidal(let value):
             try container.encode(value)
         }
     }
     
-    private enum CodingKeys: String, CodingKey {
-        case 
-    }
-
     public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decode(String.self, forKey: .)
-
-        switch type {
-        default:
-            throw DecodingError.dataCorruptedError(forKey: ., in: container, debugDescription: "Unknown type: \\(type)")
+        if let value = try? ThirdParty(from: decoder) {
+            self = .thirdParty(value)
+            return
         }
+        if let value = try? Tidal(from: decoder) {
+            self = .tidal(value)
+            return
+        }
+        
+        let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode LyricsAttributesProvider")
+        throw DecodingError.dataCorrupted(context)
     }
 }
 
