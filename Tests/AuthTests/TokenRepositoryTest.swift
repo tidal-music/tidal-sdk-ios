@@ -278,6 +278,74 @@ final class TokenRepositoryTest: XCTestCase {
 		XCTAssertEqual(fakeTokensStore.saves, 2, "The freshly retrieved token should have benn saved")
 	}
 
+	func testConcurrentRefreshCallsAreCoalesced() async throws {
+		// given: expired token with refreshToken present
+		let credentials = makeCredentials(isExpired: true, userId: "valid")
+		let tokens = Tokens(credentials: credentials, refreshToken: "refreshToken")
+
+		createAuthConfig()
+		try createTokenRepository(tokenService: FakeTokenService())
+		try fakeTokensStore.saveTokens(tokens: tokens)
+
+		// when: fire two concurrent getCredentials calls
+		async let r1 = tokenRepository.getCredentials(apiErrorSubStatus: nil)
+		async let r2 = tokenRepository.getCredentials(apiErrorSubStatus: nil)
+		let result1 = try await r1
+		let result2 = try await r2
+
+		// then: only one refresh call should be performed
+		XCTAssertEqual(
+			fakeTokenService.calls.filter { $0 == .refresh }.count,
+			1,
+			"Concurrent refresh calls must be coalesced into a single network request"
+		)
+
+		XCTAssertEqual(result1.successData?.token, "accessToken")
+		XCTAssertEqual(result2.successData?.token, "accessToken")
+	}
+
+	func testGetAccessTokenReturnsStoredCredentialsOnRedirect302() async throws {
+		// given
+		let credentials = makeCredentials(isExpired: true, userId: "valid")
+		let tokens = Tokens(credentials: credentials, refreshToken: "refreshToken")
+
+		let service = FakeTokenService(throwableToThrow: NetworkError(code: "302"))
+
+		createAuthConfig()
+		try createTokenRepository(tokenService: service)
+		try fakeTokensStore.saveTokens(tokens: tokens)
+
+		// when
+		let result = try await tokenRepository.getCredentials(apiErrorSubStatus: nil)
+
+		// then: 3xx should be treated as network/connectivity class (transient) and return stored creds
+		switch result {
+		case let .success(returnedCredentials):
+			XCTAssertEqual(returnedCredentials, credentials, "Should return stored credentials on 3xx redirects")
+		case .failure:
+			XCTFail("Should return stored credentials instead of failing on 3xx redirects")
+		}
+	}
+
+	func testGetAccessTokenDoesNotLogoutOnRateLimit429() async throws {
+		// given
+		let credentials = makeCredentials(isExpired: true, userId: "valid")
+		let tokens = Tokens(credentials: credentials, refreshToken: "refreshToken")
+
+		let service = FakeTokenService(throwableToThrow: NetworkError(code: "429"))
+
+		createAuthConfig()
+		try createTokenRepository(tokenService: service)
+		try fakeTokensStore.saveTokens(tokens: tokens)
+
+		// when
+		let result = try await tokenRepository.getCredentials(apiErrorSubStatus: nil)
+
+		// then: should not downgrade/logout; expect failure and unchanged stored creds
+		XCTAssertTrue(result.isFailure, "429 should fail without causing logout")
+		XCTAssertEqual(fakeTokensStore.last?.credentials, credentials, "Stored credentials should remain unchanged on 429")
+	}
+
 	func testWhenNoRefreshTokenIsPresentAndAccessTokenIsExpiredGetAccessTokenGetsTokenUsingClientSecretWhenPresent() async throws {
 		// given
 		let credentials = makeCredentials(isExpired: true, userId: "valid")
