@@ -191,16 +191,27 @@ struct TokenRepository {
 	}
 
 	private func shouldLogoutWithLowerLevelTokenAfterUpdate(error: TidalError) -> Bool {
-		if let errorCode = (error as? UnexpectedError)?.code,
-		   let code = Int(errorCode),
-		   code <= HTTP_UNAUTHORIZED
-		{
-			// if code 400, 401, the user is effectively logged out
-			// and we return a lower level token
-			true
-		} else {
-			false
+		guard let unexpected = error as? UnexpectedError else {
+			return false
 		}
+
+		// Prefer explicit auth substatuses that indicate invalid/expired tokens
+		if let sub = unexpected.subStatus {
+			let invalid = ApiErrorSubStatus.invalidAccessToken.rawValue.toInt
+			let expired = ApiErrorSubStatus.expiredAccessToken.rawValue.toInt
+			if sub == invalid || sub == expired {
+				return true
+			}
+			// Other substatuses should not cause logout/downgrade
+			return false
+		}
+
+		// Fallback: if no subStatus, only treat 401 as a logout condition
+		if let code = Int(unexpected.code), code == HTTP_UNAUTHORIZED {
+			return true
+		}
+
+		return false
 	}
 
 	mutating func saveTokens(
