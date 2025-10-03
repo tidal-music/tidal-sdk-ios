@@ -116,6 +116,12 @@ struct TokenRepository {
 
 			case let (.failure(error), .some(networkErrorLoggableBlock)):
 				logger?.log(loggable: networkErrorLoggableBlock(error))
+				// If this is a server error (5xx) or network error, return existing credentials
+				// instead of failing completely. This allows the app to continue functioning
+				// and retry the refresh on the next API call.
+				if error is RetryableError, let credentials = storedTokens?.credentials {
+					return .success(credentials)
+				}
 
 			default: break
 			}

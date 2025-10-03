@@ -171,11 +171,12 @@ final class TokenRepositoryTest: XCTestCase {
 		)
 
 		switch result {
-		case .success:
-			XCTFail("The returned token should be the one retrieved from the service")
-		case let .failure(error):
-			XCTAssertTrue(result.isFailure, "The returned token should be the one retrieved from the service")
-			XCTAssertTrue(error is RetryableError, "If the backend call fails, a RetryableError should be returned")
+		case let .success(returnedCredentials):
+			// When refresh fails with a server error (5xx), return the stored credentials
+			// to allow the app to continue and retry on the next API call
+			XCTAssertEqual(returnedCredentials, credentials, "Should return the stored credentials when refresh fails with server error")
+		case .failure:
+			XCTFail("Should return stored credentials instead of failing when backend has server error")
 		}
 	}
 
