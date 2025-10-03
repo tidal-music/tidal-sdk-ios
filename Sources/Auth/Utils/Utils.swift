@@ -79,7 +79,11 @@ func retryWithPolicyUnwrapped<T>(_ retryPolicy: RetryPolicy, block: () async thr
 }
 
 private func sleep(currentDelay: Int) async {
-	try? await Task.sleep(nanoseconds: UInt64(currentDelay * 1_000_000))
+	// Apply jitter (+/- 20%) to reduce thundering herds
+	let lower = max(0, Int(Double(currentDelay) * 0.8))
+	let upper = max(lower, Int(Double(currentDelay) * 1.2))
+	let jittered = Int.random(in: lower ... upper)
+	try? await Task.sleep(nanoseconds: UInt64(jittered * 1_000_000))
 }
 
 extension Int {
