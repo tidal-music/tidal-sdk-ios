@@ -171,11 +171,43 @@ final class TokenRepositoryTest: XCTestCase {
 		)
 
 		switch result {
-		case .success:
-			XCTFail("The returned token should be the one retrieved from the service")
-		case let .failure(error):
-			XCTAssertTrue(result.isFailure, "The returned token should be the one retrieved from the service")
-			XCTAssertTrue(error is RetryableError, "If the backend call fails, a RetryableError should be returned")
+		case let .success(returnedCredentials):
+			// When refresh fails with a server error (5xx), return the stored credentials
+			// to allow the app to continue and retry on the next API call
+			XCTAssertEqual(returnedCredentials, credentials, "Should return the stored credentials when refresh fails with server error")
+		case .failure:
+			XCTFail("Should return stored credentials instead of failing when backend has server error")
+		}
+	}
+
+	func testGetAccessTokenReturnsStoredCredentialsOnNetworkFailure() async throws {
+		// given
+		let credentials = makeCredentials(isExpired: true, userId: "valid")
+		let tokens = Tokens(credentials: credentials, refreshToken: "refreshToken")
+
+		// Simulate a pure network/connectivity error (non-HTTP), which maps to NetworkError
+		let service = FakeTokenService(throwableToThrow: NetworkError(code: "1"))
+
+		createAuthConfig()
+		try createTokenRepository(tokenService: service)
+		try fakeTokensStore.saveTokens(tokens: tokens)
+
+		// when
+		let result = try await tokenRepository.getCredentials(apiErrorSubStatus: nil)
+
+		// then: no retries on pure network error path
+		XCTAssertEqual(
+			fakeTokenService.calls.filter { $0 == .refresh }.count,
+			1,
+			"On network errors, refresh should not be retried by default policy"
+		)
+
+		switch result {
+		case let .success(returnedCredentials):
+			// On network/connectivity errors, return stored credentials to avoid forced logout
+			XCTAssertEqual(returnedCredentials, credentials, "Should return stored credentials on network errors")
+		case .failure:
+			XCTFail("Should return stored credentials instead of failing on network errors")
 		}
 	}
 
