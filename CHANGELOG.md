@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.6] - 2025-10-06
 
 ### Fixed
-- Prevent forced logout on transient refresh failures. When access token refresh fails due to server errors (5xx) or network/connectivity errors, return stored credentials and retry on the next API call. (Auth))
+- Prevent forced logout on transient refresh failures. When access token refresh fails due to server errors (5xx) or network/connectivity errors, return stored credentials and retry on the next API call. (Auth)
 
 ## [0.7.5] - 2025-09-30
 
