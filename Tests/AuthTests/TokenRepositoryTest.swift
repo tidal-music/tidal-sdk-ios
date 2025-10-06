@@ -22,6 +22,68 @@ private struct MockUpgradeRetryPolicy: RetryPolicy {
 	}
 }
 
+// MARK: - BlockingTokenService
+
+private final class BlockingTokenService: TokenService {
+	private(set) var refreshCalls = 0
+	private var continuation: CheckedContinuation<RefreshResponse, Error>?
+	private let response: RefreshResponse
+	private let onRefreshStarted: () -> Void
+
+	init(
+		response: RefreshResponse = RefreshResponse(
+			accessToken: "accessToken",
+			clientName: "clientName",
+			expiresIn: 5000,
+			tokenType: "tokenType",
+			scopesString: "",
+			userId: 123
+		),
+		onRefreshStarted: @escaping () -> Void = {}
+	) {
+		self.response = response
+		self.onRefreshStarted = onRefreshStarted
+	}
+
+	func getTokenFromRefreshToken(
+		clientId: String,
+		refreshToken: String,
+		grantType: String,
+		scope: String
+	) async throws -> RefreshResponse {
+		refreshCalls += 1
+		onRefreshStarted()
+		return try await withCheckedThrowingContinuation { continuation in
+			self.continuation = continuation
+		}
+	}
+
+	func resumeRefresh() {
+		continuation?.resume(returning: response)
+		continuation = nil
+	}
+
+	func getTokenFromClientSecret(
+		clientId: String,
+		clientSecret: String?,
+		grantType: String,
+		scope: String
+	) async throws -> RefreshResponse {
+		fatalError("Not implemented")
+	}
+
+	func upgradeToken(
+		refreshToken: String,
+		clientUniqueKey: String?,
+		clientId: String,
+		clientSecret: String?,
+		scopes: String,
+		grantType: String
+	) async throws -> UpgradeResponse {
+		fatalError("Not implemented")
+	}
+}
+
 // MARK: - TokenRepositoryTest
 
 // swiftlint:disable type_body_length
@@ -36,12 +98,12 @@ final class TokenRepositoryTest: XCTestCase {
 	private var tokenRepository: TokenRepository!
 
 	private func createTokenRepository(
-		tokenService: FakeTokenService,
+		tokenService: TokenService,
 		tokensStore: FakeTokensStore? = nil,
 		defaultBackoffPolicy: RetryPolicy? = nil,
 		upgradeBackoffPolicy: RetryPolicy? = nil
 	) throws {
-		fakeTokenService = tokenService
+		fakeTokenService = tokenService as? FakeTokenService
 		fakeTokensStore = tokensStore ?? FakeTokensStore(credentialsKey: authConfig!.credentialsKey)
 		tokenRepository = TokenRepository(
 			authConfig: authConfig,
@@ -301,6 +363,47 @@ final class TokenRepositoryTest: XCTestCase {
 		)
 
 		XCTAssertEqual(result1.successData?.token, "accessToken")
+		XCTAssertEqual(result2.successData?.token, "accessToken")
+	}
+
+	func testCancellingCallerDoesNotCancelSharedRefreshTask() async throws {
+		// given: expired token with refreshToken present and a blocking token service
+		let credentials = makeCredentials(isExpired: true, userId: "valid")
+		let tokens = Tokens(credentials: credentials, refreshToken: "refreshToken")
+		let refreshStarted = expectation(description: "Refresh call started")
+
+		createAuthConfig()
+		let blockingService = BlockingTokenService {
+			refreshStarted.fulfill()
+		}
+		try createTokenRepository(tokenService: blockingService)
+		try fakeTokensStore.saveTokens(tokens: tokens)
+
+		// when: trigger first refresh and wait until network call begins
+		let firstTask = Task {
+			try await tokenRepository.getCredentials(apiErrorSubStatus: nil)
+		}
+
+		await fulfillment(of: [refreshStarted], timeout: 1)
+		firstTask.cancel()
+
+		async let secondResult = tokenRepository.getCredentials(apiErrorSubStatus: nil)
+		await Task.yield()
+
+		blockingService.resumeRefresh()
+
+		let result2 = try await secondResult
+		let firstResult = await firstTask.result
+
+		// then: shared refresh continues and only one refresh call is performed
+		XCTAssertEqual(blockingService.refreshCalls, 1, "The coalesced refresh should run only once")
+		switch firstResult {
+		case .failure(let error):
+			XCTAssertTrue(error is CancellationError, "Unexpected error type: \(error)")
+		case .success:
+			break
+		}
+
 		XCTAssertEqual(result2.successData?.token, "accessToken")
 	}
 
