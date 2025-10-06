@@ -12,6 +12,7 @@ struct TokenRepository {
 	private let defaultBackoffPolicy: RetryPolicy
 	private let upgradeBackoffPolicy: RetryPolicy
 	private let logger: TidalLogger?
+	private let refreshCoordinator: RefreshCoalescing
 
 	init(
 		authConfig: AuthConfig,
@@ -19,7 +20,8 @@ struct TokenRepository {
 		tokenService: TokenService,
 		defaultBackoffPolicy: RetryPolicy,
 		upgradeBackoffPolicy: RetryPolicy,
-		logger: TidalLogger?
+		logger: TidalLogger?,
+		refreshCoordinator: RefreshCoalescing = RefreshCoordinator()
 	) {
 		self.authConfig = authConfig
 		self.tokensStore = tokensStore
@@ -27,6 +29,7 @@ struct TokenRepository {
 		self.defaultBackoffPolicy = defaultBackoffPolicy
 		self.upgradeBackoffPolicy = upgradeBackoffPolicy
 		self.logger = logger
+		self.refreshCoordinator = refreshCoordinator
 	}
 
 	private var needsCredentialsUpgrade: Bool {
@@ -39,10 +42,10 @@ struct TokenRepository {
 	}
 
 	func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
-        try await RefreshGate.shared.runOrJoinCredentials(key: authConfig.credentialsKey) {
-            try await _getCredentialsImpl(apiErrorSubStatus: apiErrorSubStatus)
-        }
-    }
+		try await refreshCoordinator.runOrJoinCredentials(key: authConfig.credentialsKey) {
+			try await _getCredentialsImpl(apiErrorSubStatus: apiErrorSubStatus)
+		}
+	}
 
 	private func _getCredentialsImpl(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
         var upgradedRefreshToken: String?
