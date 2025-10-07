@@ -12,6 +12,7 @@ struct TokenRepository {
 	private let defaultBackoffPolicy: RetryPolicy
 	private let upgradeBackoffPolicy: RetryPolicy
 	private let logger: TidalLogger?
+	private let refreshCoordinator: RefreshCoalescing
 
 	init(
 		authConfig: AuthConfig,
@@ -19,7 +20,8 @@ struct TokenRepository {
 		tokenService: TokenService,
 		defaultBackoffPolicy: RetryPolicy,
 		upgradeBackoffPolicy: RetryPolicy,
-		logger: TidalLogger?
+		logger: TidalLogger?,
+		refreshCoordinator: RefreshCoalescing = RefreshCoordinator()
 	) {
 		self.authConfig = authConfig
 		self.tokensStore = tokensStore
@@ -27,6 +29,7 @@ struct TokenRepository {
 		self.defaultBackoffPolicy = defaultBackoffPolicy
 		self.upgradeBackoffPolicy = upgradeBackoffPolicy
 		self.logger = logger
+		self.refreshCoordinator = refreshCoordinator
 	}
 
 	private var needsCredentialsUpgrade: Bool {
@@ -38,32 +41,38 @@ struct TokenRepository {
 		return (storedCredentials.level == .user && authConfig.clientId != storedCredentials.clientId) || false
 	}
 
-	mutating func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
-		var upgradedRefreshToken: String?
-		let tokens: Tokens?
-		do {
-			tokens = try loadTokensFromStore()
-		} catch {
-			logger?.log(loggable: AuthLoggable.loadTokensFromStoreError(error: error))
-			throw error
+	func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
+		try await refreshCoordinator.runOrJoinCredentials(key: authConfig.credentialsKey) {
+			try await _getCredentialsImpl(apiErrorSubStatus: apiErrorSubStatus)
 		}
-
-		let result: AuthResult<Credentials>
-		if let tokens, needsCredentialsUpgrade {
-			let upgradeCredentials = try await upgradeToken(storedTokens: tokens)
-
-			result = upgradeCredentials.map { $0.credentials }
-			upgradedRefreshToken = upgradeCredentials.successData?.refreshToken
-		} else {
-			result = try await updateToken(storedTokens: tokens, apiErrorSubStatus: apiErrorSubStatus)
-		}
-
-		if let credentials = result.successData {
-			try saveTokens(credentials: credentials, refreshToken: upgradedRefreshToken, storedTokens: tokens)
-		}
-
-		return result
 	}
+
+	private func _getCredentialsImpl(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
+        var upgradedRefreshToken: String?
+        let tokens: Tokens?
+        do {
+            tokens = try loadTokensFromStore()
+        } catch {
+            logger?.log(loggable: AuthLoggable.loadTokensFromStoreError(error: error))
+            throw error
+        }
+
+        let result: AuthResult<Credentials>
+        if let tokens, needsCredentialsUpgrade {
+            let upgradeCredentials = try await upgradeToken(storedTokens: tokens)
+
+            result = upgradeCredentials.map { $0.credentials }
+            upgradedRefreshToken = upgradeCredentials.successData?.refreshToken
+        } else {
+            result = try await updateToken(storedTokens: tokens, apiErrorSubStatus: apiErrorSubStatus)
+        }
+
+        if let credentials = result.successData {
+            try saveTokens(credentials: credentials, refreshToken: upgradedRefreshToken, storedTokens: tokens)
+        }
+
+        return result
+    }
 
 	private func updateToken(storedTokens: Tokens?, apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
 		// if our current token isn't expired, we can return it and be done
@@ -214,7 +223,7 @@ struct TokenRepository {
 		return false
 	}
 
-	mutating func saveTokens(
+	func saveTokens(
 		credentials: Credentials,
 		refreshToken: String? = nil,
 		storedTokens: Tokens? = nil
