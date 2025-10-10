@@ -332,6 +332,7 @@ private extension PlaybackInfoFetcher {
 			audioCodec: .HE_AAC_V1,
 			audioSampleRate: nil,
 			audioBitDepth: nil,
+			adaptiveAudioQualities: nil,
 			videoQuality: nil,
 			streamingSessionId: streamingSessionId,
 			contentHash: "",
