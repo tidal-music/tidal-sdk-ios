@@ -21,6 +21,7 @@ final class PlayerItemMonitorMock: PlayerItemMonitor {
 	private(set) var failedItems = [FailedItem]()
 	private(set) var djSessionTransitionItems = [DJSessionTransitionItem]()
 	private(set) var playbackMetadataLoadedItems = [String]()
+	private(set) var audioQualityChanges = [(playerItemId: String, quality: AudioQuality)]()
 
 	func loaded(playerItem: PlayerItem) {
 		loadedItems.append(playerItem.id)
@@ -56,5 +57,9 @@ final class PlayerItemMonitorMock: PlayerItemMonitor {
 
 	func playbackMetadataLoaded(playerItem: PlayerItem) {
 		playbackMetadataLoadedItems.append(playerItem.id)
+	}
+
+	func audioQualityChanged(playerItem: PlayerItem, to audioQuality: AudioQuality) {
+		audioQualityChanges.append((playerItem.id, audioQuality))
 	}
 }
