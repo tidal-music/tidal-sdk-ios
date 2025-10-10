@@ -15,6 +15,7 @@ protocol PlayerItemMonitor: AnyObject {
 	func failed(playerItem: PlayerItem, with error: Error)
 	func djSessionTransition(playerItem: PlayerItem, transition: DJSessionTransition)
 	func playbackMetadataLoaded(playerItem: PlayerItem)
+	func audioQualityChanged(playerItem: PlayerItem, to audioQuality: AudioQuality)
 }
 
 // MARK: - PlayerItem
@@ -320,6 +321,25 @@ extension PlayerItem: PlayerMonitoringDelegate {
 		}
 
 		playerItemMonitor?.playbackMetadataLoaded(playerItem: self)
+	}
+
+	func audioQualityChanged(asset: Asset?, to audioQuality: AudioQuality) {
+		guard asset === self.asset else {
+			return
+		}
+
+		guard var metadata = metadata else {
+			return
+		}
+
+		guard metadata.audioQuality != audioQuality else {
+			return
+		}
+
+		metadata.audioQuality = audioQuality
+		self.metadata = metadata
+
+		playerItemMonitor?.audioQualityChanged(playerItem: self, to: audioQuality)
 	}
 }
 
