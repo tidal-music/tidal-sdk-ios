@@ -65,9 +65,6 @@ final class PlayerItem {
 		if !featureFlagProvider.isContentCachingEnabled() {
 			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_DISABLED)
 		}
-		if featureFlagProvider.shouldUseImprovedCaching() {
-			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_V2)
-		}
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
 			sessionTags.append(StreamingSessionStart.SessionTag.IMPROVED_DRM)
 		}

@@ -83,10 +83,6 @@ enum PlayerLoggable: TidalLoggable {
 	case saveOfflinedItemFailed(error: Error)
 	case deleteOfflinedItemFailed(error: Error)
 
-	// MARK: Asset Cache Legacy
-
-	case deleteAssetCacheFailed(error: Error)
-
 	// MARK: StoredLicenseLoader
 
 	case licenseLoaderContentKeyRequestFailed(error: Error)
@@ -123,10 +119,6 @@ enum PlayerLoggable: TidalLoggable {
 	case downloadFinishedMovingFileFailed(error: Error)
 	case failedToCalculateSizeForHLSDownload(error: Error)
 	case failedToCalculateSizeForProgressiveDownload(error: Error)
-
-	// MARK: AVQueuePlayerWrapperLegacy
-
-	case legacyReadPlaybackMetadataFailed(error: Error)
 
 	// MARK: AVQueuePlayerWrapper
 
@@ -311,10 +303,6 @@ extension PlayerLoggable {
 		case .deleteOfflinedItemFailed:
 			"OfflineEngine-deleteOfflinedItemFailed"
 
-		// Asset Cache Legacy
-		case .deleteAssetCacheFailed:
-			"AssetCacheLegacy-deleteAssetCacheFailed"
-
 		// StoredLicenseLoader
 		case .licenseLoaderContentKeyRequestFailed:
 			"StoredLicenseLoader-contentKeyRequestFailed"
@@ -356,10 +344,6 @@ extension PlayerLoggable {
 			"MediaDownloader-failedToCalculateSizeForHLSDownload"
 		case .failedToCalculateSizeForProgressiveDownload:
 			"MediaDownloader-failedToCalculateSizeForProgressiveDownload"
-
-		// AVQueuePlayerWrapperLegacy
-		case .legacyReadPlaybackMetadataFailed:
-			"AVQueuePlayerWrapperLegacy-legacyReadPlaybackMetadataFailed"
 
 		// AVQueuePlayerWrapper
 		case .readPlaybackMetadataFailed:
@@ -495,7 +479,6 @@ extension PlayerLoggable {
 		     let .updateDBFileAttributes(error),
 		     let .saveOfflinedItemFailed(error),
 		     let .deleteOfflinedItemFailed(error),
-		     let .deleteAssetCacheFailed(error),
 		     let .getAuthBearerTokenCredentialFailed(error),
 		     let .licenseLoaderContentKeyRequestFailed(error),
 		     let .licenseLoaderProcessContentKeyResponseFailed(error),
@@ -509,7 +492,6 @@ extension PlayerLoggable {
 		     let .downloadFinishedMovingFileFailed(error),
 		     let .failedToCalculateSizeForHLSDownload(error),
 		     let .failedToCalculateSizeForProgressiveDownload(error),
-		     let .legacyReadPlaybackMetadataFailed(error),
 		     let .readPlaybackMetadataFailed(error),
 		     let .djSessionStartFailed(error),
 		     let .djSessionSendCommandFailed(error),
@@ -610,7 +592,6 @@ extension PlayerLoggable {
 		     .updateDBFileAttributes,
 		     .saveOfflinedItemFailed,
 		     .deleteOfflinedItemFailed,
-		     .deleteAssetCacheFailed,
 		     .getAuthBearerTokenToBearerTokenFailed,
 		     .licenseLoaderContentKeyRequestFailed,
 		     .licenseLoaderProcessContentKeyResponseFailed,
@@ -625,7 +606,6 @@ extension PlayerLoggable {
 		     .downloadFinishedMovingFileFailed,
 		     .failedToCalculateSizeForHLSDownload,
 		     .failedToCalculateSizeForProgressiveDownload,
-		     .legacyReadPlaybackMetadataFailed,
 		     .readPlaybackMetadataFailed,
 		     .djSessionStartFailed,
 		     .djSessionSendCommandFailed,
