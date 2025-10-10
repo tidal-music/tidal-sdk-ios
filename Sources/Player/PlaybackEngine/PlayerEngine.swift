@@ -415,6 +415,16 @@ extension PlayerEngine: PlayerItemMonitor {
 		}
 	}
 
+	func audioQualityChanged(playerItem: PlayerItem, to audioQuality: AudioQuality) {
+		queue.dispatch {
+			guard playerItem === self.currentItem else {
+				return
+			}
+
+			self.notificationsHandler?.mediaTransitioned(to: self.currentItem)
+		}
+	}
+
 	func playbackMetadataLoaded(playerItem: PlayerItem) {
 		queue.dispatch {
 			if playerItem === self.currentItem {
