@@ -231,10 +231,8 @@ final class PlayerEngine {
 				return
 			}
 
-			if self.featureFlagProvider.shouldUseImprovedCaching() {
-				guard self.nextItem?.mediaProduct != mediaProduct else {
-					return
-				}
+			guard self.nextItem?.mediaProduct != mediaProduct else {
+				return
 			}
 
 			self.nextItem?.unload()
@@ -263,11 +261,7 @@ final class PlayerEngine {
 	}
 
 	func resetOrUnload() {
-		if featureFlagProvider.shouldUseImprovedCaching() {
-			unload()
-		} else {
-			reset()
-		}
+		unload()
 	}
 
 	/// The Player SDK creates new PlayerEngine instances when starting a new explicit playback.
