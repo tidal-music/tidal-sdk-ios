@@ -13,6 +13,11 @@ public protocol PlayerMonitoringDelegate: AnyObject {
 	func completed(asset: Asset?)
 	func failed(asset: Asset?, with error: Error)
 	func playbackMetadataLoaded(asset: Asset?)
+	func audioQualityChanged(asset: Asset?, to audioQuality: AudioQuality)
+}
+
+public extension PlayerMonitoringDelegate {
+	func audioQualityChanged(asset: Asset?, to audioQuality: AudioQuality) {}
 }
 
 // MARK: - PlayerMonitoringDelegates
@@ -80,5 +85,9 @@ public final class PlayerMonitoringDelegates {
 
 	public func playbackMetadataLoaded(asset: Asset?) {
 		delegates.forEach { $0.playbackMetadataLoaded(asset: asset) }
+	}
+
+	public func audioQualityChanged(asset: Asset?, to audioQuality: AudioQuality) {
+		delegates.forEach { $0.audioQualityChanged(asset: asset, to: audioQuality) }
 	}
 }

@@ -11,6 +11,7 @@ open class Asset {
 	@Atomic var assetPosition: Double = 0
 	@Atomic var playbackMetadata: AssetPlaybackMetadata?
 	@Atomic var cacheState: AssetCacheState?
+	@Atomic var adaptiveAudioQualities: [AudioQuality]?
 
 	/// Convenience initializer.
 	/// - Parameters:
@@ -61,6 +62,16 @@ open class Asset {
 		cacheState = state
 	}
 
+	/// Method to store the adaptive audio quality ladder associated with the asset.
+	public func setAdaptiveAudioQualities(_ qualities: [AudioQuality]?) {
+		adaptiveAudioQualities = qualities
+	}
+
+	/// Method to retrieve the adaptive audio quality ladder associated with the asset.
+	public func getAdaptiveAudioQualities() -> [AudioQuality]? {
+		adaptiveAudioQualities
+	}
+
 	/// Method to unload the asset in the player instance.
 	public func unload() {
 		player.unload(asset: self)
@@ -93,7 +104,8 @@ extension Asset: Equatable {
 	public static func == (lhs: Asset, rhs: Asset) -> Bool {
 		lhs.assetPosition == rhs.assetPosition &&
 			lhs.loudnessNormalizationConfiguration == rhs.loudnessNormalizationConfiguration &&
-			lhs.playbackMetadata == rhs.playbackMetadata
+			lhs.playbackMetadata == rhs.playbackMetadata &&
+			lhs.adaptiveAudioQualities == rhs.adaptiveAudioQualities
 	}
 }
 
@@ -101,6 +113,6 @@ extension Asset: Equatable {
 
 extension Asset: CustomStringConvertible {
 	public var description: String {
-		"Asset(assetPosition: \(assetPosition), loudnessNormalizationConfiguration: \(String(describing: loudnessNormalizationConfiguration)), playbackMetadata: \(String(describing: playbackMetadata)), player: \(player))"
+		"Asset(assetPosition: \(assetPosition), loudnessNormalizationConfiguration: \(String(describing: loudnessNormalizationConfiguration)), playbackMetadata: \(String(describing: playbackMetadata)), adaptiveAudioQualities: \(String(describing: adaptiveAudioQualities)), player: \(player))"
 	}
 }
