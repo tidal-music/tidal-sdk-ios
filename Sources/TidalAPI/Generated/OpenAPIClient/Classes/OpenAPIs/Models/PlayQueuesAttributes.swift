@@ -13,9 +13,9 @@ import AnyCodable
 public struct PlayQueuesAttributes: Codable, Hashable {
 
     public enum Repeat: String, Codable, CaseIterable {
-        case off = "OFF"
+        case _none = "NONE"
         case one = "ONE"
-        case range = "RANGE"
+        case batch = "BATCH"
     }
     /** ISO 8601 creation timestamp */
     public var createdAt: Date

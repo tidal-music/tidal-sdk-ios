@@ -190,7 +190,7 @@ Updates existing playQueue.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueUpdateOperationPayload = PlayQueueUpdateOperation_Payload(data: PlayQueueUpdateOperation_Payload_Data(attributes: PlayQueueUpdateOperation_Payload_Data_Attributes(shuffled: false), id: "id_example", type: "type_example")) // PlayQueueUpdateOperationPayload |  (optional)
+let playQueueUpdateOperationPayload = PlayQueueUpdateOperation_Payload(data: PlayQueueUpdateOperation_Payload_Data(attributes: PlayQueueUpdateOperation_Payload_Data_Attributes(_repeat: "_repeat_example", shuffled: false), id: "id_example", type: "type_example")) // PlayQueueUpdateOperationPayload |  (optional)
 
 // Update single playQueue.
 PlayQueuesAPI.playQueuesIdPatch(id: id, playQueueUpdateOperationPayload: playQueueUpdateOperationPayload) { (response, error) in
@@ -663,7 +663,7 @@ Creates a new playQueue.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let playQueueCreateOperationPayload = PlayQueueCreateOperation_Payload(data: PlayQueueCreateOperation_Payload_Data(attributes: 123, type: "type_example")) // PlayQueueCreateOperationPayload |  (optional)
+let playQueueCreateOperationPayload = PlayQueueCreateOperation_Payload(data: PlayQueueCreateOperation_Payload_Data(type: "type_example")) // PlayQueueCreateOperationPayload |  (optional)
 
 // Create single playQueue.
 PlayQueuesAPI.playQueuesPost(playQueueCreateOperationPayload: playQueueCreateOperationPayload) { (response, error) in

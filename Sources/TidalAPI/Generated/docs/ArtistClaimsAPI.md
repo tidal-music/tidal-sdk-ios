@@ -81,7 +81,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
-let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
+let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example", redirectUri: "redirectUri_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
 
 // Update single artistClaim.
 ArtistClaimsAPI.artistClaimsIdPatch(id: id, countryCode: countryCode, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in

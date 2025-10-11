@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.9] - 2025-10-11
+
+### Changed
+- Generated API code using spec version 0.1.87 (TidalAPI)
+
 ## [0.7.8] - 2025-10-10
 
 ### Changed

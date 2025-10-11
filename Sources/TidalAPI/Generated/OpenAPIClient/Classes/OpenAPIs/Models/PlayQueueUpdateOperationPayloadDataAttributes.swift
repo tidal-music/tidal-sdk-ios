@@ -12,15 +12,24 @@ import AnyCodable
 
 public struct PlayQueueUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public enum Repeat: String, Codable, CaseIterable {
+        case _none = "NONE"
+        case one = "ONE"
+        case batch = "BATCH"
+    }
+    public var _repeat: Repeat?
     public var shuffled: Bool?
 
     public init(
+        _repeat: Repeat? = nil,
         shuffled: Bool? = nil
     ) {
+        self._repeat = _repeat
         self.shuffled = shuffled
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case _repeat = "repeat"
         case shuffled
     }
 
@@ -28,6 +37,7 @@ public struct PlayQueueUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(_repeat, forKey: ._repeat)
         try container.encodeIfPresent(shuffled, forKey: .shuffled)
     }
 }
