@@ -20,6 +20,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artworksResourceObject(ArtworksResourceObject)
     case genresResourceObject(GenresResourceObject)
     case lyricsResourceObject(LyricsResourceObject)
+    case playQueuesResourceObject(PlayQueuesResourceObject)
     case playlistsResourceObject(PlaylistsResourceObject)
     case providersResourceObject(ProvidersResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
@@ -57,6 +58,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .genresResourceObject(let value):
             try container.encode(value)
         case .lyricsResourceObject(let value):
+            try container.encode(value)
+        case .playQueuesResourceObject(let value):
             try container.encode(value)
         case .playlistsResourceObject(let value):
             try container.encode(value)
@@ -129,6 +132,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "lyrics":
             let value = try LyricsResourceObject(from: decoder)
             self = .lyricsResourceObject(value)
+        case "playQueues":
+            let value = try PlayQueuesResourceObject(from: decoder)
+            self = .playQueuesResourceObject(value)
         case "playlists":
             let value = try PlaylistsResourceObject(from: decoder)
             self = .playlistsResourceObject(value)
@@ -196,6 +202,7 @@ extension IncludedInner: Identifiable {
         case .artworksResourceObject(let value): return value.id
         case .genresResourceObject(let value): return value.id
         case .lyricsResourceObject(let value): return value.id
+        case .playQueuesResourceObject(let value): return value.id
         case .playlistsResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
