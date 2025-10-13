@@ -162,14 +162,10 @@ enum RequestHelper {
 	}
 
 	private static func isCancelled(_ error: Error) -> Bool {
-		if error is CancellationError {
-			return true
+		if error is CancellationError || (error as? URLError)?.code == .cancelled {
+			true
+		} else {
+			false
 		}
-		if let urlError = error as? URLError, urlError.code == .cancelled {
-			return true
-		}
-		let ns = error as NSError
-		return (ns.domain == NSURLErrorDomain && ns.code == NSURLErrorCancelled) ||
-			(ns.domain == "Swift.CancellationError")
 	}
 }
