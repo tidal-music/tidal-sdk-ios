@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add initial support for adaptive streaming by surfacing audio quality changes observed during AVPlayer ABR switches (Player)
+
 ## [0.7.6] - 2025-10-06
 
 ### Fixed

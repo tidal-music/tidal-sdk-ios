@@ -25,4 +25,20 @@ public extension AudioQuality {
 		default: nil
 		}
 	}
+
+	/// Typical advertised bitrates (in bits per second) used to approximate adaptive switches.
+	var typicalBitrate: Double {
+		switch self {
+		case .LOW:
+			return 96_000
+		case .HIGH:
+			return 320_000
+		case .LOSSLESS:
+			return 1_411_200
+		case .HI_RES:
+			return 2_304_000
+		case .HI_RES_LOSSLESS:
+			return 4_608_000
+		}
+	}
 }

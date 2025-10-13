@@ -684,4 +684,76 @@ final class PlayerItemTests: XCTestCase {
 		XCTAssertNotNil(playbackStatistics)
 		XCTAssertFalse(playbackStatistics?.tags?.contains(.IMPROVED_DRM) == true)
 	}
+
+	func test_audioQualityChanged_updatesMetadataAndNotifiesMonitor() {
+		let playerItem = PlayerItem.mock(
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider
+		)
+
+		let metadata = Metadata.mock(
+			audioQuality: .HIGH,
+			adaptiveAudioQualities: [.LOW, .HIGH, .LOSSLESS]
+		)
+		playerItem.set(metadata)
+
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration.mock()
+		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
+		asset.setAdaptiveAudioQualities(metadata.adaptiveAudioQualities)
+		playerItem.set(asset)
+
+		playerItem.audioQualityChanged(asset: asset, to: .LOSSLESS)
+
+		XCTAssertEqual(playerItem.metadata?.audioQuality, .LOSSLESS)
+		XCTAssertEqual(monitor.audioQualityChanges.count, 1)
+		XCTAssertEqual(monitor.audioQualityChanges.first?.playerItemId, playerItem.id)
+		XCTAssertEqual(monitor.audioQualityChanges.first?.quality, .LOSSLESS)
+	}
+
+	func test_playbackStatistics_reflectsLatestAudioQualityAfterAdaptiveSwitch() {
+		let mediaProduct = MediaProduct.mock()
+		let adaptiveQualities: [AudioQuality] = [.LOW, .HIGH, .LOSSLESS]
+
+		let playerItem = PlayerItem.mock(
+			mediaProduct: mediaProduct,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider
+		)
+
+		let metadata = Metadata.mock(
+			productId: mediaProduct.productId,
+			audioQuality: .HIGH,
+			adaptiveAudioQualities: adaptiveQualities
+		)
+		playerItem.set(metadata)
+
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration.mock()
+		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
+		asset.setAdaptiveAudioQualities(adaptiveQualities)
+		playerItem.set(asset)
+
+		let startTimestamp: UInt64 = 10
+		timestamp = startTimestamp
+		playerItem.loaded(asset: asset, with: 240)
+		playerItem.play(timestamp: startTimestamp)
+		playerItem.playing(asset: asset)
+
+		playerItem.audioQualityChanged(asset: asset, to: .LOSSLESS)
+
+		let endTimestamp: UInt64 = 20
+		timestamp = endTimestamp
+		playerItem.completed(asset: asset)
+
+		playerItem.emitEvents()
+
+		let playbackStatistics = playerEventSender.streamingMetricsEvents
+			.compactMap { $0 as? PlaybackStatistics }
+			.first
+
+		XCTAssertEqual(playbackStatistics?.actualQuality, AudioQuality.LOSSLESS.rawValue)
+	}
 }

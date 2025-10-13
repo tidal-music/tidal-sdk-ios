@@ -401,16 +401,35 @@ private extension AVQueuePlayerWrapper {
 		return asset
 	}
 
-	func monitor(_ playerItem: AVPlayerItem) {
+	func monitor(_ playerItem: AVPlayerItem, asset: AVPlayerAsset) {
+		let adaptiveQualities: [AudioQuality]?
+		if featureFlagProvider.shouldSupportABRPlayback() {
+			adaptiveQualities = asset.getAdaptiveAudioQualities()
+		} else {
+			adaptiveQualities = nil
+		}
+
 		playerItemMonitors[playerItem] = AVPlayerItemMonitor(
 			playerItem,
+			queue: queue,
+			adaptiveQualities: adaptiveQualities,
 			onFailure: failed,
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
 			onItemPlayedToEnd: playedToEnd,
 			onDjSessionTransition: receivedDjSessionTransition
-		)
+		) { [weak self] item, newQuality in
+			guard let self else {
+				return
+			}
+
+			guard let asset = self.playerItemAssets[item] else {
+				return
+			}
+
+			self.delegates.audioQualityChanged(asset: asset, to: newQuality)
+		}
 	}
 
 	func preparePlayer() {
@@ -439,8 +458,8 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	func register(playerItem: AVPlayerItem, for asset: AVPlayerAsset) {
-		monitor(playerItem)
 		playerItemAssets[playerItem] = asset
+		monitor(playerItem, asset: asset)
 	}
 
 	func enqueue(playerItem: AVPlayerItem) {
