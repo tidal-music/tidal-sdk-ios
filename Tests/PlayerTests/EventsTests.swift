@@ -2601,7 +2601,7 @@ private extension EventsTests {
 		sessionProductId: String = "productId",
 		sessionTags: [StreamingSessionStart.SessionTag]? = nil
 	) -> StreamingSessionStart {
-		StreamingSessionStart.mock(
+		return StreamingSessionStart.mock(
 			streamingSessionId: streamingSessionId,
 			startReason: startReason,
 			timestamp: timestamp,
