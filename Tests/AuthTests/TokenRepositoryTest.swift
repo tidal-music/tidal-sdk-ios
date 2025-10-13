@@ -273,7 +273,7 @@ final class TokenRepositoryTest: XCTestCase {
 		}
 	}
 
-	func testGetAccessTokenDoesNotLogoutOnBackend400WithoutAuthSubstatus() async throws {
+	func testGetAccessTokenFailsOnBackend400WithoutAuthSubstatus() async throws {
 		// given
 		let credentials = makeCredentials(isExpired: true, userId: "valid")
 		let tokens = Tokens(credentials: credentials, refreshToken: "refreshToken")
@@ -405,6 +405,80 @@ final class TokenRepositoryTest: XCTestCase {
 		}
 
 		XCTAssertEqual(result2.successData?.token, "accessToken")
+	}
+
+	func testRefreshOperationsWithDifferentCredentialsKeysRunConcurrently() async throws {
+		// given: two separate TokenRepository instances with different credentialsKeys
+		let credentials1 = makeCredentials(isExpired: true, userId: "user1")
+		let tokens1 = Tokens(credentials: credentials1, refreshToken: "refreshToken1")
+
+		let credentials2 = makeCredentials(isExpired: true, userId: "user2")
+		let tokens2 = Tokens(credentials: credentials2, refreshToken: "refreshToken2")
+
+		// Create first repository with credentialsKey "key1"
+		let authConfig1 = AuthConfig(
+			clientId: testClientId,
+			clientUniqueKey: testClientUniqueKey,
+			clientSecret: nil,
+			credentialsKey: "key1",
+			scopes: .init(),
+			enableCertificatePinning: false
+		)
+		let tokensStore1 = FakeTokensStore(credentialsKey: "key1")
+		let tokenService1 = FakeTokenService()
+		let tokenRepository1 = TokenRepository(
+			authConfig: authConfig1,
+			tokensStore: tokensStore1,
+			tokenService: tokenService1,
+			defaultBackoffPolicy: MockDefaultRetryPolicy(),
+			upgradeBackoffPolicy: MockUpgradeRetryPolicy(),
+			logger: nil
+		)
+		try tokensStore1.saveTokens(tokens: tokens1)
+
+		// Create second repository with credentialsKey "key2"
+		let authConfig2 = AuthConfig(
+			clientId: testClientId,
+			clientUniqueKey: testClientUniqueKey,
+			clientSecret: nil,
+			credentialsKey: "key2",
+			scopes: .init(),
+			enableCertificatePinning: false
+		)
+		let tokensStore2 = FakeTokensStore(credentialsKey: "key2")
+		let tokenService2 = FakeTokenService()
+		let tokenRepository2 = TokenRepository(
+			authConfig: authConfig2,
+			tokensStore: tokensStore2,
+			tokenService: tokenService2,
+			defaultBackoffPolicy: MockDefaultRetryPolicy(),
+			upgradeBackoffPolicy: MockUpgradeRetryPolicy(),
+			logger: nil
+		)
+		try tokensStore2.saveTokens(tokens: tokens2)
+
+		// when: fire concurrent getCredentials calls for both repositories
+		async let result1 = tokenRepository1.getCredentials(apiErrorSubStatus: nil)
+		async let result2 = tokenRepository2.getCredentials(apiErrorSubStatus: nil)
+
+		let r1 = try await result1
+		let r2 = try await result2
+
+		// then: both refresh calls should succeed with separate token service calls
+		// (not coalesced because they have different credentialsKeys)
+		XCTAssertEqual(
+			tokenService1.calls.filter { $0 == .refresh }.count,
+			1,
+			"First repository should perform its own refresh call"
+		)
+		XCTAssertEqual(
+			tokenService2.calls.filter { $0 == .refresh }.count,
+			1,
+			"Second repository should perform its own refresh call independently"
+		)
+
+		XCTAssertEqual(r1.successData?.token, "accessToken")
+		XCTAssertEqual(r2.successData?.token, "accessToken")
 	}
 
 	func testGetAccessTokenReturnsStoredCredentialsOnRedirect302() async throws {
