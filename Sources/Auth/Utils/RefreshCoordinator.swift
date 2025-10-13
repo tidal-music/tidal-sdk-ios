@@ -3,24 +3,58 @@ import Foundation
 protocol RefreshCoalescing {
 	func runOrJoinCredentials(
 		key: String,
+		requiresRefresh: Bool,
 		operation: @Sendable @escaping () async throws -> AuthResult<Credentials>
 	) async throws -> AuthResult<Credentials>
+
+	func upgradeRefreshIntent(for key: String) async
 }
 
 actor RefreshCoordinator: RefreshCoalescing {
 	private struct InFlightTask {
-		let id = UUID()
+		let id: UUID
 		let task: Task<AuthResult<Credentials>, Error>
+		let requiresRefresh: Bool
+
+		init(
+			id: UUID = UUID(),
+			task: Task<AuthResult<Credentials>, Error>,
+			requiresRefresh: Bool
+		) {
+			self.id = id
+			self.task = task
+			self.requiresRefresh = requiresRefresh
+		}
 	}
 
 	private var tasks: [String: InFlightTask] = [:]
 
 	func runOrJoinCredentials(
 		key: String,
+		requiresRefresh: Bool,
 		operation: @Sendable @escaping () async throws -> AuthResult<Credentials>
 	) async throws -> AuthResult<Credentials> {
 		// If a task is already in-flight for this key, join it instead of creating a new one
 		if let existing = tasks[key] {
+			if requiresRefresh && !existing.requiresRefresh {
+				let currentPriority = Task.currentPriority
+				let task = Task.detached(priority: currentPriority) {
+					_ = try? await existing.task.value
+					return try await operation()
+				}
+				let inFlightTask = InFlightTask(task: task, requiresRefresh: true)
+				tasks[key] = inFlightTask
+
+				Task.detached { [weak self, key, inFlightTask] in
+					_ = try? await inFlightTask.task.value
+					if let self {
+						await self.clearTask(for: key, taskId: inFlightTask.id)
+					}
+				}
+
+				return try await inFlightTask.task.value
+			}
+
 			return try await existing.task.value
 		}
 
@@ -31,7 +65,7 @@ actor RefreshCoordinator: RefreshCoalescing {
 		let task = Task.detached(priority: currentPriority) {
 			try await operation()
 		}
-		let inFlightTask = InFlightTask(task: task)
+		let inFlightTask = InFlightTask(task: task, requiresRefresh: requiresRefresh)
 		tasks[key] = inFlightTask
 
 		// Schedule cleanup of the task from the dictionary once it completes.
@@ -46,6 +80,18 @@ actor RefreshCoordinator: RefreshCoalescing {
 		}
 
 		return try await inFlightTask.task.value
+	}
+
+	func upgradeRefreshIntent(for key: String) async {
+		guard let existing = tasks[key], existing.requiresRefresh == false else {
+			return
+		}
+
+		tasks[key] = InFlightTask(
+			id: existing.id,
+			task: existing.task,
+			requiresRefresh: true
+		)
 	}
 
 	private func clearTask(

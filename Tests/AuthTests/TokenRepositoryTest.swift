@@ -1,5 +1,6 @@
 @testable import Auth
 @testable import Common
+import Dispatch
 import XCTest
 
 // MARK: - MockDefaultRetryPolicy
@@ -81,6 +82,57 @@ private final class BlockingTokenService: TokenService {
 		grantType: String
 	) async throws -> UpgradeResponse {
 		fatalError("Not implemented")
+	}
+}
+
+// MARK: - BlockingTokensStore
+
+private final class BlockingTokensStore: TokensStore {
+	let credentialsKey: String
+	private let onFirstLoad: () -> Void
+	private let semaphore = DispatchSemaphore(value: 0)
+	private let lock = NSLock()
+	private var shouldBlock = true
+	private var storedTokens: Tokens?
+
+	init(
+		credentialsKey: String,
+		initialTokens: Tokens?,
+		onFirstLoad: @escaping () -> Void
+	) {
+		self.credentialsKey = credentialsKey
+		self.storedTokens = initialTokens
+		self.onFirstLoad = onFirstLoad
+	}
+
+	func resume() {
+		semaphore.signal()
+	}
+
+	func getLatestTokens() throws -> Tokens? {
+		var waitForSignal = false
+
+		lock.lock()
+		if shouldBlock {
+			shouldBlock = false
+			waitForSignal = true
+		}
+		lock.unlock()
+
+		if waitForSignal {
+			onFirstLoad()
+			semaphore.wait()
+		}
+
+		return storedTokens
+	}
+
+	func saveTokens(tokens: Tokens) throws {
+		storedTokens = tokens
+	}
+
+	func eraseTokens() throws {
+		storedTokens = nil
 	}
 }
 
@@ -412,6 +464,54 @@ final class TokenRepositoryTest: XCTestCase {
 		}
 
 		XCTAssertEqual(result2.successData?.token, "accessToken")
+	}
+
+	func testForcedRefreshIntentCreatesFreshTaskWhenExistingLookupDoesNotRefresh() async throws {
+		// given: cached credentials that would normally be reused without a refresh
+		createAuthConfig()
+		let cachedCredentials = makeCredentials(isExpired: false, userId: "valid", token: "cachedToken")
+		let tokens = Tokens(credentials: cachedCredentials, refreshToken: "refreshToken")
+		let loadStarted = expectation(description: "Initial token load started")
+		let blockingStore = BlockingTokensStore(
+			credentialsKey: authConfig.credentialsKey,
+			initialTokens: tokens,
+			onFirstLoad: { loadStarted.fulfill() }
+		)
+		let service = FakeTokenService()
+		let repository = TokenRepository(
+			authConfig: authConfig,
+			tokensStore: blockingStore,
+			tokenService: service,
+			defaultBackoffPolicy: MockDefaultRetryPolicy(),
+			upgradeBackoffPolicy: MockUpgradeRetryPolicy(),
+			logger: nil
+		)
+
+		// when: start a cached lookup and, while it is in-flight, issue a forced refresh request
+		let firstTask = Task {
+			try await repository.getCredentials(apiErrorSubStatus: nil)
+		}
+
+		await fulfillment(of: [loadStarted], timeout: 1)
+
+		async let forcedResult = repository.getCredentials(
+			apiErrorSubStatus: ApiErrorSubStatus.expiredAccessToken.rawValue
+		)
+		await Task.yield()
+
+		blockingStore.resume()
+
+		let cachedResult = try await firstTask.value
+		let refreshedResult = try await forcedResult
+
+		// then: the cached caller receives the stored token, while the forced caller triggers a network refresh
+		XCTAssertEqual(cachedResult.successData?.token, "cachedToken")
+		XCTAssertEqual(refreshedResult.successData?.token, "accessToken")
+		XCTAssertEqual(
+			service.calls.filter { $0 == .refresh }.count,
+			1,
+			"The forced call should upgrade the coalesced work to perform exactly one refresh"
+		)
 	}
 
 	func testRefreshOperationsWithDifferentCredentialsKeysRunConcurrently() async throws {

@@ -42,37 +42,42 @@ struct TokenRepository {
 	}
 
 	func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
-		try await refreshCoordinator.runOrJoinCredentials(key: authConfig.credentialsKey) {
+		let requiresRefresh = apiErrorSubStatus?.shouldRefreshToken == true
+		return try await refreshCoordinator.runOrJoinCredentials(
+			key: authConfig.credentialsKey,
+			requiresRefresh: requiresRefresh
+		) {
 			try await _getCredentialsImpl(apiErrorSubStatus: apiErrorSubStatus)
 		}
 	}
 
 	private func _getCredentialsImpl(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
-        var upgradedRefreshToken: String?
-        let tokens: Tokens?
-        do {
-            tokens = try loadTokensFromStore()
-        } catch {
-            logger?.log(loggable: AuthLoggable.loadTokensFromStoreError(error: error))
-            throw error
-        }
+		var upgradedRefreshToken: String?
+		let tokens: Tokens?
+		do {
+			tokens = try loadTokensFromStore()
+		} catch {
+			logger?.log(loggable: AuthLoggable.loadTokensFromStoreError(error: error))
+			throw error
+		}
 
-        let result: AuthResult<Credentials>
-        if let tokens, needsCredentialsUpgrade {
-            let upgradeCredentials = try await upgradeToken(storedTokens: tokens)
+		let result: AuthResult<Credentials>
+		if let tokens, needsCredentialsUpgrade {
+			await refreshCoordinator.upgradeRefreshIntent(for: authConfig.credentialsKey)
+			let upgradeCredentials = try await upgradeToken(storedTokens: tokens)
 
-            result = upgradeCredentials.map { $0.credentials }
-            upgradedRefreshToken = upgradeCredentials.successData?.refreshToken
-        } else {
-            result = try await updateToken(storedTokens: tokens, apiErrorSubStatus: apiErrorSubStatus)
-        }
+			result = upgradeCredentials.map { $0.credentials }
+			upgradedRefreshToken = upgradeCredentials.successData?.refreshToken
+		} else {
+			result = try await updateToken(storedTokens: tokens, apiErrorSubStatus: apiErrorSubStatus)
+		}
 
-        if let credentials = result.successData {
-            try saveTokens(credentials: credentials, refreshToken: upgradedRefreshToken, storedTokens: tokens)
-        }
+		if let credentials = result.successData {
+			try saveTokens(credentials: credentials, refreshToken: upgradedRefreshToken, storedTokens: tokens)
+		}
 
-        return result
-    }
+		return result
+	}
 
 	private func updateToken(storedTokens: Tokens?, apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
 		// if our current token isn't expired, we can return it and be done
@@ -113,6 +118,7 @@ struct TokenRepository {
 		}
 
 		if let refreshCredentialsBlock {
+			await refreshCoordinator.upgradeRefreshIntent(for: authConfig.credentialsKey)
 			let authResult = await refreshCredentialsBlock()
 				.map { Credentials(authConfig: authConfig, response: $0) }
 
