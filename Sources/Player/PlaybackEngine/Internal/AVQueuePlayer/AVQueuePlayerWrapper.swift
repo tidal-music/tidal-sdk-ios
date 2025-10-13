@@ -27,7 +27,6 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	private var playerItemMonitors: [AVPlayerItem: AVPlayerItemMonitor] = [AVPlayerItem: AVPlayerItemMonitor]()
 	private var playerItemAssets: [AVPlayerItem: AVPlayerAsset] = [AVPlayerItem: AVPlayerAsset]()
-	private var qualityMonitors: [AVPlayerItem: AVPlayerItemABRMonitor] = [:]
 	private var delegates: PlayerMonitoringDelegates = PlayerMonitoringDelegates()
 
 	// MARK: - Convenience properties
@@ -76,7 +75,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		mediaType: String?,
 		isOfflined: Bool
 	) -> Bool {
-	if productType == .VIDEO {
+		if productType == .VIDEO || productType == .BROADCAST {
 			return true
 		}
 
@@ -253,6 +252,37 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	}
 }
 
+// MARK: LiveMediaPlayer
+
+extension AVQueuePlayerWrapper: LiveMediaPlayer {
+	func loadLive(
+		_ url: URL,
+		with licenseLoader: LicenseLoader?
+	) async -> Asset {
+		await withCheckedContinuation { continuation in
+			queue.dispatch {
+				let urlAsset = AVURLAsset(url: url)
+
+				// In Live, there's no loudness normalization.
+				let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
+					loudnessNormalizationMode: .NONE,
+					loudnessNormalizer: nil
+				)
+
+				let asset = self.load(
+					nil,
+					urlAsset,
+					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+					and: licenseLoader as? AVContentKeySessionDelegate,
+					LiveAVPlayerAsset.self
+				)
+
+				continuation.resume(returning: asset)
+			}
+		}
+	}
+}
+
 // MARK: UCMediaPlayer
 
 extension AVQueuePlayerWrapper: UCMediaPlayer {
@@ -371,15 +401,34 @@ private extension AVQueuePlayerWrapper {
 		return asset
 	}
 
-	func monitor(_ playerItem: AVPlayerItem) {
+	func monitor(_ playerItem: AVPlayerItem, asset: AVPlayerAsset) {
+		let adaptiveQualities: [AudioQuality]?
+		if featureFlagProvider.shouldSupportABRPlayback() {
+			adaptiveQualities = asset.getAdaptiveAudioQualities()
+		} else {
+			adaptiveQualities = nil
+		}
+
 		playerItemMonitors[playerItem] = AVPlayerItemMonitor(
 			playerItem,
+			queue: queue,
+			adaptiveQualities: adaptiveQualities,
 			onFailure: failed,
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
 			onItemPlayedToEnd: playedToEnd
-		)
+		) { [weak self] item, newQuality in
+			guard let self else {
+				return
+			}
+
+			guard let asset = self.playerItemAssets[item] else {
+				return
+			}
+
+			self.delegates.audioQualityChanged(asset: asset, to: newQuality)
+		}
 	}
 
 	func preparePlayer() {
@@ -405,45 +454,11 @@ private extension AVQueuePlayerWrapper {
 	func unload(playerItem: AVPlayerItem) {
 		playerItemMonitors.removeValue(forKey: playerItem)
 		playerItemAssets.removeValue(forKey: playerItem)
-		qualityMonitors.removeValue(forKey: playerItem)
 	}
 
 	func register(playerItem: AVPlayerItem, for asset: AVPlayerAsset) {
-		monitor(playerItem)
 		playerItemAssets[playerItem] = asset
-		attachAdaptiveMonitor(to: playerItem, asset: asset)
-	}
-
-	func attachAdaptiveMonitor(to playerItem: AVPlayerItem, asset: AVPlayerAsset) {
-		guard qualityMonitors[playerItem] == nil else {
-			return
-		}
-
-		guard featureFlagProvider.shouldSupportABRPlayback() else {
-			return
-		}
-
-		guard let adaptiveQualities = asset.getAdaptiveAudioQualities(), adaptiveQualities.count > 1 else {
-			return
-		}
-
-		let monitor = AVPlayerItemABRMonitor(
-			playerItem: playerItem,
-			qualities: adaptiveQualities,
-			queue: queue
-		) { [weak self, weak playerItem] newQuality in
-			guard let self, let playerItem = playerItem else {
-				return
-			}
-
-			guard let asset = self.playerItemAssets[playerItem] else {
-				return
-			}
-
-			self.delegates.audioQualityChanged(asset: asset, to: newQuality)
-		}
-
-		qualityMonitors[playerItem] = monitor
+		monitor(playerItem, asset: asset)
 	}
 
 	func enqueue(playerItem: AVPlayerItem) {
@@ -504,7 +519,6 @@ private extension AVQueuePlayerWrapper {
 		playerMonitor = nil
 		playerItemMonitors.removeAll()
 		playerItemAssets.removeAll()
-		qualityMonitors.removeAll()
 
 		assetFactory.reset()
 
@@ -605,7 +619,6 @@ private extension AVQueuePlayerWrapper {
 		queue.dispatch {
 			self.playerItemMonitors.removeValue(forKey: oldPlayerItem)
 			let asset = self.playerItemAssets.removeValue(forKey: oldPlayerItem)
-			self.qualityMonitors.removeValue(forKey: oldPlayerItem)
 
 			// AVPlayer has moved to the next item in its queue
 			if let currentPlayerItem = self.player.currentItem {
@@ -636,81 +649,10 @@ private extension AVQueuePlayerWrapper {
 		}
 	}
 
+
 	func playedToEnd(playerItem: AVPlayerItem) {
 		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
 			player.remove(playerItem)
-		}
-	}
-}
-
-private final class AVPlayerItemABRMonitor {
-	private weak var playerItem: AVPlayerItem?
-	private let qualities: [AudioQuality]
-	private let queue: OperationQueue
-	private let onQualityChanged: (AudioQuality) -> Void
-	private var observation: NSObjectProtocol?
-	private var lastReportedQuality: AudioQuality?
-
-	init(
-		playerItem: AVPlayerItem,
-		qualities: [AudioQuality],
-		queue: OperationQueue,
-		onQualityChanged: @escaping (AudioQuality) -> Void
-	) {
-		self.playerItem = playerItem
-		self.qualities = qualities
-		self.queue = queue
-		self.onQualityChanged = onQualityChanged
-
-		observation = NotificationCenter.default.addObserver(
-			forName: AVPlayerItem.newAccessLogEntryNotification,
-			object: playerItem,
-			queue: nil
-		) { [weak self] _ in
-			self?.handleAccessLog()
-		}
-
-		handleAccessLog()
-	}
-
-	deinit {
-		if let observation {
-			NotificationCenter.default.removeObserver(observation)
-		}
-	}
-
-	private func handleAccessLog() {
-		guard let item = playerItem,
-		      let event = item.accessLog()?.events.last,
-		      let quality = Self.map(
-		      	indicatedBitrate: event.indicatedBitrate,
-		      	availableQualities: qualities
-		      )
-		else {
-			return
-		}
-
-		guard quality != lastReportedQuality else {
-			return
-		}
-
-		lastReportedQuality = quality
-
-		queue.dispatch { [weak self] in
-			self?.onQualityChanged(quality)
-		}
-	}
-
-	private static func map(
-		indicatedBitrate: Double,
-		availableQualities: [AudioQuality]
-	) -> AudioQuality? {
-		guard indicatedBitrate > 0 else {
-			return nil
-		}
-
-		return availableQualities.min { lhs, rhs in
-			abs(indicatedBitrate - lhs.typicalBitrate) < abs(indicatedBitrate - rhs.typicalBitrate)
 		}
 	}
 }
