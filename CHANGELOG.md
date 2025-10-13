@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Coalesce concurrent token refresh operations to prevent duplicate network calls and race-induced downgrades (Auth)
+
 ## [0.7.6] - 2025-10-06
 
 ### Fixed
