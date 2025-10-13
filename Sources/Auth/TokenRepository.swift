@@ -204,14 +204,11 @@ struct TokenRepository {
 			return false
 		}
 
-		// Prefer explicit auth substatuses that indicate invalid/expired tokens
-		if let sub = unexpected.subStatus {
-			let invalid = ApiErrorSubStatus.invalidAccessToken.rawValue.toInt
-			let expired = ApiErrorSubStatus.expiredAccessToken.rawValue.toInt
-			if sub == invalid || sub == expired {
+		// If we have an auth substatus, treat any 400/401 with substatus as logout
+		if unexpected.subStatus != nil {
+			if let code = Int(unexpected.code), code == 400 || code == HTTP_UNAUTHORIZED {
 				return true
 			}
-			// Other substatuses should not cause logout/downgrade
 			return false
 		}
 
