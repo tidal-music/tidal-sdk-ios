@@ -2,6 +2,7 @@ import AVFoundation
 import Foundation
 
 final class AVPlayerItemMonitor {
+	private let playerItem: AVPlayerItem
 	private let failureMonitor: FailureMonitor
 	private let failedToPlayToEndMonitor: FailedToPlayToEndMonitor
 	private let stallMonitor: StallMonitor
@@ -9,16 +10,21 @@ final class AVPlayerItemMonitor {
 	private let readyToPlayMonitor: ReadyToPlayMonitor
 	private let inStreamMetadataMonitor: DJSessionTransitionMonitor
 	private let playerItemDidPlayToEndTimeMonitor: ItemPlayedToEndMonitor
+	private var abrMonitor: AVPlayerItemABRMonitor?
 
 	init(
 		_ playerItem: AVPlayerItem,
+		queue: OperationQueue,
+		adaptiveQualities: [AudioQuality]?,
 		onFailure: @escaping (AVPlayerItem, Error?) -> Void,
 		onStall: @escaping (AVPlayerItem) -> Void,
 		onCompletelyDownloaded: @escaping (AVPlayerItem) -> Void,
 		onReadyToPlayToPlay: @escaping (AVPlayerItem) -> Void,
 		onItemPlayedToEnd: @escaping (AVPlayerItem) -> Void,
-		onDjSessionTransition: @escaping (AVPlayerItem, DJSessionTransition) -> Void
+		onDjSessionTransition: @escaping (AVPlayerItem, DJSessionTransition) -> Void,
+		onAudioQualityChanged: ((AVPlayerItem, AudioQuality) -> Void)?
 	) {
+		self.playerItem = playerItem
 		failureMonitor = FailureMonitor(playerItem, onFailure)
 		failedToPlayToEndMonitor = FailedToPlayToEndMonitor(playerItem, onFailure)
 		stallMonitor = StallMonitor(playerItem, onStall)
@@ -30,6 +36,21 @@ final class AVPlayerItemMonitor {
 			and: DispatchQueue.global(qos: .default),
 			onTransition: onDjSessionTransition
 		)
+
+		if let onAudioQualityChanged,
+		   let qualities = adaptiveQualities,
+		   qualities.count > 1 {
+			abrMonitor = AVPlayerItemABRMonitor(
+				playerItem: playerItem,
+				qualities: qualities,
+				queue: queue
+			) { [weak self] newQuality in
+				guard let self else {
+					return
+				}
+				onAudioQualityChanged(self.playerItem, newQuality)
+			}
+		}
 	}
 
 	func isCompletelyDownloaded() -> Bool {
