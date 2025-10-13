@@ -24,8 +24,11 @@ actor RefreshCoordinator: RefreshCoalescing {
 			return try await existing.task.value
 		}
 
-		// Create a new detached task to perform the operation
-		let task = Task.detached(priority: nil) {
+		// Create a new detached task to perform the operation.
+		// Inherit the caller's priority to ensure high-priority requests (e.g., UI-driven)
+		// don't get delayed by lower-priority background refresh operations.
+		let currentPriority = Task.currentPriority
+		let task = Task.detached(priority: currentPriority) {
 			try await operation()
 		}
 		let inFlightTask = InFlightTask(task: task)
