@@ -13,15 +13,19 @@ import AnyCodable
 public struct ArtistClaimsUpdateOperationPayloadMeta: Codable, Hashable {
 
     public var authorizationCode: String
+    public var redirectUri: String
 
     public init(
-        authorizationCode: String
+        authorizationCode: String,
+        redirectUri: String
     ) {
         self.authorizationCode = authorizationCode
+        self.redirectUri = redirectUri
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case authorizationCode
+        case redirectUri
     }
 
     // Encodable protocol methods
@@ -29,5 +33,6 @@ public struct ArtistClaimsUpdateOperationPayloadMeta: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(authorizationCode, forKey: .authorizationCode)
+        try container.encode(redirectUri, forKey: .redirectUri)
     }
 }

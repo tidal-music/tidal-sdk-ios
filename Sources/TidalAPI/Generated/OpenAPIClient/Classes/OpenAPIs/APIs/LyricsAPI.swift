@@ -61,6 +61,48 @@ internal class LyricsAPI {
     }
 
     /**
+     Delete single lyric.
+     
+     - parameter id: (path) Lyrics Id 
+     - returns: Void
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func lyricsIdDelete(id: String) async throws {
+        return try await lyricsIdDeleteWithRequestBuilder(id: id).execute().body
+    }
+
+    /**
+     Delete single lyric.
+     - DELETE /lyrics/{id}
+     - Deletes existing lyric.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Lyrics Id 
+     - returns: RequestBuilder<Void> 
+     */
+    internal class func lyricsIdDeleteWithRequestBuilder(id: String) -> RequestBuilder<Void> {
+        var localVariablePath = "/lyrics/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get single lyric.
      
      - parameter id: (path) Lyrics Id 

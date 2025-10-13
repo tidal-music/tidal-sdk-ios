@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdPatch**
 ```swift
-    open class func artistClaimsIdPatch(id: String, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdPatch(id: String, countryCode: String, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single artistClaim.
@@ -80,10 +80,11 @@ Updates existing artistClaim.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
-let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example", redirectUri: "redirectUri_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
 
 // Update single artistClaim.
-ArtistClaimsAPI.artistClaimsIdPatch(id: id, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdPatch(id: id, countryCode: countryCode, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -100,6 +101,7 @@ ArtistClaimsAPI.artistClaimsIdPatch(id: id, artistClaimsUpdateOperationPayload: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
  **artistClaimsUpdateOperationPayload** | [**ArtistClaimsUpdateOperationPayload**](ArtistClaimsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -346,7 +348,7 @@ Creates a new artistClaim.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
-let artistClaimsCreateOperationPayload = ArtistClaimsCreateOperation_Payload(data: ArtistClaimsCreateOperation_Payload_Data(attributes: ArtistClaimsCreateOperation_Payload_Data_Attributes(artistId: "artistId_example", provider: "provider_example"), type: "type_example")) // ArtistClaimsCreateOperationPayload |  (optional)
+let artistClaimsCreateOperationPayload = ArtistClaimsCreateOperation_Payload(data: ArtistClaimsCreateOperation_Payload_Data(attributes: ArtistClaimsCreateOperation_Payload_Data_Attributes(artistId: "artistId_example", provider: "provider_example"), type: "type_example"), meta: ArtistClaimsCreateOperation_Payload_Meta(nonce: "nonce_example", redirectUrl: "redirectUrl_example")) // ArtistClaimsCreateOperationPayload |  (optional)
 
 // Create single artistClaim.
 ArtistClaimsAPI.artistClaimsPost(countryCode: countryCode, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload) { (response, error) in

@@ -15,7 +15,7 @@ public enum UsersAPITidal {
 
 
 	/**
-     Get current user&#39;s user(s).
+     Get current user&#39;s user.
      
      - returns: UsersSingleResourceDataDocument
      */
