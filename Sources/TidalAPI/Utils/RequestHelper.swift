@@ -61,7 +61,7 @@ enum RequestHelper {
 
 		var request = builder
 			.addHeader(name: "Authorization", value: "Bearer \(token)")
-		
+
 		// Add custom headers
 		for (key, value) in customHeaders {
 			request = request.addHeader(name: key, value: value)
@@ -76,7 +76,7 @@ enum RequestHelper {
 			return try await handleErrorResult(
 				error,
 				urlAttachedToError: requestURL,
-				requestBuilder: { 
+				requestBuilder: {
 					var builder = try await requestBuilder()
 					for (key, value) in customHeaders {
 						builder = builder.addHeader(name: key, value: value)
@@ -118,7 +118,10 @@ enum RequestHelper {
 		}
 
 		switch error {
-		case let .error(statusCode, data, _, _):
+		case let .error(statusCode, data, _, underlyingError):
+			if isCancelled(underlyingError) {
+				throw CancellationError()
+			}
 			if statusCode == 401 {
 				let subStatus = getHttpSubStatus(data: data)
 
@@ -156,5 +159,17 @@ enum RequestHelper {
 		}
 
 		throw TidalAPIError(error: error, url: url) // Propagate the error if not handled or retried
+	}
+
+	private static func isCancelled(_ error: Error) -> Bool {
+		if error is CancellationError {
+			return true
+		}
+		if let urlError = error as? URLError, urlError.code == .cancelled {
+			return true
+		}
+		let ns = error as NSError
+		return (ns.domain == NSURLErrorDomain && ns.code == NSURLErrorCancelled) ||
+			(ns.domain == "Swift.CancellationError")
 	}
 }
