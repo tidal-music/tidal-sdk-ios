@@ -261,7 +261,7 @@ final class TokenRepositoryResilienceTests: XCTestCase {
         }
     }
 
-    func testTransientCooldown_CurrentBehavior_NoCooldown() async throws {
+    func testTransientCooldown_ImplicitViaStoredCredentials() async throws {
         // given: expired stored token; service always returns 503
         createAuthConfig()
         let tokensStore = FailingFakeTokensStore(credentialsKey: authConfig.credentialsKey, mode: .none)
@@ -276,15 +276,17 @@ final class TokenRepositoryResilienceTests: XCTestCase {
             logger: nil
         )
 
-        // first attempt
-        _ = try await tokenRepo.getCredentials(apiErrorSubStatus: nil)
+        // first attempt: triggers refresh, gets 503, returns stored credentials
+        let result1 = try await tokenRepo.getCredentials(apiErrorSubStatus: nil)
         let firstAttempts = service.calls.filter { $0 == .refresh }.count
 
-        // immediate second attempt without cooldown in current code
-        _ = try await tokenRepo.getCredentials(apiErrorSubStatus: nil)
+        // immediate second attempt: credentials not expired and no forced refresh, returns cached
+        let result2 = try await tokenRepo.getCredentials(apiErrorSubStatus: nil)
         let secondAttempts = service.calls.filter { $0 == .refresh }.count
 
-        // then: currently more attempts after immediate retry (no cooldown yet)
-        XCTAssertTrue(secondAttempts > firstAttempts, "Current behavior performs another refresh immediately; consider adding cooldown in future")
+        // then: implicit cooldown via stored credentials - no additional refresh attempts
+        XCTAssertEqual(secondAttempts, firstAttempts, "Second call should return cached credentials without additional refresh attempts")
+        XCTAssertNotNil(result1.successData?.userId, "First call returns stored credentials on transient error")
+        XCTAssertNotNil(result2.successData?.userId, "Second call returns cached credentials")
     }
 }
