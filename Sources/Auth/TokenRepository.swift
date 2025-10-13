@@ -204,16 +204,8 @@ struct TokenRepository {
 			return false
 		}
 
-		// If we have an auth substatus, treat any 400/401 with substatus as logout
-		if unexpected.subStatus != nil {
-			if let code = Int(unexpected.code), code == 400 || code == HTTP_UNAUTHORIZED {
-				return true
-			}
-			return false
-		}
-
-		// Fallback: if no subStatus, only treat 401 as a logout condition
-		if let code = Int(unexpected.code), code == HTTP_UNAUTHORIZED {
+		// Treat 400 and 401 as logout conditions
+		if let code = Int(unexpected.code), code == 400 || code == HTTP_UNAUTHORIZED {
 			return true
 		}
 

@@ -273,7 +273,7 @@ final class TokenRepositoryTest: XCTestCase {
 		}
 	}
 
-	func testGetAccessTokenFailsOnBackend400WithoutAuthSubstatus() async throws {
+	func testGetAccessTokenReturnsLowerlevelTokenIfBackendFailsWith400() async throws {
 		// given
 		let credentials = makeCredentials(isExpired: true, userId: "valid")
 		let tokens = Tokens(credentials: credentials, refreshToken: "refreshToken")
@@ -290,9 +290,16 @@ final class TokenRepositoryTest: XCTestCase {
 		// then
 		XCTAssertEqual(fakeTokenService.calls.filter { $0 == .refresh }.count, 1, "On 400 errors, no retries should be made")
 
-		// Should not downgrade/logout; expect a failure without altering stored tokens
-		XCTAssertTrue(result.isFailure, "400 without auth substatus should not cause logout but fail the call")
-		XCTAssertEqual(fakeTokensStore.last?.credentials, credentials, "Stored credentials should remain unchanged")
+		switch result {
+		case let .success(data):
+			XCTAssertNil(
+				data.userId,
+				"When a 400 error is received the lower privileges token should have been saved in the store"
+			)
+			XCTAssertEqual(fakeTokensStore.last?.credentials, data)
+		case .failure:
+			XCTFail("The result supposed to be successful")
+		}
 	}
 
 	func testGetAccessTokenReturnsLowerlevelTokenIfBackendFailsWith401() async throws {
