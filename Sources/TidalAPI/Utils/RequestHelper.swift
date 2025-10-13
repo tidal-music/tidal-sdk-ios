@@ -120,7 +120,7 @@ enum RequestHelper {
 		switch error {
 		case let .error(statusCode, data, _, underlyingError):
 			if isCancelled(underlyingError) {
-				throw CancellationError()
+				throw TidalAPIError(error: error, url: url, type: .cancelled)
 			}
 			if statusCode == 401 {
 				let subStatus = getHttpSubStatus(data: data)
