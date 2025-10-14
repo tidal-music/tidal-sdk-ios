@@ -9,8 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.7.7] - 2025-10-14
 
+### Changed
+- Coalesce concurrent token refresh operations to prevent duplicate network calls and race-induced downgrades (Auth)
+
 ### Fixed
-- Fix error handling by introducing a new error type system to better categorize and propagate errors, particularly cancellation errors. (TidalAPI)
+- Fix error handling by introducing a new error type system to better categorize and propagate errors, particularly cancellation errors (TidalAPI)
 
 ## [0.7.6] - 2025-10-06
 
