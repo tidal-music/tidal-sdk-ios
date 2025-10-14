@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.7] - 2025-10-14
+
+### Fixed
+- Fix error handling by introducing a new error type system to better categorize and propagate errors, particularly cancellation errors.
+
 ## [0.7.6] - 2025-10-06
 
 ### Fixed
