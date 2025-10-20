@@ -1,4 +1,3 @@
-import Auth
 import AVFoundation
 @testable import Player
 
@@ -16,7 +15,6 @@ final class PlayerLoaderMock: PlayerLoader {
 		with configuration: Configuration,
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider = .mock,
-		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		mainPlayer: MainPlayerType.Type = PlayerMock.self,
 		externalPlayers: [GenericMediaPlayer.Type] = []
 	) {}

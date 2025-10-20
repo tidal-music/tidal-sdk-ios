@@ -8,11 +8,10 @@ public enum ProductType: Codable, Equatable {
 	case TRACK
 	case VIDEO
 	case BROADCAST
-	case UC(url: URL)
 
 	func quality(given playbackContext: PlaybackContext) -> String {
 		switch self {
-		case .TRACK, .BROADCAST, .UC:
+		case .TRACK, .BROADCAST:
 			playbackContext.audioQuality?.rawValue ?? "AQ N/A"
 		case .VIDEO:
 			playbackContext.videoQuality?.rawValue ?? "VQ N/A"
@@ -21,7 +20,7 @@ public enum ProductType: Codable, Equatable {
 
 	func quality(given metadata: Metadata) -> String {
 		switch self {
-		case .TRACK, .BROADCAST, .UC:
+		case .TRACK, .BROADCAST:
 			metadata.audioQuality?.rawValue ?? "AQ N/A"
 		case .VIDEO:
 			metadata.videoQuality?.rawValue ?? "VQ N/A"
@@ -33,7 +32,6 @@ public enum ProductType: Codable, Equatable {
 		case .TRACK: "TRACK"
 		case .VIDEO: "VIDEO"
 		case .BROADCAST: "BROADCAST"
-		case .UC: "UC"
 		}
 	}
 }
@@ -42,9 +40,6 @@ public enum ProductType: Codable, Equatable {
 
 extension ProductType: CustomStringConvertible {
 	public var description: String {
-		switch self {
-		case .TRACK, .VIDEO, .BROADCAST: rawValue
-		case let .UC(url): "\(rawValue) (\(url))"
-		}
+		rawValue
 	}
 }

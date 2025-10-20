@@ -24,7 +24,6 @@ public final class PlayerMock: GenericMediaPlayer {
 
 	private(set) var loadCallCount = 0
 	private(set) var loadLiveCallCount = 0
-	private(set) var loadUploadedCallCount = 0
 	private(set) var unloadCallCount = 0
 	private(set) var unloadedAssets = [Asset]()
 	private(set) var playCallCount = 0
@@ -127,26 +126,6 @@ extension PlayerMock: LiveMediaPlayer {
 	public func loadLive(_ url: URL, with licenseLoader: LicenseLoader?) async -> Asset {
 		loadLiveCallCount += 1
 		licenseLoaders.append(licenseLoader)
-		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-			loudnessNormalizationMode: loudnessNormalizationMode,
-			loudnessNormalizer: loudnessNormalizer
-		)
-		let asset = AssetMock(with: self, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
-
-		assets.append(asset)
-		return asset
-	}
-}
-
-// MARK: UCMediaPlayer
-
-extension PlayerMock: UCMediaPlayer {
-	public func loadUC(
-		_ url: URL,
-		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
-		headers: [String: String]
-	) async -> Asset {
-		loadUploadedCallCount += 1
 		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
 			loudnessNormalizationMode: loudnessNormalizationMode,
 			loudnessNormalizer: loudnessNormalizer

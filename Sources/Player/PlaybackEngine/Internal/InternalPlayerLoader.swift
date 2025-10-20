@@ -1,18 +1,15 @@
-import Auth
 import AVFoundation
 import Foundation
 
 // MARK: - InternalPlayerLoader
 
-typealias MainPlayerType = GenericMediaPlayer & LiveMediaPlayer & UCMediaPlayer & VideoPlayer
+typealias MainPlayerType = GenericMediaPlayer & LiveMediaPlayer & VideoPlayer
 
 // MARK: - InternalPlayerLoader
 
 final class InternalPlayerLoader: PlayerLoader {
 	private let configuration: Configuration
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
-
-	private let credentialsProvider: CredentialsProvider
 
 	private let featureFlagProvider: FeatureFlagProvider
 
@@ -31,13 +28,11 @@ final class InternalPlayerLoader: PlayerLoader {
 		with configuration: Configuration,
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
-		credentialsProvider: CredentialsProvider,
 		mainPlayer: MainPlayerType.Type,
 		externalPlayers: [GenericMediaPlayer.Type]
 	) {
 		self.configuration = configuration
 		fairPlayLicenseFetcher = fairplayLicenseFetcher
-		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
 
 		let fileManager = PlayerWorld.fileManagerClient
@@ -146,13 +141,6 @@ final class InternalPlayerLoader: PlayerLoader {
 			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: mainPlayer)
 		case .BROADCAST:
 			return await loadBroadcast(using: playbackInfo, and: licenseLoader, player: mainPlayer)
-		case .UC:
-			return try await loadUC(
-				using: playbackInfo,
-				with: streamingSessionId,
-				and: loudnessNormalizer,
-				player: mainPlayer
-			)
 		}
 	}
 
@@ -224,37 +212,6 @@ private extension InternalPlayerLoader {
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			and: licenseLoader
 		)
-	}
-
-	func loadUC(
-		using playbackInfo: PlaybackInfo,
-		with streamingSessionId: String,
-		and loudnessNormalizer: LoudnessNormalizer?,
-		player: UCMediaPlayer
-	) async throws -> Asset {
-		do {
-			let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-				loudnessNormalizationMode: loudnessNormalizationMode,
-				loudnessNormalizer: loudnessNormalizer
-			)
-
-			let token: String = try await credentialsProvider.getAuthBearerToken()
-
-			let headers: [String: String] = [
-				"Authorization": token,
-				"X-Tidal-Streaming-Session-Id": streamingSessionId,
-			]
-
-			return await player.loadUC(
-				playbackInfo.url,
-				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-				headers: headers
-			)
-
-		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.loadUCFailed(error: error))
-			throw error
-		}
 	}
 
 	func getPlayer(

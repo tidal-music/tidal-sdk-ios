@@ -138,10 +138,6 @@ enum PlayerLoggable: TidalLoggable {
 	case djSessionResetNoCurationURL
 	case djSessionSendStopOnNextCommand
 
-	// MARK: InternalPlayerLoader
-
-	case loadUCFailed(error: Error)
-
 	// MARK: PlayerEngine
 
 	case loadPlayerItemFailed(error: Error)
@@ -373,10 +369,6 @@ extension PlayerLoggable {
 		case .djSessionSendStopOnNextCommand:
 			"DJProducer-djSessionSendStopOnNextCommand"
 
-		// InternalPlayerLoader
-		case .loadUCFailed:
-			"InternalPlayerLoader-loadUCFailed"
-
 		// PlayerEngine
 		case .loadPlayerItemFailed:
 			"PlayerEngine-loadPlayerItemFailed"
@@ -495,7 +487,6 @@ extension PlayerLoggable {
 		     let .readPlaybackMetadataFailed(error),
 		     let .djSessionStartFailed(error),
 		     let .djSessionSendCommandFailed(error),
-		     let .loadUCFailed(error),
 		     let .loadPlayerItemFailed(error):
 			metadata[Logger.Metadata.errorKey] = "\(String(describing: error))"
 		case let .backoffHandleResponseFailed(error, retryStrategy):
@@ -609,7 +600,6 @@ extension PlayerLoggable {
 		     .readPlaybackMetadataFailed,
 		     .djSessionStartFailed,
 		     .djSessionSendCommandFailed,
-		     .loadUCFailed,
 		     .loadPlayerItemFailed,
 		     .alreadyInitialized:
 			.error

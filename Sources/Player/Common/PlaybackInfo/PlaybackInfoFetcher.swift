@@ -51,13 +51,6 @@ final class PlaybackInfoFetcher {
 				broadcastId: mediaProduct.productId,
 				streamingSessionId: streamingSessionId
 			)
-		case let .UC(url):
-			await getUCPlaybackInfo(
-				trackId: mediaProduct.productId,
-				trackURL: url,
-				playbackMode: playbackMode,
-				streamingSessionId: streamingSessionId
-			)
 		}
 	}
 
@@ -365,37 +358,6 @@ private extension PlaybackInfoFetcher {
 		let parameters = "audioquality=\(audioQuality)"
 
 		return try PlaybackInfoFetcher.createUrl(from: "\(path)?\(parameters)")
-	}
-
-	func getUCPlaybackInfo(
-		trackId: String,
-		trackURL: URL,
-		playbackMode: PlaybackMode,
-		streamingSessionId: String
-	) async -> PlaybackInfo {
-		PlaybackInfo(
-			productType: .UC(url: trackURL),
-			productId: trackId,
-			streamType: .ON_DEMAND,
-			assetPresentation: .FULL,
-			audioMode: .STEREO,
-			audioQuality: .LOW,
-			audioCodec: .HE_AAC_V1,
-			audioSampleRate: nil,
-			audioBitDepth: nil,
-			videoQuality: nil,
-			streamingSessionId: streamingSessionId,
-			contentHash: "",
-			mediaType: MediaTypes.HLS,
-			url: trackURL,
-			licenseSecurityToken: nil,
-			albumReplayGain: nil,
-			albumPeakAmplitude: nil,
-			trackReplayGain: nil,
-			trackPeakAmplitude: nil,
-			offlineRevalidateAt: nil,
-			offlineValidUntil: nil
-		)
 	}
 
 	func getPlaybackInfo<T: Decodable>(url: URL, streamingSessionId: String, playlistUUID: String?) async throws -> T {
