@@ -21,6 +21,7 @@ Add user-configurable crossfade support (2-5 seconds) for audio-only tracks whil
 - Dual AVPlayer instances with role-swapping
 - Equal-power volume crossfade
 - Player clock-based timing
+- Uses two plain `AVPlayer`s (not `AVQueuePlayer`) so both tracks can render simultaneously; the queue-based player only supports one active output at a time, which prevents true overlap.
 
 **AVQueuePlayerWrapper** (UNCHANGED):
 - All content types

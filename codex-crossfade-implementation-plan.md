@@ -31,7 +31,7 @@
 ## 4. Proposed Architecture
 ### 4.1 Player Implementations
 - Keep `AVQueuePlayerWrapper` untouched for all gapless and non-crossfade content; it remains the battle-tested default path.
-- Introduce a self-contained `DualAVPlayerWrapper` (`GenericMediaPlayer`) that internally manages two `AVPlayer` instances (`foreground` and `background`) to enable overlaps.
+- Introduce a self-contained `DualAVPlayerWrapper` (`GenericMediaPlayer`) that internally manages two plain `AVPlayer` instances (`foreground` and `background`). `AVQueuePlayer` cannot render two items simultaneously, so dedicated players are needed for overlap.
 - Compose with existing helpers (`Asset`, `AVPlayerAsset`, caching factories, monitoring delegates) directly inside the new wrapper. Only factor out shared services after the MVP if duplication becomes a maintenance issue.
 - Document follow-up candidates (e.g., shared monitoring hub, loudness controller) but defer their extraction until crossfade behaviour is stable in production.
 
