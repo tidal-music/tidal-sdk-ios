@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- Removed broadcast/DJ functionality from the Player module (Player)
+
 ## [0.7.7] - 2025-10-14
 
 ### Changed
@@ -577,6 +580,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.9] - 2024-02-13
 ### Added
 - Streaming privileges preparation (Player)
+- Support new reactions value in DJSessionMetadata (Player)
 - Support playback of DRM-free tracks using AVPlayer (Player)
 ### Changed 
 - Improve Xcode test settings for Player module (Player)
@@ -599,6 +603,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Loudness normalization values
 ### Added
 - Auth in FairPlayLicenseFetcher and PlaybackInfoFetcher
+- Auth in DJProducer
 
 ## [0.2.5-drm-crash-fix] - 2024-02-05
 ### Fixed
