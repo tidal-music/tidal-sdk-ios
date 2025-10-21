@@ -60,6 +60,8 @@ public final class PlayerMock: GenericMediaPlayer {
 
 		func clearCache() {}
 
+		func updateMaxCacheSize(_ sizeInBytes: Int?) {}
+
 		func reset() {}
 	}
 

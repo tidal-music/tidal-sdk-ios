@@ -116,6 +116,96 @@ final class PlayerCacheManagerTests: XCTestCase {
 		XCTAssertFalse(FileManager.default.fileExists(atPath: cachedURL.path))
 		XCTAssertEqual(manager.currentCacheSizeInBytes(), 0)
 	}
+
+	func testUpdateMaxCacheSizePrunesOldestEntries() throws {
+		let oldestURL = try makeDirectory(named: "oldest", size: 40)
+		let middleURL = try makeDirectory(named: "middle", size: 30)
+		let newestURL = try makeDirectory(named: "newest", size: 20)
+
+		try cacheStorage.save(
+			CacheEntry(
+				key: "oldest",
+				type: .hls,
+				url: oldestURL,
+				lastAccessedAt: Date(timeIntervalSince1970: 10),
+				size: 40
+			)
+		)
+		try cacheStorage.save(
+			CacheEntry(
+				key: "middle",
+				type: .hls,
+				url: middleURL,
+				lastAccessedAt: Date(timeIntervalSince1970: 20),
+				size: 30
+			)
+		)
+		try cacheStorage.save(
+			CacheEntry(
+				key: "newest",
+				type: .hls,
+				url: newestURL,
+				lastAccessedAt: Date(timeIntervalSince1970: 30),
+				size: 20
+			)
+		)
+
+		manager.updateMaxCacheSize(60)
+
+		XCTAssertNil(cacheStorage.entry(for: "oldest"))
+		XCTAssertFalse(FileManager.default.fileExists(atPath: oldestURL.path))
+		XCTAssertNotNil(cacheStorage.entry(for: "middle"))
+		XCTAssertNotNil(cacheStorage.entry(for: "newest"))
+		XCTAssertEqual(manager.currentCacheSizeInBytes(), 50)
+	}
+
+	func testPersistingEntryPrunesWhenExceedingQuota() throws {
+		let keepURL = try makeDirectory(named: "keep", size: 40)
+		let evictURL = try makeDirectory(named: "evict", size: 30)
+
+		try cacheStorage.save(
+			CacheEntry(
+				key: "keep",
+				type: .hls,
+				url: keepURL,
+				lastAccessedAt: Date(timeIntervalSince1970: 50),
+				size: 40
+			)
+		)
+		try cacheStorage.save(
+			CacheEntry(
+				key: "evict",
+				type: .hls,
+				url: evictURL,
+				lastAccessedAt: Date(timeIntervalSince1970: 10),
+				size: 30
+			)
+		)
+
+		manager.updateMaxCacheSize(100)
+
+		let newDownloadURL = try makeDirectory(named: "new", size: 50)
+		currentDate = Date(timeIntervalSince1970: 100)
+		manager.assetFinishedDownloading(
+			AVURLAsset(url: URL(string: "https://example.com/new.m3u8")!),
+			to: newDownloadURL,
+			for: "new"
+		)
+
+		XCTAssertNil(cacheStorage.entry(for: "evict"))
+		XCTAssertFalse(FileManager.default.fileExists(atPath: evictURL.path))
+		XCTAssertNotNil(cacheStorage.entry(for: "keep"))
+		XCTAssertNotNil(cacheStorage.entry(for: "new"))
+		XCTAssertLessThanOrEqual(manager.currentCacheSizeInBytes(), 100)
+	}
+
+	private func makeDirectory(named: String, size: Int) throws -> URL {
+		let directoryURL = temporaryDirectory.appendingPathComponent(named, isDirectory: true)
+		try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+		let fileURL = directoryURL.appendingPathComponent("data.bin")
+		try Data(repeating: 0x01, count: size).write(to: fileURL)
+		return directoryURL
+	}
 }
 
 // MARK: - TestCacheStorage

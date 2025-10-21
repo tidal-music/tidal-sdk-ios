@@ -23,6 +23,7 @@ public protocol PlayerCacheManaging: AnyObject {
 	func recordPlayback(for cacheKey: String)
 	func currentCacheSizeInBytes() -> Int
 	func clearCache()
+	func updateMaxCacheSize(_ sizeInBytes: Int?)
 	func reset()
 }
 
@@ -48,6 +49,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	private let storageDirectory: URL
 	private let fileManager: FileManagerClient
 	private let dateProvider: () -> Date
+ 	private var maxCacheSizeInBytes: Int?
 
 	private enum Constants {
 		static let cacheDatabaseFilename = "player-cache.sqlite"
@@ -57,10 +59,12 @@ final class PlayerCacheManager: PlayerCacheManaging {
 		storageDirectory: URL? = nil,
 		cacheStorage: (any CacheStorage)? = nil,
 		fileManager: FileManagerClient = .live,
-		dateProvider: @escaping () -> Date = Date.init
+		dateProvider: @escaping () -> Date = Date.init,
+		maxCacheSizeInBytes: Int? = nil
 	) {
-	self.fileManager = fileManager
-	self.dateProvider = dateProvider
+		self.fileManager = fileManager
+		self.dateProvider = dateProvider
+ 		self.maxCacheSizeInBytes = maxCacheSizeInBytes
 
 	let resolvedDirectory = storageDirectory ?? fileManager.cachesDirectory()
 	PlayerCacheManager.ensureDirectoryExists(at: resolvedDirectory, fileManager: fileManager)
@@ -181,6 +185,11 @@ final class PlayerCacheManager: PlayerCacheManaging {
 		}
 	}
 
+	public func updateMaxCacheSize(_ sizeInBytes: Int?) {
+		maxCacheSizeInBytes = sizeInBytes
+		pruneCacheIfNeeded()
+	}
+
 	public func reset() {
 		assetFactory.reset()
 	}
@@ -246,6 +255,8 @@ private extension PlayerCacheManager {
 		} catch {
 			// Intentionally ignored for now; logging can be added once requirements are defined.
 		}
+
+		pruneCacheIfNeeded()
 	}
 
 	func removeCacheEntry(for cacheKey: String) {
@@ -278,6 +289,29 @@ private extension PlayerCacheManager {
 			return
 		}
 		try? fileManager.removeItem(at: url)
+	}
+
+	func pruneCacheIfNeeded() {
+		guard let maxCacheSizeInBytes, maxCacheSizeInBytes >= 0 else {
+			return
+		}
+
+		do {
+			let entries = try cacheStorage.getAll().sorted(by: { $0.lastAccessedAt < $1.lastAccessedAt })
+			var currentSize = entries.reduce(0) { $0 + $1.size }
+
+			var index = 0
+			while currentSize > maxCacheSizeInBytes, index < entries.count {
+				let entry = entries[index]
+				assetFactory.delete(entry.key)
+				removePhysicalFileIfNeeded(at: entry.url)
+				try cacheStorage.delete(key: entry.key)
+				currentSize -= entry.size
+				index += 1
+			}
+		} catch {
+			// Intentionally ignored for now; logging can be added once requirements are defined.
+		}
 	}
 }
 
