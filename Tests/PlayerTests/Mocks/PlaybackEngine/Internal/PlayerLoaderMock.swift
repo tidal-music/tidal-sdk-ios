@@ -18,15 +18,17 @@ final class PlayerLoaderMock: PlayerLoader {
 		featureFlagProvider: FeatureFlagProvider = .mock,
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		mainPlayer: MainPlayerType.Type = PlayerMock.self,
-		externalPlayers: [GenericMediaPlayer.Type] = []
+		externalPlayers: [GenericMediaPlayer.Type] = [],
+		cacheManager: PlayerCacheManager = PlayerCacheManager()
 	) {}
 
 	convenience init() {
 		self.init(
 			with: Configuration.mock(),
-			and: FairPlayLicenseFetcher.mock(),
-			featureFlagProvider: .mock,
-			externalPlayers: []
+		and: FairPlayLicenseFetcher.mock(),
+		featureFlagProvider: .mock,
+		externalPlayers: [],
+		cacheManager: PlayerCacheManager()
 		)
 	}
 

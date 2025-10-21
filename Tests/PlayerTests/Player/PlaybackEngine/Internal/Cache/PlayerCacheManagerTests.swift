@@ -8,12 +8,12 @@ final class PlayerCacheManagerTests: XCTestCase {
 	private var temporaryDirectory: URL!
 	private var cacheStorage: TestCacheStorage!
 	private var manager: PlayerCacheManager!
-	private var currentDate: Date!
+	private var currentTimestamp: UInt64!
 
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
-		currentDate = Date()
+		currentTimestamp = 0
 		cacheStorage = TestCacheStorage()
 
 		let baseDirectory = FileManager.default.temporaryDirectory
@@ -24,8 +24,8 @@ final class PlayerCacheManagerTests: XCTestCase {
 			storageDirectory: temporaryDirectory,
 			cacheStorage: cacheStorage,
 			fileManager: .live,
-			dateProvider: { [weak self] in
-				self?.currentDate ?? Date()
+			timeProvider: { [weak self] in
+				self?.currentTimestamp ?? 0
 			}
 		)
 	}
@@ -35,13 +35,13 @@ final class PlayerCacheManagerTests: XCTestCase {
 		manager = nil
 		cacheStorage = nil
 		temporaryDirectory = nil
-		currentDate = nil
+		currentTimestamp = nil
 
 		try super.tearDownWithError()
 	}
 
 	func testPersistEntryOnDownload() throws {
-		currentDate = Date(timeIntervalSince1970: 1000)
+		currentTimestamp = 1_000
 
 		let cacheKey = "test-cache-key"
 		let assetURL = URL(string: "https://example.com/stream.m3u8")!
@@ -58,7 +58,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 		XCTAssertEqual(entry.key, cacheKey)
 		XCTAssertEqual(entry.url, downloadDirectory)
 		XCTAssertEqual(entry.size, data.count)
-		XCTAssertEqual(entry.lastAccessedAt, currentDate)
+		XCTAssertEqual(entry.lastAccessedAt, Date(timeIntervalSince1970: 1_000))
 	}
 
 	func testRecordPlaybackUpdatesLastAccessed() throws {
@@ -75,11 +75,11 @@ final class PlayerCacheManagerTests: XCTestCase {
 		)
 		try cacheStorage.save(entry)
 
-		currentDate = Date(timeIntervalSince1970: 20)
+		currentTimestamp = 20
 		manager.recordPlayback(for: cacheKey)
 
 		entry = try XCTUnwrap(cacheStorage.entry(for: cacheKey))
-		XCTAssertEqual(entry.lastAccessedAt, currentDate)
+		XCTAssertEqual(entry.lastAccessedAt, Date(timeIntervalSince1970: 20))
 	}
 
 	func testCurrentCacheSizeInBytesReflectsStorage() throws {
@@ -185,7 +185,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 		manager.updateMaxCacheSize(100)
 
 		let newDownloadURL = try makeDirectory(named: "new", size: 50)
-		currentDate = Date(timeIntervalSince1970: 100)
+		currentTimestamp = 100
 		manager.assetFinishedDownloading(
 			AVURLAsset(url: URL(string: "https://example.com/new.m3u8")!),
 			to: newDownloadURL,
