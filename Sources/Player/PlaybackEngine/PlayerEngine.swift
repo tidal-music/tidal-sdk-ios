@@ -10,7 +10,6 @@ final class PlayerEngine {
 	private let queue: OperationQueue
 	private let playbackInfoFetcher: PlaybackInfoFetcher
 	private let fairplayLicenseFetcher: FairPlayLicenseFetcher
-	private let djModeProducer: DJProducer
 	private let featureFlagProvider: FeatureFlagProvider
 
 	/// Configuration used in ``PlaybackInfoFetcher`` and for loudness normalization.
@@ -38,19 +37,6 @@ final class PlayerEngine {
 				notificationsHandler?.stateChanged(to: state.publicState)
 			}
 
-			guard let currentItem else {
-				return
-			}
-
-			if state == .PAUSED {
-				djModeProducer.pause(currentItem.mediaProduct)
-				return
-			}
-
-			if state == .PLAYING, oldValue == .PAUSED || oldValue == .STALLED {
-				djModeProducer.play(currentItem.mediaProduct, at: currentItem.assetPosition)
-				return
-			}
 		}
 	}
 
@@ -65,8 +51,6 @@ final class PlayerEngine {
 			guard let currentItem, currentItem.metadata != nil else {
 				return
 			}
-
-			djModeProducer.play(currentItem.mediaProduct, at: 0)
 		}
 	}
 
@@ -101,7 +85,6 @@ final class PlayerEngine {
 		_ httpClient: HttpClient,
 		_ credentialsProvider: CredentialsProvider,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
-		_ djProducer: DJProducer,
 		_ configuration: Configuration,
 		_ playerEventSender: PlayerEventSender,
 		_ networkMonitor: NetworkMonitor,
@@ -121,7 +104,6 @@ final class PlayerEngine {
 			featureFlagProvider: featureFlagProvider
 		)
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
-		djModeProducer = djProducer
 		self.configuration = configuration
 		self.networkMonitor = networkMonitor
 		self.playerEventSender = playerEventSender
@@ -146,21 +128,6 @@ final class PlayerEngine {
 			audioSessionRouteChangeMonitor = AudioSessionRouteChangeMonitor(self, configuration: configuration)
 			audioSessionMediaServicesWereResetMonitor = AudioSessionMediaServicesWereResetMonitor(playerEngine: self)
 		#endif
-	}
-
-	func startDjSession(title: String, timestamp: UInt64) {
-		queue.dispatch {
-			if let currentItem = self.currentItem {
-				self.djModeProducer.start(title, with: currentItem.mediaProduct, at: currentItem.assetPosition)
-				currentItem.play(timestamp: timestamp)
-			}
-		}
-	}
-
-	func stopDjSession(immediately: Bool = true) {
-		queue.dispatch {
-			self.djModeProducer.stop(immediately: immediately)
-		}
 	}
 
 	func load(_ mediaProduct: MediaProduct, timestamp: UInt64, isPreload: Bool = false) {
@@ -337,10 +304,6 @@ final class PlayerEngine {
 		playerItemLoader.renderVideo(in: view)
 	}
 
-	func isLive() -> Bool {
-		djModeProducer.isLive
-	}
-
 	func currentPlayer() -> GenericMediaPlayer? {
 		currentItem?.asset?.player
 	}
@@ -452,14 +415,6 @@ extension PlayerEngine: PlayerItemMonitor {
 		}
 	}
 
-	func djSessionTransition(playerItem: PlayerItem, transition: DJSessionTransition) {
-		queue.dispatch {
-			if playerItem === self.currentItem {
-				self.notificationsHandler?.djSessionTransitioned(to: transition)
-			}
-		}
-	}
-
 	func playbackMetadataLoaded(playerItem: PlayerItem) {
 		queue.dispatch {
 			if playerItem === self.currentItem {
@@ -489,26 +444,11 @@ extension PlayerEngine: StreamingPrivilegesHandlerDelegate {
 	}
 }
 
-// MARK: DJProducerListener
-
-extension PlayerEngine: DJProducerListener {
-	func djSessionStarted(metadata: DJSessionMetadata) {
-		notificationsHandler?.djSessionStarted(with: metadata)
-	}
-
-	func djSessionEnded(reason: DJSessionEndReason) {
-		notificationsHandler?.djSessionEnded(with: reason)
-	}
-}
-
 private extension PlayerEngine {
 	func cancellAllNetworkRequests() {
 		// 1. The FairPlayLicenseFetcher is shared with all the players, so they can reuse the certificate
 		// It uses a different HTTPClient, but shares the underlying urlSession for TLS optimizations
 		// We can't currently cancel license requests because we don´t identify requests by player inside the HTTPClient.
-
-		// 2. The djModeProducer is shared with all the players
-		// We can't currently cancel its requests because we don´t identify requests by player inside the HTTPClient.
 
 		playbackInfoFetcher.cancellNetworkRequests()
 	}
@@ -556,9 +496,6 @@ private extension PlayerEngine {
 
 			notificationsHandler.failed(with: PlayerInternalError.from(error).toPlayerError())
 			reset(to: .NOT_PLAYING)
-
-			djModeProducer.reset(error)
-
 			return
 		} else {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.handleErrorPlayerItemNotCurrent)
