@@ -14,7 +14,6 @@ final class PlayerStateTests: XCTestCase {
 	private var listenerQueue: DispatchQueue!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var featureFlagProvider: FeatureFlagProvider!
-	private var djProducer: DJProducer!
 	private var notificationsHandler: NotificationsHandler!
 	private var networkMonitor: NetworkMonitorMock!
 	private var playbackInfoFetcher: PlaybackInfoFetcher!
@@ -50,12 +49,6 @@ final class PlayerStateTests: XCTestCase {
 
 		credentialsProvider = CredentialsProviderMock()
 		featureFlagProvider = FeatureFlagProvider.mock
-
-		djProducer = DJProducer(
-			httpClient: httpClient,
-			credentialsProvider: credentialsProvider,
-			featureFlagProvider: featureFlagProvider
-		)
 
 		fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: HttpClient(using: urlSession),
@@ -93,7 +86,6 @@ final class PlayerStateTests: XCTestCase {
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -111,7 +103,6 @@ final class PlayerStateTests: XCTestCase {
 		let playerEngine = PlayerEngine.mock(
 			httpClient: httpClient,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerLoader: playerLoader,
 			notificationsHandler: notificationsHandler
 		)
@@ -131,7 +122,6 @@ final class PlayerStateTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -166,7 +156,6 @@ final class PlayerStateTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -208,7 +197,6 @@ final class PlayerStateTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -253,7 +241,6 @@ final class PlayerStateTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -297,7 +284,6 @@ final class PlayerStateTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -346,7 +332,6 @@ final class PlayerStateTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -396,7 +381,6 @@ final class PlayerStateTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -435,7 +419,6 @@ final class PlayerStateTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -480,7 +463,6 @@ final class PlayerStateTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,

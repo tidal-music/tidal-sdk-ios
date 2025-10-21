@@ -8,11 +8,6 @@ extension PlayerEngine {
 		httpClient: HttpClient = HttpClient(),
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		fairplayLicenseFetcher: FairPlayLicenseFetcher = FairPlayLicenseFetcher.mock(),
-		djProducer: DJProducer = DJProducer(
-			httpClient: HttpClient(),
-			credentialsProvider: CredentialsProviderMock(),
-			featureFlagProvider: .mock
-		),
 		configuration: Configuration = Configuration.mock(),
 		playerEventSender: PlayerEventSender = PlayerEventSenderMock(),
 		networkMonitor: NetworkMonitor = NetworkMonitorMock(),
@@ -26,7 +21,6 @@ extension PlayerEngine {
 			httpClient,
 			credentialsProvider,
 			fairplayLicenseFetcher,
-			djProducer,
 			configuration,
 			playerEventSender,
 			networkMonitor,
