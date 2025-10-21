@@ -81,6 +81,41 @@ final class PlayerCacheManagerTests: XCTestCase {
 		entry = try XCTUnwrap(cacheStorage.entry(for: cacheKey))
 		XCTAssertEqual(entry.lastAccessedAt, currentDate)
 	}
+
+	func testCurrentCacheSizeInBytesReflectsStorage() throws {
+		let firstURL = temporaryDirectory.appendingPathComponent("first")
+		try Data(count: 64).write(to: firstURL)
+
+		let secondURL = temporaryDirectory.appendingPathComponent("second")
+		try Data(count: 32).write(to: secondURL)
+
+		try cacheStorage.save(
+			CacheEntry(key: "first", type: .hls, url: firstURL, size: 64)
+		)
+		try cacheStorage.save(
+			CacheEntry(key: "second", type: .hls, url: secondURL, size: 32)
+		)
+
+		XCTAssertEqual(manager.currentCacheSizeInBytes(), 96)
+	}
+
+	func testClearCacheRemovesEntriesAndFiles() throws {
+		let cacheKey = "clear"
+		let cachedURL = temporaryDirectory.appendingPathComponent("directory", isDirectory: true)
+		try FileManager.default.createDirectory(at: cachedURL, withIntermediateDirectories: true)
+		let dataURL = cachedURL.appendingPathComponent("file.dat")
+		try Data(count: 100).write(to: dataURL)
+
+		try cacheStorage.save(
+			CacheEntry(key: cacheKey, type: .hls, url: cachedURL, size: 100)
+		)
+
+		manager.clearCache()
+
+		XCTAssertNil(cacheStorage.entry(for: cacheKey))
+		XCTAssertFalse(FileManager.default.fileExists(atPath: cachedURL.path))
+		XCTAssertEqual(manager.currentCacheSizeInBytes(), 0)
+	}
 }
 
 // MARK: - TestCacheStorage

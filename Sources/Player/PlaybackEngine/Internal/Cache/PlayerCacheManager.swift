@@ -21,6 +21,8 @@ public protocol PlayerCacheManaging: AnyObject {
 	func startCachingIfNeeded(_ urlAsset: AVURLAsset, cacheState: AssetCacheState?)
 	func cancelDownload(for cacheKey: String)
 	func recordPlayback(for cacheKey: String)
+	func currentCacheSizeInBytes() -> Int
+	func clearCache()
 	func reset()
 }
 
@@ -157,6 +159,28 @@ final class PlayerCacheManager: PlayerCacheManaging {
 		}
 	}
 
+	public func currentCacheSizeInBytes() -> Int {
+		do {
+			return try cacheStorage.totalSize()
+		} catch {
+			return 0
+		}
+	}
+
+	public func clearCache() {
+		do {
+			let entries = try cacheStorage.getAll()
+			for entry in entries {
+				assetFactory.delete(entry.key)
+				removePhysicalFileIfNeeded(at: entry.url)
+				try cacheStorage.delete(key: entry.key)
+			}
+			assetFactory.reset()
+		} catch {
+			// Intentionally ignored for now; logging can be added once requirements are defined.
+		}
+	}
+
 	public func reset() {
 		assetFactory.reset()
 	}
@@ -243,10 +267,17 @@ private extension PlayerCacheManager {
 
 		do {
 			let attributes = try fileManager.attributesOfItem(url.path)
-			return (attributes[.size] as? NSNumber)?.intValue ?? 0
-		} catch {
-			return nil
+		return (attributes[.size] as? NSNumber)?.intValue ?? 0
+	} catch {
+		return nil
+	}
+}
+
+	func removePhysicalFileIfNeeded(at url: URL) {
+		guard url.path.hasPrefix(storageDirectory.path) else {
+			return
 		}
+		try? fileManager.removeItem(at: url)
 	}
 }
 
