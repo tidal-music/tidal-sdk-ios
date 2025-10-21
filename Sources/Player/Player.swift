@@ -56,6 +56,7 @@ public final class Player {
 	private var externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?
 	private let credentialsProvider: CredentialsProvider
 	private let offlinePlaybackPrivilegeCheck: (() -> Bool)?
+ 	private let cacheManager: PlayerCacheManager
 
 	// MARK: - Initialization
 
@@ -75,7 +76,8 @@ public final class Player {
 		featureFlagProvider: FeatureFlagProvider,
 		externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?,
 		credentialsProvider: CredentialsProvider,
-		offlinePlaybackPrivilegeCheck: (() -> Bool)?
+		offlinePlaybackPrivilegeCheck: (() -> Bool)?,
+		cacheManager: PlayerCacheManager
 	) {
 		self.queue = queue
 		playerURLSession = urlSession
@@ -93,6 +95,7 @@ public final class Player {
 		self.externalPlayersSupplier = externalPlayersSupplier
 		self.credentialsProvider = credentialsProvider
 		self.offlinePlaybackPrivilegeCheck = offlinePlaybackPrivilegeCheck
+		self.cacheManager = cacheManager
 	}
 }
 
@@ -200,6 +203,8 @@ public extension Player {
 			notificationsHandler
 		)
 
+		let cacheManager = PlayerCacheManager()
+
 		let playerEngine = Player.newPlayerEngine(
 			sharedPlayerURLSession,
 			configuration,
@@ -212,7 +217,8 @@ public extension Player {
 			featureFlagProvider,
 			externalPlayersSupplier,
 			credentialsProvider,
-			offlinePlaybackPrivilegeCheck
+			offlinePlaybackPrivilegeCheck,
+			cacheManager
 		)
 
 		shared = Player(
@@ -231,7 +237,8 @@ public extension Player {
 			featureFlagProvider: featureFlagProvider,
 			externalPlayersSupplier: externalPlayersSupplier,
 			credentialsProvider: credentialsProvider,
-			offlinePlaybackPrivilegeCheck: offlinePlaybackPrivilegeCheck
+			offlinePlaybackPrivilegeCheck: offlinePlaybackPrivilegeCheck,
+			cacheManager: cacheManager
 		)
 
 		return shared
@@ -347,6 +354,27 @@ public extension Player {
 		playerEngine.getState()
 	}
 
+	/// Returns the total number of bytes currently used by the shared media cache.
+	func cacheUsageInBytes() -> Int {
+		playerEngine.cacheUsageInBytes()
+	}
+
+	/// Clears the entire shared media cache for all player implementations.
+	func clearCache() {
+		queue.block {
+			self.playerEngine.clearCacheStorage()
+		}
+	}
+
+	/// Updates the maximum cache size (in bytes) enforced across all player implementations.
+	/// Pass `nil` to disable quota enforcement.
+	/// - Parameter maxBytes: The maximum number of bytes allowed in the cache, or `nil` to remove the limit.
+	func setCacheQuota(maxBytes: Int?) {
+		queue.block {
+			self.playerEngine.updateCacheQuota(maxBytes)
+		}
+	}
+
 	func renderVideo(in view: AVPlayerLayer) {
 		queue.dispatch {
 			self.playerEngine.renderVideo(in: view)
@@ -421,7 +449,8 @@ private extension Player {
 			featureFlagProvider,
 			externalPlayersSupplier,
 			credentialsProvider,
-			offlinePlaybackPrivilegeCheck
+			offlinePlaybackPrivilegeCheck,
+			cacheManager
 		)
 	}
 
@@ -437,7 +466,8 @@ private extension Player {
 		_ featureFlagProvider: FeatureFlagProvider,
 		_ externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?,
 		_ credentialsProvider: CredentialsProvider,
-		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?
+		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
+		_ cacheManager: PlayerCacheManager
 	) -> PlayerEngine {
 		let internalPlayerLoader = InternalPlayerLoader(
 			with: configuration,
@@ -445,7 +475,8 @@ private extension Player {
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
 			mainPlayer: Player.mainPlayerType(featureFlagProvider),
-			externalPlayers: externalPlayersSupplier?() ?? []
+			externalPlayers: externalPlayersSupplier?() ?? [],
+			cacheManager: cacheManager
 		)
 
 		let playerInstance = PlayerEngine(
@@ -461,7 +492,8 @@ private extension Player {
 			offlinePlaybackPrivilegeCheck,
 			internalPlayerLoader,
 			featureFlagProvider,
-			notificationsHandler
+			notificationsHandler,
+			cacheManager
 		)
 
 		return playerInstance

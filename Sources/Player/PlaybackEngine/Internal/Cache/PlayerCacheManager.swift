@@ -48,7 +48,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	private let cacheStorage: any CacheStorage
 	private let storageDirectory: URL
 	private let fileManager: FileManagerClient
-	private let dateProvider: () -> Date
+ 	private let timeProvider: () -> UInt64
  	private var maxCacheSizeInBytes: Int?
 
 	private enum Constants {
@@ -59,11 +59,11 @@ final class PlayerCacheManager: PlayerCacheManaging {
 		storageDirectory: URL? = nil,
 		cacheStorage: (any CacheStorage)? = nil,
 		fileManager: FileManagerClient = .live,
-		dateProvider: @escaping () -> Date = Date.init,
+		timeProvider: @escaping () -> UInt64 = { PlayerWorld.timeProvider.timestamp() },
 		maxCacheSizeInBytes: Int? = nil
 	) {
 		self.fileManager = fileManager
-		self.dateProvider = dateProvider
+		self.timeProvider = timeProvider
  		self.maxCacheSizeInBytes = maxCacheSizeInBytes
 
 	let resolvedDirectory = storageDirectory ?? fileManager.cachesDirectory()
@@ -156,7 +156,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 			guard var entry = try cacheStorage.get(key: cacheKey) else {
 				return
 			}
-			entry.lastAccessedAt = dateProvider()
+			entry.lastAccessedAt = currentDate()
 			try cacheStorage.update(entry)
 		} catch {
 			// Intentionally ignored for now; logging can be added once requirements are defined.
@@ -241,13 +241,14 @@ private extension PlayerCacheManager {
 			if var existingEntry = try cacheStorage.get(key: cacheKey) {
 				existingEntry.url = url
 				existingEntry.size = size
+				existingEntry.lastAccessedAt = currentDate()
 				try cacheStorage.update(existingEntry)
 			} else {
 				let entry = CacheEntry(
 					key: cacheKey,
 					type: .hls,
 					url: url,
-					lastAccessedAt: dateProvider(),
+					lastAccessedAt: currentDate(),
 					size: size
 				)
 				try cacheStorage.save(entry)
@@ -312,6 +313,10 @@ private extension PlayerCacheManager {
 		} catch {
 			// Intentionally ignored for now; logging can be added once requirements are defined.
 		}
+	}
+
+	func currentDate() -> Date {
+		Date(timeIntervalSince1970: TimeInterval(timeProvider()))
 	}
 }
 
