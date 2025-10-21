@@ -59,13 +59,12 @@ public final class PlayerMock: GenericMediaPlayer {
 
 	public convenience init() {
 		self.init(
-			cachePath: URL(fileURLWithPath: "/tmp"),
 			cacheManager: NullPlayerCacheManager(),
 			featureFlagProvider: .mock
 		)
 	}
 
-	public init(cachePath: URL, cacheManager: PlayerCacheManaging, featureFlagProvider: FeatureFlagProvider) {
+	public init(cacheManager: PlayerCacheManaging, featureFlagProvider: FeatureFlagProvider) {
 		self.cacheManager = cacheManager
 	}
 

@@ -55,7 +55,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	// MARK: Initialization
 
-	init(cachePath: URL, cacheManager: PlayerCacheManaging, featureFlagProvider: FeatureFlagProvider) {
+	init(cacheManager: PlayerCacheManaging, featureFlagProvider: FeatureFlagProvider) {
 		self.featureFlagProvider = featureFlagProvider
 		self.cacheManager = cacheManager
 
