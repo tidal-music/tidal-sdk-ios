@@ -39,11 +39,17 @@ public struct PlayerCacheResult {
 public final class PlayerCacheManager: PlayerCacheManaging {
 	public weak var delegate: PlayerCacheManagerDelegate?
 
-	private let assetFactory: AVURLAssetFactory = AVURLAssetFactory()
+    private let assetFactory: AVURLAssetFactory
+    private let storageDirectory: URL
 
-	public init() {
-		self.assetFactory.delegate = self
-	}
+    public init(storageDirectory: URL? = nil) {
+        let resolvedDirectory = storageDirectory ?? PlayerWorld.fileManagerClient.cachesDirectory()
+        self.storageDirectory = resolvedDirectory
+
+        let assetCache = AssetCache(storageDirectory: resolvedDirectory)
+        assetFactory = AVURLAssetFactory(assetCache: assetCache)
+        self.assetFactory.delegate = self
+    }
 
 	public func prepareCache(isEnabled: Bool) {
 		if !isEnabled {
