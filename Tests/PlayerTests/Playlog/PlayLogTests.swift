@@ -42,6 +42,7 @@ final class PlayLogTests: XCTestCase {
 	private var networkMonitor: NetworkMonitorMock!
 	private var configuration: Configuration!
 	private var notificationsHandler: NotificationsHandler!
+	private var cacheManager: PlayerCacheManager!
 
 	private var timestamp: UInt64 = 1
 	private var uuid = "uuid"
@@ -138,6 +139,7 @@ final class PlayLogTests: XCTestCase {
 		)
 
 		notificationsHandler = NotificationsHandler.mock()
+		cacheManager = PlayerCacheManager()
 
 		setUpPlayerEngine()
 
@@ -1508,7 +1510,8 @@ private extension PlayLogTests {
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
 			mainPlayer: Player.mainPlayerType(featureFlagProvider),
-			externalPlayers: []
+			externalPlayers: [],
+			cacheManager: cacheManager
 		)
 
 		let operationQueue = OperationQueue()
@@ -1528,7 +1531,8 @@ private extension PlayLogTests {
 			storage: storage,
 			playerLoader: playerLoader,
 			featureFlagProvider: featureFlagProvider,
-			notificationsHandler: notificationsHandler
+			notificationsHandler: notificationsHandler,
+			cacheManager: cacheManager
 		)
 
 		djProducer.delegate = playerEngine

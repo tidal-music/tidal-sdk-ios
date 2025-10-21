@@ -36,7 +36,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		credentialsProvider: CredentialsProvider,
 		mainPlayer: MainPlayerType.Type,
 		externalPlayers: [GenericMediaPlayer.Type],
-		cacheManager: PlayerCacheManager = PlayerCacheManager()
+		cacheManager: PlayerCacheManager
 	) {
 		self.configuration = configuration
 		fairPlayLicenseFetcher = fairplayLicenseFetcher

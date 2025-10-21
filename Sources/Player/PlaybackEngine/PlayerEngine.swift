@@ -125,11 +125,12 @@ final class PlayerEngine {
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
 		djModeProducer = djProducer
 		self.configuration = configuration
-		self.networkMonitor = networkMonitor
-		self.playerEventSender = playerEventSender
-		self.notificationsHandler = notificationsHandler
-		self.featureFlagProvider = featureFlagProvider
-		self.cacheManager = cacheManager
+	self.networkMonitor = networkMonitor
+	self.playerEventSender = playerEventSender
+	self.notificationsHandler = notificationsHandler
+	self.featureFlagProvider = featureFlagProvider
+	self.cacheManager = cacheManager
+ 	self.cacheManager.updateMaxCacheSize(configuration.cacheQuotaInBytes)
 
 		playerItemLoader = PlayerItemLoader(
 			with: offlineStorage,
@@ -593,6 +594,7 @@ private extension PlayerEngine {
 extension PlayerEngine {
 	func updateConfiguration(_ configuration: Configuration) {
 		self.configuration = configuration
+		cacheManager.updateMaxCacheSize(configuration.cacheQuotaInBytes)
 	}
 
 	/// Updates the loudness normalization mode of current and next items. This allows for immediate change after the
