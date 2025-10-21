@@ -55,6 +55,8 @@ public final class PlayerMock: GenericMediaPlayer {
 
 		func cancelDownload(for cacheKey: String) {}
 
+		func recordPlayback(for cacheKey: String) {}
+
 		func reset() {}
 	}
 
