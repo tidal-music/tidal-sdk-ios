@@ -40,6 +40,7 @@ public final class Player {
 		// so that it can perform necessary updates regarding the loudness normalization
 		// immediately.
 		didSet {
+			cacheManager.updateMaxCacheSize(configuration.cacheQuotaInBytes)
 			playerEngine.updateConfiguration(configuration)
 			offlineEngine.updateConfiguration(configuration)
 			streamingPrivilegesHandler.updateConfiguration(configuration)
@@ -79,6 +80,7 @@ public final class Player {
 	) {
 		self.queue = queue
 		playerURLSession = urlSession
+		self.cacheManager = cacheManager
 		self.configuration = configuration
 		self.offlineStorage = offlineStorage
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
@@ -92,7 +94,7 @@ public final class Player {
 		self.externalPlayersSupplier = externalPlayersSupplier
 		self.credentialsProvider = credentialsProvider
 		self.offlinePlaybackPrivilegeCheck = offlinePlaybackPrivilegeCheck
-		self.cacheManager = cacheManager
+		self.cacheManager.updateMaxCacheSize(configuration.cacheQuotaInBytes)
 	}
 }
 

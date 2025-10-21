@@ -22,6 +22,10 @@ public struct Configuration {
 	/// The app's version
 	public var clientVersion: String
 
+	/// Optional maximum number of bytes allowed for the shared media cache.
+	/// Provide `nil` to disable quota enforcement.
+	public var cacheQuotaInBytes: Int? = nil
+
 	/// Tells TIDAL Player if client is in ONLINE of OFFLINE mode.
 	///
 	/// When in OFFLINE mode, TIDAL Player may not use any networking whatsoever
@@ -59,8 +63,9 @@ public struct Configuration {
 	/// Determines if the user allows adaptive (variable) bitrate playback for streaming audio.
 	public var allowVariablePlayback: Bool = false
 
-	init(clientVersion: String = Bundle.main.appVersion) {
+	init(clientVersion: String = Bundle.main.appVersion, cacheQuotaInBytes: Int? = nil) {
 		self.clientVersion = clientVersion
+		self.cacheQuotaInBytes = cacheQuotaInBytes
 	}
 }
 

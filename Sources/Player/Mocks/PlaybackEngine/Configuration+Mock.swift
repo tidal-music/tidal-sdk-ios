@@ -1,7 +1,8 @@
 public extension Configuration {
 	static func mock(
-		clientVersion: String = "clientVersion"
+		clientVersion: String = "clientVersion",
+		cacheQuotaInBytes: Int? = nil
 	) -> Self {
-		Configuration(clientVersion: clientVersion)
+		Configuration(clientVersion: clientVersion, cacheQuotaInBytes: cacheQuotaInBytes)
 	}
 }
