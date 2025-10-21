@@ -16,6 +16,8 @@ final class InternalPlayerLoader: PlayerLoader {
 
 	private let featureFlagProvider: FeatureFlagProvider
 
+	private let cacheManager: PlayerCacheManager
+
 	let mainPlayer: MainPlayerType
 	var players: [GenericMediaPlayer] = []
 
@@ -33,15 +35,17 @@ final class InternalPlayerLoader: PlayerLoader {
 		featureFlagProvider: FeatureFlagProvider,
 		credentialsProvider: CredentialsProvider,
 		mainPlayer: MainPlayerType.Type,
-		externalPlayers: [GenericMediaPlayer.Type]
+		externalPlayers: [GenericMediaPlayer.Type],
+		cacheManager: PlayerCacheManager
 	) {
 		self.configuration = configuration
 		fairPlayLicenseFetcher = fairplayLicenseFetcher
 		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
+		self.cacheManager = cacheManager
 
 		self.mainPlayer = mainPlayer.init(
-			cacheManager: PlayerCacheManager(),
+			cacheManager: cacheManager,
 			featureFlagProvider: featureFlagProvider
 		)
 
@@ -50,7 +54,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		externalPlayers.forEach { externalPlayerType in
 			registerPlayer(
 				externalPlayerType.init(
-					cacheManager: PlayerCacheManager(),
+					cacheManager: cacheManager,
 					featureFlagProvider: featureFlagProvider
 				)
 			)

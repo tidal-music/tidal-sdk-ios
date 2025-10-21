@@ -25,6 +25,7 @@ final class PlayerEngine {
 	private let networkMonitor: NetworkMonitor
 	private let playerEventSender: PlayerEventSender
 	private let playerItemLoader: PlayerItemLoader
+	private let cacheManager: PlayerCacheManager
 
 	@Atomic var notificationsHandler: NotificationsHandler?
 
@@ -109,8 +110,9 @@ final class PlayerEngine {
 		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
 		_ playerLoader: PlayerLoader,
 		_ featureFlagProvider: FeatureFlagProvider,
-		_ notificationsHandler: NotificationsHandler?
-	) {
+		_ notificationsHandler: NotificationsHandler?,
+		_ cacheManager: PlayerCacheManager
+ ) {
 		self.queue = queue
 		playbackInfoFetcher = PlaybackInfoFetcher(
 			with: configuration,
@@ -123,10 +125,12 @@ final class PlayerEngine {
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
 		djModeProducer = djProducer
 		self.configuration = configuration
-		self.networkMonitor = networkMonitor
-		self.playerEventSender = playerEventSender
-		self.notificationsHandler = notificationsHandler
-		self.featureFlagProvider = featureFlagProvider
+	self.networkMonitor = networkMonitor
+	self.playerEventSender = playerEventSender
+	self.notificationsHandler = notificationsHandler
+	self.featureFlagProvider = featureFlagProvider
+	self.cacheManager = cacheManager
+ 	self.cacheManager.updateMaxCacheSize(configuration.cacheQuotaInBytes)
 
 		playerItemLoader = PlayerItemLoader(
 			with: offlineStorage,
@@ -146,6 +150,18 @@ final class PlayerEngine {
 			audioSessionRouteChangeMonitor = AudioSessionRouteChangeMonitor(self, configuration: configuration)
 			audioSessionMediaServicesWereResetMonitor = AudioSessionMediaServicesWereResetMonitor(playerEngine: self)
 		#endif
+	}
+
+	func cacheUsageInBytes() -> Int {
+		cacheManager.currentCacheSizeInBytes()
+	}
+
+	func clearCacheStorage() {
+		cacheManager.clearCache()
+	}
+
+	func updateCacheQuota(_ sizeInBytes: Int?) {
+		cacheManager.updateMaxCacheSize(sizeInBytes)
 	}
 
 	func startDjSession(title: String, timestamp: UInt64) {
@@ -578,6 +594,7 @@ private extension PlayerEngine {
 extension PlayerEngine {
 	func updateConfiguration(_ configuration: Configuration) {
 		self.configuration = configuration
+		cacheManager.updateMaxCacheSize(configuration.cacheQuotaInBytes)
 	}
 
 	/// Updates the loudness normalization mode of current and next items. This allows for immediate change after the

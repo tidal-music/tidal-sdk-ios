@@ -21,16 +21,19 @@ final class InternalPlayerLoaderTests: XCTestCase {
 	private var fairPlayLicenseFetcher: FairPlayLicenseFetcher!
 	private var internalLoader: InternalPlayerLoader!
 	private var mockPlayer: PlayerMock!
+	private var cacheManager: PlayerCacheManager!
 
-	override func setUpWithError() throws {
+		override func setUpWithError() throws {
 		fairPlayLicenseFetcher = FairPlayLicenseFetcher.mock()
+ 		cacheManager = PlayerCacheManager()
 		internalLoader = InternalPlayerLoader(
 			with: Configuration.mock(),
 			and: fairPlayLicenseFetcher,
 			featureFlagProvider: FeatureFlagProvider.mock,
 			credentialsProvider: CredentialsProviderMock(),
 			mainPlayer: PlayerMock.self,
-			externalPlayers: []
+			externalPlayers: [],
+			cacheManager: cacheManager
 		)
 		mockPlayer = internalLoader.getMainPlayerInstance() as? PlayerMock
 	}
