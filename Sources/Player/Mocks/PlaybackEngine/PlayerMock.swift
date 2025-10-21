@@ -56,6 +56,10 @@ public final class PlayerMock: GenericMediaPlayer {
 
 		func recordPlayback(for cacheKey: String) {}
 
+		func currentCacheSizeInBytes() -> Int { 0 }
+
+		func clearCache() {}
+
 		func reset() {}
 	}
 
