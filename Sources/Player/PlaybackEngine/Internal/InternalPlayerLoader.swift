@@ -141,6 +141,16 @@ final class InternalPlayerLoader: PlayerLoader {
 			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: mainPlayer)
 		case .BROADCAST:
 			return await loadBroadcast(using: playbackInfo, and: licenseLoader, player: mainPlayer)
+		case let .UC(url):
+			guard url.isFileURL else {
+				throw PlayerLoaderError.missingPlayer.error(.PENotSupported)
+			}
+
+			return await loadLocalFile(
+				using: playbackInfo,
+				with: loudnessNormalizer,
+				player: mainPlayer
+			)
 		}
 	}
 
@@ -211,6 +221,24 @@ private extension InternalPlayerLoader {
 			cacheKey: nil,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			and: licenseLoader
+		)
+	}
+
+	func loadLocalFile(
+		using playbackInfo: PlaybackInfo,
+		with loudnessNormalizer: LoudnessNormalizer?,
+		player: GenericMediaPlayer
+	) async -> Asset {
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
+			loudnessNormalizationMode: loudnessNormalizationMode,
+			loudnessNormalizer: loudnessNormalizer
+		)
+
+		return await player.load(
+			playbackInfo.url,
+			cacheKey: nil,
+			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+			and: nil
 		)
 	}
 
