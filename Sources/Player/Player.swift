@@ -46,7 +46,6 @@ public final class Player {
 		}
 	}
 
-	private var djProducer: DJProducer
 	private var playerEventSender: PlayerEventSender
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher
 	private var streamingPrivilegesHandler: StreamingPrivilegesHandler
@@ -64,7 +63,6 @@ public final class Player {
 		urlSession: URLSession,
 		configuration: Configuration,
 		offlineStorage: OfflineStorage,
-		djProducer: DJProducer,
 		playerEventSender: PlayerEventSender,
 		fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		streamingPrivilegesHandler: StreamingPrivilegesHandler,
@@ -81,7 +79,6 @@ public final class Player {
 		playerURLSession = urlSession
 		self.configuration = configuration
 		self.offlineStorage = offlineStorage
-		self.djProducer = djProducer
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
 		self.streamingPrivilegesHandler = streamingPrivilegesHandler
 		self.networkMonitor = networkMonitor
@@ -147,16 +144,6 @@ public extension Player {
 		let sharedPlayerURLSession = URLSession.new(with: timeoutPolicy, name: "Player Player", serviceType: .responsiveAV)
 		let configuration = Configuration()
 
-		// DJProducer Initialization
-		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
-		let djProducerSession = URLSession.new(with: djProducerTimeoutPolicy, name: "Player DJ Session")
-		let djProducerHTTPClient = HttpClient(using: djProducerSession)
-		let djProducer = DJProducer(
-			httpClient: djProducerHTTPClient,
-			credentialsProvider: credentialsProvider,
-			featureFlagProvider: featureFlagProvider
-		)
-
 		let playerEventSender = PlayerEventSender(
 			configuration: configuration,
 			httpClient: HttpClient(using: URLSession.new(
@@ -204,7 +191,6 @@ public extension Player {
 			sharedPlayerURLSession,
 			configuration,
 			offlineStorage,
-			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
 			playerEventSender,
@@ -220,7 +206,6 @@ public extension Player {
 			urlSession: sharedPlayerURLSession,
 			configuration: configuration,
 			offlineStorage: offlineStorage,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			streamingPrivilegesHandler: streamingPrivilegesHandler,
@@ -248,8 +233,6 @@ public extension Player {
 			self.playerEngine.resetOrUnload()
 
 			self.playerEngine = self.instantiatedPlayerEngine(self.notificationsHandler)
-
-			self.djProducer.delegate = self.playerEngine
 
 			self.streamingPrivilegesHandler.delegate = self.playerEngine
 
@@ -284,7 +267,6 @@ public extension Player {
 
 	func reset() {
 		queue.dispatch {
-			self.djProducer.stop(immediately: true)
 			self.playerEngine.reset()
 		}
 	}
@@ -308,7 +290,6 @@ public extension Player {
 
 			self.playerEngine = handle.player
 			self.playerEngine.notificationsHandler = self.notificationsHandler
-			self.djProducer.delegate = self.playerEngine
 			self.streamingPrivilegesHandler.delegate = self.playerEngine
 
 			self.playerEngine.play(timestamp: time)
@@ -389,22 +370,6 @@ public extension Player {
 		offlineEngine.getOfflineState(mediaProduct: mediaProduct)
 	}
 
-	func startDjSession(title: String) {
-		queue.dispatch {
-			let now = PlayerWorld.timeProvider.timestamp()
-			self.playerEngine.startDjSession(title: title, timestamp: now)
-		}
-	}
-
-	func stopDjSession(immediately: Bool = true) {
-		queue.dispatch {
-			self.playerEngine.stopDjSession(immediately: immediately)
-		}
-	}
-
-	func isLive() -> Bool {
-		djProducer.isLive
-	}
 }
 
 private extension Player {
@@ -413,7 +378,6 @@ private extension Player {
 			playerURLSession,
 			configuration,
 			offlineStorage,
-			djProducer,
 			fairplayLicenseFetcher,
 			networkMonitor,
 			playerEventSender,
@@ -429,7 +393,6 @@ private extension Player {
 		_ urlSession: URLSession,
 		_ configuration: Configuration,
 		_ offlineStorage: OfflineStorage?,
-		_ djProducer: DJProducer,
 		_ fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		_ networkMonitor: NetworkMonitor,
 		_ playerEventSender: PlayerEventSender,
@@ -452,7 +415,6 @@ private extension Player {
 			HttpClient(using: urlSession),
 			credentialsProvider,
 			fairplayLicenseFetcher,
-			djProducer,
 			configuration,
 			playerEventSender,
 			networkMonitor,

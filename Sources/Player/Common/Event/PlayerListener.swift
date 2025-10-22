@@ -13,12 +13,6 @@ public protocol PlayerListener: AnyObject {
 
 	func failed(with error: PlayerError)
 
-	func djSessionStarted(_ metadata: DJSessionMetadata)
-
-	func djSessionEnded(with reason: DJSessionEndReason)
-
-	func djSessionTransitioned(to transition: DJSessionTransition)
-
 	/// Called when the media services were reset. A chance for the client of the player to respond appropriately to
 	/// mediaServicesWereResetNotification. More info about this issue:
 	/// https://developer.apple.com/documentation/avfaudio/avaudiosession/1616540-mediaserviceswereresetnotificati
@@ -30,7 +24,4 @@ public protocol PlayerListener: AnyObject {
 
 public extension PlayerListener {
 	func streamingPrivilegesLost(to device: String?) {}
-	func djSessionStarted(_ metadata: DJSessionMetadata) {}
-	func djSessionEnded(with reason: DJSessionEndReason) {}
-	func djSessionTransitioned(to transition: DJSessionTransition) {}
 }

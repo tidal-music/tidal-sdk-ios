@@ -46,11 +46,6 @@ final class PlaybackInfoFetcher {
 				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
-		case .BROADCAST:
-			return try await getBroadcastPlaybackInfo(
-				broadcastId: mediaProduct.productId,
-				streamingSessionId: streamingSessionId
-			)
 		case let .UC(url):
 			return getLocalPlaybackInfo(
 				trackId: mediaProduct.productId,
@@ -316,55 +311,9 @@ private extension PlaybackInfoFetcher {
 		return VideoQuality.HIGH
 	}
 
-	func getBroadcastPlaybackInfo(broadcastId: String, streamingSessionId: String) async throws -> PlaybackInfo {
-		let playbackInfo: BroadcastPlaybackInfo = try await getPlaybackInfo(
-			url: getBroadcastPlaybackInfoUrl(broadcastId: broadcastId),
-			streamingSessionId: streamingSessionId,
-			playlistUUID: nil
-		)
 
-		guard let url = PlaybackInfoFetcher.extractUrl(
-			manifestMimeType: playbackInfo.manifestType,
-			manifest: playbackInfo.manifest
-		) else {
-			throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
-		}
 
-		return PlaybackInfo(
-			productType: .BROADCAST,
-			productId: playbackInfo.id,
-			streamType: .LIVE,
-			assetPresentation: .FULL,
-			audioMode: nil,
-			audioQuality: playbackInfo.audioQuality,
-			audioCodec: PlaybackInfoFetcher.extractCodec(
-				manifestMimeType: playbackInfo.manifestType,
-				manifest: playbackInfo.manifest
-			),
-			audioSampleRate: nil,
-			audioBitDepth: nil,
-			videoQuality: nil,
-			streamingSessionId: streamingSessionId,
-			contentHash: "NA",
-			mediaType: playbackInfo.manifestType,
-			url: url,
-			licenseSecurityToken: nil,
-			albumReplayGain: nil,
-			albumPeakAmplitude: nil,
-			trackReplayGain: nil,
-			trackPeakAmplitude: nil,
-			offlineRevalidateAt: nil,
-			offlineValidUntil: nil
-		)
-	}
 
-	func getBroadcastPlaybackInfoUrl(broadcastId: String) throws -> URL {
-		let audioQuality = getAudioQuality(given: .STREAM)
-		let path = "https://api.tidal.com/v1/broadcasts/\(broadcastId)/playbackinfo"
-		let parameters = "audioquality=\(audioQuality)"
-
-		return try PlaybackInfoFetcher.createUrl(from: "\(path)?\(parameters)")
-	}
 
 	func getLocalPlaybackInfo(
 		trackId: String,

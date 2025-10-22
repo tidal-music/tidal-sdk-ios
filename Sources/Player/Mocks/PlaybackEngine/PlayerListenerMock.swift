@@ -27,11 +27,5 @@ public final class PlayerListenerMock: PlayerListener {
 		numErrors += 1
 	}
 
-	public func djSessionStarted(_ metadata: DJSessionMetadata) {}
-
-	public func djSessionEnded(with reason: DJSessionEndReason) {}
-
-	public func djSessionTransitioned(to transition: DJSessionTransition) {}
-
 	public func mediaServicesWereReset() {}
 }

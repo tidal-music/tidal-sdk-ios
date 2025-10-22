@@ -36,7 +36,6 @@ final class PlayLogTests: XCTestCase {
 	private var credentialsProvider: CredentialsProviderMock!
 	private var httpClient: HttpClient!
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher!
-	private var djProducer: DJProducer!
 	private var playerLoader: InternalPlayerLoader!
 	private var storage: OfflineStorage!
 	private var networkMonitor: NetworkMonitorMock!
@@ -127,15 +126,6 @@ final class PlayLogTests: XCTestCase {
 		)
 
 		networkMonitor = NetworkMonitorMock()
-
-		let djProducerTimeoutPolicy = TimeoutPolicy.shortLived
-		let djProducerSession = URLSession.new(with: djProducerTimeoutPolicy, name: "Player DJ Session")
-
-		djProducer = DJProducer(
-			httpClient: HttpClient.mock(),
-			credentialsProvider: credentialsProvider,
-			featureFlagProvider: .mock
-		)
 
 		notificationsHandler = NotificationsHandler.mock()
 
@@ -1520,7 +1510,6 @@ private extension PlayLogTests {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			configuration: configuration,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
@@ -1530,7 +1519,6 @@ private extension PlayLogTests {
 			notificationsHandler: notificationsHandler
 		)
 
-		djProducer.delegate = playerEngine
 	}
 
 	func setAudioFileResponseToURLProtocol(audioFile: AudioFile) {

@@ -126,17 +126,9 @@ enum PlayerLoggable: TidalLoggable {
 	case playWithoutQueuedItems
 	case itemChangedWithoutQueuedItems
 
-	// MARK: DJProducer
+	// MARK: InternalPlayerLoader
 
-	case djSessionStartFailed(error: Error)
-	case djSessionSendCommandFailed(error: Error)
-	case djSessionStartNoCurationURL
-	case djSessionPlayProductNotTrack
-	case djSessionPauseNoCurationURL
-	case djSessionStopNoCurationURL
-	case djSessionStopOnNextCommand
-	case djSessionResetNoCurationURL
-	case djSessionSendStopOnNextCommand
+	case loadUCFailed(error: Error)
 
 	// MARK: PlayerEngine
 
@@ -349,25 +341,9 @@ extension PlayerLoggable {
 		case .itemChangedWithoutQueuedItems:
 			"AVQueuePlayerWrapper-itemChangedWithoutQueuedItems"
 
-		// DJProducer
-		case .djSessionStartFailed:
-			"DJProducer-djSessionStartFailed"
-		case .djSessionSendCommandFailed:
-			"DJProducer-djSessionSendCommandFailed"
-		case .djSessionStartNoCurationURL:
-			"DJProducer-djSessionStartNoCurationURL"
-		case .djSessionPlayProductNotTrack:
-			"DJProducer-djSessionPlayProductNotTrack"
-		case .djSessionPauseNoCurationURL:
-			"DJProducer-djSessionPauseNoCurationURL"
-		case .djSessionStopNoCurationURL:
-			"DJProducer-djSessionStopNoCurationURL"
-		case .djSessionStopOnNextCommand:
-			"DJProducer-djSessionStopOnNextCommand"
-		case .djSessionResetNoCurationURL:
-			"DJProducer-djSessionResetNoCurationURL"
-		case .djSessionSendStopOnNextCommand:
-			"DJProducer-djSessionSendStopOnNextCommand"
+		// InternalPlayerLoader
+		case .loadUCFailed:
+			"InternalPlayerLoader-loadUCFailed"
 
 		// PlayerEngine
 		case .loadPlayerItemFailed:
@@ -485,8 +461,7 @@ extension PlayerLoggable {
 		     let .failedToCalculateSizeForHLSDownload(error),
 		     let .failedToCalculateSizeForProgressiveDownload(error),
 		     let .readPlaybackMetadataFailed(error),
-		     let .djSessionStartFailed(error),
-		     let .djSessionSendCommandFailed(error),
+		     let .loadUCFailed(error),
 		     let .loadPlayerItemFailed(error):
 			metadata[Logger.Metadata.errorKey] = "\(String(describing: error))"
 		case let .backoffHandleResponseFailed(error, retryStrategy):
@@ -534,13 +509,6 @@ extension PlayerLoggable {
 		     .writeEventNoClientId,
 		     .assetPlaybackMetadataInitWithoutRateAndDepthData,
 		     .assetPlaybackMetadataInitWithoutRequiredData,
-		     .djSessionStartNoCurationURL,
-		     .djSessionPlayProductNotTrack,
-		     .djSessionPauseNoCurationURL,
-		     .djSessionStopNoCurationURL,
-		     .djSessionStopOnNextCommand,
-		     .djSessionResetNoCurationURL,
-		     .djSessionSendStopOnNextCommand,
 		     .metricsNoIdealStartTime,
 		     .handleErrorNoNotificationsHandler,
 		     .handleErrorCancellation,
@@ -598,8 +566,7 @@ extension PlayerLoggable {
 		     .failedToCalculateSizeForHLSDownload,
 		     .failedToCalculateSizeForProgressiveDownload,
 		     .readPlaybackMetadataFailed,
-		     .djSessionStartFailed,
-		     .djSessionSendCommandFailed,
+		     .loadUCFailed,
 		     .loadPlayerItemFailed,
 		     .alreadyInitialized:
 			.error
@@ -635,13 +602,6 @@ extension PlayerLoggable {
 		     .assetPlaybackMetadataInitWithoutRateAndDepthData,
 		     .assetPlaybackMetadataInitWithoutRequiredData,
 		     .assetPlaybackMetadataInitWithInvalidFormatFlags,
-		     .djSessionStartNoCurationURL,
-		     .djSessionPlayProductNotTrack,
-		     .djSessionPauseNoCurationURL,
-		     .djSessionStopNoCurationURL,
-		     .djSessionStopOnNextCommand,
-		     .djSessionResetNoCurationURL,
-		     .djSessionSendStopOnNextCommand,
 		     .metricsNoIdealStartTime,
 		     .handleErrorNoNotificationsHandler,
 		     .handleErrorCancellation,

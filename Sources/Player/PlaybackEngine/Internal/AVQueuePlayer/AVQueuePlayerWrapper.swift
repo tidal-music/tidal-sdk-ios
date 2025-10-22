@@ -75,7 +75,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		mediaType: String?,
 		isOfflined: Bool
 	) -> Bool {
-		if productType == .VIDEO || productType == .BROADCAST {
+	if productType == .VIDEO {
 			return true
 		}
 
@@ -252,29 +252,34 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	}
 }
 
-// MARK: LiveMediaPlayer
+// MARK: UCMediaPlayer
 
-extension AVQueuePlayerWrapper: LiveMediaPlayer {
-	func loadLive(
+extension AVQueuePlayerWrapper: UCMediaPlayer {
+	func loadUC(
 		_ url: URL,
-		with licenseLoader: LicenseLoader?
+		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
+		headers: [String: String]
 	) async -> Asset {
 		await withCheckedContinuation { continuation in
 			queue.dispatch {
-				let urlAsset = AVURLAsset(url: url)
+				var options: [String: Any] = [
+					"AVURLAssetHTTPHeaderFieldsKey": headers,
+				]
 
-				// In Live, there's no loudness normalization.
-				let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-					loudnessNormalizationMode: .NONE,
-					loudnessNormalizer: nil
-				)
+				if !url.isFileURL {
+					if #available(iOS 17.0, macOS 14.0, *) {
+						options[AVURLAssetOverrideMIMETypeKey] = "application/vnd.apple.mpegurl"
+					}
+				}
+
+				let urlAsset = AVURLAsset(url: url, options: options)
 
 				let asset = self.load(
 					nil,
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-					and: licenseLoader as? AVContentKeySessionDelegate,
-					LiveAVPlayerAsset.self
+					and: nil,
+					AVPlayerAsset.self
 				)
 
 				continuation.resume(returning: asset)
@@ -372,8 +377,7 @@ private extension AVQueuePlayerWrapper {
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
-			onItemPlayedToEnd: playedToEnd,
-			onDjSessionTransition: receivedDjSessionTransition
+			onItemPlayedToEnd: playedToEnd
 		)
 	}
 
@@ -592,16 +596,6 @@ private extension AVQueuePlayerWrapper {
 			}
 
 			asset.setAssetPosition(playerItem)
-		}
-	}
-
-	func receivedDjSessionTransition(playerItem: AVPlayerItem, transition: DJSessionTransition) {
-		queue.dispatch {
-			guard let asset = self.playerItemAssets[playerItem] else {
-				return
-			}
-
-			self.delegates.djSessionTransition(asset: asset, transition: transition)
 		}
 	}
 
