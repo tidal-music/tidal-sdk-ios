@@ -32,7 +32,6 @@ final class PlayerEngineTests: XCTestCase {
 	private var credentialsProvider: CredentialsProviderMock!
 	private var featureFlagProvider: FeatureFlagProvider!
 	private var storage: OfflineStorage!
-	private var djProducer: DJProducer!
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher!
 	private var networkMonitor: NetworkMonitorMock!
 	private var playbackInfoFetcher: PlaybackInfoFetcher!
@@ -78,11 +77,6 @@ final class PlayerEngineTests: XCTestCase {
 		credentialsProvider = CredentialsProviderMock()
 		featureFlagProvider = FeatureFlagProvider.mock
 
-		djProducer = DJProducer(
-			httpClient: httpClient,
-			credentialsProvider: credentialsProvider,
-			featureFlagProvider: featureFlagProvider
-		)
 		fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: HttpClient(using: urlSession),
 			credentialsProvider: credentialsProvider,
@@ -108,7 +102,6 @@ final class PlayerEngineTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			configuration: configuration,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,

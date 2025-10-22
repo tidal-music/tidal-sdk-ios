@@ -49,23 +49,18 @@ final class AudioSessionRouteChangeMonitorTests: XCTestCase {
         listenerQueue = DispatchQueue(label: "route-change-tests")
         notificationsHandler = .mock(queue: listenerQueue)
 
-        playerEngine = PlayerEngine.mock(
-            queue: OperationQueueMock(),
-            httpClient: httpClient,
-            credentialsProvider: credentialsProvider,
-            fairplayLicenseFetcher: FairPlayLicenseFetcher.mock(),
-            djProducer: DJProducer(
-                httpClient: httpClient,
-                credentialsProvider: credentialsProvider,
-                featureFlagProvider: featureFlagProvider
-            ),
-            configuration: configuration,
-            playerEventSender: playerEventSender,
-            networkMonitor: networkMonitor,
-            playerLoader: playerLoader,
-            featureFlagProvider: featureFlagProvider,
-            notificationsHandler: notificationsHandler
-        )
+		playerEngine = PlayerEngine.mock(
+			queue: OperationQueueMock(),
+			httpClient: httpClient,
+			credentialsProvider: credentialsProvider,
+			fairplayLicenseFetcher: FairPlayLicenseFetcher.mock(),
+			configuration: configuration,
+			playerEventSender: playerEventSender,
+			networkMonitor: networkMonitor,
+			playerLoader: playerLoader,
+			featureFlagProvider: featureFlagProvider,
+			notificationsHandler: notificationsHandler
+		)
     }
 
     func test_autoResumesAfterShortBluetoothDropout() {

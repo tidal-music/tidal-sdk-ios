@@ -4,7 +4,7 @@ import Foundation
 
 // MARK: - InternalPlayerLoader
 
-typealias MainPlayerType = GenericMediaPlayer & LiveMediaPlayer & UCMediaPlayer & VideoPlayer
+typealias MainPlayerType = GenericMediaPlayer & UCMediaPlayer & VideoPlayer
 
 // MARK: - InternalPlayerLoader
 
@@ -144,8 +144,6 @@ final class InternalPlayerLoader: PlayerLoader {
 			return await loadTrack(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: player)
 		case .VIDEO:
 			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: mainPlayer)
-		case .BROADCAST:
-			return await loadBroadcast(using: playbackInfo, and: licenseLoader, player: mainPlayer)
 		case .UC:
 			return try await loadUC(
 				using: playbackInfo,
@@ -200,13 +198,6 @@ private extension InternalPlayerLoader {
 		)
 	}
 
-	func loadBroadcast(
-		using playbackInfo: PlaybackInfo,
-		and licenseLoader: LicenseLoader?,
-		player: LiveMediaPlayer
-	) async -> Asset {
-		await player.loadLive(playbackInfo.url, with: licenseLoader)
-	}
 
 	func loadVideo(
 		using playbackInfo: PlaybackInfo,

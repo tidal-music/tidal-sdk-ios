@@ -38,11 +38,6 @@ final class PlayerTests: XCTestCase {
 		let fairplayLicenseFetcher = FairPlayLicenseFetcher.mock()
 		let networkMonitor = NetworkMonitorMock()
 
-		let djProducer = DJProducer(
-			httpClient: httpClient,
-			credentialsProvider: credentialsProvider,
-			featureFlagProvider: .mock
-		)
 		let streamingPrivilegesHandler = StreamingPrivilegesHandler(
 			configuration: Configuration.mock(),
 			httpClient: httpClient,
@@ -62,7 +57,6 @@ final class PlayerTests: XCTestCase {
 			urlSession: urlSession,
 			configuration: configuration,
 			offlineStorage: storage,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
 			streamingPrivilegesHandler: streamingPrivilegesHandler,
