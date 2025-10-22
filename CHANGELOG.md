@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Restore `ProductType.UC` for local file playback while keeping remote UC handling removed (Player)
 
 ## [0.7.7] - 2025-10-14
 
