@@ -17,12 +17,12 @@ public struct PlayQueueRemoveFutureOperationPayloadData: Codable, Hashable {
         case videos = "videos"
     }
     public var id: String
-    public var meta: ItemMeta
+    public var meta: PlayQueueUpdateRemoveOperationPayloadDataMeta
     public var type: ModelType
 
     public init(
         id: String,
-        meta: ItemMeta,
+        meta: PlayQueueUpdateRemoveOperationPayloadDataMeta,
         type: ModelType
     ) {
         self.id = id

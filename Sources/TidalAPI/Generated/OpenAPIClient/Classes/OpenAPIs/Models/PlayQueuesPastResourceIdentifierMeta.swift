@@ -13,15 +13,19 @@ import AnyCodable
 public struct PlayQueuesPastResourceIdentifierMeta: Codable, Hashable {
 
     public static let itemIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public var batchId: UUID
     public var itemId: String
 
     public init(
+        batchId: UUID,
         itemId: String
     ) {
+        self.batchId = batchId
         self.itemId = itemId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case batchId
         case itemId
     }
 
@@ -29,6 +33,7 @@ public struct PlayQueuesPastResourceIdentifierMeta: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(batchId, forKey: .batchId)
         try container.encode(itemId, forKey: .itemId)
     }
 }

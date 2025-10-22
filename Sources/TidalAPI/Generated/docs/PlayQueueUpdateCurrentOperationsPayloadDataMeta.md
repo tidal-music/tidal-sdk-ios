@@ -1,4 +1,4 @@
-# ItemMeta
+# PlayQueueUpdateCurrentOperationsPayloadDataMeta
 
 ## Properties
 Name | Type | Description | Notes

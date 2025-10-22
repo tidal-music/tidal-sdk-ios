@@ -17,15 +17,19 @@ public struct PlayQueueAddFutureOperationPayloadMeta: Codable, Hashable {
         case addToBack = "ADD_TO_BACK"
         case replaceAll = "REPLACE_ALL"
     }
+    public var batchId: UUID?
     public var mode: Mode
 
     public init(
+        batchId: UUID? = nil,
         mode: Mode
     ) {
+        self.batchId = batchId
         self.mode = mode
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case batchId
         case mode
     }
 
@@ -33,6 +37,7 @@ public struct PlayQueueAddFutureOperationPayloadMeta: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(batchId, forKey: .batchId)
         try container.encode(mode, forKey: .mode)
     }
 }

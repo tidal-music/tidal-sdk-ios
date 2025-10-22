@@ -294,7 +294,7 @@ Updates current relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueUpdateCurrentOperationsPayload = PlayQueueUpdateCurrentOperations_Payload(data: PlayQueueUpdateCurrentOperations_Payload_Data(id: "id_example", meta: ItemMeta(itemId: "itemId_example"), type: "type_example")) // PlayQueueUpdateCurrentOperationsPayload |  (optional)
+let playQueueUpdateCurrentOperationsPayload = PlayQueueUpdateCurrentOperations_Payload(data: PlayQueueUpdateCurrentOperations_Payload_Data(id: "id_example", meta: PlayQueueUpdateCurrentOperations_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")) // PlayQueueUpdateCurrentOperationsPayload |  (optional)
 
 // Update current relationship (\"to-one\").
 PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, playQueueUpdateCurrentOperationsPayload: playQueueUpdateCurrentOperationsPayload) { (response, error) in
@@ -346,7 +346,7 @@ Deletes item(s) from future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueRemoveFutureOperationPayload = PlayQueueRemoveFutureOperation_Payload(data: [PlayQueueRemoveFutureOperation_Payload_Data(id: "id_example", meta: ItemMeta(itemId: "itemId_example"), type: "type_example")]) // PlayQueueRemoveFutureOperationPayload |  (optional)
+let playQueueRemoveFutureOperationPayload = PlayQueueRemoveFutureOperation_Payload(data: [PlayQueueRemoveFutureOperation_Payload_Data(id: "id_example", meta: PlayQueueUpdateRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlayQueueRemoveFutureOperationPayload |  (optional)
 
 // Delete from future relationship (\"to-many\").
 PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, playQueueRemoveFutureOperationPayload: playQueueRemoveFutureOperationPayload) { (response, error) in
@@ -452,7 +452,7 @@ Updates future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueUpdateFutureOperationPayload = PlayQueueUpdateFutureOperation_Payload(data: [PlayQueueUpdateFutureOperation_Payload_Data(id: "id_example", meta: ItemMeta(itemId: "itemId_example"), type: "type_example")], meta: PlayQueueUpdateFutureOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlayQueueUpdateFutureOperationPayload |  (optional)
+let playQueueUpdateFutureOperationPayload = PlayQueueUpdateFutureOperation_Payload(data: [PlayQueueUpdateFutureOperation_Payload_Data(id: "id_example", meta: PlayQueueUpdateFutureOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlayQueueUpdateFutureOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlayQueueUpdateFutureOperationPayload |  (optional)
 
 // Update future relationship (\"to-many\").
 PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, playQueueUpdateFutureOperationPayload: playQueueUpdateFutureOperationPayload) { (response, error) in
@@ -504,7 +504,7 @@ Adds item(s) to future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueAddFutureOperationPayload = PlayQueueAddFutureOperation_Payload(data: [PlayQueueAddFutureOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlayQueueAddFutureOperation_Payload_Meta(mode: "mode_example")) // PlayQueueAddFutureOperationPayload |  (optional)
+let playQueueAddFutureOperationPayload = PlayQueueAddFutureOperation_Payload(data: [PlayQueueAddFutureOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlayQueueAddFutureOperation_Payload_Meta(batchId: 123, mode: "mode_example")) // PlayQueueAddFutureOperationPayload |  (optional)
 
 // Add to future relationship (\"to-many\").
 PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, playQueueAddFutureOperationPayload: playQueueAddFutureOperationPayload) { (response, error) in

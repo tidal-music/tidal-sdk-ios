@@ -14,11 +14,11 @@ public struct PlayQueueUpdateFutureOperationPayload: Codable, Hashable {
 
     public static let dataRule = ArrayRule(minItems: 1, maxItems: 20, uniqueItems: false)
     public var data: [PlayQueueUpdateFutureOperationPayloadData]
-    public var meta: PlayQueueUpdateFutureOperationPayloadMeta?
+    public var meta: PlayQueueUpdateFutureOperationPayloadMeta
 
     public init(
         data: [PlayQueueUpdateFutureOperationPayloadData],
-        meta: PlayQueueUpdateFutureOperationPayloadMeta? = nil
+        meta: PlayQueueUpdateFutureOperationPayloadMeta
     ) {
         self.data = data
         self.meta = meta
@@ -34,6 +34,6 @@ public struct PlayQueueUpdateFutureOperationPayload: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(data, forKey: .data)
-        try container.encodeIfPresent(meta, forKey: .meta)
+        try container.encode(meta, forKey: .meta)
     }
 }

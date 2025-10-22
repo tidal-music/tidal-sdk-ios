@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct PlayQueueAddFutureOperationPayload: Codable, Hashable {
 
-    public static let dataRule = ArrayRule(minItems: 1, maxItems: 20, uniqueItems: false)
+    public static let dataRule = ArrayRule(minItems: 0, maxItems: 20, uniqueItems: false)
     public var data: [PlayQueueAddFutureOperationPayloadData]
     public var meta: PlayQueueAddFutureOperationPayloadMeta?
 
