@@ -3,7 +3,7 @@ import Foundation
 
 // MARK: - InternalPlayerLoader
 
-typealias MainPlayerType = GenericMediaPlayer & UCMediaPlayer & VideoPlayer
+typealias MainPlayerType = GenericMediaPlayer & VideoPlayer
 
 // MARK: - InternalPlayerLoader
 
@@ -136,15 +136,21 @@ final class InternalPlayerLoader: PlayerLoader {
 				isOfflined: false,
 				type: playbackInfo.productType
 			)
-			return await loadTrack(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: player)
-		case .VIDEO:
-			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: mainPlayer)
-		case .UC:
-			return try await loadUC(
+			return await loadTrack(
 				using: playbackInfo,
 				with: loudnessNormalizer,
+				and: licenseLoader,
+				player: player
+			)
+		case .VIDEO:
+			return await loadVideo(
+				using: playbackInfo,
+				with: loudnessNormalizer,
+				and: licenseLoader,
 				player: mainPlayer
 			)
+		case .UC:
+			return await loadLocalFile( using: playbackInfo, with: loudnessNormalizer, player: mainPlayer)
 		}
 	}
 
