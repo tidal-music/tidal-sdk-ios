@@ -75,7 +75,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		mediaType: String?,
 		isOfflined: Bool
 	) -> Bool {
-		if productType == .VIDEO || productType == .BROADCAST {
+		if productType == .VIDEO {
 			return true
 		}
 
@@ -252,36 +252,6 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	}
 }
 
-// MARK: LiveMediaPlayer
-
-extension AVQueuePlayerWrapper: LiveMediaPlayer {
-	func loadLive(
-		_ url: URL,
-		with licenseLoader: LicenseLoader?
-	) async -> Asset {
-		await withCheckedContinuation { continuation in
-			queue.dispatch {
-				let urlAsset = AVURLAsset(url: url)
-
-				// In Live, there's no loudness normalization.
-				let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-					loudnessNormalizationMode: .NONE,
-					loudnessNormalizer: nil
-				)
-
-				let asset = self.load(
-					nil,
-					urlAsset,
-					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-					and: licenseLoader as? AVContentKeySessionDelegate,
-					LiveAVPlayerAsset.self
-				)
-
-				continuation.resume(returning: asset)
-			}
-		}
-	}
-}
 
 // MARK: UCMediaPlayer
 
