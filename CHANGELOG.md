@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fixed critical AVContentKeySession crash when improved DRM handling is enabled - session was being deallocated during async operations (Player)
+- Enhanced DRM license fetch reliability with comprehensive retry logic for auth token expiration (401), network errors, timeouts, and server errors (Player)
+
 ### Removed
 - Removed broadcast/DJ functionality from the Player module (Player)
 
