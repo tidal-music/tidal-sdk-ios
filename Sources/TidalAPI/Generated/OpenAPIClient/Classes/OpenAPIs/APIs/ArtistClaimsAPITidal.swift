@@ -31,9 +31,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: 
      */
-	public static func artistClaimsIdPatch(id: String, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws {
+	public static func artistClaimsIdPatch(id: String, countryCode: String, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdPatchWithRequestBuilder(id: id, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload)
+			ArtistClaimsAPI.artistClaimsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload)
 		}
 	}
 

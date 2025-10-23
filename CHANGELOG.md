@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - OfflineEngineListener.offliningFailed() now includes an OfflineError parameter providing detailed error information (Player)
+- Generated API code using spec version 0.1.89 (TidalAPI)
 
 ### Fixed
 - Fixed critical AVContentKeySession crash when improved DRM handling is enabled - session was being deallocated during async operations (Player)
