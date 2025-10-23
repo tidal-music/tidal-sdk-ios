@@ -61,9 +61,9 @@ final class NotificationsHandler {
 		}
 	}
 
-	func offliningFailed(for mediaProduct: MediaProduct) {
+	func offliningFailed(for mediaProduct: MediaProduct, error: OfflineError) {
 		queue.async {
-			self.offlineEngineListener?.offliningFailed(for: mediaProduct)
+			self.offlineEngineListener?.offliningFailed(for: mediaProduct, error: error)
 		}
 	}
 
