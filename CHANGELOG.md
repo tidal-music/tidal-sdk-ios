@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Enhanced offline download error handling with detailed OfflineError types for better client-side error recovery and retry strategies (Player)
+
+### Changed
+- OfflineEngineListener.offliningFailed() now includes an OfflineError parameter providing detailed error information (Player)
+
 ### Removed
 - Removed broadcast/DJ functionality from the Player module (Player)
 
