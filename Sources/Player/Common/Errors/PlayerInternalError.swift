@@ -49,20 +49,25 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 		if let internalError = error as? PlayerInternalError {
 			return internalError
 		}
-		
+
+		// Handle HttpError - these are from our HTTP client
+		if let httpError = error as? HttpError {
+			return mapHttpError(httpError)
+		}
+
 		// Handle AVFoundation errors - these are critical for DRM and playback
 		if let avError = error as? AVError {
 			return mapAVFoundationError(avError)
 		}
-		
+
 		// Handle URL errors (network/connection issues)
 		if let urlError = error as? URLError {
 			return mapURLError(urlError)
 		}
-		
+
 		// Handle Foundation errors that might be wrapped
 		let nsError = error as NSError
-		
+
 		// Check error domain to categorize by source
 		switch nsError.domain {
 		case AVFoundationErrorDomain:
@@ -85,9 +90,46 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 	func toPlayerError() -> PlayerError {
 		PlayerError(errorId: errorId, errorCode: code)
 	}
-	
+
 	// MARK: - Private Error Mapping Functions
-	
+
+	private static func mapHttpError(_ httpError: HttpError) -> PlayerInternalError {
+		switch httpError {
+		case .httpClientError(let statusCode, let message):
+			// Map specific 4xx errors
+			let errorId: ErrorId = switch statusCode {
+			case 401, 403, 404:
+				.PENotAllowed // Authorization and resource not found errors
+			case 429:
+				.PERetryable // Rate limiting
+			default:
+				.EUnexpected
+			}
+
+			let description: String
+			if let data = message, let messageString = String(data: data, encoding: .utf8) {
+				description = "httpClientError(statusCode: \(statusCode), message: \(messageString))"
+			} else {
+				description = "httpClientError(statusCode: \(statusCode), message: \(message?.count ?? 0) bytes)"
+			}
+
+			return PlayerInternalError(
+				errorId: errorId,
+				errorType: .httpClientError,
+				code: statusCode,
+				description: description
+			)
+
+		case .httpServerError(let statusCode):
+			return PlayerInternalError(
+				errorId: .PERetryable, // Server errors are typically retryable
+				errorType: .httpClientError,
+				code: statusCode,
+				description: "httpServerError(statusCode: \(statusCode))"
+			)
+		}
+	}
+
 	private static func mapAVFoundationError(_ avError: AVError) -> PlayerInternalError {
 		switch avError.code {
 		// DRM-related errors
