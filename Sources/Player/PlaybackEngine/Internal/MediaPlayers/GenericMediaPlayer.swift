@@ -6,7 +6,7 @@ public protocol GenericMediaPlayer: AnyObject {
 	var shouldSwitchStateOnSkipToNext: Bool { get }
 	// swiftlint:enable identifier_name
 
-	init(cachePath: URL, featureFlagProvider: FeatureFlagProvider)
+	init(cacheManager: PlayerCacheManaging, featureFlagProvider: FeatureFlagProvider)
 
 	func canPlay(
 		productType: ProductType,
