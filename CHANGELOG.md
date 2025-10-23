@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Enhanced offline download error handling with detailed OfflineError types for better client-side error recovery and retry strategies (Player)
+
+### Changed
+- OfflineEngineListener.offliningFailed() now includes an OfflineError parameter providing detailed error information (Player)
+
 ### Fixed
 - Fixed critical AVContentKeySession crash when improved DRM handling is enabled - session was being deallocated during async operations (Player)
 - Enhanced DRM license fetch reliability with comprehensive retry logic for auth token expiration (401), network errors, timeouts, and server errors (Player)
