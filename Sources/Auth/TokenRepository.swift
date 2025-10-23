@@ -12,6 +12,7 @@ struct TokenRepository {
 	private let defaultBackoffPolicy: RetryPolicy
 	private let upgradeBackoffPolicy: RetryPolicy
 	private let logger: TidalLogger?
+	private let refreshCoordinator: RefreshCoalescing
 
 	init(
 		authConfig: AuthConfig,
@@ -19,7 +20,8 @@ struct TokenRepository {
 		tokenService: TokenService,
 		defaultBackoffPolicy: RetryPolicy,
 		upgradeBackoffPolicy: RetryPolicy,
-		logger: TidalLogger?
+		logger: TidalLogger?,
+		refreshCoordinator: RefreshCoalescing = RefreshCoordinator()
 	) {
 		self.authConfig = authConfig
 		self.tokensStore = tokensStore
@@ -27,6 +29,7 @@ struct TokenRepository {
 		self.defaultBackoffPolicy = defaultBackoffPolicy
 		self.upgradeBackoffPolicy = upgradeBackoffPolicy
 		self.logger = logger
+		self.refreshCoordinator = refreshCoordinator
 	}
 
 	private var needsCredentialsUpgrade: Bool {
@@ -38,7 +41,17 @@ struct TokenRepository {
 		return (storedCredentials.level == .user && authConfig.clientId != storedCredentials.clientId) || false
 	}
 
-	mutating func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
+	func getCredentials(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
+		let requiresRefresh = apiErrorSubStatus?.shouldRefreshToken == true
+		return try await refreshCoordinator.runOrJoinCredentials(
+			key: authConfig.credentialsKey,
+			requiresRefresh: requiresRefresh
+		) {
+			try await _getCredentialsImpl(apiErrorSubStatus: apiErrorSubStatus)
+		}
+	}
+
+	private func _getCredentialsImpl(apiErrorSubStatus: String?) async throws -> AuthResult<Credentials> {
 		var upgradedRefreshToken: String?
 		let tokens: Tokens?
 		do {
@@ -50,6 +63,7 @@ struct TokenRepository {
 
 		let result: AuthResult<Credentials>
 		if let tokens, needsCredentialsUpgrade {
+			await refreshCoordinator.upgradeRefreshIntent(for: authConfig.credentialsKey)
 			let upgradeCredentials = try await upgradeToken(storedTokens: tokens)
 
 			result = upgradeCredentials.map { $0.credentials }
@@ -104,6 +118,7 @@ struct TokenRepository {
 		}
 
 		if let refreshCredentialsBlock {
+			await refreshCoordinator.upgradeRefreshIntent(for: authConfig.credentialsKey)
 			let authResult = await refreshCredentialsBlock()
 				.map { Credentials(authConfig: authConfig, response: $0) }
 
@@ -119,7 +134,7 @@ struct TokenRepository {
 				// If this is a transient issue (server error 5xx or a network/connectivity error),
 				// return existing credentials instead of failing. This allows the app to continue
 				// and retry the refresh on the next API call.
-				if (error is RetryableError || error is NetworkError), let credentials = storedTokens?.credentials {
+				if error is RetryableError || error is NetworkError, let credentials = storedTokens?.credentials {
 					return .success(credentials)
 				}
 
@@ -191,19 +206,19 @@ struct TokenRepository {
 	}
 
 	private func shouldLogoutWithLowerLevelTokenAfterUpdate(error: TidalError) -> Bool {
-		if let errorCode = (error as? UnexpectedError)?.code,
-		   let code = Int(errorCode),
-		   code <= HTTP_UNAUTHORIZED
-		{
-			// if code 400, 401, the user is effectively logged out
-			// and we return a lower level token
-			true
-		} else {
-			false
+		guard let unexpected = error as? UnexpectedError else {
+			return false
 		}
+
+		// Treat 400 and 401 as logout conditions
+		if let code = Int(unexpected.code), code == 400 || code == HTTP_UNAUTHORIZED {
+			return true
+		}
+
+		return false
 	}
 
-	mutating func saveTokens(
+	func saveTokens(
 		credentials: Credentials,
 		refreshToken: String? = nil,
 		storedTokens: Tokens? = nil

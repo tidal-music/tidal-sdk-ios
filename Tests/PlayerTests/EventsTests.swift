@@ -43,7 +43,6 @@ final class EventsTests: XCTestCase {
 
 	private var notificationsHandler: NotificationsHandler!
 	private var networkMonitor: NetworkMonitorMock!
-	private var djProducer: DJProducer!
 	private var playbackInfoFetcher: PlaybackInfoFetcher!
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher!
 	private var playerLoader: PlayerLoaderMock!
@@ -112,12 +111,6 @@ final class EventsTests: XCTestCase {
 		listenerQueue = DispatchQueue(label: "com.tidal.queue.for.testing")
 		notificationsHandler = .mock(listener: listener, queue: listenerQueue)
 
-		djProducer = DJProducer(
-			httpClient: httpClient,
-			credentialsProvider: credentialsProvider,
-			featureFlagProvider: featureFlagProvider
-		)
-
 		playbackInfoFetcher = PlaybackInfoFetcher(
 			with: configuration,
 			httpClient,
@@ -144,7 +137,6 @@ final class EventsTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
 			playerLoader: playerLoader,
@@ -2601,7 +2593,7 @@ private extension EventsTests {
 		sessionProductId: String = "productId",
 		sessionTags: [StreamingSessionStart.SessionTag]? = nil
 	) -> StreamingSessionStart {
-		StreamingSessionStart.mock(
+		return StreamingSessionStart.mock(
 			streamingSessionId: streamingSessionId,
 			startReason: startReason,
 			timestamp: timestamp,

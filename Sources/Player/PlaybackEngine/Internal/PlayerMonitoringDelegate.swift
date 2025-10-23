@@ -12,7 +12,6 @@ public protocol PlayerMonitoringDelegate: AnyObject {
 	func downloaded(asset: Asset?)
 	func completed(asset: Asset?)
 	func failed(asset: Asset?, with error: Error)
-	func djSessionTransition(asset: Asset?, transition: DJSessionTransition)
 	func playbackMetadataLoaded(asset: Asset?)
 }
 
@@ -77,10 +76,6 @@ public final class PlayerMonitoringDelegates {
 
 	public func failed(asset: Asset?, with error: Error) {
 		delegates.forEach { $0.failed(asset: asset, with: error) }
-	}
-
-	public func djSessionTransition(asset: Asset?, transition: DJSessionTransition) {
-		delegates.forEach { $0.djSessionTransition(asset: asset, transition: transition) }
 	}
 
 	public func playbackMetadataLoaded(asset: Asset?) {

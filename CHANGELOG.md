@@ -7,25 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.7.10] - 2025-10-22
+### Added
+- Enhanced offline download error handling with detailed OfflineError types for better client-side error recovery and retry strategies (Player)
 
 ### Changed
+- OfflineEngineListener.offliningFailed() now includes an OfflineError parameter providing detailed error information (Player)
 - Generated API code using spec version 0.1.89 (TidalAPI)
 
-## [0.7.9] - 2025-10-11
+### Fixed
+- Fixed critical AVContentKeySession crash when improved DRM handling is enabled - session was being deallocated during async operations (Player)
+- Enhanced DRM license fetch reliability with comprehensive retry logic for auth token expiration (401), network errors, timeouts, and server errors (Player)
+
+### Removed
+- Removed broadcast/DJ functionality from the Player module (Player)
+
+## [0.7.7] - 2025-10-14
 
 ### Changed
-- Generated API code using spec version 0.1.87 (TidalAPI)
+- Coalesce concurrent token refresh operations to prevent duplicate network calls and race-induced downgrades (Auth)
 
-## [0.7.8] - 2025-10-10
-
-### Changed
-- Generated API code using spec version 0.1.86 (TidalAPI)
-
-## [0.7.7] - 2025-10-07
-
-### Changed
-- Generated API code using spec version 0.1.85 (TidalAPI)
+### Fixed
+- Fix error handling by introducing a new error type system to better categorize and propagate errors, particularly cancellation errors (TidalAPI)
 
 ## [0.7.6] - 2025-10-06
 

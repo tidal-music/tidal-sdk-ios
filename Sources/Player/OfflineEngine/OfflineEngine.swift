@@ -88,12 +88,14 @@ extension OfflineEngine: DownloadObserver {
 			notificationsHandler?.offliningCompleted(for: mediaProduct)
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.saveOfflinedItemFailed(error: error))
-			notificationsHandler?.offliningFailed(for: mediaProduct)
+			let offlineError = OfflineError.from(error)
+			notificationsHandler?.offliningFailed(for: mediaProduct, error: offlineError)
 		}
 	}
 
 	func downloadFailed(for mediaProduct: MediaProduct, with error: Error) {
-		notificationsHandler?.offliningFailed(for: mediaProduct)
+		let offlineError = OfflineError.from(error)
+		notificationsHandler?.offliningFailed(for: mediaProduct, error: offlineError)
 	}
 }
 

@@ -7,11 +7,6 @@ final class PlayerItemMonitorMock: PlayerItemMonitor {
 		let error: Error
 	}
 
-	struct DJSessionTransitionItem {
-		let playerItemId: String
-		let transition: DJSessionTransition
-	}
-
 	private(set) var loadedItems = [String]()
 	private(set) var playingItems = [String]()
 	private(set) var pausedItems = [String]()
@@ -19,7 +14,6 @@ final class PlayerItemMonitorMock: PlayerItemMonitor {
 	private(set) var downloadedItems = [String]()
 	private(set) var completedItems = [String]()
 	private(set) var failedItems = [FailedItem]()
-	private(set) var djSessionTransitionItems = [DJSessionTransitionItem]()
 	private(set) var playbackMetadataLoadedItems = [String]()
 
 	func loaded(playerItem: PlayerItem) {
@@ -48,10 +42,6 @@ final class PlayerItemMonitorMock: PlayerItemMonitor {
 
 	func failed(playerItem: PlayerItem, with error: Error) {
 		failedItems.append(FailedItem(playerItemId: playerItem.id, error: error))
-	}
-
-	func djSessionTransition(playerItem: PlayerItem, transition: DJSessionTransition) {
-		djSessionTransitionItems.append(DJSessionTransitionItem(playerItemId: playerItem.id, transition: transition))
 	}
 
 	func playbackMetadataLoaded(playerItem: PlayerItem) {

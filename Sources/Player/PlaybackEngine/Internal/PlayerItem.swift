@@ -13,7 +13,6 @@ protocol PlayerItemMonitor: AnyObject {
 	func downloaded(playerItem: PlayerItem)
 	func completed(playerItem: PlayerItem)
 	func failed(playerItem: PlayerItem, with error: Error)
-	func djSessionTransition(playerItem: PlayerItem, transition: DJSessionTransition)
 	func playbackMetadataLoaded(playerItem: PlayerItem)
 }
 
@@ -64,9 +63,6 @@ final class PlayerItem {
 		}
 		if !featureFlagProvider.isContentCachingEnabled() {
 			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_DISABLED)
-		}
-		if featureFlagProvider.shouldUseImprovedCaching() {
-			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_V2)
 		}
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
 			sessionTags.append(StreamingSessionStart.SessionTag.IMPROVED_DRM)
@@ -304,14 +300,6 @@ extension PlayerItem: PlayerMonitoringDelegate {
 
 		metrics?.recordEnd(endReason: .ERROR, assetPosition: asset.getAssetPosition(), error: error)
 		playerItemMonitor?.failed(playerItem: self, with: error)
-	}
-
-	func djSessionTransition(asset: Asset?, transition: DJSessionTransition) {
-		guard asset === self.asset else {
-			return
-		}
-
-		playerItemMonitor?.djSessionTransition(playerItem: self, transition: transition)
 	}
 
 	func playbackMetadataLoaded(asset: Asset?) {

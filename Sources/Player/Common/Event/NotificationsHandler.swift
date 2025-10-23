@@ -43,24 +43,6 @@ final class NotificationsHandler {
 		}
 	}
 
-	func djSessionStarted(with metadata: DJSessionMetadata) {
-		queue.async {
-			self.listener.djSessionStarted(metadata)
-		}
-	}
-
-	func djSessionEnded(with reason: DJSessionEndReason) {
-		queue.async {
-			self.listener.djSessionEnded(with: reason)
-		}
-	}
-
-	func djSessionTransitioned(to transition: DJSessionTransition) {
-		queue.async {
-			self.listener.djSessionTransitioned(to: transition)
-		}
-	}
-
 	func offliningStarted(for mediaProduct: MediaProduct) {
 		queue.async {
 			self.offlineEngineListener?.offliningStarted(for: mediaProduct)
@@ -79,9 +61,9 @@ final class NotificationsHandler {
 		}
 	}
 
-	func offliningFailed(for mediaProduct: MediaProduct) {
+	func offliningFailed(for mediaProduct: MediaProduct, error: OfflineError) {
 		queue.async {
-			self.offlineEngineListener?.offliningFailed(for: mediaProduct)
+			self.offlineEngineListener?.offliningFailed(for: mediaProduct, error: error)
 		}
 	}
 

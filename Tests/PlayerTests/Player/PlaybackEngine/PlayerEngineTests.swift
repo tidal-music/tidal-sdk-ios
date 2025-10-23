@@ -32,7 +32,6 @@ final class PlayerEngineTests: XCTestCase {
 	private var credentialsProvider: CredentialsProviderMock!
 	private var featureFlagProvider: FeatureFlagProvider!
 	private var storage: OfflineStorage!
-	private var djProducer: DJProducer!
 	private var fairplayLicenseFetcher: FairPlayLicenseFetcher!
 	private var networkMonitor: NetworkMonitorMock!
 	private var playbackInfoFetcher: PlaybackInfoFetcher!
@@ -40,7 +39,6 @@ final class PlayerEngineTests: XCTestCase {
 
 	private var playerEngine: PlayerEngine!
 	private var timestamp: UInt64 = Constants.initialTime
-	private var shouldUseImprovedCaching: Bool = false
 
 	private var genericPlayer: PlayerMock!
 	private var playerLoader: PlayerLoaderMock!
@@ -78,15 +76,7 @@ final class PlayerEngineTests: XCTestCase {
 		notificationsHandler = .mock(listener: listener, queue: listenerQueue)
 		credentialsProvider = CredentialsProviderMock()
 		featureFlagProvider = FeatureFlagProvider.mock
-		featureFlagProvider.shouldUseImprovedCaching = {
-			self.shouldUseImprovedCaching
-		}
 
-		djProducer = DJProducer(
-			httpClient: httpClient,
-			credentialsProvider: credentialsProvider,
-			featureFlagProvider: featureFlagProvider
-		)
 		fairplayLicenseFetcher = FairPlayLicenseFetcher(
 			with: HttpClient(using: urlSession),
 			credentialsProvider: credentialsProvider,
@@ -112,7 +102,6 @@ final class PlayerEngineTests: XCTestCase {
 			httpClient: httpClient,
 			credentialsProvider: credentialsProvider,
 			fairplayLicenseFetcher: fairplayLicenseFetcher,
-			djProducer: djProducer,
 			configuration: configuration,
 			playerEventSender: playerEventSender,
 			networkMonitor: networkMonitor,
@@ -251,12 +240,10 @@ extension PlayerEngineTests {
 		assertPlayerLoader(trackPlaybackInfos: [trackPlaybackInfo1])
 	}
 
-	func test_setNext_repeated_is_ignored() {
-		shouldUseImprovedCaching = true
-
-		// GIVEN
-		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
-		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
+func test_setNext_repeated_is_ignored() {
+	// GIVEN
+	let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
+	JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
 
 		let mediaProduct1 = Constants.mediaProduct1
 		playerEngine.load(mediaProduct1, timestamp: 1, isPreload: false)
@@ -295,10 +282,8 @@ extension PlayerEngineTests {
 		assertPlayerLoader(trackPlaybackInfos: [trackPlaybackInfo1])
 	}
 
-	func test_setNext_same_product_but_stored() {
-		shouldUseImprovedCaching = true
-
-		// GIVEN
+func test_setNext_same_product_but_stored() {
+	// GIVEN
 		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
 		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
 

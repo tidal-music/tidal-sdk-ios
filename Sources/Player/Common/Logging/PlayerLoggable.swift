@@ -83,10 +83,6 @@ enum PlayerLoggable: TidalLoggable {
 	case saveOfflinedItemFailed(error: Error)
 	case deleteOfflinedItemFailed(error: Error)
 
-	// MARK: Asset Cache Legacy
-
-	case deleteAssetCacheFailed(error: Error)
-
 	// MARK: StoredLicenseLoader
 
 	case licenseLoaderContentKeyRequestFailed(error: Error)
@@ -124,27 +120,11 @@ enum PlayerLoggable: TidalLoggable {
 	case failedToCalculateSizeForHLSDownload(error: Error)
 	case failedToCalculateSizeForProgressiveDownload(error: Error)
 
-	// MARK: AVQueuePlayerWrapperLegacy
-
-	case legacyReadPlaybackMetadataFailed(error: Error)
-
 	// MARK: AVQueuePlayerWrapper
 
 	case readPlaybackMetadataFailed(error: Error)
 	case playWithoutQueuedItems
 	case itemChangedWithoutQueuedItems
-
-	// MARK: DJProducer
-
-	case djSessionStartFailed(error: Error)
-	case djSessionSendCommandFailed(error: Error)
-	case djSessionStartNoCurationURL
-	case djSessionPlayProductNotTrack
-	case djSessionPauseNoCurationURL
-	case djSessionStopNoCurationURL
-	case djSessionStopOnNextCommand
-	case djSessionResetNoCurationURL
-	case djSessionSendStopOnNextCommand
 
 	// MARK: InternalPlayerLoader
 
@@ -311,10 +291,6 @@ extension PlayerLoggable {
 		case .deleteOfflinedItemFailed:
 			"OfflineEngine-deleteOfflinedItemFailed"
 
-		// Asset Cache Legacy
-		case .deleteAssetCacheFailed:
-			"AssetCacheLegacy-deleteAssetCacheFailed"
-
 		// StoredLicenseLoader
 		case .licenseLoaderContentKeyRequestFailed:
 			"StoredLicenseLoader-contentKeyRequestFailed"
@@ -357,10 +333,6 @@ extension PlayerLoggable {
 		case .failedToCalculateSizeForProgressiveDownload:
 			"MediaDownloader-failedToCalculateSizeForProgressiveDownload"
 
-		// AVQueuePlayerWrapperLegacy
-		case .legacyReadPlaybackMetadataFailed:
-			"AVQueuePlayerWrapperLegacy-legacyReadPlaybackMetadataFailed"
-
 		// AVQueuePlayerWrapper
 		case .readPlaybackMetadataFailed:
 			"AVQueuePlayerWrapper-readPlaybackMetadataFailed"
@@ -368,26 +340,6 @@ extension PlayerLoggable {
 			"AVQueuePlayerWrapper-playWithoutQueuedItems"
 		case .itemChangedWithoutQueuedItems:
 			"AVQueuePlayerWrapper-itemChangedWithoutQueuedItems"
-
-		// DJProducer
-		case .djSessionStartFailed:
-			"DJProducer-djSessionStartFailed"
-		case .djSessionSendCommandFailed:
-			"DJProducer-djSessionSendCommandFailed"
-		case .djSessionStartNoCurationURL:
-			"DJProducer-djSessionStartNoCurationURL"
-		case .djSessionPlayProductNotTrack:
-			"DJProducer-djSessionPlayProductNotTrack"
-		case .djSessionPauseNoCurationURL:
-			"DJProducer-djSessionPauseNoCurationURL"
-		case .djSessionStopNoCurationURL:
-			"DJProducer-djSessionStopNoCurationURL"
-		case .djSessionStopOnNextCommand:
-			"DJProducer-djSessionStopOnNextCommand"
-		case .djSessionResetNoCurationURL:
-			"DJProducer-djSessionResetNoCurationURL"
-		case .djSessionSendStopOnNextCommand:
-			"DJProducer-djSessionSendStopOnNextCommand"
 
 		// InternalPlayerLoader
 		case .loadUCFailed:
@@ -495,7 +447,6 @@ extension PlayerLoggable {
 		     let .updateDBFileAttributes(error),
 		     let .saveOfflinedItemFailed(error),
 		     let .deleteOfflinedItemFailed(error),
-		     let .deleteAssetCacheFailed(error),
 		     let .getAuthBearerTokenCredentialFailed(error),
 		     let .licenseLoaderContentKeyRequestFailed(error),
 		     let .licenseLoaderProcessContentKeyResponseFailed(error),
@@ -509,10 +460,7 @@ extension PlayerLoggable {
 		     let .downloadFinishedMovingFileFailed(error),
 		     let .failedToCalculateSizeForHLSDownload(error),
 		     let .failedToCalculateSizeForProgressiveDownload(error),
-		     let .legacyReadPlaybackMetadataFailed(error),
 		     let .readPlaybackMetadataFailed(error),
-		     let .djSessionStartFailed(error),
-		     let .djSessionSendCommandFailed(error),
 		     let .loadUCFailed(error),
 		     let .loadPlayerItemFailed(error):
 			metadata[Logger.Metadata.errorKey] = "\(String(describing: error))"
@@ -561,13 +509,6 @@ extension PlayerLoggable {
 		     .writeEventNoClientId,
 		     .assetPlaybackMetadataInitWithoutRateAndDepthData,
 		     .assetPlaybackMetadataInitWithoutRequiredData,
-		     .djSessionStartNoCurationURL,
-		     .djSessionPlayProductNotTrack,
-		     .djSessionPauseNoCurationURL,
-		     .djSessionStopNoCurationURL,
-		     .djSessionStopOnNextCommand,
-		     .djSessionResetNoCurationURL,
-		     .djSessionSendStopOnNextCommand,
 		     .metricsNoIdealStartTime,
 		     .handleErrorNoNotificationsHandler,
 		     .handleErrorCancellation,
@@ -610,7 +551,6 @@ extension PlayerLoggable {
 		     .updateDBFileAttributes,
 		     .saveOfflinedItemFailed,
 		     .deleteOfflinedItemFailed,
-		     .deleteAssetCacheFailed,
 		     .getAuthBearerTokenToBearerTokenFailed,
 		     .licenseLoaderContentKeyRequestFailed,
 		     .licenseLoaderProcessContentKeyResponseFailed,
@@ -625,10 +565,7 @@ extension PlayerLoggable {
 		     .downloadFinishedMovingFileFailed,
 		     .failedToCalculateSizeForHLSDownload,
 		     .failedToCalculateSizeForProgressiveDownload,
-		     .legacyReadPlaybackMetadataFailed,
 		     .readPlaybackMetadataFailed,
-		     .djSessionStartFailed,
-		     .djSessionSendCommandFailed,
 		     .loadUCFailed,
 		     .loadPlayerItemFailed,
 		     .alreadyInitialized:
@@ -665,13 +602,6 @@ extension PlayerLoggable {
 		     .assetPlaybackMetadataInitWithoutRateAndDepthData,
 		     .assetPlaybackMetadataInitWithoutRequiredData,
 		     .assetPlaybackMetadataInitWithInvalidFormatFlags,
-		     .djSessionStartNoCurationURL,
-		     .djSessionPlayProductNotTrack,
-		     .djSessionPauseNoCurationURL,
-		     .djSessionStopNoCurationURL,
-		     .djSessionStopOnNextCommand,
-		     .djSessionResetNoCurationURL,
-		     .djSessionSendStopOnNextCommand,
 		     .metricsNoIdealStartTime,
 		     .handleErrorNoNotificationsHandler,
 		     .handleErrorCancellation,

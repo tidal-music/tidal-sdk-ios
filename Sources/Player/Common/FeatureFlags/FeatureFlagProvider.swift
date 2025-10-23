@@ -1,7 +1,6 @@
 public struct FeatureFlagProvider {
 	public var shouldUseEventProducer: () -> Bool
 	public var isContentCachingEnabled: () -> Bool
-	public var shouldUseImprovedCaching: () -> Bool
 	public var shouldPauseAndPlayAroundSeek: () -> Bool
 	public var shouldNotPerformActionAtItemEnd: () -> Bool
 	public var shouldUseImprovedDRMHandling: () -> Bool
@@ -10,7 +9,6 @@ public struct FeatureFlagProvider {
 	public init(
 		shouldUseEventProducer: @escaping () -> Bool,
 		isContentCachingEnabled: @escaping () -> Bool,
-		shouldUseImprovedCaching: @escaping () -> Bool,
 		shouldPauseAndPlayAroundSeek: @escaping () -> Bool,
 		shouldNotPerformActionAtItemEnd: @escaping () -> Bool,
 		shouldUseImprovedDRMHandling: @escaping () -> Bool,
@@ -18,7 +16,6 @@ public struct FeatureFlagProvider {
 	) {
 		self.shouldUseEventProducer = shouldUseEventProducer
 		self.isContentCachingEnabled = isContentCachingEnabled
-		self.shouldUseImprovedCaching = shouldUseImprovedCaching
 		self.shouldPauseAndPlayAroundSeek = shouldPauseAndPlayAroundSeek
 		self.shouldNotPerformActionAtItemEnd = shouldNotPerformActionAtItemEnd
 		self.shouldUseImprovedDRMHandling = shouldUseImprovedDRMHandling
