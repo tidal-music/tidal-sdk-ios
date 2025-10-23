@@ -10,6 +10,7 @@ struct PlaybackInfo: Equatable {
 	let audioCodec: AudioCodec?
 	let audioSampleRate: Int?
 	let audioBitDepth: Int?
+	let adaptiveAudioQualities: [AudioQuality]?
 	let videoQuality: VideoQuality?
 	let streamingSessionId: String?
 	let contentHash: String

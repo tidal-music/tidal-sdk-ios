@@ -985,6 +985,7 @@ extension PlayerEngineTests {
 			audioCodec: nil,
 			audioSampleRate: trackPlaybackInfo.sampleRate,
 			audioBitDepth: trackPlaybackInfo.bitDepth,
+			adaptiveAudioQualities: nil,
 			videoQuality: nil,
 			streamingSessionId: trackPlaybackInfo.streamingSessionId,
 			contentHash: trackPlaybackInfo.manifestHash,

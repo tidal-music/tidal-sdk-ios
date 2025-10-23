@@ -7,6 +7,7 @@ public extension FeatureFlagProvider {
 		shouldPauseAndPlayAroundSeek: { false },
 		shouldNotPerformActionAtItemEnd: { false },
 		shouldUseImprovedDRMHandling: { false },
-		shouldUseNewPlaybackEndpoints: { false }
+		shouldUseNewPlaybackEndpoints: { false },
+		shouldSupportABRPlayback: { false }
 	)
 }

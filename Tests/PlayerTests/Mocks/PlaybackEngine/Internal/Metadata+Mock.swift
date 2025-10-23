@@ -11,6 +11,7 @@ extension Metadata {
 		audioSampleRate: Int? = 44100,
 		audioBitDepth: Int? = 15,
 		videoQuality: VideoQuality? = nil,
+		adaptiveAudioQualities: [AudioQuality]? = nil,
 		playbackSource: PlaybackSource = .INTERNET
 	) -> Self {
 		Metadata(
@@ -23,6 +24,7 @@ extension Metadata {
 			audioSampleRate: audioSampleRate,
 			audioBitDepth: audioBitDepth,
 			videoQuality: videoQuality,
+			adaptiveAudioQualities: adaptiveAudioQualities,
 			playbackSource: playbackSource
 		)
 	}
@@ -37,7 +39,8 @@ extension Metadata {
 			audioMode: trackPlaybackInfo.audioMode,
 			audioQuality: trackPlaybackInfo.audioQuality,
 			audioSampleRate: trackPlaybackInfo.sampleRate,
-			audioBitDepth: trackPlaybackInfo.bitDepth
+			audioBitDepth: trackPlaybackInfo.bitDepth,
+			adaptiveAudioQualities: nil
 		)
 	}
 }
