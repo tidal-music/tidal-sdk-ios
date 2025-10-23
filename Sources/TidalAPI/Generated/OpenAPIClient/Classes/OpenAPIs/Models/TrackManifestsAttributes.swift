@@ -17,6 +17,7 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         case aaclc = "AACLC"
         case flac = "FLAC"
         case flacHires = "FLAC_HIRES"
+        case eac3Joc = "EAC3_JOC"
     }
     public enum TrackPresentation: String, Codable, CaseIterable {
         case full = "FULL"

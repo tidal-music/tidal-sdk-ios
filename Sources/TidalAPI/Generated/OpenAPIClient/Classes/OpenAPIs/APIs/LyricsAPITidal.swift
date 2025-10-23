@@ -27,6 +27,18 @@ public enum LyricsAPITidal {
 
 
 	/**
+     Delete single lyric.
+     
+     - returns: 
+     */
+	public static func lyricsIdDelete(id: String) async throws {
+		return try await RequestHelper.createRequest {
+			LyricsAPI.lyricsIdDeleteWithRequestBuilder(id: id)
+		}
+	}
+
+
+	/**
      Get single lyric.
      
      - returns: LyricsSingleResourceDataDocument

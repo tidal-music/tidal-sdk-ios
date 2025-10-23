@@ -13,7 +13,7 @@ import AnyCodable
 internal class UsersAPI {
 
     /**
-     Get current user's user(s).
+     Get current user's user.
      
      - returns: UsersSingleResourceDataDocument
      */
@@ -23,9 +23,9 @@ internal class UsersAPI {
     }
 
     /**
-     Get current user's user(s).
+     Get current user's user.
      - GET /users/me
-     - Retrieves current user's user(s).
+     - Retrieves current user's user.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
