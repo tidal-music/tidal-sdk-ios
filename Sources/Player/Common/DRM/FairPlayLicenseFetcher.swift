@@ -217,9 +217,11 @@ private extension FairPlayLicenseFetcher {
 				case .httpClientError(let statusCode, _):
 					// Handle 401 Unauthorized - try refreshing token once
 					if statusCode == 401 && !authTokenRefreshed {
-						// Force token refresh by clearing cached token
+						// Force token refresh by requesting credentials with the invalid token sub-status
 						do {
-							_ = try await credentialsProvider.getAuthBearerToken()
+							_ = try await credentialsProvider.getCredentials(
+								apiErrorSubStatus: ApiErrorSubStatus.invalidAccessToken.rawValue
+							)
 							authTokenRefreshed = true
 
 							// Retry immediately after token refresh
