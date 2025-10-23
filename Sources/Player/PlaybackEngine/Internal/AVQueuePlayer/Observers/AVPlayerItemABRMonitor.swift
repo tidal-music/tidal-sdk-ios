@@ -6,7 +6,8 @@ final class AVPlayerItemABRMonitor {
 	private let qualities: [AudioQuality]
 	private let queue: OperationQueue
 	private let onQualityChanged: (AudioQuality) -> Void
-	private var observation: NSObjectProtocol?
+	private var mediaSelectionObservation: NSKeyValueObservation?
+	private var accessLogObservation: NSObjectProtocol?
 	private var lastReportedQuality: AudioQuality?
 
 	init(
@@ -20,27 +21,73 @@ final class AVPlayerItemABRMonitor {
 		self.queue = queue
 		self.onQualityChanged = onQualityChanged
 
-		observation = NotificationCenter.default.addObserver(
+		// Primary method: observe currentMediaSelection changes (iOS 9+)
+		mediaSelectionObservation = playerItem.observe(
+			\.currentMediaSelection,
+			options: [.new, .initial]
+		) { [weak self] item, _ in
+			self?.handleMediaSelectionChange(item: item)
+		}
+
+		// Fallback method: observe access log for bitrate-based detection
+		// This handles cases where media selection doesn't provide quality info
+		accessLogObservation = NotificationCenter.default.addObserver(
 			forName: AVPlayerItem.newAccessLogEntryNotification,
 			object: playerItem,
 			queue: nil
 		) { [weak self] _ in
 			self?.handleAccessLog()
 		}
-
-		handleAccessLog()
 	}
 
 	deinit {
-		if let observation {
-			NotificationCenter.default.removeObserver(observation)
+		mediaSelectionObservation?.invalidate()
+		if let accessLogObservation {
+			NotificationCenter.default.removeObserver(accessLogObservation)
 		}
 	}
 
+	/// Primary quality detection method using currentMediaSelection.
+	/// This reads the NAME attribute from HLS #EXT-X-MEDIA tags.
+	private func handleMediaSelectionChange(item: AVPlayerItem) {
+		guard let asset = item.asset as? AVURLAsset else {
+			return
+		}
+
+		// Get the audio media selection group
+		let mediaCharacteristics = asset.availableMediaCharacteristicsWithMediaSelectionOptions
+		guard mediaCharacteristics.contains(.audible) else {
+			return
+		}
+
+		guard let audioGroup = asset.mediaSelectionGroup(forMediaCharacteristic: .audible) else {
+			return
+		}
+
+		// Get the currently selected audio option
+		let selection = item.currentMediaSelection
+		guard let selectedOption = selection.selectedMediaOption(in: audioGroup) else {
+			return
+		}
+
+		// Try to parse quality from the display name (NAME attribute in HLS manifest)
+		if let quality = Self.parseQualityFromMediaOption(selectedOption, availableQualities: qualities) {
+			reportQuality(quality)
+		}
+		// If we can't determine quality from media selection, fall back to bitrate detection
+	}
+
+	/// Fallback quality detection method using access log bitrate matching.
+	/// Used when currentMediaSelection doesn't provide quality information.
 	private func handleAccessLog() {
+		// Only use bitrate fallback if we haven't detected quality via media selection
+		guard lastReportedQuality == nil else {
+			return
+		}
+
 		guard let item = playerItem,
 		      let event = item.accessLog()?.events.last,
-		      let quality = Self.map(
+		      let quality = Self.mapBitrateToQuality(
 		      	indicatedBitrate: event.indicatedBitrate,
 		      	availableQualities: qualities
 		      )
@@ -48,6 +95,11 @@ final class AVPlayerItemABRMonitor {
 			return
 		}
 
+		reportQuality(quality)
+	}
+
+	/// Reports a quality change if it differs from the last reported quality.
+	private func reportQuality(_ quality: AudioQuality) {
 		guard quality != lastReportedQuality else {
 			return
 		}
@@ -59,7 +111,39 @@ final class AVPlayerItemABRMonitor {
 		}
 	}
 
-	private static func map(
+	/// Parses AudioQuality from AVMediaSelectionOption by checking its displayName.
+	/// Expected names match AudioQuality enum cases: "LOW", "HIGH", "LOSSLESS", "HI_RES", "HI_RES_LOSSLESS"
+	private static func parseQualityFromMediaOption(
+		_ option: AVMediaSelectionOption,
+		availableQualities: [AudioQuality]
+	) -> AudioQuality? {
+		// Try displayName first (this is what HLS NAME attribute maps to)
+		let displayName = option.displayName.uppercased()
+
+		// Direct mapping from NAME to AudioQuality enum
+		let qualityMap: [String: AudioQuality] = [
+			"LOW": .LOW,
+			"HIGH": .HIGH,
+			"LOSSLESS": .LOSSLESS,
+			"HI_RES": .HI_RES,
+			"HI_RES_LOSSLESS": .HI_RES_LOSSLESS,
+		]
+
+		if let quality = qualityMap[displayName], availableQualities.contains(quality) {
+			return quality
+		}
+
+		// Fallback: check if displayName contains the quality string
+		for quality in availableQualities where displayName.contains(quality.rawValue) {
+			return quality
+		}
+
+		return nil
+	}
+
+	/// Legacy bitrate-based quality mapping (fallback).
+	/// Maps indicatedBitrate to the closest available AudioQuality by comparing typical bitrates.
+	private static func mapBitrateToQuality(
 		indicatedBitrate: Double,
 		availableQualities: [AudioQuality]
 	) -> AudioQuality? {
