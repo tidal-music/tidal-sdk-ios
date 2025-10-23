@@ -22,10 +22,22 @@ final class AVPlayerItemABRMonitor {
 		self.onQualityChanged = onQualityChanged
 
 		// Primary method: observe currentMediaSelection changes (iOS 9+)
+		// Use .old and .new to detect actual changes and avoid redundant processing
 		mediaSelectionObservation = playerItem.observe(
 			\.currentMediaSelection,
-			options: [.new, .initial]
-		) { [weak self] item, _ in
+			options: [.old, .new]
+		) { [weak self] item, change in
+			// Only process if the selection actually changed
+			guard let oldSelection = change.oldValue,
+			      let newSelection = change.newValue,
+			      oldSelection != newSelection
+			else {
+				// On initial observation, oldValue will be nil, so process it
+				if change.oldValue == nil {
+					self?.handleMediaSelectionChange(item: item)
+				}
+				return
+			}
 			self?.handleMediaSelectionChange(item: item)
 		}
 
