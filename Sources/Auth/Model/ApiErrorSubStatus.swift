@@ -9,7 +9,7 @@ struct ApiErrorSubValue {
 
 // MARK: - ApiErrorSubStatus
 
-enum ApiErrorSubStatus: String, CaseIterable {
+public enum ApiErrorSubStatus: String, CaseIterable {
 	case authorizationPending = "1002"
 	case sessionDoesNotExist = "6001"
 	case temporaryAuthServerError = "11001"

@@ -12,7 +12,10 @@ final class StreamingLicenseLoader: NSObject, LicenseLoader {
 	private let drmQueue = DispatchQueue(label: "com.tidal.player.drm.streaming", qos: .userInitiated)
 	private var pendingTasks: [AVContentKeyRequest: Task<Void, Never>] = [:]
 	private let serialQueue = DispatchQueue(label: "com.tidal.player.drm.streaming.state", qos: .userInitiated)
-	
+
+	// Store strong references to sessions to prevent premature deallocation during async operations
+	private var activeSessions: [AVContentKeyRequest: AVContentKeySession] = [:]
+
 	// Legacy property
 	private var pendingKeyRequest: AVContentKeyRequest?
 
@@ -67,6 +70,7 @@ final class StreamingLicenseLoader: NSObject, LicenseLoader {
 	private func cleanupTask(for keyRequest: AVContentKeyRequest) {
 		serialQueue.async {
 			self.pendingTasks.removeValue(forKey: keyRequest)
+			self.activeSessions.removeValue(forKey: keyRequest)
 		}
 	}
 	
@@ -82,11 +86,17 @@ final class StreamingLicenseLoader: NSObject, LicenseLoader {
 extension StreamingLicenseLoader: AVContentKeySessionDelegate {
 	func contentKeySession(_ session: AVContentKeySession, didProvide keyRequest: AVContentKeyRequest) {
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
+			// CRITICAL: Retain the session to prevent deallocation during async operations
+			// The keyRequest holds a weak reference to the session, so we must keep it alive
+			serialQueue.async {
+				self.activeSessions[keyRequest] = session
+			}
+
 			// Never block this method - it's called on AVFoundation's internal queue
 			let task = Task {
 				await handleKeyRequest(keyRequest)
 			}
-			
+
 			serialQueue.async {
 				self.pendingTasks[keyRequest] = task
 			}
@@ -98,15 +108,17 @@ extension StreamingLicenseLoader: AVContentKeySessionDelegate {
 	
 	func contentKeySession(_ session: AVContentKeySession, contentKeyRequest keyRequest: AVContentKeyRequest, didFailWithError error: Error) {
 		PlayerWorld.logger?.log(loggable: PlayerLoggable.streamingGetLicenseFailed(error: error))
-		
+
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
-			cleanupTask(for: keyRequest)
-			
-			// Check if this is a retryable error
+			// Check if this is a retryable error before cleaning up
 			if shouldRetryDRMError(error) {
+				// Keep the session alive for retry
 				Task {
 					await retryKeyRequestAfterDelay(keyRequest, session: session)
 				}
+			} else {
+				// Non-retryable error - clean up immediately
+				cleanupTask(for: keyRequest)
 			}
 		}
 		// For legacy mode, no special handling needed
