@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - OfflineEngineListener.offliningFailed() now includes an OfflineError parameter providing detailed error information (Player)
+- Improved ABR quality detection to use AVPlayerItem.currentMediaSelection for accurate quality identification from HLS manifest NAME attributes, with automatic fallback to bitrate-based detection for legacy manifests (Player)
 
 ### Fixed
 - Fixed critical AVContentKeySession crash when improved DRM handling is enabled - session was being deallocated during async operations (Player)
