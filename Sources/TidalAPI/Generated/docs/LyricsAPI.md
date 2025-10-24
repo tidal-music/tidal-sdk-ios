@@ -182,7 +182,7 @@ Updates existing lyric.
 import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
-let lyricsUpdateOperationPayload = LyricsUpdateOperation_Payload(data: LyricsUpdateOperation_Payload_Data(attributes: LyricsUpdateOperation_Payload_Data_Attributes(text: "text_example"), id: "id_example", type: "type_example")) // LyricsUpdateOperationPayload |  (optional)
+let lyricsUpdateOperationPayload = LyricsUpdateOperation_Payload(data: LyricsUpdateOperation_Payload_Data(attributes: LyricsUpdateOperation_Payload_Data_Attributes(lrcText: "lrcText_example", text: "text_example"), id: "id_example", type: "type_example")) // LyricsUpdateOperationPayload |  (optional)
 
 // Update single lyric.
 LyricsAPI.lyricsIdPatch(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload) { (response, error) in
