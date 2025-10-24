@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Improved ABR quality detection to use AVPlayerItem.currentMediaSelection for accurate quality identification from HLS manifest NAME attributes, with automatic fallback to bitrate-based detection for legacy manifests (Player)
+
 ## [0.8.0] - 2025-10-23
 
 ### Added
