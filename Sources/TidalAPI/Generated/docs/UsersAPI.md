@@ -4,7 +4,7 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**usersMeGet**](UsersAPI.md#usersmeget) | **GET** /users/me | Get current user&#39;s user(s).
+[**usersMeGet**](UsersAPI.md#usersmeget) | **GET** /users/me | Get current user&#39;s user.
 
 
 # **usersMeGet**
@@ -12,9 +12,9 @@ Method | HTTP request | Description
     open class func usersMeGet(completion: @escaping (_ data: UsersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get current user's user(s).
+Get current user's user.
 
-Retrieves current user's user(s).
+Retrieves current user's user.
 
 ### Example
 ```swift
@@ -22,7 +22,7 @@ Retrieves current user's user(s).
 import OpenAPIClient
 
 
-// Get current user's user(s).
+// Get current user's user.
 UsersAPI.usersMeGet() { (response, error) in
     guard error == nil else {
         print(error)

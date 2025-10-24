@@ -7,13 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Improved ABR quality detection to use AVPlayerItem.currentMediaSelection for accurate quality identification from HLS manifest NAME attributes, with automatic fallback to bitrate-based detection for legacy manifests (Player)
+
+## [0.8.0] - 2025-10-23
+
 ### Added
 - Enhanced offline download error handling with detailed OfflineError types for better client-side error recovery and retry strategies (Player)
 - Add initial support for adaptive streaming by surfacing audio quality changes observed during AVPlayer ABR switches (Player)
 
 ### Changed
 - OfflineEngineListener.offliningFailed() now includes an OfflineError parameter providing detailed error information (Player)
-- Improved ABR quality detection to use AVPlayerItem.currentMediaSelection for accurate quality identification from HLS manifest NAME attributes, with automatic fallback to bitrate-based detection for legacy manifests (Player)
+- Generated API code using spec version 0.1.89 (TidalAPI)
 
 ### Fixed
 - Fixed critical AVContentKeySession crash when improved DRM handling is enabled - session was being deallocated during async operations (Player)
