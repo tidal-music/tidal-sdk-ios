@@ -75,6 +75,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Update albums relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func tracksIdRelationshipsAlbumsPatch(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, trackAlbumsRelationshipUpdateOperationPayload: trackAlbumsRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get artists relationship (\&quot;to-many\&quot;).
      
      - returns: TracksMultiRelationshipDataDocument
