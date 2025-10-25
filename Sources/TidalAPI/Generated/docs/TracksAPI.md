@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**tracksIdGet**](TracksAPI.md#tracksidget) | **GET** /tracks/{id} | Get single track.
 [**tracksIdPatch**](TracksAPI.md#tracksidpatch) | **PATCH** /tracks/{id} | Update single track.
 [**tracksIdRelationshipsAlbumsGet**](TracksAPI.md#tracksidrelationshipsalbumsget) | **GET** /tracks/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
+[**tracksIdRelationshipsAlbumsPatch**](TracksAPI.md#tracksidrelationshipsalbumspatch) | **PATCH** /tracks/{id}/relationships/albums | Update albums relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsArtistsGet**](TracksAPI.md#tracksidrelationshipsartistsget) | **GET** /tracks/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsGenresGet**](TracksAPI.md#tracksidrelationshipsgenresget) | **GET** /tracks/{id}/relationships/genres | Get genres relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsLyricsGet**](TracksAPI.md#tracksidrelationshipslyricsget) | **GET** /tracks/{id}/relationships/lyrics | Get lyrics relationship (\&quot;to-many\&quot;).
@@ -290,6 +291,58 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **tracksIdRelationshipsAlbumsPatch**
+```swift
+    open class func tracksIdRelationshipsAlbumsPatch(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Update albums relationship (\"to-many\").
+
+Updates albums relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | A Tidal catalogue ID
+let trackAlbumsRelationshipUpdateOperationPayload = TrackAlbumsRelationshipUpdateOperation_Payload(data: [TrackAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // TrackAlbumsRelationshipUpdateOperationPayload |  (optional)
+
+// Update albums relationship (\"to-many\").
+TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, trackAlbumsRelationshipUpdateOperationPayload: trackAlbumsRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | A Tidal catalogue ID | 
+ **trackAlbumsRelationshipUpdateOperationPayload** | [**TrackAlbumsRelationshipUpdateOperationPayload**](TrackAlbumsRelationshipUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

@@ -268,6 +268,50 @@ internal class TracksAPI {
     }
 
     /**
+     Update albums relationship (\"to-many\").
+     
+     - parameter id: (path) A Tidal catalogue ID 
+     - parameter trackAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: Void
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdRelationshipsAlbumsPatch(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
+        return try await tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, trackAlbumsRelationshipUpdateOperationPayload: trackAlbumsRelationshipUpdateOperationPayload).execute().body
+    }
+
+    /**
+     Update albums relationship (\"to-many\").
+     - PATCH /tracks/{id}/relationships/albums
+     - Updates albums relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) A Tidal catalogue ID 
+     - parameter trackAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<Void> 
+     */
+    internal class func tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+        var localVariablePath = "/tracks/{id}/relationships/albums"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackAlbumsRelationshipUpdateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get artists relationship (\"to-many\").
      
      - parameter id: (path) A Tidal catalogue ID 
