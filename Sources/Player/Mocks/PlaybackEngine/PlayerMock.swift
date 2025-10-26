@@ -120,26 +120,6 @@ public final class PlayerMock: GenericMediaPlayer {
 	}
 }
 
-// MARK: UCMediaPlayer
-
-extension PlayerMock: UCMediaPlayer {
-	public func loadUC(
-		_ url: URL,
-		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
-		headers: [String: String]
-	) async -> Asset {
-		loadUploadedCallCount += 1
-		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-			loudnessNormalizationMode: loudnessNormalizationMode,
-			loudnessNormalizer: loudnessNormalizer
-		)
-		let asset = AssetMock(with: self, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
-
-		assets.append(asset)
-		return asset
-	}
-}
-
 // MARK: VideoPlayer
 
 extension PlayerMock: VideoPlayer {
