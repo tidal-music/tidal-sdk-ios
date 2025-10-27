@@ -695,13 +695,11 @@ final class PlayerItemTests: XCTestCase {
 
 		let metadata = Metadata.mock(
 			audioQuality: .HIGH,
-			adaptiveAudioQualities: [.LOW, .HIGH, .LOSSLESS]
 		)
 		playerItem.set(metadata)
 
 		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration.mock()
 		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
-		asset.setAdaptiveAudioQualities(metadata.adaptiveAudioQualities)
 		playerItem.set(asset)
 
 		playerItem.audioQualityChanged(asset: asset, to: .LOSSLESS)
@@ -727,13 +725,11 @@ final class PlayerItemTests: XCTestCase {
 		let metadata = Metadata.mock(
 			productId: mediaProduct.productId,
 			audioQuality: .HIGH,
-			adaptiveAudioQualities: adaptiveQualities
 		)
 		playerItem.set(metadata)
 
 		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration.mock()
 		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
-		asset.setAdaptiveAudioQualities(adaptiveQualities)
 		playerItem.set(asset)
 
 		let startTimestamp: UInt64 = 10

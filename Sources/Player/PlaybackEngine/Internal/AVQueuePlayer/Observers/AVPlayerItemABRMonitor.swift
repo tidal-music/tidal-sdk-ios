@@ -37,12 +37,14 @@ final class AVPlayerItemABRMonitor {
 				// On initial observation, oldValue will be nil, so process it
 				if change.oldValue == nil {
 					print("[ABRMonitor] Initial observation detected, calling handleMediaSelectionChange")
-					self?.handleMediaSelectionChange(item: item)
+					//self?.handleMediaSelectionChange(item: item)
+					self?.handleMediaSelectionChange2(item: item, mediaSelection: change.newValue!)
 				}
 				return
 			}
 			print("[ABRMonitor] Selection changed, calling handleMediaSelectionChange")
-			self?.handleMediaSelectionChange(item: item)
+			//self?.handleMediaSelectionChange(item: item)
+			self?.handleMediaSelectionChange2(item: item, mediaSelection: newSelection)
 		}
 
 		// Observe access log for quality detection via bitrate (fallback) and debugging
@@ -96,6 +98,28 @@ final class AVPlayerItemABRMonitor {
 
 		print("[ABRMonitor] Selected option displayName: \(selectedOption.displayName)")
 
+		// Load HLS metadata asynchronously to inspect codec/quality information
+		let completionHandler: @Sendable ([AVMetadataItem]?, (any Error)?) -> Void = { items, error in
+			if let error = error {
+				print("[ABRMonitor] Error loading HLS metadata: \(error)")
+				return
+			}
+			guard let items = items, !items.isEmpty else {
+				print("[ABRMonitor] No HLS metadata items")
+				return
+			}
+
+			print("[ABRMonitor] HLS metadata items count: \(items.count)")
+			for (index, item) in items.enumerated() {
+				let keyStr = (item.key as? String) ?? (item.commonKey?.rawValue ?? "nil")
+				let valueStr = item.stringValue ?? (item.value.map { String(describing: $0) } ?? "nil")
+				let identifier = item.identifier?.rawValue ?? "nil"
+				print("[ABRMonitor]   [\(index)] identifier=\(identifier), key=\(keyStr), value=\(valueStr)")
+			}
+		}
+
+		asset.loadMetadata(for: .hlsMetadata, completionHandler: completionHandler)
+
 		// Parse quality from the display name (NAME attribute in HLS manifest)
 		// If no match found, default to LOW
 		let quality = Self.parseQualityFromMediaOption(selectedOption)
@@ -103,6 +127,39 @@ final class AVPlayerItemABRMonitor {
 		reportQuality(quality)
 	}
 
+	/// Quality detection method using currentMediaSelection.
+	/// Detection strategy (priority order):
+	/// 1. MediaSelectionOptionsTaggedMediaCharacteristics (codec format identifier from backend)
+	/// 2. displayName attribute from HLS #EXT-X-MEDIA NAME tag
+	/// 3. Default to LOW if no match found
+	private func handleMediaSelectionChange2(item: AVPlayerItem, mediaSelection: AVMediaSelection) {
+		print("[ABRMonitor] handleMediaSelectionChange2 called")
+
+		guard let asset = item.asset as? AVURLAsset else {
+			print("[ABRMonitor] Asset is not AVURLAsset")
+			return
+		}
+
+		guard let audioGroup = asset.mediaSelectionGroup(forMediaCharacteristic: .audible) else {
+			print("[ABRMonitor] No audio group found")
+			return
+		}
+
+		guard let selectedOption = mediaSelection.selectedMediaOption(in: audioGroup) else {
+			print("[ABRMonitor] No selected option in audio group")
+			return
+		}
+
+		print("[ABRMonitor] Selected option displayName: \(selectedOption.displayName)")
+		print("[ABRMonitor] Selected option propertyList: \(selectedOption.propertyList())")
+		print("[ABRMonitor] Selected option metadata: \(selectedOption.commonMetadata)")
+
+		// Parse quality from selected media option (characteristics > displayName > default LOW)
+		let quality = Self.parseQualityFromMediaOption(selectedOption)
+		print("[ABRMonitor] Parsed quality: \(quality)")
+		reportQuality(quality)
+	}
+	
 	/// Reports a quality change if it differs from the last reported quality.
 	private func reportQuality(_ quality: AudioQuality) {
 		guard quality != lastReportedQuality else {
@@ -116,10 +173,18 @@ final class AVPlayerItemABRMonitor {
 		}
 	}
 
-	/// Parses AudioQuality from AVMediaSelectionOption by checking its displayName.
-	/// Expected names match AudioQuality enum cases: "LOW", "HIGH", "LOSSLESS", "HI_RES", "HI_RES_LOSSLESS"
-	/// Returns .LOW as default if no match is found.
+	/// Parses AudioQuality from AVMediaSelectionOption using multiple detection strategies.
+	/// Priority order:
+	/// 1. MediaSelectionOptionsTaggedMediaCharacteristics (format: "com.tidal.format.CODECNAME")
+	/// 2. displayName attribute
+	/// 3. Default to LOW
 	private static func parseQualityFromMediaOption(_ option: AVMediaSelectionOption) -> AudioQuality {
+		// First: Try to extract quality from characteristic attribute
+		if let quality = parseQualityFromCharacteristics(option) {
+			return quality
+		}
+
+		// Second: Try to parse from displayName
 		let displayName = option.displayName.uppercased()
 
 		// Direct mapping from NAME to AudioQuality enum
@@ -144,6 +209,37 @@ final class AVPlayerItemABRMonitor {
 
 		// Default to LOW if no match found
 		return .LOW
+	}
+
+	/// Extracts AudioQuality from MediaSelectionOptionsTaggedMediaCharacteristics.
+	/// Characteristics are formatted as "com.tidal.format.CODECNAME" where CODECNAME maps to quality levels.
+	/// Returns nil if characteristics not found or cannot be parsed.
+	private static func parseQualityFromCharacteristics(_ option: AVMediaSelectionOption) -> AudioQuality? {
+		let propertyList = option.propertyList()
+		guard let dict = propertyList as? [String: Any],
+		      let characteristics = dict["MediaSelectionOptionsTaggedMediaCharacteristics"] as? [String] else {
+			return nil
+		}
+
+		// Map characteristic codec names to AudioQuality
+		let characteristicMap: [String: AudioQuality] = [
+			"com.tidal.format.HEAACV1": .LOW,
+			"com.tidal.format.AACLC": .HIGH,
+			"com.tidal.format.FLAC": .LOSSLESS,
+			"com.tidal.format.FLAC_HIRES": .HI_RES_LOSSLESS,
+			// Also support HI_RES for potential future formats
+			"com.tidal.format.MQA": .HI_RES,
+		]
+
+		// Find the first characteristic that matches our codec map
+		for characteristic in characteristics {
+			if let quality = characteristicMap[characteristic] {
+				print("[ABRMonitor] Quality detected from characteristic: \(characteristic) → \(quality)")
+				return quality
+			}
+		}
+
+		return nil
 	}
 
 	/// Fallback bitrate-based quality detection.
@@ -241,7 +337,7 @@ final class AVPlayerItemABRMonitor {
 			var trackInfo: [String] = []
 			for (index, track) in item.tracks.enumerated() {
 				var trackDesc = "[\(index)] type=\(track.assetTrack?.mediaType.rawValue ?? "unknown")"
-				if let assetTrack = track.assetTrack {
+				if track.assetTrack != nil {
 					trackDesc += " enabled=\(track.isEnabled)"
 				}
 				trackInfo.append(trackDesc)
