@@ -88,7 +88,6 @@ private extension PlayerItemLoader {
 			audioSampleRate: playableStorageMediaProduct.audioSampleRate,
 			audioBitDepth: playableStorageMediaProduct.audioBitDepth,
 			videoQuality: playableStorageMediaProduct.videoQuality,
-			adaptiveAudioQualities: nil,
 			playbackSource: .LOCAL_STORAGE
 		)
 	}
@@ -104,7 +103,6 @@ private extension PlayerItemLoader {
 			audioSampleRate: storedMediaProduct.audioSampleRate,
 			audioBitDepth: storedMediaProduct.audioBitDepth,
 			videoQuality: storedMediaProduct.videoQuality,
-			adaptiveAudioQualities: nil,
 			playbackSource: .LOCAL_STORAGE_LEGACY
 		)
 	}
@@ -120,7 +118,6 @@ private extension PlayerItemLoader {
 			audioSampleRate: playbackInfo.audioSampleRate,
 			audioBitDepth: playbackInfo.audioBitDepth,
 			videoQuality: playbackInfo.videoQuality,
-			adaptiveAudioQualities: playbackInfo.adaptiveAudioQualities,
 			playbackSource: .INTERNET
 		)
 	}

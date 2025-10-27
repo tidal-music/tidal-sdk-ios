@@ -372,17 +372,9 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	func monitor(_ playerItem: AVPlayerItem, asset: AVPlayerAsset) {
-		let adaptiveQualities: [AudioQuality]?
-		if featureFlagProvider.shouldSupportABRPlayback() {
-			adaptiveQualities = asset.getAdaptiveAudioQualities()
-		} else {
-			adaptiveQualities = nil
-		}
-
 		playerItemMonitors[playerItem] = AVPlayerItemMonitor(
 			playerItem,
 			queue: queue,
-			adaptiveQualities: adaptiveQualities,
 			onFailure: failed,
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,

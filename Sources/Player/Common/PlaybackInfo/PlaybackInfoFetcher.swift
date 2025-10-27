@@ -117,7 +117,6 @@ private extension PlaybackInfoFetcher {
 			),
 			audioSampleRate: playbackInfo.sampleRate,
 			audioBitDepth: playbackInfo.bitDepth,
-			adaptiveAudioQualities: nil,
 			videoQuality: nil,
 			streamingSessionId: playbackInfo.streamingSessionId,
 			contentHash: playbackInfo.manifestHash,
@@ -184,9 +183,6 @@ private extension PlaybackInfoFetcher {
 
 			// Determine actual audio quality from the returned formats (inverse mapping)
 			let actualAudioQuality = PlaybackInfoFetcher.getAudioQualityFromFormats(attributes?.formats, fallback: requestedAudioQuality)
-			let adaptiveAudioQualities = adaptivePlaybackEnabled
-				? PlaybackInfoFetcher.buildQualityLadder(from: attributes?.formats)
-				: nil
 
 			return PlaybackInfo(
 				productType: .TRACK,
@@ -198,7 +194,6 @@ private extension PlaybackInfoFetcher {
 				audioCodec: getAudioCodecFromFormats(attributes?.formats),
 				audioSampleRate: nil, // Not available in new API
 				audioBitDepth: nil, // Not available in new API
-				adaptiveAudioQualities: adaptiveAudioQualities,
 				videoQuality: nil,
 				streamingSessionId: streamingSessionId,
 				contentHash: attributes?.hash ?? "NA",
@@ -286,7 +281,6 @@ private extension PlaybackInfoFetcher {
 			audioCodec: nil,
 			audioSampleRate: nil,
 			audioBitDepth: nil,
-			adaptiveAudioQualities: nil,
 			videoQuality: playbackInfo.videoQuality,
 			streamingSessionId: playbackInfo.streamingSessionId,
 			contentHash: playbackInfo.manifestHash ?? "NA",
@@ -338,7 +332,6 @@ private extension PlaybackInfoFetcher {
 			audioCodec: .HE_AAC_V1,
 			audioSampleRate: nil,
 			audioBitDepth: nil,
-			adaptiveAudioQualities: nil,
 			videoQuality: nil,
 			streamingSessionId: streamingSessionId,
 			contentHash: "",

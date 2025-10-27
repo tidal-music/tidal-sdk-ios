@@ -197,8 +197,6 @@ private extension InternalPlayerLoader {
 			and: licenseLoader
 		)
 
-		asset.setAdaptiveAudioQualities(playbackInfo.adaptiveAudioQualities)
-
 		return asset
 	}
 
