@@ -18,8 +18,10 @@ final class AVPlayerItemABRMonitor {
 		self.queue = queue
 		self.onQualityChanged = onQualityChanged
 
-		// Observe currentMediaSelection changes (iOS 9+)
-		// Use .old and .new to detect actual changes and avoid redundant processing
+		// Observe currentMediaSelection changes (iOS 9+) for codec information
+		// Note: This only fires when the selected audio track actually changes.
+		// With HLS ABR, all quality variants typically use the same audio track,
+		// so this won't fire during adaptive bitrate switching.
 		mediaSelectionObservation = playerItem.observe(
 			\.currentMediaSelection,
 			options: [.old, .new, .initial]
@@ -36,24 +38,24 @@ final class AVPlayerItemABRMonitor {
 				print("[ABRMonitor] Selection check: oldValue=\(change.oldValue != nil), newValue=\(change.newValue != nil), equal=\(change.oldValue == change.newValue)")
 				// On initial observation, oldValue will be nil, so process it
 				if change.oldValue == nil {
-					print("[ABRMonitor] Initial observation detected, calling handleMediaSelectionChange")
-					//self?.handleMediaSelectionChange(item: item)
-					self?.handleMediaSelectionChange2(item: item, mediaSelection: change.newValue!)
+					print("[ABRMonitor] Initial observation detected, analyzing media selection")
+					self?.handleMediaSelectionChange(item: item, mediaSelection: change.newValue!)
 				}
 				return
 			}
-			print("[ABRMonitor] Selection changed, calling handleMediaSelectionChange")
-			//self?.handleMediaSelectionChange(item: item)
-			self?.handleMediaSelectionChange2(item: item, mediaSelection: newSelection)
+			print("[ABRMonitor] Audio track changed, analyzing new media selection")
+			self?.handleMediaSelectionChange(item: item, mediaSelection: newSelection)
 		}
 
-		// Observe access log for quality detection via bitrate (fallback) and debugging
+		// Observe access log for PRIMARY quality detection via bitrate
+		// This is the main method for detecting quality changes during playback,
+		// since HLS ABR happens at the variant stream level (bitrate), not audio track level.
 		accessLogObservation = NotificationCenter.default.addObserver(
 			forName: AVPlayerItem.newAccessLogEntryNotification,
 			object: playerItem,
 			queue: nil
 		) { [weak self] _ in
-			// Try bitrate-based quality detection as fallback
+			// Bitrate-based quality detection is the primary method during playback
 			self?.detectQualityFromAccessLog()
 			// Also log for debugging
 			self?.logAccessLogForDebug()
@@ -68,8 +70,11 @@ final class AVPlayerItemABRMonitor {
 	}
 
 	/// Quality detection method using currentMediaSelection.
-	/// This reads the NAME attribute from HLS #EXT-X-MEDIA tags.
-	private func handleMediaSelectionChange(item: AVPlayerItem) {
+	/// Detection strategy (priority order):
+	/// 1. MediaSelectionOptionsTaggedMediaCharacteristics (codec format identifier from backend)
+	/// 2. displayName attribute from HLS #EXT-X-MEDIA NAME tag
+	/// 3. Fall back to bitrate detection if manifest doesn't support proper audio grouping
+	private func handleMediaSelectionChange(item: AVPlayerItem, mediaSelection: AVMediaSelection) {
 		print("[ABRMonitor] handleMediaSelectionChange called")
 
 		guard let asset = item.asset as? AVURLAsset else {
@@ -77,71 +82,10 @@ final class AVPlayerItemABRMonitor {
 			return
 		}
 
-		// Get the audio media selection group
-		let mediaCharacteristics = asset.availableMediaCharacteristicsWithMediaSelectionOptions
-		guard mediaCharacteristics.contains(.audible) else {
-			print("[ABRMonitor] No audible media characteristics")
-			return
-		}
-
 		guard let audioGroup = asset.mediaSelectionGroup(forMediaCharacteristic: .audible) else {
-			print("[ABRMonitor] No audio group found")
-			return
-		}
-
-		// Get the currently selected audio option
-		let selection = item.currentMediaSelection
-		guard let selectedOption = selection.selectedMediaOption(in: audioGroup) else {
-			print("[ABRMonitor] No selected option in audio group")
-			return
-		}
-
-		print("[ABRMonitor] Selected option displayName: \(selectedOption.displayName)")
-
-		// Load HLS metadata asynchronously to inspect codec/quality information
-		let completionHandler: @Sendable ([AVMetadataItem]?, (any Error)?) -> Void = { items, error in
-			if let error = error {
-				print("[ABRMonitor] Error loading HLS metadata: \(error)")
-				return
-			}
-			guard let items = items, !items.isEmpty else {
-				print("[ABRMonitor] No HLS metadata items")
-				return
-			}
-
-			print("[ABRMonitor] HLS metadata items count: \(items.count)")
-			for (index, item) in items.enumerated() {
-				let keyStr = (item.key as? String) ?? (item.commonKey?.rawValue ?? "nil")
-				let valueStr = item.stringValue ?? (item.value.map { String(describing: $0) } ?? "nil")
-				let identifier = item.identifier?.rawValue ?? "nil"
-				print("[ABRMonitor]   [\(index)] identifier=\(identifier), key=\(keyStr), value=\(valueStr)")
-			}
-		}
-
-		asset.loadMetadata(for: .hlsMetadata, completionHandler: completionHandler)
-
-		// Parse quality from the display name (NAME attribute in HLS manifest)
-		// If no match found, default to LOW
-		let quality = Self.parseQualityFromMediaOption(selectedOption)
-		print("[ABRMonitor] Parsed quality: \(quality)")
-		reportQuality(quality)
-	}
-
-	/// Quality detection method using currentMediaSelection.
-	/// Detection strategy (priority order):
-	/// 1. MediaSelectionOptionsTaggedMediaCharacteristics (codec format identifier from backend)
-	/// 2. displayName attribute from HLS #EXT-X-MEDIA NAME tag
-	/// 3. Default to LOW if no match found
-	private func handleMediaSelectionChange2(item: AVPlayerItem, mediaSelection: AVMediaSelection) {
-		print("[ABRMonitor] handleMediaSelectionChange2 called")
-
-		guard let asset = item.asset as? AVURLAsset else {
-			print("[ABRMonitor] Asset is not AVURLAsset")
-			return
-		}
-
-		guard let audioGroup = asset.mediaSelectionGroup(forMediaCharacteristic: .audible) else {
-			print("[ABRMonitor] No audio group found")
+			print("[ABRMonitor] No audio group found - manifest may not support media selection")
+			print("[ABRMonitor] Will rely on bitrate-based quality detection instead")
+			logAvailableMediaCharacteristics(asset: asset)
 			return
 		}
 
@@ -151,13 +95,28 @@ final class AVPlayerItemABRMonitor {
 		}
 
 		print("[ABRMonitor] Selected option displayName: \(selectedOption.displayName)")
-		print("[ABRMonitor] Selected option propertyList: \(selectedOption.propertyList())")
 		print("[ABRMonitor] Selected option metadata: \(selectedOption.commonMetadata)")
+		print("[ABRMonitor] Selected option propertyList: \(selectedOption.propertyList())")
 
 		// Parse quality from selected media option (characteristics > displayName > default LOW)
 		let quality = Self.parseQualityFromMediaOption(selectedOption)
 		print("[ABRMonitor] Parsed quality: \(quality)")
 		reportQuality(quality)
+	}
+
+	/// Logs available media characteristics to help debug manifest structure issues.
+	private func logAvailableMediaCharacteristics(asset: AVURLAsset) {
+		let mediaCharacteristics = asset.availableMediaCharacteristicsWithMediaSelectionOptions
+		print("[ABRMonitor] Available media characteristics: \(mediaCharacteristics.map { $0.rawValue }.joined(separator: ", "))")
+
+		for characteristic in mediaCharacteristics {
+			if let group = asset.mediaSelectionGroup(forMediaCharacteristic: characteristic) {
+				print("[ABRMonitor] Group for \(characteristic.rawValue): \(group.options.count) options")
+				for (index, option) in group.options.enumerated() {
+					print("[ABRMonitor]   Option [\(index)]: \(option.displayName)")
+				}
+			}
+		}
 	}
 	
 	/// Reports a quality change if it differs from the last reported quality.
@@ -244,7 +203,9 @@ final class AVPlayerItemABRMonitor {
 
 	/// Fallback bitrate-based quality detection.
 	/// Maps indicatedBitrate to the closest available AudioQuality by comparing typical bitrates.
-	/// Used as failover when currentMediaSelection doesn't provide quality information.
+	/// Used when currentMediaSelection doesn't provide quality information.
+	/// This is the primary quality detection method when the HLS manifest doesn't support
+	/// proper media selection grouping.
 	private func detectQualityFromAccessLog() {
 		guard let item = playerItem,
 		      let accessLog = item.accessLog(),
@@ -252,25 +213,33 @@ final class AVPlayerItemABRMonitor {
 			return
 		}
 
+		// Only report quality if bitrate is available (> 0)
+		guard event.indicatedBitrate > 0 else {
+			print("[ABRMonitor] Access log event has no bitrate data yet")
+			return
+		}
+
 		let quality = Self.mapBitrateToQuality(indicatedBitrate: event.indicatedBitrate)
-		print("[ABRMonitor] Detected quality from bitrate: \(quality)")
+		print("[ABRMonitor] Detected quality from bitrate: \(quality) (indicated: \(event.indicatedBitrate) bps, observed: \(event.observedBitrate) bps)")
 		reportQuality(quality)
 	}
 
 	/// Maps indicated bitrate to AudioQuality based on typical bitrate ranges.
-	/// Fallback method when media selection doesn't expose quality information.
+	/// This is the primary method for detecting quality changes during HLS ABR adaptation,
+	/// since ABR happens at the variant stream level (bitrate changes), not audio track level.
 	private static func mapBitrateToQuality(indicatedBitrate: Double) -> AudioQuality {
-		// Quality bitrate ranges (approximate)
-		if indicatedBitrate < 150000 {
-			return .LOW // < 150 kbps
-		} else if indicatedBitrate < 500000 {
-			return .HIGH // 150 - 500 kbps
-		} else if indicatedBitrate < 2000000 {
-			return .LOSSLESS // 500 kbps - 2 Mbps
-		} else if indicatedBitrate < 5000000 {
-			return .HI_RES // 2 - 5 Mbps
+		// Quality bitrate ranges (approximate, based on typical audio codec bitrates)
+		// These ranges represent typical variant stream bitrates for each quality tier
+		if indicatedBitrate < 200000 {
+			return .LOW // < 200 kbps (e.g., AAC 128 kbps)
+		} else if indicatedBitrate < 400000 {
+			return .HIGH // 200 - 400 kbps (e.g., AAC 256-320 kbps)
+		} else if indicatedBitrate < 1200000 {
+			return .LOSSLESS // 400 kbps - 1.2 Mbps (e.g., FLAC, Vorbis)
+		} else if indicatedBitrate < 3000000 {
+			return .HI_RES // 1.2 - 3 Mbps (e.g., FLAC Hi-Res)
 		} else {
-			return .HI_RES_LOSSLESS // > 5 Mbps
+			return .HI_RES_LOSSLESS // > 3 Mbps (e.g., FLAC Hi-Res Lossless)
 		}
 	}
 
