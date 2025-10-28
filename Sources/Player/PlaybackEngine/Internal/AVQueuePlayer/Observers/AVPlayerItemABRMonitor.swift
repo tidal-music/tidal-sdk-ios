@@ -77,7 +77,7 @@ final class AVPlayerItemABRMonitor {
 				print("[ABRMonitor] Monitor was deallocated before format extraction started")
 				return
 			}
-			
+
 			let formatMetadata = await strongSelf.extractFormatMetadata(from: item)
 			if let formatMetadata {
 				print("[ABRMonitor] ASBD formatID fourCC: \(Self.decodeFourCC(formatMetadata.audioFormatID))")
@@ -86,7 +86,7 @@ final class AVPlayerItemABRMonitor {
 			} else {
 				print("[ABRMonitor] No format metadata")
 			}
-				   
+
 			if !strongSelf.validateMonitorState(for: item, metadata: formatMetadata) {
 				return
 			}
@@ -369,10 +369,23 @@ final class AVPlayerItemABRMonitor {
 		}
 
 		// Fallback 3: some streams embed the entire sample entry verbatim
-		if let sampleEntry = exts["VerbatimISOSampleEntry"] as? Data,
-		   let esds = findBox(type: "esds", in: sampleEntry),
-		   let aot = extractAOTFromDescriptorBlob(esds) {
-			return aot
+		// VerbatimISOSampleEntry is a complete audio sample entry (e.g., "enca")
+		// Skip the 28-byte audio sample entry header to access child boxes (esds, sinf)
+		if let sampleEntry = exts["VerbatimISOSampleEntry"] as? Data, sampleEntry.count > 28 {
+			let childBoxData = sampleEntry.subdata(in: 28..<sampleEntry.count)
+
+			// First look for direct esds
+			if let esds = findBox(type: "esds", in: childBoxData),
+			   let aot = extractAOTFromDescriptorBlob(esds) {
+				return aot
+			}
+
+			// Then look for esds nested inside sinf
+			if let sinf = findBox(type: "sinf", in: childBoxData),
+			   let esds = findBox(type: "esds", in: sinf),
+			   let aot = extractAOTFromDescriptorBlob(esds) {
+				return aot
+			}
 		}
 
 		return nil
@@ -603,7 +616,7 @@ final class AVPlayerItemABRMonitor {
 			let frmaCodec = extractFrmaCodec(from: formatDesc)
 
 			let mediaSubTypeFourCC = decodeFourCC(CMFormatDescriptionGetMediaSubType(formatDesc))
-			
+
 			return AudioFormatMetadata(
 				audioFormatID: audioFormatID,
 				audioFormatFlags: audioFormatFlags,
@@ -698,7 +711,7 @@ final class AVPlayerItemABRMonitor {
 		// Compressed formats often leave this 0; default to 16
 		return 16
 	}
-	
+
 	// MP4 box scanner (size[4] + type[4] + payload)
 	private static func findBox(type: String, in data: Data) -> Data? {
 		var i = 0
