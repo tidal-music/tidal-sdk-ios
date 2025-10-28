@@ -126,15 +126,6 @@ final class AVPlayerItemABRMonitor {
 				}
 			}
 
-			// ALAC (Apple Lossless Audio Codec) detection
-			if metadata.audioFormatID == kAudioFormatAppleLossless {
-				if metadata.bitDepth >= 24 {
-					return .HI_RES // ALAC Hi-Res (24-bit or higher)
-				} else {
-					return .LOSSLESS // ALAC CD Quality (16-bit)
-				}
-			}
-
 			// AAC variants
 			if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
 				return .LOW // AAC-HE (Low bitrate, typically 96 kbps)
@@ -147,9 +138,9 @@ final class AVPlayerItemABRMonitor {
 				}
 			}
 
-			// Dolby Digital+ (Enhanced AC-3) for Atmos
+			// eAC3 Atmos
 			if metadata.audioFormatID == kAudioFormatEnhancedAC3 {
-				return .HIGH // Atmos is treated as HIGH quality
+				return .LOSSLESS // Atmos is treated as LOSSLESS quality
 			}
 		}
 
@@ -292,11 +283,9 @@ final class AVPlayerItemABRMonitor {
 		case kAudioFormatMPEG4AAC:
 			return "AAC (Low-High)"
 		case kAudioFormatEnhancedAC3:
-			return "Dolby Digital+ (Atmos)"
+			return "eAC3 Atmos"
 		case kAudioFormatFLAC:
 			return "FLAC"
-		case kAudioFormatAppleLossless:
-			return "ALAC"
 		case kAudioFormatLinearPCM:
 			return "PCM"
 		case kAudioFormatAC3:
@@ -307,22 +296,9 @@ final class AVPlayerItemABRMonitor {
 	}
 
 	/// Extracts bit depth from audio format flags.
-	/// For ALAC (Apple Lossless Audio Codec), decodes bit depth from format flags.
+	/// For FLAC and other formats, decodes bit depth from format flags.
 	/// Defensive: validates flags and returns sensible defaults if extraction fails.
 	private static func extractBitDepth(from formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
-		// ALAC bit depth is encoded in format flags
-		if formatID == kAudioFormatAppleLossless {
-			if formatFlags == kAppleLosslessFormatFlag_16BitSourceData {
-				return 16
-			} else if formatFlags == kAppleLosslessFormatFlag_24BitSourceData {
-				return 24
-			} else if formatFlags == kAppleLosslessFormatFlag_32BitSourceData {
-				return 32
-			}
-			// Unknown ALAC flag, return default
-			return 16
-		}
-
 		// For FLAC and other formats, use the bit depth bits if available
 		// kAudioFormatFlagIsSignedInteger = 0x4 (bit 2)
 		if (formatFlags & kAudioFormatFlagIsSignedInteger) != 0 {
