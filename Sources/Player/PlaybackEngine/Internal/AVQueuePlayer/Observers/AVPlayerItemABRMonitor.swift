@@ -209,45 +209,67 @@ final class AVPlayerItemABRMonitor {
 	/// Extracts audio format metadata (AudioFormatID, bit depth, sample rate) from the current playing track.
 	/// Uses the same pattern as AVQueuePlayerWrapper's readPlaybackMetadata to ensure consistency.
 	private func extractFormatMetadata(from playerItem: AVPlayerItem) async -> AudioFormatMetadata? {
-		do {
-			var formatDescriptions = [CMFormatDescription]()
-			for track in playerItem.tracks {
+		// Guard against invalid player state
+		guard !playerItem.tracks.isEmpty else {
+			return nil
+		}
+
+		var formatDescriptions = [CMFormatDescription]()
+
+		// Extract format descriptions from available tracks with error handling
+		for track in playerItem.tracks {
+			do {
 				if let assetTrack = await track.assetTrack {
-					try await formatDescriptions.append(contentsOf: assetTrack.load(.formatDescriptions))
+					let descriptions = try await assetTrack.load(.formatDescriptions)
+					formatDescriptions.append(contentsOf: descriptions)
 				}
+			} catch {
+				// Log individual track errors but continue with other tracks
+				print("[ABRMonitor] Failed to load format descriptions for track: \(error)")
+				continue
+			}
+		}
+
+		guard !formatDescriptions.isEmpty else {
+			return nil
+		}
+
+		// Extract audio format information from the first available format description
+		var metadata: AudioFormatMetadata?
+		for formatDesc in formatDescriptions {
+			guard let audioStreamDesc = formatDesc.audioStreamBasicDescription else {
+				continue
 			}
 
-			guard !formatDescriptions.isEmpty else {
-				return nil
-			}
-
-			// Extract audio format information from the highest quality track
-			guard let formatDesc = formatDescriptions.first,
-			      let audioStreamDesc = formatDesc.audioStreamBasicDescription else {
-				return nil
-			}
-
+			// Validate extracted values
 			let audioFormatID = audioStreamDesc.mFormatID
 			let audioFormatFlags = audioStreamDesc.mFormatFlags
 			let sampleRate = Int(audioStreamDesc.mSampleRate)
 
+			// Skip invalid sample rates
+			guard sampleRate > 0 else {
+				print("[ABRMonitor] Skipping format with invalid sample rate: \(sampleRate)")
+				continue
+			}
+
 			// Extract bit depth from format flags
 			let bitDepth = Self.extractBitDepth(from: audioFormatFlags, formatID: audioFormatID)
 
-			return AudioFormatMetadata(
+			metadata = AudioFormatMetadata(
 				audioFormatID: audioFormatID,
 				audioFormatFlags: audioFormatFlags,
 				bitDepth: bitDepth,
 				sampleRate: sampleRate
 			)
-		} catch {
-			// Silent failure - format metadata is optional and used only for enhanced detection
-			return nil
+			break // Use first valid format found
 		}
+
+		return metadata
 	}
 
 	/// Extracts bit depth from audio format flags.
 	/// For ALAC (Apple Lossless Audio Codec), decodes bit depth from format flags.
+	/// Defensive: validates flags and returns sensible defaults if extraction fails.
 	private static func extractBitDepth(from formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
 		// ALAC bit depth is encoded in format flags
 		if formatID == kAudioFormatAppleLossless {
@@ -258,6 +280,8 @@ final class AVPlayerItemABRMonitor {
 			} else if formatFlags == kAppleLosslessFormatFlag_32BitSourceData {
 				return 32
 			}
+			// Unknown ALAC flag, return default
+			return 16
 		}
 
 		// For FLAC and other formats, use the bit depth bits if available
@@ -265,10 +289,15 @@ final class AVPlayerItemABRMonitor {
 		if (formatFlags & kAudioFormatFlagIsSignedInteger) != 0 {
 			// Bit depth is encoded in the lower bytes
 			let bytesPerSample = formatFlags >> 16
-			return Int(bytesPerSample) * 8
+			let bitDepth = Int(bytesPerSample) * 8
+
+			// Validate extracted bit depth is reasonable (8-32 bits)
+			if bitDepth > 0 && bitDepth <= 32 {
+				return bitDepth
+			}
 		}
 
-		// Default assumption for other formats
+		// Default assumption for other formats or invalid extractions
 		return 16
 	}
 
