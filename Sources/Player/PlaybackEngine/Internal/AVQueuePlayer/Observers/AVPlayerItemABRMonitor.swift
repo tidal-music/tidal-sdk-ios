@@ -122,16 +122,19 @@ final class AVPlayerItemABRMonitor {
 
 		// Protected AAC detection
 		if isProtectedAAC(fourCC: fourCC) {
-			return qualityForProtectedAAC(sampleRate: metadata.sampleRate)
+			return qualityForProtectedAAC(sampleRate: metadata.sampleRate, audioObjectType: metadata.audioObjectType)
 		}
 
-		// Standard AAC variants
+		// Standard AAC variants - use AOT if available, otherwise fall back to formatID
+		if metadata.audioFormatID == kAudioFormatMPEG4AAC {
+			if let aot = metadata.audioObjectType {
+				return qualityForAAC(audioObjectType: aot)
+			}
+			return .HIGH
+		}
+
 		if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
 			return .LOW
-		}
-
-		if metadata.audioFormatID == kAudioFormatMPEG4AAC {
-			return .HIGH
 		}
 
 		// eAC3 Atmos
@@ -159,8 +162,28 @@ final class AVPlayerItemABRMonitor {
 		return .LOSSLESS
 	}
 
-	private static func qualityForProtectedAAC(sampleRate: Int) -> AudioQuality {
-		sampleRate >= 44100 ? .HIGH : .LOW
+	private static func qualityForProtectedAAC(sampleRate: Int, audioObjectType: UInt8? = nil) -> AudioQuality {
+		// If we have AOT, use it for more accurate detection
+		if let aot = audioObjectType {
+			return qualityForAAC(audioObjectType: aot)
+		}
+		// Fall back to sample rate-based detection
+		return sampleRate >= 44100 ? .HIGH : .LOW
+	}
+
+	private static func qualityForAAC(audioObjectType: UInt8) -> AudioQuality {
+		// AOT values: 2=AAC-LC, 5=HE-AAC (SBR), 29=HE-AAC v2 (SBR+PS)
+		switch audioObjectType {
+		case 2:
+			// AAC-LC
+			return .HIGH
+		case 5, 29:
+			// HE-AAC and HE-AAC v2
+			return .LOW
+		default:
+			// Unknown AOT, default to HIGH for safety
+			return .HIGH
+		}
 	}
 
 	private static func qualityFromBitrate(_ bitrate: Double) -> AudioQuality {
@@ -291,6 +314,40 @@ final class AVPlayerItemABRMonitor {
 		return formatDescriptions
 	}
 
+	/// Extracts Audio Object Type from AudioSpecificConfig in format description extensions
+	/// AOT tells us the AAC profile: 2=AAC-LC, 5=HE-AAC (SBR), 29=HE-AAC v2 (SBR+PS)
+	private static func extractAudioObjectType(from formatDesc: CMFormatDescription) -> UInt8? {
+		guard let extensions = CMFormatDescriptionGetExtensions(formatDesc) as? [String: Any] else {
+			return nil
+		}
+
+		// Try to get AudioSpecificConfig from extensions
+		// It can be stored under different keys depending on the source
+		let possibleKeys = [
+			"AudioSpecificConfig",
+			"com.apple.cmformatdescription.audio.aac_profile",
+			"magicCookie"
+		]
+
+		for key in possibleKeys {
+			if let ascData = extensions[key] as? Data, ascData.count >= 1 {
+				// Parse Audio Object Type from first 5 bits of first byte
+				// AOT is in bits 7-3: (byte[0] >> 3) & 0x1F
+				var aot = (ascData[0] >> 3) & 0x1F
+
+				// Handle escape sequence: if AOT == 31, read next 6 bits
+				if aot == 31 && ascData.count >= 2 {
+					let lowBits = UInt8((ascData[1] >> 2) & 0x3F)
+					aot = 32 + lowBits
+				}
+
+				return aot
+			}
+		}
+
+		return nil
+	}
+
 	/// Finds the first valid audio format description with metadata
 	private static func findFirstValidAudioFormat(in formatDescriptions: [CMFormatDescription]) -> AudioFormatMetadata? {
 		for formatDesc in formatDescriptions {
@@ -317,11 +374,15 @@ final class AVPlayerItemABRMonitor {
 			// Extract bit depth from format flags
 			let bitDepth = extractBitDepth(from: audioFormatFlags, formatID: audioFormatID)
 
+			// Extract Audio Object Type from format description for AAC profile detection
+			let audioObjectType = extractAudioObjectType(from: formatDesc)
+
 			return AudioFormatMetadata(
 				audioFormatID: audioFormatID,
 				audioFormatFlags: audioFormatFlags,
 				bitDepth: bitDepth,
-				sampleRate: sampleRate
+				sampleRate: sampleRate,
+				audioObjectType: audioObjectType
 			)
 		}
 
@@ -428,4 +489,5 @@ private struct AudioFormatMetadata: Equatable {
 	let audioFormatFlags: AudioFormatFlags
 	let bitDepth: Int
 	let sampleRate: Int
+	let audioObjectType: UInt8?  // For AAC variants: 2=LC, 5=HE, 29=HE-v2
 }
