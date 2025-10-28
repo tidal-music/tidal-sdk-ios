@@ -115,11 +115,10 @@ final class AVPlayerItemABRMonitor {
 			// FLAC detection with bit-depth and sample rate analysis (including qflc: protected FLAC)
 			let isQFlc = fourCC == "qflc"
 			if metadata.audioFormatID == kAudioFormatFLAC || isQFlc {
-				// For qflc (protected FLAC), bitDepth might be 0, so infer from bitrate
-				let inferredBitDepth = metadata.bitDepth > 0 ? metadata.bitDepth : Self.inferBitDepthFromBitrate(indicatedBitrate)
-
+				// FLAC formatFlags encode bitDepth during extraction
+	
 				// HI_RES_LOSSLESS: FLAC/qflc 20+ bit depth and 48KHz+ sample rate
-				if inferredBitDepth >= 20 && metadata.sampleRate >= 48000 {
+				if metadata.bitDepth >= 20 && metadata.sampleRate >= 48000 {
 					return .HI_RES_LOSSLESS
 				}
 				// All other FLAC variants fall to LOSSLESS
@@ -269,18 +268,6 @@ final class AVPlayerItemABRMonitor {
 		return metadata
 	}
 
-	/// Infers FLAC bit depth from indicated bitrate when mBitsPerChannel is unavailable.
-	/// Used for protected FLAC (qflc) where bit depth info may not be directly available.
-	private static func inferBitDepthFromBitrate(_ bitrate: Double) -> Int {
-		// Typical FLAC bitrates by quality:
-		// - 16-bit CD Quality (44.1KHz): ~600-900 kbps
-		// - 20-24-bit Hi-Res (48KHz+): >1200 kbps
-		if bitrate > 1200000 {
-			return 24 // High bitrate suggests 20+ bit (assume 24-bit for HI_RES_LOSSLESS)
-		} else {
-			return 16 // Lower bitrate suggests 16-bit CD quality
-		}
-	}
 
 	/// Maps AudioFormatID to human-readable format name for logging.
 	private static func formatIDName(_ formatID: AudioFormatID) -> String {
