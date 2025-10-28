@@ -307,20 +307,26 @@ final class AVPlayerItemABRMonitor {
 
 	/// Handles variant switch events from iOS 18+ AVMetrics API.
 	/// These events fire when HLS adapts to a different variant stream (quality change).
-	/// Quality detection is based on bitrate from the access log.
+	/// Quality detection is based on bitrate from the variant metadata.
 	@available(iOS 18.0, macOS 15.0, *)
 	private func handleVariantSwitchEvent(_ event: AVMetricPlayerItemVariantSwitchEvent) {
 		print("[ABRMonitor] Variant switch event detected")
 
-		// Extract variant information (codec info)
+		// Extract variant information (codec info and bitrate)
 		let variantInfo = extractVariantInfo(from: event)
 
 		// Log all available event properties for analysis
 		logVariantSwitchEvent(event, info: variantInfo)
 
-		// Detect quality from current bitrate in access log
-		// The variant switch event signals that a change occurred, but we use bitrate for quality
-		detectQualityFromAccessLog()
+		// Detect quality from variant bitrate (more accurate than access log)
+		if variantInfo.bitrate > 0 {
+			let qualityFromVariant = Self.mapBitrateToQuality(indicatedBitrate: variantInfo.bitrate)
+			print("[ABRMonitor] Quality from variant event: \(qualityFromVariant) (bitrate: \(variantInfo.bitrate) bps, \(variantInfo.bitrate / 1000) kbps)")
+			reportQuality(qualityFromVariant)
+		} else {
+			// Fallback to access log if variant bitrate unavailable
+			detectQualityFromAccessLog()
+		}
 	}
 
 	/// Extracts variant information from AVMetricPlayerItemVariantSwitchEvent.
@@ -331,6 +337,8 @@ final class AVPlayerItemABRMonitor {
 		let toVariant = event.toVariant
 		let didSucceed = event.didSucceed
 
+		var toBitrate: Double = 0
+		var fromBitrate: Double = 0
 		let mediaType: String = "audio"
 		let codec: String = "unknown"
 		let reason: String = didSucceed ? "switch_successful" : "switch_failed"
@@ -345,6 +353,16 @@ final class AVPlayerItemABRMonitor {
 			print("[ABRMonitor] toVariant audio codec: \(qualityName)")
 		}
 
+		// Extract bitrate from toVariant (new quality level)
+		// Use averageBitRate if available, otherwise fall back to peakBitRate
+		if let avgBitrate = toVariant.averageBitRate, avgBitrate >= 0 {
+			toBitrate = avgBitrate
+			print("[ABRMonitor] toVariant average bitrate: \(toBitrate) bps (\(toBitrate / 1000) kbps)")
+		} else if let peakBitrate = toVariant.peakBitRate, peakBitrate >= 0 {
+			toBitrate = peakBitrate
+			print("[ABRMonitor] toVariant peak bitrate: \(toBitrate) bps (\(toBitrate / 1000) kbps)")
+		}
+
 		// Extract all available audio metadata from "from" variant (previous quality tier) if available
 		if let fromVariant = fromVariant, let audioAttrs = fromVariant.audioAttributes {
 			// Get format IDs and flags to determine codec and quality tier
@@ -352,13 +370,28 @@ final class AVPlayerItemABRMonitor {
 			print("[ABRMonitor] fromVariant audio codec: \(qualityName)")
 		}
 
+		// Extract bitrate from fromVariant (previous quality level) if available
+		if let fromVariant = fromVariant {
+			if let avgBitrate = fromVariant.averageBitRate, avgBitrate >= 0 {
+				fromBitrate = avgBitrate
+				print("[ABRMonitor] fromVariant average bitrate: \(fromBitrate) bps (\(fromBitrate / 1000) kbps)")
+			} else if let peakBitrate = fromVariant.peakBitRate, peakBitrate >= 0 {
+				fromBitrate = peakBitrate
+				print("[ABRMonitor] fromVariant peak bitrate: \(fromBitrate) bps (\(fromBitrate / 1000) kbps)")
+			}
+		}
+
 		print("[ABRMonitor] Variant Switch Details:")
 		print("[ABRMonitor]   - Success: \(didSucceed)")
-		print("[ABRMonitor]   - From Variant: \(fromVariant != nil ? "present" : "nil (initial)")")
-		print("[ABRMonitor]   - To Variant: present")
+		print("[ABRMonitor]   - From Variant: \(fromVariant != nil ? "present (bitrate: \(fromBitrate) bps)" : "nil (initial)")")
+		print("[ABRMonitor]   - To Variant: present (bitrate: \(toBitrate) bps)")
+		if fromBitrate > 0 {
+			let percentChange = (toBitrate - fromBitrate) / fromBitrate * 100
+			print("[ABRMonitor]   - Bitrate Change: \(fromBitrate) → \(toBitrate) bps (\(String(format: "%.1f", percentChange))% change)")
+		}
 
 		return VariantInfo(
-			bitrate: 0, // Bitrate is obtained from access log, not from variant metadata
+			bitrate: toBitrate,
 			mediaType: mediaType,
 			codec: codec,
 			reason: reason,
