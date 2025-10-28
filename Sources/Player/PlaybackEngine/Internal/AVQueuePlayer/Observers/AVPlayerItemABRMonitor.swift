@@ -94,7 +94,8 @@ final class AVPlayerItemABRMonitor {
 			}
 
 			if let metadata = formatMetadata {
-				print("[ABRMonitor] Current variant format: formatID=\(metadata.audioFormatID), bitDepth=\(metadata.bitDepth), sampleRate=\(metadata.sampleRate) Hz")
+				let formatName = Self.formatIDName(metadata.audioFormatID)
+				print("[ABRMonitor] Current variant format: \(formatName), bitDepth=\(metadata.bitDepth), sampleRate=\(metadata.sampleRate) Hz")
 			}
 			// Quality is determined with format metadata (or nil if extraction failed)
 			let quality = Self.mapBitrateToQuality(indicatedBitrate: event.indicatedBitrate, formatMetadata: formatMetadata)
@@ -107,43 +108,59 @@ final class AVPlayerItemABRMonitor {
 	/// This is the primary method for detecting quality changes during HLS ABR adaptation,
 	/// since ABR happens at the variant stream level (bitrate changes), not audio track level.
 	private static func mapBitrateToQuality(indicatedBitrate: Double, formatMetadata: AudioFormatMetadata? = nil) -> AudioQuality {
-		// Quality bitrate ranges (approximate, based on typical audio codec bitrates)
-		// These ranges represent typical variant stream bitrates for each quality tier
-
 		// Use format metadata to refine quality detection if available
 		if let metadata = formatMetadata {
-			// FLAC with 24-bit or higher typically indicates Hi-Res tiers
+			// FLAC detection with bit-depth analysis
 			if metadata.audioFormatID == kAudioFormatFLAC {
 				if metadata.bitDepth >= 24 {
+					// FLAC 24-bit or higher (Hi-Res source)
 					if indicatedBitrate > 2000000 {
-						return .HI_RES_LOSSLESS // FLAC 24-bit+ with high bitrate
+						return .HI_RES_LOSSLESS // FLAC Hi-Res 24-bit+ at high bitrate (>2 Mbps)
 					} else if indicatedBitrate > 1000000 {
-						return .HI_RES // FLAC 24-bit+ with moderate bitrate
+						return .HI_RES // FLAC Hi-Res 24-bit+ at moderate bitrate (>1 Mbps)
 					} else {
-						return .LOSSLESS // FLAC with lower bitrate
+						return .LOSSLESS // FLAC Hi-Res downmixed to lower bitrate
 					}
 				} else if metadata.bitDepth == 16 {
-					return .LOSSLESS // FLAC 16-bit
+					return .LOSSLESS // FLAC CD Quality (16-bit)
 				}
 			}
 
-			// ALAC detection (Apple Lossless Audio Codec)
+			// ALAC (Apple Lossless Audio Codec) detection
 			if metadata.audioFormatID == kAudioFormatAppleLossless {
 				if metadata.bitDepth >= 24 {
-					return .HI_RES // ALAC 24-bit or higher
+					return .HI_RES // ALAC Hi-Res (24-bit or higher)
 				} else {
-					return .LOSSLESS // ALAC 16-bit
+					return .LOSSLESS // ALAC CD Quality (16-bit)
 				}
+			}
+
+			// AAC variants
+			if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
+				return .LOW // AAC-HE (Low bitrate, typically 96 kbps)
+			}
+			if metadata.audioFormatID == kAudioFormatMPEG4AAC {
+				if indicatedBitrate > 250000 {
+					return .HIGH // AAC at high bitrate (256-320 kbps)
+				} else {
+					return .LOW // AAC at low-mid bitrate
+				}
+			}
+
+			// Dolby Digital+ (Enhanced AC-3) for Atmos
+			if metadata.audioFormatID == kAudioFormatEnhancedAC3 {
+				return .HIGH // Atmos is treated as HIGH quality
 			}
 		}
 
 		// Fallback to bitrate-only detection when format metadata is unavailable
+		// Quality bitrate ranges (approximate, based on typical audio codec bitrates)
 		if indicatedBitrate < 200000 {
-			return .LOW // < 200 kbps (e.g., AAC 128 kbps)
+			return .LOW // < 200 kbps (e.g., AAC-HE 96 kbps)
 		} else if indicatedBitrate < 400000 {
 			return .HIGH // 200 - 400 kbps (e.g., AAC 256-320 kbps)
 		} else if indicatedBitrate < 1200000 {
-			return .LOSSLESS // 400 kbps - 1.2 Mbps (e.g., FLAC, Vorbis)
+			return .LOSSLESS // 400 kbps - 1.2 Mbps (e.g., FLAC CD, Vorbis)
 		} else if indicatedBitrate < 3000000 {
 			return .HI_RES // 1.2 - 3 Mbps (e.g., FLAC Hi-Res)
 		} else {
@@ -265,6 +282,28 @@ final class AVPlayerItemABRMonitor {
 		}
 
 		return metadata
+	}
+
+	/// Maps AudioFormatID to human-readable format name for logging.
+	private static func formatIDName(_ formatID: AudioFormatID) -> String {
+		switch formatID {
+		case kAudioFormatMPEG4AAC_HE:
+			return "AAC-HE (Low)"
+		case kAudioFormatMPEG4AAC:
+			return "AAC (Low-High)"
+		case kAudioFormatEnhancedAC3:
+			return "Dolby Digital+ (Atmos)"
+		case kAudioFormatFLAC:
+			return "FLAC"
+		case kAudioFormatAppleLossless:
+			return "ALAC"
+		case kAudioFormatLinearPCM:
+			return "PCM"
+		case kAudioFormatAC3:
+			return "Dolby Digital"
+		default:
+			return "Unknown (0x\(String(formatID, radix: 16)))"
+		}
 	}
 
 	/// Extracts bit depth from audio format flags.
