@@ -354,10 +354,31 @@ final class AVPlayerItemABRMonitor {
 	}
 
 	/// Extracts bit depth from audio format flags.
-	/// For FLAC and other formats, decodes bit depth from format flags.
-	/// Defensive: validates flags and returns sensible defaults if extraction fails.
+	/// For FLAC/qflc, the formatFlags directly encode the bit depth.
+	/// For other formats, derives bit depth from format flags.
 	private static func extractBitDepth(from formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
-		// For FLAC and other formats, use the bit depth bits if available
+		// For FLAC and qflc (protected FLAC), formatFlags directly encode bit depth
+		// kAppleLosslessFormatFlag_16BitSourceData = 1
+		// kAppleLosslessFormatFlag_20BitSourceData = 2
+		// kAppleLosslessFormatFlag_24BitSourceData = 3
+		// kAppleLosslessFormatFlag_32BitSourceData = 4
+		let isQFlc = decodeFourCC(formatID) == "qflc"
+		if formatID == kAudioFormatFLAC || isQFlc {
+			switch formatFlags {
+			case 1:
+				return 16 // 16-bit CD Quality
+			case 2:
+				return 20 // 20-bit
+			case 3:
+				return 24 // 24-bit Hi-Res
+			case 4:
+				return 32 // 32-bit Hi-Res
+			default:
+				return 16 // Default to 16-bit if flag is unknown
+			}
+		}
+
+		// For other formats, try to extract from format flags
 		// kAudioFormatFlagIsSignedInteger = 0x4 (bit 2)
 		if (formatFlags & kAudioFormatFlagIsSignedInteger) != 0 {
 			// Bit depth is encoded in the lower bytes
