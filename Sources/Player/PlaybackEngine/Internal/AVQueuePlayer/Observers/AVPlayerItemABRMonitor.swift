@@ -72,7 +72,6 @@ final class AVPlayerItemABRMonitor {
 		// This is done on a background task to avoid blocking the access log handler
 		// Defensive: capture weak self and verify it's still valid after async operations
 		Task { [weak self] in
-			// Verify self is still valid at the start of the task
 			guard let strongSelf = self else {
 				print("[ABRMonitor] Monitor was deallocated before format extraction started")
 				return
@@ -80,16 +79,7 @@ final class AVPlayerItemABRMonitor {
 
 			let formatMetadata = await strongSelf.extractFormatMetadata(from: item)
 
-			// Verify self is still valid after the async format extraction
-			// (the monitor might have been deallocated while waiting)
-			guard self != nil else {
-				print("[ABRMonitor] Monitor was deallocated during format extraction")
-				return
-			}
-
-			// Verify the playerItem is still the same (in case playback changed)
-			guard strongSelf.playerItem === item else {
-				print("[ABRMonitor] Player item changed during format extraction, skipping quality update")
+			if !strongSelf.validateMonitorState(for: item, metadata: formatMetadata) {
 				return
 			}
 
@@ -103,63 +93,83 @@ final class AVPlayerItemABRMonitor {
 		}
 	}
 
+	/// Validates monitor state during async operations
+	private func validateMonitorState(for item: AVPlayerItem, metadata: AudioFormatMetadata?) -> Bool {
+		// Verify the playerItem is still the same (in case playback changed)
+		guard playerItem === item else {
+			print("[ABRMonitor] Player item changed during format extraction, skipping quality update")
+			return false
+		}
+
+		return true
+	}
+
 	/// Maps indicated bitrate to AudioQuality based on format metadata and audio specifications.
 	/// Combines bitrate, bit depth, and sample rate for confident quality detection.
 	/// This is the primary method for detecting quality changes during HLS ABR adaptation,
 	/// since ABR happens at the variant stream level (bitrate changes), not audio track level.
 	private static func mapBitrateToQuality(indicatedBitrate: Double, formatMetadata: AudioFormatMetadata? = nil) -> AudioQuality {
-		// Use format metadata to refine quality detection if available
-		if let metadata = formatMetadata {
-			let fourCC = decodeFourCC(metadata.audioFormatID)
-
-			// FLAC detection with bit-depth and sample rate analysis (including qflc: protected FLAC)
-			let isQFlc = fourCC == "qflc"
-			if metadata.audioFormatID == kAudioFormatFLAC || isQFlc {
-				// FLAC formatFlags encode bitDepth during extraction
-	
-				// HI_RES_LOSSLESS: >16-bit OR >44.1kHz
-				if metadata.bitDepth > 16 || metadata.sampleRate > 44100 {
-					return .HI_RES_LOSSLESS
-				}
-				// LOSSLESS: 16-bit AND 44.1kHz
-				return .LOSSLESS
-			}
-
-			// AAC variants (including qach and qacc: protected AAC)
-			let isQach = fourCC == "qach"
-			let isQacc = fourCC == "qacc"
-
-			if isQach || isQacc {
-				// Protected AAC quality depends on sample rate
-				if metadata.sampleRate >= 44100 {
-					return .HIGH // 44.1kHz or higher
-				} else {
-					return .LOW // Below 44.1kHz (e.g., 22.05kHz)
-				}
-			}
-
-			if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
-				return .LOW // AAC-HE always LOW
-			}
-
-			if metadata.audioFormatID == kAudioFormatMPEG4AAC {
-				return .HIGH // AAC
-			}
-
-			// eAC3 Atmos
-			if metadata.audioFormatID == kAudioFormatEnhancedAC3 {
-				return .LOSSLESS
-			}
+		guard let metadata = formatMetadata else {
+			return qualityFromBitrate(indicatedBitrate)
 		}
 
-		// Fallback to bitrate-only detection when format metadata is unavailable
-		// Quality bitrate ranges (approximate, based on typical audio codec bitrates)
-		if indicatedBitrate < 200000 {
-			return .LOW // < 200 kbps (e.g., AAC-HE 96 kbps)
-		} else if indicatedBitrate < 400000 {
-			return .HIGH // 200 - 400 kbps (e.g., AAC 256-320 kbps)
+		let fourCC = decodeFourCC(metadata.audioFormatID)
+
+		// FLAC detection
+		if isProtectedFLAC(fourCC: fourCC, formatID: metadata.audioFormatID) {
+			return qualityForFLAC(bitDepth: metadata.bitDepth, sampleRate: metadata.sampleRate)
+		}
+
+		// Protected AAC detection
+		if isProtectedAAC(fourCC: fourCC) {
+			return qualityForProtectedAAC(sampleRate: metadata.sampleRate)
+		}
+
+		// Standard AAC variants
+		if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
+			return .LOW
+		}
+
+		if metadata.audioFormatID == kAudioFormatMPEG4AAC {
+			return .HIGH
+		}
+
+		// eAC3 Atmos
+		if metadata.audioFormatID == kAudioFormatEnhancedAC3 {
+			return .LOSSLESS
+		}
+
+		return qualityFromBitrate(indicatedBitrate)
+	}
+
+	private static func isProtectedFLAC(fourCC: String, formatID: AudioFormatID) -> Bool {
+		fourCC == "qflc" || formatID == kAudioFormatFLAC
+	}
+
+	private static func isProtectedAAC(fourCC: String) -> Bool {
+		fourCC == "qach" || fourCC == "qacc"
+	}
+
+	private static func qualityForFLAC(bitDepth: Int, sampleRate: Int) -> AudioQuality {
+		// HI_RES_LOSSLESS: >16-bit OR >44.1kHz
+		if bitDepth > 16 || sampleRate > 44100 {
+			return .HI_RES_LOSSLESS
+		}
+		// LOSSLESS: 16-bit AND 44.1kHz
+		return .LOSSLESS
+	}
+
+	private static func qualityForProtectedAAC(sampleRate: Int) -> AudioQuality {
+		sampleRate >= 44100 ? .HIGH : .LOW
+	}
+
+	private static func qualityFromBitrate(_ bitrate: Double) -> AudioQuality {
+		if bitrate < 200000 {
+			return .LOW
+		} else if bitrate < 400000 {
+			return .HIGH
 		} else {
-			return .LOSSLESS // 400 kbps+ (e.g., FLAC, Vorbis)
+			return .LOSSLESS
 		}
 	}
 
@@ -173,10 +183,30 @@ final class AVPlayerItemABRMonitor {
 		}
 
 		print("[ABRMonitor] Number of access log events: \(accessLog.events.count)")
-		
+
 		// Get current media selection name
 		var currentSelectionName = "Unknown"
 		var mediaSelectionState = "Unknown"
+
+		// Only access media selection for items with tracks to avoid -12718 errors
+		// Skip media selection logging if no tracks present
+		guard !item.tracks.isEmpty else {
+			let debugInfo = """
+			[ABRMonitor Debug] Access Log Entry:
+			  - Current Media Selection: \(currentSelectionName)
+			  - Media Selection State: No tracks
+			  - Indicated Bitrate: \(event.indicatedBitrate) bps
+			  - Observed Bitrate: \(event.observedBitrate) bps
+			  - Average Audio Bitrate: \(event.averageAudioBitrate) bps
+			  - Duration Watched: \(event.durationWatched) s
+			  - Segments Downloaded Duration: \(event.segmentsDownloadedDuration) s
+			  - Number of Media Requests: \(event.numberOfMediaRequests)
+			  - Number of Stalls: \(event.numberOfStalls)
+			  - Playback Type: \(event.playbackType ?? "Unknown")
+			"""
+			print(debugInfo)
+			return
+		}
 
 		if let asset = item.asset as? AVURLAsset {
 			// Investigate audio group
@@ -226,12 +256,28 @@ final class AVPlayerItemABRMonitor {
 			return nil
 		}
 
+		let formatDescriptions = await loadFormatDescriptions(from: playerItem)
+
+		guard !formatDescriptions.isEmpty else {
+			return nil
+		}
+
+		return Self.findFirstValidAudioFormat(in: formatDescriptions)
+	}
+
+	/// Loads format descriptions from all available audio tracks
+	private func loadFormatDescriptions(from playerItem: AVPlayerItem) async -> [CMFormatDescription] {
 		var formatDescriptions = [CMFormatDescription]()
 
-		// Extract format descriptions from available tracks with error handling
+		// Extract format descriptions from audio tracks only to avoid -12718 errors on non-audio tracks
 		for track in playerItem.tracks {
 			do {
 				if let assetTrack = await track.assetTrack {
+					// Filter to audio tracks only to prevent errors when accessing audio-specific properties
+					guard assetTrack.mediaType == .audio else {
+						continue
+					}
+
 					let descriptions = try await assetTrack.load(.formatDescriptions)
 					formatDescriptions.append(contentsOf: descriptions)
 				}
@@ -242,13 +288,17 @@ final class AVPlayerItemABRMonitor {
 			}
 		}
 
-		guard !formatDescriptions.isEmpty else {
-			return nil
-		}
+		return formatDescriptions
+	}
 
-		// Extract audio format information from the first available format description
-		var metadata: AudioFormatMetadata?
+	/// Finds the first valid audio format description with metadata
+	private static func findFirstValidAudioFormat(in formatDescriptions: [CMFormatDescription]) -> AudioFormatMetadata? {
 		for formatDesc in formatDescriptions {
+			// Skip non-audio format descriptions to avoid -12718 errors
+			guard CMFormatDescriptionGetMediaType(formatDesc) == kCMMediaType_Audio else {
+				continue
+			}
+
 			guard let audioStreamDesc = formatDesc.audioStreamBasicDescription else {
 				continue
 			}
@@ -265,20 +315,18 @@ final class AVPlayerItemABRMonitor {
 			}
 
 			// Extract bit depth from format flags
-			let bitDepth = Self.extractBitDepth(from: audioFormatFlags, formatID: audioFormatID)
+			let bitDepth = extractBitDepth(from: audioFormatFlags, formatID: audioFormatID)
 
-			metadata = AudioFormatMetadata(
+			return AudioFormatMetadata(
 				audioFormatID: audioFormatID,
 				audioFormatFlags: audioFormatFlags,
 				bitDepth: bitDepth,
 				sampleRate: sampleRate
 			)
-			break // Use first valid format found
 		}
 
-		return metadata
+		return nil
 	}
-
 
 	/// Maps AudioFormatID to human-readable format name for logging.
 	private static func formatIDName(_ formatID: AudioFormatID) -> String {
@@ -304,14 +352,13 @@ final class AVPlayerItemABRMonitor {
 			let fourCC = decodeFourCC(formatID)
 			if !fourCC.isEmpty {
 				// Add helpful annotations for known FourCC codes
-				if fourCC == "qflc" {
-					return "qflc (Protected FLAC)"
-				}
-				if fourCC == "qach" {
-					return "qach (Protected AAC)"
-				}
-				if fourCC == "qacc" {
-					return "qacc (Protected AAC)"
+				let protectedFormats: [String: String] = [
+					"qflc": "Protected FLAC",
+					"qach": "Protected AAC",
+					"qacc": "Protected AAC"
+				]
+				if let annotation = protectedFormats[fourCC] {
+					return "\(fourCC) (\(annotation))"
 				}
 				return fourCC
 			}
@@ -349,24 +396,10 @@ final class AVPlayerItemABRMonitor {
 	/// For other formats, derives bit depth from format flags.
 	private static func extractBitDepth(from formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
 		// For FLAC and qflc (protected FLAC), formatFlags directly encode bit depth
-		// kAppleLosslessFormatFlag_16BitSourceData = 1
-		// kAppleLosslessFormatFlag_20BitSourceData = 2
-		// kAppleLosslessFormatFlag_24BitSourceData = 3
-		// kAppleLosslessFormatFlag_32BitSourceData = 4
 		let isQFlc = decodeFourCC(formatID) == "qflc"
 		if formatID == kAudioFormatFLAC || isQFlc {
-			switch formatFlags {
-			case 1:
-				return 16 // 16-bit CD Quality
-			case 2:
-				return 20 // 20-bit
-			case 3:
-				return 24 // 24-bit Hi-Res
-			case 4:
-				return 32 // 32-bit Hi-Res
-			default:
-				return 16 // Default to 16-bit if flag is unknown
-			}
+			let flacBitDepths: [AudioFormatFlags: Int] = [1: 16, 2: 20, 3: 24, 4: 32]
+			return flacBitDepths[formatFlags] ?? 16
 		}
 
 		// For other formats, try to extract from format flags
@@ -385,7 +418,6 @@ final class AVPlayerItemABRMonitor {
 		// Default assumption for other formats or invalid extractions
 		return 16
 	}
-
 }
 
 // MARK: - AudioFormatMetadata
