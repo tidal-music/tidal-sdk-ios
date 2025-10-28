@@ -93,7 +93,6 @@ final class AVPlayerItemABRMonitor {
 
 
 	/// Maps audio format IDs to human-readable quality names.
-	/// For FLAC, uses format flags to differentiate between HI_RES and HI_RES_LOSSLESS based on bit depth and sample rate.
 	@available(iOS 18.0, macOS 15.0, *)
 	private static func formatQualityName(from audioAttrs: AVAssetVariant.AudioAttributes) -> String {
 		let formatIds = audioAttrs.formatIDs
@@ -109,14 +108,7 @@ final class AVPlayerItemABRMonitor {
 		case kAudioFormatEnhancedAC3:
 			return "Enhanced AC-3 (Atmos)"
 		case kAudioFormatFLAC:
-			// Try to access format flags via KVC to determine FLAC quality tier
-			if let flagsValue = (audioAttrs as NSObject).value(forKey: "formatFlags") as? NSNumber {
-				let flags = UInt32(flagsValue.uint32Value)
-				return determineFLACQuality(flags: flags)
-			} else {
-				// Fallback if formatFlags not available
-				return "FLAC"
-			}
+			return "FLAC"
 		default:
 			// Format the unknown format ID as FourCC for debugging
 			let fourCC = String(format: "%c%c%c%c",
@@ -125,65 +117,6 @@ final class AVPlayerItemABRMonitor {
 				UInt8((formatId >> 8) & 0xFF),
 				UInt8(formatId & 0xFF))
 			return "Unknown (\(fourCC) / \(formatId))"
-		}
-	}
-
-	/// Determines FLAC quality tier (HI_RES vs HI_RES_LOSSLESS) based on format flags.
-	/// FLAC flags encode bit depth and sample rate information:
-	/// - Bits 13-15: Bits per sample minus 1 (0=8bit, 1=12bit, 2=16bit, 3=20bit, 4=24bit)
-	/// - Bits 4-7: Sample rate index (6=48kHz, 7=96kHz, 8=176.4kHz, 9=192kHz)
-	private static func determineFLACQuality(flags: UInt32) -> String {
-		// Extract bit depth from flags (bits 13-15)
-		// FLAC encodes bits per sample minus 1: 0=8bit, 1=12bit, 2=16bit, 3=20bit, 4=24bit
-		let bitDepthIndex = (flags >> 13) & 0x7
-		let bitDepth: Int
-		switch bitDepthIndex {
-		case 0: bitDepth = 8
-		case 1: bitDepth = 12
-		case 2: bitDepth = 16
-		case 3: bitDepth = 20
-		case 4: bitDepth = 24
-		case 5, 6, 7: bitDepth = 0 // Reserved/invalid
-		default: bitDepth = 0
-		}
-
-		// Extract sample rate from flags (bits 4-7)
-		// FLAC sample rate indices: 0=8kHz, 1=16kHz, 2=22.05kHz, 3=24kHz, 4=32kHz, 5=44.1kHz,
-		// 6=48kHz, 7=96kHz, 8=176.4kHz, 9=192kHz, 10-14=reserved, 15=invalid
-		let sampleRateIndex = (flags >> 4) & 0xF
-		let sampleRate: Int
-		switch sampleRateIndex {
-		case 0: sampleRate = 8000
-		case 1: sampleRate = 16000
-		case 2: sampleRate = 22050
-		case 3: sampleRate = 24000
-		case 4: sampleRate = 32000
-		case 5: sampleRate = 44100
-		case 6: sampleRate = 48000
-		case 7: sampleRate = 96000
-		case 8: sampleRate = 176400
-		case 9: sampleRate = 192000
-		default: sampleRate = 0 // Reserved or invalid (10-15)
-		}
-
-		// Determine quality tier based on bit depth and sample rate
-		// HI_RES_LOSSLESS: High bit depth (24+) and high sample rate (176.4kHz+)
-		// HI_RES: 24-bit at high sample rates (96kHz+)
-		// LOSSLESS: 16-20bit at any rate, or high sample rate without 24-bit
-		// Standard FLAC: 16-bit or lower
-		if bitDepth == 0 || sampleRate == 0 {
-			// Invalid flags, return generic FLAC
-			return "FLAC (unknown format)"
-		} else if bitDepth >= 24 && sampleRate >= 176400 {
-			return "FLAC (HI_RES_LOSSLESS) \(bitDepth)bit@\(sampleRate)Hz"
-		} else if bitDepth >= 24 && sampleRate >= 96000 {
-			return "FLAC (HI_RES) \(bitDepth)bit@\(sampleRate)Hz"
-		} else if bitDepth >= 20 || sampleRate >= 96000 {
-			return "FLAC (LOSSLESS) \(bitDepth)bit@\(sampleRate)Hz"
-		} else if bitDepth >= 16 {
-			return "FLAC \(bitDepth)bit@\(sampleRate)Hz"
-		} else {
-			return "FLAC (compressed) \(bitDepth)bit@\(sampleRate)Hz"
 		}
 	}
 
@@ -400,37 +333,6 @@ final class AVPlayerItemABRMonitor {
 			didSucceed: didSucceed,
 			hasAudioAttrs: hasAudioAttrs
 		)
-	}
-
-	/// Extracts detailed audio attributes from a variant if available.
-	/// This requires the current media selection option to get rendition-specific attributes.
-	@available(iOS 18.0, macOS 15.0, *)
-	private func extractAudioAttributes(from variant: AVAssetVariant, for mediaOption: AVMediaSelectionOption?) -> String {
-		guard let audioAttrs = variant.audioAttributes else {
-			return "no_audio_attributes"
-		}
-
-		var attributes: [String] = ["audio_present"]
-
-		// Extract rendition-specific attributes if we have a media option
-		if let mediaOption = mediaOption,
-		   let renditionAttrs = audioAttrs.renditionSpecificAttributes(for: mediaOption) {
-			if #available(iOS 16.0, *) {
-				if renditionAttrs.isBinaural {
-					attributes.append("binaural")
-				}
-				if renditionAttrs.isDownmix {
-					attributes.append("downmix")
-				}
-			}
-			if #available(iOS 17.0, *) {
-				if renditionAttrs.isImmersive {
-					attributes.append("immersive")
-				}
-			}
-		}
-
-		return attributes.joined(separator: ",")
 	}
 
 	/// Logs comprehensive variant switch event information for debugging.
