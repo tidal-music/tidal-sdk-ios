@@ -5,7 +5,6 @@ final class AVPlayerItemABRMonitor {
 	private weak var playerItem: AVPlayerItem?
 	private let queue: OperationQueue
 	private let onQualityChanged: (AudioQuality) -> Void
-	private var mediaSelectionObservation: NSKeyValueObservation?
 	private var accessLogObservation: NSObjectProtocol?
 	private var metricsObservationTask: Task<Void, Never>? // iOS 18+ AVMetrics observation
 	private var lastReportedQuality: AudioQuality?
@@ -19,50 +18,8 @@ final class AVPlayerItemABRMonitor {
 		self.queue = queue
 		self.onQualityChanged = onQualityChanged
 
-		// Observe currentMediaSelection changes (iOS 9+) for codec information
-		// Note: This only fires when the selected audio track actually changes.
-		// With HLS ABR, all quality variants typically use the same audio track,
-		// so this won't fire during adaptive bitrate switching.
-		mediaSelectionObservation = playerItem.observe(
-			\.currentMediaSelection,
-			options: [.old, .new, .initial]
-		) { [weak self] item, change in
-			print("[ABRMonitor] currentMediaSelection KVO triggered")
-			print("[ABRMonitor] oldValue: \(String(describing: change.oldValue))")
-			print("[ABRMonitor] newValue: \(String(describing: change.newValue))")
-
-			// Only process if the selection actually changed
-			guard let oldSelection = change.oldValue,
-			      let newSelection = change.newValue,
-			      oldSelection != newSelection
-			else {
-				print("[ABRMonitor] Selection check: oldValue=\(change.oldValue != nil), newValue=\(change.newValue != nil), equal=\(change.oldValue == change.newValue)")
-				// On initial observation, oldValue will be nil, so process it
-				if change.oldValue == nil {
-					print("[ABRMonitor] Initial observation detected, analyzing media selection")
-					self?.handleMediaSelectionChange(item: item, mediaSelection: change.newValue!)
-				}
-				return
-			}
-			print("[ABRMonitor] Audio track changed, analyzing new media selection")
-			self?.handleMediaSelectionChange(item: item, mediaSelection: newSelection)
-		}
-
-		// Observe access log for PRIMARY quality detection via bitrate
-		// This is the main method for detecting quality changes during playback,
-		// since HLS ABR happens at the variant stream level (bitrate), not audio track level.
-		accessLogObservation = NotificationCenter.default.addObserver(
-			forName: AVPlayerItem.newAccessLogEntryNotification,
-			object: playerItem,
-			queue: nil
-		) { [weak self] _ in
-			// Bitrate-based quality detection is the primary method during playback
-			self?.detectQualityFromAccessLog()
-			// Also log for debugging
-			self?.logAccessLogForDebug()
-		}
-
-		// Observe variant switch events for iOS 18+ (more accurate quality detection)
+		// Observe variant switch events for iOS 18+ (primary quality detection)
+		// These events fire when HLS adapts to a different variant stream (quality change).
 		if #available(iOS 18.0, macOS 15.0, *) {
 			metricsObservationTask = Task { [weak self, weak playerItem] in
 				guard let playerItem = playerItem else { return }
@@ -77,66 +34,26 @@ final class AVPlayerItemABRMonitor {
 				}
 			}
 		}
+
+		// Observe access log for fallback quality detection via bitrate (iOS < 18)
+		// Also used for debugging to understand bitrate patterns during playback.
+		accessLogObservation = NotificationCenter.default.addObserver(
+			forName: AVPlayerItem.newAccessLogEntryNotification,
+			object: playerItem,
+			queue: nil
+		) { [weak self] _ in
+			self?.detectQualityFromAccessLog()
+			self?.logAccessLogForDebug()
+		}
 	}
 
 	deinit {
-		mediaSelectionObservation?.invalidate()
 		if let accessLogObservation {
 			NotificationCenter.default.removeObserver(accessLogObservation)
 		}
 		metricsObservationTask?.cancel()
 	}
 
-	/// Quality detection method using currentMediaSelection.
-	/// Detection strategy (priority order):
-	/// 1. MediaSelectionOptionsTaggedMediaCharacteristics (codec format identifier from backend)
-	/// 2. displayName attribute from HLS #EXT-X-MEDIA NAME tag
-	/// 3. Fall back to bitrate detection if manifest doesn't support proper audio grouping
-	private func handleMediaSelectionChange(item: AVPlayerItem, mediaSelection: AVMediaSelection) {
-		print("[ABRMonitor] handleMediaSelectionChange called")
-
-		guard let asset = item.asset as? AVURLAsset else {
-			print("[ABRMonitor] Asset is not AVURLAsset")
-			return
-		}
-
-		guard let audioGroup = asset.mediaSelectionGroup(forMediaCharacteristic: .audible) else {
-			print("[ABRMonitor] No audio group found - manifest may not support media selection")
-			print("[ABRMonitor] Will rely on bitrate-based quality detection instead")
-			logAvailableMediaCharacteristics(asset: asset)
-			return
-		}
-
-		guard let selectedOption = mediaSelection.selectedMediaOption(in: audioGroup) else {
-			print("[ABRMonitor] No selected option in audio group")
-			return
-		}
-
-		print("[ABRMonitor] Selected option displayName: \(selectedOption.displayName)")
-		print("[ABRMonitor] Selected option metadata: \(selectedOption.commonMetadata)")
-		print("[ABRMonitor] Selected option propertyList: \(selectedOption.propertyList())")
-
-		// Parse quality from selected media option (characteristics > displayName > default LOW)
-		let quality = Self.parseQualityFromMediaOption(selectedOption)
-		print("[ABRMonitor] Parsed quality: \(quality)")
-		reportQuality(quality)
-	}
-
-	/// Logs available media characteristics to help debug manifest structure issues.
-	private func logAvailableMediaCharacteristics(asset: AVURLAsset) {
-		let mediaCharacteristics = asset.availableMediaCharacteristicsWithMediaSelectionOptions
-		print("[ABRMonitor] Available media characteristics: \(mediaCharacteristics.map { $0.rawValue }.joined(separator: ", "))")
-
-		for characteristic in mediaCharacteristics {
-			if let group = asset.mediaSelectionGroup(forMediaCharacteristic: characteristic) {
-				print("[ABRMonitor] Group for \(characteristic.rawValue): \(group.options.count) options")
-				for (index, option) in group.options.enumerated() {
-					print("[ABRMonitor]   Option [\(index)]: \(option.displayName)")
-				}
-			}
-		}
-	}
-	
 	/// Reports a quality change if it differs from the last reported quality.
 	private func reportQuality(_ quality: AudioQuality) {
 		guard quality != lastReportedQuality else {
@@ -153,94 +70,9 @@ final class AVPlayerItemABRMonitor {
 		}
 	}
 
-	/// Compares quality detection from different methods for validation.
-	/// Logs when both variant events and bitrate detection report quality changes,
-	/// allowing us to validate the variant event approach against bitrate-based detection.
-	private func compareDetectionMethods(variantQuality: AudioQuality?, bitrateQuality: AudioQuality?, timestamp: Date = Date()) {
-		// For parallel testing, log when we have both measurements
-		if let variant = variantQuality, let bitrate = bitrateQuality {
-			let match = variant == bitrate ? "✓ MATCH" : "✗ MISMATCH"
-			print("[ABRMonitor Comparison] \(match)")
-			print("[ABRMonitor Comparison]   - Variant Event: \(variant)")
-			print("[ABRMonitor Comparison]   - Bitrate Detection: \(bitrate)")
-			print("[ABRMonitor Comparison]   - Timestamp: \(timestamp)")
-		}
-	}
-
-	/// Parses AudioQuality from AVMediaSelectionOption using multiple detection strategies.
-	/// Priority order:
-	/// 1. MediaSelectionOptionsTaggedMediaCharacteristics (format: "com.tidal.format.CODECNAME")
-	/// 2. displayName attribute
-	/// 3. Default to LOW
-	private static func parseQualityFromMediaOption(_ option: AVMediaSelectionOption) -> AudioQuality {
-		// First: Try to extract quality from characteristic attribute
-		if let quality = parseQualityFromCharacteristics(option) {
-			return quality
-		}
-
-		// Second: Try to parse from displayName
-		let displayName = option.displayName.uppercased()
-
-		// Direct mapping from NAME to AudioQuality enum
-		let qualityMap: [String: AudioQuality] = [
-			"LOW": .LOW,
-			"HIGH": .HIGH,
-			"LOSSLESS": .LOSSLESS,
-			"HI_RES": .HI_RES,
-			"HI_RES_LOSSLESS": .HI_RES_LOSSLESS,
-		]
-
-		if let quality = qualityMap[displayName] {
-			return quality
-		}
-
-		// Fallback: check if displayName contains any quality string
-		for quality in [AudioQuality.HIGH, .LOSSLESS, .HI_RES, .HI_RES_LOSSLESS] {
-			if displayName.contains(quality.rawValue) {
-				return quality
-			}
-		}
-
-		// Default to LOW if no match found
-		return .LOW
-	}
-
-	/// Extracts AudioQuality from MediaSelectionOptionsTaggedMediaCharacteristics.
-	/// Characteristics are formatted as "com.tidal.format.CODECNAME" where CODECNAME maps to quality levels.
-	/// Returns nil if characteristics not found or cannot be parsed.
-	private static func parseQualityFromCharacteristics(_ option: AVMediaSelectionOption) -> AudioQuality? {
-		let propertyList = option.propertyList()
-		guard let dict = propertyList as? [String: Any],
-		      let characteristics = dict["MediaSelectionOptionsTaggedMediaCharacteristics"] as? [String] else {
-			return nil
-		}
-
-		// Map characteristic codec names to AudioQuality
-		let characteristicMap: [String: AudioQuality] = [
-			"com.tidal.format.HEAACV1": .LOW,
-			"com.tidal.format.AACLC": .HIGH,
-			"com.tidal.format.FLAC": .LOSSLESS,
-			"com.tidal.format.FLAC_HIRES": .HI_RES_LOSSLESS,
-			// Also support HI_RES for potential future formats
-			"com.tidal.format.MQA": .HI_RES,
-		]
-
-		// Find the first characteristic that matches our codec map
-		for characteristic in characteristics {
-			if let quality = characteristicMap[characteristic] {
-				print("[ABRMonitor] Quality detected from characteristic: \(characteristic) → \(quality)")
-				return quality
-			}
-		}
-
-		return nil
-	}
-
-	/// Fallback bitrate-based quality detection.
+	/// Bitrate-based quality detection from access log.
 	/// Maps indicatedBitrate to the closest available AudioQuality by comparing typical bitrates.
-	/// Used when currentMediaSelection doesn't provide quality information.
-	/// This is the primary quality detection method when the HLS manifest doesn't support
-	/// proper media selection grouping.
+	/// This is used during playback on iOS < 18, where AVMetrics API is not available.
 	private func detectQualityFromAccessLog() {
 		guard let item = playerItem,
 		      let accessLog = item.accessLog(),
