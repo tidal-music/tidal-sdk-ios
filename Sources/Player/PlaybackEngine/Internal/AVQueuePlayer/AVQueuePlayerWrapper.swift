@@ -430,51 +430,8 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	func readPlaybackMetadata(playerItem: AVPlayerItem, asset: AVPlayerAsset) {
-		guard PlayerWorld.developmentFeatureFlagProvider.shouldReadAndVerifyPlaybackMetadata else {
-			delegates.playbackMetadataLoaded(asset: asset)
-			return
-		}
-
-		// In a separate context to not block player operation
-		SafeTask {
-			if let metadata = await self.readPlaybackMetadata(playerItem) {
-				queue.dispatch {
-					guard let asset = self.playerItemAssets[playerItem] else {
-						return
-					}
-					asset.playbackMetadata = metadata
-					self.delegates.playbackMetadataLoaded(asset: asset)
-				}
-			}
-		}
-	}
-
-	func readPlaybackMetadata(_ playerItem: AVPlayerItem) async -> AssetPlaybackMetadata? {
-		do {
-			var formatDescriptions = [CMFormatDescription]()
-			for track in playerItem.tracks {
-				if let assetTrack = await track.assetTrack {
-					try await formatDescriptions.append(contentsOf: assetTrack.load(.formatDescriptions))
-				}
-			}
-
-			guard !formatDescriptions.isEmpty else {
-				return nil
-			}
-
-			let sampleRate: Float64? = Set(formatDescriptions).compactMap {
-				$0.audioStreamBasicDescription?.mSampleRate
-			}.sorted(by: { $0 > $1 }).first
-
-			let bitdepthFlags = Set(formatDescriptions).compactMap {
-				$0.audioStreamBasicDescription?.mFormatFlags
-			}.sorted(by: { $0 > $1 }).first
-
-			return AssetPlaybackMetadata(sampleRate: sampleRate, formatFlags: bitdepthFlags)
-		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.readPlaybackMetadataFailed(error: error))
-			return nil
-		}
+		// Metadata extraction is now handled by AVPlayerItemABRMonitor for quality detection
+		delegates.playbackMetadataLoaded(asset: asset)
 	}
 
 	func internalReset() {

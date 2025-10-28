@@ -1,4 +1,5 @@
 import AVFoundation
+import CoreMedia
 import Foundation
 
 final class AVPlayerItemABRMonitor {
@@ -51,8 +52,8 @@ final class AVPlayerItemABRMonitor {
 		}
 	}
 
-	/// Bitrate-based quality detection from access log.
-	/// Maps indicatedBitrate to the closest available AudioQuality by comparing typical bitrates.
+	/// Bitrate-based quality detection from access log enhanced with format metadata.
+	/// Maps indicatedBitrate + format information to AudioQuality for confident detection.
 	/// This is the primary quality detection method across all iOS versions.
 	private func detectQualityFromAccessLog() {
 		guard let item = playerItem,
@@ -67,17 +68,55 @@ final class AVPlayerItemABRMonitor {
 			return
 		}
 
-		let quality = Self.mapBitrateToQuality(indicatedBitrate: event.indicatedBitrate)
-		print("[ABRMonitor] Detected quality from bitrate: \(quality) (indicated: \(event.indicatedBitrate) bps, observed: \(event.observedBitrate) bps)")
-		reportQuality(quality)
+		// Extract format metadata asynchronously to get current variant information
+		// This is done on a background task to avoid blocking the access log handler
+		Task { [weak self] in
+			let formatMetadata = await self?.extractFormatMetadata(from: item)
+			if let metadata = formatMetadata {
+				print("[ABRMonitor] Current variant format: formatID=\(metadata.audioFormatID), bitDepth=\(metadata.bitDepth), sampleRate=\(metadata.sampleRate) Hz")
+			}
+			// Quality is determined with format metadata (or nil if extraction failed)
+			let quality = Self.mapBitrateToQuality(indicatedBitrate: event.indicatedBitrate, formatMetadata: formatMetadata)
+			self?.reportQuality(quality)
+		}
 	}
 
-	/// Maps indicated bitrate to AudioQuality based on typical bitrate ranges.
+	/// Maps indicated bitrate to AudioQuality based on typical bitrate ranges and format metadata.
+	/// Combines bitrate with audio format information (codec, bit depth) for more confident detection.
 	/// This is the primary method for detecting quality changes during HLS ABR adaptation,
 	/// since ABR happens at the variant stream level (bitrate changes), not audio track level.
-	private static func mapBitrateToQuality(indicatedBitrate: Double) -> AudioQuality {
+	private static func mapBitrateToQuality(indicatedBitrate: Double, formatMetadata: AudioFormatMetadata? = nil) -> AudioQuality {
 		// Quality bitrate ranges (approximate, based on typical audio codec bitrates)
 		// These ranges represent typical variant stream bitrates for each quality tier
+
+		// Use format metadata to refine quality detection if available
+		if let metadata = formatMetadata {
+			// FLAC with 24-bit or higher typically indicates Hi-Res tiers
+			if metadata.audioFormatID == kAudioFormatFLAC {
+				if metadata.bitDepth >= 24 {
+					if indicatedBitrate > 2000000 {
+						return .HI_RES_LOSSLESS // FLAC 24-bit+ with high bitrate
+					} else if indicatedBitrate > 1000000 {
+						return .HI_RES // FLAC 24-bit+ with moderate bitrate
+					} else {
+						return .LOSSLESS // FLAC with lower bitrate
+					}
+				} else if metadata.bitDepth == 16 {
+					return .LOSSLESS // FLAC 16-bit
+				}
+			}
+
+			// ALAC detection (Apple Lossless Audio Codec)
+			if metadata.audioFormatID == kAudioFormatAppleLossless {
+				if metadata.bitDepth >= 24 {
+					return .HI_RES // ALAC 24-bit or higher
+				} else {
+					return .LOSSLESS // ALAC 16-bit
+				}
+			}
+		}
+
+		// Fallback to bitrate-only detection when format metadata is unavailable
 		if indicatedBitrate < 200000 {
 			return .LOW // < 200 kbps (e.g., AAC 128 kbps)
 		} else if indicatedBitrate < 400000 {
@@ -146,4 +185,80 @@ final class AVPlayerItemABRMonitor {
 		print(debugInfo)
 	}
 
+	/// Extracts audio format metadata (AudioFormatID, bit depth, sample rate) from the current playing track.
+	/// Uses the same pattern as AVQueuePlayerWrapper's readPlaybackMetadata to ensure consistency.
+	private func extractFormatMetadata(from playerItem: AVPlayerItem) async -> AudioFormatMetadata? {
+		do {
+			var formatDescriptions = [CMFormatDescription]()
+			for track in playerItem.tracks {
+				if let assetTrack = await track.assetTrack {
+					try await formatDescriptions.append(contentsOf: assetTrack.load(.formatDescriptions))
+				}
+			}
+
+			guard !formatDescriptions.isEmpty else {
+				return nil
+			}
+
+			// Extract audio format information from the highest quality track
+			guard let formatDesc = formatDescriptions.first,
+			      let audioStreamDesc = formatDesc.audioStreamBasicDescription else {
+				return nil
+			}
+
+			let audioFormatID = audioStreamDesc.mFormatID
+			let audioFormatFlags = audioStreamDesc.mFormatFlags
+			let sampleRate = Int(audioStreamDesc.mSampleRate)
+
+			// Extract bit depth from format flags
+			let bitDepth = Self.extractBitDepth(from: audioFormatFlags, formatID: audioFormatID)
+
+			return AudioFormatMetadata(
+				audioFormatID: audioFormatID,
+				audioFormatFlags: audioFormatFlags,
+				bitDepth: bitDepth,
+				sampleRate: sampleRate
+			)
+		} catch {
+			// Silent failure - format metadata is optional and used only for enhanced detection
+			return nil
+		}
+	}
+
+	/// Extracts bit depth from audio format flags.
+	/// For ALAC (Apple Lossless Audio Codec), decodes bit depth from format flags.
+	private static func extractBitDepth(from formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
+		// ALAC bit depth is encoded in format flags
+		if formatID == kAudioFormatAppleLossless {
+			if formatFlags == kAppleLosslessFormatFlag_16BitSourceData {
+				return 16
+			} else if formatFlags == kAppleLosslessFormatFlag_24BitSourceData {
+				return 24
+			} else if formatFlags == kAppleLosslessFormatFlag_32BitSourceData {
+				return 32
+			}
+		}
+
+		// For FLAC and other formats, use the bit depth bits if available
+		// kAudioFormatFlagIsSignedInteger = 0x4 (bit 2)
+		if (formatFlags & kAudioFormatFlagIsSignedInteger) != 0 {
+			// Bit depth is encoded in the lower bytes
+			let bytesPerSample = formatFlags >> 16
+			return Int(bytesPerSample) * 8
+		}
+
+		// Default assumption for other formats
+		return 16
+	}
+
+}
+
+// MARK: - AudioFormatMetadata
+
+/// Metadata describing the audio format of the current playback stream.
+private struct AudioFormatMetadata: Equatable {
+	let audioFormatID: AudioFormatID
+	let audioFormatFlags: AudioFormatFlags
+	let bitDepth: Int
+	let sampleRate: Int
 }
