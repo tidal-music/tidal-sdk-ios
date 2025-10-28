@@ -117,11 +117,11 @@ final class AVPlayerItemABRMonitor {
 			if metadata.audioFormatID == kAudioFormatFLAC || isQFlc {
 				// FLAC formatFlags encode bitDepth during extraction
 	
-				// HI_RES_LOSSLESS: FLAC/qflc 20+ bit depth and 48KHz+ sample rate
-				if metadata.bitDepth >= 20 && metadata.sampleRate >= 48000 {
+				// HI_RES_LOSSLESS: >16-bit OR >44.1kHz
+				if metadata.bitDepth > 16 || metadata.sampleRate > 44100 {
 					return .HI_RES_LOSSLESS
 				}
-				// All other FLAC variants fall to LOSSLESS
+				// LOSSLESS: 16-bit AND 44.1kHz
 				return .LOSSLESS
 			}
 
