@@ -421,17 +421,29 @@ final class AVPlayerItemABRMonitor {
 		return nil
 	}
 
+	/// Safely reads a big-endian UInt32 from any byte offset in Data
+	private static func readBigEndianUInt32(from data: Data, at offset: Int) -> UInt32? {
+		guard offset + 4 <= data.count else { return nil }
+		var result: UInt32 = 0
+		for i in 0..<4 {
+			result = (result << 8) | UInt32(data[offset + i])
+		}
+		return result
+	}
+
 	/// Extracts Audio Object Type from sinf (Sample Information Box) atom
 	private static func extractAudioObjectTypeFromSinf(_ sinfData: Data) -> UInt8? {
 		// sinf contains nested atoms including potentially frma and esds
 		// Look for esds within sinf structure
-		let esdsTag: UInt32 = 0x65736473 // "esds" in little-endian
+		let esdsTag: UInt32 = 0x65736473 // "esds"
 
 		var offset = 8 // Skip sinf header
 
 		while offset + 8 <= sinfData.count {
-			let tag = sinfData.withUnsafeBytes { ptr in
-				ptr.load(fromByteOffset: offset + 4, as: UInt32.self)
+			// Safely read tag as individual bytes to avoid alignment issues
+			guard let tag = readBigEndianUInt32(from: sinfData, at: offset + 4) else {
+				offset += 1
+				continue
 			}
 
 			if tag == esdsTag {
@@ -478,15 +490,14 @@ final class AVPlayerItemABRMonitor {
 						let frmaTag: UInt32 = 0x66726d61
 						var offset = 0
 						while offset + 8 <= sinfData.count {
-							let tag = sinfData.withUnsafeBytes { ptr in
-								ptr.load(fromByteOffset: offset + 4, as: UInt32.self)
+							// Safely read tag as individual bytes to avoid alignment issues
+							guard let tag = readBigEndianUInt32(from: sinfData, at: offset + 4) else {
+								offset += 1
+								continue
 							}
 							if tag == frmaTag {
 								// Found frma, extract the fourCC at offset + 8
-								if offset + 12 <= sinfData.count {
-									let fourcc = sinfData.withUnsafeBytes { ptr in
-										ptr.load(fromByteOffset: offset + 8, as: UInt32.self).bigEndian
-									}
+								if let fourcc = readBigEndianUInt32(from: sinfData, at: offset + 8) {
 									return decodeFourCC(fourcc)
 								}
 								break
