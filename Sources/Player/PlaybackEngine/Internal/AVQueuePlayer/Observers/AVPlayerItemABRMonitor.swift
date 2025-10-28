@@ -150,7 +150,7 @@ final class AVPlayerItemABRMonitor {
 	}
 
 	private static func isProtectedAAC(fourCC: String) -> Bool {
-		fourCC == "qach" || fourCC == "qacc"
+		fourCC == "qach" || fourCC == "qaac"
 	}
 
 	private static func qualityForFLAC(bitDepth: Int, sampleRate: Int) -> AudioQuality {
@@ -416,7 +416,7 @@ final class AVPlayerItemABRMonitor {
 				let protectedFormats: [String: String] = [
 					"qflc": "Protected FLAC",
 					"qach": "Protected AAC",
-					"qacc": "Protected AAC"
+					"qaac": "Protected AAC"
 				]
 				if let annotation = protectedFormats[fourCC] {
 					return "\(fourCC) (\(annotation))"
