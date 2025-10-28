@@ -188,6 +188,26 @@ final class AVPlayerItemABRMonitor {
 		var currentSelectionName = "Unknown"
 		var mediaSelectionState = "Unknown"
 
+		// Only access media selection for items with tracks to avoid -12718 errors
+		// Skip media selection logging if no tracks present
+		guard !item.tracks.isEmpty else {
+			let debugInfo = """
+			[ABRMonitor Debug] Access Log Entry:
+			  - Current Media Selection: \(currentSelectionName)
+			  - Media Selection State: No tracks
+			  - Indicated Bitrate: \(event.indicatedBitrate) bps
+			  - Observed Bitrate: \(event.observedBitrate) bps
+			  - Average Audio Bitrate: \(event.averageAudioBitrate) bps
+			  - Duration Watched: \(event.durationWatched) s
+			  - Segments Downloaded Duration: \(event.segmentsDownloadedDuration) s
+			  - Number of Media Requests: \(event.numberOfMediaRequests)
+			  - Number of Stalls: \(event.numberOfStalls)
+			  - Playback Type: \(event.playbackType ?? "Unknown")
+			"""
+			print(debugInfo)
+			return
+		}
+
 		if let asset = item.asset as? AVURLAsset {
 			// Investigate audio group
 			let mediaCharacteristics = asset.availableMediaCharacteristicsWithMediaSelectionOptions
@@ -245,14 +265,19 @@ final class AVPlayerItemABRMonitor {
 		return Self.findFirstValidAudioFormat(in: formatDescriptions)
 	}
 
-	/// Loads format descriptions from all available player item tracks
+	/// Loads format descriptions from all available audio tracks
 	private func loadFormatDescriptions(from playerItem: AVPlayerItem) async -> [CMFormatDescription] {
 		var formatDescriptions = [CMFormatDescription]()
 
-		// Extract format descriptions from available tracks with error handling
+		// Extract format descriptions from audio tracks only to avoid -12718 errors on non-audio tracks
 		for track in playerItem.tracks {
 			do {
 				if let assetTrack = await track.assetTrack {
+					// Filter to audio tracks only to prevent errors when accessing audio-specific properties
+					guard assetTrack.mediaType == .audio else {
+						continue
+					}
+
 					let descriptions = try await assetTrack.load(.formatDescriptions)
 					formatDescriptions.append(contentsOf: descriptions)
 				}
@@ -269,6 +294,11 @@ final class AVPlayerItemABRMonitor {
 	/// Finds the first valid audio format description with metadata
 	private static func findFirstValidAudioFormat(in formatDescriptions: [CMFormatDescription]) -> AudioFormatMetadata? {
 		for formatDesc in formatDescriptions {
+			// Skip non-audio format descriptions to avoid -12718 errors
+			guard CMFormatDescriptionGetMediaType(formatDesc) == kCMMediaType_Audio else {
+				continue
+			}
+
 			guard let audioStreamDesc = formatDesc.audioStreamBasicDescription else {
 				continue
 			}
