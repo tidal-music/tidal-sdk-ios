@@ -103,48 +103,52 @@ final class AVPlayerItemABRMonitor {
 		}
 	}
 
-	/// Maps indicated bitrate to AudioQuality based on typical bitrate ranges and format metadata.
-	/// Combines bitrate with audio format information (codec, bit depth) for more confident detection.
+	/// Maps indicated bitrate to AudioQuality based on format metadata and audio specifications.
+	/// Combines bitrate, bit depth, and sample rate for confident quality detection.
 	/// This is the primary method for detecting quality changes during HLS ABR adaptation,
 	/// since ABR happens at the variant stream level (bitrate changes), not audio track level.
 	private static func mapBitrateToQuality(indicatedBitrate: Double, formatMetadata: AudioFormatMetadata? = nil) -> AudioQuality {
 		// Use format metadata to refine quality detection if available
 		if let metadata = formatMetadata {
-			// FLAC detection with bit-depth analysis (including qflc: protected FLAC)
-			let isQFlc = decodeFourCC(metadata.audioFormatID) == "qflc"
+			let fourCC = decodeFourCC(metadata.audioFormatID)
+
+			// FLAC detection with bit-depth and sample rate analysis (including qflc: protected FLAC)
+			let isQFlc = fourCC == "qflc"
 			if metadata.audioFormatID == kAudioFormatFLAC || isQFlc {
-				// For qflc (protected FLAC), bitDepth might be 0, so infer from bitrate
-				let inferredBitDepth = metadata.bitDepth > 0 ? metadata.bitDepth : Self.inferBitDepthFromBitrate(indicatedBitrate)
-
-				if inferredBitDepth >= 24 {
-					// FLAC 24-bit or higher (Hi-Res source)
-					if indicatedBitrate > 2000000 {
-						return .HI_RES_LOSSLESS // FLAC Hi-Res 24-bit+ at high bitrate (>2 Mbps)
-					} else if indicatedBitrate > 1000000 {
-						return .HI_RES // FLAC Hi-Res 24-bit+ at moderate bitrate (>1 Mbps)
-					} else {
-						return .LOSSLESS // FLAC Hi-Res downmixed to lower bitrate
-					}
-				} else if inferredBitDepth == 16 {
-					return .LOSSLESS // FLAC CD Quality (16-bit)
+				// FLAC formatFlags encode bitDepth during extraction
+	
+				// HI_RES_LOSSLESS: >16-bit OR >44.1kHz
+				if metadata.bitDepth > 16 || metadata.sampleRate > 44100 {
+					return .HI_RES_LOSSLESS
 				}
+				// LOSSLESS: 16-bit AND 44.1kHz
+				return .LOSSLESS
 			}
 
-			// AAC variants
-			if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
-				return .LOW // AAC-HE (Low bitrate, typically 96 kbps)
-			}
-			if metadata.audioFormatID == kAudioFormatMPEG4AAC {
-				if indicatedBitrate > 250000 {
-					return .HIGH // AAC at high bitrate (256-320 kbps)
+			// AAC variants (including qach and qacc: protected AAC)
+			let isQach = fourCC == "qach"
+			let isQacc = fourCC == "qacc"
+
+			if isQach || isQacc {
+				// Protected AAC quality depends on sample rate
+				if metadata.sampleRate >= 44100 {
+					return .HIGH // 44.1kHz or higher
 				} else {
-					return .LOW // AAC at low-mid bitrate
+					return .LOW // Below 44.1kHz (e.g., 22.05kHz)
 				}
+			}
+
+			if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
+				return .LOW // AAC-HE always LOW
+			}
+
+			if metadata.audioFormatID == kAudioFormatMPEG4AAC {
+				return .HIGH // AAC
 			}
 
 			// eAC3 Atmos
 			if metadata.audioFormatID == kAudioFormatEnhancedAC3 {
-				return .LOSSLESS // Atmos is treated as LOSSLESS quality
+				return .LOSSLESS
 			}
 		}
 
@@ -154,12 +158,8 @@ final class AVPlayerItemABRMonitor {
 			return .LOW // < 200 kbps (e.g., AAC-HE 96 kbps)
 		} else if indicatedBitrate < 400000 {
 			return .HIGH // 200 - 400 kbps (e.g., AAC 256-320 kbps)
-		} else if indicatedBitrate < 1200000 {
-			return .LOSSLESS // 400 kbps - 1.2 Mbps (e.g., FLAC CD, Vorbis)
-		} else if indicatedBitrate < 3000000 {
-			return .HI_RES // 1.2 - 3 Mbps (e.g., FLAC Hi-Res)
 		} else {
-			return .HI_RES_LOSSLESS // > 3 Mbps (e.g., FLAC Hi-Res Lossless)
+			return .LOSSLESS // 400 kbps+ (e.g., FLAC, Vorbis)
 		}
 	}
 
@@ -279,21 +279,6 @@ final class AVPlayerItemABRMonitor {
 		return metadata
 	}
 
-	/// Infers FLAC bit depth from indicated bitrate when mBitsPerChannel is unavailable.
-	/// Used for protected FLAC (qflc) where bit depth info may not be directly available.
-	private static func inferBitDepthFromBitrate(_ bitrate: Double) -> Int {
-		// Typical FLAC bitrates by quality:
-		// - 16-bit CD Quality: 600-900 kbps
-		// - 24-bit Hi-Res: 1.2-2.5 Mbps
-		// - 24-bit Hi-Res Max: >2.5 Mbps
-		if bitrate > 2000000 {
-			return 24 // High bitrate suggests 24-bit Hi-Res
-		} else if bitrate > 1000000 {
-			return 24 // Moderate-high bitrate suggests 24-bit
-		} else {
-			return 16 // Lower bitrate suggests 16-bit CD quality
-		}
-	}
 
 	/// Maps AudioFormatID to human-readable format name for logging.
 	private static func formatIDName(_ formatID: AudioFormatID) -> String {
@@ -321,6 +306,12 @@ final class AVPlayerItemABRMonitor {
 				// Add helpful annotations for known FourCC codes
 				if fourCC == "qflc" {
 					return "qflc (Protected FLAC)"
+				}
+				if fourCC == "qach" {
+					return "qach (Protected AAC)"
+				}
+				if fourCC == "qacc" {
+					return "qacc (Protected AAC)"
 				}
 				return fourCC
 			}
