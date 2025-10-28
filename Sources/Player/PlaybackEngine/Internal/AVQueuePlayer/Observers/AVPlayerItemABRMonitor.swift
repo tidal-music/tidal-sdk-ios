@@ -125,12 +125,23 @@ final class AVPlayerItemABRMonitor {
 				return .LOSSLESS
 			}
 
-			// AAC variants (including qach: protected AAC)
+			// AAC variants (including qach and qacc: protected AAC)
 			let isQach = fourCC == "qach"
-			if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE || isQach {
-				// Protected AAC (qach) or AAC-HE both map to LOW quality
-				return .LOW
+			let isQacc = fourCC == "qacc"
+
+			if isQach || isQacc {
+				// Protected AAC quality depends on sample rate
+				if metadata.sampleRate >= 44100 {
+					return .HIGH // 44.1kHz or higher
+				} else {
+					return .LOW // Below 44.1kHz (e.g., 22.05kHz)
+				}
 			}
+
+			if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
+				return .LOW // AAC-HE always LOW
+			}
+
 			if metadata.audioFormatID == kAudioFormatMPEG4AAC {
 				return .HIGH // AAC
 			}
@@ -298,6 +309,9 @@ final class AVPlayerItemABRMonitor {
 				}
 				if fourCC == "qach" {
 					return "qach (Protected AAC)"
+				}
+				if fourCC == "qacc" {
+					return "qacc (Protected AAC)"
 				}
 				return fourCC
 			}
