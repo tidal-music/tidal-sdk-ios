@@ -70,14 +70,35 @@ final class AVPlayerItemABRMonitor {
 
 		// Extract format metadata asynchronously to get current variant information
 		// This is done on a background task to avoid blocking the access log handler
+		// Defensive: capture weak self and verify it's still valid after async operations
 		Task { [weak self] in
-			let formatMetadata = await self?.extractFormatMetadata(from: item)
+			// Verify self is still valid at the start of the task
+			guard let strongSelf = self else {
+				print("[ABRMonitor] Monitor was deallocated before format extraction started")
+				return
+			}
+
+			let formatMetadata = await strongSelf.extractFormatMetadata(from: item)
+
+			// Verify self is still valid after the async format extraction
+			// (the monitor might have been deallocated while waiting)
+			guard self != nil else {
+				print("[ABRMonitor] Monitor was deallocated during format extraction")
+				return
+			}
+
+			// Verify the playerItem is still the same (in case playback changed)
+			guard strongSelf.playerItem === item else {
+				print("[ABRMonitor] Player item changed during format extraction, skipping quality update")
+				return
+			}
+
 			if let metadata = formatMetadata {
 				print("[ABRMonitor] Current variant format: formatID=\(metadata.audioFormatID), bitDepth=\(metadata.bitDepth), sampleRate=\(metadata.sampleRate) Hz")
 			}
 			// Quality is determined with format metadata (or nil if extraction failed)
 			let quality = Self.mapBitrateToQuality(indicatedBitrate: event.indicatedBitrate, formatMetadata: formatMetadata)
-			self?.reportQuality(quality)
+			strongSelf.reportQuality(quality)
 		}
 	}
 
