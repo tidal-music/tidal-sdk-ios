@@ -110,9 +110,13 @@ final class AVPlayerItemABRMonitor {
 	private static func mapBitrateToQuality(indicatedBitrate: Double, formatMetadata: AudioFormatMetadata? = nil) -> AudioQuality {
 		// Use format metadata to refine quality detection if available
 		if let metadata = formatMetadata {
-			// FLAC detection with bit-depth analysis
-			if metadata.audioFormatID == kAudioFormatFLAC {
-				if metadata.bitDepth >= 24 {
+			// FLAC detection with bit-depth analysis (including qflc: protected FLAC)
+			let isQFlc = decodeFourCC(metadata.audioFormatID) == "qflc"
+			if metadata.audioFormatID == kAudioFormatFLAC || isQFlc {
+				// For qflc (protected FLAC), bitDepth might be 0, so infer from bitrate
+				let inferredBitDepth = metadata.bitDepth > 0 ? metadata.bitDepth : Self.inferBitDepthFromBitrate(indicatedBitrate)
+
+				if inferredBitDepth >= 24 {
 					// FLAC 24-bit or higher (Hi-Res source)
 					if indicatedBitrate > 2000000 {
 						return .HI_RES_LOSSLESS // FLAC Hi-Res 24-bit+ at high bitrate (>2 Mbps)
@@ -121,7 +125,7 @@ final class AVPlayerItemABRMonitor {
 					} else {
 						return .LOSSLESS // FLAC Hi-Res downmixed to lower bitrate
 					}
-				} else if metadata.bitDepth == 16 {
+				} else if inferredBitDepth == 16 {
 					return .LOSSLESS // FLAC CD Quality (16-bit)
 				}
 			}
@@ -275,6 +279,22 @@ final class AVPlayerItemABRMonitor {
 		return metadata
 	}
 
+	/// Infers FLAC bit depth from indicated bitrate when mBitsPerChannel is unavailable.
+	/// Used for protected FLAC (qflc) where bit depth info may not be directly available.
+	private static func inferBitDepthFromBitrate(_ bitrate: Double) -> Int {
+		// Typical FLAC bitrates by quality:
+		// - 16-bit CD Quality: 600-900 kbps
+		// - 24-bit Hi-Res: 1.2-2.5 Mbps
+		// - 24-bit Hi-Res Max: >2.5 Mbps
+		if bitrate > 2000000 {
+			return 24 // High bitrate suggests 24-bit Hi-Res
+		} else if bitrate > 1000000 {
+			return 24 // Moderate-high bitrate suggests 24-bit
+		} else {
+			return 16 // Lower bitrate suggests 16-bit CD quality
+		}
+	}
+
 	/// Maps AudioFormatID to human-readable format name for logging.
 	private static func formatIDName(_ formatID: AudioFormatID) -> String {
 		switch formatID {
@@ -298,6 +318,10 @@ final class AVPlayerItemABRMonitor {
 			// Try to decode as FourCC string if possible
 			let fourCC = decodeFourCC(formatID)
 			if !fourCC.isEmpty {
+				// Add helpful annotations for known FourCC codes
+				if fourCC == "qflc" {
+					return "qflc (Protected FLAC)"
+				}
 				return fourCC
 			}
 			return "Unknown (0x\(String(formatID, radix: 16)))"
@@ -330,10 +354,31 @@ final class AVPlayerItemABRMonitor {
 	}
 
 	/// Extracts bit depth from audio format flags.
-	/// For FLAC and other formats, decodes bit depth from format flags.
-	/// Defensive: validates flags and returns sensible defaults if extraction fails.
+	/// For FLAC/qflc, the formatFlags directly encode the bit depth.
+	/// For other formats, derives bit depth from format flags.
 	private static func extractBitDepth(from formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
-		// For FLAC and other formats, use the bit depth bits if available
+		// For FLAC and qflc (protected FLAC), formatFlags directly encode bit depth
+		// kAppleLosslessFormatFlag_16BitSourceData = 1
+		// kAppleLosslessFormatFlag_20BitSourceData = 2
+		// kAppleLosslessFormatFlag_24BitSourceData = 3
+		// kAppleLosslessFormatFlag_32BitSourceData = 4
+		let isQFlc = decodeFourCC(formatID) == "qflc"
+		if formatID == kAudioFormatFLAC || isQFlc {
+			switch formatFlags {
+			case 1:
+				return 16 // 16-bit CD Quality
+			case 2:
+				return 20 // 20-bit
+			case 3:
+				return 24 // 24-bit Hi-Res
+			case 4:
+				return 32 // 32-bit Hi-Res
+			default:
+				return 16 // Default to 16-bit if flag is unknown
+			}
+		}
+
+		// For other formats, try to extract from format flags
 		// kAudioFormatFlagIsSignedInteger = 0x4 (bit 2)
 		if (formatFlags & kAudioFormatFlagIsSignedInteger) != 0 {
 			// Bit depth is encoded in the lower bytes
