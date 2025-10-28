@@ -350,6 +350,44 @@ final class AVPlayerItemABRMonitor {
 		return nil
 	}
 
+	/// Extracts the true codec from the frma atom for encrypted tracks
+	/// When formatID is 'enca' (encrypted), the frma atom contains the actual codec family
+	/// Returns the fourCC string: 'mp4a' (AAC), 'alac', 'fLaC', etc.
+	private static func extractFrmaCodec(from formatDesc: CMFormatDescription) -> String? {
+		guard let extensions = CMFormatDescriptionGetExtensions(formatDesc) as? [String: Any] else {
+			return nil
+		}
+
+		// Try to get the sample description extension atoms
+		let possibleKeys = [
+			kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms as String,
+			"SampleDescriptionExtensionAtoms"
+		]
+
+		for key in possibleKeys {
+			if let atoms = extensions[key] as? [String: Any],
+			   let frmaData = atoms["frma"] as? Data,
+			   frmaData.count >= 4 {
+				// frma contains the fourCC as a big-endian UInt32
+				let fourcc = frmaData.withUnsafeBytes { $0.load(as: UInt32.self).bigEndian }
+				// Decode as ASCII fourCC
+				let bytes = [
+					UInt8((fourcc >> 24) & 0xFF),
+					UInt8((fourcc >> 16) & 0xFF),
+					UInt8((fourcc >> 8) & 0xFF),
+					UInt8(fourcc & 0xFF)
+				]
+				let string = String(bytes: bytes, encoding: .ascii) ?? ""
+				let trimmed = string.trimmingCharacters(in: .whitespaces)
+				if !trimmed.isEmpty {
+					return trimmed
+				}
+			}
+		}
+
+		return nil
+	}
+
 	/// Finds the first valid audio format description with metadata
 	private static func findFirstValidAudioFormat(in formatDescriptions: [CMFormatDescription]) -> AudioFormatMetadata? {
 		for formatDesc in formatDescriptions {
@@ -379,12 +417,16 @@ final class AVPlayerItemABRMonitor {
 			// Extract Audio Object Type from format description for AAC profile detection
 			let audioObjectType = extractAudioObjectType(from: formatDesc)
 
+			// Extract frma atom for encrypted tracks to discover true codec
+			let frmaCodec = extractFrmaCodec(from: formatDesc)
+
 			return AudioFormatMetadata(
 				audioFormatID: audioFormatID,
 				audioFormatFlags: audioFormatFlags,
 				bitDepth: bitDepth,
 				sampleRate: sampleRate,
-				audioObjectType: audioObjectType
+				audioObjectType: audioObjectType,
+				frmaCodec: frmaCodec
 			)
 		}
 
@@ -497,4 +539,5 @@ private struct AudioFormatMetadata: Equatable {
 	let bitDepth: Int
 	let sampleRate: Int
 	let audioObjectType: UInt8?  // For AAC variants: 2=LC, 5=HE, 29=HE-v2
+	let frmaCodec: String?  // For encrypted tracks: 'mp4a', 'alac', 'fLaC', etc.
 }
