@@ -402,7 +402,7 @@ final class AVPlayerItemABRMonitor {
 	}
 
 	/// Extracts variant information from AVMetricPlayerItemVariantSwitchEvent.
-	/// Retrieves all available variant metadata including audio/video attributes.
+	/// Retrieves all available audio metadata including bitrates and attributes.
 	@available(iOS 18.0, macOS 15.0, *)
 	private func extractVariantInfo(from event: AVMetricPlayerItemVariantSwitchEvent) -> VariantInfo {
 		let fromVariant = event.fromVariant
@@ -410,53 +410,61 @@ final class AVPlayerItemABRMonitor {
 		let didSucceed = event.didSucceed
 
 		// Extract audio attributes from "to" variant (the new quality tier)
-		var bitrate: Double = 0
-		var mediaType: String = "audio"
-		var codec: String = "unknown"
-		var reason: String = didSucceed ? "switch_successful" : "switch_failed"
-		var audioAttributes: String = "none"
-		var videoAttributes: String = "none"
-		var audioRenditionAttributes: String = "none"
+		var toBitrate: Double = 0
+		var fromBitrate: Double = 0
+		let mediaType: String = "audio"
+		let codec: String = "unknown"
+		let reason: String = didSucceed ? "switch_successful" : "switch_failed"
 		var hasAudioAttrs = false
-		var hasVideoAttrs = false
 
-		// Get audio attributes from the new variant
+		// Extract all available audio metadata from "to" variant (new quality tier)
 		if let audioAttrs = toVariant.audioAttributes {
-			audioAttributes = "present"
 			hasAudioAttrs = true
 
-			// Try to get rendition-specific attributes
-			// Note: We'd need the current mediaSelectionOption to get these,
-			// so we'll document this for future enhancement
-			if #available(iOS 16.0, *) {
-				audioRenditionAttributes = "available (iOS 16+)"
+			// Get the average bitrate from audio attributes
+			// This uses KVC to access the private _averageBitRate property
+			if let avgBitrate = (audioAttrs as NSObject).value(forKey: "_averageBitRate") as? NSNumber {
+				toBitrate = avgBitrate.doubleValue
+				print("[ABRMonitor] toVariant audio average bitrate: \(toBitrate) bps (\(toBitrate / 1000) kbps)")
+			}
+
+			// Get peak bitrate if available
+			if let peakBitrate = (audioAttrs as NSObject).value(forKey: "_peakBitRate") as? NSNumber {
+				print("[ABRMonitor] toVariant audio peak bitrate: \(peakBitrate.doubleValue) bps (\(peakBitrate.doubleValue / 1000) kbps)")
 			}
 		}
 
-		// Get video attributes from the new variant (for reference)
-		if let videoAttrs = toVariant.videoAttributes {
-			videoAttributes = "present"
-			hasVideoAttrs = true
+		// Extract all available audio metadata from "from" variant (previous quality tier) if available
+		if let fromVariant = fromVariant, let audioAttrs = fromVariant.audioAttributes {
+			if let avgBitrate = (audioAttrs as NSObject).value(forKey: "_averageBitRate") as? NSNumber {
+				fromBitrate = avgBitrate.doubleValue
+				print("[ABRMonitor] fromVariant audio average bitrate: \(fromBitrate) bps (\(fromBitrate / 1000) kbps)")
+			}
+
+			// Get peak bitrate if available
+			if let peakBitrate = (audioAttrs as NSObject).value(forKey: "_peakBitRate") as? NSNumber {
+				print("[ABRMonitor] fromVariant audio peak bitrate: \(peakBitrate.doubleValue) bps (\(peakBitrate.doubleValue / 1000) kbps)")
+			}
 		}
 
 		print("[ABRMonitor] Variant Switch Details:")
 		print("[ABRMonitor]   - Success: \(didSucceed)")
-		print("[ABRMonitor]   - From Variant: \(fromVariant != nil ? "present" : "nil (initial)")")
-		print("[ABRMonitor]   - To Variant: present")
-		print("[ABRMonitor]   - Audio Attributes: \(audioAttributes)")
-		print("[ABRMonitor]   - Video Attributes: \(videoAttributes)")
-		print("[ABRMonitor]   - Audio Rendition Attributes: \(audioRenditionAttributes)")
+		print("[ABRMonitor]   - From Variant: \(fromVariant != nil ? "present (bitrate: \(fromBitrate) bps)" : "nil (initial)")")
+		print("[ABRMonitor]   - To Variant: present (bitrate: \(toBitrate) bps)")
+		if fromBitrate > 0 {
+			let percentChange = (toBitrate - fromBitrate) / fromBitrate * 100
+			print("[ABRMonitor]   - Bitrate Change: \(fromBitrate) → \(toBitrate) bps (\(String(format: "%.1f", percentChange))% change)")
+		}
 
 		return VariantInfo(
-			bitrate: bitrate,
+			bitrate: toBitrate,
 			mediaType: mediaType,
 			codec: codec,
 			reason: reason,
 			fromVariant: fromVariant != nil,
 			toVariant: true,
 			didSucceed: didSucceed,
-			hasAudioAttrs: hasAudioAttrs,
-			hasVideoAttrs: hasVideoAttrs
+			hasAudioAttrs: hasAudioAttrs
 		)
 	}
 
@@ -515,6 +523,5 @@ final class AVPlayerItemABRMonitor {
 		let toVariant: Bool
 		let didSucceed: Bool
 		let hasAudioAttrs: Bool
-		let hasVideoAttrs: Bool
 	}
 }
