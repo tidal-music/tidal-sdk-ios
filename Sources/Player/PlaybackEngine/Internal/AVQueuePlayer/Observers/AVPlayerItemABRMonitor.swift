@@ -146,7 +146,9 @@ final class AVPlayerItemABRMonitor {
 	}
 
 	private static func isProtectedFLAC(fourCC: String, formatID: AudioFormatID) -> Bool {
-		fourCC == "qflc" || formatID == kAudioFormatFLAC
+		// Primary: check the actual formatID (reliable)
+		// Backup: check 'qflc' fourCC (QuickTime encoder tag, less reliable but can help with protected streams)
+		formatID == kAudioFormatFLAC || fourCC == "qflc"
 	}
 
 	private static func isProtectedAAC(fourCC: String) -> Bool {
@@ -413,6 +415,9 @@ final class AVPlayerItemABRMonitor {
 			let fourCC = decodeFourCC(formatID)
 			if !fourCC.isEmpty {
 				// Add helpful annotations for known FourCC codes
+				// Note: 'qflc', 'qaac', 'qach' are QuickTime encoder tags, not codec indicators.
+				// They're shown here for logging/debugging only. For quality detection,
+				// we rely on the actual formatID and AudioSpecificConfig.
 				let protectedFormats: [String: String] = [
 					"qflc": "Protected FLAC",
 					"qach": "Protected AAC",
@@ -453,10 +458,12 @@ final class AVPlayerItemABRMonitor {
 	}
 
 	/// Extracts bit depth from audio format flags.
-	/// For FLAC/qflc, the formatFlags directly encode the bit depth.
+	/// For FLAC, the formatFlags directly encode the bit depth.
 	/// For other formats, derives bit depth from format flags.
 	private static func extractBitDepth(from formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
-		// For FLAC and qflc (protected FLAC), formatFlags directly encode bit depth
+		// For FLAC, formatFlags directly encode bit depth
+		// Primary: check kAudioFormatFLAC (reliable)
+		// Backup: check 'qflc' fourCC for protected streams (less reliable but useful)
 		let isQFlc = decodeFourCC(formatID) == "qflc"
 		if formatID == kAudioFormatFLAC || isQFlc {
 			let flacBitDepths: [AudioFormatFlags: Int] = [1: 16, 2: 20, 3: 24, 4: 32]
