@@ -402,30 +402,93 @@ final class AVPlayerItemABRMonitor {
 	}
 
 	/// Extracts variant information from AVMetricPlayerItemVariantSwitchEvent.
+	/// Retrieves all available variant metadata including audio/video attributes.
 	@available(iOS 18.0, macOS 15.0, *)
 	private func extractVariantInfo(from event: AVMetricPlayerItemVariantSwitchEvent) -> VariantInfo {
-		// Extract bitrate and other variant details
-		// Note: The exact properties available depend on AVMetrics implementation
-		// Common properties expected: indicatedBitrate, mediaType, codec, etc.
+		let fromVariant = event.fromVariant
+		let toVariant = event.toVariant
+		let didSucceed = event.didSucceed
 
+		// Extract audio attributes from "to" variant (the new quality tier)
 		var bitrate: Double = 0
-		var mediaType: String = "unknown"
+		var mediaType: String = "audio"
 		var codec: String = "unknown"
-		var reason: String = "unknown"
+		var reason: String = didSucceed ? "switch_successful" : "switch_failed"
+		var audioAttributes: String = "none"
+		var videoAttributes: String = "none"
+		var audioRenditionAttributes: String = "none"
+		var hasAudioAttrs = false
+		var hasVideoAttrs = false
 
-		// Try to access variant-specific information
-		// The AVMetricPlayerItemVariantSwitchEvent object should contain this information
-		// based on AVFoundation's metric event design
+		// Get audio attributes from the new variant
+		if let audioAttrs = toVariant.audioAttributes {
+			audioAttributes = "present"
+			hasAudioAttrs = true
 
-		// For now, we'll collect what's available through reflection/inspection
-		let mirror = Mirror(reflecting: event)
-		for child in mirror.children {
-			let label = child.label ?? "unknown"
-			let value = child.value
-			print("[ABRMonitor] Variant event property: \(label) = \(value)")
+			// Try to get rendition-specific attributes
+			// Note: We'd need the current mediaSelectionOption to get these,
+			// so we'll document this for future enhancement
+			if #available(iOS 16.0, *) {
+				audioRenditionAttributes = "available (iOS 16+)"
+			}
 		}
 
-		return VariantInfo(bitrate: bitrate, mediaType: mediaType, codec: codec, reason: reason)
+		// Get video attributes from the new variant (for reference)
+		if let videoAttrs = toVariant.videoAttributes {
+			videoAttributes = "present"
+			hasVideoAttrs = true
+		}
+
+		print("[ABRMonitor] Variant Switch Details:")
+		print("[ABRMonitor]   - Success: \(didSucceed)")
+		print("[ABRMonitor]   - From Variant: \(fromVariant != nil ? "present" : "nil (initial)")")
+		print("[ABRMonitor]   - To Variant: present")
+		print("[ABRMonitor]   - Audio Attributes: \(audioAttributes)")
+		print("[ABRMonitor]   - Video Attributes: \(videoAttributes)")
+		print("[ABRMonitor]   - Audio Rendition Attributes: \(audioRenditionAttributes)")
+
+		return VariantInfo(
+			bitrate: bitrate,
+			mediaType: mediaType,
+			codec: codec,
+			reason: reason,
+			fromVariant: fromVariant != nil,
+			toVariant: true,
+			didSucceed: didSucceed,
+			hasAudioAttrs: hasAudioAttrs,
+			hasVideoAttrs: hasVideoAttrs
+		)
+	}
+
+	/// Extracts detailed audio attributes from a variant if available.
+	/// This requires the current media selection option to get rendition-specific attributes.
+	@available(iOS 18.0, macOS 15.0, *)
+	private func extractAudioAttributes(from variant: AVAssetVariant, for mediaOption: AVMediaSelectionOption?) -> String {
+		guard let audioAttrs = variant.audioAttributes else {
+			return "no_audio_attributes"
+		}
+
+		var attributes: [String] = ["audio_present"]
+
+		// Extract rendition-specific attributes if we have a media option
+		if let mediaOption = mediaOption,
+		   let renditionAttrs = audioAttrs.renditionSpecificAttributes(for: mediaOption) {
+			if #available(iOS 16.0, *) {
+				if renditionAttrs.isBinaural {
+					attributes.append("binaural")
+				}
+				if renditionAttrs.isDownmix {
+					attributes.append("downmix")
+				}
+			}
+			if #available(iOS 17.0, *) {
+				if renditionAttrs.isImmersive {
+					attributes.append("immersive")
+				}
+			}
+		}
+
+		return attributes.joined(separator: ",")
 	}
 
 	/// Logs comprehensive variant switch event information for debugging.
@@ -448,5 +511,10 @@ final class AVPlayerItemABRMonitor {
 		let mediaType: String
 		let codec: String
 		let reason: String
+		let fromVariant: Bool
+		let toVariant: Bool
+		let didSucceed: Bool
+		let hasAudioAttrs: Bool
+		let hasVideoAttrs: Bool
 	}
 }
