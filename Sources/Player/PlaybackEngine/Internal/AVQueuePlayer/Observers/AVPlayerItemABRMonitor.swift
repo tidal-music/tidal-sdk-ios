@@ -290,9 +290,43 @@ final class AVPlayerItemABRMonitor {
 			return "PCM"
 		case kAudioFormatAC3:
 			return "Dolby Digital"
+		case kAudioFormatMPEGLayer3:
+			return "MP3"
+		case kAudioFormatOpus:
+			return "Opus"
 		default:
+			// Try to decode as FourCC string if possible
+			let fourCC = decodeFourCC(formatID)
+			if !fourCC.isEmpty {
+				return fourCC
+			}
 			return "Unknown (0x\(String(formatID, radix: 16)))"
 		}
+	}
+
+	/// Decodes AudioFormatID as a FourCC string (4-character code).
+	private static func decodeFourCC(_ formatID: AudioFormatID) -> String {
+		let bytes = [
+			UInt8((formatID >> 24) & 0xFF),
+			UInt8((formatID >> 16) & 0xFF),
+			UInt8((formatID >> 8) & 0xFF),
+			UInt8(formatID & 0xFF)
+		]
+
+		// Check if all bytes are printable ASCII characters (32-126)
+		let isAllPrintable = bytes.allSatisfy { byte in
+			byte >= 32 && byte <= 126
+		}
+
+		if isAllPrintable {
+			let string = String(bytes: bytes, encoding: .ascii) ?? ""
+			let trimmed = string.trimmingCharacters(in: .whitespaces)
+			if !trimmed.isEmpty {
+				return trimmed
+			}
+		}
+
+		return ""
 	}
 
 	/// Extracts bit depth from audio format flags.
