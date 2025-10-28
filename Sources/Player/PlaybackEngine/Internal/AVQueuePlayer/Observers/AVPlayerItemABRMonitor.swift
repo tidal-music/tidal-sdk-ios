@@ -91,6 +91,7 @@ final class AVPlayerItemABRMonitor {
 		reportQuality(quality)
 	}
 
+
 	/// Maps audio format IDs to human-readable quality names.
 	/// Returns a string describing the codec and quality tier based on the format ID.
 	private static func formatQualityName(from formatIds: [AudioFormatID]) -> String {
@@ -238,26 +239,20 @@ final class AVPlayerItemABRMonitor {
 
 	/// Handles variant switch events from iOS 18+ AVMetrics API.
 	/// These events fire when HLS adapts to a different variant stream (quality change).
-	/// This is more accurate than bitrate-based detection.
+	/// Quality detection is based on bitrate from the access log.
 	@available(iOS 18.0, macOS 15.0, *)
 	private func handleVariantSwitchEvent(_ event: AVMetricPlayerItemVariantSwitchEvent) {
 		print("[ABRMonitor] Variant switch event detected")
 
-		// Extract variant information
+		// Extract variant information (codec info)
 		let variantInfo = extractVariantInfo(from: event)
 
 		// Log all available event properties for analysis
 		logVariantSwitchEvent(event, info: variantInfo)
 
-		// Detect quality from variant bitrate
-		let qualityFromVariant = Self.mapBitrateToQuality(indicatedBitrate: variantInfo.bitrate)
-		print("[ABRMonitor] Quality from variant event: \(qualityFromVariant) (bitrate: \(variantInfo.bitrate) bps)")
-
-		// Trigger comparison with bitrate-based detection for validation
-		// (This happens asynchronously, so both methods run in parallel for testing)
-
-		// Report the quality change
-		reportQuality(qualityFromVariant)
+		// Detect quality from current bitrate in access log
+		// The variant switch event signals that a change occurred, but we use bitrate for quality
+		detectQualityFromAccessLog()
 	}
 
 	/// Extracts variant information from AVMetricPlayerItemVariantSwitchEvent.
@@ -268,9 +263,6 @@ final class AVPlayerItemABRMonitor {
 		let toVariant = event.toVariant
 		let didSucceed = event.didSucceed
 
-		// Extract audio attributes from "to" variant (the new quality tier)
-		var toBitrate: Double = 0
-		var fromBitrate: Double = 0
 		let mediaType: String = "audio"
 		let codec: String = "unknown"
 		let reason: String = didSucceed ? "switch_successful" : "switch_failed"
@@ -280,19 +272,7 @@ final class AVPlayerItemABRMonitor {
 		if let audioAttrs = toVariant.audioAttributes {
 			hasAudioAttrs = true
 
-			// Get the average bitrate from audio attributes
-			// This uses KVC to access the private _averageBitRate property
-			if let avgBitrate = (audioAttrs as NSObject).value(forKey: "_averageBitRate") as? NSNumber {
-				toBitrate = avgBitrate.doubleValue
-				print("[ABRMonitor] toVariant audio average bitrate: \(toBitrate) bps (\(toBitrate / 1000) kbps)")
-			}
-
-			// Get peak bitrate if available
-			if let peakBitrate = (audioAttrs as NSObject).value(forKey: "_peakBitRate") as? NSNumber {
-				print("[ABRMonitor] toVariant audio peak bitrate: \(peakBitrate.doubleValue) bps (\(peakBitrate.doubleValue / 1000) kbps)")
-			}
-
-			// Get format IDs (audio codec identifiers)
+			// Get format IDs (audio codec identifiers) - only public API available
 			let formatIds = audioAttrs.formatIDs
 			if !formatIds.isEmpty {
 				let qualityName = Self.formatQualityName(from: formatIds)
@@ -302,17 +282,7 @@ final class AVPlayerItemABRMonitor {
 
 		// Extract all available audio metadata from "from" variant (previous quality tier) if available
 		if let fromVariant = fromVariant, let audioAttrs = fromVariant.audioAttributes {
-			if let avgBitrate = (audioAttrs as NSObject).value(forKey: "_averageBitRate") as? NSNumber {
-				fromBitrate = avgBitrate.doubleValue
-				print("[ABRMonitor] fromVariant audio average bitrate: \(fromBitrate) bps (\(fromBitrate / 1000) kbps)")
-			}
-
-			// Get peak bitrate if available
-			if let peakBitrate = (audioAttrs as NSObject).value(forKey: "_peakBitRate") as? NSNumber {
-				print("[ABRMonitor] fromVariant audio peak bitrate: \(peakBitrate.doubleValue) bps (\(peakBitrate.doubleValue / 1000) kbps)")
-			}
-
-			// Get format IDs (audio codec identifiers)
+			// Get format IDs (audio codec identifiers) - only public API available
 			let formatIds = audioAttrs.formatIDs
 			if !formatIds.isEmpty {
 				let qualityName = Self.formatQualityName(from: formatIds)
@@ -322,15 +292,11 @@ final class AVPlayerItemABRMonitor {
 
 		print("[ABRMonitor] Variant Switch Details:")
 		print("[ABRMonitor]   - Success: \(didSucceed)")
-		print("[ABRMonitor]   - From Variant: \(fromVariant != nil ? "present (bitrate: \(fromBitrate) bps)" : "nil (initial)")")
-		print("[ABRMonitor]   - To Variant: present (bitrate: \(toBitrate) bps)")
-		if fromBitrate > 0 {
-			let percentChange = (toBitrate - fromBitrate) / fromBitrate * 100
-			print("[ABRMonitor]   - Bitrate Change: \(fromBitrate) → \(toBitrate) bps (\(String(format: "%.1f", percentChange))% change)")
-		}
+		print("[ABRMonitor]   - From Variant: \(fromVariant != nil ? "present" : "nil (initial)")")
+		print("[ABRMonitor]   - To Variant: present")
 
 		return VariantInfo(
-			bitrate: toBitrate,
+			bitrate: 0, // Bitrate is obtained from access log, not from variant metadata
 			mediaType: mediaType,
 			codec: codec,
 			reason: reason,
