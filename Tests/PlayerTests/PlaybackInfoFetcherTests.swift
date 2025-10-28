@@ -856,4 +856,60 @@ extension PlaybackInfoFetcherTests {
 
 		XCTAssertFalse(shouldAdaptForOffline)
 	}
+
+	func test_buildFormatList_whenImmersiveAudioEnabledAndLosslessQuality_includesEac3Joc() {
+		var configuration = Configuration.mock()
+		configuration.isImmersiveAudio = true
+
+		let formats = PlaybackInfoFetcher.buildFormatList(
+			maxQuality: .LOSSLESS,
+			adaptive: false,
+			configuration: configuration
+		)
+
+		XCTAssertTrue(formats.contains(.eac3Joc))
+		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac, .eac3Joc])
+	}
+
+	func test_buildFormatList_whenImmersiveAudioEnabledAndHiResLosslessQuality_includesEac3Joc() {
+		var configuration = Configuration.mock()
+		configuration.isImmersiveAudio = true
+
+		let formats = PlaybackInfoFetcher.buildFormatList(
+			maxQuality: .HI_RES_LOSSLESS,
+			adaptive: false,
+			configuration: configuration
+		)
+
+		XCTAssertTrue(formats.contains(.eac3Joc))
+		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac, .flacHires, .eac3Joc])
+	}
+
+	func test_buildFormatList_whenImmersiveAudioEnabledButHighQuality_doesNotIncludeEac3Joc() {
+		var configuration = Configuration.mock()
+		configuration.isImmersiveAudio = true
+
+		let formats = PlaybackInfoFetcher.buildFormatList(
+			maxQuality: .HIGH,
+			adaptive: false,
+			configuration: configuration
+		)
+
+		XCTAssertFalse(formats.contains(.eac3Joc))
+		XCTAssertEqual(formats, [.heaacv1, .aaclc])
+	}
+
+	func test_buildFormatList_whenImmersiveAudioDisabledAndLosslessQuality_doesNotIncludeEac3Joc() {
+		var configuration = Configuration.mock()
+		configuration.isImmersiveAudio = false
+
+		let formats = PlaybackInfoFetcher.buildFormatList(
+			maxQuality: .LOSSLESS,
+			adaptive: false,
+			configuration: configuration
+		)
+
+		XCTAssertFalse(formats.contains(.eac3Joc))
+		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac])
+	}
 }
