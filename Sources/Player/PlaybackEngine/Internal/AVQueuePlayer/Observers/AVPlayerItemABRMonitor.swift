@@ -323,7 +323,7 @@ final class AVPlayerItemABRMonitor {
 			return nil
 		}
 
-		// Try to get AudioSpecificConfig from extensions
+		// Try to get AudioSpecificConfig from direct keys first
 		// It can be stored under different keys depending on the source
 		let possibleKeys = [
 			"AudioSpecificConfig",
@@ -333,18 +333,116 @@ final class AVPlayerItemABRMonitor {
 
 		for key in possibleKeys {
 			if let ascData = extensions[key] as? Data, ascData.count >= 1 {
-				// Parse Audio Object Type from first 5 bits of first byte
-				// AOT is in bits 7-3: (byte[0] >> 3) & 0x1F
-				var aot = (ascData[0] >> 3) & 0x1F
+				return parseAudioObjectTypeFromASC(ascData)
+			}
+		}
 
-				// Handle escape sequence: if AOT == 31, read next 6 bits
-				if aot == 31 && ascData.count >= 2 {
-					let lowBits = UInt8((ascData[1] >> 2) & 0x3F)
-					aot = 32 + lowBits
+		// If not found in direct keys, try extracting from esds atom
+		// esds is Elementary Stream Descriptor atom, commonly found in SampleDescriptionExtensionAtoms
+		let atomKeys = [
+			kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms as String,
+			"SampleDescriptionExtensionAtoms"
+		]
+
+		for key in atomKeys {
+			if let atoms = extensions[key] as? [String: Any] {
+				// Try direct esds key first
+				if let esdsData = atoms["esds"] as? Data {
+					if let aot = extractAudioObjectTypeFromEsds(esdsData) {
+						return aot
+					}
 				}
 
-				return aot
+				// Also try sinf which may contain esds
+				if let sinfData = atoms["sinf"] as? Data {
+					if let aot = extractAudioObjectTypeFromSinf(sinfData) {
+						return aot
+					}
+				}
 			}
+		}
+
+		return nil
+	}
+
+	/// Parses Audio Object Type from AudioSpecificConfig data
+	private static func parseAudioObjectTypeFromASC(_ ascData: Data) -> UInt8 {
+		var aot = (ascData[0] >> 3) & 0x1F
+
+		// Handle escape sequence: if AOT == 31, read next 6 bits
+		if aot == 31 && ascData.count >= 2 {
+			let lowBits = UInt8((ascData[1] >> 2) & 0x3F)
+			aot = 32 + lowBits
+		}
+
+		return aot
+	}
+
+	/// Extracts Audio Object Type from esds (Elementary Stream Descriptor) atom
+	private static func extractAudioObjectTypeFromEsds(_ esdsData: Data) -> UInt8? {
+		// esds structure: [size:4][tag:"esds":4][version+flags:4][ES_Descriptor][DecoderConfigDescriptor]
+		// DecoderConfigDescriptor contains AudioSpecificConfig in tag 0x04
+		// esds format: [4 bytes size][4 bytes "esds"][1 byte version][3 bytes flags][ES_Descriptor structure]
+		// We need to find the DecoderConfigDescriptor (tag 0x04) which contains the ASC
+
+		if esdsData.count < 12 { return nil }
+
+		// Start after esds header (size + tag + version/flags = 12 bytes minimum)
+		var offset = 8 // Skip size and "esds" tag
+
+		while offset + 2 <= esdsData.count {
+			let tag = esdsData[offset]
+			offset += 1
+
+			// Parse variable-length size field (MPEG-style)
+			var size: Int = 0
+			var sizeLength = 0
+			while sizeLength < 4 && offset < esdsData.count {
+				let byte = esdsData[offset]
+				offset += 1
+				sizeLength += 1
+				size = (size << 7) | Int(byte & 0x7F)
+				if (byte & 0x80) == 0 { break }
+			}
+
+			// Found DecoderConfigDescriptor (0x04)
+			if tag == 0x04 && size >= 13 && offset + 13 <= esdsData.count {
+				// Skip objectTypeIndicator (1) + streamType+upstream (1) + bufferSizeDB (3)
+				offset += 5
+				// Now we should be at the start of AudioSpecificConfig
+				if offset < esdsData.count {
+					return parseAudioObjectTypeFromASC(esdsData.subdata(in: offset..<esdsData.count))
+				}
+			}
+
+			offset += size
+		}
+
+		return nil
+	}
+
+	/// Extracts Audio Object Type from sinf (Sample Information Box) atom
+	private static func extractAudioObjectTypeFromSinf(_ sinfData: Data) -> UInt8? {
+		// sinf contains nested atoms including potentially frma and esds
+		// Look for esds within sinf structure
+		let esdsTag: UInt32 = 0x65736473 // "esds" in little-endian
+
+		var offset = 8 // Skip sinf header
+
+		while offset + 8 <= sinfData.count {
+			let tag = sinfData.withUnsafeBytes { ptr in
+				ptr.load(fromByteOffset: offset + 4, as: UInt32.self)
+			}
+
+			if tag == esdsTag {
+				// Found esds atom, extract just the data portion
+				if offset + 12 <= sinfData.count {
+					let atomData = sinfData.subdata(in: offset..<sinfData.count)
+					return extractAudioObjectTypeFromEsds(atomData)
+				}
+			}
+
+			offset += 1
 		}
 
 		return nil
@@ -365,27 +463,49 @@ final class AVPlayerItemABRMonitor {
 		]
 
 		for key in possibleKeys {
-			if let atoms = extensions[key] as? [String: Any],
-			   let frmaData = atoms["frma"] as? Data,
-			   frmaData.count >= 4 {
-				// frma contains the fourCC as a big-endian UInt32
-				let fourcc = frmaData.withUnsafeBytes { $0.load(as: UInt32.self).bigEndian }
-				// Decode as ASCII fourCC
-				let bytes = [
-					UInt8((fourcc >> 24) & 0xFF),
-					UInt8((fourcc >> 16) & 0xFF),
-					UInt8((fourcc >> 8) & 0xFF),
-					UInt8(fourcc & 0xFF)
-				]
-				let string = String(bytes: bytes, encoding: .ascii) ?? ""
-				let trimmed = string.trimmingCharacters(in: .whitespaces)
-				if !trimmed.isEmpty {
-					return trimmed
+			if let atoms = extensions[key] as? [String: Any] {
+				// Try direct "frma" key first (if exposed as separate key)
+				if let frmaData = atoms["frma"] as? Data {
+					return decodeFrmaFromData(frmaData)
+				}
+
+				// Otherwise, parse sinf atom which contains frma
+				if let sinfData = atoms["sinf"] as? Data {
+					// sinf structure: [4 bytes size][4 bytes "sinf"][... nested atoms ...]
+					// frma is at offset 8 with structure: [4 bytes size][4 bytes "frma"][4 bytes fourCC]
+					if sinfData.count >= 20 { // Minimum size for sinf with frma
+						// Look for "frma" tag (0x66726d61) in the data
+						let frmaTag: UInt32 = 0x66726d61
+						var offset = 0
+						while offset + 8 <= sinfData.count {
+							let tag = sinfData.withUnsafeBytes { ptr in
+								ptr.load(fromByteOffset: offset + 4, as: UInt32.self)
+							}
+							if tag == frmaTag {
+								// Found frma, extract the fourCC at offset + 8
+								if offset + 12 <= sinfData.count {
+									let fourcc = sinfData.withUnsafeBytes { ptr in
+										ptr.load(fromByteOffset: offset + 8, as: UInt32.self).bigEndian
+									}
+									return decodeFourCC(fourcc)
+								}
+								break
+							}
+							offset += 1
+						}
+					}
 				}
 			}
 		}
 
 		return nil
+	}
+
+	/// Decodes fourCC from frma data
+	private static func decodeFrmaFromData(_ data: Data) -> String? {
+		guard data.count >= 4 else { return nil }
+		let fourcc = data.withUnsafeBytes { $0.load(as: UInt32.self).bigEndian }
+		return decodeFourCC(fourcc)
 	}
 
 	/// Finds the first valid audio format description with metadata
