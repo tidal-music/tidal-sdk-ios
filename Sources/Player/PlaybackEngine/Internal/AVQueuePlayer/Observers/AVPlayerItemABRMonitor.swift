@@ -110,8 +110,10 @@ final class AVPlayerItemABRMonitor {
 	private static func mapBitrateToQuality(indicatedBitrate: Double, formatMetadata: AudioFormatMetadata? = nil) -> AudioQuality {
 		// Use format metadata to refine quality detection if available
 		if let metadata = formatMetadata {
+			let fourCC = decodeFourCC(metadata.audioFormatID)
+
 			// FLAC detection with bit-depth and sample rate analysis (including qflc: protected FLAC)
-			let isQFlc = decodeFourCC(metadata.audioFormatID) == "qflc"
+			let isQFlc = fourCC == "qflc"
 			if metadata.audioFormatID == kAudioFormatFLAC || isQFlc {
 				// For qflc (protected FLAC), bitDepth might be 0, so infer from bitrate
 				let inferredBitDepth = metadata.bitDepth > 0 ? metadata.bitDepth : Self.inferBitDepthFromBitrate(indicatedBitrate)
@@ -124,9 +126,11 @@ final class AVPlayerItemABRMonitor {
 				return .LOSSLESS
 			}
 
-			// AAC variants
-			if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
-				return .LOW // AAC-HE
+			// AAC variants (including qach: protected AAC)
+			let isQach = fourCC == "qach"
+			if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE || isQach {
+				// Protected AAC (qach) or AAC-HE both map to LOW quality
+				return .LOW
 			}
 			if metadata.audioFormatID == kAudioFormatMPEG4AAC {
 				return .HIGH // AAC
@@ -304,6 +308,9 @@ final class AVPlayerItemABRMonitor {
 				// Add helpful annotations for known FourCC codes
 				if fourCC == "qflc" {
 					return "qflc (Protected FLAC)"
+				}
+				if fourCC == "qach" {
+					return "qach (Protected AAC)"
 				}
 				return fourCC
 			}
