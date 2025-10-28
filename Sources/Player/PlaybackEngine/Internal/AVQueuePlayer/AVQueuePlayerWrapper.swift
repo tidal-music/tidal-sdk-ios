@@ -375,22 +375,24 @@ private extension AVQueuePlayerWrapper {
 		playerItemMonitors[playerItem] = AVPlayerItemMonitor(
 			playerItem,
 			queue: queue,
+			adaptiveQualities: asset.getAdaptiveAudioQualities(),
 			onFailure: failed,
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
-			onItemPlayedToEnd: playedToEnd
-		) { [weak self] item, newQuality in
-			guard let self else {
-				return
-			}
+			onItemPlayedToEnd: playedToEnd,
+			onAudioQualityChanged: { [weak self] item, newQuality in
+				guard let self else {
+					return
+				}
 
-			guard let asset = self.playerItemAssets[item] else {
-				return
-			}
+				guard let asset = self.playerItemAssets[item] else {
+					return
+				}
 
-			self.delegates.audioQualityChanged(asset: asset, to: newQuality)
-		}
+				self.delegates.audioQualityChanged(asset: asset, to: newQuality)
+			}
+		)
 	}
 
 	func preparePlayer() {

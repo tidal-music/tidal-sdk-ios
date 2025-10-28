@@ -30,19 +30,17 @@ final class AVPlayerItemMonitor {
 		readyToPlayMonitor = ReadyToPlayMonitor(playerItem, onReadyToPlayToPlay)
 		playerItemDidPlayToEndTimeMonitor = ItemPlayedToEndMonitor(playerItem: playerItem, onPlayedToEnd: onItemPlayedToEnd)
 
-		if let onAudioQualityChanged,
-		   let qualities = adaptiveQualities,
-		   qualities.count > 1 {
+		if let onAudioQualityChanged {
 			abrMonitor = AVPlayerItemABRMonitor(
 				playerItem: playerItem,
-				qualities: qualities,
-				queue: queue
-			) { [weak self] newQuality in
-				guard let self else {
-					return
+				queue: queue,
+				onQualityChanged: { [weak self] newQuality in
+					guard let self else {
+						return
+					}
+					onAudioQualityChanged(self.playerItem, newQuality)
 				}
-				onAudioQualityChanged(self.playerItem, newQuality)
-			}
+			)
 		}
 	}
 
