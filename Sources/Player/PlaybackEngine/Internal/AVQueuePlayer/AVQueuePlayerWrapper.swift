@@ -321,7 +321,7 @@ private extension AVQueuePlayerWrapper {
 	static func createPlayerItem(_ asset: AVURLAsset) -> AVPlayerItem {
 		let playerItem = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: [#keyPath(AVAsset.duration)])
 		playerItem.preferredForwardBufferDuration = 0 // Framework decides
-		//playerItem.variantPreferences = .scalabilityToLosslessAudio
+		playerItem.variantPreferences = .scalabilityToLosslessAudio
 		return playerItem
 	}
 
