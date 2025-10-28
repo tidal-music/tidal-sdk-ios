@@ -1,6 +1,7 @@
 import AVFoundation
 import CoreMedia
 import Foundation
+import AudioToolbox
 
 final class AVPlayerItemABRMonitor {
 	private weak var playerItem: AVPlayerItem?
@@ -76,9 +77,16 @@ final class AVPlayerItemABRMonitor {
 				print("[ABRMonitor] Monitor was deallocated before format extraction started")
 				return
 			}
-
+			
 			let formatMetadata = await strongSelf.extractFormatMetadata(from: item)
-
+			if let formatMetadata {
+				print("[ABRMonitor] ASBD formatID fourCC: \(Self.decodeFourCC(formatMetadata.audioFormatID))")
+				print("[ABRMonitor] mediaSubType: \(formatMetadata.mediaSubType ?? "nil")")
+				print("[ABRMonitor] frma: \(formatMetadata.frmaCodec ?? "nil")")
+			} else {
+				print("[ABRMonitor] No format metadata")
+			}
+				   
 			if !strongSelf.validateMonitorState(for: item, metadata: formatMetadata) {
 				return
 			}
@@ -113,24 +121,30 @@ final class AVPlayerItemABRMonitor {
 			return qualityFromBitrate(indicatedBitrate)
 		}
 
-		let fourCC = decodeFourCC(metadata.audioFormatID)
+		let fourCCFromFormatID = decodeFourCC(metadata.audioFormatID)
+		let frma = metadata.frmaCodec
+		let mediaSubType = metadata.mediaSubType
 
-		// FLAC detection
-		if isProtectedFLAC(fourCC: fourCC, formatID: metadata.audioFormatID) {
+		// FLAC detection (prefer true codec ID or frma); also handle 'qflc' tag if it leaks through
+		if metadata.audioFormatID == kAudioFormatFLAC || frma == "fLaC" || fourCCFromFormatID == "qflc" {
 			return qualityForFLAC(bitDepth: metadata.bitDepth, sampleRate: metadata.sampleRate)
 		}
 
-		// Protected AAC detection
-		if isProtectedAAC(fourCC: fourCC) {
-			return qualityForProtectedAAC(sampleRate: metadata.sampleRate, audioObjectType: metadata.audioObjectType)
-		}
-
-		// Standard AAC variants - use AOT if available, otherwise fall back to formatID
-		if metadata.audioFormatID == kAudioFormatMPEG4AAC {
+		// AAC detection: use frma first (most reliable), then formatID checks
+		// frma='mp4a' indicates true AAC codec (works for protected/unprotected)
+		if frma == "mp4a" || metadata.audioFormatID == kAudioFormatMPEG4AAC {
 			if let aot = metadata.audioObjectType {
 				return qualityForAAC(audioObjectType: aot)
 			}
+			// If no AOT available but frma confirms it's AAC, default to HIGH
+			if frma == "mp4a" { return .HIGH }
 			return .HIGH
+		}
+
+		// Protected AAC: 'enca' sample entry or QuickTime encoder tag 'qaac'
+		// (catches cases where frma='mp4a' didn't match above, or mediaSubType='enca' with AOT)
+		if mediaSubType == "enca" || fourCCFromFormatID == "qaac" {
+			return qualityForProtectedAAC(sampleRate: metadata.sampleRate, audioObjectType: metadata.audioObjectType)
 		}
 
 		if metadata.audioFormatID == kAudioFormatMPEG4AAC_HE {
@@ -319,47 +333,46 @@ final class AVPlayerItemABRMonitor {
 	/// Extracts Audio Object Type from AudioSpecificConfig in format description extensions
 	/// AOT tells us the AAC profile: 2=AAC-LC, 5=HE-AAC (SBR), 29=HE-AAC v2 (SBR+PS)
 	private static func extractAudioObjectType(from formatDesc: CMFormatDescription) -> UInt8? {
-		guard let extensions = CMFormatDescriptionGetExtensions(formatDesc) as? [String: Any] else {
+		guard let exts = CMFormatDescriptionGetExtensions(formatDesc) as? [String: Any] else {
 			return nil
 		}
 
-		// Try to get AudioSpecificConfig from direct keys first
-		// It can be stored under different keys depending on the source
-		let possibleKeys = [
-			"AudioSpecificConfig",
-			"com.apple.cmformatdescription.audio.aac_profile",
-			"magicCookie"
-		]
+		// Preferred: canonical ASC key
+		if let asc = exts["AudioSpecificConfig"] as? Data, !asc.isEmpty {
+			return parseAudioObjectTypeFromASC(asc)
+		}
 
-		for key in possibleKeys {
-			if let ascData = extensions[key] as? Data, ascData.count >= 1 {
-				return parseAudioObjectTypeFromASC(ascData)
+		// Fallback 1: magic cookie (often contains ES/DecoderSpecificInfo)
+		var cookieSize = 0
+		if let ptr = CMAudioFormatDescriptionGetMagicCookie(formatDesc, sizeOut: &cookieSize),
+		   cookieSize > 0 {
+			let cookie = Data(bytes: ptr, count: cookieSize)
+			if let aot = extractAOTFromDescriptorBlob(cookie) { return aot }
+		}
+
+		// Fallback 2: look in SampleDescriptionExtensionAtoms → esds
+		let atomKeys = [
+			kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms as String,
+			"SampleDescriptionExtensionAtoms",
+		]
+		for key in atomKeys {
+			if let atoms = exts[key] as? [String: Any] {
+				if let esds = atoms["esds"] as? Data, let aot = extractAOTFromDescriptorBlob(esds) {
+					return aot
+				}
+				if let sinf = atoms["sinf"] as? Data,
+				   let esds = findBox(type: "esds", in: sinf),
+				   let aot = extractAOTFromDescriptorBlob(esds) {
+					return aot
+				}
 			}
 		}
 
-		// If not found in direct keys, try extracting from esds atom
-		// esds is Elementary Stream Descriptor atom, commonly found in SampleDescriptionExtensionAtoms
-		let atomKeys = [
-			kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms as String,
-			"SampleDescriptionExtensionAtoms"
-		]
-
-		for key in atomKeys {
-			if let atoms = extensions[key] as? [String: Any] {
-				// Try direct esds key first
-				if let esdsData = atoms["esds"] as? Data {
-					if let aot = extractAudioObjectTypeFromEsds(esdsData) {
-						return aot
-					}
-				}
-
-				// Also try sinf which may contain esds
-				if let sinfData = atoms["sinf"] as? Data {
-					if let aot = extractAudioObjectTypeFromSinf(sinfData) {
-						return aot
-					}
-				}
-			}
+		// Fallback 3: some streams embed the entire sample entry verbatim
+		if let sampleEntry = exts["VerbatimISOSampleEntry"] as? Data,
+		   let esds = findBox(type: "esds", in: sampleEntry),
+		   let aot = extractAOTFromDescriptorBlob(esds) {
+			return aot
 		}
 
 		return nil
@@ -468,6 +481,39 @@ final class AVPlayerItemABRMonitor {
 			return nil
 		}
 
+		// Most reliable on protected tracks: numeric fourCC of the original format.
+		// Some SDKs expose this already in the expected order; others seem swapped.
+		// Try direct interpretation first, then a swapped fallback.
+		if let n = (extensions["CommonEncryptionOriginalFormat"] as? NSNumber)?.uint32Value {
+			// direct interpretation
+			let directBytes: [UInt8] = [
+				UInt8((n >> 24) & 0xFF),
+				UInt8((n >> 16) & 0xFF),
+				UInt8((n >> 8) & 0xFF),
+				UInt8(n & 0xFF)
+			]
+			let sDirect = String(bytes: directBytes, encoding: .ascii)?.trimmingCharacters(in: .whitespaces)
+
+			// swapped interpretation
+			let swapped = CFSwapInt32(n)
+			let swappedBytes: [UInt8] = [
+				UInt8((swapped >> 24) & 0xFF),
+				UInt8((swapped >> 16) & 0xFF),
+				UInt8((swapped >> 8) & 0xFF),
+				UInt8(swapped & 0xFF)
+			]
+			let sSwapped = String(bytes: swappedBytes, encoding: .ascii)?.trimmingCharacters(in: .whitespaces)
+
+			// prefer common real codecs if one matches
+			let known = Set(["mp4a", "fLaC", "alac"])
+			if let s = sDirect, known.contains(s) { return s }
+			if let s = sSwapped, known.contains(s) { return s }
+
+			// else, return any non-empty result (direct first)
+			if let s = sDirect, !s.isEmpty { return s }
+			if let s = sSwapped, !s.isEmpty { return s }
+		}
+
 		// Try to get the sample description extension atoms
 		let possibleKeys = [
 			kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms as String,
@@ -543,7 +589,12 @@ final class AVPlayerItemABRMonitor {
 			}
 
 			// Extract bit depth from format flags
-			let bitDepth = extractBitDepth(from: audioFormatFlags, formatID: audioFormatID)
+			let bitsPerChannel = Int(audioStreamDesc.mBitsPerChannel)
+			let bitDepth = extractBitDepth(
+				bitsPerChannel: bitsPerChannel,
+				formatFlags: audioFormatFlags,
+				formatID: audioFormatID
+			)
 
 			// Extract Audio Object Type from format description for AAC profile detection
 			let audioObjectType = extractAudioObjectType(from: formatDesc)
@@ -551,13 +602,16 @@ final class AVPlayerItemABRMonitor {
 			// Extract frma atom for encrypted tracks to discover true codec
 			let frmaCodec = extractFrmaCodec(from: formatDesc)
 
+			let mediaSubTypeFourCC = decodeFourCC(CMFormatDescriptionGetMediaSubType(formatDesc))
+			
 			return AudioFormatMetadata(
 				audioFormatID: audioFormatID,
 				audioFormatFlags: audioFormatFlags,
 				bitDepth: bitDepth,
 				sampleRate: sampleRate,
 				audioObjectType: audioObjectType,
-				frmaCodec: frmaCodec
+				frmaCodec: frmaCodec,
+				mediaSubType: mediaSubTypeFourCC
 			)
 		}
 
@@ -630,34 +684,57 @@ final class AVPlayerItemABRMonitor {
 		return ""
 	}
 
-	/// Extracts bit depth from audio format flags.
-	/// For FLAC, the formatFlags directly encode the bit depth.
-	/// For other formats, derives bit depth from format flags.
-	private static func extractBitDepth(from formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
-		// For FLAC, formatFlags directly encode bit depth
-		// Primary: check kAudioFormatFLAC (reliable)
-		// Backup: check 'qflc' fourCC for protected streams (less reliable but useful)
-		let isQFlc = decodeFourCC(formatID) == "qflc"
-		if formatID == kAudioFormatFLAC || isQFlc {
-			let flacBitDepths: [AudioFormatFlags: Int] = [1: 16, 2: 20, 3: 24, 4: 32]
-			return flacBitDepths[formatFlags] ?? 16
-		}
+	private static func extractBitDepth(bitsPerChannel: Int, formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
+		// If ASBD reports a valid value, trust it (works for FLAC/PCM when available)
+		if bitsPerChannel > 0 { return bitsPerChannel }
 
-		// For other formats, try to extract from format flags
-		// kAudioFormatFlagIsSignedInteger = 0x4 (bit 2)
-		if (formatFlags & kAudioFormatFlagIsSignedInteger) != 0 {
-			// Bit depth is encoded in the lower bytes
+		// For Linear PCM, infer from flags (rarely needed if ASBD is populated)
+		if formatID == kAudioFormatLinearPCM {
 			let bytesPerSample = formatFlags >> 16
-			let bitDepth = Int(bytesPerSample) * 8
-
-			// Validate extracted bit depth is reasonable (8-32 bits)
-			if bitDepth > 0 && bitDepth <= 32 {
-				return bitDepth
-			}
+			let bpc = Int(bytesPerSample) * 8
+			if bpc > 0 && bpc <= 32 { return bpc }
 		}
 
-		// Default assumption for other formats or invalid extractions
+		// Compressed formats often leave this 0; default to 16
 		return 16
+	}
+	
+	// MP4 box scanner (size[4] + type[4] + payload)
+	private static func findBox(type: String, in data: Data) -> Data? {
+		var i = 0
+		while i + 8 <= data.count {
+			let size = Int(UInt32(bigEndian: data[i..<(i+4)].withUnsafeBytes { $0.load(as: UInt32.self) }))
+			let typ  = String(bytes: data[(i+4)..<(i+8)], encoding: .ascii) ?? ""
+			let end  = (size > 0 ? i + size : data.count)
+			if typ == type, i + 8 <= end { return data[(i+8)..<end] }
+			i = (size > 0 ? end : data.count)
+		}
+		return nil
+	}
+
+	// Parse MPEG-4 descriptors and return AOT from DecoderSpecificInfo (tag 0x05)
+	private static func extractAOTFromDescriptorBlob(_ blob: Data) -> UInt8? {
+		var i = 0
+		func readVarLen() -> Int? {
+			var len = 0, count = 0
+			while i < blob.count {
+				let b = Int(blob[i]); i += 1; count += 1
+				len = (len << 7) | (b & 0x7F)
+				if (b & 0x80) == 0 { return len }
+				if count == 4 { return nil }
+			}
+			return nil
+		}
+		while i < blob.count {
+			let tag = Int(blob[i]); i += 1
+			guard let len = readVarLen(), i + len <= blob.count else { return nil }
+			if tag == 0x05 { // DecoderSpecificInfo → ASC
+				let asc = blob[i..<(i+len)]
+				return parseAudioObjectTypeFromASC(asc)
+			}
+			i += len
+		}
+		return nil
 	}
 }
 
@@ -669,6 +746,7 @@ private struct AudioFormatMetadata: Equatable {
 	let audioFormatFlags: AudioFormatFlags
 	let bitDepth: Int
 	let sampleRate: Int
-	let audioObjectType: UInt8?  // For AAC variants: 2=LC, 5=HE, 29=HE-v2
-	let frmaCodec: String?  // For encrypted tracks: 'mp4a', 'alac', 'fLaC', etc.
+	let audioObjectType: UInt8?  // 2=LC, 5=HE, 29=HEv2
+	let frmaCodec: String?       // 'mp4a', 'fLaC', 'alac', ...
+	let mediaSubType: String?    // 'mp4a', 'enca', etc.
 }
