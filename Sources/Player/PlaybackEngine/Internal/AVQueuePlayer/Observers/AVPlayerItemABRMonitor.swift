@@ -432,6 +432,13 @@ final class AVPlayerItemABRMonitor {
 			if let peakBitrate = (audioAttrs as NSObject).value(forKey: "_peakBitRate") as? NSNumber {
 				print("[ABRMonitor] toVariant audio peak bitrate: \(peakBitrate.doubleValue) bps (\(peakBitrate.doubleValue / 1000) kbps)")
 			}
+
+			// Get format IDs (audio codec identifiers)
+			let formatIds = audioAttrs.formatIDs
+			if !formatIds.isEmpty {
+				let formatIdStrings = formatIds.map { String($0) }
+				print("[ABRMonitor] toVariant audio format IDs: \(formatIdStrings)")
+			}
 		}
 
 		// Extract all available audio metadata from "from" variant (previous quality tier) if available
@@ -444,6 +451,13 @@ final class AVPlayerItemABRMonitor {
 			// Get peak bitrate if available
 			if let peakBitrate = (audioAttrs as NSObject).value(forKey: "_peakBitRate") as? NSNumber {
 				print("[ABRMonitor] fromVariant audio peak bitrate: \(peakBitrate.doubleValue) bps (\(peakBitrate.doubleValue / 1000) kbps)")
+			}
+
+			// Get format IDs (audio codec identifiers)
+			let formatIds = audioAttrs.formatIDs
+			if !formatIds.isEmpty {
+				let formatIdStrings = formatIds.map { String($0) }
+				print("[ABRMonitor] fromVariant audio format IDs: \(formatIdStrings)")
 			}
 		}
 
