@@ -259,6 +259,33 @@ final class AVPlayerItemABRMonitor {
 		reportQuality(quality)
 	}
 
+	/// Maps audio format IDs to human-readable quality names.
+	/// Returns a string describing the codec and quality tier based on the format ID.
+	private static func formatQualityName(from formatIds: [AudioFormatID]) -> String {
+		guard !formatIds.isEmpty else { return "unknown" }
+
+		let formatId = formatIds[0]
+
+		switch formatId {
+		case kAudioFormatMPEG4AAC_HE:
+			return "AAC-HE (Low 96)"
+		case kAudioFormatMPEG4AAC:
+			return "AAC (Low 320)"
+		case kAudioFormatEnhancedAC3:
+			return "Enhanced AC-3 (Atmos)"
+		case kAudioFormatFLAC:
+			return "FLAC (High/Max with flags)"
+		default:
+			// Format the unknown format ID as FourCC for debugging
+			let fourCC = String(format: "%c%c%c%c",
+				UInt8(formatId >> 24),
+				UInt8((formatId >> 16) & 0xFF),
+				UInt8((formatId >> 8) & 0xFF),
+				UInt8(formatId & 0xFF))
+			return "Unknown (\(fourCC) / \(formatId))"
+		}
+	}
+
 	/// Maps indicated bitrate to AudioQuality based on typical bitrate ranges.
 	/// This is the primary method for detecting quality changes during HLS ABR adaptation,
 	/// since ABR happens at the variant stream level (bitrate changes), not audio track level.
@@ -436,8 +463,8 @@ final class AVPlayerItemABRMonitor {
 			// Get format IDs (audio codec identifiers)
 			let formatIds = audioAttrs.formatIDs
 			if !formatIds.isEmpty {
-				let formatIdStrings = formatIds.map { String($0) }
-				print("[ABRMonitor] toVariant audio format IDs: \(formatIdStrings)")
+				let qualityName = Self.formatQualityName(from: formatIds)
+				print("[ABRMonitor] toVariant audio codec: \(qualityName)")
 			}
 		}
 
@@ -456,8 +483,8 @@ final class AVPlayerItemABRMonitor {
 			// Get format IDs (audio codec identifiers)
 			let formatIds = audioAttrs.formatIDs
 			if !formatIds.isEmpty {
-				let formatIdStrings = formatIds.map { String($0) }
-				print("[ABRMonitor] fromVariant audio format IDs: \(formatIdStrings)")
+				let qualityName = Self.formatQualityName(from: formatIds)
+				print("[ABRMonitor] fromVariant audio codec: \(qualityName)")
 			}
 		}
 
