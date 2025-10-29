@@ -8,15 +8,15 @@ import Foundation
 /// This monitor dispatches callbacks through a provided OperationQueue to ensure
 /// consistent threading behavior with other SDK observers. Callbacks are dispatched
 /// asynchronously to avoid blocking metadata processing.
-final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelegate {
+class FormatVariantMonitor: NSObject {
 	private weak var playerItem: AVPlayerItem?
-	private var metadataOutput: AVPlayerItemMetadataOutput?
+	private var metadataCollector: AVPlayerItemMetadataCollector?
 	private let onFormatChanged: (FormatVariantMetadata) -> Void
 	private let queue: OperationQueue
 	private var lastReportedFormat: FormatVariantMetadata?
 
 	// Metadata identifier for Tidal format information
-	private static let formatMetadataIdentifier = AVMetadataIdentifier(rawValue: "com.tidal.format")
+	private static let groupLabel = "com.tidal.format"
 
 	// Cached whitespace character set for string trimming optimization
 	private static let whitespaceCharacters = CharacterSet.whitespaces
@@ -31,65 +31,39 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 		self.onFormatChanged = onFormatChanged
 		super.init()
 
-		setupMetadataOutput(for: playerItem)
+		setupMetadataCollector(for: playerItem)
 	}
 
 	deinit {
-		teardownMetadataOutput()
+		teardownMetadataCollector()
 	}
 
 	/// Sets up the AVPlayerItemMetadataOutput to observe timed metadata
-	private func setupMetadataOutput(for playerItem: AVPlayerItem) {
-		// Create metadata output configured for common metadata identifier schemes
-		let metadataOutput = AVPlayerItemMetadataOutput(identifiers: [Self.formatMetadataIdentifier.rawValue])
-		metadataOutput.setDelegate(self, queue: DispatchQueue.main)
-
-		// Add the metadata output to the player item
-		playerItem.add(metadataOutput)
-		self.metadataOutput = metadataOutput
-
+	private func setupMetadataCollector(for playerItem: AVPlayerItem) {
+		let metadataCollector = AVPlayerItemMetadataCollector()
+		metadataCollector.setDelegate(self, queue: DispatchQueue.main)
+		playerItem.add(metadataCollector)
+		self.metadataCollector = metadataCollector
+		
 		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantMonitorInitialized)
 	}
 
 	/// Tears down the metadata output when the monitor is deallocated
-	private func teardownMetadataOutput() {
-		if let output = metadataOutput, let item = playerItem {
-			item.remove(output)
+	private func teardownMetadataCollector() {
+		if let collector = metadataCollector, let item = playerItem {
+			item.remove(collector)
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantMonitorRemoved)
 		}
-		metadataOutput = nil
-	}
-
-	// MARK: - AVPlayerItemMetadataOutputPushDelegate
-
-	/// Called when new metadata is available
-	func metadataOutput(
-		_ output: AVPlayerItemMetadataOutput,
-		didOutputTimedMetadataGroups groups: [AVTimedMetadataGroup],
-		from track: AVPlayerItemTrack?
-	) {
-		for group in groups {
-			for item in group.items {
-				// Look for com.tidal.format identifier
-				if item.identifier == Self.formatMetadataIdentifier {
-					processFormatMetadata(item, timestamp: group.timeRange.start)
-				}
-			}
-		}
+		metadataCollector = nil
 	}
 
 	/// Processes format metadata and reports changes
 	/// Dispatches callbacks through the configured OperationQueue with playerItem validation
-	private func processFormatMetadata(_ metadataItem: AVMetadataItem, timestamp: CMTime) {
-		guard let formatData = extractFormatData(from: metadataItem) else {
+	private func processFormatMetadata(_ metadataItem: AVMetadataItem) {
+		guard let formatMetadata = extractFormatMetadata(from: metadataItem) else {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractionFailed)
 			return
 		}
-
-		let formatMetadata = FormatVariantMetadata(
-			formatString: formatData,
-			timestamp: timestamp
-		)
 
 		// Only report if format changed
 		guard formatMetadata != lastReportedFormat else {
@@ -98,7 +72,7 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 
 		let previousFormat = lastReportedFormat?.formatString
 		lastReportedFormat = formatMetadata
-		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantChanged(from: previousFormat, to: formatData))
+		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantChanged(from: previousFormat, to: formatMetadata.formatString))
 
 		// Dispatch callback through configured queue with playerItem validation
 		// to prevent race conditions during player item deallocation
@@ -115,14 +89,14 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 	/// 1. Direct string value from metadataItem.value
 	/// 2. X-COM-TIDAL-FORMAT from extraAttributes (AVFoundation dictionary)
 	/// 3. Parsed from key-value pairs in dictionary representation
-	private func extractFormatData(from metadataItem: AVMetadataItem) -> String? {
+	private func extractFormatMetadata(from metadataItem: AVMetadataItem) -> FormatVariantMetadata? {
 		// Strategy 1: Check if value is directly a format string
 		if let value = metadataItem.value as? String, !value.isEmpty {
 			let trimmed = value.trimmingCharacters(in: Self.whitespaceCharacters)
 			// Valid format strings contain quality, codec, or attribute indicators
 			if !trimmed.isEmpty {
 				PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromValue(format: trimmed))
-				return trimmed
+				return FormatVariantMetadata(formatString: trimmed)
 			}
 		}
 
@@ -132,7 +106,7 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 				let trimmed = format.trimmingCharacters(in: Self.whitespaceCharacters)
 				if !trimmed.isEmpty {
 					PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromDictionary(format: trimmed))
-					return trimmed
+					return FormatVariantMetadata(formatString: trimmed)
 				}
 			}
 		}
@@ -146,7 +120,7 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 					let trimmed = format.trimmingCharacters(in: Self.whitespaceCharacters)
 					if !trimmed.isEmpty {
 						PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromAttributes(format: trimmed, attribute: attrName))
-						return trimmed
+						return FormatVariantMetadata(formatString: trimmed)
 					}
 				}
 			}
@@ -156,28 +130,39 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 	}
 }
 
+// MARK: AVPlayerItemMetadataCollectorPushDelegate
+extension FormatVariantMonitor: AVPlayerItemMetadataCollectorPushDelegate {
+	func metadataCollector(
+		_ metadataCollector: AVPlayerItemMetadataCollector,
+		didCollect metadataGroups: [AVDateRangeMetadataGroup],
+		indexesOfNewGroups: IndexSet,
+		indexesOfModifiedGroups: IndexSet
+	) {
+		indexesOfNewGroups.map { metadataGroups[$0] }
+			.filter { $0.classifyingLabel == Self.groupLabel }
+			.forEach { self.handleMetadataGroup($0) }
+	}
+	
+	func handleMetadataGroup(_ metadataGroup: AVDateRangeMetadataGroup) {
+		metadataGroup.items.forEach { self.processFormatMetadata($0) }
+	}
+}
+
 // MARK: - FormatVariantMetadata
 
 /// Metadata describing the format variant for an HLS stream segment
-///
-/// Conformance to Equatable compares only the formatString property. This ensures that
-/// deduplication logic (checking if format changed) works correctly regardless of
-/// CMTime timescale differences. The timestamp is informational and does not affect equality.
 public struct FormatVariantMetadata: Equatable {
 	public let formatString: String
-	public let timestamp: CMTime
 
 	public var description: String {
-		"FormatVariantMetadata(format: \(formatString), time: \(timestamp.seconds)s)"
+		"FormatVariantMetadata(format: \(formatString))"
 	}
 
-	public init(formatString: String, timestamp: CMTime) {
+	public init(formatString: String) {
 		self.formatString = formatString
-		self.timestamp = timestamp
 	}
 
 	/// Custom equality: compares only formatString to enable reliable deduplication
-	/// regardless of CMTime timescale variations from AVFoundation metadata processing.
 	public static func == (lhs: FormatVariantMetadata, rhs: FormatVariantMetadata) -> Bool {
 		lhs.formatString == rhs.formatString
 	}
