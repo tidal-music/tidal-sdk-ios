@@ -379,18 +379,30 @@ private extension AVQueuePlayerWrapper {
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
-			onItemPlayedToEnd: playedToEnd
-		) { [weak self] item, newQuality in
-			guard let self else {
-				return
-			}
+			onItemPlayedToEnd: playedToEnd,
+			onAudioQualityChanged: { [weak self] item, newQuality in
+				guard let self else {
+					return
+				}
 
-			guard let asset = self.playerItemAssets[item] else {
-				return
-			}
+				guard let asset = self.playerItemAssets[item] else {
+					return
+				}
 
-			self.delegates.audioQualityChanged(asset: asset, to: newQuality)
-		}
+				self.delegates.audioQualityChanged(asset: asset, to: newQuality)
+			},
+			onFormatVariantChanged: { [weak self] item, formatVariant in
+				guard let self else {
+					return
+				}
+
+				guard let asset = self.playerItemAssets[item] else {
+					return
+				}
+
+				self.delegates.formatVariantChanged(asset: asset, variant: formatVariant)
+			}
+		)
 	}
 
 	func preparePlayer() {
