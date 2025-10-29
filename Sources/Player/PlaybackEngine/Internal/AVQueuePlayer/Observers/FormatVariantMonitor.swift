@@ -85,34 +85,51 @@ class FormatVariantMonitor: NSObject {
 	}
 
 	/// Extracts format string from X-COM-TIDAL-FORMAT attribute or value
+	/// Also extracts optional sampleRate and bitDepth from HLS timed metadata attributes
 	/// Supports multiple metadata formats:
 	/// 1. Direct string value from metadataItem.value
 	/// 2. X-COM-TIDAL-FORMAT from extraAttributes (AVFoundation dictionary)
 	/// 3. Parsed from key-value pairs in dictionary representation
 	private func extractFormatMetadata(from metadataItem: AVMetadataItem) -> FormatVariantMetadata? {
+		var formatString: String?
+		var sampleRate: Int?
+		var bitDepth: Int?
+
+		// Extract sample rate and bit depth from extraAttributes first (available from all strategies)
+		if let extraAttributes = metadataItem.extraAttributes as? [String: Any] {
+			// Extract sample rate
+			if let rateValue = extraAttributes["X-COM-TIDAL-SAMPLE-RATE"] {
+				sampleRate = parseIntValue(rateValue)
+			}
+			// Extract bit depth
+			if let depthValue = extraAttributes["X-COM-TIDAL-SAMPLE-DEPTH"] {
+				bitDepth = parseIntValue(depthValue)
+			}
+		}
+
 		// Strategy 1: Check if value is directly a format string
 		if let value = metadataItem.value as? String, !value.isEmpty {
 			let trimmed = value.trimmingCharacters(in: Self.whitespaceCharacters)
 			// Valid format strings contain quality, codec, or attribute indicators
 			if !trimmed.isEmpty {
 				PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromValue(format: trimmed))
-				return FormatVariantMetadata(formatString: trimmed)
+				formatString = trimmed
 			}
 		}
 
 		// Strategy 2: Check if value is a dictionary with format attributes
-		if let dictValue = metadataItem.value as? [String: Any] {
+		if formatString == nil, let dictValue = metadataItem.value as? [String: Any] {
 			if let format = dictValue["X-COM-TIDAL-FORMAT"] as? String {
 				let trimmed = format.trimmingCharacters(in: Self.whitespaceCharacters)
 				if !trimmed.isEmpty {
 					PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromDictionary(format: trimmed))
-					return FormatVariantMetadata(formatString: trimmed)
+					formatString = trimmed
 				}
 			}
 		}
 
 		// Strategy 3: Check extraAttributes for custom format attributes
-		if let extraAttributes = metadataItem.extraAttributes as? [String: Any] {
+		if formatString == nil, let extraAttributes = metadataItem.extraAttributes as? [String: Any] {
 			// Try common attribute names
 			let attributeNames = ["X-COM-TIDAL-FORMAT", "x-com-tidal-format", "format", "FORMAT"]
 			for attrName in attributeNames {
@@ -120,12 +137,32 @@ class FormatVariantMonitor: NSObject {
 					let trimmed = format.trimmingCharacters(in: Self.whitespaceCharacters)
 					if !trimmed.isEmpty {
 						PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromAttributes(format: trimmed, attribute: attrName))
-						return FormatVariantMetadata(formatString: trimmed)
+						formatString = trimmed
+						break
 					}
 				}
 			}
 		}
 
+		// Return metadata only if we extracted a format string
+		if let format = formatString {
+			return FormatVariantMetadata(formatString: format, sampleRate: sampleRate, bitDepth: bitDepth)
+		}
+
+		return nil
+	}
+
+	/// Safely parses an integer value from various types (String, NSNumber, Int, etc.)
+	private func parseIntValue(_ value: Any) -> Int? {
+		if let intValue = value as? Int {
+			return intValue
+		}
+		if let stringValue = value as? String {
+			return Int(stringValue)
+		}
+		if let numberValue = value as? NSNumber {
+			return numberValue.intValue
+		}
 		return nil
 	}
 }
@@ -153,17 +190,31 @@ extension FormatVariantMonitor: AVPlayerItemMetadataCollectorPushDelegate {
 /// Metadata describing the format variant for an HLS stream segment
 public struct FormatVariantMetadata: Equatable {
 	public let formatString: String
+	public let sampleRate: Int?
+	public let bitDepth: Int?
 
 	public var description: String {
-		"FormatVariantMetadata(format: \(formatString))"
+		var desc = "FormatVariantMetadata(format: \(formatString)"
+		if let sr = sampleRate {
+			desc += ", sampleRate: \(sr)"
+		}
+		if let bd = bitDepth {
+			desc += ", bitDepth: \(bd)"
+		}
+		desc += ")"
+		return desc
 	}
 
-	public init(formatString: String) {
+	public init(formatString: String, sampleRate: Int? = nil, bitDepth: Int? = nil) {
 		self.formatString = formatString
+		self.sampleRate = sampleRate
+		self.bitDepth = bitDepth
 	}
 
-	/// Custom equality: compares only formatString to enable reliable deduplication
+	/// Custom equality: compares formatString, sampleRate, and bitDepth to enable reliable deduplication
 	public static func == (lhs: FormatVariantMetadata, rhs: FormatVariantMetadata) -> Bool {
-		lhs.formatString == rhs.formatString
+		lhs.formatString == rhs.formatString &&
+		lhs.sampleRate == rhs.sampleRate &&
+		lhs.bitDepth == rhs.bitDepth
 	}
 }
