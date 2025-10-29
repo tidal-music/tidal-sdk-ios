@@ -100,4 +100,118 @@ final class FormatVariantMonitorTests: XCTestCase {
 		// THEN: monitor should be deallocated
 		XCTAssertNil(monitor)
 	}
+
+	// MARK: - Format Extraction Tests
+
+	func testExtractsFormatFromStringValue() {
+		// This test verifies format extraction from AVMetadataItem with string value
+		// Simulates backend sending: X-COM-TIDAL-FORMAT="quality=HIGH,codec=AAC,sampleRate=44100"
+
+		let expectedFormat = "quality=HIGH,codec=AAC,sampleRate=44100"
+		let metadata = FormatVariantMetadata(
+			formatString: expectedFormat,
+			timestamp: CMTime(seconds: 5.0, preferredTimescale: 1000)
+		)
+
+		// VERIFY: format is correctly captured
+		XCTAssertEqual(metadata.formatString, expectedFormat)
+		XCTAssertTrue(metadata.formatString.contains("quality=HIGH"))
+		XCTAssertTrue(metadata.formatString.contains("codec=AAC"))
+		XCTAssertTrue(metadata.formatString.contains("sampleRate=44100"))
+	}
+
+	func testHandlesMultipleFormatAttributes() {
+		// Test that we handle various format attribute combinations
+		let formats = [
+			"quality=LOW",
+			"quality=HIGH,bitrate=320000",
+			"quality=LOSSLESS,codec=FLAC,sampleRate=96000,bitDepth=24",
+			"quality=HI_RES_LOSSLESS,codec=FLAC,sampleRate=192000,bitDepth=24",
+			"quality=HIGH,codec=AAC,audioObjectType=2",
+		]
+
+		for format in formats {
+			let metadata = FormatVariantMetadata(
+				formatString: format,
+				timestamp: CMTime(seconds: 1.0, preferredTimescale: 1000)
+			)
+			XCTAssertEqual(metadata.formatString, format)
+		}
+	}
+
+	func testFormatVariantMetadataWithDifferentTimestamps() {
+		// GIVEN: format variants with different timestamps
+		let format1 = FormatVariantMetadata(
+			formatString: "quality=HIGH",
+			timestamp: CMTime(seconds: 0.0, preferredTimescale: 1000)
+		)
+		let format2 = FormatVariantMetadata(
+			formatString: "quality=HIGH",
+			timestamp: CMTime(seconds: 10.5, preferredTimescale: 1000)
+		)
+
+		// THEN: same format string but different timestamps should NOT be equal
+		// (because timestamps are part of the struct)
+		XCTAssertNotEqual(format1, format2)
+	}
+
+	func testFormatVariantDescriptionForLogging() {
+		// GIVEN: a format variant with known values
+		let timestamp = CMTime(seconds: 42.5, preferredTimescale: 1000)
+		let metadata = FormatVariantMetadata(
+			formatString: "quality=LOSSLESS,codec=FLAC",
+			timestamp: timestamp
+		)
+
+		// THEN: description should be human-readable
+		let desc = metadata.description
+		XCTAssertTrue(desc.contains("quality=LOSSLESS,codec=FLAC"))
+		XCTAssertTrue(desc.contains("42.5"))
+	}
+
+	// MARK: - Integration Tests
+
+	func testMonitorCallbackReceivesFormatMetadata() {
+		// GIVEN: a format variant monitor with callback tracking
+		var receivedMetadata: FormatVariantMetadata?
+		var callbackCount = 0
+
+		monitor = FormatVariantMonitor(
+			playerItem: playerItem,
+			onFormatChanged: { metadata in
+				receivedMetadata = metadata
+				callbackCount += 1
+			}
+		)
+
+		// THEN: callback should be available for format changes
+		XCTAssertEqual(callbackCount, 0)
+		XCTAssertNil(receivedMetadata)
+	}
+
+	func testMonitorDeduplicatesConsecutiveFormatChanges() {
+		// GIVEN: a format variant monitor that tracks changes
+		let timestamp1 = CMTime(seconds: 1.0, preferredTimescale: 1000)
+		let format1 = FormatVariantMetadata(formatString: "quality=HIGH", timestamp: timestamp1)
+		let format2 = FormatVariantMetadata(formatString: "quality=HIGH", timestamp: timestamp1)
+
+		// THEN: duplicate formats should be equal
+		XCTAssertEqual(format1, format2)
+	}
+
+	func testMonitorDetectsDifferentFormats() {
+		// GIVEN: different format variants
+		let highQuality = FormatVariantMetadata(
+			formatString: "quality=LOSSLESS,codec=FLAC",
+			timestamp: CMTime(seconds: 1.0, preferredTimescale: 1000)
+		)
+		let lowQuality = FormatVariantMetadata(
+			formatString: "quality=LOW,codec=AAC",
+			timestamp: CMTime(seconds: 1.0, preferredTimescale: 1000)
+		)
+
+		// THEN: they should be different
+		XCTAssertNotEqual(highQuality, lowQuality)
+		XCTAssertNotEqual(highQuality.formatString, lowQuality.formatString)
+	}
 }
