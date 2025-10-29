@@ -4,42 +4,56 @@ This document describes how the FormatVariantMonitor integrates with the backend
 
 ## Backend Implementation Reference
 
-See: https://github.com/tidal-engineering/bits-ilmanifesto/pull/105
+**Source**: [bits-ilmanifesto PR #105](https://github.com/tidal-engineering/bits-ilmanifesto)
+**Commit**: `4ad24ab` - "Write the format as timed metadata in media playlists (#105)"
+**File**: `src/main/java/com/tidal/ilmanifesto/manifest/hls/HlsMediaPlaylistFactory.java`
 
 ## Expected HLS Metadata Format
 
-The backend adds format metadata to HLS playlists using the `EXT-X-DATERANGE` tag with a custom `com.tidal.format` identifier:
+The backend adds format metadata to HLS playlists using the `EXT-X-DATERANGE` tag with `com.tidal.format` class identifier:
 
 ```
-#EXT-X-DATERANGE:ID="com.tidal.format",START-DATE="2025-10-29T10:30:45Z",DURATION=5.0,X-COM-TIDAL-FORMAT="quality=HIGH,codec=AAC,sampleRate=44100"
+#EXT-X-PROGRAM-DATE-TIME:2025-10-29T10:30:45.123Z
+#EXT-X-DATERANGE:ID="HIGH",CLASS="com.tidal.format",START-DATE="2025-10-29T10:30:45.123Z",X-COM-TIDAL-FORMAT="HIGH"
 ```
 
 ### Metadata Structure
 
-- **ID**: `com.tidal.format` (fixed identifier that the monitor listens for)
-- **START-DATE**: ISO 8601 timestamp when the format variant becomes active
-- **DURATION**: How long this variant is active (optional)
-- **X-COM-TIDAL-FORMAT**: Custom attribute containing format details
+From backend implementation (`createFormatMetadataLines`):
+
+```java
+var format = traits.format().name();  // Enum name: "HIGH", "LOW", "LOSSLESS", "HI_RES_LOSSLESS"
+var extXDaterange = new ExtXDaterange(
+    Attribute.createQuoted("ID", format),                          // ID = format name
+    Attribute.createQuoted("CLASS", "com.tidal.format"),           // Fixed class identifier
+    Attribute.createQuoted("START-DATE", time.toString()),         // ISO 8601 timestamp
+    Attribute.createQuoted("X-COM-TIDAL-FORMAT", format));         // Format name again
+```
+
+**EXT-X-DATERANGE Attributes**:
+- **ID**: Format quality level name (e.g., "HIGH", "LOW", "LOSSLESS", "HI_RES_LOSSLESS")
+- **CLASS**: Fixed value `"com.tidal.format"` (identifies this as format metadata)
+- **START-DATE**: ISO 8601 timestamp when format becomes active
+- **X-COM-TIDAL-FORMAT**: Format quality level name (duplicated from ID)
 
 ### Format String Format
 
-The `X-COM-TIDAL-FORMAT` attribute contains comma-separated key=value pairs describing the variant:
+The `X-COM-TIDAL-FORMAT` attribute contains the format enum name as a simple string:
 
-**Common attributes:**
-- `quality`: Quality level (LOW, HIGH, LOSSLESS, HI_RES_LOSSLESS)
-- `codec`: Audio codec (AAC, FLAC, ALAC, MP3, eAC3, Opus)
-- `sampleRate`: Sample rate in Hz (44100, 96000, 192000)
-- `bitDepth`: Bits per sample (16, 24, 32)
-- `bitrate`: Bitrate in bps (optional, for reference)
-- `audioObjectType`: AAC profile (2=LC, 5=HE, 29=HEv2)
+**Valid Format Values** (from backend enum):
+- `LOW` - Low quality (AAC, ~128 kbps)
+- `HIGH` - High quality (AAC, ~320 kbps)
+- `LOSSLESS` - Lossless quality (FLAC, 16-bit/44.1 kHz)
+- `HI_RES_LOSSLESS` - Hi-Res lossless (FLAC, 24-bit/96+ kHz)
 
-**Example formats:**
+**Example HLS output**:
 ```
-quality=LOW,codec=AAC,sampleRate=44100
-quality=HIGH,codec=AAC,sampleRate=44100,audioObjectType=2
-quality=LOSSLESS,codec=FLAC,sampleRate=44100,bitDepth=16
-quality=HI_RES_LOSSLESS,codec=FLAC,sampleRate=192000,bitDepth=24
-quality=LOSSLESS,codec=eAC3
+#EXT-X-PROGRAM-DATE-TIME:2025-10-29T10:30:00.000Z
+#EXT-X-DATERANGE:ID="HIGH",CLASS="com.tidal.format",START-DATE="2025-10-29T10:30:00.000Z",X-COM-TIDAL-FORMAT="HIGH"
+...segments...
+#EXT-X-PROGRAM-DATE-TIME:2025-10-29T10:31:00.000Z
+#EXT-X-DATERANGE:ID="LOSSLESS",CLASS="com.tidal.format",START-DATE="2025-10-29T10:31:00.000Z",X-COM-TIDAL-FORMAT="LOSSLESS"
+...segments...
 ```
 
 ## Client Implementation
@@ -48,13 +62,24 @@ quality=LOSSLESS,codec=eAC3
 
 1. **Setup**: When a player item is created, `AVPlayerItemMonitor` automatically creates a `FormatVariantMonitor`
 2. **Listening**: The monitor sets up `AVPlayerItemMetadataOutput` with the identifier `"com.tidal.format"`
-3. **Detection**: When the HLS stream contains matching `EXT-X-DATERANGE` tags, `metadataOutput(:didOutputTimedMetadataGroups:from:)` is called
-4. **Extraction**: Format data is extracted from the metadata item using multiple strategies:
-   - Direct string value
+3. **Detection**: When the HLS stream contains `EXT-X-DATERANGE` tags with `CLASS="com.tidal.format"`, the metadata callback is triggered
+4. **Extraction**: Format value is extracted from the metadata item using multiple strategies (to handle AVFoundation variations):
+   - Direct string value from `metadataItem.value`
    - Dictionary value with `X-COM-TIDAL-FORMAT` key
    - Extra attributes dictionary
-5. **Deduplication**: If the format hasn't changed, the update is ignored
+5. **Deduplication**: If the format hasn't changed from the last report, the update is ignored
 6. **Reporting**: Format changes are propagated via `PlayerMonitoringDelegate.formatVariantChanged(asset:variant:)`
+
+### FormatVariantMetadata
+
+The monitor reports changes as a `FormatVariantMetadata` struct:
+
+```swift
+public struct FormatVariantMetadata: Equatable {
+    public let formatString: String      // "HIGH", "LOW", "LOSSLESS", or "HI_RES_LOSSLESS"
+    public let timestamp: CMTime         // When format became active (from START-DATE)
+}
+```
 
 ### Supported Metadata Item Formats
 
@@ -62,13 +87,13 @@ The implementation supports multiple ways AVFoundation might expose the metadata
 
 ```swift
 // Strategy 1: Direct string value
-metadataItem.value = "quality=HIGH,codec=AAC,sampleRate=44100"
+metadataItem.value = "HIGH"
 
 // Strategy 2: Dictionary with X-COM-TIDAL-FORMAT key
-metadataItem.value = ["X-COM-TIDAL-FORMAT": "quality=HIGH,..."]
+metadataItem.value = ["X-COM-TIDAL-FORMAT": "HIGH"]
 
 // Strategy 3: Extra attributes
-metadataItem.extraAttributes = ["X-COM-TIDAL-FORMAT": "quality=HIGH,..."]
+metadataItem.extraAttributes = ["X-COM-TIDAL-FORMAT": "HIGH"]
 ```
 
 ## Testing
@@ -76,39 +101,69 @@ metadataItem.extraAttributes = ["X-COM-TIDAL-FORMAT": "quality=HIGH,..."]
 The implementation includes 13 comprehensive tests:
 
 - ✅ Format metadata creation and equality
-- ✅ Multiple format attribute combinations
-- ✅ Timestamp handling
+- ✅ Multiple format values (LOW, HIGH, LOSSLESS, HI_RES_LOSSLESS)
+- ✅ Timestamp handling and comparison
 - ✅ Description/logging output
 - ✅ Monitor initialization and cleanup
 - ✅ Callback integration
-- ✅ Deduplication logic
-- ✅ Format variant detection
+- ✅ Deduplication logic (same format not reported twice)
+- ✅ Format variant detection (different formats reported)
 
 ### Test Examples
 
 ```swift
-// Format extraction with AAC
+// Format extraction with backend values
 testExtractsFormatFromStringValue()
-// Expected: "quality=HIGH,codec=AAC,sampleRate=44100"
+// Examples: "HIGH", "LOW", "LOSSLESS", "HI_RES_LOSSLESS"
 
-// Multiple attribute combinations
+// Multiple format variants
 testHandlesMultipleFormatAttributes()
-// Handles: LOW, HIGH, LOSSLESS, HI_RES_LOSSLESS variants
+// Handles: LOW, HIGH, LOSSLESS, HI_RES_LOSSLESS format values
 
 // Format change detection
 testMonitorDetectsDifferentFormats()
-// Correctly identifies when quality/codec changes
+// Correctly identifies: "HIGH" → "LOSSLESS" as a change
 ```
+
+### Example Test Case
+
+From the test suite, simulating backend format metadata:
+
+```swift
+let timestamp = CMTime(seconds: 5.0, preferredTimescale: 1000)
+let metadata = FormatVariantMetadata(
+    formatString: "HIGH",      // Backend sends: X-COM-TIDAL-FORMAT="HIGH"
+    timestamp: timestamp
+)
+
+XCTAssertEqual(metadata.formatString, "HIGH")
+XCTAssertTrue(metadata.formatString == "HIGH")
+```
+
+# Client-Backend Verification
+
+## Format String Mapping
+
+Backend Format Enum → Client FormatVariantMetadata:
+
+| Backend Enum | Description | Client Format String |
+|---|---|---|
+| LOW | Low quality AAC (~128 kbps) | `"LOW"` |
+| HIGH | High quality AAC (~320 kbps) | `"HIGH"` |
+| LOSSLESS | Lossless FLAC (16-bit/44.1 kHz) | `"LOSSLESS"` |
+| HI_RES_LOSSLESS | Hi-Res lossless (24-bit/96+ kHz) | `"HI_RES_LOSSLESS"` |
 
 ## Integration Verification Checklist
 
 - [x] Monitor initializes without errors
-- [x] Metadata output is properly configured
-- [x] Format extraction handles multiple input formats
-- [x] Deduplication works (prevents duplicate events)
+- [x] Metadata output is properly configured for `"com.tidal.format"` identifier
+- [x] Format extraction handles multiple AVFoundation metadata formats
+- [x] Deduplication works (prevents duplicate events for same format)
 - [x] Callbacks propagate to delegates correctly
 - [x] Proper cleanup on deinit
 - [x] Debug logging for troubleshooting
+- [x] Backend format values tested (HIGH, LOW, LOSSLESS, HI_RES_LOSSLESS)
+- [x] Timestamp extraction and conversion working
 
 ## Debugging
 
