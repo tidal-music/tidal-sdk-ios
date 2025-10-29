@@ -252,7 +252,6 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	}
 }
 
-
 // MARK: UCMediaPlayer
 
 extension AVQueuePlayerWrapper: UCMediaPlayer {
@@ -580,7 +579,6 @@ private extension AVQueuePlayerWrapper {
 			asset.setAssetPosition(playerItem)
 		}
 	}
-
 
 	func playedToEnd(playerItem: AVPlayerItem) {
 		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
