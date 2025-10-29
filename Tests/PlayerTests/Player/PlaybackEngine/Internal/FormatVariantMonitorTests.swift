@@ -6,12 +6,15 @@ final class FormatVariantMonitorTests: XCTestCase {
 	private var playerItem: AVPlayerItem!
 	private var monitor: FormatVariantMonitor?
 	private var formatChanges: [FormatVariantMetadata] = []
+	private var testQueue: OperationQueue!
 
 	override func setUp() {
 		super.setUp()
 		let asset = AVAsset(url: URL(fileURLWithPath: "/dev/null"))
 		playerItem = AVPlayerItem(asset: asset)
 		formatChanges = []
+		testQueue = OperationQueue()
+		testQueue.maxConcurrentOperationCount = 1
 	}
 
 	override func tearDown() {
@@ -25,6 +28,7 @@ final class FormatVariantMonitorTests: XCTestCase {
 		// GIVEN: a format variant monitor
 		monitor = FormatVariantMonitor(
 			playerItem: playerItem,
+			queue: testQueue,
 			onFormatChanged: { [weak self] metadata in
 				self?.formatChanges.append(metadata)
 			}
@@ -38,6 +42,7 @@ final class FormatVariantMonitorTests: XCTestCase {
 		// GIVEN: a format variant monitor with a callback
 		monitor = FormatVariantMonitor(
 			playerItem: playerItem,
+			queue: testQueue,
 			onFormatChanged: { [weak self] metadata in
 				self?.formatChanges.append(metadata)
 			}
@@ -90,6 +95,7 @@ final class FormatVariantMonitorTests: XCTestCase {
 		// GIVEN: a format variant monitor assigned to self.monitor
 		monitor = FormatVariantMonitor(
 			playerItem: playerItem,
+			queue: testQueue,
 			onFormatChanged: { _ in }
 		)
 		XCTAssertNotNil(monitor)
@@ -152,9 +158,12 @@ final class FormatVariantMonitorTests: XCTestCase {
 			timestamp: CMTime(seconds: 10.5, preferredTimescale: 1000)
 		)
 
-		// THEN: same format string but different timestamps should NOT be equal
-		// (because timestamps are part of the struct)
-		XCTAssertNotEqual(format1, format2)
+		// THEN: same format string but different timestamps should be equal
+		// Equality compares only formatString to enable deduplication regardless of CMTime variations
+		XCTAssertEqual(format1, format2)
+
+		// But the metadata still preserves different timestamps for informational purposes
+		XCTAssertNotEqual(format1.timestamp.seconds, format2.timestamp.seconds)
 	}
 
 	func testFormatVariantDescriptionForLogging() {
@@ -180,6 +189,7 @@ final class FormatVariantMonitorTests: XCTestCase {
 
 		monitor = FormatVariantMonitor(
 			playerItem: playerItem,
+			queue: testQueue,
 			onFormatChanged: { metadata in
 				receivedMetadata = metadata
 				callbackCount += 1
