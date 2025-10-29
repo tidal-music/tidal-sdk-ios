@@ -121,13 +121,15 @@ final class FormatVariantMonitorTests: XCTestCase {
 	}
 
 	func testHandlesMultipleFormatAttributes() {
-		// Test that we handle various format attribute combinations
+		// Test that we handle various format values from the backend
+		// Backend sends simple format enum names: LOW, HIGH, LOSSLESS, HI_RES_LOSSLESS
+		// Client is flexible to handle future extensions with more detailed metadata
 		let formats = [
-			"quality=LOW",
-			"quality=HIGH,bitrate=320000",
-			"quality=LOSSLESS,codec=FLAC,sampleRate=96000,bitDepth=24",
-			"quality=HI_RES_LOSSLESS,codec=FLAC,sampleRate=192000,bitDepth=24",
-			"quality=HIGH,codec=AAC,audioObjectType=2",
+			"LOW",                                                              // Backend format
+			"HIGH",                                                             // Backend format
+			"LOSSLESS",                                                         // Backend format
+			"HI_RES_LOSSLESS",                                                  // Backend format
+			"quality=HIGH,codec=AAC,audioObjectType=2",                        // Future: extended format
 		]
 
 		for format in formats {
