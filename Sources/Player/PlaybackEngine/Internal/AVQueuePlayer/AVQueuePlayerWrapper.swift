@@ -391,6 +391,17 @@ private extension AVQueuePlayerWrapper {
 				}
 
 				self.delegates.audioQualityChanged(asset: asset, to: newQuality)
+			},
+			onFormatVariantChanged: { [weak self] item, formatVariant in
+				guard let self else {
+					return
+				}
+
+				guard let asset = self.playerItemAssets[item] else {
+					return
+				}
+
+				self.delegates.formatVariantChanged(asset: asset, variant: formatVariant)
 			}
 		)
 	}

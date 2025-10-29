@@ -10,6 +10,7 @@ final class AVPlayerItemMonitor {
 	private let readyToPlayMonitor: ReadyToPlayMonitor
 	private let playerItemDidPlayToEndTimeMonitor: ItemPlayedToEndMonitor
 	private var abrMonitor: AVPlayerItemABRMonitor?
+	private var formatVariantMonitor: FormatVariantMonitor?
 
 	init(
 		_ playerItem: AVPlayerItem,
@@ -20,7 +21,8 @@ final class AVPlayerItemMonitor {
 		onCompletelyDownloaded: @escaping (AVPlayerItem) -> Void,
 		onReadyToPlayToPlay: @escaping (AVPlayerItem) -> Void,
 		onItemPlayedToEnd: @escaping (AVPlayerItem) -> Void,
-		onAudioQualityChanged: ((AVPlayerItem, AudioQuality) -> Void)?
+		onAudioQualityChanged: @escaping (AVPlayerItem, AudioQuality) -> Void,
+		onFormatVariantChanged: @escaping (AVPlayerItem, FormatVariantMetadata) -> Void
 	) {
 		self.playerItem = playerItem
 		failureMonitor = FailureMonitor(playerItem, onFailure)
@@ -30,17 +32,24 @@ final class AVPlayerItemMonitor {
 		readyToPlayMonitor = ReadyToPlayMonitor(playerItem, onReadyToPlayToPlay)
 		playerItemDidPlayToEndTimeMonitor = ItemPlayedToEndMonitor(playerItem: playerItem, onPlayedToEnd: onItemPlayedToEnd)
 
-		if let onAudioQualityChanged {
-			abrMonitor = AVPlayerItemABRMonitor(
-				playerItem: playerItem,
-				queue: queue,
-				onQualityChanged: { [weak self] newQuality in
-					guard let self else {
-						return
-					}
-					onAudioQualityChanged(self.playerItem, newQuality)
+		abrMonitor = AVPlayerItemABRMonitor(
+			playerItem: playerItem,
+			queue: queue,
+			onQualityChanged: { [weak self] newQuality in
+				guard let self else {
+					return
 				}
-			)
+				onAudioQualityChanged(self.playerItem, newQuality)
+			}
+		)
+
+		formatVariantMonitor = FormatVariantMonitor(
+			playerItem: playerItem
+		) { [weak self] formatMetadata in
+			guard let self else {
+				return
+			}
+			onFormatVariantChanged(self.playerItem, formatMetadata)
 		}
 	}
 
