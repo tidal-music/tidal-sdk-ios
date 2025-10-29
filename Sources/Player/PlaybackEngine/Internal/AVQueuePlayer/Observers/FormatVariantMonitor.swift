@@ -92,33 +92,57 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 	}
 
 	/// Extracts format string from X-COM-TIDAL-FORMAT attribute or value
+	/// Supports multiple metadata formats:
+	/// 1. Direct string value from metadataItem.value
+	/// 2. X-COM-TIDAL-FORMAT from extraAttributes (AVFoundation dictionary)
+	/// 3. Parsed from key-value pairs in dictionary representation
 	private func extractFormatData(from metadataItem: AVMetadataItem) -> String? {
-		// First, try to get the value directly (if it contains the format string)
+		// Strategy 1: Check if value is directly a format string
 		if let value = metadataItem.value as? String, !value.isEmpty {
-			// Check if it looks like a format string (contains quality indicators)
-			if value.contains("=") || value.contains(",") || !value.isEmpty {
-				return value
+			let trimmed = value.trimmingCharacters(in: .whitespaces)
+			// Valid format strings contain quality, codec, or attribute indicators
+			if !trimmed.isEmpty {
+				print("[FormatVariantMonitor] Extracted format from direct value: \(trimmed)")
+				return trimmed
 			}
 		}
 
-		// Try to extract from commonKey or key
-		if let commonKey = metadataItem.commonKey {
-			print("[FormatVariantMonitor] Common key: \(commonKey)")
+		// Strategy 2: Check if value is a dictionary with format attributes
+		if let dictValue = metadataItem.value as? [String: Any] {
+			if let format = dictValue["X-COM-TIDAL-FORMAT"] as? String {
+				let trimmed = format.trimmingCharacters(in: .whitespaces)
+				if !trimmed.isEmpty {
+					print("[FormatVariantMonitor] Extracted format from dictionary value: \(trimmed)")
+					return trimmed
+				}
+			}
 		}
 
-		if let key = metadataItem.key {
-			print("[FormatVariantMonitor] Key: \(key)")
-		}
-
-		// Try to get from extraAttributes (sometimes metadata stores custom attributes)
+		// Strategy 3: Check extraAttributes for custom format attributes
 		if let extraAttributes = metadataItem.extraAttributes as? [String: Any] {
-			if let format = extraAttributes["X-COM-TIDAL-FORMAT"] as? String {
-				return format
+			// Try common attribute names
+			let attributeNames = ["X-COM-TIDAL-FORMAT", "x-com-tidal-format", "format", "FORMAT"]
+			for attrName in attributeNames {
+				if let format = extraAttributes[attrName] as? String {
+					let trimmed = format.trimmingCharacters(in: .whitespaces)
+					if !trimmed.isEmpty {
+						print("[FormatVariantMonitor] Extracted format from extraAttributes[\(attrName)]: \(trimmed)")
+						return trimmed
+					}
+				}
 			}
 		}
 
-		// If no explicit format string, try to construct from available metadata
-		// This is a fallback for when format info is in different attributes
+		// Strategy 4: Debug logging for troubleshooting
+		print("[FormatVariantMonitor] Could not extract format. Item details:")
+		print("[FormatVariantMonitor]   - identifier: \(metadataItem.identifier.map { $0.rawValue } ?? "nil")")
+		print("[FormatVariantMonitor]   - key: \(metadataItem.key.map { String(describing: $0) } ?? "nil")")
+		print("[FormatVariantMonitor]   - commonKey: \(metadataItem.commonKey.map { String(describing: $0) } ?? "nil")")
+		print("[FormatVariantMonitor]   - value type: \(type(of: metadataItem.value))")
+		if let attrs = metadataItem.extraAttributes {
+			print("[FormatVariantMonitor]   - extraAttributes keys: \(Array(attrs.keys))")
+		}
+
 		return nil
 	}
 }
