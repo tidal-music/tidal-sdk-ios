@@ -417,7 +417,7 @@ private extension PlaybackInfoFetcher {
 
 	private func getFormatsForAudioQuality(_ audioQuality: AudioQuality, adaptive: Bool) -> String {
 		PlaybackInfoFetcher
-			.buildFormatList(maxQuality: audioQuality, adaptive: adaptive)
+			.buildFormatList(maxQuality: audioQuality, adaptive: adaptive, configuration: configuration)
 			.map(\.rawValue)
 			.joined(separator: ",")
 	}
@@ -528,21 +528,35 @@ private extension PlaybackInfoFetcher {
 extension PlaybackInfoFetcher {
 	static func buildFormatList(
 		maxQuality: AudioQuality,
-		adaptive: Bool
+		adaptive: Bool,
+		configuration: Configuration? = nil
 	) -> [TrackManifestsAttributes.Formats] {
 		let targetQualities = adaptive ? audioQualities(upTo: maxQuality) : [maxQuality]
 
 		return uniqueOrderedFormats(
-			targetQualities.flatMap(formats(for:))
+			targetQualities.flatMap { formats(for: $0, configuration: configuration) }
 		)
 	}
 
-	private static func formats(for audioQuality: AudioQuality) -> [TrackManifestsAttributes.Formats] {
+	private static func formats(
+		for audioQuality: AudioQuality,
+		configuration: Configuration? = nil
+	) -> [TrackManifestsAttributes.Formats] {
+		let isImmersiveAudioEnabled = configuration?.isImmersiveAudio ?? false
+
 		switch audioQuality {
 		case .HI_RES, .HI_RES_LOSSLESS:
-			return [.heaacv1, .aaclc, .flac, .flacHires]
+			var formats: [TrackManifestsAttributes.Formats] = [.heaacv1, .aaclc, .flac, .flacHires]
+			if isImmersiveAudioEnabled {
+				formats.append(.eac3Joc)
+			}
+			return formats
 		case .LOSSLESS:
-			return [.heaacv1, .aaclc, .flac]
+			var formats: [TrackManifestsAttributes.Formats] = [.heaacv1, .aaclc, .flac]
+			if isImmersiveAudioEnabled {
+				formats.append(.eac3Joc)
+			}
+			return formats
 		case .HIGH:
 			return [.heaacv1, .aaclc]
 		case .LOW:
