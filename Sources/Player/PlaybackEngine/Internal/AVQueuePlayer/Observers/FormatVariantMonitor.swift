@@ -38,14 +38,14 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 		playerItem.add(metadataOutput)
 		self.metadataOutput = metadataOutput
 
-		print("[FormatVariantMonitor] Metadata output initialized for format tracking")
+		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantMonitorInitialized)
 	}
 
 	/// Tears down the metadata output when the monitor is deallocated
 	private func teardownMetadataOutput() {
 		if let output = metadataOutput, let item = playerItem {
 			item.remove(output)
-			print("[FormatVariantMonitor] Metadata output removed")
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantMonitorRemoved)
 		}
 		metadataOutput = nil
 	}
@@ -71,7 +71,7 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 	/// Processes format metadata and reports changes
 	private func processFormatMetadata(_ metadataItem: AVMetadataItem, timestamp: CMTime) {
 		guard let formatData = extractFormatData(from: metadataItem) else {
-			print("[FormatVariantMonitor] Failed to extract format data from metadata")
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractionFailed)
 			return
 		}
 
@@ -85,8 +85,9 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 			return
 		}
 
+		let previousFormat = lastReportedFormat?.formatString
 		lastReportedFormat = formatMetadata
-		print("[FormatVariantMonitor] Format changed: \(formatData)")
+		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantChanged(from: previousFormat, to: formatData))
 
 		onFormatChanged(formatMetadata)
 	}
@@ -102,7 +103,7 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 			let trimmed = value.trimmingCharacters(in: .whitespaces)
 			// Valid format strings contain quality, codec, or attribute indicators
 			if !trimmed.isEmpty {
-				print("[FormatVariantMonitor] Extracted format from direct value: \(trimmed)")
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromValue(format: trimmed))
 				return trimmed
 			}
 		}
@@ -112,7 +113,7 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 			if let format = dictValue["X-COM-TIDAL-FORMAT"] as? String {
 				let trimmed = format.trimmingCharacters(in: .whitespaces)
 				if !trimmed.isEmpty {
-					print("[FormatVariantMonitor] Extracted format from dictionary value: \(trimmed)")
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromDictionary(format: trimmed))
 					return trimmed
 				}
 			}
@@ -126,21 +127,11 @@ final class FormatVariantMonitor: NSObject, AVPlayerItemMetadataOutputPushDelega
 				if let format = extraAttributes[attrName] as? String {
 					let trimmed = format.trimmingCharacters(in: .whitespaces)
 					if !trimmed.isEmpty {
-						print("[FormatVariantMonitor] Extracted format from extraAttributes[\(attrName)]: \(trimmed)")
+						PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromAttributes(format: trimmed, attribute: attrName))
 						return trimmed
 					}
 				}
 			}
-		}
-
-		// Strategy 4: Debug logging for troubleshooting
-		print("[FormatVariantMonitor] Could not extract format. Item details:")
-		print("[FormatVariantMonitor]   - identifier: \(metadataItem.identifier.map { $0.rawValue } ?? "nil")")
-		print("[FormatVariantMonitor]   - key: \(metadataItem.key.map { String(describing: $0) } ?? "nil")")
-		print("[FormatVariantMonitor]   - commonKey: \(metadataItem.commonKey.map { String(describing: $0) } ?? "nil")")
-		print("[FormatVariantMonitor]   - value type: \(type(of: metadataItem.value))")
-		if let attrs = metadataItem.extraAttributes {
-			print("[FormatVariantMonitor]   - extraAttributes keys: \(Array(attrs.keys))")
 		}
 
 		return nil
