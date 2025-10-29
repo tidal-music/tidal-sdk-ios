@@ -67,6 +67,38 @@ final class FormatVariantMonitorTests: XCTestCase {
 		XCTAssertEqual(metadata.formatString, "quality=HIGH,codec=AAC,sampleRate=44100")
 	}
 
+	func testFormatVariantMetadataWithSampleRateAndBitDepth() {
+		// GIVEN: a format variant metadata with sample rate and bit depth
+		let metadata = FormatVariantMetadata(
+			formatString: "quality=HIGH,codec=AAC",
+			sampleRate: 44100,
+			bitDepth: 16
+		)
+
+		// THEN: all properties are accessible
+		XCTAssertEqual(metadata.formatString, "quality=HIGH,codec=AAC")
+		XCTAssertEqual(metadata.sampleRate, 44100)
+		XCTAssertEqual(metadata.bitDepth, 16)
+	}
+
+	func testFormatVariantMetadataWithOptionalFields() {
+		// GIVEN: format metadata with optional fields
+		let withoutOptionals = FormatVariantMetadata(formatString: "quality=HIGH")
+		let withSampleRate = FormatVariantMetadata(formatString: "quality=HIGH", sampleRate: 48000)
+		let withBitDepth = FormatVariantMetadata(formatString: "quality=HIGH", bitDepth: 24)
+		let withBoth = FormatVariantMetadata(formatString: "quality=HIGH", sampleRate: 96000, bitDepth: 24)
+
+		// THEN: optional fields should be nil or set accordingly
+		XCTAssertNil(withoutOptionals.sampleRate)
+		XCTAssertNil(withoutOptionals.bitDepth)
+		XCTAssertEqual(withSampleRate.sampleRate, 48000)
+		XCTAssertNil(withSampleRate.bitDepth)
+		XCTAssertEqual(withBitDepth.bitDepth, 24)
+		XCTAssertNil(withBitDepth.sampleRate)
+		XCTAssertEqual(withBoth.sampleRate, 96000)
+		XCTAssertEqual(withBoth.bitDepth, 24)
+	}
+
 	func testFormatVariantMetadataEquality() {
 		// GIVEN: two format variant metadata objects with same format string
 		let format1 = FormatVariantMetadata(formatString: "quality=HIGH")
@@ -193,5 +225,50 @@ final class FormatVariantMonitorTests: XCTestCase {
 		// THEN: they should be different
 		XCTAssertNotEqual(highQuality, lowQuality)
 		XCTAssertNotEqual(highQuality.formatString, lowQuality.formatString)
+	}
+
+	// MARK: - Equality Tests with New Fields
+
+	func testFormatVariantEqualityIncludesSampleRateAndBitDepth() {
+		// GIVEN: format metadata with same format but different sample rate/bitDepth
+		let format1 = FormatVariantMetadata(formatString: "quality=HIGH", sampleRate: 44100, bitDepth: 16)
+		let format2 = FormatVariantMetadata(formatString: "quality=HIGH", sampleRate: 44100, bitDepth: 16)
+		let format3 = FormatVariantMetadata(formatString: "quality=HIGH", sampleRate: 48000, bitDepth: 16)
+		let format4 = FormatVariantMetadata(formatString: "quality=HIGH", sampleRate: 44100, bitDepth: 24)
+
+		// THEN: formats with same all properties should be equal
+		XCTAssertEqual(format1, format2)
+		// But different sample rate or bit depth should make them unequal
+		XCTAssertNotEqual(format1, format3)
+		XCTAssertNotEqual(format1, format4)
+	}
+
+	func testFormatVariantDescriptionIncludesNewFields() {
+		// GIVEN: format metadata with sample rate and bit depth
+		let metadata = FormatVariantMetadata(
+			formatString: "quality=LOSSLESS,codec=FLAC",
+			sampleRate: 96000,
+			bitDepth: 24
+		)
+
+		// THEN: description should include all fields
+		let desc = metadata.description
+		XCTAssertTrue(desc.contains("quality=LOSSLESS,codec=FLAC"))
+		XCTAssertTrue(desc.contains("96000"))
+		XCTAssertTrue(desc.contains("24"))
+		XCTAssertTrue(desc.contains("sampleRate"))
+		XCTAssertTrue(desc.contains("bitDepth"))
+	}
+
+	func testFormatVariantDescriptionWithoutOptionalFields() {
+		// GIVEN: format metadata without optional fields
+		let metadata = FormatVariantMetadata(formatString: "quality=HIGH")
+
+		// THEN: description should not include nil fields
+		let desc = metadata.description
+		XCTAssertTrue(desc.contains("quality=HIGH"))
+		// Nil fields should not appear in description
+		XCTAssertFalse(desc.contains("sampleRate: nil"))
+		XCTAssertFalse(desc.contains("bitDepth: nil"))
 	}
 }
