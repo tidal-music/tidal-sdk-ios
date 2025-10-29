@@ -12,4 +12,5 @@ struct Metadata: Equatable {
 	let videoQuality: VideoQuality?
 	let adaptiveAudioQualities: [AudioQuality]?
 	let playbackSource: PlaybackSource
+	let isAdaptivePlaybackEnabled: Bool
 }

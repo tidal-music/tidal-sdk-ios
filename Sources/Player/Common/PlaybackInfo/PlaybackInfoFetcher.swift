@@ -129,7 +129,8 @@ private extension PlaybackInfoFetcher {
 			trackReplayGain: playbackInfo.trackReplayGain,
 			trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
 			offlineRevalidateAt: playbackInfo.offlineRevalidateAt,
-			offlineValidUntil: playbackInfo.offlineValidUntil
+			offlineValidUntil: playbackInfo.offlineValidUntil,
+			isAdaptivePlaybackEnabled: false
 		)
 	}
 
@@ -188,6 +189,9 @@ private extension PlaybackInfoFetcher {
 				? PlaybackInfoFetcher.buildQualityLadder(from: attributes?.formats)
 				: nil
 
+			// Check if adaptive playback is enabled
+			let isAdaptivePlaybackEnabled = configuration.allowVariablePlayback && featureFlagProvider.shouldSupportABRPlayback()
+
 			return PlaybackInfo(
 				productType: .TRACK,
 				productId: trackId,
@@ -210,7 +214,8 @@ private extension PlaybackInfoFetcher {
 				trackReplayGain: attributes?.trackAudioNormalizationData?.replayGain,
 				trackPeakAmplitude: attributes?.trackAudioNormalizationData?.peakAmplitude,
 				offlineRevalidateAt: nil, // May need to be derived from DRM data
-				offlineValidUntil: nil // May need to be derived from DRM data
+				offlineValidUntil: nil, // May need to be derived from DRM data
+				isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled
 			)
 			
 		} catch {
@@ -298,7 +303,8 @@ private extension PlaybackInfoFetcher {
 			trackReplayGain: playbackInfo.trackReplayGain,
 			trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
 			offlineRevalidateAt: playbackInfo.offlineRevalidateAt,
-			offlineValidUntil: playbackInfo.offlineValidUntil
+			offlineValidUntil: playbackInfo.offlineValidUntil,
+			isAdaptivePlaybackEnabled: false
 		)
 	}
 
@@ -350,7 +356,8 @@ private extension PlaybackInfoFetcher {
 			trackReplayGain: nil,
 			trackPeakAmplitude: nil,
 			offlineRevalidateAt: nil,
-			offlineValidUntil: nil
+			offlineValidUntil: nil,
+			isAdaptivePlaybackEnabled: false
 		)
 	}
 
