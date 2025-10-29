@@ -183,6 +183,11 @@ enum PlayerLoggable: TidalLoggable {
 	case formatVariantExtractedFromAttributes(format: String, attribute: String)
 	case formatVariantExtractionFailed
 
+	// MARK: AVPlayerItemABRMonitor
+
+	case abrMonitorQualityDetected(from: String?, to: String)
+	case abrMonitorFormatExtractionFailed
+
 	// MARK: AssetPlaybackMetadata
 
 	case assetPlaybackMetadataInitWithoutRateAndDepthData
@@ -429,6 +434,12 @@ extension PlayerLoggable {
 		case .formatVariantExtractionFailed:
 			"FormatVariantMonitor-extractionFailed"
 
+		// AVPlayerItemABRMonitor
+		case .abrMonitorQualityDetected:
+			"AVPlayerItemABRMonitor-qualityDetected"
+		case .abrMonitorFormatExtractionFailed:
+			"AVPlayerItemABRMonitor-formatExtractionFailed"
+
 		// AssetPlaybackMetadata
 		case .assetPlaybackMetadataInitWithoutRateAndDepthData:
 			"AssetPlaybackMetadata-initWithoutRateAndDepthData"
@@ -513,6 +524,9 @@ extension PlayerLoggable {
 		case let .formatVariantExtractedFromAttributes(format, attribute):
 			metadata["format"] = "\(String(describing: format))"
 			metadata["attribute"] = "\(String(describing: attribute))"
+		case let .abrMonitorQualityDetected(from, to):
+			metadata["from"] = "\(String(describing: from))"
+			metadata["to"] = "\(String(describing: to))"
 		case let .audioCodecInitWithNilQuality(mode):
 			metadata[Constants.metadataAudioModeKey] = "\(String(describing: mode))"
 		case .streamingNotifyGetCredentialFailed,
@@ -538,6 +552,7 @@ extension PlayerLoggable {
 		     .formatVariantMonitorInitialized,
 		     .formatVariantMonitorRemoved,
 		     .formatVariantExtractionFailed,
+		     .abrMonitorFormatExtractionFailed,
 		     .changeMonitorHandleNotificationWithoutRequiredData,
 		     .changeMonitorUpdateVolumeWithoutRequiredData,
 		     .handleMediaServicesWereReset,
@@ -641,6 +656,8 @@ extension PlayerLoggable {
 		     .formatVariantExtractedFromDictionary,
 		     .formatVariantExtractedFromAttributes,
 		     .formatVariantExtractionFailed,
+		     .abrMonitorQualityDetected,
+		     .abrMonitorFormatExtractionFailed,
 		     .eventSenderInitEventsDirectoryFailed,
 		     .eventSenderInitOfflinePlaysDirectoryFailed,
 		     .eventSenderInitializeDirectoryNoURLPath,
