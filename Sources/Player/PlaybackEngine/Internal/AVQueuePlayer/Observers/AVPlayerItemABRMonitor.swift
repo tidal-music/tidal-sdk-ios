@@ -3,6 +3,24 @@ import CoreMedia
 import Foundation
 import AudioToolbox
 
+/// AVPlayerItemABRMonitor detects audio quality changes via bitrate analysis from HLS access logs.
+///
+/// **Current Status (Debug-Only):**
+/// This monitor is currently used for debugging and diagnostics purposes only.
+/// Quality change callbacks are disabled. Quality monitoring has been replaced by
+/// FormatVariantMonitor, which uses HLS timed metadata (ext-x-daterange) for more
+/// accurate variant switch tracking and timing information.
+///
+/// **Why FormatVariantMonitor?**
+/// - FormatVariantMonitor uses backend-provided format metadata from HLS playlists
+/// - Provides precise timing of variant switches via START-DATE attribute
+/// - Avoids timing ambiguities from access log processing delays
+/// - Direct mapping to backend format enums (HIGH, LOW, LOSSLESS, HI_RES_LOSSLESS)
+///
+/// **Keep ABRMonitor For:**
+/// - Debugging ABR behavior and bitrate detection logic
+/// - Validating access log quality inference against actual playback data
+/// - Future enhancements if access log monitoring is needed
 final class AVPlayerItemABRMonitor {
 	private weak var playerItem: AVPlayerItem?
 	private let queue: OperationQueue
@@ -37,7 +55,9 @@ final class AVPlayerItemABRMonitor {
 		}
 	}
 
-	/// Reports a quality change if it differs from the last reported quality.
+	/// Debug-only: Logs detected quality changes without reporting them up the SDK chain.
+	/// This monitor is currently used for debugging and diagnostics only.
+	/// Quality monitoring is now handled by FormatVariantMonitor using HLS timed metadata.
 	private func reportQuality(_ quality: AudioQuality) {
 		guard quality != lastReportedQuality else {
 			return
@@ -46,11 +66,14 @@ final class AVPlayerItemABRMonitor {
 		let previousQuality = lastReportedQuality
 		lastReportedQuality = quality
 
-		print("[ABRMonitor] Quality changed: \(String(describing: previousQuality)) → \(quality)")
+		print("[ABRMonitor] Quality detected (debug-only, not reported): \(String(describing: previousQuality)) → \(quality)")
 
-		queue.dispatch { [weak self] in
-			self?.onQualityChanged(quality)
-		}
+		// NOTE: Quality change callback disabled - FormatVariantMonitor handles quality monitoring
+		// via HLS timed metadata for more accurate ABR tracking.
+		// Kept for future debugging and diagnostics purposes.
+		// queue.dispatch { [weak self] in
+		//	   self?.onQualityChanged(quality)
+		// }
 	}
 
 	/// Bitrate-based quality detection from access log enhanced with format metadata.
