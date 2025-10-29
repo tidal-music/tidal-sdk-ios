@@ -42,7 +42,8 @@ final class AVPlayerItemMonitor {
 		}
 
 		formatVariantMonitor = FormatVariantMonitor(
-			playerItem: playerItem
+			playerItem: playerItem,
+			queue: queue
 		) { [weak self] formatMetadata in
 			guard let self else {
 				return
