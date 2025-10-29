@@ -59,23 +59,18 @@ final class FormatVariantMonitorTests: XCTestCase {
 
 	func testFormatVariantMetadataCreation() {
 		// GIVEN: a format variant metadata
-		let timestamp = CMTime(seconds: 10.5, preferredTimescale: 1000)
 		let metadata = FormatVariantMetadata(
-			formatString: "quality=HIGH,codec=AAC,sampleRate=44100",
-			timestamp: timestamp
+			formatString: "quality=HIGH,codec=AAC,sampleRate=44100"
 		)
 
 		// THEN: metadata properties are accessible
 		XCTAssertEqual(metadata.formatString, "quality=HIGH,codec=AAC,sampleRate=44100")
-		XCTAssertEqual(metadata.timestamp.seconds, 10.5)
 	}
 
 	func testFormatVariantMetadataEquality() {
-		// GIVEN: two format variant metadata objects with same values
-		let timestamp1 = CMTime(seconds: 10.5, preferredTimescale: 1000)
-		let timestamp2 = CMTime(seconds: 10.5, preferredTimescale: 1000)
-		let format1 = FormatVariantMetadata(formatString: "quality=HIGH", timestamp: timestamp1)
-		let format2 = FormatVariantMetadata(formatString: "quality=HIGH", timestamp: timestamp2)
+		// GIVEN: two format variant metadata objects with same format string
+		let format1 = FormatVariantMetadata(formatString: "quality=HIGH")
+		let format2 = FormatVariantMetadata(formatString: "quality=HIGH")
 
 		// THEN: they should be equal
 		XCTAssertEqual(format1, format2)
@@ -83,9 +78,8 @@ final class FormatVariantMonitorTests: XCTestCase {
 
 	func testFormatVariantMetadataInequality() {
 		// GIVEN: two format variant metadata objects with different format strings
-		let timestamp = CMTime(seconds: 10.5, preferredTimescale: 1000)
-		let format1 = FormatVariantMetadata(formatString: "quality=HIGH", timestamp: timestamp)
-		let format2 = FormatVariantMetadata(formatString: "quality=LOW", timestamp: timestamp)
+		let format1 = FormatVariantMetadata(formatString: "quality=HIGH")
+		let format2 = FormatVariantMetadata(formatString: "quality=LOW")
 
 		// THEN: they should not be equal
 		XCTAssertNotEqual(format1, format2)
@@ -114,10 +108,7 @@ final class FormatVariantMonitorTests: XCTestCase {
 		// Simulates backend sending: X-COM-TIDAL-FORMAT="quality=HIGH,codec=AAC,sampleRate=44100"
 
 		let expectedFormat = "quality=HIGH,codec=AAC,sampleRate=44100"
-		let metadata = FormatVariantMetadata(
-			formatString: expectedFormat,
-			timestamp: CMTime(seconds: 5.0, preferredTimescale: 1000)
-		)
+		let metadata = FormatVariantMetadata(formatString: expectedFormat)
 
 		// VERIFY: format is correctly captured
 		XCTAssertEqual(metadata.formatString, expectedFormat)
@@ -139,45 +130,29 @@ final class FormatVariantMonitorTests: XCTestCase {
 		]
 
 		for format in formats {
-			let metadata = FormatVariantMetadata(
-				formatString: format,
-				timestamp: CMTime(seconds: 1.0, preferredTimescale: 1000)
-			)
+			let metadata = FormatVariantMetadata(formatString: format)
 			XCTAssertEqual(metadata.formatString, format)
 		}
 	}
 
-	func testFormatVariantMetadataWithDifferentTimestamps() {
-		// GIVEN: format variants with different timestamps
-		let format1 = FormatVariantMetadata(
-			formatString: "quality=HIGH",
-			timestamp: CMTime(seconds: 0.0, preferredTimescale: 1000)
-		)
-		let format2 = FormatVariantMetadata(
-			formatString: "quality=HIGH",
-			timestamp: CMTime(seconds: 10.5, preferredTimescale: 1000)
-		)
+	func testFormatVariantMetadataEqualsFormatString() {
+		// GIVEN: format variants with same format string
+		let format1 = FormatVariantMetadata(formatString: "quality=HIGH")
+		let format2 = FormatVariantMetadata(formatString: "quality=HIGH")
 
-		// THEN: same format string but different timestamps should be equal
-		// Equality compares only formatString to enable deduplication regardless of CMTime variations
+		// THEN: they should be equal
+		// Equality compares only formatString to enable deduplication
 		XCTAssertEqual(format1, format2)
-
-		// But the metadata still preserves different timestamps for informational purposes
-		XCTAssertNotEqual(format1.timestamp.seconds, format2.timestamp.seconds)
 	}
 
 	func testFormatVariantDescriptionForLogging() {
 		// GIVEN: a format variant with known values
-		let timestamp = CMTime(seconds: 42.5, preferredTimescale: 1000)
-		let metadata = FormatVariantMetadata(
-			formatString: "quality=LOSSLESS,codec=FLAC",
-			timestamp: timestamp
-		)
+		let metadata = FormatVariantMetadata(formatString: "quality=LOSSLESS,codec=FLAC")
 
 		// THEN: description should be human-readable
 		let desc = metadata.description
 		XCTAssertTrue(desc.contains("quality=LOSSLESS,codec=FLAC"))
-		XCTAssertTrue(desc.contains("42.5"))
+		XCTAssertTrue(desc.contains("FormatVariantMetadata"))
 	}
 
 	// MARK: - Integration Tests
@@ -202,25 +177,18 @@ final class FormatVariantMonitorTests: XCTestCase {
 	}
 
 	func testMonitorDeduplicatesConsecutiveFormatChanges() {
-		// GIVEN: a format variant monitor that tracks changes
-		let timestamp1 = CMTime(seconds: 1.0, preferredTimescale: 1000)
-		let format1 = FormatVariantMetadata(formatString: "quality=HIGH", timestamp: timestamp1)
-		let format2 = FormatVariantMetadata(formatString: "quality=HIGH", timestamp: timestamp1)
+		// GIVEN: duplicate format variants
+		let format1 = FormatVariantMetadata(formatString: "quality=HIGH")
+		let format2 = FormatVariantMetadata(formatString: "quality=HIGH")
 
-		// THEN: duplicate formats should be equal
+		// THEN: duplicate formats should be equal for deduplication
 		XCTAssertEqual(format1, format2)
 	}
 
 	func testMonitorDetectsDifferentFormats() {
 		// GIVEN: different format variants
-		let highQuality = FormatVariantMetadata(
-			formatString: "quality=LOSSLESS,codec=FLAC",
-			timestamp: CMTime(seconds: 1.0, preferredTimescale: 1000)
-		)
-		let lowQuality = FormatVariantMetadata(
-			formatString: "quality=LOW,codec=AAC",
-			timestamp: CMTime(seconds: 1.0, preferredTimescale: 1000)
-		)
+		let highQuality = FormatVariantMetadata(formatString: "quality=LOSSLESS,codec=FLAC")
+		let lowQuality = FormatVariantMetadata(formatString: "quality=LOW,codec=AAC")
 
 		// THEN: they should be different
 		XCTAssertNotEqual(highQuality, lowQuality)
