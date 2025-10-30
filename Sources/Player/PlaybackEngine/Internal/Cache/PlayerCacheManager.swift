@@ -138,7 +138,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 			result = self?._resolveAsset(for: url, cacheKey: cacheKey)
 		}
 		queue.addOperation(operation)
-		queue.waitUntilAllOperationsAreFinished()
+		operation.waitUntilFinished()
 		return result ?? PlayerCacheResult(urlAsset: AVURLAsset(url: url), cacheState: nil)
 	}
 
@@ -238,7 +238,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 			result = self?._currentCacheSizeInBytes() ?? 0
 		}
 		queue.addOperation(operation)
-		queue.waitUntilAllOperationsAreFinished()
+		operation.waitUntilFinished()
 		return result
 	}
 
@@ -267,7 +267,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 			for entry in entries {
 				assetFactory.delete(entry.key)
 				do {
-					_removePhysicalFileIfNeeded(at: entry.url)
+					try _removePhysicalFileIfNeeded(at: entry.url)
 				} catch {
 					logger?.log(loggable: CacheLoggable.deleteCacheFileFailed(fileName: entry.url.lastPathComponent, error: error))
 					// Continue clearing other entries even if file deletion fails
@@ -416,7 +416,7 @@ private extension PlayerCacheManager {
 			while currentSize > maxCacheSizeInBytes, index < entries.count {
 				let entry = entries[index]
 				assetFactory.delete(entry.key)
-				_removePhysicalFileIfNeeded(at: entry.url)
+				try _removePhysicalFileIfNeeded(at: entry.url)
 				try cacheStorage.delete(key: entry.key)
 				currentSize -= entry.size
 				entriesRemoved += 1
