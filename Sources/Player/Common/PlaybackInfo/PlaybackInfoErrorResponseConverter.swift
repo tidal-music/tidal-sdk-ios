@@ -35,14 +35,15 @@ private extension PlaybackInfoErrorResponseConverter {
 		}
 
 		let subStatus = error.subStatus
+		let errorCode = error.errorObject?.code
 
 		switch statusCode {
 		case 401:
 			return AuthError(status: subStatus)
 		case 403:
-			return handleForbidden(with: subStatus)
+			return handleForbidden(with: subStatus, errorCode: errorCode)
 		case 404:
-			return handleNotFound(with: subStatus)
+			return handleNotFound(with: subStatus, errorCode: errorCode)
 		case 429:
 			return PlaybackInfoFetcherError.rateLimited.error(.PERetryable)
 		case 500...599:
@@ -63,9 +64,9 @@ private extension PlaybackInfoErrorResponseConverter {
 		case 401:
 			return AuthError(status: extractedSubStatus)
 		case 403:
-			return handleForbidden(with: extractedSubStatus)
+			return handleForbidden(with: extractedSubStatus, errorCode: nil)
 		case 404:
-			return handleNotFound(with: extractedSubStatus)
+			return handleNotFound(with: extractedSubStatus, errorCode: nil)
 		case 429:
 			return PlaybackInfoFetcherError.rateLimited.error(.PERetryable)
 		default:
@@ -93,7 +94,22 @@ private extension PlaybackInfoErrorResponseConverter {
 		return subStatus as? Int
 	}
 
-	static func handleForbidden(with subStatus: Int?) -> Error {
+	static func handleForbidden(with subStatus: Int?, errorCode: String?) -> Error {
+		// Check for CONCURRENCY_LIMIT (maps to retry, but we handle it specially here)
+		if errorCode == "CONCURRENCY_LIMIT" {
+			return StreamingPrivilegesLostError()
+		}
+
+		// Prefer new error code format if available
+		if let errorCode = errorCode {
+			return PlayerInternalError(
+				errorId: ErrorId.playbackErrorId(from: errorCode),
+				errorType: .playbackInfoForbidden,
+				code: 403
+			)
+		}
+
+		// Fall back to legacy subStatus handling
 		guard let subStatus else {
 			return PlaybackInfoFetcherError.noResponseSubStatus.error(.EUnexpected)
 		}
@@ -109,7 +125,17 @@ private extension PlaybackInfoErrorResponseConverter {
 		)
 	}
 
-	static func handleNotFound(with subStatus: Int?) -> Error {
+	static func handleNotFound(with subStatus: Int?, errorCode: String?) -> Error {
+		// Prefer new error code format if available
+		if let errorCode = errorCode {
+			return PlayerInternalError(
+				errorId: ErrorId.playbackErrorId(from: errorCode),
+				errorType: .playbackInfoNotFound,
+				code: 404
+			)
+		}
+
+		// Fall back to legacy subStatus handling
 		guard let subStatus else {
 			return PlaybackInfoFetcherError.noResponseSubStatus.error(.EUnexpected)
 		}
