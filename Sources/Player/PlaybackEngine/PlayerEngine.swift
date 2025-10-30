@@ -146,21 +146,6 @@ final class PlayerEngine {
 		cacheManager.updateMaxCacheSize(sizeInBytes)
 	}
 
-	func startDjSession(title: String, timestamp: UInt64) {
-		queue.dispatch {
-			if let currentItem = self.currentItem {
-				self.djModeProducer.start(title, with: currentItem.mediaProduct, at: currentItem.assetPosition)
-				currentItem.play(timestamp: timestamp)
-			}
-		}
-	}
-
-	func stopDjSession(immediately: Bool = true) {
-		queue.dispatch {
-			self.djModeProducer.stop(immediately: immediately)
-		}
-	}
-
 	func load(_ mediaProduct: MediaProduct, timestamp: UInt64, isPreload: Bool = false) {
 		queue.dispatch {
 			self.state = .NOT_PLAYING
