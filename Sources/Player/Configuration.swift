@@ -57,7 +57,7 @@ public struct Configuration {
 	public var isImmersiveAudio: Bool = true
 
 	/// Determines if the user allows adaptive (variable) bitrate playback for streaming audio.
-	public var allowVariablePlayback: Bool = false
+	public var allowVariablePlayback: Bool = true
 
 	init(clientVersion: String = Bundle.main.appVersion) {
 		self.clientVersion = clientVersion
