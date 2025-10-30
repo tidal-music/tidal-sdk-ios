@@ -136,18 +136,13 @@ private extension GRDBCacheStorage {
 	/// Idempotent: safe to call multiple times (checks for existing index before creating).
 	func addLastAccessedAtIndex() throws {
 		try dbQueue.write { db in
-			// Check if index already exists to avoid errors on re-runs
+			// Create index on lastAccessedAt for efficient ORDER BY queries in pruneToSize.
+			// Use IF NOT EXISTS to make it idempotent (safe to call multiple times).
 			let indexName = "idx_cacheEntry_lastAccessedAt"
-			let existingIndexes = try db.schema(CacheEntryGRDBEntity.databaseTableName)?.indexes ?? []
-			let indexExists = existingIndexes.contains { $0.name == indexName }
-
-			if !indexExists {
-				// Create index on lastAccessedAt for efficient ORDER BY queries in pruneToSize
-				try db.execute(sql: """
-					CREATE INDEX \(indexName)
-					ON \(CacheEntryGRDBEntity.databaseTableName)(lastAccessedAt)
-					""")
-			}
+			try db.execute(sql: """
+				CREATE INDEX IF NOT EXISTS \(indexName)
+				ON \(CacheEntryGRDBEntity.databaseTableName)(lastAccessedAt)
+				""")
 		}
 	}
 }

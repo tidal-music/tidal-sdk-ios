@@ -188,7 +188,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	}
 
 	public func startCachingIfNeeded(_ urlAsset: AVURLAsset, cacheState: AssetCacheState?) {
-		queue.async { [weak self] in
+		queue.addOperation { [weak self] in
 			self?._startCachingIfNeeded(urlAsset, cacheState: cacheState)
 		}
 	}

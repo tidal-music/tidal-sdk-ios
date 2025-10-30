@@ -1,3 +1,4 @@
+import Foundation
 import Logging
 
 /// Structured logging events for cache operations.
