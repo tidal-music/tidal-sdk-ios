@@ -3,6 +3,24 @@ import CoreMedia
 import Foundation
 import AudioToolbox
 
+/// AVPlayerItemABRMonitor detects audio quality changes via bitrate analysis from HLS access logs.
+///
+/// **Current Status (Debug-Only):**
+/// This monitor is currently used for debugging and diagnostics purposes only.
+/// Quality change callbacks are disabled. Quality monitoring has been replaced by
+/// FormatVariantMonitor, which uses HLS timed metadata (ext-x-daterange) for more
+/// accurate variant switch tracking and timing information.
+///
+/// **Why FormatVariantMonitor?**
+/// - FormatVariantMonitor uses backend-provided format metadata from HLS playlists
+/// - Provides precise timing of variant switches via START-DATE attribute
+/// - Avoids timing ambiguities from access log processing delays
+/// - Direct mapping to backend format enums (HIGH, LOW, LOSSLESS, HI_RES_LOSSLESS)
+///
+/// **Keep ABRMonitor For:**
+/// - Debugging ABR behavior and bitrate detection logic
+/// - Validating access log quality inference against actual playback data
+/// - Future enhancements if access log monitoring is needed
 final class AVPlayerItemABRMonitor {
 	private weak var playerItem: AVPlayerItem?
 	private let queue: OperationQueue
@@ -27,7 +45,6 @@ final class AVPlayerItemABRMonitor {
 			queue: nil
 		) { [weak self] _ in
 			self?.detectQualityFromAccessLog()
-			self?.logAccessLogForDebug()
 		}
 	}
 
@@ -37,7 +54,9 @@ final class AVPlayerItemABRMonitor {
 		}
 	}
 
-	/// Reports a quality change if it differs from the last reported quality.
+	/// Debug-only: Logs detected quality changes without reporting them up the SDK chain.
+	/// This monitor is currently used for debugging and diagnostics only.
+	/// Quality monitoring is now handled by FormatVariantMonitor using HLS timed metadata.
 	private func reportQuality(_ quality: AudioQuality) {
 		guard quality != lastReportedQuality else {
 			return
@@ -46,11 +65,16 @@ final class AVPlayerItemABRMonitor {
 		let previousQuality = lastReportedQuality
 		lastReportedQuality = quality
 
-		print("[ABRMonitor] Quality changed: \(String(describing: previousQuality)) → \(quality)")
+		let fromDescription = previousQuality.map { String(describing: $0) }
+		let toDescription = String(describing: quality)
+		PlayerWorld.logger?.log(loggable: PlayerLoggable.abrMonitorQualityDetected(from: fromDescription, to: toDescription))
 
-		queue.dispatch { [weak self] in
-			self?.onQualityChanged(quality)
-		}
+		// NOTE: Quality change callback disabled - FormatVariantMonitor handles quality monitoring
+		// via HLS timed metadata for more accurate ABR tracking.
+		// Kept for future debugging and diagnostics purposes.
+		// queue.dispatch { [weak self] in
+		//	   self?.onQualityChanged(quality)
+		// }
 	}
 
 	/// Bitrate-based quality detection from access log enhanced with format metadata.
@@ -65,7 +89,6 @@ final class AVPlayerItemABRMonitor {
 
 		// Only report quality if bitrate is available (> 0)
 		guard event.indicatedBitrate > 0 else {
-			print("[ABRMonitor] Access log event has no bitrate data yet")
 			return
 		}
 
@@ -74,27 +97,18 @@ final class AVPlayerItemABRMonitor {
 		// Defensive: capture weak self and verify it's still valid after async operations
 		Task { [weak self] in
 			guard let strongSelf = self else {
-				print("[ABRMonitor] Monitor was deallocated before format extraction started")
 				return
 			}
 
 			let formatMetadata = await strongSelf.extractFormatMetadata(from: item)
-			if let formatMetadata {
-				print("[ABRMonitor] ASBD formatID fourCC: \(Self.decodeFourCC(formatMetadata.audioFormatID))")
-				print("[ABRMonitor] mediaSubType: \(formatMetadata.mediaSubType ?? "nil")")
-				print("[ABRMonitor] frma: \(formatMetadata.frmaCodec ?? "nil")")
-			} else {
-				print("[ABRMonitor] No format metadata")
+			if formatMetadata == nil {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.abrMonitorFormatExtractionFailed)
 			}
 
 			if !strongSelf.validateMonitorState(for: item, metadata: formatMetadata) {
 				return
 			}
 
-			if let metadata = formatMetadata {
-				let formatName = Self.formatIDName(metadata.audioFormatID)
-				print("[ABRMonitor] Current variant format: \(formatName), bitDepth=\(metadata.bitDepth), sampleRate=\(metadata.sampleRate) Hz")
-			}
 			// Quality is determined with format metadata (or nil if extraction failed)
 			let quality = Self.mapBitrateToQuality(indicatedBitrate: event.indicatedBitrate, formatMetadata: formatMetadata)
 			strongSelf.reportQuality(quality)
@@ -105,7 +119,6 @@ final class AVPlayerItemABRMonitor {
 	private func validateMonitorState(for item: AVPlayerItem, metadata: AudioFormatMetadata?) -> Bool {
 		// Verify the playerItem is still the same (in case playback changed)
 		guard playerItem === item else {
-			print("[ABRMonitor] Player item changed during format extraction, skipping quality update")
 			return false
 		}
 
@@ -212,81 +225,6 @@ final class AVPlayerItemABRMonitor {
 		}
 	}
 
-	/// Debug method: Logs access log information for bandwidth/bitrate debugging.
-	/// This is used for debugging purposes only and not for quality detection.
-	private func logAccessLogForDebug() {
-		guard let item = playerItem,
-		      let accessLog = item.accessLog(),
-		      let event = accessLog.events.last else {
-			return
-		}
-
-		print("[ABRMonitor] Number of access log events: \(accessLog.events.count)")
-
-		// Get current media selection name
-		var currentSelectionName = "Unknown"
-		var mediaSelectionState = "Unknown"
-
-		// Only access media selection for items with tracks to avoid -12718 errors
-		// Skip media selection logging if no tracks present
-		guard !item.tracks.isEmpty else {
-			let debugInfo = """
-			[ABRMonitor Debug] Access Log Entry:
-			  - Current Media Selection: \(currentSelectionName)
-			  - Media Selection State: No tracks
-			  - Indicated Bitrate: \(event.indicatedBitrate) bps
-			  - Observed Bitrate: \(event.observedBitrate) bps
-			  - Average Audio Bitrate: \(event.averageAudioBitrate) bps
-			  - Duration Watched: \(event.durationWatched) s
-			  - Segments Downloaded Duration: \(event.segmentsDownloadedDuration) s
-			  - Number of Media Requests: \(event.numberOfMediaRequests)
-			  - Number of Stalls: \(event.numberOfStalls)
-			  - Playback Type: \(event.playbackType ?? "Unknown")
-			"""
-			print(debugInfo)
-			return
-		}
-
-		if let asset = item.asset as? AVURLAsset {
-			// Investigate audio group
-			let mediaCharacteristics = asset.availableMediaCharacteristicsWithMediaSelectionOptions
-			if mediaCharacteristics.contains(.audible),
-			   let audioGroup = asset.mediaSelectionGroup(forMediaCharacteristic: .audible) {
-
-				// Get currently selected option
-				let selection = item.currentMediaSelection
-				if let selectedOption = selection.selectedMediaOption(in: audioGroup) {
-					currentSelectionName = selectedOption.displayName
-					mediaSelectionState = "Selected"
-				} else {
-					// No explicit selection - this might mean the first option or default
-					mediaSelectionState = "No explicit selection"
-					currentSelectionName = "None"
-				}
-
-				// Additional debug info
-				let isAutomaticSelectionEnabled = audioGroup.allowsEmptySelection
-				mediaSelectionState = "State: \(mediaSelectionState) | AllowsEmpty: \(isAutomaticSelectionEnabled)"
-			}
-		}
-
-		let debugInfo = """
-		[ABRMonitor Debug] Access Log Entry:
-		  - Current Media Selection: \(currentSelectionName)
-		  - Media Selection State: \(mediaSelectionState)
-		  - Indicated Bitrate: \(event.indicatedBitrate) bps
-		  - Observed Bitrate: \(event.observedBitrate) bps
-		  - Average Audio Bitrate: \(event.averageAudioBitrate) bps
-		  - Duration Watched: \(event.durationWatched) s
-		  - Segments Downloaded Duration: \(event.segmentsDownloadedDuration) s
-		  - Number of Media Requests: \(event.numberOfMediaRequests)
-		  - Number of Stalls: \(event.numberOfStalls)
-		  - Playback Type: \(event.playbackType ?? "Unknown")
-		"""
-
-		print(debugInfo)
-	}
-
 	/// Extracts audio format metadata (AudioFormatID, bit depth, sample rate) from the current playing track.
 	/// Uses the same pattern as AVQueuePlayerWrapper's readPlaybackMetadata to ensure consistency.
 	private func extractFormatMetadata(from playerItem: AVPlayerItem) async -> AudioFormatMetadata? {
@@ -321,8 +259,7 @@ final class AVPlayerItemABRMonitor {
 					formatDescriptions.append(contentsOf: descriptions)
 				}
 			} catch {
-				// Log individual track errors but continue with other tracks
-				print("[ABRMonitor] Failed to load format descriptions for track: \(error)")
+				// Continue with other tracks if this one fails
 				continue
 			}
 		}
@@ -597,7 +534,6 @@ final class AVPlayerItemABRMonitor {
 
 			// Skip invalid sample rates
 			guard sampleRate > 0 else {
-				print("[ABRMonitor] Skipping format with invalid sample rate: \(sampleRate)")
 				continue
 			}
 

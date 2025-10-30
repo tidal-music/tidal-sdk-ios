@@ -252,7 +252,6 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	}
 }
 
-
 // MARK: UCMediaPlayer
 
 extension AVQueuePlayerWrapper: UCMediaPlayer {
@@ -391,6 +390,17 @@ private extension AVQueuePlayerWrapper {
 				}
 
 				self.delegates.audioQualityChanged(asset: asset, to: newQuality)
+			},
+			onFormatVariantChanged: { [weak self] item, formatVariant in
+				guard let self else {
+					return
+				}
+
+				guard let asset = self.playerItemAssets[item] else {
+					return
+				}
+
+				self.delegates.formatVariantChanged(asset: asset, variant: formatVariant)
 			}
 		)
 	}
@@ -569,7 +579,6 @@ private extension AVQueuePlayerWrapper {
 			asset.setAssetPosition(playerItem)
 		}
 	}
-
 
 	func playedToEnd(playerItem: AVPlayerItem) {
 		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {

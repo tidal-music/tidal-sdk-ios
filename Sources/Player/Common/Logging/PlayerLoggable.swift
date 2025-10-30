@@ -173,6 +173,21 @@ enum PlayerLoggable: TidalLoggable {
 	case handleMediaServicesWereLost
 	case handleMediaServicesWereReset
 
+	// MARK: FormatVariantMonitor
+
+	case formatVariantMonitorInitialized
+	case formatVariantMonitorRemoved
+	case formatVariantChanged(from: String?, to: String)
+	case formatVariantExtractedFromValue(format: String)
+	case formatVariantExtractedFromDictionary(format: String)
+	case formatVariantExtractedFromAttributes(format: String, attribute: String)
+	case formatVariantExtractionFailed
+
+	// MARK: AVPlayerItemABRMonitor
+
+	case abrMonitorQualityDetected(from: String?, to: String)
+	case abrMonitorFormatExtractionFailed
+
 	// MARK: AssetPlaybackMetadata
 
 	case assetPlaybackMetadataInitWithoutRateAndDepthData
@@ -403,6 +418,28 @@ extension PlayerLoggable {
 		case .handleMediaServicesWereReset:
 			"AudioSessionMediaServicesWereResetMonitor-handleMediaServicesWereReset"
 
+		// FormatVariantMonitor
+		case .formatVariantMonitorInitialized:
+			"FormatVariantMonitor-initialized"
+		case .formatVariantMonitorRemoved:
+			"FormatVariantMonitor-removed"
+		case .formatVariantChanged:
+			"FormatVariantMonitor-formatChanged"
+		case .formatVariantExtractedFromValue:
+			"FormatVariantMonitor-extractedFromValue"
+		case .formatVariantExtractedFromDictionary:
+			"FormatVariantMonitor-extractedFromDictionary"
+		case .formatVariantExtractedFromAttributes:
+			"FormatVariantMonitor-extractedFromAttributes"
+		case .formatVariantExtractionFailed:
+			"FormatVariantMonitor-extractionFailed"
+
+		// AVPlayerItemABRMonitor
+		case .abrMonitorQualityDetected:
+			"AVPlayerItemABRMonitor-qualityDetected"
+		case .abrMonitorFormatExtractionFailed:
+			"AVPlayerItemABRMonitor-formatExtractionFailed"
+
 		// AssetPlaybackMetadata
 		case .assetPlaybackMetadataInitWithoutRateAndDepthData:
 			"AssetPlaybackMetadata-initWithoutRateAndDepthData"
@@ -477,6 +514,19 @@ extension PlayerLoggable {
 			metadata[Constants.metadataFormatFlagsKey] = "\(String(describing: formatFlags))"
 		case let .changeMonitorHandleNotificationDefaultReason(reason):
 			metadata[Constants.metadataRouteChangeReasonKey] = "\(String(describing: reason))"
+		case let .formatVariantChanged(from, to):
+			metadata["from"] = "\(String(describing: from))"
+			metadata["to"] = "\(String(describing: to))"
+		case let .formatVariantExtractedFromValue(format):
+			metadata["format"] = "\(String(describing: format))"
+		case let .formatVariantExtractedFromDictionary(format):
+			metadata["format"] = "\(String(describing: format))"
+		case let .formatVariantExtractedFromAttributes(format, attribute):
+			metadata["format"] = "\(String(describing: format))"
+			metadata["attribute"] = "\(String(describing: attribute))"
+		case let .abrMonitorQualityDetected(from, to):
+			metadata["from"] = "\(String(describing: from))"
+			metadata["to"] = "\(String(describing: to))"
 		case let .audioCodecInitWithNilQuality(mode):
 			metadata[Constants.metadataAudioModeKey] = "\(String(describing: mode))"
 		case .streamingNotifyGetCredentialFailed,
@@ -499,6 +549,10 @@ extension PlayerLoggable {
 		     .interruptionMonitorHandleNotificationEndedNoShouldResume,
 		     .interruptionMonitorHandleNotificationEndedNotPlayingWhenInterrupted,
 		     .interruptionMonitorHandleNotificationUnknownType,
+		     .formatVariantMonitorInitialized,
+		     .formatVariantMonitorRemoved,
+		     .formatVariantExtractionFailed,
+		     .abrMonitorFormatExtractionFailed,
 		     .changeMonitorHandleNotificationWithoutRequiredData,
 		     .changeMonitorUpdateVolumeWithoutRequiredData,
 		     .handleMediaServicesWereReset,
@@ -595,6 +649,15 @@ extension PlayerLoggable {
 		     .changeMonitorUpdateVolumeWithoutRequiredData,
 		     .handleMediaServicesWereLost,
 		     .handleMediaServicesWereReset,
+		     .formatVariantMonitorInitialized,
+		     .formatVariantMonitorRemoved,
+		     .formatVariantChanged,
+		     .formatVariantExtractedFromValue,
+		     .formatVariantExtractedFromDictionary,
+		     .formatVariantExtractedFromAttributes,
+		     .formatVariantExtractionFailed,
+		     .abrMonitorQualityDetected,
+		     .abrMonitorFormatExtractionFailed,
 		     .eventSenderInitEventsDirectoryFailed,
 		     .eventSenderInitOfflinePlaysDirectoryFailed,
 		     .eventSenderInitializeDirectoryNoURLPath,
