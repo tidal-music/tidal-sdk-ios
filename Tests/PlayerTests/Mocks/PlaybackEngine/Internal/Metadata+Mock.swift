@@ -12,7 +12,8 @@ extension Metadata {
 		audioBitDepth: Int? = 15,
 		videoQuality: VideoQuality? = nil,
 		adaptiveAudioQualities: [AudioQuality]? = nil,
-		playbackSource: PlaybackSource = .INTERNET
+		playbackSource: PlaybackSource = .INTERNET,
+		isAdaptivePlaybackEnabled: Bool = false
 	) -> Self {
 		Metadata(
 			productId: productId,
@@ -25,7 +26,8 @@ extension Metadata {
 			audioBitDepth: audioBitDepth,
 			videoQuality: videoQuality,
 			adaptiveAudioQualities: adaptiveAudioQualities,
-			playbackSource: playbackSource
+			playbackSource: playbackSource,
+			isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled
 		)
 	}
 

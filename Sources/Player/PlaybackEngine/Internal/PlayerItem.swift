@@ -396,6 +396,9 @@ private extension PlayerItem {
 		if featureFlagProvider.shouldUseNewPlaybackEndpoints() {
 			tags.append(PlaybackStatistics.EventTag.NEW_PLAYBACK_ENDPOINTS)
 		}
+		if metadata.isAdaptivePlaybackEnabled {
+			tags.append(PlaybackStatistics.EventTag.ADAPTIVE_PLAYBACK)
+		}
 
 		let endInfo = metrics.endInfo
 		playerEventSender.send(PlaybackStatistics(

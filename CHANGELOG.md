@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Enhanced offline download error handling with detailed OfflineError types for better client-side error recovery and retry strategies (Player)
-- Add initial support for adaptive streaming by surfacing audio quality changes observed during AVPlayer ABR switches (Player)
+- Full support for adaptive streaming with format variant monitoring - surfacing audio quality changes, sample rates, and bit depths observed during AVPlayer ABR switches (Player)
+- Added adaptive playback tracking to PlaybackStatistics with format variant metadata and quality change events (Player)
 
 ### Changed
 - OfflineEngineListener.offliningFailed() now includes an OfflineError parameter providing detailed error information (Player)

@@ -997,7 +997,8 @@ extension PlayerEngineTests {
 			trackReplayGain: trackPlaybackInfo.trackReplayGain,
 			trackPeakAmplitude: trackPlaybackInfo.trackPeakAmplitude,
 			offlineRevalidateAt: trackPlaybackInfo.offlineRevalidateAt,
-			offlineValidUntil: trackPlaybackInfo.offlineValidUntil
+			offlineValidUntil: trackPlaybackInfo.offlineValidUntil,
+			isAdaptivePlaybackEnabled: false
 		)
 		return playbackInfo
 	}

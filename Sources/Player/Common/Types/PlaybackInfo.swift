@@ -23,4 +23,5 @@ struct PlaybackInfo: Equatable {
 	let trackPeakAmplitude: Float?
 	let offlineRevalidateAt: UInt64?
 	let offlineValidUntil: UInt64?
+	let isAdaptivePlaybackEnabled: Bool
 }
