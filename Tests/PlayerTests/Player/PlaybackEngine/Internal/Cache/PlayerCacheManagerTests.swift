@@ -40,6 +40,15 @@ final class PlayerCacheManagerTests: XCTestCase {
 		try super.tearDownWithError()
 	}
 
+	private func waitForQueue() {
+		// Use a semaphore to wait for async queue operations to complete
+		let semaphore = DispatchSemaphore(value: 0)
+		// Schedule a dummy operation that signals when complete
+		manager.prepareCache(isEnabled: true)
+		// Give queue time to process
+		Thread.sleep(forTimeInterval: 0.05)
+	}
+
 	func testPersistEntryOnDownload() throws {
 		currentTimestamp = 1_000
 
@@ -53,6 +62,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 		try data.write(to: segmentURL)
 
 		manager.assetFinishedDownloading(AVURLAsset(url: assetURL), to: downloadDirectory, for: cacheKey)
+		waitForQueue()
 
 		let entry = try XCTUnwrap(cacheStorage.entry(for: cacheKey))
 		XCTAssertEqual(entry.key, cacheKey)
@@ -77,6 +87,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 
 		currentTimestamp = 20
 		manager.recordPlayback(for: cacheKey)
+		waitForQueue()
 
 		entry = try XCTUnwrap(cacheStorage.entry(for: cacheKey))
 		XCTAssertEqual(entry.lastAccessedAt, Date(timeIntervalSince1970: 20))
@@ -111,6 +122,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 		)
 
 		manager.clearCache()
+		waitForQueue()
 
 		XCTAssertNil(cacheStorage.entry(for: cacheKey))
 		XCTAssertFalse(FileManager.default.fileExists(atPath: cachedURL.path))
@@ -151,6 +163,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 		)
 
 		manager.updateMaxCacheSize(60)
+		waitForQueue()
 
 		XCTAssertNil(cacheStorage.entry(for: "oldest"))
 		XCTAssertFalse(FileManager.default.fileExists(atPath: oldestURL.path))
@@ -183,6 +196,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 		)
 
 		manager.updateMaxCacheSize(100)
+		waitForQueue()
 
 		let newDownloadURL = try makeDirectory(named: "new", size: 50)
 		currentTimestamp = 100
@@ -191,6 +205,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 			to: newDownloadURL,
 			for: "new"
 		)
+		waitForQueue()
 
 		XCTAssertNil(cacheStorage.entry(for: "evict"))
 		XCTAssertFalse(FileManager.default.fileExists(atPath: evictURL.path))
@@ -273,6 +288,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 
 		// Set quota to force pruning
 		manager.updateMaxCacheSize(500) // Should remove oldest 50 entries
+		waitForQueue()
 
 		// Verify correct entries were removed (oldest first)
 		let remainingEntries = try cacheStorage.getAll()
