@@ -59,12 +59,7 @@ class FormatVariantMonitor: NSObject {
 
 	/// Processes format metadata and reports changes
 	/// Dispatches callbacks through the configured OperationQueue with playerItem validation
-	private func processFormatMetadata(_ metadataItem: AVMetadataItem) {
-		guard let formatMetadata = extractFormatMetadata(from: metadataItem) else {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractionFailed)
-			return
-		}
-
+	private func processFormatMetadata(_ formatMetadata: FormatVariantMetadata) {
 		// Only report if format changed
 		guard formatMetadata != lastReportedFormat else {
 			return
@@ -84,62 +79,35 @@ class FormatVariantMonitor: NSObject {
 		}
 	}
 
-	/// Extracts format string from X-COM-TIDAL-FORMAT attribute or value
-	/// Also extracts optional sampleRate and bitDepth from HLS timed metadata attributes
-	/// Supports multiple metadata formats:
-	/// 1. Direct string value from metadataItem.value
-	/// 2. X-COM-TIDAL-FORMAT from extraAttributes (AVFoundation dictionary)
-	/// 3. Parsed from key-value pairs in dictionary representation
-	private func extractFormatMetadata(from metadataItem: AVMetadataItem) -> FormatVariantMetadata? {
+	/// Extracts format metadata from all items in a metadata group
+	/// Parses X-COM-TIDAL-FORMAT, X-COM-TIDAL-SAMPLE-RATE, and X-COM-TIDAL-SAMPLE-DEPTH
+	/// from the metadata items in the group
+	private func extractGroupFormatMetadata(from metadataGroup: AVDateRangeMetadataGroup) -> FormatVariantMetadata? {
 		var formatString: String?
 		var sampleRate: Int?
 		var bitDepth: Int?
 
-		// Extract sample rate and bit depth from extraAttributes first (available from all strategies)
-		if let extraAttributes = metadataItem.extraAttributes as? [String: Any] {
-			// Extract sample rate
-			if let rateValue = extraAttributes["X-COM-TIDAL-SAMPLE-RATE"] {
-				sampleRate = parseIntValue(rateValue)
+		// Process all items in the group to extract format, sample rate, and bit depth
+		for item in metadataGroup.items {
+			guard let key = item.key as? String else {
+				continue
 			}
-			// Extract bit depth
-			if let depthValue = extraAttributes["X-COM-TIDAL-SAMPLE-DEPTH"] {
-				bitDepth = parseIntValue(depthValue)
-			}
-		}
 
-		// Strategy 1: Check if value is directly a format string
-		if let value = metadataItem.value as? String, !value.isEmpty {
-			let trimmed = value.trimmingCharacters(in: Self.whitespaceCharacters)
-			// Valid format strings contain quality, codec, or attribute indicators
-			if !trimmed.isEmpty {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromValue(format: trimmed))
-				formatString = trimmed
-			}
-		}
-
-		// Strategy 2: Check if value is a dictionary with format attributes
-		if formatString == nil, let dictValue = metadataItem.value as? [String: Any] {
-			if let format = dictValue["X-COM-TIDAL-FORMAT"] as? String {
-				let trimmed = format.trimmingCharacters(in: Self.whitespaceCharacters)
-				if !trimmed.isEmpty {
-					PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromDictionary(format: trimmed))
-					formatString = trimmed
-				}
-			}
-		}
-
-		// Strategy 3: Check extraAttributes for custom format attributes
-		if formatString == nil, let extraAttributes = metadataItem.extraAttributes as? [String: Any] {
-			// Try common attribute names
-			let attributeNames = ["X-COM-TIDAL-FORMAT", "x-com-tidal-format", "format", "FORMAT"]
-			for attrName in attributeNames {
-				if let format = extraAttributes[attrName] as? String {
-					let trimmed = format.trimmingCharacters(in: Self.whitespaceCharacters)
+			if key.contains("X-COM-TIDAL-FORMAT") {
+				if let value = item.value as? String {
+					let trimmed = value.trimmingCharacters(in: Self.whitespaceCharacters)
 					if !trimmed.isEmpty {
-						PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromAttributes(format: trimmed, attribute: attrName))
+						PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractedFromValue(format: trimmed))
 						formatString = trimmed
-						break
 					}
+				}
+			} else if key.contains("X-COM-TIDAL-SAMPLE-RATE") {
+				if let value = item.value {
+					sampleRate = parseIntValue(value)
+				}
+			} else if key.contains("X-COM-TIDAL-SAMPLE-DEPTH") {
+				if let value = item.value {
+					bitDepth = parseIntValue(value)
 				}
 			}
 		}
@@ -181,7 +149,11 @@ extension FormatVariantMonitor: AVPlayerItemMetadataCollectorPushDelegate {
 	}
 	
 	func handleMetadataGroup(_ metadataGroup: AVDateRangeMetadataGroup) {
-		metadataGroup.items.forEach { self.processFormatMetadata($0) }
+		guard let formatMetadata = extractGroupFormatMetadata(from: metadataGroup) else {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractionFailed)
+			return
+		}
+		processFormatMetadata(formatMetadata)
 	}
 }
 
