@@ -503,14 +503,15 @@ internal class UserCollectionsAPI {
      Get playlists relationship (\"to-many\").
      
      - parameter id: (path) User id 
+     - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: UserCollectionsPlaylistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
-        return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, include: include).execute().body
+    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, collectionView: String? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
+        return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, collectionView: collectionView, pageCursor: pageCursor, sort: sort, include: include).execute().body
     }
 
     /**
@@ -521,12 +522,13 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
+     - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, collectionView: String? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -536,6 +538,7 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "collectionView": (wrappedValue: collectionView?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),

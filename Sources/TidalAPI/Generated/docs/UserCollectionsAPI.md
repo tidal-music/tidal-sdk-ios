@@ -519,7 +519,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsPlaylistsGet**
 ```swift
-    open class func userCollectionsIdRelationshipsPlaylistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsPlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsPlaylistsGet(id: String, collectionView: String? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsPlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get playlists relationship (\"to-many\").
@@ -532,12 +532,13 @@ Retrieves playlists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User id
+let collectionView = "collectionView_example" // String |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlists (optional)
 
 // Get playlists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGet(id: id, pageCursor: pageCursor, sort: sort, include: include) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGet(id: id, collectionView: collectionView, pageCursor: pageCursor, sort: sort, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -554,6 +555,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGet(id: id, pageCursor
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User id | 
+ **collectionView** | **String** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlists | [optional] 
