@@ -75,7 +75,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		mediaType: String?,
 		isOfflined: Bool
 	) -> Bool {
-	if productType == .VIDEO {
+		if productType == .VIDEO {
 			return true
 		}
 
@@ -252,6 +252,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	}
 }
 
+
 // MARK: UCMediaPlayer
 
 extension AVQueuePlayerWrapper: UCMediaPlayer {
@@ -370,15 +371,34 @@ private extension AVQueuePlayerWrapper {
 		return asset
 	}
 
-	func monitor(_ playerItem: AVPlayerItem) {
+	func monitor(_ playerItem: AVPlayerItem, asset: AVPlayerAsset) {
+		let adaptiveQualities: [AudioQuality]?
+		if featureFlagProvider.shouldSupportABRPlayback() {
+			adaptiveQualities = asset.getAdaptiveAudioQualities()
+		} else {
+			adaptiveQualities = nil
+		}
+
 		playerItemMonitors[playerItem] = AVPlayerItemMonitor(
 			playerItem,
+			queue: queue,
+			adaptiveQualities: adaptiveQualities,
 			onFailure: failed,
 			onStall: stalled,
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
 			onItemPlayedToEnd: playedToEnd
-		)
+		) { [weak self] item, newQuality in
+			guard let self else {
+				return
+			}
+
+			guard let asset = self.playerItemAssets[item] else {
+				return
+			}
+
+			self.delegates.audioQualityChanged(asset: asset, to: newQuality)
+		}
 	}
 
 	func preparePlayer() {
@@ -407,8 +427,8 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	func register(playerItem: AVPlayerItem, for asset: AVPlayerAsset) {
-		monitor(playerItem)
 		playerItemAssets[playerItem] = asset
+		monitor(playerItem, asset: asset)
 	}
 
 	func enqueue(playerItem: AVPlayerItem) {
@@ -598,6 +618,7 @@ private extension AVQueuePlayerWrapper {
 			asset.setAssetPosition(playerItem)
 		}
 	}
+
 
 	func playedToEnd(playerItem: AVPlayerItem) {
 		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {

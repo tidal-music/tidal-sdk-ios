@@ -190,12 +190,16 @@ private extension InternalPlayerLoader {
 			loudnessNormalizer: loudnessNormalizer
 		)
 
-		return await player.load(
+		let asset = await player.load(
 			playbackInfo.url,
 			cacheKey: cacheKey,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			and: licenseLoader
 		)
+
+		asset.setAdaptiveAudioQualities(playbackInfo.adaptiveAudioQualities)
+
+		return asset
 	}
 
 

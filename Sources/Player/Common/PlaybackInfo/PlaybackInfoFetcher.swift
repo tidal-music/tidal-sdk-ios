@@ -117,6 +117,7 @@ private extension PlaybackInfoFetcher {
 			),
 			audioSampleRate: playbackInfo.sampleRate,
 			audioBitDepth: playbackInfo.bitDepth,
+			adaptiveAudioQualities: nil,
 			videoQuality: nil,
 			streamingSessionId: playbackInfo.streamingSessionId,
 			contentHash: playbackInfo.manifestHash,
@@ -139,9 +140,9 @@ private extension PlaybackInfoFetcher {
 	) async throws -> PlaybackInfo {
 		let start = PlayerWorld.timeProvider.timestamp()
 		do {
-			// Determine requested quality and corresponding acceptable formats
 			let requestedAudioQuality = getAudioQuality(given: playbackMode)
-			let formats = getFormatsForAudioQuality(requestedAudioQuality)
+			let adaptivePlaybackEnabled = shouldRequestAdaptivePlayback(for: playbackMode)
+			let formats = getFormatsForAudioQuality(requestedAudioQuality, adaptive: adaptivePlaybackEnabled)
 
 			// Ensure credentials provider is set
 			if OpenAPIClientAPI.credentialsProvider == nil {
@@ -154,7 +155,7 @@ private extension PlaybackInfoFetcher {
 				formats: formats,
 				uriScheme: .data,
 				usage: playbackMode == .OFFLINE ? .download : .playback,
-				adaptive: .false,
+				adaptive: adaptivePlaybackEnabled ? .true : .false,
 				customHeaders: ["x-playback-session-id": streamingSessionId]
 			)
 
@@ -183,6 +184,9 @@ private extension PlaybackInfoFetcher {
 
 			// Determine actual audio quality from the returned formats (inverse mapping)
 			let actualAudioQuality = PlaybackInfoFetcher.getAudioQualityFromFormats(attributes?.formats, fallback: requestedAudioQuality)
+			let adaptiveAudioQualities = adaptivePlaybackEnabled
+				? PlaybackInfoFetcher.buildQualityLadder(from: attributes?.formats)
+				: nil
 
 			return PlaybackInfo(
 				productType: .TRACK,
@@ -194,6 +198,7 @@ private extension PlaybackInfoFetcher {
 				audioCodec: getAudioCodecFromFormats(attributes?.formats),
 				audioSampleRate: nil, // Not available in new API
 				audioBitDepth: nil, // Not available in new API
+				adaptiveAudioQualities: adaptiveAudioQualities,
 				videoQuality: nil,
 				streamingSessionId: streamingSessionId,
 				contentHash: attributes?.hash ?? "NA",
@@ -281,6 +286,7 @@ private extension PlaybackInfoFetcher {
 			audioCodec: nil,
 			audioSampleRate: nil,
 			audioBitDepth: nil,
+			adaptiveAudioQualities: nil,
 			videoQuality: playbackInfo.videoQuality,
 			streamingSessionId: playbackInfo.streamingSessionId,
 			contentHash: playbackInfo.manifestHash ?? "NA",
@@ -332,6 +338,7 @@ private extension PlaybackInfoFetcher {
 			audioCodec: .HE_AAC_V1,
 			audioSampleRate: nil,
 			audioBitDepth: nil,
+			adaptiveAudioQualities: nil,
 			videoQuality: nil,
 			streamingSessionId: streamingSessionId,
 			contentHash: "",
@@ -399,22 +406,20 @@ private extension PlaybackInfoFetcher {
 	}
 
 	// MARK: - New API Helper Methods
-	
-	private func getFormatsForAudioQuality(_ audioQuality: AudioQuality) -> String {
-		let formats: [TrackManifestsAttributes.Formats]
-		
-		switch audioQuality {
-		case .HI_RES, .HI_RES_LOSSLESS:
-			formats = [.heaacv1, .aaclc, .flac, .flacHires]
-		case .LOSSLESS:
-			formats = [.heaacv1, .aaclc, .flac]
-		case .HIGH:
-			formats = [.heaacv1, .aaclc]
-		case .LOW:
-			formats = [.heaacv1]
-		}
-		
-		return formats.map(\.rawValue).joined(separator: ",")
+
+	private func shouldRequestAdaptivePlayback(for playbackMode: PlaybackMode) -> Bool {
+		PlaybackInfoFetcher.shouldRequestAdaptivePlayback(
+			configuration: configuration,
+			featureFlagProvider: featureFlagProvider,
+			playbackMode: playbackMode
+		)
+	}
+
+	private func getFormatsForAudioQuality(_ audioQuality: AudioQuality, adaptive: Bool) -> String {
+		PlaybackInfoFetcher
+			.buildFormatList(maxQuality: audioQuality, adaptive: adaptive, configuration: configuration)
+			.map(\.rawValue)
+			.joined(separator: ",")
 	}
 
 	private func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
@@ -521,6 +526,113 @@ private extension PlaybackInfoFetcher {
 }
 
 extension PlaybackInfoFetcher {
+	static func buildFormatList(
+		maxQuality: AudioQuality,
+		adaptive: Bool,
+		configuration: Configuration? = nil
+	) -> [TrackManifestsAttributes.Formats] {
+		let targetQualities = adaptive ? audioQualities(upTo: maxQuality) : [maxQuality]
+
+		return uniqueOrderedFormats(
+			targetQualities.flatMap { formats(for: $0, configuration: configuration) }
+		)
+	}
+
+	private static func formats(
+		for audioQuality: AudioQuality,
+		configuration: Configuration? = nil
+	) -> [TrackManifestsAttributes.Formats] {
+		let isImmersiveAudioEnabled = configuration?.isImmersiveAudio ?? false
+
+		switch audioQuality {
+		case .HI_RES, .HI_RES_LOSSLESS:
+			var formats: [TrackManifestsAttributes.Formats] = [.heaacv1, .aaclc, .flac, .flacHires]
+			if isImmersiveAudioEnabled {
+				formats.append(.eac3Joc)
+			}
+			return formats
+		case .LOSSLESS:
+			var formats: [TrackManifestsAttributes.Formats] = [.heaacv1, .aaclc, .flac]
+			if isImmersiveAudioEnabled {
+				formats.append(.eac3Joc)
+			}
+			return formats
+		case .HIGH:
+			return [.heaacv1, .aaclc]
+		case .LOW:
+			return [.heaacv1]
+		}
+	}
+
+	private static func audioQualities(upTo maxQuality: AudioQuality) -> [AudioQuality] {
+		switch maxQuality {
+		case .LOW:
+			return [.LOW]
+		case .HIGH:
+			return [.LOW, .HIGH]
+		case .LOSSLESS:
+			return [.LOW, .HIGH, .LOSSLESS]
+		case .HI_RES:
+			return [.LOW, .HIGH, .LOSSLESS, .HI_RES]
+		case .HI_RES_LOSSLESS:
+			return [.LOW, .HIGH, .LOSSLESS, .HI_RES, .HI_RES_LOSSLESS]
+		}
+	}
+
+	private static func uniqueOrderedFormats(
+		_ formats: [TrackManifestsAttributes.Formats]
+	) -> [TrackManifestsAttributes.Formats] {
+		var seen = Set<TrackManifestsAttributes.Formats>()
+		var ordered = [TrackManifestsAttributes.Formats]()
+
+		for format in formats where seen.insert(format).inserted {
+			ordered.append(format)
+		}
+
+		return ordered
+	}
+
+	static func buildQualityLadder(
+		from formats: [TrackManifestsAttributes.Formats]?
+	) -> [AudioQuality]? {
+		guard let formats, formats.isEmpty == false else {
+			return nil
+		}
+
+		let orderedPairs: [(TrackManifestsAttributes.Formats, AudioQuality)] = [
+			(.heaacv1, .LOW),
+			(.aaclc, .HIGH),
+			(.flac, .LOSSLESS),
+			(.flacHires, .HI_RES_LOSSLESS),
+		]
+
+		let ladder = orderedPairs.compactMap { format, quality in
+			formats.contains(format) ? quality : nil
+		}
+
+		return ladder.isEmpty ? nil : ladder
+	}
+
+	static func buildQualityLadder(upTo maxQuality: AudioQuality) -> [AudioQuality] {
+		audioQualities(upTo: maxQuality)
+	}
+
+	static func shouldRequestAdaptivePlayback(
+		configuration: Configuration,
+		featureFlagProvider: FeatureFlagProvider,
+		playbackMode: PlaybackMode
+	) -> Bool {
+		guard playbackMode == .STREAM else {
+			return false
+		}
+
+		guard configuration.allowVariablePlayback else {
+			return false
+		}
+
+		return featureFlagProvider.shouldSupportABRPlayback()
+	}
+
 	/// Inverse mapping: derive AudioQuality from returned manifest formats
 	static func getAudioQualityFromFormats(
 		_ formats: [TrackManifestsAttributes.Formats]?,

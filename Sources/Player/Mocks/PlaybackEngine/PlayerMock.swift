@@ -190,6 +190,10 @@ extension PlayerMock {
 		failed(asset: assets.first, with: error)
 	}
 
+	func audioQualityChanged(to quality: AudioQuality) {
+		delegates.audioQualityChanged(asset: assets.first, to: quality)
+	}
+
 	func failed(asset: Asset?, with error: Error) {
 		assets.removeAll { $0 === asset }
 		delegates.failed(asset: asset, with: error)

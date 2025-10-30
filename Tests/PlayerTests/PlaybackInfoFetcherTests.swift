@@ -715,14 +715,18 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 
 	// MARK: - Helper Methods
 
-	private func createFeatureFlagProvider(shouldUseNewPlaybackEndpoints: Bool) -> FeatureFlagProvider {
+	private func createFeatureFlagProvider(
+		shouldUseNewPlaybackEndpoints: Bool,
+		shouldSupportABRPlayback: Bool = false
+	) -> FeatureFlagProvider {
 		FeatureFlagProvider(
 			shouldUseEventProducer: { true },
 			isContentCachingEnabled: { true },
 			shouldPauseAndPlayAroundSeek: { false },
 			shouldNotPerformActionAtItemEnd: { false },
 			shouldUseImprovedDRMHandling: { false },
-			shouldUseNewPlaybackEndpoints: { shouldUseNewPlaybackEndpoints }
+			shouldUseNewPlaybackEndpoints: { shouldUseNewPlaybackEndpoints },
+			shouldSupportABRPlayback: { shouldSupportABRPlayback }
 		)
 	}
 }
@@ -774,5 +778,138 @@ extension PlaybackInfoFetcherTests {
 	func test_formatsToAudioQuality_emptyOrNilFallsBack() {
 		XCTAssertEqual(PlaybackInfoFetcher.getAudioQualityFromFormats([], fallback: .HIGH), .HIGH)
 		XCTAssertEqual(PlaybackInfoFetcher.getAudioQualityFromFormats(nil, fallback: .LOW), .LOW)
+	}
+
+	func test_buildFormatList_whenAdaptiveDisabled_returnsFormatsForMaxQuality() {
+		let formats = PlaybackInfoFetcher.buildFormatList(maxQuality: .HIGH, adaptive: false)
+		XCTAssertEqual(formats, [.heaacv1, .aaclc])
+	}
+
+	func test_buildFormatList_whenAdaptiveEnabled_returnsLadderUpToMaxQuality() {
+		let formats = PlaybackInfoFetcher.buildFormatList(maxQuality: .HI_RES_LOSSLESS, adaptive: true)
+		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac, .flacHires])
+	}
+
+	func test_buildFormatList_whenImmersiveAudioEnabledAndLosslessQuality_includesEac3Joc() {
+		var configuration = Configuration.mock()
+		configuration.isImmersiveAudio = true
+
+		let formats = PlaybackInfoFetcher.buildFormatList(
+			maxQuality: .LOSSLESS,
+			adaptive: false,
+			configuration: configuration
+		)
+
+		XCTAssertTrue(formats.contains(.eac3Joc))
+		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac, .eac3Joc])
+	}
+
+	func test_buildFormatList_whenImmersiveAudioEnabledAndHiResLosslessQuality_includesEac3Joc() {
+		var configuration = Configuration.mock()
+		configuration.isImmersiveAudio = true
+
+		let formats = PlaybackInfoFetcher.buildFormatList(
+			maxQuality: .HI_RES_LOSSLESS,
+			adaptive: false,
+			configuration: configuration
+		)
+
+		XCTAssertTrue(formats.contains(.eac3Joc))
+		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac, .flacHires, .eac3Joc])
+	}
+
+	func test_buildFormatList_whenImmersiveAudioEnabledButHighQuality_doesNotIncludeEac3Joc() {
+		var configuration = Configuration.mock()
+		configuration.isImmersiveAudio = true
+
+		let formats = PlaybackInfoFetcher.buildFormatList(
+			maxQuality: .HIGH,
+			adaptive: false,
+			configuration: configuration
+		)
+
+		XCTAssertFalse(formats.contains(.eac3Joc))
+		XCTAssertEqual(formats, [.heaacv1, .aaclc])
+	}
+
+	func test_buildFormatList_whenImmersiveAudioDisabledAndLosslessQuality_doesNotIncludeEac3Joc() {
+		var configuration = Configuration.mock()
+		configuration.isImmersiveAudio = false
+
+		let formats = PlaybackInfoFetcher.buildFormatList(
+			maxQuality: .LOSSLESS,
+			adaptive: false,
+			configuration: configuration
+		)
+
+		XCTAssertFalse(formats.contains(.eac3Joc))
+		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac])
+	}
+
+	func test_buildQualityLadderFromFormats_returnsOrderedQualities() {
+		let ladder = PlaybackInfoFetcher.buildQualityLadder(
+			from: [.heaacv1, .aaclc, .flac]
+		)
+		XCTAssertEqual(ladder, [.LOW, .HIGH, .LOSSLESS])
+	}
+
+	func test_buildQualityLadderFromFormats_whenHiResFormatsPresent_includesHiResLossless() {
+		let ladder = PlaybackInfoFetcher.buildQualityLadder(
+			from: [.heaacv1, .flacHires]
+		)
+		XCTAssertEqual(ladder, [.LOW, .HI_RES_LOSSLESS])
+	}
+
+	func test_buildQualityLadderUpTo_returnsOrderedQualities() {
+		let ladder = PlaybackInfoFetcher.buildQualityLadder(upTo: .LOSSLESS)
+		XCTAssertEqual(ladder, [.LOW, .HIGH, .LOSSLESS])
+	}
+
+	func test_shouldRequestAdaptivePlayback_checksFeatureFlagUserConsentAndMode() {
+		var configuration = Configuration.mock()
+		configuration.allowVariablePlayback = true
+
+		let featureFlagsEnabled = createFeatureFlagProvider(
+			shouldUseNewPlaybackEndpoints: true,
+			shouldSupportABRPlayback: true
+		)
+
+		let shouldAdapt = PlaybackInfoFetcher.shouldRequestAdaptivePlayback(
+			configuration: configuration,
+			featureFlagProvider: featureFlagsEnabled,
+			playbackMode: .STREAM
+		)
+
+		XCTAssertTrue(shouldAdapt)
+
+		let shouldAdaptWhenFlagDisabled = PlaybackInfoFetcher.shouldRequestAdaptivePlayback(
+			configuration: configuration,
+			featureFlagProvider: createFeatureFlagProvider(
+				shouldUseNewPlaybackEndpoints: true,
+				shouldSupportABRPlayback: false
+			),
+			playbackMode: .STREAM
+		)
+
+		XCTAssertFalse(shouldAdaptWhenFlagDisabled)
+
+		var configWithoutConsent = configuration
+		configWithoutConsent.allowVariablePlayback = false
+
+		let shouldAdaptWithoutConsent = PlaybackInfoFetcher.shouldRequestAdaptivePlayback(
+			configuration: configWithoutConsent,
+			featureFlagProvider: featureFlagsEnabled,
+			playbackMode: .STREAM
+		)
+
+		XCTAssertFalse(shouldAdaptWithoutConsent)
+
+		let shouldAdaptForOffline = PlaybackInfoFetcher.shouldRequestAdaptivePlayback(
+			configuration: configuration,
+			featureFlagProvider: featureFlagsEnabled,
+			playbackMode: .OFFLINE
+		)
+
+		XCTAssertFalse(shouldAdaptForOffline)
 	}
 }
