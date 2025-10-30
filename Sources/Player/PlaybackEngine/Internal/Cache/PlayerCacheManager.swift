@@ -252,11 +252,16 @@ final class PlayerCacheManager: PlayerCacheManaging {
 
 	public func clearCache() {
 		queue.addOperation { [weak self] in
-			self?._clearCache()
+			self?._clearCacheAtomically()
 		}
 	}
 
-	private func _clearCache() {
+	private func _clearCacheAtomically() {
+		// Step 1: Cancel all in-progress downloads first
+		// This prevents new entries from being added to cache during clearing
+		assetFactory.reset()
+
+		// Step 2: Delete all cache entries and their associated files
 		do {
 			let entries = try cacheStorage.getAll()
 			for entry in entries {
@@ -265,11 +270,10 @@ final class PlayerCacheManager: PlayerCacheManaging {
 					_removePhysicalFileIfNeeded(at: entry.url)
 				} catch {
 					logger?.log(loggable: CacheLoggable.deleteCacheFileFailed(fileName: entry.url.lastPathComponent, error: error))
-					// Continue clearing other entries
+					// Continue clearing other entries even if file deletion fails
 				}
 				try cacheStorage.delete(key: entry.key)
 			}
-			assetFactory.reset()
 		} catch {
 			logger?.log(loggable: CacheLoggable.clearCacheFailed(error: error))
 		}
@@ -387,11 +391,11 @@ private extension PlayerCacheManager {
 		}
 	}
 
-	func _removePhysicalFileIfNeeded(at url: URL) {
+	func _removePhysicalFileIfNeeded(at url: URL) throws {
 		guard url.path.hasPrefix(storageDirectory.path) else {
 			return
 		}
-		try? fileManager.removeItem(at: url)
+		try fileManager.removeItem(at: url)
 	}
 
 	func _pruneCacheIfNeeded() {
