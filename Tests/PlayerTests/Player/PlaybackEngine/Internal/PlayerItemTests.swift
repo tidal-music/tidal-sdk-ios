@@ -712,7 +712,6 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_playbackStatistics_reflectsLatestAudioQualityAfterAdaptiveSwitch() {
 		let mediaProduct = MediaProduct.mock()
-		let adaptiveQualities: [AudioQuality] = [.LOW, .HIGH, .LOSSLESS]
 
 		let playerItem = PlayerItem.mock(
 			mediaProduct: mediaProduct,
