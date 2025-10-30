@@ -1,16 +1,23 @@
 import Foundation
+import TidalAPI
 
 // MARK: - PlaybackInfoErrorResponseConverter
 
 enum PlaybackInfoErrorResponseConverter {
 	static func convert(_ error: Error) -> Error {
+		// Handle TidalAPIError from new endpoints
+		if let tidalAPIError = error as? TidalAPIError {
+			return convertTidalAPIError(tidalAPIError)
+		}
+
+		// Handle HttpError from legacy endpoints
 		guard let httpError = error as? HttpError else {
 			return error
 		}
 
 		switch httpError {
 		case let .httpClientError(statusCode, message):
-			return convertClientError(status: statusCode, data: message)
+			return convertClientError(status: statusCode, data: message, subStatus: nil)
 		case let .httpServerError(statusCode):
 			return PlayerInternalError(
 				errorId: .PERetryable,
@@ -22,16 +29,43 @@ enum PlaybackInfoErrorResponseConverter {
 }
 
 private extension PlaybackInfoErrorResponseConverter {
-	static func convertClientError(status: Int, data: Data?) -> Error {
-		let subStatus = extractSubStatus(from: data)
+	static func convertTidalAPIError(_ error: TidalAPIError) -> Error {
+		guard let statusCode = error.statusCode else {
+			return error
+		}
 
-		switch status {
+		let subStatus = error.subStatus
+
+		switch statusCode {
 		case 401:
 			return AuthError(status: subStatus)
 		case 403:
 			return handleForbidden(with: subStatus)
 		case 404:
 			return handleNotFound(with: subStatus)
+		case 429:
+			return PlaybackInfoFetcherError.rateLimited.error(.PERetryable)
+		case 500...599:
+			return PlayerInternalError(
+				errorId: .PERetryable,
+				errorType: .playbackInfoServerError,
+				code: statusCode
+			)
+		default:
+			return PlaybackInfoFetcherError.unHandledHttpStatus.error(.EUnexpected)
+		}
+	}
+
+	static func convertClientError(status: Int, data: Data?, subStatus: Int? = nil) -> Error {
+		let extractedSubStatus = subStatus ?? extractSubStatus(from: data)
+
+		switch status {
+		case 401:
+			return AuthError(status: extractedSubStatus)
+		case 403:
+			return handleForbidden(with: extractedSubStatus)
+		case 404:
+			return handleNotFound(with: extractedSubStatus)
 		case 429:
 			return PlaybackInfoFetcherError.rateLimited.error(.PERetryable)
 		default:
