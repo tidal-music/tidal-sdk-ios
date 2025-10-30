@@ -111,6 +111,19 @@ enum RequestHelper {
 			return nil
 		}
 
+		func getErrorObject(data: Data?) -> ErrorObject? {
+			guard let data else {
+				return nil
+			}
+
+			do {
+				let errorsDocument = try JSONDecoder().decode(ErrorsDocument.self, from: data)
+				return errorsDocument.errors?.first
+			} catch {
+				return nil
+			}
+		}
+
 		let currentRetryCount = retries[url] ?? 0 // Default to 0 if nil
 
 		guard let provider = OpenAPIClientAPI.credentialsProvider else {
@@ -124,6 +137,7 @@ enum RequestHelper {
 			}
 			if statusCode == 401 {
 				let subStatus = getHttpSubStatus(data: data)
+				let errorObject = getErrorObject(data: data)
 
 				do {
 					_ = try await provider.getCredentials(apiErrorSubStatus: subStatus.flatMap(String.init))
@@ -133,7 +147,8 @@ enum RequestHelper {
 							message: "Failed to get credentials",
 							url: url,
 							statusCode: statusCode,
-							subStatus: subStatus
+							subStatus: subStatus,
+							errorObject: errorObject
 						)
 					} else {
 						throw TidalAPIError(error: error, url: url)
@@ -145,7 +160,8 @@ enum RequestHelper {
 						message: "User is not logged in",
 						url: url,
 						statusCode: statusCode,
-						subStatus: subStatus
+						subStatus: subStatus,
+						errorObject: errorObject
 					)
 				}
 
@@ -158,7 +174,15 @@ enum RequestHelper {
 			}
 		}
 
-		throw TidalAPIError(error: error, url: url) // Propagate the error if not handled or retried
+		let subStatus = getHttpSubStatus(data: error.data)
+		let errorObject = getErrorObject(data: error.data)
+		throw TidalAPIError(
+			error: error,
+			url: url,
+			statusCode: error.statusCode,
+			subStatus: subStatus,
+			errorObject: errorObject
+		) // Propagate the error if not handled or retried
 	}
 
 	private static func isCancelled(_ error: Error) -> Bool {
@@ -167,5 +191,21 @@ enum RequestHelper {
 		} else {
 			false
 		}
+	}
+}
+
+extension ErrorResponse {
+	var statusCode: Int? {
+		if case let .error(code, _, _, _) = self {
+			return code
+		}
+		return nil
+	}
+
+	var data: Data? {
+		if case let .error(_, responseData, _, _) = self {
+			return responseData
+		}
+		return nil
 	}
 }
