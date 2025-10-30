@@ -65,12 +65,6 @@ public final class AssetCache {
 extension AssetCache {
 	func deleteFile(at url: URL) {
 		let fileManager = PlayerWorld.fileManagerClient
-		if let storageDirectory,
-		   url.path.hasPrefix(storageDirectory.path)
-		{
-			try? fileManager.removeItem(at: url)
-		} else if storageDirectory == nil {
-			try? fileManager.removeItem(at: url)
-		}
+		try? fileManager.removeItem(at: url)
 	}
 }
