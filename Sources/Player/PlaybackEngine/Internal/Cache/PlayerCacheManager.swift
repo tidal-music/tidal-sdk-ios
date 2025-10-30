@@ -1,6 +1,7 @@
 import AVFoundation
 import Foundation
 import GRDB
+import Logging
 
 // MARK: - Protocols
 
@@ -73,6 +74,9 @@ final class PlayerCacheManager: PlayerCacheManaging {
  	private let timeProvider: () -> UInt64
  	private var maxCacheSizeInBytes: Int?
 
+	/// Logger for cache operations. Uses PlayerWorld.logger if available.
+	private var logger: TidalLogger?
+
 	/// Serial OperationQueue for thread-safe access to cache operations.
 	/// Matches the concurrency pattern used in PlayerEngine and other
 	/// core Player components.
@@ -92,6 +96,9 @@ final class PlayerCacheManager: PlayerCacheManaging {
 		self.fileManager = fileManager
 		self.timeProvider = timeProvider
  		self.maxCacheSizeInBytes = maxCacheSizeInBytes
+
+		// Initialize logger from PlayerWorld if available
+		self.logger = PlayerWorld.logger
 
 		// Configure serial queue (matches PlayerEngine pattern)
 		queue.maxConcurrentOperationCount = 1
@@ -221,7 +228,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 			entry.lastAccessedAt = _currentDate()
 			try cacheStorage.update(entry)
 		} catch {
-			// Intentionally ignored for now; logging can be added once requirements are defined.
+			logger?.log(loggable: CacheLoggable.recordPlaybackFailed(cacheKey: cacheKey, error: error))
 		}
 	}
 
@@ -254,12 +261,17 @@ final class PlayerCacheManager: PlayerCacheManaging {
 			let entries = try cacheStorage.getAll()
 			for entry in entries {
 				assetFactory.delete(entry.key)
-				_removePhysicalFileIfNeeded(at: entry.url)
+				do {
+					_removePhysicalFileIfNeeded(at: entry.url)
+				} catch {
+					logger?.log(loggable: CacheLoggable.deleteCacheFileFailed(fileName: entry.url.lastPathComponent, error: error))
+					// Continue clearing other entries
+				}
 				try cacheStorage.delete(key: entry.key)
 			}
 			assetFactory.reset()
 		} catch {
-			// Intentionally ignored for now; logging can be added once requirements are defined.
+			logger?.log(loggable: CacheLoggable.clearCacheFailed(error: error))
 		}
 	}
 
@@ -342,7 +354,7 @@ private extension PlayerCacheManager {
 				try cacheStorage.save(entry)
 			}
 		} catch {
-			// Intentionally ignored for now; logging can be added once requirements are defined.
+			logger?.log(loggable: CacheLoggable.persistCacheEntryFailed(cacheKey: cacheKey, error: error))
 		}
 
 		_pruneCacheIfNeeded()
@@ -361,6 +373,7 @@ private extension PlayerCacheManager {
 					partialResult + (_calculateSize(of: fileURL) ?? 0)
 				}
 			} catch {
+				logger?.log(loggable: CacheLoggable.calculateSizeFailed(url: url, error: error))
 				return nil
 			}
 		}
@@ -369,6 +382,7 @@ private extension PlayerCacheManager {
 			let attributes = try fileManager.attributesOfItem(url.path)
 			return (attributes[.size] as? NSNumber)?.intValue ?? 0
 		} catch {
+			logger?.log(loggable: CacheLoggable.calculateSizeFailed(url: url, error: error))
 			return nil
 		}
 	}
@@ -389,6 +403,11 @@ private extension PlayerCacheManager {
 			let entries = try cacheStorage.getAll().sorted(by: { $0.lastAccessedAt < $1.lastAccessedAt })
 			var currentSize = entries.reduce(0) { $0 + $1.size }
 
+			guard currentSize > maxCacheSizeInBytes else { return }
+
+			logger?.log(loggable: CacheLoggable.pruningStarted(currentSize: currentSize, targetSize: maxCacheSizeInBytes))
+
+			var entriesRemoved = 0
 			var index = 0
 			while currentSize > maxCacheSizeInBytes, index < entries.count {
 				let entry = entries[index]
@@ -396,10 +415,13 @@ private extension PlayerCacheManager {
 				_removePhysicalFileIfNeeded(at: entry.url)
 				try cacheStorage.delete(key: entry.key)
 				currentSize -= entry.size
+				entriesRemoved += 1
 				index += 1
 			}
+
+			logger?.log(loggable: CacheLoggable.pruningCompleted(newSize: currentSize, entriesRemoved: entriesRemoved))
 		} catch {
-			// Intentionally ignored for now; logging can be added once requirements are defined.
+			logger?.log(loggable: CacheLoggable.pruneFailed(error: error))
 		}
 	}
 
