@@ -10,6 +10,7 @@ public final class PlayerMock: GenericMediaPlayer {
 	public var shouldSwitchStateOnSkipToNext: Bool { shouldSwitchStateOnSkipToNextFlag }
 
 	var shouldSwitchStateOnSkipToNextFlag: Bool = false
+	private let cacheManager: PlayerCacheManaging
 
 	static let duration = 10.0
 
@@ -37,9 +38,35 @@ public final class PlayerMock: GenericMediaPlayer {
 	var loudnessNormalizer = LoudnessNormalizer.mock()
 	var loudnessNormalizationMode: LoudnessNormalizationMode = .ALBUM
 
-	public init() {}
+	private final class NullPlayerCacheManager: PlayerCacheManaging {
+		weak var delegate: PlayerCacheManagerDelegate?
 
-	public init(cachePath: URL, featureFlagProvider: FeatureFlagProvider) {}
+		func prepareCache(isEnabled: Bool) {}
+
+		func resolveAsset(for url: URL, cacheKey: String?) -> PlayerCacheResult {
+			PlayerCacheResult(
+				urlAsset: AVURLAsset(url: url),
+				cacheState: cacheKey.map { AssetCacheState(key: $0, status: .notCached) }
+			)
+		}
+
+		func startCachingIfNeeded(_ urlAsset: AVURLAsset, cacheState: AssetCacheState?) {}
+
+		func cancelDownload(for cacheKey: String) {}
+
+		func reset() {}
+	}
+
+	public convenience init() {
+		self.init(
+			cacheManager: NullPlayerCacheManager(),
+			featureFlagProvider: .mock
+		)
+	}
+
+	public init(cacheManager: PlayerCacheManaging, featureFlagProvider: FeatureFlagProvider) {
+		self.cacheManager = cacheManager
+	}
 
 	public func canPlay(
 		productType: PlayerProductType,

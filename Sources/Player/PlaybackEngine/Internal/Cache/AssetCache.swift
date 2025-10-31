@@ -20,10 +20,15 @@ public struct AssetCacheState {
 // MARK: - AssetCache
 
 public final class AssetCache {
-	private var userDefaults: UserDefaultsClient
+	private let userDefaults: UserDefaultsClient
+	private let storageDirectory: URL?
 
-	public init(userDefaults: UserDefaultsClient = UserDefaultsClient.live()) {
+	public init(
+		userDefaults: UserDefaultsClient = UserDefaultsClient.live(),
+		storageDirectory: URL? = nil
+	) {
 		self.userDefaults = userDefaults
+		self.storageDirectory = storageDirectory
 	}
 
 	public func get(_ key: String) -> AssetCacheState {

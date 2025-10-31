@@ -40,9 +40,8 @@ final class InternalPlayerLoader: PlayerLoader {
 		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
 
-		let fileManager = PlayerWorld.fileManagerClient
 		self.mainPlayer = mainPlayer.init(
-			cachePath: fileManager.cachesDirectory(),
+			cacheManager: PlayerCacheManager(),
 			featureFlagProvider: featureFlagProvider
 		)
 
@@ -51,7 +50,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		externalPlayers.forEach { externalPlayerType in
 			registerPlayer(
 				externalPlayerType.init(
-					cachePath: fileManager.cachesDirectory(),
+					cacheManager: PlayerCacheManager(),
 					featureFlagProvider: featureFlagProvider
 				)
 			)
