@@ -50,7 +50,8 @@ final class PlayerTests: XCTestCase {
 			playerEventSender: playerEventSender,
 			notificationsHandler: notificationsHandler
 		)
-		let playerEngine = PlayerEngine.mock(httpClient: httpClient)
+		let cacheManager = PlayerCacheManager()
+		let playerEngine = PlayerEngine.mock(httpClient: httpClient, cacheManager: cacheManager)
 
 		player = Player(
 			queue: OperationQueueMock(),
@@ -67,7 +68,8 @@ final class PlayerTests: XCTestCase {
 			featureFlagProvider: .mock,
 			externalPlayersSupplier: nil,
 			credentialsProvider: CredentialsProviderMock(),
-			offlinePlaybackPrivilegeCheck: nil
+			offlinePlaybackPrivilegeCheck: nil,
+			cacheManager: cacheManager
 		)
 	}
 }

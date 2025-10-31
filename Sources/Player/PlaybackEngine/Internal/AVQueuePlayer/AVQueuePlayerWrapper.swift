@@ -461,6 +461,10 @@ private extension AVQueuePlayerWrapper {
 				return
 			}
 
+			if let cacheKey = asset.getCacheState()?.key {
+				self.cacheManager.recordPlayback(for: cacheKey)
+			}
+
 			self.player.allowsExternalPlayback = playerItem.tracks.contains(where: { $0.assetTrack?.mediaType == .video })
 
 			let volume: Float = asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
