@@ -8,7 +8,9 @@ public typealias PlayerAudioCodec = AudioCodec
 public enum AudioCodec: Equatable, Codable {
 	enum Constants {
 		static let Manifest_Name_HE_AAC_V1 = "mp4a.40.5"
+		static let Manifest_Name_HE_AAC_V1_Alt = "heaacv1"
 		static let Manifest_Name_AAC_LC = "mp4a.40.2"
+		static let Manifest_Name_AAC_LC_Alt = "aaclc"
 		static let Manifest_Name_AAC = "aac"
 		static let Manifest_Name_FLAC = "flac"
 		static let Manifest_Name_FLAC_HIRES = "flac_hires"
@@ -46,9 +48,9 @@ public enum AudioCodec: Equatable, Codable {
 		}
 
 		switch rawValue.lowercased() {
-		case Constants.Manifest_Name_HE_AAC_V1:
+		case Constants.Manifest_Name_HE_AAC_V1, Constants.Manifest_Name_HE_AAC_V1_Alt:
 			self = .HE_AAC_V1
-		case Constants.Manifest_Name_AAC_LC:
+		case Constants.Manifest_Name_AAC_LC, Constants.Manifest_Name_AAC_LC_Alt:
 			self = .AAC_LC
 		case Constants.Manifest_Name_AAC:
 			self = .AAC
