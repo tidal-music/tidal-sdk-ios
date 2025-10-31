@@ -1,6 +1,6 @@
 import Foundation
 
-enum RetryStrategy {
+public enum RetryStrategy {
 	case BACKOFF(duration: TimeInterval)
 	case NONE
 }
