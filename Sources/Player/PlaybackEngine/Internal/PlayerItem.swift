@@ -352,7 +352,11 @@ private extension PlayerItem {
 			sampleRate = playbackMetadata.sampleRate
 			// Try to derive audio quality from the format string in playback metadata
 			if let audioCodec = AudioCodec(rawValue: playbackMetadata.formatString),
-			   let qualityFromCodec = audioQualityFromCodec(audioCodec) {
+			   let qualityFromCodec = audioQualityFromCodec(
+				audioCodec,
+				bitDepth: playbackMetadata.bitDepth,
+				sampleRate: playbackMetadata.sampleRate
+			) {
 				audioQuality = qualityFromCodec
 			}
 		}
@@ -360,18 +364,31 @@ private extension PlayerItem {
 		return (bitDepth, sampleRate, audioQuality)
 	}
 
-	private func audioQualityFromCodec(_ codec: AudioCodec) -> AudioQuality? {
+	private func audioQualityFromCodec(
+		_ codec: AudioCodec,
+		bitDepth: Int? = nil,
+		sampleRate: Int? = nil
+	) -> AudioQuality? {
 		switch codec {
 		case .HE_AAC_V1, .AAC_LC, .AAC:
-			.HIGH
+			return .HIGH
 		case .FLAC, .ALAC:
-			.LOSSLESS
+			// For FLAC/ALAC, determine if it's hi-res lossless based on bit depth and sample rate
+			if let bitDepth, let sampleRate {
+				// HI_RES_LOSSLESS: >16-bit OR >44.1kHz
+				if bitDepth > 16 || sampleRate > 44100 {
+					return .HI_RES_LOSSLESS
+				}
+				return .LOSSLESS
+			}
+			// If we don't have bit depth/sample rate info, assume standard lossless
+			return .LOSSLESS
 		case .MQA:
-			.HI_RES
+			return .HI_RES
 		case .MHA1, .MHM1:
-			.HI_RES_LOSSLESS
+			return .HI_RES_LOSSLESS
 		default:
-			nil
+			return nil
 		}
 	}
 

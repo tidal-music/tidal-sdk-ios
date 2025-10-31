@@ -11,6 +11,7 @@ public enum AudioCodec: Equatable, Codable {
 		static let Manifest_Name_AAC_LC = "mp4a.40.2"
 		static let Manifest_Name_AAC = "aac"
 		static let Manifest_Name_FLAC = "flac"
+		static let Manifest_Name_FLAC_HIRES = "flac_hires"
 		static let Manifest_Name_ALAC = "alac"
 		static let Manifest_Name_MQA = "mqa"
 		static let Manifest_Name_AC4 = "ac4"
@@ -52,6 +53,8 @@ public enum AudioCodec: Equatable, Codable {
 		case Constants.Manifest_Name_AAC:
 			self = .AAC
 		case Constants.Manifest_Name_FLAC:
+			self = .FLAC
+		case Constants.Manifest_Name_FLAC_HIRES:
 			self = .FLAC
 		case Constants.Manifest_Name_ALAC:
 			self = .ALAC

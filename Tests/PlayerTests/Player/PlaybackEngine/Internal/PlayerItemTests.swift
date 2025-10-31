@@ -754,4 +754,96 @@ final class PlayerItemTests: XCTestCase {
 
 		XCTAssertEqual(playbackStatistics?.actualQuality, AudioQuality.LOSSLESS.rawValue)
 	}
+
+	func test_playbackStatistics_reflectsHiResLosslessQualityForHighBitDepthFLAC() {
+		let mediaProduct = MediaProduct.mock()
+
+		let playerItem = PlayerItem.mock(
+			mediaProduct: mediaProduct,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider
+		)
+
+		let metadata = Metadata.mock(
+			productId: mediaProduct.productId,
+			audioQuality: .HIGH,
+			audioSampleRate: nil,
+			audioBitDepth: nil
+		)
+		playerItem.set(metadata)
+
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration.mock()
+		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
+		playerItem.set(asset)
+
+		let startTimestamp: UInt64 = 10
+		timestamp = startTimestamp
+		playerItem.loaded(asset: asset, with: 240)
+		playerItem.play(timestamp: startTimestamp)
+		playerItem.playing(asset: asset)
+
+		// FLAC with 24-bit should report HI_RES_LOSSLESS
+		let playbackMeta = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 44100, bitDepth: 24)
+		playerItem.playbackMetadataChanged(asset: asset, to: playbackMeta)
+
+		let endTimestamp: UInt64 = 20
+		timestamp = endTimestamp
+		playerItem.completed(asset: asset)
+
+		playerItem.emitEvents()
+
+		let playbackStatistics = playerEventSender.streamingMetricsEvents
+			.compactMap { $0 as? PlaybackStatistics }
+			.first
+
+		XCTAssertEqual(playbackStatistics?.actualQuality, AudioQuality.HI_RES_LOSSLESS.rawValue)
+	}
+
+	func test_playbackStatistics_reflectsHiResLosslessQualityForHighSampleRateFLAC() {
+		let mediaProduct = MediaProduct.mock()
+
+		let playerItem = PlayerItem.mock(
+			mediaProduct: mediaProduct,
+			playerItemMonitor: monitor,
+			playerEventSender: playerEventSender,
+			timestamp: timestamp,
+			featureFlagProvider: featureFlagProvider
+		)
+
+		let metadata = Metadata.mock(
+			productId: mediaProduct.productId,
+			audioQuality: .HIGH,
+			audioSampleRate: nil,
+			audioBitDepth: nil
+		)
+		playerItem.set(metadata)
+
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration.mock()
+		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
+		playerItem.set(asset)
+
+		let startTimestamp: UInt64 = 10
+		timestamp = startTimestamp
+		playerItem.loaded(asset: asset, with: 240)
+		playerItem.play(timestamp: startTimestamp)
+		playerItem.playing(asset: asset)
+
+		// FLAC with 96 kHz should report HI_RES_LOSSLESS
+		let playbackMeta = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 96000, bitDepth: 16)
+		playerItem.playbackMetadataChanged(asset: asset, to: playbackMeta)
+
+		let endTimestamp: UInt64 = 20
+		timestamp = endTimestamp
+		playerItem.completed(asset: asset)
+
+		playerItem.emitEvents()
+
+		let playbackStatistics = playerEventSender.streamingMetricsEvents
+			.compactMap { $0 as? PlaybackStatistics }
+			.first
+
+		XCTAssertEqual(playbackStatistics?.actualQuality, AudioQuality.HI_RES_LOSSLESS.rawValue)
+	}
 }
