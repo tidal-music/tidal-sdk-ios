@@ -382,7 +382,7 @@ private extension PlayerItem {
 			playerEventSender.send(StreamingSessionEnd(streamingSessionId: id, timestamp: now))
 		}
 
-		guard let metrics, let metadata, let playbackContext else {
+		guard let metrics, let metadata else {
 			return
 		}
 
@@ -406,6 +406,12 @@ private extension PlayerItem {
 		}
 
 		let endInfo = metrics.endInfo
+		let actualQuality: String
+		if let playbackContext {
+			actualQuality = mediaProduct.productType.quality(given: playbackContext)
+		} else {
+			actualQuality = mediaProduct.productType.quality(given: metadata)
+		}
 		playerEventSender.send(PlaybackStatistics(
 			streamingSessionId: id,
 			idealStartTimestamp: metrics.idealStartTime,
@@ -415,7 +421,7 @@ private extension PlayerItem {
 			actualStreamType: metadata.streamType.rawValue,
 			actualAssetPresentation: metadata.assetPresentation.rawValue,
 			actualAudioMode: metadata.audioMode?.rawValue,
-			actualQuality: mediaProduct.productType.quality(given: playbackContext),
+			actualQuality: actualQuality,
 			stalls: metrics.stalls,
 			startReason: playbackStartReason,
 			endReason: endInfo.reason.rawValue,
