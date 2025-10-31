@@ -254,91 +254,102 @@ Phase 4 (Notifications, Health Checks, Verification)
 
 ### 1.1 Add Thread Safety to PlayerCacheManager
 
-**Objective:** Wrap all public methods with synchronized access
+**Objective:** Wrap all public methods with synchronized access using OperationQueue + @Atomic
+
+**Architecture:**
+This follows the same pattern used in `PlayerEngine.swift` and other core Player components:
+- **OperationQueue** (serial): Ensures operations execute sequentially
+- **@Atomic property wrapper**: Protects individual mutable properties
+- See `Sources/Player/Common/Utils/Atomic.swift` for the @Atomic implementation
 
 **Implementation Steps:**
 
-#### Step 1.1.1: Create DispatchQueue for Synchronization
+#### Step 1.1.1: Create Serial OperationQueue for Synchronization
 
 **File:** `Sources/Player/PlaybackEngine/Internal/Cache/PlayerCacheManager.swift`
 
 **Changes:**
 ```swift
 // Add after class declaration (around line 45)
-private let queue = DispatchQueue(
-    label: "com.tidal.player.cache",
-    qos: .utility,
-    attributes: [],
-    autoreleaseFrequency: .never
-)
+private let queue = OperationQueue()
+
+// Configure in init() method:
+init(...) {
+    // ... existing code ...
+
+    // Configure serial queue (matches PlayerEngine pattern)
+    queue.maxConcurrentOperationCount = 1
+    queue.qualityOfService = .utility
+    queue.name = "com.tidal.player.cache"
+}
 ```
 
-**Why this approach:**
-- Serial queue ensures all operations execute sequentially
-- `.utility` QoS prevents UI thread blocking
-- No autoreleaseFrequency allows GRDB to manage memory
+**Why OperationQueue instead of DispatchQueue:**
+- **Consistency:** Matches `PlayerEngine.swift` (the closest comparable component)
+- **Higher-level API:** Better semantics than raw DispatchQueue
+- **Proven pattern:** Already used throughout the codebase for similar scenarios
+- **Better observability:** Can check `operationCount` for debugging
+- **iOS 15+ best practice:** Recommended approach in Player SDK
 
 **Validation:**
 - Compile check only - no behavior change yet
 
 ---
 
-#### Step 1.1.2: Wrap Public Async Methods
+#### Step 1.1.2: Wrap Public Async Methods with addOperation
 
-**Methods to Wrap:** `recordPlayback()`, `prepareCache()`, `cancelDownload()`, `reset()`
+**Methods to Wrap (Async):** `recordPlayback()`, `prepareCache()`, `cancelDownload()`, `reset()`, `startCachingIfNeeded()`, `clearCache()`, `updateMaxCacheSize()`
 
 **Pattern:**
 ```swift
 public func recordPlayback(for cacheKey: String) {
-    queue.async { [weak self] in
-        self?._recordPlayback(cacheKey: cacheKey)
+    queue.addOperation { [weak self] in
+        self?._recordPlayback(for: cacheKey)
     }
 }
 
-private func _recordPlayback(cacheKey: String) {
+private func _recordPlayback(for cacheKey: String) {
     // Original implementation from recordPlayback()
+    // Update lastAccessedAt, etc.
     // ... existing code ...
 }
 ```
 
+**Why addOperation:**
+- Async methods dispatch work and return immediately
+- Operation is queued sequentially on the serial queue
+- Matches `OperationQueue.dispatch` pattern used in Player SDK
+
 **Files to Modify:**
-- PlayerCacheManager.swift - lines 154-165 (recordPlayback)
-- PlayerCacheManager.swift - lines 75-87 (prepareCache)
-- PlayerCacheManager.swift - lines 140-152 (cancelDownload)
-- PlayerCacheManager.swift - lines 166-170 (reset)
+- PlayerCacheManager.swift - recordPlayback, prepareCache, cancelDownload, reset
+- PlayerCacheManager.swift - startCachingIfNeeded, clearCache, updateMaxCacheSize
 
 **Changes per method:**
 ```swift
 // 1. Rename original method: recordPlayback → _recordPlayback
-// 2. Create new public wrapper using queue.async
+// 2. Create new public wrapper using queue.addOperation
 // 3. Update any internal calls to use _recordPlayback (same thread)
 ```
 
-**Testing:**
-- Run existing unit tests - should pass without change
-- Verify no hangs or deadlocks
-
 ---
 
-#### Step 1.1.3: Wrap Public Sync Methods
+#### Step 1.1.3: Wrap Public Sync Methods (Return Values)
 
-**Methods to Wrap:** `resolveAsset()`, `startCachingIfNeeded()`, `currentCacheSizeInBytes()`, `clearCache()`, `updateMaxCacheSize()`
+**Methods to Wrap (Sync):** `resolveAsset()`, `currentCacheSizeInBytes()`
 
 **Pattern:**
 ```swift
-public func resolveAsset(
-    for url: URL,
-    cacheKey: String?
-) -> PlayerCacheResult {
-    queue.sync { [weak self] in
-        self?._resolveAsset(for: url, cacheKey: cacheKey)
-    } ?? .notCached
+public func resolveAsset(for url: URL, cacheKey: String?) -> PlayerCacheResult {
+    var result: PlayerCacheResult?
+    let operation = BlockOperation { [weak self] in
+        result = self?._resolveAsset(for: url, cacheKey: cacheKey)
+    }
+    queue.addOperation(operation)
+    queue.waitUntilAllOperationsAreFinished()  // Block until complete
+    return result ?? fallbackValue
 }
 
-private func _resolveAsset(
-    for url: URL,
-    cacheKey: String?
-) -> PlayerCacheResult {
+private func _resolveAsset(for url: URL, cacheKey: String?) -> PlayerCacheResult {
     // Original implementation
     // ... existing code ...
 }
@@ -346,16 +357,17 @@ private func _resolveAsset(
 
 **Files to Modify:**
 - PlayerCacheManager.swift - lines 90-133 (resolveAsset)
-- PlayerCacheManager.swift - lines 134-139 (startCachingIfNeeded)
 - PlayerCacheManager.swift - lines 171-173 (currentCacheSizeInBytes)
-- PlayerCacheManager.swift - lines 174-186 (clearCache)
-- PlayerCacheManager.swift - lines 188-194 (updateMaxCacheSize)
 
-**Critical Note:** Use `queue.sync` to return values synchronously while maintaining thread safety.
+**Critical Notes:**
+- Use `waitUntilAllOperationsAreFinished()` to block caller until operation completes
+- Allows synchronous API while maintaining queue serialization
+- Similar pattern used in AVQueuePlayerWrapper for bridging async operations
 
 **Deadlock Prevention:**
 - All internal calls use `_methodName()` to avoid re-entering queue
 - No calls to public methods from within private methods
+- Single serial queue prevents circular waits
 
 **Testing:**
 ```swift
@@ -443,29 +455,81 @@ func _persistCacheEntry() {
 
 ---
 
-#### Step 1.1.6: Update Player.swift Wrappers
+#### Step 1.1.4: Protect Mutable State with @Atomic (Optional)
+
+**File:** `Sources/Player/PlaybackEngine/Internal/Cache/PlayerCacheManager.swift`
+
+**Pattern:** For individual properties that need concurrent read/write (if needed)
+
+```swift
+@Atomic private var maxCacheSizeInBytes: Int?
+```
+
+**When to use @Atomic:**
+- For simple properties with independent read/write semantics
+- Currently, `maxCacheSizeInBytes` can stay as regular property since it's only accessed via `_updateMaxCacheSize()` which runs on the queue
+- **In this case:** NOT needed since queue serializes all access
+
+**Note:** The serial OperationQueue provides sufficient synchronization. @Atomic is useful for properties accessed directly outside the queue context (like PlayerEngine does with state).
+
+---
+
+#### Step 1.1.5: Update Player.swift Wrappers
 
 **File:** `Sources/Player/Player.swift` - lines 359-378
 
-**Current State:** Wrappers already exist but may need updates for thread safety
+**Current State:** Wrappers already exist and delegate to PlayerEngine
 
-**Changes:**
+**Verify no changes needed:**
 ```swift
-// Verify these already delegate to threadsafe methods:
+// These already delegate to threadsafe methods:
 public func cacheUsageInBytes() -> Int {
-    playerEngine.cacheUsageInBytes()  // Delegates to PlayerEngine
+    playerEngine.cacheUsageInBytes()  // Delegates to PlayerEngine (already thread-safe)
 }
 
 public func clearCache() {
-    playerEngine.clearCache()  // Delegates to PlayerEngine
+    playerEngine.clearCache()  // Delegates to PlayerEngine (already thread-safe)
 }
 
 public func setCacheQuota(maxBytes: Int?) {
-    playerEngine.setCacheQuota(maxBytes: maxBytes)
+    playerEngine.setCacheQuota(maxBytes: maxBytes)  // Delegates (already thread-safe)
 }
 ```
 
-**Verify:** PlayerEngine.swift already wraps these with thread safety
+**Verify:** PlayerEngine.swift already wraps these with thread safety ✅
+
+---
+
+#### Step 1.1.6: Update Documentation
+
+**File:** PlayerCacheManager.swift - class documentation
+
+Update class header to reflect OperationQueue architecture:
+
+```swift
+/// Thread-safe cache manager for coordinating media asset downloads.
+///
+/// All public methods are thread-safe and can be called from any thread.
+/// The manager uses a serial OperationQueue to ensure all cache operations
+/// execute sequentially, matching the concurrency pattern used throughout
+/// the Player SDK (see PlayerEngine for a similar implementation).
+///
+/// - Important: Async methods like ``recordPlayback(for:)`` dispatch work to
+///   the queue and return immediately. Sync methods like ``resolveAsset(for:cacheKey:)``
+///   block the calling thread until the operation completes, but do not block
+///   other cache operations (serialized on the queue).
+///
+/// Example:
+/// ```swift
+/// // Safe to call from any thread
+/// DispatchQueue.global().async {
+///     manager.recordPlayback(for: cacheKey)
+/// }
+///
+/// // Blocks until complete
+/// let result = manager.resolveAsset(for: url, cacheKey: cacheKey)
+/// ```
+```
 
 ---
 
@@ -476,6 +540,7 @@ public func setCacheQuota(maxBytes: Int?) {
 - ✅ No deadlocks detected
 - ✅ Concurrent access stress test passes
 - ✅ Documentation complete
+- ✅ Matches PlayerEngine concurrency patterns
 
 ---
 
