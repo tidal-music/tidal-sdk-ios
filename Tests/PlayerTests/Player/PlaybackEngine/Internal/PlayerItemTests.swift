@@ -702,12 +702,12 @@ final class PlayerItemTests: XCTestCase {
 		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration)
 		playerItem.set(asset)
 
-		playerItem.audioQualityChanged(asset: asset, to: .LOSSLESS)
+		let pbMeta = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 44100, bitDepth: 16)
+	playerItem.playbackMetadataChanged(asset: asset, to: pbMeta)
 
-		XCTAssertEqual(playerItem.metadata?.audioQuality, .LOSSLESS)
-		XCTAssertEqual(monitor.audioQualityChanges.count, 1)
-		XCTAssertEqual(monitor.audioQualityChanges.first?.playerItemId, playerItem.id)
-		XCTAssertEqual(monitor.audioQualityChanges.first?.quality, .LOSSLESS)
+		XCTAssertEqual(monitor.playbackMetadataChanges.count, 1)
+		XCTAssertEqual(monitor.playbackMetadataChanges.first?.playerItemId, playerItem.id)
+		XCTAssertEqual(monitor.playbackMetadataChanges.first?.metadata, pbMeta)
 	}
 
 	func test_playbackStatistics_reflectsLatestAudioQualityAfterAdaptiveSwitch() {
@@ -737,7 +737,8 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.play(timestamp: startTimestamp)
 		playerItem.playing(asset: asset)
 
-		playerItem.audioQualityChanged(asset: asset, to: .LOSSLESS)
+		let playbackMeta = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 44100, bitDepth: 16)
+	playerItem.playbackMetadataChanged(asset: asset, to: playbackMeta)
 
 		let endTimestamp: UInt64 = 20
 		timestamp = endTimestamp

@@ -190,8 +190,8 @@ extension PlayerMock {
 		failed(asset: assets.first, with: error)
 	}
 
-	func audioQualityChanged(to quality: AudioQuality) {
-		delegates.audioQualityChanged(asset: assets.first, to: quality)
+	func playbackMetadataChanged(to metadata: AssetPlaybackMetadata) {
+		delegates.playbackMetadataChanged(asset: assets.first, to: metadata)
 	}
 
 	func failed(asset: Asset?, with error: Error) {

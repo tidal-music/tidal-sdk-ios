@@ -15,7 +15,7 @@ final class PlayerItemMonitorMock: PlayerItemMonitor {
 	private(set) var completedItems = [String]()
 	private(set) var failedItems = [FailedItem]()
 	private(set) var playbackMetadataLoadedItems = [String]()
-	private(set) var audioQualityChanges = [(playerItemId: String, quality: AudioQuality)]()
+	private(set) var playbackMetadataChanges = [(playerItemId: String, metadata: AssetPlaybackMetadata)]()
 
 	func loaded(playerItem: PlayerItem) {
 		loadedItems.append(playerItem.id)
@@ -49,7 +49,7 @@ final class PlayerItemMonitorMock: PlayerItemMonitor {
 		playbackMetadataLoadedItems.append(playerItem.id)
 	}
 
-	func audioQualityChanged(playerItem: PlayerItem, to audioQuality: AudioQuality) {
-		audioQualityChanges.append((playerItem.id, audioQuality))
+	func playbackMetadataChanged(playerItem: PlayerItem, to metadata: AssetPlaybackMetadata) {
+		playbackMetadataChanges.append((playerItem.id, metadata))
 	}
 }

@@ -14,7 +14,7 @@ protocol PlayerItemMonitor: AnyObject {
 	func completed(playerItem: PlayerItem)
 	func failed(playerItem: PlayerItem, with error: Error)
 	func playbackMetadataLoaded(playerItem: PlayerItem)
-	func audioQualityChanged(playerItem: PlayerItem, to audioQuality: AudioQuality)
+	func playbackMetadataChanged(playerItem: PlayerItem, to metadata: AssetPlaybackMetadata)
 }
 
 // MARK: - PlayerItem
@@ -158,23 +158,23 @@ final class PlayerItem {
 			return nil
 		}
 
-		let (bitDepth, sampleRate) = obtainPlaybackContextBitDepthAndSampleRate(
+		let (bitDepth, sampleRate, audioQuality) = obtainPlaybackContextBitDepthSampleRateAndQuality(
 			pbiMetadata: metadata,
 			playbackMetadata: asset?.playbackMetadata
 		)
 
-		let codec = metadata.audioCodec ?? AudioCodec(from: metadata.audioQuality, mode: metadata.audioMode)
+		let codec = metadata.audioCodec ?? AudioCodec(from: audioQuality, mode: metadata.audioMode)
 
 		return PlaybackContext(
 			productId: metadata.productId,
 			streamType: metadata.streamType,
 			assetPresentation: metadata.assetPresentation,
 			audioMode: metadata.audioMode,
-			audioQuality: metadata.audioQuality,
+			audioQuality: audioQuality,
 			audioCodec: codec?.displayName,
 			audioSampleRate: sampleRate,
 			audioBitDepth: bitDepth,
-			audioBitRate: metadata.audioQuality?.toBitRate(),
+			audioBitRate: audioQuality?.toBitRate(),
 			videoQuality: metadata.videoQuality,
 			duration: duration,
 			assetPosition: assetPosition,
@@ -311,23 +311,12 @@ extension PlayerItem: PlayerMonitoringDelegate {
 		playerItemMonitor?.playbackMetadataLoaded(playerItem: self)
 	}
 
-	func audioQualityChanged(asset: Asset?, to audioQuality: AudioQuality) {
+	func playbackMetadataChanged(asset: Asset?, to metadata: AssetPlaybackMetadata) {
 		guard asset === self.asset else {
 			return
 		}
 
-		guard var metadata = metadata else {
-			return
-		}
-
-		guard metadata.audioQuality != audioQuality else {
-			return
-		}
-
-		metadata.audioQuality = audioQuality
-		self.metadata = metadata
-
-		playerItemMonitor?.audioQualityChanged(playerItem: self, to: audioQuality)
+		playerItemMonitor?.playbackMetadataChanged(playerItem: self, to: metadata)
 	}
 }
 
@@ -340,18 +329,15 @@ extension PlayerItem: CustomStringConvertible {
 }
 
 private extension PlayerItem {
-	func obtainPlaybackContextBitDepthAndSampleRate(
+	func obtainPlaybackContextBitDepthSampleRateAndQuality(
 		pbiMetadata: Metadata,
 		playbackMetadata: AssetPlaybackMetadata?
-	) -> (Int?, Int?) {
-		// We will be using the backend data for now, same as the other platforms
+	) -> (Int?, Int?, AudioQuality?) {
 		var bitDepth: Int? = pbiMetadata.audioBitDepth
 		var sampleRate: Int? = pbiMetadata.audioSampleRate
+		var audioQuality: AudioQuality? = pbiMetadata.audioQuality
 
-		guard PlayerWorld.developmentFeatureFlagProvider.shouldReadAndVerifyPlaybackMetadata else {
-			return (bitDepth, sampleRate)
-		}
-
+		// If we have PBI metadata with sample rate and bit depth, use them
 		if let metadataSampleRate = pbiMetadata.audioSampleRate,
 		   let metadataBitDepth = pbiMetadata.audioBitDepth,
 		   let playbackMetadata
@@ -361,13 +347,16 @@ private extension PlayerItem {
 			assert(metadataBitDepth == playbackMetadata.bitDepth, "Bit-depth does not match!")
 			assert(metadataSampleRate == playbackMetadata.sampleRate, "Sample rate does not match!")
 		} else if let playbackMetadata {
-			// This could happen in the cases were we are playing an offlined track without the metadata stored
-			// or if the backend has not yet backfilled the data
+			// If PBI metadata doesn't have sample rate or bit depth, use playback metadata
 			bitDepth = playbackMetadata.bitDepth
 			sampleRate = playbackMetadata.sampleRate
+			// Try to derive audio quality from the format string in playback metadata
+			if let audioQualityFromFormat = AudioQuality(rawValue: playbackMetadata.formatString) {
+				audioQuality = audioQualityFromFormat
+			}
 		}
 
-		return (bitDepth, sampleRate)
+		return (bitDepth, sampleRate, audioQuality)
 	}
 
 	func emitStreamingMetrics() {

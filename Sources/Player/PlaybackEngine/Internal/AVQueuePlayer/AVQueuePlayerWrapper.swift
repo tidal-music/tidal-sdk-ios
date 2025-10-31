@@ -380,7 +380,7 @@ private extension AVQueuePlayerWrapper {
 			onCompletelyDownloaded: downloaded,
 			onReadyToPlayToPlay: loaded,
 			onItemPlayedToEnd: playedToEnd,
-			onAudioQualityChanged: { [weak self] item, newQuality in
+			onPlaybackMetadataChanged: { [weak self] item, metadata in
 				guard let self else {
 					return
 				}
@@ -389,18 +389,7 @@ private extension AVQueuePlayerWrapper {
 					return
 				}
 
-				self.delegates.audioQualityChanged(asset: asset, to: newQuality)
-			},
-			onFormatVariantChanged: { [weak self] item, formatVariant in
-				guard let self else {
-					return
-				}
-
-				guard let asset = self.playerItemAssets[item] else {
-					return
-				}
-
-				self.delegates.formatVariantChanged(asset: asset, variant: formatVariant)
+				self.delegates.playbackMetadataChanged(asset: asset, to: metadata)
 			}
 		)
 	}
