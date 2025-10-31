@@ -67,7 +67,7 @@ class FormatVariantMonitor: NSObject {
 
 		let previousFormat = lastReportedFormat?.formatString
 		lastReportedFormat = formatMetadata
-		let currentFormat = formatMetadata.formatString ?? "unknown"
+		let currentFormat = formatMetadata.formatString
 		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantChanged(from: previousFormat, to: currentFormat))
 
 		// Dispatch callback through configured queue with playerItem validation

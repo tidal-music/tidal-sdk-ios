@@ -316,6 +316,7 @@ extension PlayerItem: PlayerMonitoringDelegate {
 			return
 		}
 
+		self.asset?.setPlaybackMetadata(metadata)
 		playerItemMonitor?.playbackMetadataChanged(playerItem: self, to: metadata)
 	}
 }
@@ -337,26 +338,41 @@ private extension PlayerItem {
 		var sampleRate: Int? = pbiMetadata.audioSampleRate
 		var audioQuality: AudioQuality? = pbiMetadata.audioQuality
 
-		// If we have PBI metadata with sample rate and bit depth, use them
-		if let metadataSampleRate = pbiMetadata.audioSampleRate,
-		   let metadataBitDepth = pbiMetadata.audioBitDepth,
-		   let playbackMetadata
-		{
-			// We have the data from both places to compare so we can assert on DEBUG to verify it's always the same.
-			// With this info we can decide in the future if we should switch to the real data.
-			assert(metadataBitDepth == playbackMetadata.bitDepth, "Bit-depth does not match!")
-			assert(metadataSampleRate == playbackMetadata.sampleRate, "Sample rate does not match!")
-		} else if let playbackMetadata {
+		// If PBI metadata has complete sample rate and bit depth, it takes priority
+		if let _ = pbiMetadata.audioSampleRate,
+		   let _ = pbiMetadata.audioBitDepth {
+			// PBI metadata is complete, use it as-is
+			return (bitDepth, sampleRate, audioQuality)
+		}
+
+		// If PBI metadata is incomplete but playback metadata is available, use playback metadata
+		if let playbackMetadata {
 			// If PBI metadata doesn't have sample rate or bit depth, use playback metadata
 			bitDepth = playbackMetadata.bitDepth
 			sampleRate = playbackMetadata.sampleRate
 			// Try to derive audio quality from the format string in playback metadata
-			if let audioQualityFromFormat = AudioQuality(rawValue: playbackMetadata.formatString) {
-				audioQuality = audioQualityFromFormat
+			if let audioCodec = AudioCodec(rawValue: playbackMetadata.formatString),
+			   let qualityFromCodec = audioQualityFromCodec(audioCodec) {
+				audioQuality = qualityFromCodec
 			}
 		}
 
 		return (bitDepth, sampleRate, audioQuality)
+	}
+
+	private func audioQualityFromCodec(_ codec: AudioCodec) -> AudioQuality? {
+		switch codec {
+		case .HE_AAC_V1, .AAC_LC, .AAC:
+			.HIGH
+		case .FLAC, .ALAC:
+			.LOSSLESS
+		case .MQA:
+			.HI_RES
+		case .MHA1, .MHM1:
+			.HI_RES_LOSSLESS
+		default:
+			nil
+		}
 	}
 
 	func emitStreamingMetrics() {
@@ -366,7 +382,7 @@ private extension PlayerItem {
 			playerEventSender.send(StreamingSessionEnd(streamingSessionId: id, timestamp: now))
 		}
 
-		guard let metrics, let metadata else {
+		guard let metrics, let metadata, let playbackContext else {
 			return
 		}
 
@@ -399,7 +415,7 @@ private extension PlayerItem {
 			actualStreamType: metadata.streamType.rawValue,
 			actualAssetPresentation: metadata.assetPresentation.rawValue,
 			actualAudioMode: metadata.audioMode?.rawValue,
-			actualQuality: mediaProduct.productType.quality(given: metadata),
+			actualQuality: mediaProduct.productType.quality(given: playbackContext),
 			stalls: metrics.stalls,
 			startReason: playbackStartReason,
 			endReason: endInfo.reason.rawValue,

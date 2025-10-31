@@ -723,7 +723,9 @@ final class PlayerItemTests: XCTestCase {
 
 		let metadata = Metadata.mock(
 			productId: mediaProduct.productId,
-			audioQuality: .HIGH
+			audioQuality: .HIGH,
+			audioSampleRate: nil,
+			audioBitDepth: nil
 		)
 		playerItem.set(metadata)
 
