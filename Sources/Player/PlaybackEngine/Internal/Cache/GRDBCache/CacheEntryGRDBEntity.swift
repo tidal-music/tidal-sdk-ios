@@ -5,6 +5,21 @@ import GRDB
 
 extension CacheEntryType: DatabaseValueConvertible {}
 
+// MARK: - URL + DatabaseValueConvertible
+
+extension URL: DatabaseValueConvertible {
+	public var databaseValue: DatabaseValue {
+		absoluteString.databaseValue
+	}
+
+	public static func fromDatabaseValue(_ dbValue: DatabaseValue) -> Self? {
+		guard let string = String.fromDatabaseValue(dbValue) else {
+			return nil
+		}
+		return URL(string: string)
+	}
+}
+
 // MARK: - CacheEntryGRDBEntity
 
 struct CacheEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
