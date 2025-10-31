@@ -54,6 +54,16 @@ final class TidalAPIRetryHandler<T> {
 			return urlError.code == .timedOut
 		}
 
+		if let errorResponse = error as? ErrorResponse,
+		   case let .error(_, _, _, underlyingError) = errorResponse
+		{
+			return isTimeoutError(underlyingError)
+		}
+
+		if let underlyingError = underlyingError(from: error) {
+			return isTimeoutError(underlyingError)
+		}
+
 		return false
 	}
 
@@ -77,6 +87,28 @@ final class TidalAPIRetryHandler<T> {
 			return statusCode == -1 || statusCode == -2
 		}
 
+		if let errorResponse = error as? ErrorResponse,
+		   case let .error(_, _, _, underlyingError) = errorResponse
+		{
+			return isNetworkError(underlyingError)
+		}
+
+		if let underlyingError = underlyingError(from: error) {
+			return isNetworkError(underlyingError)
+		}
+
 		return false
+	}
+
+	private func underlyingError(from error: Error) -> Error? {
+		if let tidalError = error as? TidalError {
+			return tidalError.throwable
+		}
+
+		if let tidalAPIError = error as? TidalAPIError {
+			return tidalAPIError.underlyingError
+		}
+
+		return nil
 	}
 }
