@@ -1,7 +1,7 @@
 import Foundation
 
 /// Describes how to act when a http request fails due to retryable error.
-protocol BackoffPolicy {
+public protocol BackoffPolicy {
 	/// Implementations should return a delay to wait until the next attempt is performed.
 	/// - Important: Implementations should make sure that the value returned is strictly larger than 0. Doing otherwise may result
 	/// in
