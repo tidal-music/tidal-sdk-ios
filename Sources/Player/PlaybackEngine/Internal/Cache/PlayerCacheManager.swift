@@ -316,7 +316,7 @@ private extension PlayerCacheManager {
 	}
 
 	func currentDate() -> Date {
-		Date(timeIntervalSince1970: TimeInterval(timeProvider()))
+		Date(timeIntervalSince1970: TimeInterval(timeProvider()) / 1000.0)
 	}
 }
 

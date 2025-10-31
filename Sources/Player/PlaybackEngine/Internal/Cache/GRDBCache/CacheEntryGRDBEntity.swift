@@ -5,36 +5,6 @@ import GRDB
 
 extension CacheEntryType: DatabaseValueConvertible {}
 
-// MARK: - Date + DatabaseValueConvertible (Custom)
-
-extension Date: DatabaseValueConvertible {
-	public var databaseValue: DatabaseValue {
-		ISO8601DateFormatter().string(from: self).databaseValue
-	}
-
-	public static func fromDatabaseValue(_ dbValue: DatabaseValue) -> Self? {
-		guard let string = String.fromDatabaseValue(dbValue) else {
-			return nil
-		}
-
-		// Try ISO8601 format first
-		if let date = ISO8601DateFormatter().date(from: string) {
-			return date
-		}
-
-		// Try parsing as datetime (YYYY-MM-DD HH:MM:SS.mmm) - GRDB's default format
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-		if let date = dateFormatter.date(from: string) {
-			return date
-		}
-
-		// If parsing fails (corrupted date), use current date as fallback
-		// This prevents crashes when encountering invalid dates in the database
-		return Date()
-	}
-}
-
 // MARK: - CacheEntryGRDBEntity
 
 struct CacheEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
