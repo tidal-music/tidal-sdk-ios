@@ -19,9 +19,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiResourceDataDocument
      */
-	public static func albumsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil) async throws -> AlbumsMultiResourceDataDocument {
+	public static func albumsGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil) async throws -> AlbumsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId)
+			AlbumsAPI.albumsGetWithRequestBuilder(pageCursor: pageCursor, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId)
 		}
 	}
 

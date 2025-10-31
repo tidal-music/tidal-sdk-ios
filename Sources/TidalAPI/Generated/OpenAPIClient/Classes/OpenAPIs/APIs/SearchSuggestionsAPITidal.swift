@@ -19,9 +19,9 @@ public enum SearchSuggestionsAPITidal {
      
      - returns: SearchSuggestionsSingleResourceDataDocument
      */
-	public static func searchSuggestionsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
+	public static func searchSuggestionsIdGet(id: String, explicitFilter: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsIdGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include)
+			SearchSuggestionsAPI.searchSuggestionsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum SearchSuggestionsAPITidal {
      
      - returns: SearchSuggestionsMultiRelationshipDataDocument
      */
-	public static func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
+	public static func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: String? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor)
+			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 }

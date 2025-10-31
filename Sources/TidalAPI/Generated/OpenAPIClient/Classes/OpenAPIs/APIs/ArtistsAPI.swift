@@ -203,8 +203,8 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -223,12 +223,12 @@ internal class ArtistsAPI {
      Get biography relationship (\"to-one\").
      
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: biography (optional)
      - returns: ArtistsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsBiographyGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtistsSingleRelationshipDataDocument {
+    internal class func artistsIdRelationshipsBiographyGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ArtistsSingleRelationshipDataDocument {
         return try await artistsIdRelationshipsBiographyGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
     }
 
@@ -243,11 +243,11 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: biography (optional)
      - returns: RequestBuilder<ArtistsSingleRelationshipDataDocument> 
      */
-    internal class func artistsIdRelationshipsBiographyGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<ArtistsSingleRelationshipDataDocument> {
+    internal class func artistsIdRelationshipsBiographyGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsSingleRelationshipDataDocument> {
         var localVariablePath = "/artists/{id}/relationships/biography"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -257,7 +257,7 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -426,12 +426,12 @@ internal class ArtistsAPI {
      Add to following relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter artistFollowingRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String, artistFollowingRelationshipAddOperationPayload: ArtistFollowingRelationshipAddOperationPayload? = nil) async throws {
+    internal class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, artistFollowingRelationshipAddOperationPayload: ArtistFollowingRelationshipAddOperationPayload? = nil) async throws {
         return try await artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, artistFollowingRelationshipAddOperationPayload: artistFollowingRelationshipAddOperationPayload).execute().body
     }
 
@@ -443,11 +443,11 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter artistFollowingRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func artistsIdRelationshipsFollowingPostWithRequestBuilder(id: String, countryCode: String, artistFollowingRelationshipAddOperationPayload: ArtistFollowingRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistsIdRelationshipsFollowingPostWithRequestBuilder(id: String, countryCode: String? = nil, artistFollowingRelationshipAddOperationPayload: ArtistFollowingRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/artists/{id}/relationships/following"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -457,7 +457,7 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -525,13 +525,13 @@ internal class ArtistsAPI {
      Get profileArt relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: profileArt (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsProfileArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiRelationshipDataDocument {
+    internal class func artistsIdRelationshipsProfileArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsMultiRelationshipDataDocument {
         return try await artistsIdRelationshipsProfileArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -546,12 +546,12 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: profileArt (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ArtistsMultiRelationshipDataDocument> 
      */
-    internal class func artistsIdRelationshipsProfileArtGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ArtistsMultiRelationshipDataDocument> {
+    internal class func artistsIdRelationshipsProfileArtGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/artists/{id}/relationships/profileArt"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -561,7 +561,7 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
@@ -661,8 +661,8 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -770,8 +770,8 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -843,15 +843,15 @@ internal class ArtistsAPI {
      Get tracks relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter collapseBy: (query) Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items. 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: ArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsTracksGet(id: String, countryCode: String, collapseBy: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiRelationshipDataDocument {
-        return try await artistsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, collapseBy: collapseBy, pageCursor: pageCursor, include: include).execute().body
+    internal class func artistsIdRelationshipsTracksGet(id: String, collapseBy: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiRelationshipDataDocument {
+        return try await artistsIdRelationshipsTracksGetWithRequestBuilder(id: id, collapseBy: collapseBy, countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
     }
 
     /**
@@ -865,13 +865,13 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter collapseBy: (query) Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items. 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: RequestBuilder<ArtistsMultiRelationshipDataDocument> 
      */
-    internal class func artistsIdRelationshipsTracksGetWithRequestBuilder(id: String, countryCode: String, collapseBy: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsMultiRelationshipDataDocument> {
+    internal class func artistsIdRelationshipsTracksGetWithRequestBuilder(id: String, collapseBy: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/artists/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -881,9 +881,9 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "collapseBy": (wrappedValue: collapseBy.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -938,8 +938,8 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 

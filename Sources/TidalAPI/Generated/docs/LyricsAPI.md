@@ -221,7 +221,7 @@ Void (empty response body)
 
 # **lyricsIdRelationshipsOwnersGet**
 ```swift
-    open class func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: LyricsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: LyricsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -234,7 +234,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -256,7 +256,7 @@ LyricsAPI.lyricsIdRelationshipsOwnersGet(id: id, countryCode: countryCode, inclu
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -277,7 +277,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdRelationshipsTrackGet**
 ```swift
-    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: LyricsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: LyricsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get track relationship (\"to-one\").
@@ -290,7 +290,7 @@ Retrieves track relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: track (optional)
 
 // Get track relationship (\"to-one\").
@@ -311,7 +311,7 @@ LyricsAPI.lyricsIdRelationshipsTrackGet(id: id, countryCode: countryCode, includ
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: track | [optional] 
 
 ### Return type

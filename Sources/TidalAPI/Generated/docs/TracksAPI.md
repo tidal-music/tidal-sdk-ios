@@ -25,7 +25,7 @@ Method | HTTP request | Description
 
 # **tracksGet**
 ```swift
-    open class func tracksGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple tracks.
@@ -37,15 +37,15 @@ Retrieves multiple tracks by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 let filterId = ["inner_example"] // [String] | A Tidal catalogue ID (optional)
 
 // Get multiple tracks.
-TracksAPI.tracksGet(countryCode: countryCode, pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterIsrc: filterIsrc, filterId: filterId) { (response, error) in
+TracksAPI.tracksGet(pageCursor: pageCursor, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterIsrc: filterIsrc, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -61,8 +61,8 @@ TracksAPI.tracksGet(countryCode: countryCode, pageCursor: pageCursor, include: i
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
  **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
@@ -135,7 +135,7 @@ Void (empty response body)
 
 # **tracksIdGet**
 ```swift
-    open class func tracksIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single track.
@@ -148,7 +148,7 @@ Retrieves single track by id.
 import OpenAPIClient
 
 let id = "id_example" // String | A Tidal catalogue ID
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
 
 // Get single track.
@@ -169,7 +169,7 @@ TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include) { (res
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | A Tidal catalogue ID | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics | [optional] 
 
 ### Return type

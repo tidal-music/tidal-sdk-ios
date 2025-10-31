@@ -31,7 +31,7 @@ public enum ArtistClaimsAPITidal {
      
      - returns: 
      */
-	public static func artistClaimsIdPatch(id: String, countryCode: String, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws {
+	public static func artistClaimsIdPatch(id: String, countryCode: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
 			ArtistClaimsAPI.artistClaimsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload)
 		}
@@ -91,7 +91,7 @@ public enum ArtistClaimsAPITidal {
      
      - returns: ArtistClaimsSingleResourceDataDocument
      */
-	public static func artistClaimsPost(countryCode: String, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
+	public static func artistClaimsPost(countryCode: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistClaimsAPI.artistClaimsPostWithRequestBuilder(countryCode: countryCode, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload)
 		}

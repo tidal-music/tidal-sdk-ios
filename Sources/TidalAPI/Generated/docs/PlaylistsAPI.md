@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 # **playlistsGet**
 ```swift
-    open class func playlistsGet(countryCode: String, pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsGet(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple playlists.
@@ -32,15 +32,15 @@ Retrieves multiple playlists by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 let filterId = ["inner_example"] // [String] | Playlist id (optional)
 
 // Get multiple playlists.
-PlaylistsAPI.playlistsGet(countryCode: countryCode, pageCursor: pageCursor, sort: sort, include: include, filterOwnersId: filterOwnersId, filterId: filterId) { (response, error) in
+PlaylistsAPI.playlistsGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -56,9 +56,9 @@ PlaylistsAPI.playlistsGet(countryCode: countryCode, pageCursor: pageCursor, sort
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
  **filterId** | [**[String]**](String.md) | Playlist id | [optional] 
@@ -130,7 +130,7 @@ Void (empty response body)
 
 # **playlistsIdGet**
 ```swift
-    open class func playlistsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: PlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: PlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single playlist.
@@ -143,7 +143,7 @@ Retrieves single playlist by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
 
 // Get single playlist.
@@ -164,7 +164,7 @@ PlaylistsAPI.playlistsIdGet(id: id, countryCode: countryCode, include: include) 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners | [optional] 
 
 ### Return type
@@ -184,7 +184,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdPatch**
 ```swift
-    open class func playlistsIdPatch(id: String, countryCode: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdPatch(id: String, countryCode: String? = nil, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single playlist.
@@ -197,7 +197,7 @@ Updates existing playlist.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let playlistUpdateOperationPayload = PlaylistUpdateOperation_Payload(data: PlaylistUpdateOperation_Payload_Data(attributes: PlaylistUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), id: "id_example", type: "type_example")) // PlaylistUpdateOperationPayload |  (optional)
 
 // Update single playlist.
@@ -218,7 +218,7 @@ PlaylistsAPI.playlistsIdPatch(id: id, countryCode: countryCode, playlistUpdateOp
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **playlistUpdateOperationPayload** | [**PlaylistUpdateOperationPayload**](PlaylistUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -238,7 +238,7 @@ Void (empty response body)
 
 # **playlistsIdRelationshipsCoverArtGet**
 ```swift
-    open class func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get coverArt relationship (\"to-many\").
@@ -251,7 +251,7 @@ Retrieves coverArt relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: coverArt (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -273,7 +273,7 @@ PlaylistsAPI.playlistsIdRelationshipsCoverArtGet(id: id, countryCode: countryCod
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: coverArt | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -398,7 +398,7 @@ Void (empty response body)
 
 # **playlistsIdRelationshipsItemsGet**
 ```swift
-    open class func playlistsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: PlaylistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: PlaylistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -411,12 +411,12 @@ Retrieves items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
 
 // Get items relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -433,8 +433,8 @@ PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, countryCode: countryCode, 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
 
 ### Return type
@@ -506,7 +506,7 @@ Void (empty response body)
 
 # **playlistsIdRelationshipsItemsPost**
 ```swift
-    open class func playlistsIdRelationshipsItemsPost(id: String, countryCode: String, playlistItemsRelationshipAddOperationPayload: PlaylistItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, playlistItemsRelationshipAddOperationPayload: PlaylistItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -519,7 +519,7 @@ Adds item(s) to items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let playlistItemsRelationshipAddOperationPayload = PlaylistItemsRelationshipAddOperation_Payload(data: [PlaylistItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlaylistItemsRelationshipAddOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
@@ -540,7 +540,7 @@ PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, countryCode: countryCode,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **playlistItemsRelationshipAddOperationPayload** | [**PlaylistItemsRelationshipAddOperationPayload**](PlaylistItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -560,7 +560,7 @@ Void (empty response body)
 
 # **playlistsIdRelationshipsOwnersGet**
 ```swift
-    open class func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -573,7 +573,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -595,7 +595,7 @@ PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, countryCode: countryCode,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -616,7 +616,7 @@ Name | Type | Description  | Notes
 
 # **playlistsPost**
 ```swift
-    open class func playlistsPost(countryCode: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil, completion: @escaping (_ data: PlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsPost(countryCode: String? = nil, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil, completion: @escaping (_ data: PlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single playlist.
@@ -628,7 +628,7 @@ Creates a new playlist.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let playlistCreateOperationPayload = PlaylistCreateOperation_Payload(data: PlaylistCreateOperation_Payload_Data(attributes: PlaylistCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), type: "type_example")) // PlaylistCreateOperationPayload |  (optional)
 
 // Create single playlist.
@@ -648,7 +648,7 @@ PlaylistsAPI.playlistsPost(countryCode: countryCode, playlistCreateOperationPayl
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **playlistCreateOperationPayload** | [**PlaylistCreateOperationPayload**](PlaylistCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
