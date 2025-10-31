@@ -5,6 +5,41 @@ import GRDB
 
 extension CacheEntryType: DatabaseValueConvertible {}
 
+// MARK: - Date + DatabaseValueConvertible (Graceful Fallback)
+
+extension Date: DatabaseValueConvertible {
+	public var databaseValue: DatabaseValue {
+		// Use GRDB's default format for new entries
+		let formatter = DateFormatter()
+		formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+		formatter.timeZone = TimeZone(abbreviation: "UTC")
+		return formatter.string(from: self).databaseValue
+	}
+
+	public static func fromDatabaseValue(_ dbValue: DatabaseValue) -> Self? {
+		guard let string = String.fromDatabaseValue(dbValue) else {
+			return nil
+		}
+
+		// Try ISO8601 format first (for future use)
+		if let date = ISO8601DateFormatter().date(from: string) {
+			return date
+		}
+
+		// Try GRDB's standard datetime format
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+		dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+		if let date = dateFormatter.date(from: string) {
+			return date
+		}
+
+		// Graceful fallback: corrupted dates (like year 57803) get replaced with current date
+		// This allows the app to recover from buggy entries stored before the fix
+		return Date()
+	}
+}
+
 // MARK: - CacheEntryGRDBEntity
 
 struct CacheEntryGRDBEntity: Codable, FetchableRecord, PersistableRecord {
