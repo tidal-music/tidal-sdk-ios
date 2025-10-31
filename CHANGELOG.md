@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Moved retry infrastructure (backoff policies and error managers) from Player to Common module for shared use across modules (Common)
+
 ## [0.8.0] - 2025-10-23
 
 ### Added
