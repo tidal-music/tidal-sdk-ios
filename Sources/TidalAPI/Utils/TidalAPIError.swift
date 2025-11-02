@@ -10,6 +10,7 @@ public struct TidalAPIError: LocalizedError, Equatable {
 	public let url: String
 	public var statusCode: Int?
 	public var subStatus: Int?
+	public var errorObject: ErrorObject?
 	public var type: ErrorType
 
 	public init(
@@ -20,6 +21,7 @@ public struct TidalAPIError: LocalizedError, Equatable {
 		url: String,
 		statusCode: Int? = nil,
 		subStatus: Int? = nil,
+		errorObject: ErrorObject? = nil,
 		type: ErrorType = .unknown
 	) {
 		self.fileID = String(describing: fileID)
@@ -29,6 +31,7 @@ public struct TidalAPIError: LocalizedError, Equatable {
 		self.url = url
 		self.statusCode = statusCode
 		self.subStatus = subStatus
+		self.errorObject = errorObject
 		self.type = type
 	}
 
@@ -50,6 +53,7 @@ extension TidalAPIError {
 		url: String,
 		statusCode: Int? = nil,
 		subStatus: Int? = nil,
+		errorObject: ErrorObject? = nil,
 		type: ErrorType = .unknown
 	) {
 		var errorMessage = ""
@@ -62,6 +66,7 @@ extension TidalAPIError {
 			url: url,
 			statusCode: statusCode,
 			subStatus: subStatus,
+			errorObject: errorObject,
 			type: type
 		)
 	}
