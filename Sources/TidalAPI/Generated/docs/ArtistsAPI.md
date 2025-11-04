@@ -899,7 +899,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsTracksGet**
 ```swift
-    open class func artistsIdRelationshipsTracksGet(id: String, collapseBy: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsTracksGet(id: String, collapseBy: CollapseBy_artistsIdRelationshipsTracksGet, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get tracks relationship (\"to-many\").

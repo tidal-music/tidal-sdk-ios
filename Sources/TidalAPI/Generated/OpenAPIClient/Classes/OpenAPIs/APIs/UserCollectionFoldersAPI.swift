@@ -193,12 +193,13 @@ internal class UserCollectionFoldersAPI {
     /**
      Delete from items relationship (\"to-many\").
      
+     - parameter id: (path) Folder Id 
      - parameter removePayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdRelationshipsItemsDelete(removePayload: RemovePayload? = nil) async throws {
-        return try await userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(removePayload: removePayload).execute().body
+    internal class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, removePayload: RemovePayload? = nil) async throws {
+        return try await userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, removePayload: removePayload).execute().body
     }
 
     /**
@@ -208,11 +209,15 @@ internal class UserCollectionFoldersAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter id: (path) Folder Id 
      - parameter removePayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(removePayload: RemovePayload? = nil) -> RequestBuilder<Void> {
-        let localVariablePath = "/userCollectionFolders/{id}/relationships/items"
+    internal class func userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: String, removePayload: RemovePayload? = nil) -> RequestBuilder<Void> {
+        var localVariablePath = "/userCollectionFolders/{id}/relationships/items"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: removePayload)
 

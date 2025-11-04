@@ -840,6 +840,14 @@ internal class ArtistsAPI {
     }
 
     /**
+     * enum for parameter collapseBy
+     */
+    public enum CollapseBy_artistsIdRelationshipsTracksGet: String, CaseIterable {
+        case fingerprint = "FINGERPRINT"
+        case _none = "NONE"
+    }
+
+    /**
      Get tracks relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
@@ -850,7 +858,7 @@ internal class ArtistsAPI {
      - returns: ArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsTracksGet(id: String, collapseBy: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiRelationshipDataDocument {
+    internal class func artistsIdRelationshipsTracksGet(id: String, collapseBy: CollapseBy_artistsIdRelationshipsTracksGet, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiRelationshipDataDocument {
         return try await artistsIdRelationshipsTracksGetWithRequestBuilder(id: id, collapseBy: collapseBy, countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
     }
 
@@ -871,7 +879,7 @@ internal class ArtistsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: RequestBuilder<ArtistsMultiRelationshipDataDocument> 
      */
-    internal class func artistsIdRelationshipsTracksGetWithRequestBuilder(id: String, collapseBy: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsMultiRelationshipDataDocument> {
+    internal class func artistsIdRelationshipsTracksGetWithRequestBuilder(id: String, collapseBy: CollapseBy_artistsIdRelationshipsTracksGet, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/artists/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""

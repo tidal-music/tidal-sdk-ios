@@ -67,9 +67,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: 
      */
-	public static func userCollectionFoldersIdRelationshipsItemsDelete(removePayload: RemovePayload? = nil) async throws {
+	public static func userCollectionFoldersIdRelationshipsItemsDelete(id: String, removePayload: RemovePayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(removePayload: removePayload)
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, removePayload: removePayload)
 		}
 	}
 

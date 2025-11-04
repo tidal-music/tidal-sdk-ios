@@ -169,6 +169,19 @@ public enum UserCollectionsAPITidal {
 
 
 	/**
+	 * enum for parameter collectionView
+	 */
+	public enum CollectionView_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
+		case folders = "FOLDERS"
+
+		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.CollectionView_userCollectionsIdRelationshipsPlaylistsGet {
+			switch self {
+			case .folders: return .folders
+			}
+		}
+	}
+
+	/**
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
@@ -196,9 +209,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: UserCollectionsPlaylistsMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsPlaylistsGet(id: String, collectionView: String? = nil, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
+	public static func userCollectionsIdRelationshipsPlaylistsGet(id: String, collectionView: UserCollectionsAPITidal.CollectionView_userCollectionsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, collectionView: collectionView, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, include: include)
+			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, collectionView: collectionView?.toUserCollectionsAPIEnum(), pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, include: include)
 		}
 	}
 

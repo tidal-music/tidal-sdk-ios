@@ -223,7 +223,7 @@ Void (empty response body)
 
 # **userCollectionFoldersIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsDelete(removePayload: RemovePayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, removePayload: RemovePayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -235,10 +235,11 @@ Deletes item(s) from items relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let id = "" // String | Folder Id
 let removePayload = RemovePayload(data: [_Data(id: "id_example", resourceType: "resourceType_example")]) // RemovePayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(removePayload: removePayload) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id, removePayload: removePayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -254,6 +255,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(removeP
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **id** | **String** | Folder Id | 
  **removePayload** | [**RemovePayload**](RemovePayload.md) |  | [optional] 
 
 ### Return type

@@ -207,13 +207,28 @@ public enum ArtistsAPITidal {
 
 
 	/**
+	 * enum for parameter collapseBy
+	 */
+	public enum CollapseBy_artistsIdRelationshipsTracksGet: String, CaseIterable {
+		case fingerprint = "FINGERPRINT"
+		case _none = "NONE"
+
+		func toArtistsAPIEnum() -> ArtistsAPI.CollapseBy_artistsIdRelationshipsTracksGet {
+			switch self {
+			case .fingerprint: return .fingerprint
+			case ._none: return ._none
+			}
+		}
+	}
+
+	/**
      Get tracks relationship (\&quot;to-many\&quot;).
      
      - returns: ArtistsMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsTracksGet(id: String, collapseBy: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsTracksGet(id: String, collapseBy: ArtistsAPITidal.CollapseBy_artistsIdRelationshipsTracksGet, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsTracksGetWithRequestBuilder(id: id, collapseBy: collapseBy, countryCode: countryCode, pageCursor: pageCursor, include: include)
+			ArtistsAPI.artistsIdRelationshipsTracksGetWithRequestBuilder(id: id, collapseBy: collapseBy.toArtistsAPIEnum(), countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 
