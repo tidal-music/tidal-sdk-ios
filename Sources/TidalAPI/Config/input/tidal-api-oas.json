@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.99"
+    "version" : "0.1.89"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -59,8 +59,6 @@
   }, {
     "name" : "tracks"
   }, {
-    "name" : "userCollectionFolders"
-  }, {
     "name" : "userCollections"
   }, {
     "name" : "userEntitlements"
@@ -78,18 +76,19 @@
       "get" : {
         "description" : "Retrieves multiple albums by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
           "required" : false,
           "schema" : {
             "type" : "string"
@@ -436,19 +435,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -524,19 +523,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -665,19 +664,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -753,19 +752,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -825,59 +824,6 @@
         "tags" : [ "albums" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
-        }
-      },
-      "patch" : {
-        "description" : "Updates items relationship.",
-        "parameters" : [ {
-          "description" : "Album id",
-          "example" : "251380836",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/vnd.api+json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/AlbumItemsRelationshipUpdateOperation_Payload"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "w_usr" ]
-        } ],
-        "summary" : "Update items relationship (\"to-many\").",
-        "tags" : [ "albums" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -1059,19 +1005,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -1492,9 +1438,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -1633,9 +1580,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -2381,19 +2329,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -2473,9 +2421,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: biography",
@@ -2772,9 +2721,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -2913,9 +2863,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: profileArt",
@@ -3050,19 +3001,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -3217,19 +3168,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -3384,29 +3335,28 @@
             "type" : "string"
           }
         }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
           "description" : "Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items.",
           "example" : "FINGERPRINT",
           "in" : "query",
           "name" : "collapseBy",
           "required" : true,
           "schema" : {
-            "type" : "string",
-            "enum" : [ "FINGERPRINT", "NONE" ]
+            "type" : "string"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
           "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : true,
           "schema" : {
             "type" : "string"
           }
@@ -3482,19 +3432,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -4294,9 +4244,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
@@ -4380,9 +4331,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: track",
@@ -5260,6 +5212,16 @@
       "get" : {
         "description" : "Retrieves multiple playlists by available filters, or without if applicable.",
         "parameters" : [ {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
@@ -5277,19 +5239,10 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "default" : "-createdAt",
+              "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners",
@@ -5382,9 +5335,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -5500,9 +5454,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners",
@@ -5578,9 +5533,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -5642,9 +5598,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: coverArt",
@@ -5832,18 +5789,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
           "required" : false,
           "schema" : {
             "type" : "string"
@@ -5975,9 +5933,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -6039,9 +5998,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
@@ -6910,6 +6870,16 @@
             "type" : "string"
           }
         }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
           "description" : "Explicit filter",
           "example" : "INCLUDE/EXCLUDE",
           "in" : "query",
@@ -6917,17 +6887,7 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
             "default" : "INCLUDE"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: directHits",
@@ -6999,6 +6959,16 @@
             "type" : "string"
           }
         }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
           "description" : "Explicit filter",
           "example" : "INCLUDE/EXCLUDE",
           "in" : "query",
@@ -7006,17 +6976,7 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
             "default" : "INCLUDE"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: directHits",
@@ -7469,19 +7429,14 @@
           "name" : "formats",
           "required" : true,
           "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "enum" : [ "HEAACV1", "AACLC", "FLAC", "FLAC_HIRES", "EAC3_JOC" ]
-            }
+            "type" : "string"
           }
         }, {
           "in" : "query",
           "name" : "usage",
           "required" : true,
           "schema" : {
-            "type" : "string",
-            "enum" : [ "PLAYBACK", "DOWNLOAD" ]
+            "type" : "string"
           }
         } ],
         "responses" : {
@@ -7544,42 +7499,35 @@
           "name" : "manifestType",
           "required" : true,
           "schema" : {
-            "type" : "string",
-            "enum" : [ "HLS", "MPEG_DASH" ]
+            "type" : "string"
           }
         }, {
           "in" : "query",
           "name" : "formats",
           "required" : true,
           "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "enum" : [ "HEAACV1", "AACLC", "FLAC", "FLAC_HIRES", "EAC3_JOC" ]
-            }
+            "type" : "string"
           }
         }, {
           "in" : "query",
           "name" : "uriScheme",
           "required" : true,
           "schema" : {
-            "type" : "string",
-            "enum" : [ "HTTPS", "DATA" ]
+            "type" : "string"
           }
         }, {
           "in" : "query",
           "name" : "usage",
           "required" : true,
           "schema" : {
-            "type" : "string",
-            "enum" : [ "PLAYBACK", "DOWNLOAD" ]
+            "type" : "string"
           }
         }, {
           "in" : "query",
           "name" : "adaptive",
           "required" : true,
           "schema" : {
-            "type" : "boolean"
+            "type" : "string"
           }
         } ],
         "responses" : {
@@ -8123,18 +8071,19 @@
       "get" : {
         "description" : "Retrieves multiple tracks by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
           "required" : false,
           "schema" : {
             "type" : "string"
@@ -8352,9 +8301,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics",
@@ -8554,59 +8504,6 @@
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
         }
-      },
-      "patch" : {
-        "description" : "Updates albums relationship.",
-        "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
-          "example" : "75413016",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/vnd.api+json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/TrackAlbumsRelationshipUpdateOperation_Payload"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "w_usr" ]
-        } ],
-        "summary" : "Update albums relationship (\"to-many\").",
-        "tags" : [ "tracks" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
       }
     },
     "/tracks/{id}/relationships/artists" : {
@@ -8622,19 +8519,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -9198,19 +9095,19 @@
             "type" : "string"
           }
         }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -9413,574 +9310,6 @@
         }
       }
     },
-    "/userCollectionFolders" : {
-      "get" : {
-        "description" : "Retrieves multiple userCollectionFolders by available filters, or without if applicable.",
-        "parameters" : [ {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: items, owners",
-          "example" : "items",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "items"
-            }
-          }
-        }, {
-          "description" : "Folder Id",
-          "example" : "",
-          "in" : "query",
-          "name" : "filter[id]",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : ""
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserCollectionFolders_Multi_Resource_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
-        } ],
-        "summary" : "Get multiple userCollectionFolders.",
-        "tags" : [ "userCollectionFolders" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      },
-      "post" : {
-        "description" : "Creates a new userCollectionFolder.",
-        "parameters" : [ ],
-        "requestBody" : {
-          "content" : {
-            "application/vnd.api+json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/FolderCreateOperation_Payload"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "201" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserCollectionFolders_Single_Resource_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
-        } ],
-        "summary" : "Create single userCollectionFolder.",
-        "tags" : [ "userCollectionFolders" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      }
-    },
-    "/userCollectionFolders/{id}" : {
-      "delete" : {
-        "description" : "Deletes existing userCollectionFolder.",
-        "parameters" : [ {
-          "description" : "Folder Id",
-          "example" : "",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
-        } ],
-        "summary" : "Delete single userCollectionFolder.",
-        "tags" : [ "userCollectionFolders" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      },
-      "get" : {
-        "description" : "Retrieves single userCollectionFolder by id.",
-        "parameters" : [ {
-          "description" : "Folder Id",
-          "example" : "",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: items, owners",
-          "example" : "items",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "items"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserCollectionFolders_Single_Resource_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
-        } ],
-        "summary" : "Get single userCollectionFolder.",
-        "tags" : [ "userCollectionFolders" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      },
-      "patch" : {
-        "description" : "Updates existing userCollectionFolder.",
-        "parameters" : [ {
-          "description" : "Folder Id",
-          "example" : "",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/vnd.api+json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/FolderUpdateOperation_Payload"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
-        } ],
-        "summary" : "Update single userCollectionFolder.",
-        "tags" : [ "userCollectionFolders" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      }
-    },
-    "/userCollectionFolders/{id}/relationships/items" : {
-      "delete" : {
-        "description" : "Deletes item(s) from items relationship.",
-        "parameters" : [ {
-          "description" : "Folder Id",
-          "example" : "",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/vnd.api+json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/RemovePayload"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
-        } ],
-        "summary" : "Delete from items relationship (\"to-many\").",
-        "tags" : [ "userCollectionFolders" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      },
-      "get" : {
-        "description" : "Retrieves items relationship.",
-        "parameters" : [ {
-          "description" : "Folder Id",
-          "example" : "",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending.",
-          "in" : "query",
-          "name" : "sort",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "items.addedAt",
-              "enum" : [ "items.addedAt", "-items.addedAt", "items.lastModifiedAt", "-items.lastModifiedAt", "items.name", "-items.name" ],
-              "default" : "items.addedAt",
-              "x-enum-varnames" : [ "ItemsAddedAtAsc", "ItemsAddedAtDesc", "ItemsLastModifiedAtAsc", "ItemsLastModifiedAtDesc", "ItemsNameAsc", "ItemsNameDesc" ]
-            }
-          }
-        }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: items",
-          "example" : "items",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "items"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserCollectionFolders_Items_Multi_Relationship_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
-        } ],
-        "summary" : "Get items relationship (\"to-many\").",
-        "tags" : [ "userCollectionFolders" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      },
-      "post" : {
-        "description" : "Adds item(s) to items relationship.",
-        "parameters" : [ {
-          "description" : "Folder Id",
-          "example" : "",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/vnd.api+json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/AddPayload"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
-        } ],
-        "summary" : "Add to items relationship (\"to-many\").",
-        "tags" : [ "userCollectionFolders" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      }
-    },
-    "/userCollectionFolders/{id}/relationships/owners" : {
-      "get" : {
-        "description" : "Retrieves owners relationship.",
-        "parameters" : [ {
-          "description" : "Folder Id",
-          "example" : "",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
-          "example" : "owners",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "owners"
-            }
-          }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserCollectionFolders_Multi_Relationship_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Bad_Request_Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Not_Found_Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Not_Acceptable_Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Too_Many_Requests_Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Internal_Server_Error_Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
-        } ],
-        "summary" : "Get owners relationship (\"to-many\").",
-        "tags" : [ "userCollectionFolders" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
-        }
-      }
-    },
     "/userCollections/{id}" : {
       "get" : {
         "description" : "Retrieves single userCollection by id.",
@@ -10008,9 +9337,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos",
@@ -10135,6 +9465,16 @@
             "type" : "string"
           }
         }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
           "description" : "BCP 47 locale",
           "example" : "en-US",
           "in" : "query",
@@ -10162,19 +9502,10 @@
             "items" : {
               "type" : "string",
               "example" : "albums.addedAt",
-              "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
               "default" : "-albums.addedAt",
+              "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
               "x-enum-varnames" : [ "AlbumsAddedAtAsc", "AlbumsAddedAtDesc", "AlbumsArtistsNameAsc", "AlbumsArtistsNameDesc", "AlbumsReleaseDateAsc", "AlbumsReleaseDateDesc", "AlbumsTitleAsc", "AlbumsTitleDesc" ]
             }
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: albums",
@@ -10248,9 +9579,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -10361,6 +9693,16 @@
             "type" : "string"
           }
         }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
           "description" : "BCP 47 locale",
           "example" : "en-US",
           "in" : "query",
@@ -10388,19 +9730,10 @@
             "items" : {
               "type" : "string",
               "example" : "artists.addedAt",
-              "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
               "default" : "-artists.addedAt",
+              "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
               "x-enum-varnames" : [ "ArtistsAddedAtAsc", "ArtistsAddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc" ]
             }
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: artists",
@@ -10474,9 +9807,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -10664,14 +9998,6 @@
             "type" : "string"
           }
         }, {
-          "in" : "query",
-          "name" : "collectionView",
-          "required" : false,
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "FOLDERS" ]
-          }
-        }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
@@ -10689,8 +10015,8 @@
             "items" : {
               "type" : "string",
               "example" : "playlists.addedAt",
-              "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
               "default" : "-playlists.addedAt",
+              "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
               "x-enum-varnames" : [ "PlaylistsAddedAtAsc", "PlaylistsAddedAtDesc", "PlaylistsLastUpdatedAtAsc", "PlaylistsLastUpdatedAtDesc", "PlaylistsNameAsc", "PlaylistsNameDesc" ]
             }
           }
@@ -10870,6 +10196,16 @@
             "type" : "string"
           }
         }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
           "description" : "BCP 47 locale",
           "example" : "en-US",
           "in" : "query",
@@ -10897,19 +10233,10 @@
             "items" : {
               "type" : "string",
               "example" : "tracks.addedAt",
-              "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
               "default" : "-tracks.addedAt",
+              "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
               "x-enum-varnames" : [ "TracksAddedAtAsc", "TracksAddedAtDesc", "TracksAlbumsTitleAsc", "TracksAlbumsTitleDesc", "TracksArtistsNameAsc", "TracksArtistsNameDesc", "TracksDurationAsc", "TracksDurationDesc", "TracksTitleAsc", "TracksTitleDesc" ]
             }
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: tracks",
@@ -10983,9 +10310,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -11096,6 +10424,16 @@
             "type" : "string"
           }
         }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "US"
+          }
+        }, {
           "description" : "BCP 47 locale",
           "example" : "en-US",
           "in" : "query",
@@ -11123,19 +10461,10 @@
             "items" : {
               "type" : "string",
               "example" : "videos.addedAt",
-              "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
               "default" : "-videos.addedAt",
+              "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
               "x-enum-varnames" : [ "VideosAddedAtAsc", "VideosAddedAtDesc", "VideosArtistsNameAsc", "VideosArtistsNameDesc", "VideosDurationAsc", "VideosDurationDesc", "VideosTitleAsc", "VideosTitleDesc" ]
             }
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: videos",
@@ -11209,9 +10538,10 @@
           "example" : "US",
           "in" : "query",
           "name" : "countryCode",
-          "required" : false,
+          "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "US"
           }
         } ],
         "requestBody" : {
@@ -12399,19 +11729,6 @@
       }
     },
     "schemas" : {
-      "AddPayload" : {
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 10,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Data"
-            }
-          }
-        }
-      },
       "AlbumCoverArtRelationshipUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -12557,47 +11874,6 @@
           }
         }
       },
-      "AlbumItemsRelationshipUpdateOperation_Payload" : {
-        "required" : [ "data", "meta" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 1,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/AlbumItemsRelationshipUpdateOperation_Payload_Data"
-            }
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/AlbumItemsRelationshipUpdateOperation_Payload_Meta"
-          }
-        }
-      },
-      "AlbumItemsRelationshipUpdateOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "tracks", "videos" ]
-          }
-        }
-      },
-      "AlbumItemsRelationshipUpdateOperation_Payload_Meta" : {
-        "required" : [ "positionIndex" ],
-        "type" : "object",
-        "properties" : {
-          "positionIndex" : {
-            "type" : "integer",
-            "description" : "1-based index",
-            "format" : "int32"
-          }
-        }
-      },
       "AlbumUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -12686,12 +11962,6 @@
         "required" : [ "barcodeId", "duration", "explicit", "mediaTags", "numberOfItems", "numberOfVolumes", "popularity", "title", "type" ],
         "type" : "object",
         "properties" : {
-          "accessType" : {
-            "type" : "string",
-            "description" : "Access type",
-            "example" : "PRIVATE",
-            "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
-          },
           "availability" : {
             "type" : "array",
             "description" : "Available usage for this album",
@@ -14235,19 +13505,6 @@
           }
         }
       },
-      "Attributes" : {
-        "required" : [ "collectionType", "name" ],
-        "type" : "object",
-        "properties" : {
-          "collectionType" : {
-            "type" : "string",
-            "enum" : [ "PLAYLISTS" ]
-          },
-          "name" : {
-            "type" : "string"
-          }
-        }
-      },
       "AudioNormalizationData" : {
         "type" : "object",
         "properties" : {
@@ -14285,18 +13542,6 @@
           }
         },
         "description" : "Copyright information"
-      },
-      "Data" : {
-        "required" : [ "id", "resourceType" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "resourceType" : {
-            "type" : "string"
-          }
-        }
       },
       "DrmData" : {
         "type" : "object",
@@ -14458,53 +13703,6 @@
         },
         "description" : "metadata for upload link"
       },
-      "FolderCreateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/FolderCreateOperation_Payload_Data"
-          }
-        }
-      },
-      "FolderCreateOperation_Payload_Data" : {
-        "required" : [ "attributes", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Attributes"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "userCollectionFolders" ]
-          }
-        }
-      },
-      "FolderUpdateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/FolderUpdateOperation_Payload_Data"
-          }
-        }
-      },
-      "FolderUpdateOperation_Payload_Data" : {
-        "required" : [ "attributes", "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Attributes"
-          },
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "userCollectionFolders" ]
-          }
-        }
-      },
       "Genres_Attributes" : {
         "required" : [ "genreName" ],
         "type" : "object",
@@ -14594,7 +13792,6 @@
               "trackSourceFiles" : "#/components/schemas/TrackSourceFiles_Resource_Object",
               "trackStatistics" : "#/components/schemas/TrackStatistics_Resource_Object",
               "tracks" : "#/components/schemas/Tracks_Resource_Object",
-              "userCollectionFolders" : "#/components/schemas/UserCollectionFolders_Resource_Object",
               "userCollections" : "#/components/schemas/UserCollections_Resource_Object",
               "userEntitlements" : "#/components/schemas/UserEntitlements_Resource_Object",
               "userRecommendations" : "#/components/schemas/UserRecommendations_Resource_Object",
@@ -14644,8 +13841,6 @@
             "$ref" : "#/components/schemas/TrackStatistics_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/Tracks_Resource_Object"
-          }, {
-            "$ref" : "#/components/schemas/UserCollectionFolders_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/UserCollections_Resource_Object"
           }, {
@@ -14772,10 +13967,6 @@
           }
         },
         "discriminator" : {
-          "mapping" : {
-            "THIRD_PARTY" : "#/components/schemas/ThirdPartyLyricsProvider",
-            "TIDAL" : "#/components/schemas/TidalLyricsProvider"
-          },
           "propertyName" : "source"
         }
       },
@@ -14805,11 +13996,9 @@
         }
       },
       "LyricsUpdateOperation_Payload_Data_Attributes" : {
+        "required" : [ "text" ],
         "type" : "object",
         "properties" : {
-          "lrcText" : {
-            "type" : "string"
-          },
           "text" : {
             "maxLength" : 10000,
             "minLength" : 0,
@@ -14830,9 +14019,9 @@
           },
           "provider" : {
             "oneOf" : [ {
-              "$ref" : "#/components/schemas/ThirdPartyLyricsProvider"
+              "$ref" : "#/components/schemas/ThirdParty"
             }, {
-              "$ref" : "#/components/schemas/TidalLyricsProvider"
+              "$ref" : "#/components/schemas/Tidal"
             } ]
           },
           "technicalStatus" : {
@@ -15911,19 +15100,6 @@
           }
         }
       },
-      "RemovePayload" : {
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 10,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Data"
-            }
-          }
-        }
-      },
       "Resource_Identifier" : {
         "required" : [ "id", "type" ],
         "type" : "object",
@@ -16408,7 +15584,7 @@
           }
         }
       },
-      "ThirdPartyLyricsProvider" : {
+      "ThirdParty" : {
         "required" : [ "commonTrackId", "lyricsId", "name" ],
         "type" : "object",
         "allOf" : [ {
@@ -16425,38 +15601,11 @@
           }
         } ]
       },
-      "TidalLyricsProvider" : {
+      "Tidal" : {
         "type" : "object",
         "allOf" : [ {
           "$ref" : "#/components/schemas/LyricsProvider"
         } ]
-      },
-      "TrackAlbumsRelationshipUpdateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 1,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/TrackAlbumsRelationshipUpdateOperation_Payload_Data"
-            }
-          }
-        }
-      },
-      "TrackAlbumsRelationshipUpdateOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "albums" ]
-          }
-        }
       },
       "TrackCreateOperation_Payload" : {
         "required" : [ "data" ],
@@ -17455,163 +16604,6 @@
           "type" : {
             "type" : "string",
             "enum" : [ "artists" ]
-          }
-        }
-      },
-      "UserCollectionFolders_Attributes" : {
-        "required" : [ "collectionType", "createdAt", "lastModifiedAt", "name" ],
-        "type" : "object",
-        "properties" : {
-          "collectionType" : {
-            "type" : "string",
-            "enum" : [ "PLAYLISTS" ]
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "lastModifiedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "name" : {
-            "type" : "string"
-          }
-        }
-      },
-      "UserCollectionFolders_Items_Multi_Relationship_Data_Document" : {
-        "required" : [ "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UserCollectionFolders_Items_Resource_Identifier"
-            }
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "UserCollectionFolders_Items_Resource_Identifier" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "Resource id",
-            "example" : "12345"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/UserCollectionFolders_Items_Resource_Identifier_Meta"
-          },
-          "type" : {
-            "type" : "string",
-            "description" : "Resource type",
-            "example" : "tracks"
-          }
-        }
-      },
-      "UserCollectionFolders_Items_Resource_Identifier_Meta" : {
-        "required" : [ "addedAt", "lastModifiedAt" ],
-        "type" : "object",
-        "properties" : {
-          "addedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "lastModifiedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
-        }
-      },
-      "UserCollectionFolders_Multi_Relationship_Data_Document" : {
-        "required" : [ "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Resource_Identifier"
-            }
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "UserCollectionFolders_Multi_Resource_Data_Document" : {
-        "required" : [ "data", "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UserCollectionFolders_Resource_Object"
-            }
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "UserCollectionFolders_Relationships" : {
-        "required" : [ "items", "owners" ],
-        "properties" : {
-          "items" : {
-            "$ref" : "#/components/schemas/UserCollectionFolders_Items_Multi_Relationship_Data_Document"
-          },
-          "owners" : {
-            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
-          }
-        }
-      },
-      "UserCollectionFolders_Resource_Object" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/UserCollectionFolders_Attributes"
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "Resource id",
-            "example" : "12345"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/UserCollectionFolders_Relationships"
-          },
-          "type" : {
-            "minLength" : 1,
-            "type" : "string",
-            "description" : "Resource type",
-            "example" : "tracks"
-          }
-        }
-      },
-      "UserCollectionFolders_Single_Resource_Data_Document" : {
-        "required" : [ "data", "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/UserCollectionFolders_Resource_Object"
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
           }
         }
       },
