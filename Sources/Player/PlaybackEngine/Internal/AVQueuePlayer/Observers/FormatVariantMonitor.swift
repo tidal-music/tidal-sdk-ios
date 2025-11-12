@@ -11,9 +11,9 @@ import Foundation
 class FormatVariantMonitor: NSObject {
 	private weak var playerItem: AVPlayerItem?
 	private var metadataCollector: AVPlayerItemMetadataCollector?
-	private let onFormatChanged: (FormatVariantMetadata) -> Void
+	private let onFormatChanged: (AssetPlaybackMetadata) -> Void
 	private let queue: OperationQueue
-	private var lastReportedFormat: FormatVariantMetadata?
+	private var lastReportedFormat: AssetPlaybackMetadata?
 
 	// Metadata identifier for Tidal format information
 	private static let groupLabel = "com.tidal.format"
@@ -24,7 +24,7 @@ class FormatVariantMonitor: NSObject {
 	init(
 		playerItem: AVPlayerItem,
 		queue: OperationQueue,
-		onFormatChanged: @escaping (FormatVariantMetadata) -> Void
+		onFormatChanged: @escaping (AssetPlaybackMetadata) -> Void
 	) {
 		self.playerItem = playerItem
 		self.queue = queue
@@ -59,7 +59,7 @@ class FormatVariantMonitor: NSObject {
 
 	/// Processes format metadata and reports changes
 	/// Dispatches callbacks through the configured OperationQueue with playerItem validation
-	private func processFormatMetadata(_ formatMetadata: FormatVariantMetadata) {
+	private func processFormatMetadata(_ formatMetadata: AssetPlaybackMetadata) {
 		// Only report if format changed
 		guard formatMetadata != lastReportedFormat else {
 			return
@@ -67,7 +67,8 @@ class FormatVariantMonitor: NSObject {
 
 		let previousFormat = lastReportedFormat?.formatString
 		lastReportedFormat = formatMetadata
-		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantChanged(from: previousFormat, to: formatMetadata.formatString))
+		let currentFormat = formatMetadata.formatString
+		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantChanged(from: previousFormat, to: currentFormat))
 
 		// Dispatch callback through configured queue with playerItem validation
 		// to prevent race conditions during player item deallocation
@@ -82,7 +83,7 @@ class FormatVariantMonitor: NSObject {
 	/// Extracts format metadata from all items in a metadata group
 	/// Parses X-COM-TIDAL-FORMAT, X-COM-TIDAL-SAMPLE-RATE, and X-COM-TIDAL-SAMPLE-DEPTH
 	/// from the metadata items in the group
-	private func extractGroupFormatMetadata(from metadataGroup: AVDateRangeMetadataGroup) -> FormatVariantMetadata? {
+	private func extractGroupFormatMetadata(from metadataGroup: AVDateRangeMetadataGroup) -> AssetPlaybackMetadata? {
 		var formatString: String?
 		var sampleRate: Int?
 		var bitDepth: Int?
@@ -112,9 +113,11 @@ class FormatVariantMonitor: NSObject {
 			}
 		}
 
-		// Return metadata only if we extracted a format string
-		if let format = formatString {
-			return FormatVariantMetadata(formatString: format, sampleRate: sampleRate, bitDepth: bitDepth)
+		// Return metadata only if we extracted all required fields
+		if let format = formatString,
+		   let sr = sampleRate,
+		   let bd = bitDepth {
+			return AssetPlaybackMetadata(formatString: format, sampleRate: sr, bitDepth: bd)
 		}
 
 		return nil
@@ -157,36 +160,3 @@ extension FormatVariantMonitor: AVPlayerItemMetadataCollectorPushDelegate {
 	}
 }
 
-// MARK: - FormatVariantMetadata
-
-/// Metadata describing the format variant for an HLS stream segment
-public struct FormatVariantMetadata: Equatable {
-	public let formatString: String
-	public let sampleRate: Int?
-	public let bitDepth: Int?
-
-	public var description: String {
-		var desc = "FormatVariantMetadata(format: \(formatString)"
-		if let sr = sampleRate {
-			desc += ", sampleRate: \(sr)"
-		}
-		if let bd = bitDepth {
-			desc += ", bitDepth: \(bd)"
-		}
-		desc += ")"
-		return desc
-	}
-
-	public init(formatString: String, sampleRate: Int? = nil, bitDepth: Int? = nil) {
-		self.formatString = formatString
-		self.sampleRate = sampleRate
-		self.bitDepth = bitDepth
-	}
-
-	/// Custom equality: compares formatString, sampleRate, and bitDepth to enable reliable deduplication
-	public static func == (lhs: FormatVariantMetadata, rhs: FormatVariantMetadata) -> Bool {
-		lhs.formatString == rhs.formatString &&
-		lhs.sampleRate == rhs.sampleRate &&
-		lhs.bitDepth == rhs.bitDepth
-	}
-}
