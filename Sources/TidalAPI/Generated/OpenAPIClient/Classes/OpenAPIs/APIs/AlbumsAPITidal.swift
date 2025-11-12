@@ -123,6 +123,18 @@ public enum AlbumsAPITidal {
 
 
 	/**
+     Update items relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func albumsIdRelationshipsItemsPatch(id: String, albumItemsRelationshipUpdateOperationPayload: AlbumItemsRelationshipUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, albumItemsRelationshipUpdateOperationPayload: albumItemsRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: AlbumsMultiRelationshipDataDocument
