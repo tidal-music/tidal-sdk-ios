@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **trackFilesIdGet**
 ```swift
-    open class func trackFilesIdGet(id: String, formats: String, usage: String, completion: @escaping (_ data: TrackFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackFilesIdGet(id: String, formats: [Formats_trackFilesIdGet], usage: Usage_trackFilesIdGet, completion: @escaping (_ data: TrackFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single trackFile.
@@ -22,7 +22,7 @@ Retrieves single trackFile by id.
 import OpenAPIClient
 
 let id = "id_example" // String | 
-let formats = "formats_example" // String | 
+let formats = ["formats_example"] // [String] | 
 let usage = "usage_example" // String | 
 
 // Get single trackFile.
@@ -43,7 +43,7 @@ TrackFilesAPI.trackFilesIdGet(id: id, formats: formats, usage: usage) { (respons
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
- **formats** | **String** |  | 
+ **formats** | [**[String]**](String.md) |  | 
  **usage** | **String** |  | 
 
 ### Return type

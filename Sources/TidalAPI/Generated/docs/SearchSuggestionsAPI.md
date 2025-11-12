@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **searchSuggestionsIdGet**
 ```swift
-    open class func searchSuggestionsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchSuggestionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsIdGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchSuggestionsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single searchSuggestion.
@@ -23,12 +23,12 @@ Retrieves single searchSuggestion by id.
 import OpenAPIClient
 
 let id = "id_example" // String | 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to "INCLUDE")
+let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits (optional)
 
 // Get single searchSuggestion.
-SearchSuggestionsAPI.searchSuggestionsIdGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include) { (response, error) in
+SearchSuggestionsAPI.searchSuggestionsIdGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,8 +45,8 @@ SearchSuggestionsAPI.searchSuggestionsIdGet(id: id, countryCode: countryCode, ex
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
- **explicitFilter** | **String** | Explicit filter | [optional] [default to &quot;INCLUDE&quot;]
+ **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits | [optional] 
 
 ### Return type
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **searchSuggestionsIdRelationshipsDirectHitsGet**
 ```swift
-    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get directHits relationship (\"to-many\").
@@ -79,13 +79,13 @@ Retrieves directHits relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to "INCLUDE")
+let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get directHits relationship (\"to-many\").
-SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor) { (response, error) in
+SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -102,8 +102,8 @@ SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, count
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
- **explicitFilter** | **String** | Explicit filter | [optional] [default to &quot;INCLUDE&quot;]
+ **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 

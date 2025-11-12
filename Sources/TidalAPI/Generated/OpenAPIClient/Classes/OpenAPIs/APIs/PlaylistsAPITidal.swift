@@ -42,9 +42,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsMultiResourceDataDocument
      */
-	public static func playlistsGet(countryCode: String, pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiResourceDataDocument {
+	public static func playlistsGet(pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil) async throws -> PlaylistsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, include: include, filterOwnersId: filterOwnersId, filterId: filterId)
+			PlaylistsAPI.playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterId: filterId)
 		}
 	}
 
@@ -66,7 +66,7 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsSingleResourceDataDocument
      */
-	public static func playlistsIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> PlaylistsSingleResourceDataDocument {
+	public static func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> PlaylistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
@@ -78,7 +78,7 @@ public enum PlaylistsAPITidal {
      
      - returns: 
      */
-	public static func playlistsIdPatch(id: String, countryCode: String, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) async throws {
+	public static func playlistsIdPatch(id: String, countryCode: String? = nil, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, playlistUpdateOperationPayload: playlistUpdateOperationPayload)
 		}
@@ -90,7 +90,7 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -126,9 +126,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
 		}
 	}
 
@@ -150,7 +150,7 @@ public enum PlaylistsAPITidal {
      
      - returns: 
      */
-	public static func playlistsIdRelationshipsItemsPost(id: String, countryCode: String, playlistItemsRelationshipAddOperationPayload: PlaylistItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, playlistItemsRelationshipAddOperationPayload: PlaylistItemsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, playlistItemsRelationshipAddOperationPayload: playlistItemsRelationshipAddOperationPayload)
 		}
@@ -162,7 +162,7 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -174,7 +174,7 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsSingleResourceDataDocument
      */
-	public static func playlistsPost(countryCode: String, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) async throws -> PlaylistsSingleResourceDataDocument {
+	public static func playlistsPost(countryCode: String? = nil, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) async throws -> PlaylistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsPostWithRequestBuilder(countryCode: countryCode, playlistCreateOperationPayload: playlistCreateOperationPayload)
 		}

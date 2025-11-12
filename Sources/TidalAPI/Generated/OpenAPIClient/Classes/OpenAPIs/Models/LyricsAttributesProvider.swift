@@ -11,26 +11,26 @@ import AnyCodable
 #endif
 
 public enum LyricsAttributesProvider: Codable, JSONEncodable, Hashable {
-    case thirdParty(ThirdParty)
-    case tidal(Tidal)
+    case thirdPartyLyricsProvider(ThirdPartyLyricsProvider)
+    case tidalLyricsProvider(TidalLyricsProvider)
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
-        case .thirdParty(let value):
+        case .thirdPartyLyricsProvider(let value):
             try container.encode(value)
-        case .tidal(let value):
+        case .tidalLyricsProvider(let value):
             try container.encode(value)
         }
     }
     
     public init(from decoder: Decoder) throws {
-        if let value = try? ThirdParty(from: decoder) {
-            self = .thirdParty(value)
+        if let value = try? ThirdPartyLyricsProvider(from: decoder) {
+            self = .thirdPartyLyricsProvider(value)
             return
         }
-        if let value = try? Tidal(from: decoder) {
-            self = .tidal(value)
+        if let value = try? TidalLyricsProvider(from: decoder) {
+            self = .tidalLyricsProvider(value)
             return
         }
         

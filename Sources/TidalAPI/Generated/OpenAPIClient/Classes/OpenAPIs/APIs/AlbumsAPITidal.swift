@@ -19,9 +19,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiResourceDataDocument
      */
-	public static func albumsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil) async throws -> AlbumsMultiResourceDataDocument {
+	public static func albumsGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil) async throws -> AlbumsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId)
+			AlbumsAPI.albumsGetWithRequestBuilder(pageCursor: pageCursor, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId)
 		}
 	}
 
@@ -118,6 +118,18 @@ public enum AlbumsAPITidal {
 	public static func albumsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> AlbumsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			AlbumsAPI.albumsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Update items relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func albumsIdRelationshipsItemsPatch(id: String, albumItemsRelationshipUpdateOperationPayload: AlbumItemsRelationshipUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, albumItemsRelationshipUpdateOperationPayload: albumItemsRelationshipUpdateOperationPayload)
 		}
 	}
 

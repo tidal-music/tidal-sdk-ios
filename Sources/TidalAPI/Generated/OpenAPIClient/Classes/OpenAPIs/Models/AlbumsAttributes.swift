@@ -12,6 +12,11 @@ import AnyCodable
 
 public struct AlbumsAttributes: Codable, Hashable {
 
+    public enum AccessType: String, Codable, CaseIterable {
+        case _public = "PUBLIC"
+        case unlisted = "UNLISTED"
+        case _private = "PRIVATE"
+    }
     public enum Availability: String, Codable, CaseIterable {
         case stream = "STREAM"
         case dj = "DJ"
@@ -22,6 +27,8 @@ public struct AlbumsAttributes: Codable, Hashable {
         case ep = "EP"
         case single = "SINGLE"
     }
+    /** Access type */
+    public var accessType: AccessType?
     /** Available usage for this album */
     public var availability: [Availability]?
     /** Barcode id (EAN-13 or UPC-A) */
@@ -50,6 +57,7 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var version: String?
 
     public init(
+        accessType: AccessType? = nil,
         availability: [Availability]? = nil,
         barcodeId: String,
         copyright: Copyright? = nil,
@@ -65,6 +73,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         type: ModelType,
         version: String? = nil
     ) {
+        self.accessType = accessType
         self.availability = availability
         self.barcodeId = barcodeId
         self.copyright = copyright
@@ -82,6 +91,7 @@ public struct AlbumsAttributes: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case accessType
         case availability
         case barcodeId
         case copyright
@@ -102,6 +112,7 @@ public struct AlbumsAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(accessType, forKey: .accessType)
         try container.encodeIfPresent(availability, forKey: .availability)
         try container.encode(barcodeId, forKey: .barcodeId)
         try container.encodeIfPresent(copyright, forKey: .copyright)

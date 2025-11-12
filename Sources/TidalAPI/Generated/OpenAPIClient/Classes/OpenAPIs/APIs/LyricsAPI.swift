@@ -200,13 +200,13 @@ internal class LyricsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Lyrics Id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: LyricsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiRelationshipDataDocument {
+    internal class func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiRelationshipDataDocument {
         return try await lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
     }
 
@@ -218,12 +218,12 @@ internal class LyricsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Lyrics Id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<LyricsMultiRelationshipDataDocument> 
      */
-    internal class func lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<LyricsMultiRelationshipDataDocument> {
+    internal class func lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<LyricsMultiRelationshipDataDocument> {
         var localVariablePath = "/lyrics/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -233,7 +233,7 @@ internal class LyricsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
@@ -253,12 +253,12 @@ internal class LyricsAPI {
      Get track relationship (\"to-one\").
      
      - parameter id: (path) Lyrics Id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
      - returns: LyricsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
+    internal class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
         return try await lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
     }
 
@@ -273,11 +273,11 @@ internal class LyricsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Lyrics Id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
      - returns: RequestBuilder<LyricsSingleRelationshipDataDocument> 
      */
-    internal class func lyricsIdRelationshipsTrackGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<LyricsSingleRelationshipDataDocument> {
+    internal class func lyricsIdRelationshipsTrackGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<LyricsSingleRelationshipDataDocument> {
         var localVariablePath = "/lyrics/{id}/relationships/track"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -287,7 +287,7 @@ internal class LyricsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
