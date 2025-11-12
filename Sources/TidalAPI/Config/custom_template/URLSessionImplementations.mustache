@@ -4,6 +4,7 @@
 // https://openapi-generator.tech
 //
 
+import Common
 import Foundation
 #if !os(macOS)
 import MobileCoreServices
@@ -56,7 +57,13 @@ class URLSessionRequestBuilderFactory: RequestBuilderFactory {
 private let sessionDelegate = SessionDelegate()
 
 // Store the URLSession to retain its reference
-private let defaultURLSession = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: nil)
+private let defaultURLSession: URLSession = {
+	let configuration = URLSessionConfiguration.default
+	let timeoutPolicy = TimeoutPolicy.standard
+	configuration.timeoutIntervalForRequest = timeoutPolicy.requestTimeout
+	configuration.timeoutIntervalForResource = timeoutPolicy.resourceTimeout
+	return URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: nil)
+}()
 
 // Store current taskDidReceiveChallenge for every URLSessionTask
 private var challengeHandlerStore = SynchronizedDictionary<Int, {{projectName}}APIChallengeHandler>()
