@@ -49,17 +49,12 @@ final class TidalAPIRetryHandler<T> {
 	}
 
 	private func isTimeoutError(_ error: Error) -> Bool {
-		// Check if it's a URLError with timeout
+		// URLErrors are no longer wrapped - check directly
 		if let urlError = error as? URLError {
 			return urlError.code == .timedOut
 		}
 
-		if let errorResponse = error as? ErrorResponse,
-		   case let .error(_, _, _, underlyingError) = errorResponse
-		{
-			return isTimeoutError(underlyingError)
-		}
-
+		// Check wrapped errors (TidalError, TidalAPIError)
 		if let underlyingError = underlyingError(from: error) {
 			return isTimeoutError(underlyingError)
 		}
@@ -68,7 +63,7 @@ final class TidalAPIRetryHandler<T> {
 	}
 
 	private func isNetworkError(_ error: Error) -> Bool {
-		// Check if it's a URLError indicating network issues
+		// URLErrors are no longer wrapped - check directly
 		if let urlError = error as? URLError {
 			switch urlError.code {
 			case .networkConnectionLost, .notConnectedToInternet,
@@ -79,20 +74,7 @@ final class TidalAPIRetryHandler<T> {
 			}
 		}
 
-		// Check if it's an ErrorResponse with network-related status codes
-		if let errorResponse = error as? ErrorResponse,
-		   case let .error(statusCode, _, _, _) = errorResponse
-		{
-			// Status codes -1 and -2 are network errors from the generated client
-			return statusCode == -1 || statusCode == -2
-		}
-
-		if let errorResponse = error as? ErrorResponse,
-		   case let .error(_, _, _, underlyingError) = errorResponse
-		{
-			return isNetworkError(underlyingError)
-		}
-
+		// Check wrapped errors (TidalError, TidalAPIError)
 		if let underlyingError = underlyingError(from: error) {
 			return isNetworkError(underlyingError)
 		}
