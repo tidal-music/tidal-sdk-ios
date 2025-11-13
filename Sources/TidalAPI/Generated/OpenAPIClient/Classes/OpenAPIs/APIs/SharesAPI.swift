@@ -22,7 +22,18 @@ internal class SharesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesGet(include: [String]? = nil, filterCode: [String]? = nil, filterId: [String]? = nil) async throws -> SharesMultiResourceDataDocument {
-        return try await sharesGetWithRequestBuilder(include: include, filterCode: filterCode, filterId: filterId).execute().body
+        do {
+            return try await sharesGetWithRequestBuilder(include: include, filterCode: filterCode, filterId: filterId).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -72,7 +83,18 @@ internal class SharesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesIdGet(id: String, include: [String]? = nil) async throws -> SharesSingleResourceDataDocument {
-        return try await sharesIdGetWithRequestBuilder(id: id, include: include).execute().body
+        do {
+            return try await sharesIdGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -123,7 +145,18 @@ internal class SharesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SharesMultiRelationshipDataDocument {
-        return try await sharesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await sharesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -173,7 +206,18 @@ internal class SharesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> SharesMultiRelationshipDataDocument {
-        return try await sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+        do {
+            return try await sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -224,7 +268,18 @@ internal class SharesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesPost(sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) async throws -> SharesSingleResourceDataDocument {
-        return try await sharesPostWithRequestBuilder(sharesCreateOperationPayload: sharesCreateOperationPayload).execute().body
+        do {
+            return try await sharesPostWithRequestBuilder(sharesCreateOperationPayload: sharesCreateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
