@@ -23,7 +23,18 @@ internal class SearchResultsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func searchResultsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) async throws -> SearchResultsSingleResourceDataDocument {
-        return try await searchResultsIdGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include).execute().body
+        do {
+            return try await searchResultsIdGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -80,7 +91,18 @@ internal class SearchResultsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func searchResultsIdRelationshipsAlbumsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
-        return try await searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -139,7 +161,18 @@ internal class SearchResultsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func searchResultsIdRelationshipsArtistsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
-        return try await searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -198,7 +231,18 @@ internal class SearchResultsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func searchResultsIdRelationshipsPlaylistsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
-        return try await searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -257,7 +301,18 @@ internal class SearchResultsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func searchResultsIdRelationshipsTopHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
-        return try await searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -316,7 +371,18 @@ internal class SearchResultsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func searchResultsIdRelationshipsTracksGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
-        return try await searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -375,7 +441,18 @@ internal class SearchResultsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func searchResultsIdRelationshipsVideosGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
-        return try await searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**

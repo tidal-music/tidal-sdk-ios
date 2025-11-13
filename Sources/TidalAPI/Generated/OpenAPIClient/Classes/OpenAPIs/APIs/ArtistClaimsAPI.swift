@@ -21,7 +21,18 @@ internal class ArtistClaimsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artistClaimsIdGet(id: String, include: [String]? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
-        return try await artistClaimsIdGetWithRequestBuilder(id: id, include: include).execute().body
+        do {
+            return try await artistClaimsIdGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -69,7 +80,18 @@ internal class ArtistClaimsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artistClaimsIdPatch(id: String, countryCode: String, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws {
-        return try await artistClaimsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload).execute().body
+        do {
+            return try await artistClaimsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -118,7 +140,18 @@ internal class ArtistClaimsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
-        return try await artistClaimsIdRelationshipsAcceptedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await artistClaimsIdRelationshipsAcceptedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -167,7 +200,18 @@ internal class ArtistClaimsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws {
-        return try await artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload).execute().body
+        do {
+            return try await artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -212,7 +256,18 @@ internal class ArtistClaimsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artistClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
-        return try await artistClaimsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await artistClaimsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -262,7 +317,18 @@ internal class ArtistClaimsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
-        return try await artistClaimsIdRelationshipsRecommendedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await artistClaimsIdRelationshipsRecommendedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -311,7 +377,18 @@ internal class ArtistClaimsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artistClaimsPost(countryCode: String, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
-        return try await artistClaimsPostWithRequestBuilder(countryCode: countryCode, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload).execute().body
+        do {
+            return try await artistClaimsPostWithRequestBuilder(countryCode: countryCode, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**

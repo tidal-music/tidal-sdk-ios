@@ -21,7 +21,18 @@ internal class LyricsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func lyricsGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> LyricsMultiResourceDataDocument {
-        return try await lyricsGetWithRequestBuilder(include: include, filterId: filterId).execute().body
+        do {
+            return try await lyricsGetWithRequestBuilder(include: include, filterId: filterId).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -68,7 +79,18 @@ internal class LyricsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func lyricsIdDelete(id: String) async throws {
-        return try await lyricsIdDeleteWithRequestBuilder(id: id).execute().body
+        do {
+            return try await lyricsIdDeleteWithRequestBuilder(id: id).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -111,7 +133,18 @@ internal class LyricsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func lyricsIdGet(id: String, include: [String]? = nil) async throws -> LyricsSingleResourceDataDocument {
-        return try await lyricsIdGetWithRequestBuilder(id: id, include: include).execute().body
+        do {
+            return try await lyricsIdGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -161,7 +194,18 @@ internal class LyricsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func lyricsIdPatch(id: String, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws {
-        return try await lyricsIdPatchWithRequestBuilder(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload).execute().body
+        do {
+            return try await lyricsIdPatchWithRequestBuilder(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -207,7 +251,18 @@ internal class LyricsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiRelationshipDataDocument {
-        return try await lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -259,7 +314,18 @@ internal class LyricsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
-        return try await lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+        do {
+            return try await lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -310,7 +376,18 @@ internal class LyricsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func lyricsPost(lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsSingleResourceDataDocument {
-        return try await lyricsPostWithRequestBuilder(lyricsCreateOperationPayload: lyricsCreateOperationPayload).execute().body
+        do {
+            return try await lyricsPostWithRequestBuilder(lyricsCreateOperationPayload: lyricsCreateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            // Map HTTP errors to ErrorResponse for backward compatibility
+            throw ErrorResponse.error(
+                httpError.statusCode,
+                httpError.data,
+                httpError.response,  // Pass through the full URLResponse
+                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+            )
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**

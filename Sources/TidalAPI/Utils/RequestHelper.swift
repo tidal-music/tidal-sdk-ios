@@ -46,11 +46,8 @@ enum RequestHelper {
 				requestBuilder: { requestBuilder }
 			)
 		} catch {
-			throw TidalError(
-				code: error.localizedDescription,
-				message: error.localizedDescription,
-				throwable: error
-			)
+			// Let URLError and other transport errors propagate unchanged
+			throw error
 		}
 	}
 
@@ -111,11 +108,8 @@ enum RequestHelper {
 				}
 			)
 		} catch {
-			throw TidalError(
-				code: error.localizedDescription,
-				message: error.localizedDescription,
-				throwable: error
-			)
+			// Let URLError and other transport errors propagate unchanged
+			throw error
 		}
 	}
 

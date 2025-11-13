@@ -49,7 +49,8 @@ final class TidalAPIResponseErrorManager: BaseErrorManager, ErrorManager {
 	}
 
 	func onError(_ error: Error, attemptCount: Int) -> RetryStrategy {
-		// HTTP response with status 4xx (except 429)
+		// HTTPErrorResponse handling (retry handler already filtered to 5xx/429)
+		// Legacy ErrorResponse handling for backward compatibility
 		if let errorResponse = error as? ErrorResponse,
 		   case let .error(statusCode, _, _, _) = errorResponse,
 		   statusCode >= 400 && statusCode < 500 && statusCode != 429

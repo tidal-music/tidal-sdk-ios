@@ -83,23 +83,29 @@ private var credentialStore = SynchronizedDictionary<Int, URLCredential>()
     }
 
     /**
-     Override async execute() to unwrap ErrorResponse and throw underlying errors directly.
-     This allows URLErrors and other URLSession errors to be thrown without wrapping.
+     Override async execute() to properly separate transport errors (URLError)
+     from HTTP errors (HTTPErrorResponse) with full response metadata.
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     override {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}open{{/nonPublicApi}} func execute() async throws -> Response<T> {
         do {
             return try await super.execute()
         } catch let errorResponse as ErrorResponse {
-            // Unwrap and throw the underlying error directly if it exists
-            if case let .error(statusCode, _, _, underlyingError) = errorResponse {
-                // Status codes -1 and -2 are used for non-HTTP errors (URLSession errors)
-                // Throw the underlying error directly instead of wrapped ErrorResponse
+            if case let .error(statusCode, data, urlResponse, underlyingError) = errorResponse {
+                // Transport errors (status -1, -2): throw URLError directly
                 if statusCode == -1 || statusCode == -2 {
                     throw underlyingError
                 }
+
+                // HTTP errors (4xx, 5xx): convert to HTTPErrorResponse with full response
+                let httpError = HTTPErrorResponse(
+                    statusCode: statusCode,
+                    response: urlResponse ?? URLResponse(),  // Pass full response with headers
+                    data: data  // Already optional, pass as-is
+                )
+                throw httpError
             }
-            // For actual HTTP errors (4xx, 5xx), keep ErrorResponse
+            // Fallback: rethrow as-is
             throw errorResponse
         }
     }

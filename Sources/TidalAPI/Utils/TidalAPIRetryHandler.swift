@@ -26,16 +26,38 @@ final class TidalAPIRetryHandler<T> {
 	func execute(attemptCount: Int = 0) async throws -> T {
 		do {
 			return try await executionBlock()
-		} catch {
+		} catch let httpError as HTTPErrorResponse {
+			// HTTP errors (4xx, 5xx) - check status code for retry
 			try Task.checkCancellation()
 
-			// Determine which error manager to use (same logic as Player's ResponseHandler)
+			let retryStrategy: RetryStrategy
+			if httpError.statusCode >= 500 || httpError.statusCode == 429 {
+				// Retry server errors and rate limits
+				retryStrategy = responseErrorManager.onError(httpError, attemptCount: attemptCount)
+			} else {
+				// Don't retry client errors (4xx except 429)
+				retryStrategy = .NONE
+			}
+
+			switch retryStrategy {
+			case .NONE:
+				throw httpError
+			case let .BACKOFF(duration):
+				try await Task.sleep(seconds: duration)
+				return try await execute(attemptCount: attemptCount + 1)
+			}
+
+		} catch {
+			// Transport errors (URLError, etc.)
+			try Task.checkCancellation()
+
 			let retryStrategy: RetryStrategy = if isTimeoutError(error) {
 				timeoutErrorManager.onError(error, attemptCount: attemptCount)
 			} else if isNetworkError(error) {
 				networkErrorManager.onError(error, attemptCount: attemptCount)
 			} else {
-				responseErrorManager.onError(error, attemptCount: attemptCount)
+				// Unknown error type - don't retry
+				.NONE
 			}
 
 			switch retryStrategy {
