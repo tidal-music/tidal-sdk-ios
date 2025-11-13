@@ -1,3 +1,4 @@
+import Auth
 import Common
 import Foundation
 
@@ -10,32 +11,47 @@ final class TidalAPIRetryHandler<T> {
 	private let responseErrorManager: ErrorManager
 	private let networkErrorManager: ErrorManager
 	private let timeoutErrorManager: ErrorManager
+	private let authenticationErrorManager: ErrorManager
 
 	init(
 		executionBlock: @escaping RequestBuilderExecutor<T>,
 		responseErrorManager: ErrorManager = TidalAPIResponseErrorManager(),
 		networkErrorManager: ErrorManager = TidalAPINetworkErrorManager(),
-		timeoutErrorManager: ErrorManager = TidalAPITimeoutErrorManager()
+		timeoutErrorManager: ErrorManager = TidalAPITimeoutErrorManager(),
+		authenticationErrorManager: ErrorManager = TidalAPIAuthenticationErrorManager()
 	) {
 		self.executionBlock = executionBlock
 		self.responseErrorManager = responseErrorManager
 		self.networkErrorManager = networkErrorManager
 		self.timeoutErrorManager = timeoutErrorManager
+		self.authenticationErrorManager = authenticationErrorManager
 	}
 
 	func execute(attemptCount: Int = 0) async throws -> T {
 		do {
 			return try await executionBlock()
 		} catch let httpError as HTTPErrorResponse {
-			// HTTP errors (4xx, 5xx) - check status code for retry
 			try Task.checkCancellation()
+
+			if httpError.statusCode == 401 {
+				guard let authManager = authenticationErrorManager as? TidalAPIAuthenticationErrorManager else {
+					throw httpError
+				}
+
+				let retryStrategy = await authManager.handleAuthenticationError(httpError, attemptCount: attemptCount)
+
+				switch retryStrategy {
+				case .NONE:
+					throw httpError
+				case .BACKOFF:
+					return try await execute(attemptCount: attemptCount + 1)
+				}
+			}
 
 			let retryStrategy: RetryStrategy
 			if httpError.statusCode >= 500 || httpError.statusCode == 429 {
-				// Retry server errors and rate limits
 				retryStrategy = responseErrorManager.onError(httpError, attemptCount: attemptCount)
 			} else {
-				// Don't retry client errors (4xx except 429)
 				retryStrategy = .NONE
 			}
 
@@ -48,7 +64,6 @@ final class TidalAPIRetryHandler<T> {
 			}
 
 		} catch {
-			// Transport errors (URLError, etc.)
 			try Task.checkCancellation()
 
 			let retryStrategy: RetryStrategy = if isTimeoutError(error) {
@@ -56,7 +71,6 @@ final class TidalAPIRetryHandler<T> {
 			} else if isNetworkError(error) {
 				networkErrorManager.onError(error, attemptCount: attemptCount)
 			} else {
-				// Unknown error type - don't retry
 				.NONE
 			}
 
