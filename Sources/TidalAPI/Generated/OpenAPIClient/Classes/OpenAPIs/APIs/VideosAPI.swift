@@ -26,13 +26,7 @@ internal class VideosAPI {
         do {
             return try await videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterIsrc: filterIsrc, filterId: filterId).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -90,13 +84,7 @@ internal class VideosAPI {
         do {
             return try await videosIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -155,13 +143,7 @@ internal class VideosAPI {
         do {
             return try await videosIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -222,13 +204,7 @@ internal class VideosAPI {
         do {
             return try await videosIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -289,13 +265,7 @@ internal class VideosAPI {
         do {
             return try await videosIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -356,13 +326,7 @@ internal class VideosAPI {
         do {
             return try await videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }

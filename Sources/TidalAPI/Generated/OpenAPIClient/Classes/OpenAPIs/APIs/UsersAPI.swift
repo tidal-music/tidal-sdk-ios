@@ -22,13 +22,7 @@ internal class UsersAPI {
         do {
             return try await usersMeGetWithRequestBuilder().execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }

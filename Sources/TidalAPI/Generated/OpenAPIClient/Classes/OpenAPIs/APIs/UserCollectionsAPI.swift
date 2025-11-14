@@ -26,13 +26,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -88,13 +82,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsAlbumsDeleteWithRequestBuilder(id: id, userCollectionAlbumsRelationshipRemoveOperationPayload: userCollectionAlbumsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -161,13 +149,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -228,13 +210,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionAlbumsRelationshipAddOperationPayload: userCollectionAlbumsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -287,13 +263,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, userCollectionArtistsRelationshipRemoveOperationPayload: userCollectionArtistsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -356,13 +326,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -423,13 +387,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionArtistsRelationshipAddOperationPayload: userCollectionArtistsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -483,13 +441,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -543,13 +495,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsPlaylistsDeleteWithRequestBuilder(id: id, userCollectionPlaylistsRelationshipRemoveOperationPayload: userCollectionPlaylistsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -612,13 +558,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -674,13 +614,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsPlaylistsPostWithRequestBuilder(id: id, userCollectionPlaylistsRelationshipRemoveOperationPayload: userCollectionPlaylistsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -729,13 +663,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsTracksDeleteWithRequestBuilder(id: id, userCollectionTracksRelationshipRemoveOperationPayload: userCollectionTracksRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -804,13 +732,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -871,13 +793,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionTracksRelationshipAddOperationPayload: userCollectionTracksRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -930,13 +846,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsVideosDeleteWithRequestBuilder(id: id, userCollectionVideosRelationshipRemoveOperationPayload: userCollectionVideosRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -1003,13 +913,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -1070,13 +974,7 @@ internal class UserCollectionsAPI {
         do {
             return try await userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionVideosRelationshipAddOperationPayload: userCollectionVideosRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }

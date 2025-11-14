@@ -25,13 +25,7 @@ internal class ArtistBiographiesAPI {
         do {
             return try await artistBiographiesGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -87,13 +81,7 @@ internal class ArtistBiographiesAPI {
         do {
             return try await artistBiographiesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -150,13 +138,7 @@ internal class ArtistBiographiesAPI {
         do {
             return try await artistBiographiesIdPatchWithRequestBuilder(id: id, artistBiographyUpdateBody: artistBiographyUpdateBody).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }
@@ -206,13 +188,7 @@ internal class ArtistBiographiesAPI {
         do {
             return try await artistBiographiesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
-            // Map HTTP errors to ErrorResponse for backward compatibility
-            throw ErrorResponse.error(
-                httpError.statusCode,
-                httpError.data,
-                httpError.response,  // Pass through the full URLResponse
-                DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
-            )
+            throw ErrorResponse.fromHTTPError(httpError)
         }
         // URLError and other errors propagate as-is
     }

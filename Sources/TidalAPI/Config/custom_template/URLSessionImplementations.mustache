@@ -13,6 +13,17 @@ import MobileCoreServices
 import UniformTypeIdentifiers
 #endif
 
+extension ErrorResponse {
+    static func fromHTTPError(_ httpError: HTTPErrorResponse) -> ErrorResponse {
+        .error(
+            httpError.statusCode,
+            httpError.data,
+            httpError.response,
+            DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+        )
+    }
+}
+
 // Protocol defined for a session data task. This allows mocking out the URLSessionProtocol below since
 // you may not want to create or return a real URLSessionDataTask.
 {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} protocol URLSessionDataTaskProtocol {
@@ -58,10 +69,13 @@ private let sessionDelegate = SessionDelegate()
 
 // Store the URLSession to retain its reference
 private let defaultURLSession: URLSession = {
+	let cacheMemoryCapacity = 50 * 1024 * 1024
+	let cacheDiskCapacity = 100 * 1024 * 1024
 	let configuration = URLSessionConfiguration.default
 	let timeoutPolicy = TimeoutPolicy.standard
 	configuration.timeoutIntervalForRequest = timeoutPolicy.requestTimeout
 	configuration.timeoutIntervalForResource = timeoutPolicy.resourceTimeout
+	configuration.urlCache = URLCache(memoryCapacity: cacheMemoryCapacity, diskCapacity: cacheDiskCapacity)
 	return URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: nil)
 }()
 
