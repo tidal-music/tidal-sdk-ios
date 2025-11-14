@@ -69,23 +69,9 @@ final class TidalAPIResponseErrorManager: BaseErrorManager, ErrorManager {
 
 // MARK: - TidalAPIAuthenticationErrorManager
 
-final class TidalAPIAuthenticationErrorManager: BaseErrorManager, ErrorManager {
+final class TidalAPIAuthenticationErrorManager: BaseErrorManager {
 	init() {
 		super.init(maxRetryAttempts: 1, backoffPolicy: StandardBackoffPolicy.standard)
-	}
-
-	func onError(_ error: Error, attemptCount: Int) -> RetryStrategy {
-		guard let httpError = error as? HTTPErrorResponse,
-		      httpError.statusCode == 401
-		else {
-			return .NONE
-		}
-
-		if attemptCount >= maxErrorRetryAttempts {
-			return .NONE
-		}
-
-		return .BACKOFF(duration: 0)
 	}
 
 	func handleAuthenticationError(_ error: HTTPErrorResponse, attemptCount: Int) async -> RetryStrategy {
