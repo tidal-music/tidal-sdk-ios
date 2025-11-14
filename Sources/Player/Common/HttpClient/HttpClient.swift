@@ -1,3 +1,4 @@
+import Common
 import Foundation
 
 typealias RequestResponse = (urlResponse: HTTPURLResponse?, data: Data?)

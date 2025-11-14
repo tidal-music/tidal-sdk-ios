@@ -4,6 +4,7 @@
 // https://openapi-generator.tech
 //
 
+import Common
 import Foundation
 #if !os(macOS)
 import MobileCoreServices
@@ -11,6 +12,17 @@ import MobileCoreServices
 #if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers
 #endif
+
+extension ErrorResponse {
+    static func fromHTTPError(_ httpError: HTTPErrorResponse) -> ErrorResponse {
+        .error(
+            httpError.statusCode,
+            httpError.data,
+            httpError.response,
+            DecodableRequestBuilderError.unsuccessfulHTTPStatusCode
+        )
+    }
+}
 
 // Protocol defined for a session data task. This allows mocking out the URLSessionProtocol below since
 // you may not want to create or return a real URLSessionDataTask.
@@ -56,7 +68,16 @@ class URLSessionRequestBuilderFactory: RequestBuilderFactory {
 private let sessionDelegate = SessionDelegate()
 
 // Store the URLSession to retain its reference
-private let defaultURLSession = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: nil)
+private let defaultURLSession: URLSession = {
+	let cacheMemoryCapacity = 50 * 1024 * 1024
+	let cacheDiskCapacity = 100 * 1024 * 1024
+	let configuration = URLSessionConfiguration.default
+	let timeoutPolicy = TimeoutPolicy.standard
+	configuration.timeoutIntervalForRequest = timeoutPolicy.requestTimeout
+	configuration.timeoutIntervalForResource = timeoutPolicy.resourceTimeout
+	configuration.urlCache = URLCache(memoryCapacity: cacheMemoryCapacity, diskCapacity: cacheDiskCapacity)
+	return URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: nil)
+}()
 
 // Store current taskDidReceiveChallenge for every URLSessionTask
 private var challengeHandlerStore = SynchronizedDictionary<Int, {{projectName}}APIChallengeHandler>()
@@ -73,6 +94,34 @@ private var credentialStore = SynchronizedDictionary<Int, URLCredential>()
 
     required {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} init(method: String, URLString: String, parameters: [String: Any]?, headers: [String: String] = [:], requiresAuthentication: Bool) {
         super.init(method: method, URLString: URLString, parameters: parameters, headers: headers, requiresAuthentication: requiresAuthentication)
+    }
+
+    /**
+     Override async execute() to properly separate transport errors (URLError)
+     from HTTP errors (HTTPErrorResponse) with full response metadata.
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    override {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}open{{/nonPublicApi}} func execute() async throws -> Response<T> {
+        do {
+            return try await super.execute()
+        } catch let errorResponse as ErrorResponse {
+            if case let .error(statusCode, data, urlResponse, underlyingError) = errorResponse {
+                // Transport errors (status -1, -2): throw URLError directly
+                if statusCode == -1 || statusCode == -2 {
+                    throw underlyingError
+                }
+
+                // HTTP errors (4xx, 5xx): convert to HTTPErrorResponse with full response
+                let httpError = HTTPErrorResponse(
+                    statusCode: statusCode,
+                    response: urlResponse ?? URLResponse(),  // Pass full response with headers
+                    data: data  // Already optional, pass as-is
+                )
+                throw httpError
+            }
+            // Fallback: rethrow as-is
+            throw errorResponse
+        }
     }
 
     /**

@@ -1,11 +1,11 @@
 import Foundation
 
-final class TimeoutErrorManager: BaseErrorManager, ErrorManager {
-	init(backoffPolicy: BackoffPolicy = JitteredBackoffPolicy.forTimeoutErrors) {
+public final class TimeoutErrorManager: BaseErrorManager, ErrorManager {
+	public init(backoffPolicy: BackoffPolicy = JitteredBackoffPolicy.forTimeoutErrors) {
 		super.init(maxRetryAttempts: 3, backoffPolicy: backoffPolicy)
 	}
 
-	func onError(_ error: Error, attemptCount: Int) -> RetryStrategy {
+	public func onError(_ error: Error, attemptCount: Int) -> RetryStrategy {
 		if error is CancellationError {
 			return .NONE
 		}

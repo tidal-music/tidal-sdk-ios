@@ -20,7 +20,12 @@ internal class UserEntitlementsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userEntitlementsIdGet(id: String) async throws -> UserEntitlementsSingleResourceDataDocument {
-        return try await userEntitlementsIdGetWithRequestBuilder(id: id).execute().body
+        do {
+            return try await userEntitlementsIdGetWithRequestBuilder(id: id).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**

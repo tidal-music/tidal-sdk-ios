@@ -22,7 +22,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesGet(pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
-        return try await playQueuesGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId).execute().body
+        do {
+            return try await playQueuesGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -68,7 +73,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdDelete(id: String) async throws {
-        return try await playQueuesIdDeleteWithRequestBuilder(id: id).execute().body
+        do {
+            return try await playQueuesIdDeleteWithRequestBuilder(id: id).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -111,7 +121,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdGet(id: String, include: [String]? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
-        return try await playQueuesIdGetWithRequestBuilder(id: id, include: include).execute().body
+        do {
+            return try await playQueuesIdGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -158,7 +173,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdPatch(id: String, playQueueUpdateOperationPayload: PlayQueueUpdateOperationPayload? = nil) async throws {
-        return try await playQueuesIdPatchWithRequestBuilder(id: id, playQueueUpdateOperationPayload: playQueueUpdateOperationPayload).execute().body
+        do {
+            return try await playQueuesIdPatchWithRequestBuilder(id: id, playQueueUpdateOperationPayload: playQueueUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -202,7 +222,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil) async throws -> PlayQueuesSingleRelationshipDataDocument {
-        return try await playQueuesIdRelationshipsCurrentGetWithRequestBuilder(id: id, include: include).execute().body
+        do {
+            return try await playQueuesIdRelationshipsCurrentGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -249,7 +274,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdRelationshipsCurrentPatch(id: String, playQueueUpdateCurrentOperationsPayload: PlayQueueUpdateCurrentOperationsPayload? = nil) async throws {
-        return try await playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: id, playQueueUpdateCurrentOperationsPayload: playQueueUpdateCurrentOperationsPayload).execute().body
+        do {
+            return try await playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: id, playQueueUpdateCurrentOperationsPayload: playQueueUpdateCurrentOperationsPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -293,7 +323,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdRelationshipsFutureDelete(id: String, playQueueRemoveFutureOperationPayload: PlayQueueRemoveFutureOperationPayload? = nil) async throws {
-        return try await playQueuesIdRelationshipsFutureDeleteWithRequestBuilder(id: id, playQueueRemoveFutureOperationPayload: playQueueRemoveFutureOperationPayload).execute().body
+        do {
+            return try await playQueuesIdRelationshipsFutureDeleteWithRequestBuilder(id: id, playQueueRemoveFutureOperationPayload: playQueueRemoveFutureOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -338,7 +373,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdRelationshipsFutureGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlayQueuesFutureMultiRelationshipDataDocument {
-        return try await playQueuesIdRelationshipsFutureGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+        do {
+            return try await playQueuesIdRelationshipsFutureGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -387,7 +427,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdRelationshipsFuturePatch(id: String, playQueueUpdateFutureOperationPayload: PlayQueueUpdateFutureOperationPayload? = nil) async throws {
-        return try await playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: id, playQueueUpdateFutureOperationPayload: playQueueUpdateFutureOperationPayload).execute().body
+        do {
+            return try await playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: id, playQueueUpdateFutureOperationPayload: playQueueUpdateFutureOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -431,7 +476,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdRelationshipsFuturePost(id: String, playQueueAddFutureOperationPayload: PlayQueueAddFutureOperationPayload? = nil) async throws {
-        return try await playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: id, playQueueAddFutureOperationPayload: playQueueAddFutureOperationPayload).execute().body
+        do {
+            return try await playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: id, playQueueAddFutureOperationPayload: playQueueAddFutureOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -476,7 +526,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlayQueuesMultiRelationshipDataDocument {
-        return try await playQueuesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await playQueuesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -526,7 +581,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesIdRelationshipsPastGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlayQueuesPastMultiRelationshipDataDocument {
-        return try await playQueuesIdRelationshipsPastGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+        do {
+            return try await playQueuesIdRelationshipsPastGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -574,7 +634,12 @@ internal class PlayQueuesAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func playQueuesPost(playQueueCreateOperationPayload: PlayQueueCreateOperationPayload? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
-        return try await playQueuesPostWithRequestBuilder(playQueueCreateOperationPayload: playQueueCreateOperationPayload).execute().body
+        do {
+            return try await playQueuesPostWithRequestBuilder(playQueueCreateOperationPayload: playQueueCreateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
