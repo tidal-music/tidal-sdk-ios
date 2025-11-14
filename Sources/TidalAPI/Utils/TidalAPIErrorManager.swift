@@ -1,3 +1,4 @@
+import Auth
 import Common
 import Foundation
 
@@ -63,5 +64,58 @@ final class TidalAPIResponseErrorManager: BaseErrorManager, ErrorManager {
 		}
 
 		return .BACKOFF(duration: backoffPolicy.onFailedAttempt(attemptCount: attemptCount))
+	}
+}
+
+// MARK: - TidalAPIAuthenticationErrorManager
+
+final class TidalAPIAuthenticationErrorManager: BaseErrorManager {
+	init() {
+		super.init(maxRetryAttempts: 1, backoffPolicy: StandardBackoffPolicy.standard)
+	}
+
+	func handleAuthenticationError(_ error: HTTPErrorResponse, attemptCount: Int) async -> RetryStrategy {
+		guard error.statusCode == 401 else {
+			return .NONE
+		}
+
+		if attemptCount >= maxErrorRetryAttempts {
+			return .NONE
+		}
+
+		guard let credentialsProvider = OpenAPIClientAPI.credentialsProvider else {
+			return .NONE
+		}
+
+		let subStatus = extractSubStatus(from: error.data)
+
+		do {
+			_ = try await credentialsProvider.getCredentials(apiErrorSubStatus: subStatus.flatMap(String.init))
+
+			if subStatus != nil, !credentialsProvider.isUserLoggedIn {
+				return .NONE
+			}
+
+			return .BACKOFF(duration: 0)
+		} catch {
+			return .NONE
+		}
+	}
+
+	private func extractSubStatus(from data: Data?) -> Int? {
+		guard let data else {
+			return nil
+		}
+
+		do {
+			if let parsedObject = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any],
+			   let subStatus = parsedObject["subStatus"] as? Int
+			{
+				return subStatus
+			}
+		} catch {
+			return nil
+		}
+		return nil
 	}
 }

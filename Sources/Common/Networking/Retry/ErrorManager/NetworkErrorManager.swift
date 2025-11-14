@@ -1,12 +1,11 @@
-import Common
 import Foundation
 
-final class NetworkErrorManager: BaseErrorManager, ErrorManager {
-	init(backoffPolicy: BackoffPolicy = JitteredBackoffPolicy.forNetworkErrors) {
+public final class NetworkErrorManager: BaseErrorManager, ErrorManager {
+	public init(backoffPolicy: BackoffPolicy = JitteredBackoffPolicy.forNetworkErrors) {
 		super.init(maxRetryAttempts: 10, backoffPolicy: backoffPolicy)
 	}
 
-	func onError(_ error: Error, attemptCount: Int) -> RetryStrategy {
+	public func onError(_ error: Error, attemptCount: Int) -> RetryStrategy {
 		if error is CancellationError {
 			return .NONE
 		}
