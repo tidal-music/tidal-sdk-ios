@@ -20,7 +20,12 @@ internal class UserReportsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) async throws -> UserReportsSingleResourceDataDocument {
-        return try await userReportsPostWithRequestBuilder(userReportCreateOperationPayload: userReportCreateOperationPayload).execute().body
+        do {
+            return try await userReportsPostWithRequestBuilder(userReportCreateOperationPayload: userReportCreateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**

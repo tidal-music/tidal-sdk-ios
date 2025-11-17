@@ -6,7 +6,7 @@ import TidalAPI
 enum PlaybackInfoErrorResponseConverter {
 	static func convert(_ error: Error) -> Error {
 		// Handle TidalAPIError from new endpoints
-		if let tidalAPIError = error as? TidalAPIError {
+		if let tidalAPIError = error as? HTTPErrorResponse {
 			return convertTidalAPIError(tidalAPIError)
 		}
 
@@ -29,28 +29,21 @@ enum PlaybackInfoErrorResponseConverter {
 }
 
 private extension PlaybackInfoErrorResponseConverter {
-	static func convertTidalAPIError(_ error: TidalAPIError) -> Error {
-		guard let statusCode = error.statusCode else {
-			return error
-		}
-
-		let subStatus = error.subStatus
-		let errorCode = error.errorObject?.code
-
-		switch statusCode {
+	static func convertTidalAPIError(_ error: HTTPErrorResponse) -> Error {
+        switch error.statusCode {
 		case 401:
-			return AuthError(status: subStatus)
+			return AuthError(status: nil)
 		case 403:
-			return handleForbidden(with: subStatus, errorCode: errorCode)
+            return handleForbidden(with: nil, errorCode: extractErrorCode(from: error))
 		case 404:
-			return handleNotFound(with: subStatus, errorCode: errorCode)
+			return handleNotFound(with: nil, errorCode: extractErrorCode(from: error))
 		case 429:
 			return PlaybackInfoFetcherError.rateLimited.error(.PERetryable)
 		case 500...599:
 			return PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .playbackInfoServerError,
-				code: statusCode
+                code: error.statusCode
 			)
 		default:
 			return PlaybackInfoFetcherError.unHandledHttpStatus.error(.EUnexpected)
@@ -93,10 +86,18 @@ private extension PlaybackInfoErrorResponseConverter {
 
 		return subStatus as? Int
 	}
+    
+    static func extractErrorCode(from error: HTTPErrorResponse) -> String {
+        if case .some(let code) = error.errorObject()?.code {
+            return code
+        }
+        
+        return "NA"
+    }
 
 	static func handleForbidden(with subStatus: Int?, errorCode: String?) -> Error {
 		// Check for CONCURRENCY_LIMIT (maps to retry, but we handle it specially here)
-		if errorCode == "CONCURRENCY_LIMIT" {
+		if errorCode == "CONCURRENCY_LIMIT" || errorCode == "CONCURRENT_PLAYBACK" {
 			return StreamingPrivilegesLostError()
 		}
 

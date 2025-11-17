@@ -29,10 +29,13 @@ final class AudioCodecTests: XCTestCase {
 		XCTAssertNil(AudioCodec(rawValue: nil))
 
 		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_HE_AAC_V1), AudioCodec.HE_AAC_V1)
+		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_HE_AAC_V1_Alt), AudioCodec.HE_AAC_V1)
 		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_AAC_LC), AudioCodec.AAC_LC)
+		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_AAC_LC_Alt), AudioCodec.AAC_LC)
 		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_AAC), AudioCodec.AAC)
 		XCTAssertEqual(AudioCodec(rawValue: upperCasedAACCodec), AudioCodec.AAC)
 		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_FLAC), AudioCodec.FLAC)
+		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_FLAC_HIRES), AudioCodec.FLAC)
 		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_ALAC), AudioCodec.ALAC)
 		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_MQA), AudioCodec.MQA)
 		XCTAssertEqual(AudioCodec(rawValue: AudioCodec.Constants.Manifest_Name_AC4), AudioCodec.AC4)

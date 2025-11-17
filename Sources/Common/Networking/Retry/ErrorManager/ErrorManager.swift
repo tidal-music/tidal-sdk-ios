@@ -1,7 +1,7 @@
 import Foundation
 
 /// Describes the retry strategy to use when there is an error
-protocol ErrorManager: AnyObject {
+public protocol ErrorManager: AnyObject {
 	/// Implementations should return a RetryStrategy to indicate how the connection should be retried
 	///
 	/// - Parameters:

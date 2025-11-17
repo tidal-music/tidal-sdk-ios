@@ -25,13 +25,9 @@ public enum ErrorId: String {
 			return .PEContentNotAvailableInLocation
 		case "PURCHASE_REQUIRED":
 			return .PEContentNotAvailableForSubscription
-		case "CLIENT_NOT_ENTITLED":
+		case "CLIENT_NOT_ENTITLED", "CONTENT_NOT_FOUND", "PREREQUISITE_MISSING", "CONCURRENCY_LIMIT", "CONCURRENT_PLAYBACK":
 			return .PENotAllowed
 		case "TEMPORARY_ERROR", "INTERNAL_ERROR":
-			return .PERetryable
-		case "CONTENT_NOT_FOUND", "PREREQUISITE_MISSING":
-			return .PENotAllowed
-		case "CONCURRENCY_LIMIT":
 			return .PERetryable
 		default:
 			return .EUnexpected

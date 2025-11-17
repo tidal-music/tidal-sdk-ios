@@ -12,6 +12,7 @@ public struct TidalAPIError: LocalizedError, Equatable {
 	public var subStatus: Int?
 	public var errorObject: ErrorObject?
 	public var type: ErrorType
+	public let underlyingError: (any Error)?
 
 	public init(
 		fileID: StaticString = #fileID,
@@ -22,7 +23,8 @@ public struct TidalAPIError: LocalizedError, Equatable {
 		statusCode: Int? = nil,
 		subStatus: Int? = nil,
 		errorObject: ErrorObject? = nil,
-		type: ErrorType = .unknown
+		type: ErrorType = .unknown,
+		underlyingError: (any Error)? = nil
 	) {
 		self.fileID = String(describing: fileID)
 		self.line = line
@@ -33,6 +35,7 @@ public struct TidalAPIError: LocalizedError, Equatable {
 		self.subStatus = subStatus
 		self.errorObject = errorObject
 		self.type = type
+		self.underlyingError = underlyingError
 	}
 
 	public var errorDescription: String {
@@ -67,7 +70,8 @@ extension TidalAPIError {
 			statusCode: statusCode,
 			subStatus: subStatus,
 			errorObject: errorObject,
-			type: type
+			type: type,
+			underlyingError: error
 		)
 	}
 }
@@ -81,4 +85,17 @@ public extension TidalAPIError {
 		case cancelled // user or system cancellation
 		case unknown
 	}
+}
+
+// MARK: - Equatable
+
+public func == (lhs: TidalAPIError, rhs: TidalAPIError) -> Bool {
+	lhs.fileID == rhs.fileID &&
+		lhs.line == rhs.line &&
+		lhs.column == rhs.column &&
+		lhs.message == rhs.message &&
+		lhs.url == rhs.url &&
+		lhs.statusCode == rhs.statusCode &&
+		lhs.subStatus == rhs.subStatus &&
+		lhs.type == rhs.type
 }

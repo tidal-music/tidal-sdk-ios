@@ -21,8 +21,7 @@ final class AVPlayerItemMonitor {
 		onCompletelyDownloaded: @escaping (AVPlayerItem) -> Void,
 		onReadyToPlayToPlay: @escaping (AVPlayerItem) -> Void,
 		onItemPlayedToEnd: @escaping (AVPlayerItem) -> Void,
-		onAudioQualityChanged: @escaping (AVPlayerItem, AudioQuality) -> Void,
-		onFormatVariantChanged: @escaping (AVPlayerItem, FormatVariantMetadata) -> Void
+		onPlaybackMetadataChanged: @escaping (AVPlayerItem, AssetPlaybackMetadata) -> Void
 	) {
 		self.playerItem = playerItem
 		failureMonitor = FailureMonitor(playerItem, onFailure)
@@ -40,11 +39,9 @@ final class AVPlayerItemMonitor {
 		abrMonitor = AVPlayerItemABRMonitor(
 			playerItem: playerItem,
 			queue: queue,
-			onQualityChanged: { [weak self] newQuality in
-				guard let self else {
-					return
-				}
-				onAudioQualityChanged(self.playerItem, newQuality)
+			onQualityChanged: { _ in
+				// Quality monitoring is now handled by FormatVariantMonitor using HLS timed metadata
+				// Keep ABRMonitor for debugging only
 			}
 		)
 		#endif
@@ -52,11 +49,11 @@ final class AVPlayerItemMonitor {
 		formatVariantMonitor = FormatVariantMonitor(
 			playerItem: playerItem,
 			queue: queue
-		) { [weak self] formatMetadata in
+		) { [weak self] metadata in
 			guard let self else {
 				return
 			}
-			onFormatVariantChanged(self.playerItem, formatMetadata)
+			onPlaybackMetadataChanged(self.playerItem, metadata)
 		}
 	}
 

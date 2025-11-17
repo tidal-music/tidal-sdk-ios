@@ -19,7 +19,12 @@ internal class UsersAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func usersMeGet() async throws -> UsersSingleResourceDataDocument {
-        return try await usersMeGetWithRequestBuilder().execute().body
+        do {
+            return try await usersMeGetWithRequestBuilder().execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**

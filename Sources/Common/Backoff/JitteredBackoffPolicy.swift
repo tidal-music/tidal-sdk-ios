@@ -2,18 +2,18 @@ import Foundation
 
 // MARK: - JitteredBackoffPolicy
 
-struct JitteredBackoffPolicy: BackoffPolicy {
+public struct JitteredBackoffPolicy: BackoffPolicy {
 	private let baseDelayInS: TimeInterval
 	private let maxBackoffDelayInS: TimeInterval
 	private let maxJitterFactor: Double
 
-	init(baseDelayInS: TimeInterval, maxDelayInS: TimeInterval, jitterFactor: Double = 0.2) {
+	public init(baseDelayInS: TimeInterval, maxDelayInS: TimeInterval, jitterFactor: Double = 0.2) {
 		self.baseDelayInS = baseDelayInS
 		maxBackoffDelayInS = maxDelayInS
 		maxJitterFactor = jitterFactor
 	}
 
-	func onFailedAttempt(attemptCount: Int) -> TimeInterval {
+	public func onFailedAttempt(attemptCount: Int) -> TimeInterval {
 		let exponentialDelayInMs = (baseDelayInS * 1000) * pow(2.0, Double(attemptCount))
 		let cappedDelayInMs = min(exponentialDelayInMs, maxBackoffDelayInS * 1000)
 		let jitterFactor = Double(Int.random(in: 0 ... 100)) / Double(100) * maxJitterFactor
@@ -25,7 +25,7 @@ struct JitteredBackoffPolicy: BackoffPolicy {
 
 // MARK: - Convenience
 
-extension JitteredBackoffPolicy {
+public extension JitteredBackoffPolicy {
 	static var standard: JitteredBackoffPolicy {
 		JitteredBackoffPolicy(baseDelayInS: 0.5, maxDelayInS: 16)
 	}
