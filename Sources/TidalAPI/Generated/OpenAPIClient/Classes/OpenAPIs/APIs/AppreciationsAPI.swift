@@ -20,7 +20,12 @@ internal class AppreciationsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func appreciationsPost(appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil) async throws -> AppreciationsSingleResourceDataDocument {
-        return try await appreciationsPostWithRequestBuilder(appreciationsCreateOperationPayload: appreciationsCreateOperationPayload).execute().body
+        do {
+            return try await appreciationsPostWithRequestBuilder(appreciationsCreateOperationPayload: appreciationsCreateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**

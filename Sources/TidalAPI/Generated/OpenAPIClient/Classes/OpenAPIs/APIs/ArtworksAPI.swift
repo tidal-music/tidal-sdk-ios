@@ -22,7 +22,12 @@ internal class ArtworksAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artworksGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtworksMultiResourceDataDocument {
-        return try await artworksGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId).execute().body
+        do {
+            return try await artworksGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -73,7 +78,12 @@ internal class ArtworksAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artworksIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtworksSingleResourceDataDocument {
-        return try await artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+        do {
+            return try await artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -126,7 +136,12 @@ internal class ArtworksAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtworksMultiRelationshipDataDocument {
-        return try await artworksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await artworksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -174,7 +189,12 @@ internal class ArtworksAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil) async throws -> ArtworksSingleResourceDataDocument {
-        return try await artworksPostWithRequestBuilder(artworkCreateOperationPayload: artworkCreateOperationPayload).execute().body
+        do {
+            return try await artworksPostWithRequestBuilder(artworkCreateOperationPayload: artworkCreateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**

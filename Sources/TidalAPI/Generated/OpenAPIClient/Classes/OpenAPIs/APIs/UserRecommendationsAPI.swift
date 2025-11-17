@@ -23,7 +23,12 @@ internal class UserRecommendationsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userRecommendationsIdGet(id: String, countryCode: String, locale: String, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
-        return try await userRecommendationsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
+        do {
+            return try await userRecommendationsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -77,7 +82,12 @@ internal class UserRecommendationsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
-        return try await userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -133,7 +143,12 @@ internal class UserRecommendationsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
-        return try await userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -189,7 +204,12 @@ internal class UserRecommendationsAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, locale: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
-        return try await userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor).execute().body
+        do {
+            return try await userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**

@@ -21,7 +21,12 @@ internal class GenresAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func genresGet(pageCursor: String? = nil, filterId: [String]? = nil) async throws -> GenresMultiResourceDataDocument {
-        return try await genresGetWithRequestBuilder(pageCursor: pageCursor, filterId: filterId).execute().body
+        do {
+            return try await genresGetWithRequestBuilder(pageCursor: pageCursor, filterId: filterId).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
@@ -68,7 +73,12 @@ internal class GenresAPI {
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func genresIdGet(id: String) async throws -> GenresSingleResourceDataDocument {
-        return try await genresIdGetWithRequestBuilder(id: id).execute().body
+        do {
+            return try await genresIdGetWithRequestBuilder(id: id).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
     }
 
     /**
