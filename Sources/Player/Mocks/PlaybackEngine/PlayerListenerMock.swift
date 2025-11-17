@@ -2,6 +2,8 @@ import Foundation
 
 public final class PlayerListenerMock: PlayerListener {
 	var state: State?
+	var stateChanges: [State] = []
+	var endedStateChangeCounts: [Int] = []
 	var numEnds: Int = 0
 	var numTransitions: Int = 0
 	var numPrivilegesLost: Int = 0
@@ -9,10 +11,12 @@ public final class PlayerListenerMock: PlayerListener {
 
 	public func stateChanged(to state: State) {
 		self.state = state
+		stateChanges.append(state)
 	}
 
 	public func ended(_ mediaProduct: MediaProduct) {
 		numEnds += 1
+		endedStateChangeCounts.append(stateChanges.count)
 	}
 
 	public func mediaTransitioned(to mediaProduct: MediaProduct, with playbackContext: PlaybackContext) {
