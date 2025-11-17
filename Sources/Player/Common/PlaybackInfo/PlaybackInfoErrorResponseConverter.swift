@@ -5,9 +5,8 @@ import TidalAPI
 
 enum PlaybackInfoErrorResponseConverter {
 	static func convert(_ error: Error) -> Error {
-		// Handle TidalAPIError from new endpoints
-		if let tidalAPIError = error as? HTTPErrorResponse {
-			return convertTidalAPIError(tidalAPIError)
+		if let httpErrorResponse = error as? HTTPErrorResponse {
+			return convertHTTPErrorResponse(httpErrorResponse)
 		}
 
 		// Handle HttpError from legacy endpoints
@@ -29,7 +28,7 @@ enum PlaybackInfoErrorResponseConverter {
 }
 
 private extension PlaybackInfoErrorResponseConverter {
-	static func convertTidalAPIError(_ error: HTTPErrorResponse) -> Error {
+	static func convertHTTPErrorResponse(_ error: HTTPErrorResponse) -> Error {
         switch error.statusCode {
 		case 401:
 			return AuthError(status: nil)
