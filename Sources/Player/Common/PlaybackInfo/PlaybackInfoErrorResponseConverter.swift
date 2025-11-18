@@ -1,16 +1,22 @@
 import Foundation
+import TidalAPI
 
 // MARK: - PlaybackInfoErrorResponseConverter
 
 enum PlaybackInfoErrorResponseConverter {
 	static func convert(_ error: Error) -> Error {
+		if let httpErrorResponse = error as? HTTPErrorResponse {
+			return convertHTTPErrorResponse(httpErrorResponse)
+		}
+
+		// Handle HttpError from legacy endpoints
 		guard let httpError = error as? HttpError else {
 			return error
 		}
 
 		switch httpError {
 		case let .httpClientError(statusCode, message):
-			return convertClientError(status: statusCode, data: message)
+			return convertClientError(status: statusCode, data: message, subStatus: nil)
 		case let .httpServerError(statusCode):
 			return PlayerInternalError(
 				errorId: .PERetryable,
@@ -22,16 +28,37 @@ enum PlaybackInfoErrorResponseConverter {
 }
 
 private extension PlaybackInfoErrorResponseConverter {
-	static func convertClientError(status: Int, data: Data?) -> Error {
-		let subStatus = extractSubStatus(from: data)
+	static func convertHTTPErrorResponse(_ error: HTTPErrorResponse) -> Error {
+        switch error.statusCode {
+		case 401:
+			return AuthError(status: nil)
+		case 403:
+            return handleForbidden(with: nil, errorCode: extractErrorCode(from: error))
+		case 404:
+			return handleNotFound(with: nil, errorCode: extractErrorCode(from: error))
+		case 429:
+			return PlaybackInfoFetcherError.rateLimited.error(.PERetryable)
+		case 500...599:
+			return PlayerInternalError(
+				errorId: .PERetryable,
+				errorType: .playbackInfoServerError,
+                code: error.statusCode
+			)
+		default:
+			return PlaybackInfoFetcherError.unHandledHttpStatus.error(.EUnexpected)
+		}
+	}
+
+	static func convertClientError(status: Int, data: Data?, subStatus: Int? = nil) -> Error {
+		let extractedSubStatus = subStatus ?? extractSubStatus(from: data)
 
 		switch status {
 		case 401:
-			return AuthError(status: subStatus)
+			return AuthError(status: extractedSubStatus)
 		case 403:
-			return handleForbidden(with: subStatus)
+			return handleForbidden(with: extractedSubStatus, errorCode: nil)
 		case 404:
-			return handleNotFound(with: subStatus)
+			return handleNotFound(with: extractedSubStatus, errorCode: nil)
 		case 429:
 			return PlaybackInfoFetcherError.rateLimited.error(.PERetryable)
 		default:
@@ -58,8 +85,31 @@ private extension PlaybackInfoErrorResponseConverter {
 
 		return subStatus as? Int
 	}
+    
+    static func extractErrorCode(from error: HTTPErrorResponse) -> String {
+        if case .some(let code) = error.errorObject()?.code {
+            return code
+        }
+        
+        return "NA"
+    }
 
-	static func handleForbidden(with subStatus: Int?) -> Error {
+	static func handleForbidden(with subStatus: Int?, errorCode: String?) -> Error {
+		// Check for CONCURRENCY_LIMIT (maps to retry, but we handle it specially here)
+		if errorCode == "CONCURRENCY_LIMIT" || errorCode == "CONCURRENT_PLAYBACK" {
+			return StreamingPrivilegesLostError()
+		}
+
+		// Prefer new error code format if available
+		if let errorCode = errorCode {
+			return PlayerInternalError(
+				errorId: ErrorId.playbackErrorId(from: errorCode),
+				errorType: .playbackInfoForbidden,
+				code: 403
+			)
+		}
+
+		// Fall back to legacy subStatus handling
 		guard let subStatus else {
 			return PlaybackInfoFetcherError.noResponseSubStatus.error(.EUnexpected)
 		}
@@ -75,7 +125,17 @@ private extension PlaybackInfoErrorResponseConverter {
 		)
 	}
 
-	static func handleNotFound(with subStatus: Int?) -> Error {
+	static func handleNotFound(with subStatus: Int?, errorCode: String?) -> Error {
+		// Prefer new error code format if available
+		if let errorCode = errorCode {
+			return PlayerInternalError(
+				errorId: ErrorId.playbackErrorId(from: errorCode),
+				errorType: .playbackInfoNotFound,
+				code: 404
+			)
+		}
+
+		// Fall back to legacy subStatus handling
 		guard let subStatus else {
 			return PlaybackInfoFetcherError.noResponseSubStatus.error(.EUnexpected)
 		}
