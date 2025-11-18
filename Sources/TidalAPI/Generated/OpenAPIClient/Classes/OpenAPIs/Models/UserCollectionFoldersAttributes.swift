@@ -19,17 +19,20 @@ public struct UserCollectionFoldersAttributes: Codable, Hashable {
     public var createdAt: Date
     public var lastModifiedAt: Date
     public var name: String
+    public var numberOfItems: Int?
 
     public init(
         collectionType: CollectionType,
         createdAt: Date,
         lastModifiedAt: Date,
-        name: String
+        name: String,
+        numberOfItems: Int? = nil
     ) {
         self.collectionType = collectionType
         self.createdAt = createdAt
         self.lastModifiedAt = lastModifiedAt
         self.name = name
+        self.numberOfItems = numberOfItems
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -37,6 +40,7 @@ public struct UserCollectionFoldersAttributes: Codable, Hashable {
         case createdAt
         case lastModifiedAt
         case name
+        case numberOfItems
     }
 
     // Encodable protocol methods
@@ -47,5 +51,6 @@ public struct UserCollectionFoldersAttributes: Codable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(name, forKey: .name)
+        try container.encodeIfPresent(numberOfItems, forKey: .numberOfItems)
     }
 }
