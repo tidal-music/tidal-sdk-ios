@@ -217,18 +217,19 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		}
 	}
 
-	func unload() {
-		queue.cancelAllOperations()
+    func unload() {
+        queue.cancelAllOperations()
+        queue.dispatch {
+            self.playerMonitor = nil
+            self.delegates.removeAll()
+            self.playerItemMonitors.removeAll()
+            self.playerItemAssets.removeAll()
 
-		playerMonitor = nil
-		delegates.removeAll()
-		playerItemMonitors.removeAll()
-		playerItemAssets.removeAll()
+            self.assetFactory.reset()
 
-		assetFactory.reset()
-
-		player.pause()
-		player.removeAllItems()
+            self.player.pause()
+            self.player.removeAllItems()
+        }
 	}
 
 	func reset() {
