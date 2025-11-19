@@ -171,6 +171,18 @@ public enum AlbumsAPITidal {
 
 
 	/**
+     Get suggestedCoverArts relationship (\&quot;to-many\&quot;).
+     
+     - returns: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
+     */
+	public static func albumsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsSuggestedCoverArtsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsSuggestedCoverArtsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Create single album.
      
      - returns: AlbumsSingleResourceDataDocument

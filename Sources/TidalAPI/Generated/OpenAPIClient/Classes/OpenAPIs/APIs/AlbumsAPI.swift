@@ -17,7 +17,7 @@ internal class AlbumsAPI {
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
      - parameter filterOwnersId: (query) User id (optional)
      - parameter filterId: (query) Album id (optional)
      - parameter filterBarcodeId: (query) Barcode Id (optional)
@@ -40,7 +40,7 @@ internal class AlbumsAPI {
        - name: Client_Credentials
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
      - parameter filterOwnersId: (query) User id (optional)
      - parameter filterId: (query) Album id (optional)
      - parameter filterBarcodeId: (query) Barcode Id (optional)
@@ -119,7 +119,7 @@ internal class AlbumsAPI {
      
      - parameter id: (path) Album id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
      - returns: AlbumsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -139,7 +139,7 @@ internal class AlbumsAPI {
        - name: Client_Credentials
      - parameter id: (path) Album id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
      - returns: RequestBuilder<AlbumsSingleResourceDataDocument> 
      */
     internal class func albumsIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<AlbumsSingleResourceDataDocument> {
@@ -681,6 +681,56 @@ internal class AlbumsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<AlbumsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get suggestedCoverArts relationship (\"to-many\").
+     
+     - parameter id: (path) Album id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: suggestedCoverArts (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func albumsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsSuggestedCoverArtsMultiRelationshipDataDocument {
+        return try await albumsIdRelationshipsSuggestedCoverArtsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+    }
+
+    /**
+     Get suggestedCoverArts relationship (\"to-many\").
+     - GET /albums/{id}/relationships/suggestedCoverArts
+     - Retrieves suggestedCoverArts relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Album id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: suggestedCoverArts (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<AlbumsSuggestedCoverArtsMultiRelationshipDataDocument> 
+     */
+    internal class func albumsIdRelationshipsSuggestedCoverArtsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<AlbumsSuggestedCoverArtsMultiRelationshipDataDocument> {
+        var localVariablePath = "/albums/{id}/relationships/suggestedCoverArts"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AlbumsSuggestedCoverArtsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
