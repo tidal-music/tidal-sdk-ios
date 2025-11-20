@@ -13,15 +13,19 @@ import AnyCodable
 public struct LyricsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public static let textRule = StringRule(minLength: 0, maxLength: 10000, pattern: nil)
-    public var text: String
+    public var lrcText: String?
+    public var text: String?
 
     public init(
-        text: String
+        lrcText: String? = nil,
+        text: String? = nil
     ) {
+        self.lrcText = lrcText
         self.text = text
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case lrcText
         case text
     }
 
@@ -29,6 +33,7 @@ public struct LyricsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(text, forKey: .text)
+        try container.encodeIfPresent(lrcText, forKey: .lrcText)
+        try container.encodeIfPresent(text, forKey: .text)
     }
 }

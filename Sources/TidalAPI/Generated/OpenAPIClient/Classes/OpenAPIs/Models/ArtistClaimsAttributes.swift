@@ -18,9 +18,8 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         case tunecore = "TUNECORE"
     }
     public enum Recommendation: String, Codable, CaseIterable {
-        case dspProfileClaimed = "DSP_PROFILE_CLAIMED"
-        case contentMigratedToUploads = "CONTENT_MIGRATED_TO_UPLOADS"
-        case noContentMatched = "NO_CONTENT_MATCHED"
+        case claimProfile = "CLAIM_PROFILE"
+        case claimContent = "CLAIM_CONTENT"
     }
     public enum Status: String, Codable, CaseIterable {
         case awaitingOauth = "AWAITING_OAUTH"

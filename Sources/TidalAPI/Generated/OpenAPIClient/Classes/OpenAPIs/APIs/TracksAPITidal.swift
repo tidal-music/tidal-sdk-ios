@@ -19,9 +19,9 @@ public enum TracksAPITidal {
      
      - returns: TracksMultiResourceDataDocument
      */
-	public static func tracksGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> TracksMultiResourceDataDocument {
+	public static func tracksGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> TracksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterIsrc: filterIsrc, filterId: filterId)
+			TracksAPI.tracksGetWithRequestBuilder(pageCursor: pageCursor, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterIsrc: filterIsrc, filterId: filterId)
 		}
 	}
 
@@ -43,7 +43,7 @@ public enum TracksAPITidal {
      
      - returns: TracksSingleResourceDataDocument
      */
-	public static func tracksIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> TracksSingleResourceDataDocument {
+	public static func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> TracksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
@@ -70,6 +70,18 @@ public enum TracksAPITidal {
 	public static func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Update albums relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func tracksIdRelationshipsAlbumsPatch(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, trackAlbumsRelationshipUpdateOperationPayload: trackAlbumsRelationshipUpdateOperationPayload)
 		}
 	}
 

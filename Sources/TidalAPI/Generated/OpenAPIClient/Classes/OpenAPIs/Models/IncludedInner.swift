@@ -31,6 +31,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case trackSourceFilesResourceObject(TrackSourceFilesResourceObject)
     case trackStatisticsResourceObject(TrackStatisticsResourceObject)
     case tracksResourceObject(TracksResourceObject)
+    case userCollectionFoldersResourceObject(UserCollectionFoldersResourceObject)
     case userCollectionsResourceObject(UserCollectionsResourceObject)
     case userEntitlementsResourceObject(UserEntitlementsResourceObject)
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
@@ -80,6 +81,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .trackStatisticsResourceObject(let value):
             try container.encode(value)
         case .tracksResourceObject(let value):
+            try container.encode(value)
+        case .userCollectionFoldersResourceObject(let value):
             try container.encode(value)
         case .userCollectionsResourceObject(let value):
             try container.encode(value)
@@ -165,6 +168,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "tracks":
             let value = try TracksResourceObject(from: decoder)
             self = .tracksResourceObject(value)
+        case "userCollectionFolders":
+            let value = try UserCollectionFoldersResourceObject(from: decoder)
+            self = .userCollectionFoldersResourceObject(value)
         case "userCollections":
             let value = try UserCollectionsResourceObject(from: decoder)
             self = .userCollectionsResourceObject(value)
@@ -213,6 +219,7 @@ extension IncludedInner: Identifiable {
         case .trackSourceFilesResourceObject(let value): return value.id
         case .trackStatisticsResourceObject(let value): return value.id
         case .tracksResourceObject(let value): return value.id
+        case .userCollectionFoldersResourceObject(let value): return value.id
         case .userCollectionsResourceObject(let value): return value.id
         case .userEntitlementsResourceObject(let value): return value.id
         case .userRecommendationsResourceObject(let value): return value.id
