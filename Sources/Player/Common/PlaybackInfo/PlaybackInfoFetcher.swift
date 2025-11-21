@@ -143,7 +143,7 @@ private extension PlaybackInfoFetcher {
 		do {
 			let requestedAudioQuality = getAudioQuality(given: playbackMode)
 			let adaptivePlaybackEnabled = shouldRequestAdaptivePlayback(for: playbackMode)
-			let formats = getFormatsForAudioQuality(requestedAudioQuality, adaptive: adaptivePlaybackEnabled)
+			let formats = formats(for: requestedAudioQuality)
 
 			// Ensure credentials provider is set
 			if OpenAPIClientAPI.credentialsProvider == nil {
@@ -156,8 +156,7 @@ private extension PlaybackInfoFetcher {
 				formats: formats,
 				uriScheme: .data,
 				usage: playbackMode == .OFFLINE ? .download : .playback,
-				adaptive: adaptivePlaybackEnabled ? .true : .false,
-				customHeaders: ["x-playback-session-id": streamingSessionId]
+				adaptive: adaptivePlaybackEnabled
 			)
 
 			let manifestData = manifestResponse.data
@@ -422,13 +421,6 @@ private extension PlaybackInfoFetcher {
 		)
 	}
 
-	private func getFormatsForAudioQuality(_ audioQuality: AudioQuality, adaptive: Bool) -> String {
-		PlaybackInfoFetcher
-			.buildFormatList(maxQuality: audioQuality, adaptive: adaptive, configuration: configuration)
-			.map(\.rawValue)
-			.joined(separator: ",")
-	}
-
 	private func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
 		switch presentation {
 		case .full:
@@ -533,42 +525,23 @@ private extension PlaybackInfoFetcher {
 }
 
 extension PlaybackInfoFetcher {
-	static func buildFormatList(
-		maxQuality: AudioQuality,
-		adaptive: Bool,
-		configuration: Configuration? = nil
-	) -> [TrackManifestsAttributes.Formats] {
-		let targetQualities = adaptive ? audioQualities(upTo: maxQuality) : [maxQuality]
-
-		return uniqueOrderedFormats(
-			targetQualities.flatMap { formats(for: $0, configuration: configuration) }
-		)
-	}
-
-	private static func formats(
-		for audioQuality: AudioQuality,
-		configuration: Configuration? = nil
-	) -> [TrackManifestsAttributes.Formats] {
-		let isImmersiveAudioEnabled = configuration?.isImmersiveAudio ?? false
-
-		switch audioQuality {
+	private func formats(for audioQuality: AudioQuality) -> [TrackManifestsAPITidal.Formats_trackManifestsIdGet] {
+        var formats: [TrackManifestsAPITidal.Formats_trackManifestsIdGet] = switch audioQuality {
 		case .HI_RES, .HI_RES_LOSSLESS:
-			var formats: [TrackManifestsAttributes.Formats] = [.heaacv1, .aaclc, .flac, .flacHires]
-			if isImmersiveAudioEnabled {
-				formats.append(.eac3Joc)
-			}
-			return formats
+            [.heaacv1, .aaclc, .flac, .flacHires]
 		case .LOSSLESS:
-			var formats: [TrackManifestsAttributes.Formats] = [.heaacv1, .aaclc, .flac]
-			if isImmersiveAudioEnabled {
-				formats.append(.eac3Joc)
-			}
-			return formats
+			[.heaacv1, .aaclc, .flac]
 		case .HIGH:
-			return [.heaacv1, .aaclc]
+			[.heaacv1, .aaclc]
 		case .LOW:
-			return [.heaacv1]
+			[.heaacv1]
 		}
+        
+        if configuration.isImmersiveAudio {
+            formats.append(.eac3Joc)
+        }
+        
+        return formats
 	}
 
 	private static func audioQualities(upTo maxQuality: AudioQuality) -> [AudioQuality] {

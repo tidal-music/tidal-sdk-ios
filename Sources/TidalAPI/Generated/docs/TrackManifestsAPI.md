@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **trackManifestsIdGet**
 ```swift
-    open class func trackManifestsIdGet(id: String, manifestType: String, formats: String, uriScheme: String, usage: String, adaptive: String, completion: @escaping (_ data: TrackManifestsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, completion: @escaping (_ data: TrackManifestsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single trackManifest.
@@ -23,10 +23,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | 
 let manifestType = "manifestType_example" // String | 
-let formats = "formats_example" // String | 
+let formats = ["formats_example"] // [String] | 
 let uriScheme = "uriScheme_example" // String | 
 let usage = "usage_example" // String | 
-let adaptive = "adaptive_example" // String | 
+let adaptive = true // Bool | 
 
 // Get single trackManifest.
 TrackManifestsAPI.trackManifestsIdGet(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive) { (response, error) in
@@ -47,10 +47,10 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
  **manifestType** | **String** |  | 
- **formats** | **String** |  | 
+ **formats** | [**[String]**](String.md) |  | 
  **uriScheme** | **String** |  | 
  **usage** | **String** |  | 
- **adaptive** | **String** |  | 
+ **adaptive** | **Bool** |  | 
 
 ### Return type
 

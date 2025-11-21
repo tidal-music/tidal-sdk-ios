@@ -67,7 +67,7 @@ public enum LyricsAPITidal {
      
      - returns: LyricsMultiRelationshipDataDocument
      */
-	public static func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiRelationshipDataDocument {
+	public static func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -79,7 +79,7 @@ public enum LyricsAPITidal {
      
      - returns: LyricsSingleRelationshipDataDocument
      */
-	public static func lyricsIdRelationshipsTrackGet(id: String, countryCode: String, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
+	public static func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}

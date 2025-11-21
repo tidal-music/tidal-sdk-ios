@@ -698,21 +698,6 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 		}
 	}
 
-	func test_trackManifestParameters_shouldUseTypeUsingEnums() {
-		// Test that our type-safe enums work correctly
-		XCTAssertEqual(TrackManifestParameters.ManifestType.hls.rawValue, "HLS")
-		XCTAssertEqual(TrackManifestParameters.ManifestType.mpegDash.rawValue, "MPEG_DASH")
-		
-		XCTAssertEqual(TrackManifestParameters.UriScheme.data.rawValue, "DATA")
-		XCTAssertEqual(TrackManifestParameters.UriScheme.http.rawValue, "HTTP")
-		
-		XCTAssertEqual(TrackManifestParameters.Usage.playback.rawValue, "PLAYBACK")
-		XCTAssertEqual(TrackManifestParameters.Usage.download.rawValue, "DOWNLOAD")
-		
-		XCTAssertEqual(TrackManifestParameters.Adaptive.true.rawValue, "true")
-		XCTAssertEqual(TrackManifestParameters.Adaptive.false.rawValue, "false")
-	}
-
 	// MARK: - Helper Methods
 
 	private func createFeatureFlagProvider(
@@ -778,72 +763,6 @@ extension PlaybackInfoFetcherTests {
 	func test_formatsToAudioQuality_emptyOrNilFallsBack() {
 		XCTAssertEqual(PlaybackInfoFetcher.getAudioQualityFromFormats([], fallback: .HIGH), .HIGH)
 		XCTAssertEqual(PlaybackInfoFetcher.getAudioQualityFromFormats(nil, fallback: .LOW), .LOW)
-	}
-
-	func test_buildFormatList_whenAdaptiveDisabled_returnsFormatsForMaxQuality() {
-		let formats = PlaybackInfoFetcher.buildFormatList(maxQuality: .HIGH, adaptive: false)
-		XCTAssertEqual(formats, [.heaacv1, .aaclc])
-	}
-
-	func test_buildFormatList_whenAdaptiveEnabled_returnsLadderUpToMaxQuality() {
-		let formats = PlaybackInfoFetcher.buildFormatList(maxQuality: .HI_RES_LOSSLESS, adaptive: true)
-		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac, .flacHires])
-	}
-
-	func test_buildFormatList_whenImmersiveAudioEnabledAndLosslessQuality_includesEac3Joc() {
-		var configuration = Configuration.mock()
-		configuration.isImmersiveAudio = true
-
-		let formats = PlaybackInfoFetcher.buildFormatList(
-			maxQuality: .LOSSLESS,
-			adaptive: false,
-			configuration: configuration
-		)
-
-		XCTAssertTrue(formats.contains(.eac3Joc))
-		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac, .eac3Joc])
-	}
-
-	func test_buildFormatList_whenImmersiveAudioEnabledAndHiResLosslessQuality_includesEac3Joc() {
-		var configuration = Configuration.mock()
-		configuration.isImmersiveAudio = true
-
-		let formats = PlaybackInfoFetcher.buildFormatList(
-			maxQuality: .HI_RES_LOSSLESS,
-			adaptive: false,
-			configuration: configuration
-		)
-
-		XCTAssertTrue(formats.contains(.eac3Joc))
-		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac, .flacHires, .eac3Joc])
-	}
-
-	func test_buildFormatList_whenImmersiveAudioEnabledButHighQuality_doesNotIncludeEac3Joc() {
-		var configuration = Configuration.mock()
-		configuration.isImmersiveAudio = true
-
-		let formats = PlaybackInfoFetcher.buildFormatList(
-			maxQuality: .HIGH,
-			adaptive: false,
-			configuration: configuration
-		)
-
-		XCTAssertFalse(formats.contains(.eac3Joc))
-		XCTAssertEqual(formats, [.heaacv1, .aaclc])
-	}
-
-	func test_buildFormatList_whenImmersiveAudioDisabledAndLosslessQuality_doesNotIncludeEac3Joc() {
-		var configuration = Configuration.mock()
-		configuration.isImmersiveAudio = false
-
-		let formats = PlaybackInfoFetcher.buildFormatList(
-			maxQuality: .LOSSLESS,
-			adaptive: false,
-			configuration: configuration
-		)
-
-		XCTAssertFalse(formats.contains(.eac3Joc))
-		XCTAssertEqual(formats, [.heaacv1, .aaclc, .flac])
 	}
 
 	func test_buildQualityLadderFromFormats_returnsOrderedQualities() {

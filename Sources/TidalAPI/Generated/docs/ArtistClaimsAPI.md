@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdPatch**
 ```swift
-    open class func artistClaimsIdPatch(id: String, countryCode: String, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdPatch(id: String, countryCode: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single artistClaim.
@@ -80,7 +80,7 @@ Updates existing artistClaim.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example", redirectUri: "redirectUri_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
 
 // Update single artistClaim.
@@ -101,7 +101,7 @@ ArtistClaimsAPI.artistClaimsIdPatch(id: id, countryCode: countryCode, artistClai
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **artistClaimsUpdateOperationPayload** | [**ArtistClaimsUpdateOperationPayload**](ArtistClaimsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -175,7 +175,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsPatch**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update acceptedArtists relationship (\"to-many\").
@@ -188,10 +188,11 @@ Updates acceptedArtists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let artistClaimAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
 
 // Update acceptedArtists relationship (\"to-many\").
-ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, countryCode: countryCode, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -208,6 +209,7 @@ ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, artistCl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **artistClaimAcceptedArtistsRelationshipUpdateOperationPayload** | [**ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload**](ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -335,7 +337,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsPost**
 ```swift
-    open class func artistClaimsPost(countryCode: String, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsPost(countryCode: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artistClaim.
@@ -347,7 +349,7 @@ Creates a new artistClaim.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (default to "US")
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let artistClaimsCreateOperationPayload = ArtistClaimsCreateOperation_Payload(data: ArtistClaimsCreateOperation_Payload_Data(attributes: ArtistClaimsCreateOperation_Payload_Data_Attributes(artistId: "artistId_example", provider: "provider_example"), type: "type_example"), meta: ArtistClaimsCreateOperation_Payload_Meta(nonce: "nonce_example", redirectUrl: "redirectUrl_example")) // ArtistClaimsCreateOperationPayload |  (optional)
 
 // Create single artistClaim.
@@ -367,7 +369,7 @@ ArtistClaimsAPI.artistClaimsPost(countryCode: countryCode, artistClaimsCreateOpe
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [default to &quot;US&quot;]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **artistClaimsCreateOperationPayload** | [**ArtistClaimsCreateOperationPayload**](ArtistClaimsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

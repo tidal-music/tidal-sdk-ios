@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**accessType** | **String** | Access type | [optional] 
 **availability** | **[String]** | Available usage for this album | [optional] 
 **barcodeId** | **String** | Barcode id (EAN-13 or UPC-A) | 
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 

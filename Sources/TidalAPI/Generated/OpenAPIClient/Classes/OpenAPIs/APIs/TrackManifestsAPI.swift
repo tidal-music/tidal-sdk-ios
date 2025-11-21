@@ -13,6 +13,41 @@ import AnyCodable
 internal class TrackManifestsAPI {
 
     /**
+     * enum for parameter manifestType
+     */
+    public enum ManifestType_trackManifestsIdGet: String, CaseIterable {
+        case hls = "HLS"
+        case mpegDash = "MPEG_DASH"
+    }
+
+    /**
+     * enum for parameter formats
+     */
+    public enum Formats_trackManifestsIdGet: String, CaseIterable {
+        case heaacv1 = "HEAACV1"
+        case aaclc = "AACLC"
+        case flac = "FLAC"
+        case flacHires = "FLAC_HIRES"
+        case eac3Joc = "EAC3_JOC"
+    }
+
+    /**
+     * enum for parameter uriScheme
+     */
+    public enum UriScheme_trackManifestsIdGet: String, CaseIterable {
+        case https = "HTTPS"
+        case data = "DATA"
+    }
+
+    /**
+     * enum for parameter usage
+     */
+    public enum Usage_trackManifestsIdGet: String, CaseIterable {
+        case playback = "PLAYBACK"
+        case download = "DOWNLOAD"
+    }
+
+    /**
      Get single trackManifest.
      
      - parameter id: (path)  
@@ -24,7 +59,7 @@ internal class TrackManifestsAPI {
      - returns: TrackManifestsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackManifestsIdGet(id: String, manifestType: String, formats: String, uriScheme: String, usage: String, adaptive: String) async throws -> TrackManifestsSingleResourceDataDocument {
+    internal class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool) async throws -> TrackManifestsSingleResourceDataDocument {
         do {
             return try await trackManifestsIdGetWithRequestBuilder(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -51,7 +86,7 @@ internal class TrackManifestsAPI {
      - parameter adaptive: (query)  
      - returns: RequestBuilder<TrackManifestsSingleResourceDataDocument> 
      */
-    internal class func trackManifestsIdGetWithRequestBuilder(id: String, manifestType: String, formats: String, uriScheme: String, usage: String, adaptive: String) -> RequestBuilder<TrackManifestsSingleResourceDataDocument> {
+    internal class func trackManifestsIdGetWithRequestBuilder(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool) -> RequestBuilder<TrackManifestsSingleResourceDataDocument> {
         var localVariablePath = "/trackManifests/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""

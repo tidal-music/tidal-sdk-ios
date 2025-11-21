@@ -13,18 +13,26 @@ import AnyCodable
 internal class SearchSuggestionsAPI {
 
     /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchSuggestionsIdGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
      Get single searchSuggestion.
      
      - parameter id: (path)  
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to "INCLUDE")
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - returns: SearchSuggestionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchSuggestionsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
+    internal class func searchSuggestionsIdGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
         do {
-            return try await searchSuggestionsIdGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include).execute().body
+            return try await searchSuggestionsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -42,12 +50,12 @@ internal class SearchSuggestionsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path)  
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to "INCLUDE")
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - returns: RequestBuilder<SearchSuggestionsSingleResourceDataDocument> 
      */
-    internal class func searchSuggestionsIdGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchSuggestionsSingleResourceDataDocument> {
+    internal class func searchSuggestionsIdGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchSuggestionsSingleResourceDataDocument> {
         var localVariablePath = "/searchSuggestions/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -57,8 +65,8 @@ internal class SearchSuggestionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -74,19 +82,27 @@ internal class SearchSuggestionsAPI {
     }
 
     /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
      Get directHits relationship (\"to-many\").
      
      - parameter id: (path)  
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to "INCLUDE")
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SearchSuggestionsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
+    internal class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
         do {
-            return try await searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+            return try await searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -104,13 +120,13 @@ internal class SearchSuggestionsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path)  
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to "INCLUDE")
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument> 
      */
-    internal class func searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument> {
+    internal class func searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchSuggestions/{id}/relationships/directHits"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -120,8 +136,8 @@ internal class SearchSuggestionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])

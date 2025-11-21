@@ -19,9 +19,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiResourceDataDocument
      */
-	public static func albumsGet(countryCode: String, pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil) async throws -> AlbumsMultiResourceDataDocument {
+	public static func albumsGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil) async throws -> AlbumsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsGetWithRequestBuilder(countryCode: countryCode, pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId)
+			AlbumsAPI.albumsGetWithRequestBuilder(pageCursor: pageCursor, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId)
 		}
 	}
 
@@ -123,6 +123,18 @@ public enum AlbumsAPITidal {
 
 
 	/**
+     Update items relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func albumsIdRelationshipsItemsPatch(id: String, albumItemsRelationshipUpdateOperationPayload: AlbumItemsRelationshipUpdateOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, albumItemsRelationshipUpdateOperationPayload: albumItemsRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: AlbumsMultiRelationshipDataDocument
@@ -154,6 +166,18 @@ public enum AlbumsAPITidal {
 	public static func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
+     Get suggestedCoverArts relationship (\&quot;to-many\&quot;).
+     
+     - returns: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
+     */
+	public static func albumsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumsSuggestedCoverArtsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsSuggestedCoverArtsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 

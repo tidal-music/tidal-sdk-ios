@@ -17,12 +17,12 @@ internal class UserCollectionsAPI {
      
      - parameter id: (path) User id 
      - parameter locale: (query) BCP 47 locale 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
      - returns: UserCollectionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdGet(id: String, locale: String, countryCode: String, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
+    internal class func userCollectionsIdGet(id: String, locale: String, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
         do {
             return try await userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -40,11 +40,11 @@ internal class UserCollectionsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
      - parameter locale: (query) BCP 47 locale 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
      - returns: RequestBuilder<UserCollectionsSingleResourceDataDocument> 
      */
-    internal class func userCollectionsIdGetWithRequestBuilder(id: String, locale: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
+    internal class func userCollectionsIdGetWithRequestBuilder(id: String, locale: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
         var localVariablePath = "/userCollections/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -55,7 +55,7 @@ internal class UserCollectionsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -137,17 +137,17 @@ internal class UserCollectionsAPI {
      Get albums relationship (\"to-many\").
      
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: UserCollectionsAlbumsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
+            return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, locale: locale, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -162,14 +162,14 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -179,10 +179,10 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -201,12 +201,12 @@ internal class UserCollectionsAPI {
      Add to albums relationship (\"to-many\").
      
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String, userCollectionAlbumsRelationshipAddOperationPayload: UserCollectionAlbumsRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, userCollectionAlbumsRelationshipAddOperationPayload: UserCollectionAlbumsRelationshipAddOperationPayload? = nil) async throws {
         do {
             return try await userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionAlbumsRelationshipAddOperationPayload: userCollectionAlbumsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -223,11 +223,11 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: String, countryCode: String, userCollectionAlbumsRelationshipAddOperationPayload: UserCollectionAlbumsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: String, countryCode: String? = nil, userCollectionAlbumsRelationshipAddOperationPayload: UserCollectionAlbumsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -237,7 +237,7 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -314,17 +314,17 @@ internal class UserCollectionsAPI {
      Get artists relationship (\"to-many\").
      
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: UserCollectionsArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
+            return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, locale: locale, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -339,14 +339,14 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -356,10 +356,10 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -378,12 +378,12 @@ internal class UserCollectionsAPI {
      Add to artists relationship (\"to-many\").
      
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String, userCollectionArtistsRelationshipAddOperationPayload: UserCollectionArtistsRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, userCollectionArtistsRelationshipAddOperationPayload: UserCollectionArtistsRelationshipAddOperationPayload? = nil) async throws {
         do {
             return try await userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionArtistsRelationshipAddOperationPayload: userCollectionArtistsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -400,11 +400,11 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: String, countryCode: String, userCollectionArtistsRelationshipAddOperationPayload: UserCollectionArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: String, countryCode: String? = nil, userCollectionArtistsRelationshipAddOperationPayload: UserCollectionArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -414,7 +414,7 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -533,6 +533,13 @@ internal class UserCollectionsAPI {
     }
 
     /**
+     * enum for parameter collectionView
+     */
+    public enum CollectionView_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
+        case folders = "FOLDERS"
+    }
+
+    /**
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
@@ -548,15 +555,16 @@ internal class UserCollectionsAPI {
      Get playlists relationship (\"to-many\").
      
      - parameter id: (path) User id 
+     - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: UserCollectionsPlaylistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, collectionView: CollectionView_userCollectionsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, include: include).execute().body
+            return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, collectionView: collectionView, pageCursor: pageCursor, sort: sort, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -571,12 +579,13 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
+     - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, collectionView: CollectionView_userCollectionsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -586,6 +595,7 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "collectionView": (wrappedValue: collectionView?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
@@ -720,17 +730,17 @@ internal class UserCollectionsAPI {
      Get tracks relationship (\"to-many\").
      
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: UserCollectionsTracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsTracksGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsTracksGet(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
+            return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, locale: locale, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -745,14 +755,14 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -762,10 +772,10 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -784,12 +794,12 @@ internal class UserCollectionsAPI {
      Add to tracks relationship (\"to-many\").
      
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String, userCollectionTracksRelationshipAddOperationPayload: UserCollectionTracksRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, userCollectionTracksRelationshipAddOperationPayload: UserCollectionTracksRelationshipAddOperationPayload? = nil) async throws {
         do {
             return try await userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionTracksRelationshipAddOperationPayload: userCollectionTracksRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -806,11 +816,11 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: String, countryCode: String, userCollectionTracksRelationshipAddOperationPayload: UserCollectionTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: String, countryCode: String? = nil, userCollectionTracksRelationshipAddOperationPayload: UserCollectionTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -820,7 +830,7 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -901,17 +911,17 @@ internal class UserCollectionsAPI {
      Get videos relationship (\"to-many\").
      
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: UserCollectionsVideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsVideosGet(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsVideosGet(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, pageCursor: pageCursor, sort: sort, include: include).execute().body
+            return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, locale: locale, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -926,14 +936,14 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter locale: (query) BCP 47 locale 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, countryCode: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -943,10 +953,10 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -965,12 +975,12 @@ internal class UserCollectionsAPI {
      Add to videos relationship (\"to-many\").
      
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String, userCollectionVideosRelationshipAddOperationPayload: UserCollectionVideosRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, userCollectionVideosRelationshipAddOperationPayload: UserCollectionVideosRelationshipAddOperationPayload? = nil) async throws {
         do {
             return try await userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionVideosRelationshipAddOperationPayload: userCollectionVideosRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -987,11 +997,11 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: String, countryCode: String, userCollectionVideosRelationshipAddOperationPayload: UserCollectionVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: String, countryCode: String? = nil, userCollectionVideosRelationshipAddOperationPayload: UserCollectionVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1001,7 +1011,7 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
