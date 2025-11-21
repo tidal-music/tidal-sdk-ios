@@ -13,13 +13,13 @@ import AnyCodable
 public struct AlbumsSuggestedCoverArtsResourceIdentifierMeta: Codable, Hashable {
 
     /** Background color for the suggested artwork */
-    public var backgroundColor: String?
+    public var backgroundColor: String
     /** Foreground color for the suggested artwork */
-    public var foregroundColor: String?
+    public var foregroundColor: String
 
     public init(
-        backgroundColor: String? = nil,
-        foregroundColor: String? = nil
+        backgroundColor: String,
+        foregroundColor: String
     ) {
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
@@ -34,7 +34,7 @@ public struct AlbumsSuggestedCoverArtsResourceIdentifierMeta: Codable, Hashable 
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(backgroundColor, forKey: .backgroundColor)
-        try container.encodeIfPresent(foregroundColor, forKey: .foregroundColor)
+        try container.encode(backgroundColor, forKey: .backgroundColor)
+        try container.encode(foregroundColor, forKey: .foregroundColor)
     }
 }

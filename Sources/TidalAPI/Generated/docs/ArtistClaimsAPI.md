@@ -175,7 +175,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsPatch**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update acceptedArtists relationship (\"to-many\").
@@ -188,10 +188,11 @@ Updates acceptedArtists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let artistClaimAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
 
 // Update acceptedArtists relationship (\"to-many\").
-ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, countryCode: countryCode, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -208,6 +209,7 @@ ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, artistCl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **artistClaimAcceptedArtistsRelationshipUpdateOperationPayload** | [**ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload**](ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
