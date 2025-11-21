@@ -196,7 +196,7 @@ private extension PlaybackInfoFetcher {
 				productId: trackId,
 				streamType: .ON_DEMAND,
 				assetPresentation: convertTrackPresentation(attributes?.trackPresentation),
-				audioMode: .STEREO, // Default value, may need refinement
+				audioMode: getAudioModeFromFormats(attributes?.formats),
 				audioQuality: actualAudioQuality,
 				audioCodec: getAudioCodecFromFormats(attributes?.formats),
 				audioSampleRate: nil, // Not available in new API
@@ -454,6 +454,14 @@ private extension PlaybackInfoFetcher {
 		
 		return nil
 	}
+
+    private func getAudioModeFromFormats(_ formats: [TrackManifestsAttributes.Formats]?) -> AudioMode {
+		if let formats = formats, formats.contains(.eac3Joc) {
+			return .DOLBY_ATMOS
+		}
+
+		return .STEREO
+    }
 	
 	/// Extracts license security token from new DRM data format
 	/// Note: Current DRM system doesn't actually use licenseSecurityToken - it uses dynamic URLs
