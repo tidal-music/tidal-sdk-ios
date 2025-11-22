@@ -520,7 +520,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let playlistItemsRelationshipAddOperationPayload = PlaylistItemsRelationshipAddOperation_Payload(data: [PlaylistItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlaylistItemsRelationshipAddOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistItemsRelationshipAddOperationPayload |  (optional)
+let playlistItemsRelationshipAddOperationPayload = PlaylistItemsRelationshipAddOperation_Payload(data: [PlaylistItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: PlaylistItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")], meta: PlaylistItemsRelationshipAddOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
 PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, countryCode: countryCode, playlistItemsRelationshipAddOperationPayload: playlistItemsRelationshipAddOperationPayload) { (response, error) in
