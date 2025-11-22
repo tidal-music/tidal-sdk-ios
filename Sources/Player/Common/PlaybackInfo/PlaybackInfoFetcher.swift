@@ -442,7 +442,8 @@ private extension PlaybackInfoFetcher {
 			(.flacHires, .FLAC),
 			(.flac, .FLAC),
 			(.aaclc, .AAC_LC),
-			(.heaacv1, .HE_AAC_V1)
+			(.heaacv1, .HE_AAC_V1),
+			(.eac3Joc, .EAC3)
 		]
 		
 		// Return the highest quality codec available
