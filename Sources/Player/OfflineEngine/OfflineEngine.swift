@@ -39,6 +39,11 @@ public final class OfflineEngine {
 		return false
 	}
 
+	public func cancelOffline(mediaProduct: MediaProduct) -> Bool {
+		downloader.cancel(mediaProduct: mediaProduct)
+		return true
+	}
+
 	public func deleteOffline(mediaProduct: MediaProduct) -> Bool {
 		guard let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId) else {
 			return false

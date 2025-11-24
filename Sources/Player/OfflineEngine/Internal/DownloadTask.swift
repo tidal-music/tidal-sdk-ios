@@ -33,6 +33,8 @@ final class DownloadTask {
 	private var localLicenseUrl: URL?
 	private var localAssetSize: Int?
 
+	@Atomic private var isCancelled: Bool = false
+
 	init(
 		mediaProduct: MediaProduct,
 		networkType: NetworkType,
@@ -130,6 +132,26 @@ final class DownloadTask {
 			self.monitor?.failed(downloadTask: self, with: error)
 		}
 	}
+
+	func cancel() {
+		queue.dispatch {
+			self.isCancelled = true
+			self.endTimestamp = PlayerWorld.timeProvider.timestamp()
+
+			// Clean up any downloaded files
+			do {
+				let fileManager = PlayerWorld.fileManagerClient
+				if let localAssetUrl = self.localAssetUrl {
+					try fileManager.removeItem(at: localAssetUrl)
+				}
+				if let localLicenseUrl = self.localLicenseUrl {
+					try fileManager.removeItem(at: localLicenseUrl)
+				}
+			} catch {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadCancelFailed(error: error))
+			}
+		}
+	}
 }
 
 private extension DownloadTask {
@@ -182,6 +204,11 @@ private extension DownloadTask {
 	}
 
 	func finalize() {
+		// Don't complete if download was cancelled
+		guard !isCancelled else {
+			return
+		}
+
 		guard let playbackInfo, let localAssetUrl, let localAssetSize else {
 			return
 		}

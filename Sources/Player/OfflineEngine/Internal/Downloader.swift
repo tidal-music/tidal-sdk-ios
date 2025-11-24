@@ -43,16 +43,26 @@ class Downloader {
 		outputDevice: String? = nil
 	) {
 		let taskID = mediaProduct.productId
+		let downloadTask = DownloadTask(
+			mediaProduct: mediaProduct,
+			networkType: self.networkMonitor.getNetworkType(),
+			outputDevice: outputDevice,
+			sessionType: sessionType,
+			monitor: self
+		)
 		let task = SafeTask {
-			await start(DownloadTask(
-				mediaProduct: mediaProduct,
-				networkType: self.networkMonitor.getNetworkType(),
-				outputDevice: outputDevice,
-				sessionType: sessionType,
-				monitor: self
-			))
+			await self.start(downloadTask)
 		}
 		activeTasks[taskID] = task
+	}
+
+	func cancel(mediaProduct: MediaProduct) {
+		let taskID = mediaProduct.productId
+		if let task = activeTasks[taskID] {
+			task.cancel()
+			activeTasks.removeValue(forKey: taskID)
+		}
+		mediaDownloader.cancel(for: mediaProduct)
 	}
 
 	func cancellAll() {
