@@ -41,7 +41,6 @@ public final class OfflineEngine {
 
 	public func cancelOffline(mediaProduct: MediaProduct) -> Bool {
 		downloader.cancel(mediaProduct: mediaProduct)
-		return true
 	}
 
 	public func deleteOffline(mediaProduct: MediaProduct) -> Bool {

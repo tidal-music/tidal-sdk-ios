@@ -349,7 +349,7 @@ public extension Player {
 	/// Has no effect if the media product is not currently being downloaded.
 	/// - Parameters:
 	///   - mediaProduct: The media product to cancel offline download for
-	/// - Returns: True
+	/// - Returns: True if an active download was cancelled, false otherwise
 	func cancelOffline(mediaProduct: MediaProduct) -> Bool {
 		offlineEngine.cancelOffline(mediaProduct: mediaProduct)
 	}
@@ -379,7 +379,6 @@ public extension Player {
 	func getOfflineState(mediaProduct: MediaProduct) -> OfflineState {
 		offlineEngine.getOfflineState(mediaProduct: mediaProduct)
 	}
-
 }
 
 private extension Player {

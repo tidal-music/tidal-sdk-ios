@@ -36,7 +36,6 @@ final class PlayerEngine {
 			if state.publicState != oldValue.publicState {
 				notificationsHandler?.stateChanged(to: state.publicState)
 			}
-
 		}
 	}
 
@@ -370,7 +369,6 @@ extension PlayerEngine: PlayerItemMonitor {
 				return
 			}
 
-			self.state = .IDLE
 			self.notificationsHandler?.ended(playerItem)
 
 			// The order is important due to logic for emitting events in didSet of the items.

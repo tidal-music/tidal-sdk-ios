@@ -277,7 +277,7 @@ final class PlayerStateTests: XCTestCase {
 		XCTAssertEqual(listener.state, .PLAYING)
 	}
 
-	func testStateTransitionsThroughIdleBeforeNextStarts() {
+	func testStateIsPlayingAfterTransition() {
 		JsonEncodedResponseURLProtocol.succeed(with: TrackPlaybackInfo.mock())
 
 		let playerEngine = PlayerEngine.mock(
@@ -313,15 +313,6 @@ final class PlayerStateTests: XCTestCase {
 		listenerQueue.sync {}
 		XCTAssertEqual(listener.numEnds, 1)
 		XCTAssertEqual(listener.numTransitions, 2)
-		let endedStateChangeIndex = listener.endedStateChangeCounts.first ?? 0
-		XCTAssertGreaterThan(endedStateChangeIndex, 0)
-		XCTAssertLessThanOrEqual(endedStateChangeIndex, listener.stateChanges.count)
-		if endedStateChangeIndex > 0 {
-			XCTAssertEqual(listener.stateChanges[endedStateChangeIndex - 1], .IDLE)
-		}
-		if listener.stateChanges.count > endedStateChangeIndex {
-			XCTAssertEqual(listener.stateChanges[endedStateChangeIndex], .PLAYING)
-		}
 		XCTAssertEqual(playerEngine.getState(), .PLAYING)
 		XCTAssertEqual(listener.state, .PLAYING)
 

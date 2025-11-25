@@ -40,13 +40,11 @@ final class MediaDownloader: NSObject {
 	}
 
 	func cancel(for mediaProduct: MediaProduct) {
-		for (urlTask, downloadTask) in activeTasks {
-			if downloadTask.mediaProduct.productId == mediaProduct.productId {
-				downloadTask.cancel()
-				urlTask.cancel()
-				activeTasks.removeValue(forKey: urlTask)
-				break
-			}
+		for (urlTask, downloadTask) in activeTasks where downloadTask.mediaProduct.productId == mediaProduct.productId {
+			downloadTask.cancel()
+			urlTask.cancel()
+			activeTasks.removeValue(forKey: urlTask)
+			break
 		}
 	}
 
@@ -55,6 +53,7 @@ final class MediaDownloader: NSObject {
 			downloadTask.cancel()
 			task.cancel()
 		}
+		activeTasks.removeAll()
 	}
 }
 
