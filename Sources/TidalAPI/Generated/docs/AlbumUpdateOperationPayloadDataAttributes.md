@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**accessType** | **String** | Access type | [optional] 
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **explicitLyrics** | **Bool** |  | [optional] 
 **releaseDate** | **Date** |  | [optional] 
