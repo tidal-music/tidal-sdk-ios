@@ -1,12 +1,11 @@
 @testable import Player
-import Foundation
 import Testing
 
 @Test("Cancel executes without throwing")
 func cancelExecutesSuccessfully() {
 	// Given: A download task
 	let mediaProduct = MediaProduct(productType: .TRACK, productId: "123")
-	let monitor = MockDownloadTaskMonitor()
+	let monitor = DownloadTaskMonitorMock()
 	let downloadTask = DownloadTask(
 		mediaProduct: mediaProduct,
 		networkType: .WIFI,
@@ -30,7 +29,7 @@ func cancelExecutesSuccessfully() {
 func cancelIsIdempotent() {
 	// Given: A download task
 	let mediaProduct = MediaProduct(productType: .TRACK, productId: "123")
-	let monitor = MockDownloadTaskMonitor()
+	let monitor = DownloadTaskMonitorMock()
 	let downloadTask = DownloadTask(
 		mediaProduct: mediaProduct,
 		networkType: .WIFI,
@@ -48,34 +47,4 @@ func cancelIsIdempotent() {
 	// File cleanup errors are logged but don't throw
 	#expect(monitor.failedCalls == 0)
 	#expect(monitor.completedCalls == 0)
-}
-
-// MARK: - Mock DownloadTaskMonitor
-
-private class MockDownloadTaskMonitor: DownloadTaskMonitor {
-	var completedCalls = 0
-	var failedCalls = 0
-	var progressCalls = 0
-	var startedCalls = 0
-	var emittedEvents: [any StreamingMetricsEvent] = []
-
-	func emit(event: any StreamingMetricsEvent) {
-		emittedEvents.append(event)
-	}
-
-	func started(downloadTask: DownloadTask) {
-		startedCalls += 1
-	}
-
-	func progress(downloadTask: DownloadTask, progress: Double) {
-		progressCalls += 1
-	}
-
-	func completed(downloadTask: DownloadTask, offlineEntry: OfflineEntry) {
-		completedCalls += 1
-	}
-
-	func failed(downloadTask: DownloadTask, with error: Error) {
-		failedCalls += 1
-	}
 }
