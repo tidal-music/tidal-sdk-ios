@@ -1,9 +1,8 @@
-# TrackFilesIdGet403ResponseErrorsInner
+# Default503ResponseBodyErrorsInner
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**code** | **String** |  | 
 **detail** | **String** |  | [optional] 
 **status** | **String** |  | 
 

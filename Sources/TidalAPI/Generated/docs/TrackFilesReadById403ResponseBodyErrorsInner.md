@@ -1,4 +1,4 @@
-# TrackFilesIdGet404ResponseErrorsInner
+# TrackFilesReadById403ResponseBodyErrorsInner
 
 ## Properties
 Name | Type | Description | Notes
