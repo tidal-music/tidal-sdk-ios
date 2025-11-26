@@ -7,25 +7,28 @@ enum RequestHelper {
 		customHeaders: [String: String] = [:],
 		requestBuilder: @escaping () async throws -> RequestBuilder<T>
 	) async throws -> T {
-		let retryHandler = TidalAPIRetryHandler {
-			try await executeRequestWithAuth(
-				customHeaders: customHeaders,
-				requestBuilder: requestBuilder
-			)
-		}
+		let builder = try await requestBuilder()
+		let retryHandler = TidalAPIRetryHandler(
+			httpMethod: builder.method,
+			executionBlock: {
+				try await executeRequestWithAuth(
+					customHeaders: customHeaders,
+					builder: builder
+				)
+			})
+
 		return try await retryHandler.execute()
 	}
 
 	private static func executeRequestWithAuth<T>(
 		customHeaders: [String: String],
-		requestBuilder: @escaping () async throws -> RequestBuilder<T>
+		builder: RequestBuilder<T>
 	) async throws -> T {
 		guard let credentialsProvider = OpenAPIClientAPI.credentialsProvider else {
 			throw TidalAPIError(message: "NO_CREDENTIALS_PROVIDER", url: "Not available")
 		}
 
 		let credentials = try await credentialsProvider.getCredentials()
-		let builder = try await requestBuilder()
 		let requestURL = builder.URLString
 		guard let token = credentials.token else {
 			throw TidalAPIError(

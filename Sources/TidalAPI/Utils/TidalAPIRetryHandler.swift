@@ -12,14 +12,17 @@ final class TidalAPIRetryHandler<T> {
 	private let networkErrorManager: ErrorManager
 	private let timeoutErrorManager: ErrorManager
 	private let authenticationErrorManager: TidalAPIAuthenticationErrorManager
+	private let retryable: Bool
 
 	init(
+		httpMethod: String,
 		executionBlock: @escaping RequestBuilderExecutor<T>,
 		responseErrorManager: ErrorManager = TidalAPIResponseErrorManager(),
 		networkErrorManager: ErrorManager = TidalAPINetworkErrorManager(),
 		timeoutErrorManager: ErrorManager = TidalAPITimeoutErrorManager(),
 		authenticationErrorManager: TidalAPIAuthenticationErrorManager = TidalAPIAuthenticationErrorManager()
 	) {
+		self.retryable = TidalAPIRetryHandler.retryable(httpMethod: httpMethod)
 		self.executionBlock = executionBlock
 		self.responseErrorManager = responseErrorManager
 		self.networkErrorManager = networkErrorManager
@@ -37,7 +40,7 @@ final class TidalAPIRetryHandler<T> {
             case 401:
                 await authenticationErrorManager.handleAuthenticationError(httpError, attemptCount: attemptCount)
             case 429, 500..<600:
-                responseErrorManager.onError(httpError, attemptCount: attemptCount)
+				retryable ? responseErrorManager.onError(httpError, attemptCount: attemptCount) : .NONE
             default:
                 .NONE
             }
@@ -59,7 +62,7 @@ final class TidalAPIRetryHandler<T> {
 				.NONE
 			}
 
-            if case .BACKOFF(let duration) = strategy {
+            if case .BACKOFF(let duration) = strategy, retryable {
                 try await Task.sleep(seconds: duration)
                 return try await execute(attemptCount: attemptCount + 1)
             }
@@ -109,4 +112,8 @@ final class TidalAPIRetryHandler<T> {
 
 		return nil
 	}
+
+	private static func retryable(httpMethod: String) -> Bool {
+        return ["GET", "HEAD", "OPTIONS"].contains(httpMethod.uppercased())
+    }
 }
