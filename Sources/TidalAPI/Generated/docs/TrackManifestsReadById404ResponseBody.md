@@ -1,11 +1,9 @@
-# PlaylistItemsRelationshipAddOperationPayloadData
+# TrackManifestsReadById404ResponseBody
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **String** |  | 
-**meta** | [**PlaylistItemsRelationshipAddOperationPayloadDataMeta**](PlaylistItemsRelationshipAddOperationPayloadDataMeta.md) |  | [optional] 
-**type** | **String** |  | 
+**errors** | [TrackFilesReadById404ResponseBodyErrorsInner] |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

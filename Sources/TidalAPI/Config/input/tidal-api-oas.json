@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.0.4"
+    "version" : "1.0.6"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -12915,32 +12915,8 @@
       "Default400Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "detail" : "The request is malformed or invalid",
-                "status" : "400"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/Default400ResponseBody"
             }
           }
         },
@@ -12949,32 +12925,8 @@
       "Default404Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "detail" : "The requested resource was not found",
-                "status" : "404"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/Default404ResponseBody"
             }
           }
         },
@@ -12983,32 +12935,8 @@
       "Default405Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "detail" : "The HTTP method is not allowed for the requested resource",
-                "status" : "405"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/Default405ResponseBody"
             }
           }
         },
@@ -13017,32 +12945,8 @@
       "Default406Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "detail" : "A response that satisfies the content negotiation headers cannot be produced",
-                "status" : "406"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/Default406ResponseBody"
             }
           }
         },
@@ -13051,32 +12955,8 @@
       "Default415Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "detail" : "Unsupported request payload media type or content encoding",
-                "status" : "415"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/Default415ResponseBody"
             }
           }
         },
@@ -13085,32 +12965,8 @@
       "Default429Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "detail" : "Rate limit exceeded",
-                "status" : "429"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/Default429ResponseBody"
             }
           }
         },
@@ -13119,32 +12975,8 @@
       "Default500Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "detail" : "An unexpected error was encountered",
-                "status" : "500"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/Default500ResponseBody"
             }
           }
         },
@@ -13153,32 +12985,8 @@
       "Default503Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "detail" : "Temporarily unavailable; please try again later",
-                "status" : "503"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/Default503ResponseBody"
             }
           }
         },
@@ -13187,37 +12995,8 @@
       "TrackFilesReadById403Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "code" : "PREREQUISITE_MISSING",
-                "detail" : "Cannot fulfill this request because required prerequisites are missing",
-                "status" : "403"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "code" : {
-                        "type" : "string",
-                        "enum" : [ "CLIENT_NOT_ENTITLED", "CONCURRENT_PLAYBACK", "GEO_RESTRICTED", "PREREQUISITE_MISSING", "PURCHASE_REQUIRED" ]
-                      },
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "code", "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/TrackFilesReadById403ResponseBody"
             }
           }
         },
@@ -13226,37 +13005,8 @@
       "TrackFilesReadById404Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "code" : "CONTENT_NOT_FOUND",
-                "detail" : "The requested content does not exist or is no longer available",
-                "status" : "404"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "code" : {
-                        "type" : "string",
-                        "enum" : [ "CONTENT_NOT_FOUND" ]
-                      },
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "code", "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/TrackFilesReadById404ResponseBody"
             }
           }
         },
@@ -13265,37 +13015,8 @@
       "TrackManifestsReadById403Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "code" : "PREREQUISITE_MISSING",
-                "detail" : "Cannot fulfill this request because required prerequisites are missing",
-                "status" : "403"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "code" : {
-                        "type" : "string",
-                        "enum" : [ "CLIENT_NOT_ENTITLED", "CONCURRENT_PLAYBACK", "GEO_RESTRICTED", "PREREQUISITE_MISSING", "PURCHASE_REQUIRED" ]
-                      },
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "code", "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/TrackManifestsReadById403ResponseBody"
             }
           }
         },
@@ -13304,37 +13025,8 @@
       "TrackManifestsReadById404Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : {
-              "errors" : [ {
-                "code" : "CONTENT_NOT_FOUND",
-                "detail" : "The requested content does not exist or is no longer available",
-                "status" : "404"
-              } ]
-            },
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "errors" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "object",
-                    "properties" : {
-                      "code" : {
-                        "type" : "string",
-                        "enum" : [ "CONTENT_NOT_FOUND" ]
-                      },
-                      "detail" : {
-                        "type" : "string"
-                      },
-                      "status" : {
-                        "type" : "string"
-                      }
-                    },
-                    "required" : [ "code", "status" ]
-                  }
-                }
-              },
-              "required" : [ "errors" ]
+              "$ref" : "#/components/schemas/TrackManifestsReadById404ResponseBody"
             }
           }
         },
@@ -13572,6 +13264,12 @@
       "AlbumUpdateOperation_Payload_Data_Attributes" : {
         "type" : "object",
         "properties" : {
+          "accessType" : {
+            "type" : "string",
+            "description" : "Access type",
+            "example" : "PRIVATE",
+            "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
+          },
           "copyright" : {
             "$ref" : "#/components/schemas/Copyright"
           },
@@ -14319,6 +14017,13 @@
             "type" : "string",
             "description" : "The artist id which is being claimed"
           },
+          "externalLinks" : {
+            "type" : "array",
+            "description" : "Artist claim links external to TIDAL API",
+            "items" : {
+              "$ref" : "#/components/schemas/External_Link"
+            }
+          },
           "provider" : {
             "minLength" : 1,
             "type" : "string",
@@ -14329,10 +14034,6 @@
             "type" : "string",
             "description" : "The recommended claim resolution",
             "enum" : [ "CLAIM_PROFILE", "CLAIM_CONTENT" ]
-          },
-          "redirectUrl" : {
-            "type" : "string",
-            "description" : "The DSP redirect url used for authentication"
           },
           "retrievedUpcs" : {
             "type" : "array",
@@ -15295,6 +14996,190 @@
           }
         }
       },
+      "Default400ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "detail" : {
+                  "type" : "string",
+                  "example" : "The request is malformed or invalid"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "400"
+                }
+              },
+              "required" : [ "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "Default404ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "detail" : {
+                  "type" : "string",
+                  "example" : "The requested resource was not found"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "404"
+                }
+              },
+              "required" : [ "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "Default405ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "detail" : {
+                  "type" : "string",
+                  "example" : "The HTTP method is not allowed for the requested resource"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "405"
+                }
+              },
+              "required" : [ "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "Default406ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "detail" : {
+                  "type" : "string",
+                  "example" : "A response that satisfies the content negotiation headers cannot be produced"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "406"
+                }
+              },
+              "required" : [ "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "Default415ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "detail" : {
+                  "type" : "string",
+                  "example" : "Unsupported request payload media type or content encoding"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "415"
+                }
+              },
+              "required" : [ "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "Default429ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "detail" : {
+                  "type" : "string",
+                  "example" : "Rate limit exceeded"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "429"
+                }
+              },
+              "required" : [ "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "Default500ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "detail" : {
+                  "type" : "string",
+                  "example" : "An unexpected error was encountered"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "500"
+                }
+              },
+              "required" : [ "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "Default503ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "detail" : {
+                  "type" : "string",
+                  "example" : "Temporarily unavailable; please try again later"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "503"
+                }
+              },
+              "required" : [ "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
       "DrmData" : {
         "type" : "object",
         "properties" : {
@@ -15388,7 +15273,7 @@
         "properties" : {
           "type" : {
             "type" : "string",
-            "enum" : [ "TIDAL_SHARING", "TIDAL_USER_SHARING", "TIDAL_AUTOPLAY_ANDROID", "TIDAL_AUTOPLAY_IOS", "TIDAL_AUTOPLAY_WEB", "TWITTER", "FACEBOOK", "INSTAGRAM", "TIKTOK", "SNAPCHAT", "OFFICIAL_HOMEPAGE", "CASHAPP_CONTRIBUTIONS" ]
+            "enum" : [ "TIDAL_SHARING", "TIDAL_USER_SHARING", "TIDAL_AUTOPLAY_ANDROID", "TIDAL_AUTOPLAY_IOS", "TIDAL_AUTOPLAY_WEB", "TWITTER", "FACEBOOK", "INSTAGRAM", "TIKTOK", "SNAPCHAT", "OFFICIAL_HOMEPAGE", "CASHAPP_CONTRIBUTIONS", "ARTIST_CLAIM_PROVIDER_REDIRECT" ]
           }
         },
         "description" : "metadata about an external link"
@@ -16504,9 +16389,22 @@
           "id" : {
             "type" : "string"
           },
+          "meta" : {
+            "$ref" : "#/components/schemas/PlaylistItemsRelationshipAddOperation_Payload_Data_Meta"
+          },
           "type" : {
             "type" : "string",
             "enum" : [ "tracks", "videos" ]
+          }
+        }
+      },
+      "PlaylistItemsRelationshipAddOperation_Payload_Data_Meta" : {
+        "required" : [ "addedAt" ],
+        "type" : "object",
+        "properties" : {
+          "addedAt" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       },
@@ -17282,7 +17180,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "tracks" ]
+            "enum" : [ "tracks", "albums" ]
           }
         }
       },
@@ -17596,6 +17494,62 @@
           }
         }
       },
+      "TrackFilesReadById403ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "code" : {
+                  "type" : "string",
+                  "example" : "CLIENT_NOT_ENTITLED",
+                  "enum" : [ "CLIENT_NOT_ENTITLED", "CONCURRENT_PLAYBACK", "GEO_RESTRICTED", "PREREQUISITE_MISSING", "PURCHASE_REQUIRED" ]
+                },
+                "detail" : {
+                  "type" : "string",
+                  "example" : "Cannot fulfill this request because required prerequisites are missing"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "403"
+                }
+              },
+              "required" : [ "code", "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "TrackFilesReadById404ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "code" : {
+                  "type" : "string",
+                  "example" : "CONTENT_NOT_FOUND",
+                  "enum" : [ "CONTENT_NOT_FOUND" ]
+                },
+                "detail" : {
+                  "type" : "string",
+                  "example" : "The requested content does not exist or is no longer available"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "404"
+                }
+              },
+              "required" : [ "code", "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
       "TrackFiles_Attributes" : {
         "type" : "object",
         "properties" : {
@@ -17673,6 +17627,62 @@
             "$ref" : "#/components/schemas/Links"
           }
         }
+      },
+      "TrackManifestsReadById403ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "code" : {
+                  "type" : "string",
+                  "example" : "CLIENT_NOT_ENTITLED",
+                  "enum" : [ "CLIENT_NOT_ENTITLED", "CONCURRENT_PLAYBACK", "GEO_RESTRICTED", "PREREQUISITE_MISSING", "PURCHASE_REQUIRED" ]
+                },
+                "detail" : {
+                  "type" : "string",
+                  "example" : "Cannot fulfill this request because required prerequisites are missing"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "403"
+                }
+              },
+              "required" : [ "code", "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "TrackManifestsReadById404ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "code" : {
+                  "type" : "string",
+                  "example" : "CONTENT_NOT_FOUND",
+                  "enum" : [ "CONTENT_NOT_FOUND" ]
+                },
+                "detail" : {
+                  "type" : "string",
+                  "example" : "The requested content does not exist or is no longer available"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "404"
+                }
+              },
+              "required" : [ "code", "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
       },
       "TrackManifests_Attributes" : {
         "type" : "object",

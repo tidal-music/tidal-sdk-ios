@@ -12,6 +12,13 @@ import AnyCodable
 
 public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public enum AccessType: String, Codable, CaseIterable {
+        case _public = "PUBLIC"
+        case unlisted = "UNLISTED"
+        case _private = "PRIVATE"
+    }
+    /** Access type */
+    public var accessType: AccessType?
     public var copyright: Copyright?
     public var explicitLyrics: Bool?
     public var releaseDate: Date?
@@ -19,12 +26,14 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public var version: String?
 
     public init(
+        accessType: AccessType? = nil,
         copyright: Copyright? = nil,
         explicitLyrics: Bool? = nil,
         releaseDate: Date? = nil,
         title: String? = nil,
         version: String? = nil
     ) {
+        self.accessType = accessType
         self.copyright = copyright
         self.explicitLyrics = explicitLyrics
         self.releaseDate = releaseDate
@@ -33,6 +42,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case accessType
         case copyright
         case explicitLyrics
         case releaseDate
@@ -44,6 +54,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(accessType, forKey: .accessType)
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)

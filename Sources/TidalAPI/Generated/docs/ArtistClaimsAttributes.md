@@ -4,9 +4,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **artistId** | **String** | The artist id which is being claimed | 
+**externalLinks** | [ExternalLink] | Artist claim links external to TIDAL API | [optional] 
 **provider** | **String** | The DSP used for authentication | 
 **recommendation** | **String** | The recommended claim resolution | [optional] 
-**redirectUrl** | **String** | The DSP redirect url used for authentication | [optional] 
 **retrievedUpcs** | [BarcodeId] | List of UPCs retrieved from the DSP | [optional] 
 **status** | **String** | Current status of this claim | 
 

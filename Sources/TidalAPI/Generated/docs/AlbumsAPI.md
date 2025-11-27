@@ -200,7 +200,7 @@ Updates existing album.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let albumUpdateOperationPayload = AlbumUpdateOperation_Payload(data: AlbumUpdateOperation_Payload_Data(attributes: AlbumUpdateOperation_Payload_Data_Attributes(copyright: Copyright(text: "text_example"), explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumUpdateOperation_Payload_Data_Relationships(genres: AlbumUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumUpdateOperationPayload |  (optional)
+let albumUpdateOperationPayload = AlbumUpdateOperation_Payload(data: AlbumUpdateOperation_Payload_Data(attributes: AlbumUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", copyright: Copyright(text: "text_example"), explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumUpdateOperation_Payload_Data_Relationships(genres: AlbumUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumUpdateOperationPayload |  (optional)
 
 // Update single album.
 AlbumsAPI.albumsIdPatch(id: id, albumUpdateOperationPayload: albumUpdateOperationPayload) { (response, error) in
