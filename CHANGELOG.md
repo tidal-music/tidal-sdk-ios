@@ -7,40 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.9.5] - 2024-11-21
+## [0.10.0] - 2025-11-27
 
-## [0.9.7] - 2025-11-26
+### Added
+- OfflineEngine download cancellation support with `cancelOffline()` method for stopping in-progress downloads (Player)
+- Thread-safe cancellation using atomic flags to prevent race conditions in OfflineEngine (Player)
+- Automatic cleanup of partial download files (media and license) when OfflineEngine cancellation occurs (Player)
 
 ### Changed
 - Generated API code using spec version 1.0.6 (TidalAPI)
+- Disabled HTTP request retries for unsafe methods (POST, PUT, PATCH) to prevent unpredictable consequences (TidalAPI)
 
-- Output audiomode when playing from trackManifests endpoint
-
-## [0.9.6] - 2025-11-25
-
-### Changed
-- Generated API code using spec version 1.0.5 (TidalAPI)
-
-## [0.9.5] - 2025-11-22
-
-### Changed
-- Generated API code using spec version 1.0.5 (TidalAPI)
-
-## [0.9.4] - 2025-11-21
+## [0.9.5] - 2025-11-24
 
 ### Changed
 - Generated API code using spec version 1.0.4 (TidalAPI)
+- Output audiomode when playing from trackManifests endpoint (Player)
 
 ## [0.9.2] - 2025-11-18
 
-## [0.9.3] - 2025-11-20
-
 ### Changed
-- Generated API code using spec version 1.0.2 (TidalAPI)
-
-
-### Changed
-- Fix crash related to data race when unloading player
+- Fix crash related to data race when unloading player (Player)
 
 ## [0.9.1] - 2025-11-18
 
