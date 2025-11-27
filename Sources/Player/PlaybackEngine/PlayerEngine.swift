@@ -36,7 +36,6 @@ final class PlayerEngine {
 			if state.publicState != oldValue.publicState {
 				notificationsHandler?.stateChanged(to: state.publicState)
 			}
-
 		}
 	}
 

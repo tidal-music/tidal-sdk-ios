@@ -344,6 +344,16 @@ public extension Player {
 		offlineEngine.offline(mediaProduct: mediaProduct)
 	}
 
+	/// Cancels an ongoing offline download for the specified media product.
+	/// This prevents the download from completing and cleans up any partial files.
+	/// Has no effect if the media product is not currently being downloaded.
+	/// - Parameters:
+	///   - mediaProduct: The media product to cancel offline download for
+	/// - Returns: True if an active download was cancelled, false otherwise
+	func cancelOffline(mediaProduct: MediaProduct) -> Bool {
+		offlineEngine.cancelOffline(mediaProduct: mediaProduct)
+	}
+
 	/// Deletes an offlined media product. No difference is made between queued, executing or done offlines. Everything is removed
 	/// for the media product.
 	/// Async and thread safe. If returns true, progress can be tracked via OfflineDeletedMessage.
@@ -369,7 +379,6 @@ public extension Player {
 	func getOfflineState(mediaProduct: MediaProduct) -> OfflineState {
 		offlineEngine.getOfflineState(mediaProduct: mediaProduct)
 	}
-
 }
 
 private extension Player {

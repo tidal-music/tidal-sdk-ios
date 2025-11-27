@@ -43,16 +43,28 @@ class Downloader {
 		outputDevice: String? = nil
 	) {
 		let taskID = mediaProduct.productId
+		let downloadTask = DownloadTask(
+			mediaProduct: mediaProduct,
+			networkType: networkMonitor.getNetworkType(),
+			outputDevice: outputDevice,
+			sessionType: sessionType,
+			monitor: self
+		)
 		let task = SafeTask {
-			await start(DownloadTask(
-				mediaProduct: mediaProduct,
-				networkType: self.networkMonitor.getNetworkType(),
-				outputDevice: outputDevice,
-				sessionType: sessionType,
-				monitor: self
-			))
+			await self.start(downloadTask)
 		}
 		activeTasks[taskID] = task
+	}
+
+	func cancel(mediaProduct: MediaProduct) -> Bool {
+		let taskID = mediaProduct.productId
+		guard let task = activeTasks[taskID] else {
+			return false
+		}
+		task.cancel()
+		activeTasks.removeValue(forKey: taskID)
+		mediaDownloader.cancel(for: mediaProduct)
+		return true
 	}
 
 	func cancellAll() {
@@ -101,7 +113,9 @@ private extension Downloader {
 	func downloadHls(for downloadTask: DownloadTask, using playbackInfo: PlaybackInfo) {
 		let asset = AVURLAsset(url: playbackInfo.url)
 
-		if playbackInfo.licenseSecurityToken != nil || (playbackInfo.productType == .TRACK && featureFlagProvider.shouldUseNewPlaybackEndpoints()) {
+		if playbackInfo
+			.licenseSecurityToken != nil || (playbackInfo.productType == .TRACK && featureFlagProvider.shouldUseNewPlaybackEndpoints())
+		{
 			// Create license downloader first
 			let licenseDownloader = LicenseDownloader(
 				fairPlayLicenseFetcher: fairPlayLicenseFetcher,
@@ -112,11 +126,11 @@ private extension Downloader {
 			// Apple's requirement: Set up content key session BEFORE any asset operations
 			let drmQueue = DispatchQueue(label: "com.tidal.player.drm.download.\(downloadTask.id)", qos: .userInitiated)
 			downloadTask.contentKeySession.setDelegate(licenseDownloader, queue: drmQueue)
-			
+
 			// Add content key recipient before starting download
 			downloadTask.contentKeySession.addContentKeyRecipient(asset)
 			downloadTask.licenseDownloader = licenseDownloader
-			
+
 			// Preload certificate to avoid delays during download
 			Task {
 				do {
@@ -128,7 +142,7 @@ private extension Downloader {
 		}
 
 		downloadTask.playbackInfo = playbackInfo
-		
+
 		// Start media download only after DRM setup is complete
 		mediaDownloader.download(asset: asset, for: downloadTask)
 	}

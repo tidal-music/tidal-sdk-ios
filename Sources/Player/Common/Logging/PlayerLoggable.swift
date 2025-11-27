@@ -72,6 +72,7 @@ enum PlayerLoggable: TidalLoggable {
 
 	case downloadFailed(error: Error)
 	case downloadFinalizeFailed(error: Error)
+	case downloadCancelFailed(error: Error)
 
 	// MARK: Offline Storage
 
@@ -293,6 +294,8 @@ extension PlayerLoggable {
 			"DownloadTask-downloadFailed"
 		case .downloadFinalizeFailed:
 			"DownloadTask-downloadFinalizeFailed"
+		case .downloadCancelFailed:
+			"DownloadTask-downloadCancelFailed"
 
 		// GRDBOfflineStorage
 		case .withDefaultDatabase:
@@ -480,6 +483,7 @@ extension PlayerLoggable {
 		     let .credentialsSuccessParserParsingFailed(error),
 		     let .downloadFailed(error),
 		     let .downloadFinalizeFailed(error),
+		     let .downloadCancelFailed(error),
 		     let .withDefaultDatabase(error),
 		     let .updateDBFileAttributes(error),
 		     let .saveOfflinedItemFailed(error),
@@ -601,6 +605,7 @@ extension PlayerLoggable {
 		     .credentialsSuccessParserParsingFailed,
 		     .downloadFailed,
 		     .downloadFinalizeFailed,
+		     .downloadCancelFailed,
 		     .withDefaultDatabase,
 		     .updateDBFileAttributes,
 		     .saveOfflinedItemFailed,
