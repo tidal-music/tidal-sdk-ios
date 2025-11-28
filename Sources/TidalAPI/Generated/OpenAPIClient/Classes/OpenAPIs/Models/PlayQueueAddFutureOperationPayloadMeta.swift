@@ -15,22 +15,27 @@ public struct PlayQueueAddFutureOperationPayloadMeta: Codable, Hashable {
     public enum Mode: String, Codable, CaseIterable {
         case addToFront = "ADD_TO_FRONT"
         case addToBack = "ADD_TO_BACK"
+        case addBefore = "ADD_BEFORE"
         case replaceAll = "REPLACE_ALL"
     }
     public var batchId: UUID?
     public var mode: Mode
+    public var positionBefore: String?
 
     public init(
         batchId: UUID? = nil,
-        mode: Mode
+        mode: Mode,
+        positionBefore: String? = nil
     ) {
         self.batchId = batchId
         self.mode = mode
+        self.positionBefore = positionBefore
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case batchId
         case mode
+        case positionBefore
     }
 
     // Encodable protocol methods
@@ -39,5 +44,6 @@ public struct PlayQueueAddFutureOperationPayloadMeta: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(batchId, forKey: .batchId)
         try container.encode(mode, forKey: .mode)
+        try container.encodeIfPresent(positionBefore, forKey: .positionBefore)
     }
 }
