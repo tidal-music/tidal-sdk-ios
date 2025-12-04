@@ -158,6 +158,18 @@ public enum PlaylistsAPITidal {
 
 
 	/**
+     Get ownerProfiles relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsOwnerProfilesGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: PlaylistsMultiRelationshipDataDocument

@@ -188,7 +188,7 @@ internal class TrackSourceFilesAPI {
     /**
      Create single trackSourceFile.
      - POST /trackSourceFiles
-     - Creates a new trackSourceFile.
+     - Create a track source file. <p/> The response contains a upload link that must be used to upload the actual content.<p/> The headers in the upload link response must be sent doing the actual upload. 
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

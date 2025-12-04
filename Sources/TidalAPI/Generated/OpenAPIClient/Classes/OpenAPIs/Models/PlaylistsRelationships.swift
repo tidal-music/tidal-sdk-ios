@@ -14,21 +14,25 @@ public struct PlaylistsRelationships: Codable, Hashable {
 
     public var coverArt: MultiRelationshipDataDocument
     public var items: PlaylistsItemsMultiRelationshipDataDocument
+    public var ownerProfiles: MultiRelationshipDataDocument
     public var owners: MultiRelationshipDataDocument
 
     public init(
         coverArt: MultiRelationshipDataDocument,
         items: PlaylistsItemsMultiRelationshipDataDocument,
+        ownerProfiles: MultiRelationshipDataDocument,
         owners: MultiRelationshipDataDocument
     ) {
         self.coverArt = coverArt
         self.items = items
+        self.ownerProfiles = ownerProfiles
         self.owners = owners
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case coverArt
         case items
+        case ownerProfiles
         case owners
     }
 
@@ -38,6 +42,7 @@ public struct PlaylistsRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(coverArt, forKey: .coverArt)
         try container.encode(items, forKey: .items)
+        try container.encode(ownerProfiles, forKey: .ownerProfiles)
         try container.encode(owners, forKey: .owners)
     }
 }
