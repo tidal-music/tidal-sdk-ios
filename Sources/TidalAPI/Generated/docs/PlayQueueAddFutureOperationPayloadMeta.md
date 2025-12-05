@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **batchId** | **UUID** |  | [optional] 
+**legacySource** | [**LegacySource**](LegacySource.md) |  | [optional] 
 **mode** | **String** |  | 
 **positionBefore** | **String** |  | [optional] 
 

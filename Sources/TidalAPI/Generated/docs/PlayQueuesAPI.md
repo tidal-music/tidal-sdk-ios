@@ -504,7 +504,7 @@ Adds item(s) to future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueAddFutureOperationPayload = PlayQueueAddFutureOperation_Payload(data: [PlayQueueAddFutureOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlayQueueAddFutureOperation_Payload_Meta(batchId: 123, mode: "mode_example", positionBefore: "positionBefore_example")) // PlayQueueAddFutureOperationPayload |  (optional)
+let playQueueAddFutureOperationPayload = PlayQueueAddFutureOperation_Payload(data: [PlayQueueAddFutureOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlayQueueAddFutureOperation_Payload_Meta(batchId: 123, legacySource: LegacySource(id: "id_example", type: "type_example"), mode: "mode_example", positionBefore: "positionBefore_example")) // PlayQueueAddFutureOperationPayload |  (optional)
 
 // Add to future relationship (\"to-many\").
 PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, playQueueAddFutureOperationPayload: playQueueAddFutureOperationPayload) { (response, error) in

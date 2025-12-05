@@ -15,7 +15,7 @@ internal class ProvidersAPI {
     /**
      Get multiple providers.
      
-     - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
+     - parameter filterId: (query) Provider ID (optional)
      - returns: ProvidersMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -38,7 +38,7 @@ internal class ProvidersAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
+     - parameter filterId: (query) Provider ID (optional)
      - returns: RequestBuilder<ProvidersMultiResourceDataDocument> 
      */
     internal class func providersGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<ProvidersMultiResourceDataDocument> {
@@ -65,7 +65,7 @@ internal class ProvidersAPI {
     /**
      Get single provider.
      
-     - parameter id: (path) Provider id 
+     - parameter id: (path) Provider ID 
      - returns: ProvidersSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -88,7 +88,7 @@ internal class ProvidersAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Provider id 
+     - parameter id: (path) Provider ID 
      - returns: RequestBuilder<ProvidersSingleResourceDataDocument> 
      */
     internal class func providersIdGetWithRequestBuilder(id: String) -> RequestBuilder<ProvidersSingleResourceDataDocument> {

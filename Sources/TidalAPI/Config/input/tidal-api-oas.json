@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.0.9"
+    "version" : "1.0.14"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -2140,7 +2140,7 @@
       "get" : {
         "description" : "Retrieves multiple artistRoles by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Allows to filter the collection of resources based on id attribute value",
+          "description" : "Artist role id",
           "example" : "1",
           "in" : "query",
           "name" : "filter[id]",
@@ -4115,6 +4115,16 @@
             "type" : "string"
           }
         }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
+          }
+        }, {
           "description" : "Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from",
           "example" : "'1,2,3' or 'USER_SELECTABLE'",
           "in" : "query",
@@ -4187,6 +4197,16 @@
           "required" : true,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
           }
         } ],
         "responses" : {
@@ -6560,8 +6580,8 @@
       "get" : {
         "description" : "Retrieves multiple providers by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Allows to filter the collection of resources based on id attribute value",
-          "example" : "771",
+          "description" : "Provider ID",
+          "example" : "12345",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -6569,7 +6589,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "771"
+              "example" : "12345"
             }
           }
         } ],
@@ -6625,8 +6645,8 @@
       "get" : {
         "description" : "Retrieves single provider by id.",
         "parameters" : [ {
-          "description" : "Provider id",
-          "example" : "771",
+          "description" : "Provider ID",
+          "example" : "12345",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -10605,16 +10625,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "BCP 47 locale",
-          "example" : "en-US",
-          "in" : "query",
-          "name" : "locale",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "default" : "en-US"
-          }
-        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
@@ -10622,6 +10632,16 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos",
@@ -10752,16 +10772,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "BCP 47 locale",
-          "example" : "en-US",
-          "in" : "query",
-          "name" : "locale",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "default" : "en-US"
-          }
-        }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
@@ -10792,6 +10802,16 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: albums",
@@ -10987,16 +11007,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "BCP 47 locale",
-          "example" : "en-US",
-          "in" : "query",
-          "name" : "locale",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "default" : "en-US"
-          }
-        }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
@@ -11027,6 +11037,16 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: artists",
@@ -11517,16 +11537,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "BCP 47 locale",
-          "example" : "en-US",
-          "in" : "query",
-          "name" : "locale",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "default" : "en-US"
-          }
-        }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
@@ -11557,6 +11567,16 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: tracks",
@@ -11752,16 +11772,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "BCP 47 locale",
-          "example" : "en-US",
-          "in" : "query",
-          "name" : "locale",
-          "required" : true,
-          "schema" : {
-            "type" : "string",
-            "default" : "en-US"
-          }
-        }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
@@ -11792,6 +11802,16 @@
           "required" : false,
           "schema" : {
             "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: videos",
@@ -11930,6 +11950,19 @@
           "schema" : {
             "type" : "string"
           }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
         } ],
         "responses" : {
           "200" : {
@@ -11968,9 +12001,89 @@
           }
         },
         "security" : [ {
-          "Authorization_Code_PKCE" : [ "entitlements.read" ]
+          "Authorization_Code_PKCE" : [ "entitlements.read", "r_usr" ]
         } ],
         "summary" : "Get single userEntitlement.",
+        "tags" : [ "userEntitlements" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/userEntitlements/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserEntitlements_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "entitlements.read", "r_usr" ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
         "tags" : [ "userEntitlements" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -12496,8 +12609,8 @@
             }
           }
         }, {
-          "description" : "Allows to filter the collection of resources based on isrc attribute value",
-          "example" : "USSM21600755",
+          "description" : "International Standard Recording Code (ISRC)",
+          "example" : "QMJMT1701237",
           "in" : "query",
           "name" : "filter[isrc]",
           "required" : false,
@@ -12505,11 +12618,11 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "USSM21600755"
+              "example" : "QMJMT1701237"
             }
           }
         }, {
-          "description" : "Allows to filter the collection of resources based on id attribute value",
+          "description" : "Video id",
           "example" : "75623239",
           "in" : "query",
           "name" : "filter[id]",
@@ -12666,6 +12779,14 @@
             "type" : "string"
           }
         }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
@@ -12686,14 +12807,6 @@
               "type" : "string",
               "example" : "albums"
             }
-          }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         } ],
         "responses" : {
@@ -12757,6 +12870,14 @@
             "type" : "string"
           }
         }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
@@ -12777,14 +12898,6 @@
               "type" : "string",
               "example" : "artists"
             }
-          }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         } ],
         "responses" : {
@@ -12848,6 +12961,14 @@
             "type" : "string"
           }
         }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
@@ -12868,14 +12989,6 @@
               "type" : "string",
               "example" : "providers"
             }
-          }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         } ],
         "responses" : {
@@ -12939,6 +13052,14 @@
             "type" : "string"
           }
         }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
@@ -12959,14 +13080,6 @@
               "type" : "string",
               "example" : "thumbnailArt"
             }
-          }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
           }
         } ],
         "responses" : {
@@ -14373,10 +14486,12 @@
         }
       },
       "ArtistRoles_Attributes" : {
+        "required" : [ "name" ],
         "type" : "object",
         "properties" : {
           "name" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Name of the artist role"
           }
         }
       },
@@ -15651,6 +15766,18 @@
           } ]
         }
       },
+      "LegacySource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          }
+        }
+      },
       "Links" : {
         "required" : [ "self" ],
         "type" : "object",
@@ -15987,6 +16114,9 @@
             "type" : "string",
             "format" : "uuid"
           },
+          "legacySource" : {
+            "$ref" : "#/components/schemas/LegacySource"
+          },
           "mode" : {
             "type" : "string",
             "enum" : [ "ADD_TO_FRONT", "ADD_TO_BACK", "ADD_BEFORE", "REPLACE_ALL" ]
@@ -16249,6 +16379,9 @@
           "itemId" : {
             "minLength" : 1,
             "type" : "string"
+          },
+          "legacySource" : {
+            "$ref" : "#/components/schemas/LegacySource"
           }
         }
       },
@@ -16336,6 +16469,9 @@
           "itemId" : {
             "minLength" : 1,
             "type" : "string"
+          },
+          "legacySource" : {
+            "$ref" : "#/components/schemas/LegacySource"
           }
         }
       },
@@ -19216,12 +19352,30 @@
         "properties" : {
           "entitlements" : {
             "type" : "array",
-            "description" : "entitlements for user",
+            "description" : "Entitlements for user",
             "items" : {
               "type" : "string",
-              "description" : "entitlements for user",
+              "description" : "Entitlements for user",
               "enum" : [ "MUSIC", "DJ" ]
             }
+          }
+        }
+      },
+      "UserEntitlements_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
           }
         }
       },
@@ -19243,6 +19397,14 @@
           }
         }
       },
+      "UserEntitlements_Relationships" : {
+        "required" : [ "owners" ],
+        "properties" : {
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          }
+        }
+      },
       "UserEntitlements_Resource_Object" : {
         "required" : [ "id", "type" ],
         "type" : "object",
@@ -19254,6 +19416,9 @@
             "type" : "string",
             "description" : "Resource id",
             "example" : "12345"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/UserEntitlements_Relationships"
           },
           "type" : {
             "minLength" : 1,

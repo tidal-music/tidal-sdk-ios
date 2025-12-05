@@ -16,7 +16,7 @@ public struct UserEntitlementsAttributes: Codable, Hashable {
         case music = "MUSIC"
         case dj = "DJ"
     }
-    /** entitlements for user */
+    /** Entitlements for user */
     public var entitlements: [Entitlements]
 
     public init(
