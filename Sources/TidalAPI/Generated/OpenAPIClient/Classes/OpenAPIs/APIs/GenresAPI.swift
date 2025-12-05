@@ -16,13 +16,14 @@ internal class GenresAPI {
      Get multiple genres.
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter filterId: (query) Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (optional)
      - returns: GenresMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func genresGet(pageCursor: String? = nil, filterId: [String]? = nil) async throws -> GenresMultiResourceDataDocument {
+    internal class func genresGet(pageCursor: String? = nil, locale: String? = nil, filterId: [String]? = nil) async throws -> GenresMultiResourceDataDocument {
         do {
-            return try await genresGetWithRequestBuilder(pageCursor: pageCursor, filterId: filterId).execute().body
+            return try await genresGetWithRequestBuilder(pageCursor: pageCursor, locale: locale, filterId: filterId).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,10 +41,11 @@ internal class GenresAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter filterId: (query) Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (optional)
      - returns: RequestBuilder<GenresMultiResourceDataDocument> 
      */
-    internal class func genresGetWithRequestBuilder(pageCursor: String? = nil, filterId: [String]? = nil) -> RequestBuilder<GenresMultiResourceDataDocument> {
+    internal class func genresGetWithRequestBuilder(pageCursor: String? = nil, locale: String? = nil, filterId: [String]? = nil) -> RequestBuilder<GenresMultiResourceDataDocument> {
         let localVariablePath = "/genres"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -51,6 +53,7 @@ internal class GenresAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
         ])
 
@@ -69,12 +72,13 @@ internal class GenresAPI {
      Get single genre.
      
      - parameter id: (path) Genre id 
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - returns: GenresSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func genresIdGet(id: String) async throws -> GenresSingleResourceDataDocument {
+    internal class func genresIdGet(id: String, locale: String? = nil) async throws -> GenresSingleResourceDataDocument {
         do {
-            return try await genresIdGetWithRequestBuilder(id: id).execute().body
+            return try await genresIdGetWithRequestBuilder(id: id, locale: locale).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -92,9 +96,10 @@ internal class GenresAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Genre id 
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - returns: RequestBuilder<GenresSingleResourceDataDocument> 
      */
-    internal class func genresIdGetWithRequestBuilder(id: String) -> RequestBuilder<GenresSingleResourceDataDocument> {
+    internal class func genresIdGetWithRequestBuilder(id: String, locale: String? = nil) -> RequestBuilder<GenresSingleResourceDataDocument> {
         var localVariablePath = "/genres/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -102,7 +107,10 @@ internal class GenresAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             :

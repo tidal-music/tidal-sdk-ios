@@ -175,7 +175,7 @@ Name | Type | Description  | Notes
 
 Create single trackSourceFile.
 
-Creates a new trackSourceFile.
+Create a track source file. <p/> The response contains a upload link that must be used to upload the actual content.<p/> The headers in the upload link response must be sent doing the actual upload. 
 
 ### Example
 ```swift

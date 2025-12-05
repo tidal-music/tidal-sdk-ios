@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **genresGet**
 ```swift
-    open class func genresGet(pageCursor: String? = nil, filterId: [String]? = nil, completion: @escaping (_ data: GenresMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func genresGet(pageCursor: String? = nil, locale: String? = nil, filterId: [String]? = nil, completion: @escaping (_ data: GenresMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple genres.
@@ -23,10 +23,11 @@ Retrieves multiple genres by available filters, or without if applicable.
 import OpenAPIClient
 
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let filterId = ["inner_example"] // [String] | Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (optional)
 
 // Get multiple genres.
-GenresAPI.genresGet(pageCursor: pageCursor, filterId: filterId) { (response, error) in
+GenresAPI.genresGet(pageCursor: pageCursor, locale: locale, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -43,6 +44,7 @@ GenresAPI.genresGet(pageCursor: pageCursor, filterId: filterId) { (response, err
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **filterId** | [**[String]**](String.md) | Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from | [optional] 
 
 ### Return type
@@ -62,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **genresIdGet**
 ```swift
-    open class func genresIdGet(id: String, completion: @escaping (_ data: GenresSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func genresIdGet(id: String, locale: String? = nil, completion: @escaping (_ data: GenresSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single genre.
@@ -75,9 +77,10 @@ Retrieves single genre by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Genre id
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 
 // Get single genre.
-GenresAPI.genresIdGet(id: id) { (response, error) in
+GenresAPI.genresIdGet(id: id, locale: locale) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -94,6 +97,7 @@ GenresAPI.genresIdGet(id: id) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Genre id | 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
 
 ### Return type
 

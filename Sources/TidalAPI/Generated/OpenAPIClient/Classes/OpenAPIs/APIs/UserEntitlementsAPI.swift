@@ -16,12 +16,13 @@ internal class UserEntitlementsAPI {
      Get single userEntitlement.
      
      - parameter id: (path) User id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: UserEntitlementsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userEntitlementsIdGet(id: String) async throws -> UserEntitlementsSingleResourceDataDocument {
+    internal class func userEntitlementsIdGet(id: String, include: [String]? = nil) async throws -> UserEntitlementsSingleResourceDataDocument {
         do {
-            return try await userEntitlementsIdGetWithRequestBuilder(id: id).execute().body
+            return try await userEntitlementsIdGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -36,9 +37,10 @@ internal class UserEntitlementsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: RequestBuilder<UserEntitlementsSingleResourceDataDocument> 
      */
-    internal class func userEntitlementsIdGetWithRequestBuilder(id: String) -> RequestBuilder<UserEntitlementsSingleResourceDataDocument> {
+    internal class func userEntitlementsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UserEntitlementsSingleResourceDataDocument> {
         var localVariablePath = "/userEntitlements/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -46,7 +48,10 @@ internal class UserEntitlementsAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             :
@@ -55,6 +60,61 @@ internal class UserEntitlementsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<UserEntitlementsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get owners relationship (\"to-many\").
+     
+     - parameter id: (path) User id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: UserEntitlementsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func userEntitlementsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserEntitlementsMultiRelationshipDataDocument {
+        do {
+            return try await userEntitlementsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get owners relationship (\"to-many\").
+     - GET /userEntitlements/{id}/relationships/owners
+     - Retrieves owners relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) User id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<UserEntitlementsMultiRelationshipDataDocument> 
+     */
+    internal class func userEntitlementsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserEntitlementsMultiRelationshipDataDocument> {
+        var localVariablePath = "/userEntitlements/{id}/relationships/owners"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UserEntitlementsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
