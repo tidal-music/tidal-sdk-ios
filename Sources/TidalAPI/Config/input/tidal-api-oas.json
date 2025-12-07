@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.0.14"
+    "version" : "1.0.16"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -36,6 +36,8 @@
     "name" : "genres"
   }, {
     "name" : "lyrics"
+  }, {
+    "name" : "manualArtistClaims"
   }, {
     "name" : "playQueues"
   }, {
@@ -4738,6 +4740,65 @@
         } ],
         "summary" : "Get track relationship (\"to-one\").",
         "tags" : [ "lyrics" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/manualArtistClaims" : {
+      "post" : {
+        "description" : "Creates a new manualArtistClaim.",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ManualArtistClaimsCreateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ManualArtistClaims_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Create single manualArtistClaim.",
+        "tags" : [ "manualArtistClaims" ],
         "x-path-item-properties" : {
           "required-access-tier" : "INTERNAL"
         }
@@ -12094,7 +12155,7 @@
       "get" : {
         "description" : "Retrieves single userRecommendation by id.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User recommendations id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -12112,13 +12173,14 @@
             "type" : "string"
           }
         }, {
-          "description" : "BCP47 locale code",
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
           "name" : "locale",
-          "required" : true,
+          "required" : false,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes",
@@ -12171,7 +12233,7 @@
           }
         },
         "security" : [ {
-          "Authorization_Code_PKCE" : [ "recommendations.read" ]
+          "Authorization_Code_PKCE" : [ "r_usr", "recommendations.read" ]
         } ],
         "summary" : "Get single userRecommendation.",
         "tags" : [ "userRecommendations" ],
@@ -12184,11 +12246,19 @@
       "get" : {
         "description" : "Retrieves discoveryMixes relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User recommendations id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -12202,13 +12272,14 @@
             "type" : "string"
           }
         }, {
-          "description" : "BCP47 locale code",
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
           "name" : "locale",
-          "required" : true,
+          "required" : false,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: discoveryMixes",
@@ -12223,14 +12294,6 @@
               "example" : "discoveryMixes"
             }
           }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
         } ],
         "responses" : {
           "200" : {
@@ -12269,7 +12332,7 @@
           }
         },
         "security" : [ {
-          "Authorization_Code_PKCE" : [ "recommendations.read" ]
+          "Authorization_Code_PKCE" : [ "r_usr", "recommendations.read" ]
         } ],
         "summary" : "Get discoveryMixes relationship (\"to-many\").",
         "tags" : [ "userRecommendations" ],
@@ -12282,11 +12345,19 @@
       "get" : {
         "description" : "Retrieves myMixes relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User recommendations id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -12300,13 +12371,14 @@
             "type" : "string"
           }
         }, {
-          "description" : "BCP47 locale code",
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
           "name" : "locale",
-          "required" : true,
+          "required" : false,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: myMixes",
@@ -12321,14 +12393,6 @@
               "example" : "myMixes"
             }
           }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
         } ],
         "responses" : {
           "200" : {
@@ -12367,7 +12431,7 @@
           }
         },
         "security" : [ {
-          "Authorization_Code_PKCE" : [ "recommendations.read" ]
+          "Authorization_Code_PKCE" : [ "r_usr", "recommendations.read" ]
         } ],
         "summary" : "Get myMixes relationship (\"to-many\").",
         "tags" : [ "userRecommendations" ],
@@ -12380,11 +12444,19 @@
       "get" : {
         "description" : "Retrieves newArrivalMixes relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User recommendations id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -12398,13 +12470,14 @@
             "type" : "string"
           }
         }, {
-          "description" : "BCP47 locale code",
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
           "name" : "locale",
-          "required" : true,
+          "required" : false,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "default" : "en-US"
           }
         }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: newArrivalMixes",
@@ -12419,14 +12492,6 @@
               "example" : "newArrivalMixes"
             }
           }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
         } ],
         "responses" : {
           "200" : {
@@ -12465,7 +12530,7 @@
           }
         },
         "security" : [ {
-          "Authorization_Code_PKCE" : [ "recommendations.read" ]
+          "Authorization_Code_PKCE" : [ "r_usr", "recommendations.read" ]
         } ],
         "summary" : "Get newArrivalMixes relationship (\"to-many\").",
         "tags" : [ "userRecommendations" ],
@@ -15688,6 +15753,7 @@
               "artworks" : "#/components/schemas/Artworks_Resource_Object",
               "genres" : "#/components/schemas/Genres_Resource_Object",
               "lyrics" : "#/components/schemas/Lyrics_Resource_Object",
+              "manualArtistClaims" : "#/components/schemas/ManualArtistClaims_Resource_Object",
               "playQueues" : "#/components/schemas/PlayQueues_Resource_Object",
               "playlists" : "#/components/schemas/Playlists_Resource_Object",
               "providers" : "#/components/schemas/Providers_Resource_Object",
@@ -15727,6 +15793,8 @@
             "$ref" : "#/components/schemas/Genres_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/Lyrics_Resource_Object"
+          }, {
+            "$ref" : "#/components/schemas/ManualArtistClaims_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/PlayQueues_Resource_Object"
           }, {
@@ -16052,6 +16120,223 @@
         "properties" : {
           "data" : {
             "$ref" : "#/components/schemas/Lyrics_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ManualArtistClaimsCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ManualArtistClaimsCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "ManualArtistClaimsCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/ManualArtistClaimsCreateOperation_Payload_Data_Attributes"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "manualArtistClaims" ]
+          }
+        }
+      },
+      "ManualArtistClaimsCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "artistId", "legalFirstName", "legalLastName", "websiteOrSocialLink" ],
+        "type" : "object",
+        "properties" : {
+          "acceptedTerms" : {
+            "type" : "boolean"
+          },
+          "artistId" : {
+            "type" : "string"
+          },
+          "distributorName" : {
+            "type" : "string"
+          },
+          "errorReason" : {
+            "type" : "string"
+          },
+          "labelContactEmail" : {
+            "type" : "string"
+          },
+          "labelContactName" : {
+            "type" : "string"
+          },
+          "labelName" : {
+            "type" : "string"
+          },
+          "legalFirstName" : {
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "legalLastName" : {
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "managerEmail" : {
+            "type" : "string"
+          },
+          "managerName" : {
+            "type" : "string"
+          },
+          "role" : {
+            "type" : "string"
+          },
+          "selectedAlbums" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "selectedSingles" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "websiteOrSocialLink" : {
+            "minLength" : 1,
+            "type" : "string"
+          }
+        }
+      },
+      "ManualArtistClaims_Attributes" : {
+        "required" : [ "artistId", "legalFirstName", "legalLastName", "websiteOrSocialLink" ],
+        "type" : "object",
+        "properties" : {
+          "acceptedTerms" : {
+            "type" : "boolean",
+            "description" : "Accepted terms and conditions"
+          },
+          "artistId" : {
+            "type" : "string",
+            "description" : "Artist ID being claimed"
+          },
+          "distributorName" : {
+            "type" : "string",
+            "description" : "Distributor name"
+          },
+          "errorReason" : {
+            "type" : "string",
+            "description" : "Error reason if claim failed"
+          },
+          "labelContactEmail" : {
+            "type" : "string",
+            "description" : "Label contact email"
+          },
+          "labelContactName" : {
+            "type" : "string",
+            "description" : "Label contact name"
+          },
+          "labelName" : {
+            "type" : "string",
+            "description" : "Label name"
+          },
+          "legalFirstName" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Legal first name"
+          },
+          "legalLastName" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Legal last name"
+          },
+          "managerEmail" : {
+            "type" : "string",
+            "description" : "Manager email"
+          },
+          "managerName" : {
+            "type" : "string",
+            "description" : "Manager name"
+          },
+          "role" : {
+            "type" : "string",
+            "description" : "Role"
+          },
+          "selectedAlbums" : {
+            "type" : "array",
+            "description" : "Album IDs selected by user",
+            "items" : {
+              "type" : "string",
+              "description" : "Album IDs selected by user"
+            }
+          },
+          "selectedSingles" : {
+            "type" : "array",
+            "description" : "Single IDs selected by user",
+            "items" : {
+              "type" : "string",
+              "description" : "Single IDs selected by user"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Claim status",
+            "enum" : [ "PENDING", "APPROVED", "REJECTED" ]
+          },
+          "websiteOrSocialLink" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Website or social link"
+          }
+        }
+      },
+      "ManualArtistClaims_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ManualArtistClaims_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ManualArtistClaims_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/ManualArtistClaims_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "ManualArtistClaims_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ManualArtistClaims_Resource_Object"
           },
           "included" : {
             "$ref" : "#/components/schemas/Included"
@@ -18980,7 +19265,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "albums", "appreciations", "artistClaims", "artistRoles", "artists", "artworks", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
+            "enum" : [ "albums", "appreciations", "artistClaims", "artistRoles", "artists", "artworks", "manualArtistClaims", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
           }
         }
       },
@@ -19007,7 +19292,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "albums", "appreciations", "artistClaims", "artistRoles", "artists", "artworks", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
+            "enum" : [ "albums", "appreciations", "artistClaims", "artistRoles", "artists", "artworks", "manualArtistClaims", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
           }
         }
       },

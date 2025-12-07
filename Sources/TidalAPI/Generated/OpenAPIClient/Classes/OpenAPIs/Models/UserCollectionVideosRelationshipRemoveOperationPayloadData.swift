@@ -19,6 +19,7 @@ public struct UserCollectionVideosRelationshipRemoveOperationPayloadData: Codabl
         case artistroles = "artistRoles"
         case artists = "artists"
         case artworks = "artworks"
+        case manualartistclaims = "manualArtistClaims"
         case playlists = "playlists"
         case providers = "providers"
         case searchresults = "searchResults"
