@@ -18,10 +18,16 @@ public protocol PlayerListener: AnyObject {
 	/// https://developer.apple.com/documentation/avfaudio/avaudiosession/1616540-mediaserviceswereresetnotificati
 	/// - Important: This is a good time to set up the audio session again.
 	func mediaServicesWereReset()
+
+	/// Called when playback quality changes during ABR (Adaptive Bitrate) streaming.
+	/// This occurs when the HLS adaptive bitrate switches to a different quality variant mid-playback.
+	/// - Parameter playbackContext: The updated playback context with new quality information
+	func playbackQualityChanged(to playbackContext: PlaybackContext)
 }
 
 // MARK: - Optional methods
 
 public extension PlayerListener {
 	func streamingPrivilegesLost(to device: String?) {}
+	func playbackQualityChanged(to playbackContext: PlaybackContext) {}
 }
