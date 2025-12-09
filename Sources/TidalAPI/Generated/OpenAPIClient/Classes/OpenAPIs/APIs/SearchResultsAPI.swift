@@ -13,16 +13,24 @@ import AnyCodable
 internal class SearchResultsAPI {
 
     /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchResultsIdGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
      Get single searchResult.
      
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
      - returns: SearchResultsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) async throws -> SearchResultsSingleResourceDataDocument {
+    internal class func searchResultsIdGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, include: [String]? = nil) async throws -> SearchResultsSingleResourceDataDocument {
         do {
             return try await searchResultsIdGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -41,13 +49,13 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
      - returns: RequestBuilder<SearchResultsSingleResourceDataDocument> 
      */
-    internal class func searchResultsIdGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsSingleResourceDataDocument> {
+    internal class func searchResultsIdGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsSingleResourceDataDocument> {
         var localVariablePath = "/searchResults/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -57,8 +65,8 @@ internal class SearchResultsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -74,19 +82,27 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchResultsIdRelationshipsAlbumsGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
      Get albums relationship (\"to-many\").
      
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsAlbumsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsAlbumsGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+            return try await searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -103,14 +119,14 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -120,10 +136,10 @@ internal class SearchResultsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -138,19 +154,27 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchResultsIdRelationshipsArtistsGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
      Get artists relationship (\"to-many\").
      
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsArtistsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsArtistsGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+            return try await searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -167,14 +191,14 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -184,10 +208,10 @@ internal class SearchResultsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -202,19 +226,27 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
      Get playlists relationship (\"to-many\").
      
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsPlaylistsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsPlaylistsGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+            return try await searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -231,14 +263,14 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -248,10 +280,10 @@ internal class SearchResultsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -266,19 +298,27 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchResultsIdRelationshipsTopHitsGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
      Get topHits relationship (\"to-many\").
      
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsTopHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsTopHitsGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+            return try await searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -295,14 +335,14 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/topHits"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -312,10 +352,10 @@ internal class SearchResultsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -330,19 +370,27 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchResultsIdRelationshipsTracksGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
      Get tracks relationship (\"to-many\").
      
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsTracksGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsTracksGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+            return try await searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -359,14 +407,14 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -376,10 +424,10 @@ internal class SearchResultsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -394,19 +442,27 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchResultsIdRelationshipsVideosGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
      Get videos relationship (\"to-many\").
      
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsVideosGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsVideosGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor).execute().body
+            return try await searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -423,14 +479,14 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query 
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter explicitFilter: (query) Explicit filter (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -440,10 +496,10 @@ internal class SearchResultsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

@@ -218,10 +218,10 @@ internal class PlayQueuesAPI {
      
      - parameter id: (path) Play queue id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current (optional)
-     - returns: PlayQueuesSingleRelationshipDataDocument
+     - returns: PlayQueuesCurrentSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil) async throws -> PlayQueuesSingleRelationshipDataDocument {
+    internal class func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil) async throws -> PlayQueuesCurrentSingleRelationshipDataDocument {
         do {
             return try await playQueuesIdRelationshipsCurrentGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -239,9 +239,9 @@ internal class PlayQueuesAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current (optional)
-     - returns: RequestBuilder<PlayQueuesSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<PlayQueuesCurrentSingleRelationshipDataDocument> 
      */
-    internal class func playQueuesIdRelationshipsCurrentGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<PlayQueuesSingleRelationshipDataDocument> {
+    internal class func playQueuesIdRelationshipsCurrentGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<PlayQueuesCurrentSingleRelationshipDataDocument> {
         var localVariablePath = "/playQueues/{id}/relationships/current"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -260,7 +260,7 @@ internal class PlayQueuesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlayQueuesSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlayQueuesCurrentSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

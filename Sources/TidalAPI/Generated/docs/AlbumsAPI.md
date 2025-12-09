@@ -23,7 +23,7 @@ Method | HTTP request | Description
 
 # **albumsGet**
 ```swift
-    open class func albumsGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, filterBarcodeId: [String]? = nil, completion: @escaping (_ data: AlbumsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumsGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: AlbumsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple albums.
@@ -38,12 +38,12 @@ import OpenAPIClient
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
-let filterId = ["inner_example"] // [String] | Album id (optional)
 let filterBarcodeId = ["inner_example"] // [String] | Barcode Id (optional)
+let filterId = ["inner_example"] // [String] | Album id (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 
 // Get multiple albums.
-AlbumsAPI.albumsGet(pageCursor: pageCursor, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterId: filterId, filterBarcodeId: filterBarcodeId) { (response, error) in
+AlbumsAPI.albumsGet(pageCursor: pageCursor, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -62,9 +62,9 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
- **filterId** | [**[String]**](String.md) | Album id | [optional] 
  **filterBarcodeId** | [**[String]**](String.md) | Barcode Id | [optional] 
+ **filterId** | [**[String]**](String.md) | Album id | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
 
 ### Return type
 
@@ -200,7 +200,7 @@ Updates existing album.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let albumUpdateOperationPayload = AlbumUpdateOperation_Payload(data: AlbumUpdateOperation_Payload_Data(attributes: AlbumUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", copyright: Copyright(text: "text_example"), explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumUpdateOperation_Payload_Data_Relationships(genres: AlbumUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumUpdateOperationPayload |  (optional)
+let albumUpdateOperationPayload = AlbumUpdateOperation_Payload(data: AlbumUpdateOperation_Payload_Data(attributes: AlbumUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", albumType: "albumType_example", copyright: Copyright(text: "text_example"), explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumUpdateOperation_Payload_Data_Relationships(genres: AlbumUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumUpdateOperationPayload |  (optional)
 
 // Update single album.
 AlbumsAPI.albumsIdPatch(id: id, albumUpdateOperationPayload: albumUpdateOperationPayload) { (response, error) in
@@ -799,7 +799,7 @@ Creates a new album.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let albumCreateOperationPayload = AlbumCreateOperation_Payload(data: AlbumCreateOperation_Payload_Data(attributes: AlbumCreateOperation_Payload_Data_Attributes(copyright: Copyright(text: "text_example"), explicitLyrics: false, releaseDate: Date(), title: "title_example", upc: "upc_example", version: "version_example"), relationships: AlbumCreateOperation_Payload_Data_Relationships(artists: AlbumCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumCreateOperationPayload |  (optional)
+let albumCreateOperationPayload = AlbumCreateOperation_Payload(data: AlbumCreateOperation_Payload_Data(attributes: AlbumCreateOperation_Payload_Data_Attributes(albumType: "albumType_example", copyright: Copyright(text: "text_example"), explicitLyrics: false, releaseDate: Date(), title: "title_example", upc: "upc_example", version: "version_example"), relationships: AlbumCreateOperation_Payload_Data_Relationships(artists: AlbumCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumCreateOperationPayload |  (optional)
 
 // Create single album.
 AlbumsAPI.albumsPost(albumCreateOperationPayload: albumCreateOperationPayload) { (response, error) in

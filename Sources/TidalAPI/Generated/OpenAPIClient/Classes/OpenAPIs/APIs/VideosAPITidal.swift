@@ -19,9 +19,9 @@ public enum VideosAPITidal {
      
      - returns: VideosMultiResourceDataDocument
      */
-	public static func videosGet(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> VideosMultiResourceDataDocument {
+	public static func videosGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil) async throws -> VideosMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			VideosAPI.videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterIsrc: filterIsrc, filterId: filterId)
+			VideosAPI.videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc)
 		}
 	}
 

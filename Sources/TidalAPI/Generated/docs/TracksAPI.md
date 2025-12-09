@@ -25,7 +25,7 @@ Method | HTTP request | Description
 
 # **tracksGet**
 ```swift
-    open class func tracksGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple tracks.
@@ -40,12 +40,12 @@ import OpenAPIClient
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
-let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 let filterId = ["inner_example"] // [String] | A Tidal catalogue ID (optional)
+let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 
 // Get multiple tracks.
-TracksAPI.tracksGet(pageCursor: pageCursor, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterIsrc: filterIsrc, filterId: filterId) { (response, error) in
+TracksAPI.tracksGet(pageCursor: pageCursor, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -64,9 +64,9 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
- **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
  **filterId** | [**[String]**](String.md) | A Tidal catalogue ID | [optional] 
+ **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
 
 ### Return type
 

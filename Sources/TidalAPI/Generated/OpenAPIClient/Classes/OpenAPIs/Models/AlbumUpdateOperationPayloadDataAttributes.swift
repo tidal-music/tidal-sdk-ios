@@ -17,8 +17,14 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
     }
+    public enum AlbumType: String, Codable, CaseIterable {
+        case album = "ALBUM"
+        case ep = "EP"
+        case single = "SINGLE"
+    }
     /** Access type */
     public var accessType: AccessType?
+    public var albumType: AlbumType?
     public var copyright: Copyright?
     public var explicitLyrics: Bool?
     public var releaseDate: Date?
@@ -27,6 +33,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public init(
         accessType: AccessType? = nil,
+        albumType: AlbumType? = nil,
         copyright: Copyright? = nil,
         explicitLyrics: Bool? = nil,
         releaseDate: Date? = nil,
@@ -34,6 +41,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
         version: String? = nil
     ) {
         self.accessType = accessType
+        self.albumType = albumType
         self.copyright = copyright
         self.explicitLyrics = explicitLyrics
         self.releaseDate = releaseDate
@@ -43,6 +51,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case accessType
+        case albumType
         case copyright
         case explicitLyrics
         case releaseDate
@@ -55,6 +64,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(accessType, forKey: .accessType)
+        try container.encodeIfPresent(albumType, forKey: .albumType)
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)

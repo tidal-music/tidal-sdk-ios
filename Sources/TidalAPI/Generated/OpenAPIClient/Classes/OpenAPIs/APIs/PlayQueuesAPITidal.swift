@@ -65,9 +65,9 @@ public enum PlayQueuesAPITidal {
 	/**
      Get current relationship (\&quot;to-one\&quot;).
      
-     - returns: PlayQueuesSingleRelationshipDataDocument
+     - returns: PlayQueuesCurrentSingleRelationshipDataDocument
      */
-	public static func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil) async throws -> PlayQueuesSingleRelationshipDataDocument {
+	public static func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil) async throws -> PlayQueuesCurrentSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			PlayQueuesAPI.playQueuesIdRelationshipsCurrentGetWithRequestBuilder(id: id, include: include)
 		}

@@ -12,7 +12,13 @@ import AnyCodable
 
 public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public enum AlbumType: String, Codable, CaseIterable {
+        case album = "ALBUM"
+        case ep = "EP"
+        case single = "SINGLE"
+    }
     public static let upcRule = StringRule(minLength: 12, maxLength: 13, pattern: nil)
+    public var albumType: AlbumType?
     public var copyright: Copyright?
     public var explicitLyrics: Bool?
     public var releaseDate: Date?
@@ -21,6 +27,7 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
     public var version: String?
 
     public init(
+        albumType: AlbumType? = nil,
         copyright: Copyright? = nil,
         explicitLyrics: Bool? = nil,
         releaseDate: Date? = nil,
@@ -28,6 +35,7 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
         upc: String? = nil,
         version: String? = nil
     ) {
+        self.albumType = albumType
         self.copyright = copyright
         self.explicitLyrics = explicitLyrics
         self.releaseDate = releaseDate
@@ -37,6 +45,7 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case albumType
         case copyright
         case explicitLyrics
         case releaseDate
@@ -49,6 +58,7 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(albumType, forKey: .albumType)
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)

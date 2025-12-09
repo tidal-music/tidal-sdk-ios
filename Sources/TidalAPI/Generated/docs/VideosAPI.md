@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **videosGet**
 ```swift
-    open class func videosGet(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: VideosMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func videosGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, completion: @escaping (_ data: VideosMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple videos.
@@ -28,11 +28,11 @@ import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
-let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 let filterId = ["inner_example"] // [String] | Video id (optional)
+let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 
 // Get multiple videos.
-VideosAPI.videosGet(countryCode: countryCode, include: include, filterIsrc: filterIsrc, filterId: filterId) { (response, error) in
+VideosAPI.videosGet(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -50,8 +50,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt | [optional] 
- **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
  **filterId** | [**[String]**](String.md) | Video id | [optional] 
+ **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
 
 ### Return type
 

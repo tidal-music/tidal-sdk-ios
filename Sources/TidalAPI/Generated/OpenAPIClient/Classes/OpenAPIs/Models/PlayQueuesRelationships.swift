@@ -12,13 +12,13 @@ import AnyCodable
 
 public struct PlayQueuesRelationships: Codable, Hashable {
 
-    public var current: SingleRelationshipDataDocument
+    public var current: PlayQueuesCurrentSingleRelationshipDataDocument
     public var future: PlayQueuesFutureMultiRelationshipDataDocument
     public var owners: MultiRelationshipDataDocument
     public var past: PlayQueuesPastMultiRelationshipDataDocument
 
     public init(
-        current: SingleRelationshipDataDocument,
+        current: PlayQueuesCurrentSingleRelationshipDataDocument,
         future: PlayQueuesFutureMultiRelationshipDataDocument,
         owners: MultiRelationshipDataDocument,
         past: PlayQueuesPastMultiRelationshipDataDocument

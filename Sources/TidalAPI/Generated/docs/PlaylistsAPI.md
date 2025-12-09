@@ -21,7 +21,7 @@ Method | HTTP request | Description
 
 # **playlistsGet**
 ```swift
-    open class func playlistsGet(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsGet(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: PlaylistsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple playlists.
@@ -37,11 +37,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 let filterId = ["inner_example"] // [String] | Playlist id (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 
 // Get multiple playlists.
-PlaylistsAPI.playlistsGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterOwnersId: filterOwnersId, filterId: filterId) { (response, error) in
+PlaylistsAPI.playlistsGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -61,8 +61,8 @@ Name | Type | Description  | Notes
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
  **filterId** | [**[String]**](String.md) | Playlist id | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
 
 ### Return type
 

@@ -229,7 +229,7 @@ Void (empty response body)
 
 # **playQueuesIdRelationshipsCurrentGet**
 ```swift
-    open class func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil, completion: @escaping (_ data: PlayQueuesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil, completion: @escaping (_ data: PlayQueuesCurrentSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get current relationship (\"to-one\").
@@ -266,7 +266,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlayQueuesSingleRelationshipDataDocument**](PlayQueuesSingleRelationshipDataDocument.md)
+[**PlayQueuesCurrentSingleRelationshipDataDocument**](PlayQueuesCurrentSingleRelationshipDataDocument.md)
 
 ### Authorization
 

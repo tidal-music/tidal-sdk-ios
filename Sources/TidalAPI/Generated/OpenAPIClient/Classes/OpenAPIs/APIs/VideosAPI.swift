@@ -17,14 +17,14 @@ internal class VideosAPI {
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
-     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterId: (query) Video id (optional)
+     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - returns: VideosMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func videosGet(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> VideosMultiResourceDataDocument {
+    internal class func videosGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil) async throws -> VideosMultiResourceDataDocument {
         do {
-            return try await videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterIsrc: filterIsrc, filterId: filterId).execute().body
+            return try await videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -43,11 +43,11 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
-     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterId: (query) Video id (optional)
+     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - returns: RequestBuilder<VideosMultiResourceDataDocument> 
      */
-    internal class func videosGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<VideosMultiResourceDataDocument> {
+    internal class func videosGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil) -> RequestBuilder<VideosMultiResourceDataDocument> {
         let localVariablePath = "/videos"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -56,8 +56,8 @@ internal class VideosAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[isrc]": (wrappedValue: filterIsrc?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[isrc]": (wrappedValue: filterIsrc?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
