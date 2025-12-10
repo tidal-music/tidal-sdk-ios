@@ -755,7 +755,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | User id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let userCollectionTracksRelationshipAddOperationPayload = UserCollectionTracksRelationshipAddOperation_Payload(data: [UserCollectionTracksRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionTracksRelationshipAddOperationPayload |  (optional)
+let userCollectionTracksRelationshipAddOperationPayload = UserCollectionTracksRelationshipAddOperation_Payload(data: [UserCollectionTracksRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionTracksRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionTracksRelationshipAddOperationPayload |  (optional)
 
 // Add to tracks relationship (\"to-many\").
 UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, countryCode: countryCode, userCollectionTracksRelationshipAddOperationPayload: userCollectionTracksRelationshipAddOperationPayload) { (response, error) in

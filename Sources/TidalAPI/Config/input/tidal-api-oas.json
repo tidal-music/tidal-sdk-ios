@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.0.21"
+    "version" : "1.0.23"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -19776,9 +19776,22 @@
           "id" : {
             "type" : "string"
           },
+          "meta" : {
+            "$ref" : "#/components/schemas/UserCollectionTracksRelationshipAddOperation_Payload_Data_Meta"
+          },
           "type" : {
             "type" : "string",
             "enum" : [ "tracks" ]
+          }
+        }
+      },
+      "UserCollectionTracksRelationshipAddOperation_Payload_Data_Meta" : {
+        "required" : [ "addedAt" ],
+        "type" : "object",
+        "properties" : {
+          "addedAt" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       },
@@ -19832,7 +19845,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "albums", "appreciations", "artistClaims", "artistRoles", "artists", "artworks", "manualArtistClaims", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
+            "enum" : [ "videos" ]
           }
         }
       },
@@ -19859,7 +19872,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "albums", "appreciations", "artistClaims", "artistRoles", "artists", "artworks", "manualArtistClaims", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
+            "enum" : [ "videos" ]
           }
         }
       },

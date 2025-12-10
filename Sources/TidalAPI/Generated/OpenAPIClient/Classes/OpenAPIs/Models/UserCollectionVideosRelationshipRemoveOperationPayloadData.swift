@@ -13,24 +13,6 @@ import AnyCodable
 public struct UserCollectionVideosRelationshipRemoveOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case albums = "albums"
-        case appreciations = "appreciations"
-        case artistclaims = "artistClaims"
-        case artistroles = "artistRoles"
-        case artists = "artists"
-        case artworks = "artworks"
-        case manualartistclaims = "manualArtistClaims"
-        case playlists = "playlists"
-        case providers = "providers"
-        case searchresults = "searchResults"
-        case searchsuggestions = "searchSuggestions"
-        case tracks = "tracks"
-        case trackstatistics = "trackStatistics"
-        case usercollections = "userCollections"
-        case userentitlements = "userEntitlements"
-        case userrecommendations = "userRecommendations"
-        case userreports = "userReports"
-        case users = "users"
         case videos = "videos"
     }
     public var id: String
