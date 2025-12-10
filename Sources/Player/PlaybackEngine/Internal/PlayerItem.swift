@@ -158,23 +158,19 @@ final class PlayerItem {
 			return nil
 		}
 
-		let (bitDepth, sampleRate, audioQuality) = obtainPlaybackContextBitDepthSampleRateAndQuality(
-			pbiMetadata: metadata,
-			playbackMetadata: asset?.playbackMetadata
-		)
-
-		let codec = metadata.audioCodec ?? AudioCodec(from: audioQuality, mode: metadata.audioMode)
+		let playbackMetadata = obtainAssetPlaybackMetadata(pbiMetadata: metadata, playbackMetadata: asset?.playbackMetadata)
+		let codec = AudioCodec(from: playbackMetadata.audioQuality, mode: playbackMetadata.audioMode)
 
 		return PlaybackContext(
 			productId: metadata.productId,
 			streamType: metadata.streamType,
 			assetPresentation: metadata.assetPresentation,
-			audioMode: metadata.audioMode,
-			audioQuality: audioQuality,
+			audioMode: playbackMetadata.audioMode,
+			audioQuality: playbackMetadata.audioQuality,
 			audioCodec: codec?.displayName,
-			audioSampleRate: sampleRate,
-			audioBitDepth: bitDepth,
-			audioBitRate: audioQuality?.toBitRate(),
+			audioSampleRate: playbackMetadata.sampleRate,
+			audioBitDepth: playbackMetadata.bitDepth,
+			audioBitRate: playbackMetadata.audioQuality.toBitRate(),
 			videoQuality: metadata.videoQuality,
 			duration: duration,
 			assetPosition: assetPosition,
@@ -330,66 +326,19 @@ extension PlayerItem: CustomStringConvertible {
 }
 
 private extension PlayerItem {
-	func obtainPlaybackContextBitDepthSampleRateAndQuality(
+	func obtainAssetPlaybackMetadata(
 		pbiMetadata: Metadata,
 		playbackMetadata: AssetPlaybackMetadata?
-	) -> (Int?, Int?, AudioQuality?) {
-		var bitDepth: Int? = pbiMetadata.audioBitDepth
-		var sampleRate: Int? = pbiMetadata.audioSampleRate
-		var audioQuality: AudioQuality? = pbiMetadata.audioQuality
-
-		// If PBI metadata has complete sample rate and bit depth, it takes priority
-		if let _ = pbiMetadata.audioSampleRate,
-		   let _ = pbiMetadata.audioBitDepth {
-			// PBI metadata is complete, use it as-is
-			return (bitDepth, sampleRate, audioQuality)
+	) -> AssetPlaybackMetadata {
+		if let playbackMetadata = playbackMetadata {
+			return playbackMetadata
 		}
-
-		// If PBI metadata is incomplete but playback metadata is available, use playback metadata
-		if let playbackMetadata {
-			// If PBI metadata doesn't have sample rate or bit depth, use playback metadata
-			bitDepth = playbackMetadata.bitDepth
-			sampleRate = playbackMetadata.sampleRate
-			// Try to derive audio quality from the format string in playback metadata
-			if let audioCodec = AudioCodec(rawValue: playbackMetadata.formatString),
-			   let qualityFromCodec = audioQualityFromCodec(
-				audioCodec,
-				bitDepth: playbackMetadata.bitDepth,
-				sampleRate: playbackMetadata.sampleRate
-			) {
-				audioQuality = qualityFromCodec
-			}
-		}
-
-		return (bitDepth, sampleRate, audioQuality)
-	}
-
-	private func audioQualityFromCodec(
-		_ codec: AudioCodec,
-		bitDepth: Int? = nil,
-		sampleRate: Int? = nil
-	) -> AudioQuality? {
-		switch codec {
-		case .HE_AAC_V1, .AAC_LC, .AAC:
-			return .HIGH
-		case .FLAC, .ALAC:
-			// For FLAC/ALAC, determine if it's hi-res lossless based on bit depth and sample rate
-			if let bitDepth, let sampleRate {
-				// HI_RES_LOSSLESS: >16-bit OR >44.1kHz
-				if bitDepth > 16 || sampleRate > 44100 {
-					return .HI_RES_LOSSLESS
-				}
-				return .LOSSLESS
-			}
-			// If we don't have bit depth/sample rate info, assume standard lossless
-			return .LOSSLESS
-		case .MQA:
-			return .HI_RES
-		case .MHA1, .MHM1:
-			return .HI_RES_LOSSLESS
-		default:
-			return nil
-		}
+		
+		return AssetPlaybackMetadata(
+			audioQuality: pbiMetadata.audioQuality ?? .LOW,
+			audioMode: pbiMetadata.audioMode ?? .STEREO,
+			sampleRate: pbiMetadata.audioSampleRate,
+			bitDepth: pbiMetadata.audioBitDepth)
 	}
 
 	func emitStreamingMetrics() {
