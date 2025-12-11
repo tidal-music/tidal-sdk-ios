@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.0.23"
+    "version" : "1.0.26"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -1413,8 +1413,8 @@
       "get" : {
         "description" : "Retrieves single artistBiographie by id.",
         "parameters" : [ {
-          "description" : "Artist id",
-          "example" : "1566",
+          "description" : "Artist biography id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -1494,8 +1494,8 @@
       "patch" : {
         "description" : "Updates existing artistBiographie.",
         "parameters" : [ {
-          "description" : "Artist id",
-          "example" : "1566",
+          "description" : "Artist biography id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -1552,8 +1552,8 @@
       "get" : {
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
-          "description" : "Artist id",
-          "example" : "1566",
+          "description" : "Artist biography id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7094,7 +7094,7 @@
         "description" : "Retrieves single searchResult by id.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7188,7 +7188,7 @@
         "description" : "Retrieves albums relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7290,7 +7290,7 @@
         "description" : "Retrieves artists relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7392,7 +7392,7 @@
         "description" : "Retrieves playlists relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7494,7 +7494,7 @@
         "description" : "Retrieves topHits relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7596,7 +7596,7 @@
         "description" : "Retrieves tracks relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7698,7 +7698,7 @@
         "description" : "Retrieves videos relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7799,6 +7799,8 @@
       "get" : {
         "description" : "Retrieves single searchSuggestion by id.",
         "parameters" : [ {
+          "description" : "Search query string used as the resource identifier",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7891,6 +7893,8 @@
       "get" : {
         "description" : "Retrieves directHits relationship.",
         "parameters" : [ {
+          "description" : "Search query string used as the resource identifier",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -8377,6 +8381,8 @@
       "get" : {
         "description" : "Retrieves single trackFile by id.",
         "parameters" : [ {
+          "description" : "Track file id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -8458,6 +8464,8 @@
       "get" : {
         "description" : "Retrieves single trackManifest by id.",
         "parameters" : [ {
+          "description" : "Track manifest id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -8860,7 +8868,7 @@
             }
           }
         }, {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "query",
           "name" : "filter[id]",
@@ -8923,8 +8931,8 @@
       "get" : {
         "description" : "Retrieves single trackStatistic by id.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
-          "example" : "75413016",
+          "description" : "Track statistic id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -8995,8 +9003,8 @@
       "get" : {
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
-          "example" : "75413016",
+          "description" : "Track statistic id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -9105,7 +9113,7 @@
             }
           }
         }, {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "query",
           "name" : "filter[id]",
@@ -9253,7 +9261,7 @@
       "delete" : {
         "description" : "Deletes existing track.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9300,7 +9308,7 @@
       "get" : {
         "description" : "Retrieves single track by id.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9381,7 +9389,7 @@
       "patch" : {
         "description" : "Updates existing track.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9439,7 +9447,7 @@
       "get" : {
         "description" : "Retrieves albums relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9528,7 +9536,7 @@
       "patch" : {
         "description" : "Updates albums relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9586,7 +9594,7 @@
       "get" : {
         "description" : "Retrieves artists relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9677,7 +9685,7 @@
       "get" : {
         "description" : "Retrieves genres relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9768,7 +9776,7 @@
       "get" : {
         "description" : "Retrieves lyrics relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9850,7 +9858,7 @@
       "get" : {
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9932,7 +9940,7 @@
       "get" : {
         "description" : "Retrieves providers relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10023,7 +10031,7 @@
       "get" : {
         "description" : "Retrieves radio relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10105,7 +10113,7 @@
       "get" : {
         "description" : "Retrieves shares relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10185,7 +10193,7 @@
       "get" : {
         "description" : "Retrieves similarTracks relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10276,7 +10284,7 @@
       "get" : {
         "description" : "Retrieves sourceFile relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10350,7 +10358,7 @@
       "get" : {
         "description" : "Retrieves trackStatistics relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -11017,7 +11025,7 @@
       "get" : {
         "description" : "Retrieves single userCollection by id.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11108,7 +11116,7 @@
       "delete" : {
         "description" : "Deletes item(s) from albums relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11164,7 +11172,7 @@
       "get" : {
         "description" : "Retrieves albums relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11276,7 +11284,7 @@
       "post" : {
         "description" : "Adds item(s) to albums relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11343,7 +11351,7 @@
       "delete" : {
         "description" : "Deletes item(s) from artists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11399,7 +11407,7 @@
       "get" : {
         "description" : "Retrieves artists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11511,7 +11519,7 @@
       "post" : {
         "description" : "Adds item(s) to artists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11578,7 +11586,7 @@
       "get" : {
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11658,7 +11666,7 @@
       "delete" : {
         "description" : "Deletes item(s) from playlists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11714,7 +11722,7 @@
       "get" : {
         "description" : "Retrieves playlists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11815,7 +11823,7 @@
       "post" : {
         "description" : "Adds item(s) to playlists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11873,7 +11881,7 @@
       "delete" : {
         "description" : "Deletes item(s) from tracks relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11929,7 +11937,7 @@
       "get" : {
         "description" : "Retrieves tracks relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -12041,7 +12049,7 @@
       "post" : {
         "description" : "Adds item(s) to tracks relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -12108,7 +12116,7 @@
       "delete" : {
         "description" : "Deletes item(s) from videos relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -12164,7 +12172,7 @@
       "get" : {
         "description" : "Retrieves videos relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -12276,7 +12284,7 @@
       "post" : {
         "description" : "Adds item(s) to videos relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -17528,7 +17536,7 @@
         }
       },
       "Playlists_Attributes" : {
-        "required" : [ "accessType", "bounded", "createdAt", "externalLinks", "lastModifiedAt", "name", "playlistType" ],
+        "required" : [ "accessType", "bounded", "createdAt", "externalLinks", "lastModifiedAt", "name", "numberOfFollowers", "playlistType" ],
         "type" : "object",
         "properties" : {
           "accessType" : {
@@ -17570,6 +17578,11 @@
             "minLength" : 1,
             "type" : "string",
             "description" : "Playlist name"
+          },
+          "numberOfFollowers" : {
+            "type" : "integer",
+            "description" : "The amount of followers of the playlist",
+            "format" : "int32"
           },
           "numberOfItems" : {
             "type" : "integer",

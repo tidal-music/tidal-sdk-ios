@@ -38,6 +38,8 @@ public struct PlaylistsAttributes: Codable, Hashable {
     public var lastModifiedAt: Date
     /** Playlist name */
     public var name: String
+    /** The amount of followers of the playlist */
+    public var numberOfFollowers: Int
     /** Number of items in the playlist */
     public var numberOfItems: Int?
     /** The type of the playlist */
@@ -52,6 +54,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         externalLinks: [ExternalLink],
         lastModifiedAt: Date,
         name: String,
+        numberOfFollowers: Int,
         numberOfItems: Int? = nil,
         playlistType: PlaylistType
     ) {
@@ -63,6 +66,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         self.externalLinks = externalLinks
         self.lastModifiedAt = lastModifiedAt
         self.name = name
+        self.numberOfFollowers = numberOfFollowers
         self.numberOfItems = numberOfItems
         self.playlistType = playlistType
     }
@@ -76,6 +80,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case externalLinks
         case lastModifiedAt
         case name
+        case numberOfFollowers
         case numberOfItems
         case playlistType
     }
@@ -92,6 +97,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         try container.encode(externalLinks, forKey: .externalLinks)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(name, forKey: .name)
+        try container.encode(numberOfFollowers, forKey: .numberOfFollowers)
         try container.encodeIfPresent(numberOfItems, forKey: .numberOfItems)
         try container.encode(playlistType, forKey: .playlistType)
     }

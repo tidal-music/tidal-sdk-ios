@@ -40,7 +40,7 @@ import OpenAPIClient
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
-let filterId = ["inner_example"] // [String] | A Tidal catalogue ID (optional)
+let filterId = ["inner_example"] // [String] | Track id (optional)
 let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 
@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics | [optional] 
- **filterId** | [**[String]**](String.md) | A Tidal catalogue ID | [optional] 
+ **filterId** | [**[String]**](String.md) | Track id | [optional] 
  **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
 
@@ -97,7 +97,7 @@ Deletes existing track.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 
 // Delete single track.
 TracksAPI.tracksIdDelete(id: id) { (response, error) in
@@ -116,7 +116,7 @@ TracksAPI.tracksIdDelete(id: id) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
 
 ### Return type
 
@@ -147,7 +147,7 @@ Retrieves single track by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
 
@@ -168,7 +168,7 @@ TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include) { (res
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics | [optional] 
 
@@ -201,7 +201,7 @@ Updates existing track.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TrackUpdateOperation_Payload_Data_Relationships(genres: TrackUpdateOperation_Payload_Data_Relationships_Genres(data: [TrackUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackUpdateOperationPayload |  (optional)
 
 // Update single track.
@@ -221,7 +221,7 @@ TracksAPI.tracksIdPatch(id: id, trackUpdateOperationPayload: trackUpdateOperatio
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **trackUpdateOperationPayload** | [**TrackUpdateOperationPayload**](TrackUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -253,7 +253,7 @@ Retrieves albums relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -275,7 +275,7 @@ TracksAPI.tracksIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, inclu
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -309,7 +309,7 @@ Updates albums relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let trackAlbumsRelationshipUpdateOperationPayload = TrackAlbumsRelationshipUpdateOperation_Payload(data: [TrackAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // TrackAlbumsRelationshipUpdateOperationPayload |  (optional)
 
 // Update albums relationship (\"to-many\").
@@ -329,7 +329,7 @@ TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, trackAlbumsRelationshipUpdate
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **trackAlbumsRelationshipUpdateOperationPayload** | [**TrackAlbumsRelationshipUpdateOperationPayload**](TrackAlbumsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -361,7 +361,7 @@ Retrieves artists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
@@ -383,7 +383,7 @@ TracksAPI.tracksIdRelationshipsArtistsGet(id: id, countryCode: countryCode, page
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
@@ -417,7 +417,7 @@ Retrieves genres relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: genres (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -439,7 +439,7 @@ TracksAPI.tracksIdRelationshipsGenresGet(id: id, countryCode: countryCode, inclu
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: genres | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -473,7 +473,7 @@ Retrieves lyrics relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: lyrics (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -494,7 +494,7 @@ TracksAPI.tracksIdRelationshipsLyricsGet(id: id, include: include, pageCursor: p
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: lyrics | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -527,7 +527,7 @@ Retrieves owners relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -548,7 +548,7 @@ TracksAPI.tracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: p
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -581,7 +581,7 @@ Retrieves providers relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: providers (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -603,7 +603,7 @@ TracksAPI.tracksIdRelationshipsProvidersGet(id: id, countryCode: countryCode, in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: providers | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -637,7 +637,7 @@ Retrieves radio relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: radio (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -658,7 +658,7 @@ TracksAPI.tracksIdRelationshipsRadioGet(id: id, include: include, pageCursor: pa
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: radio | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -691,7 +691,7 @@ Retrieves shares relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: shares (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -712,7 +712,7 @@ TracksAPI.tracksIdRelationshipsSharesGet(id: id, include: include, pageCursor: p
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: shares | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -745,7 +745,7 @@ Retrieves similarTracks relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarTracks (optional)
@@ -767,7 +767,7 @@ TracksAPI.tracksIdRelationshipsSimilarTracksGet(id: id, countryCode: countryCode
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: similarTracks | [optional] 
@@ -801,7 +801,7 @@ Retrieves sourceFile relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: sourceFile (optional)
 
 // Get sourceFile relationship (\"to-one\").
@@ -821,7 +821,7 @@ TracksAPI.tracksIdRelationshipsSourceFileGet(id: id, include: include) { (respon
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: sourceFile | [optional] 
 
 ### Return type
@@ -853,7 +853,7 @@ Retrieves trackStatistics relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: trackStatistics (optional)
 
 // Get trackStatistics relationship (\"to-one\").
@@ -873,7 +873,7 @@ TracksAPI.tracksIdRelationshipsTrackStatisticsGet(id: id, include: include) { (r
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: trackStatistics | [optional] 
 
 ### Return type

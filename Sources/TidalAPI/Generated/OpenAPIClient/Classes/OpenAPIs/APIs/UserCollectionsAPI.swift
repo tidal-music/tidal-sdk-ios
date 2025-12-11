@@ -15,7 +15,7 @@ internal class UserCollectionsAPI {
     /**
      Get single userCollection.
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
@@ -38,7 +38,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
@@ -73,7 +73,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from albums relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -94,7 +94,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -136,7 +136,7 @@ internal class UserCollectionsAPI {
     /**
      Get albums relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -161,7 +161,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -200,7 +200,7 @@ internal class UserCollectionsAPI {
     /**
      Add to albums relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -222,7 +222,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
@@ -254,7 +254,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from artists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -275,7 +275,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -313,7 +313,7 @@ internal class UserCollectionsAPI {
     /**
      Get artists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -338,7 +338,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -377,7 +377,7 @@ internal class UserCollectionsAPI {
     /**
      Add to artists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -399,7 +399,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
@@ -431,7 +431,7 @@ internal class UserCollectionsAPI {
     /**
      Get owners relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: UserCollectionsMultiRelationshipDataDocument
@@ -453,7 +453,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<UserCollectionsMultiRelationshipDataDocument> 
@@ -486,7 +486,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from playlists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -507,7 +507,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -554,7 +554,7 @@ internal class UserCollectionsAPI {
     /**
      Get playlists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
@@ -578,7 +578,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
@@ -615,7 +615,7 @@ internal class UserCollectionsAPI {
     /**
      Add to playlists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -636,7 +636,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -664,7 +664,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from tracks relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -685,7 +685,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -729,7 +729,7 @@ internal class UserCollectionsAPI {
     /**
      Get tracks relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -754,7 +754,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -793,7 +793,7 @@ internal class UserCollectionsAPI {
     /**
      Add to tracks relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -815,7 +815,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
@@ -847,7 +847,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from videos relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -868,7 +868,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -910,7 +910,7 @@ internal class UserCollectionsAPI {
     /**
      Get videos relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -935,7 +935,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -974,7 +974,7 @@ internal class UserCollectionsAPI {
     /**
      Add to videos relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -996,7 +996,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 

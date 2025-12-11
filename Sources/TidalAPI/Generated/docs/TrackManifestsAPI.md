@@ -21,7 +21,7 @@ Retrieves single trackManifest by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | Track manifest id
 let manifestType = "manifestType_example" // String | 
 let formats = ["formats_example"] // [String] | 
 let uriScheme = "uriScheme_example" // String | 
@@ -45,7 +45,7 @@ TrackManifestsAPI.trackManifestsIdGet(id: id, manifestType: manifestType, format
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | Track manifest id | 
  **manifestType** | **String** |  | 
  **formats** | [**[String]**](String.md) |  | 
  **uriScheme** | **String** |  | 

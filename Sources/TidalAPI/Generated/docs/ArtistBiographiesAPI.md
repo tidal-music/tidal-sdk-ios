@@ -78,7 +78,7 @@ Retrieves single artistBiographie by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Artist id
+let id = "id_example" // String | Artist biography id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 
@@ -99,7 +99,7 @@ ArtistBiographiesAPI.artistBiographiesIdGet(id: id, countryCode: countryCode, in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Artist id | 
+ **id** | **String** | Artist biography id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
 
@@ -132,7 +132,7 @@ Updates existing artistBiographie.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Artist id
+let id = "id_example" // String | Artist biography id
 let artistBiographyUpdateBody = ArtistBiographyUpdateBody(data: ArtistBiographyUpdateBody_Data(attributes: ArtistBiographyUpdateBody_Data_Attributes(text: "text_example"), id: "id_example", type: "type_example")) // ArtistBiographyUpdateBody |  (optional)
 
 // Update single artistBiographie.
@@ -152,7 +152,7 @@ ArtistBiographiesAPI.artistBiographiesIdPatch(id: id, artistBiographyUpdateBody:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Artist id | 
+ **id** | **String** | Artist biography id | 
  **artistBiographyUpdateBody** | [**ArtistBiographyUpdateBody**](ArtistBiographyUpdateBody.md) |  | [optional] 
 
 ### Return type
@@ -184,7 +184,7 @@ Retrieves owners relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Artist id
+let id = "id_example" // String | Artist biography id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -205,7 +205,7 @@ ArtistBiographiesAPI.artistBiographiesIdRelationshipsOwnersGet(id: id, include: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Artist id | 
+ **id** | **String** | Artist biography id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 

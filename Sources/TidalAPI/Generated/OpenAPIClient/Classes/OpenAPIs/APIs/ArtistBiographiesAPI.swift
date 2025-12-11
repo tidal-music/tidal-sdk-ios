@@ -71,7 +71,7 @@ internal class ArtistBiographiesAPI {
     /**
      Get single artistBiographie.
      
-     - parameter id: (path) Artist id 
+     - parameter id: (path) Artist biography id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: ArtistBiographiesSingleResourceDataDocument
@@ -96,7 +96,7 @@ internal class ArtistBiographiesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Artist id 
+     - parameter id: (path) Artist biography id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: RequestBuilder<ArtistBiographiesSingleResourceDataDocument> 
@@ -129,7 +129,7 @@ internal class ArtistBiographiesAPI {
     /**
      Update single artistBiographie.
      
-     - parameter id: (path) Artist id 
+     - parameter id: (path) Artist biography id 
      - parameter artistBiographyUpdateBody: (body)  (optional)
      - returns: Void
      */
@@ -150,7 +150,7 @@ internal class ArtistBiographiesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) Artist id 
+     - parameter id: (path) Artist biography id 
      - parameter artistBiographyUpdateBody: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -178,7 +178,7 @@ internal class ArtistBiographiesAPI {
     /**
      Get owners relationship (\"to-many\").
      
-     - parameter id: (path) Artist id 
+     - parameter id: (path) Artist biography id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ArtistBiographiesMultiRelationshipDataDocument
@@ -203,7 +203,7 @@ internal class ArtistBiographiesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Artist id 
+     - parameter id: (path) Artist biography id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ArtistBiographiesMultiRelationshipDataDocument> 

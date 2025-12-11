@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **externalLinks** | [ExternalLink] |  | 
 **lastModifiedAt** | **Date** | Datetime of last modification of the playlist (ISO 8601) | 
 **name** | **String** | Playlist name | 
+**numberOfFollowers** | **Int** | The amount of followers of the playlist | 
 **numberOfItems** | **Int** | Number of items in the playlist | [optional] 
 **playlistType** | **String** | The type of the playlist | 
 

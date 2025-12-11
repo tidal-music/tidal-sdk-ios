@@ -18,7 +18,7 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
-     - parameter filterId: (query) A Tidal catalogue ID (optional)
+     - parameter filterId: (query) Track id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterOwnersId: (query) User id (optional)
      - returns: TracksMultiResourceDataDocument
@@ -46,7 +46,7 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
-     - parameter filterId: (query) A Tidal catalogue ID (optional)
+     - parameter filterId: (query) Track id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterOwnersId: (query) User id (optional)
      - returns: RequestBuilder<TracksMultiResourceDataDocument> 
@@ -80,7 +80,7 @@ internal class TracksAPI {
     /**
      Delete single track.
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -100,7 +100,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - returns: RequestBuilder<Void> 
      */
     internal class func tracksIdDeleteWithRequestBuilder(id: String) -> RequestBuilder<Void> {
@@ -127,7 +127,7 @@ internal class TracksAPI {
     /**
      Get single track.
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
      - returns: TracksSingleResourceDataDocument
@@ -152,7 +152,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
      - returns: RequestBuilder<TracksSingleResourceDataDocument> 
@@ -185,7 +185,7 @@ internal class TracksAPI {
     /**
      Update single track.
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter trackUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -206,7 +206,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter trackUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -234,7 +234,7 @@ internal class TracksAPI {
     /**
      Get albums relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -260,7 +260,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -295,7 +295,7 @@ internal class TracksAPI {
     /**
      Update albums relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter trackAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -316,7 +316,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter trackAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -344,7 +344,7 @@ internal class TracksAPI {
     /**
      Get artists relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
@@ -370,7 +370,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
@@ -405,7 +405,7 @@ internal class TracksAPI {
     /**
      Get genres relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: genres (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -431,7 +431,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: genres (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -466,7 +466,7 @@ internal class TracksAPI {
     /**
      Get lyrics relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: lyrics (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: TracksMultiRelationshipDataDocument
@@ -491,7 +491,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: lyrics (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
@@ -524,7 +524,7 @@ internal class TracksAPI {
     /**
      Get owners relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: TracksMultiRelationshipDataDocument
@@ -549,7 +549,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
@@ -582,7 +582,7 @@ internal class TracksAPI {
     /**
      Get providers relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -608,7 +608,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -643,7 +643,7 @@ internal class TracksAPI {
     /**
      Get radio relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: radio (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: TracksMultiRelationshipDataDocument
@@ -668,7 +668,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: radio (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
@@ -701,7 +701,7 @@ internal class TracksAPI {
     /**
      Get shares relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: shares (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: TracksMultiRelationshipDataDocument
@@ -723,7 +723,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: shares (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
@@ -756,7 +756,7 @@ internal class TracksAPI {
     /**
      Get similarTracks relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarTracks (optional)
@@ -782,7 +782,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarTracks (optional)
@@ -817,7 +817,7 @@ internal class TracksAPI {
     /**
      Get sourceFile relationship (\"to-one\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sourceFile (optional)
      - returns: TracksSingleRelationshipDataDocument
      */
@@ -841,7 +841,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sourceFile (optional)
      - returns: RequestBuilder<TracksSingleRelationshipDataDocument> 
      */
@@ -872,7 +872,7 @@ internal class TracksAPI {
     /**
      Get trackStatistics relationship (\"to-one\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: trackStatistics (optional)
      - returns: TracksSingleRelationshipDataDocument
      */
@@ -893,7 +893,7 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: trackStatistics (optional)
      - returns: RequestBuilder<TracksSingleRelationshipDataDocument> 
      */
