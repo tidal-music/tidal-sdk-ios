@@ -24,7 +24,7 @@ Retrieves multiple trackStatistics by available filters, or without if applicabl
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterId = ["inner_example"] // [String] | A Tidal catalogue ID (optional)
+let filterId = ["inner_example"] // [String] | Track id (optional)
 
 // Get multiple trackStatistics.
 TrackStatisticsAPI.trackStatisticsGet(include: include, filterId: filterId) { (response, error) in
@@ -44,7 +44,7 @@ TrackStatisticsAPI.trackStatisticsGet(include: include, filterId: filterId) { (r
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterId** | [**[String]**](String.md) | A Tidal catalogue ID | [optional] 
+ **filterId** | [**[String]**](String.md) | Track id | [optional] 
 
 ### Return type
 
@@ -75,7 +75,7 @@ Retrieves single trackStatistic by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track statistic id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 
 // Get single trackStatistic.
@@ -95,7 +95,7 @@ TrackStatisticsAPI.trackStatisticsIdGet(id: id, include: include) { (response, e
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track statistic id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
 
 ### Return type
@@ -127,7 +127,7 @@ Retrieves owners relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | A Tidal catalogue ID
+let id = "id_example" // String | Track statistic id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -148,7 +148,7 @@ TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGet(id: id, include: incl
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | A Tidal catalogue ID | 
+ **id** | **String** | Track statistic id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 

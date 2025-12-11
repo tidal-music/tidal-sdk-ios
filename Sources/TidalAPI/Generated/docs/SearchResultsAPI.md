@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **searchResultsIdGet**
 ```swift
-    open class func searchResultsIdGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single searchResult.
@@ -27,9 +27,9 @@ Retrieves single searchResult by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query
+let id = "id_example" // String | Search query string used as the resource identifier
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
 
 // Get single searchResult.
@@ -49,9 +49,9 @@ SearchResultsAPI.searchResultsIdGet(id: id, countryCode: countryCode, explicitFi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query | 
+ **id** | **String** | Search query string used as the resource identifier | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **explicitFilter** | **String** | Explicit filter | [optional] 
+ **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos | [optional] 
 
 ### Return type
@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsAlbumsGet**
 ```swift
-    open class func searchResultsIdRelationshipsAlbumsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsAlbumsGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -83,14 +83,14 @@ Retrieves albums relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query
+let id = "id_example" // String | Search query string used as the resource identifier
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
 
 // Get albums relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -106,11 +106,11 @@ SearchResultsAPI.searchResultsIdRelationshipsAlbumsGet(id: id, countryCode: coun
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query | 
+ **id** | **String** | Search query string used as the resource identifier | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **explicitFilter** | **String** | Explicit filter | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
+ **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
 
 ### Return type
 
@@ -129,7 +129,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsArtistsGet**
 ```swift
-    open class func searchResultsIdRelationshipsArtistsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsArtistsGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -141,14 +141,14 @@ Retrieves artists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query
+let id = "id_example" // String | Search query string used as the resource identifier
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
 
 // Get artists relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsArtistsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsArtistsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -164,11 +164,11 @@ SearchResultsAPI.searchResultsIdRelationshipsArtistsGet(id: id, countryCode: cou
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query | 
+ **id** | **String** | Search query string used as the resource identifier | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **explicitFilter** | **String** | Explicit filter | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
+ **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
 
 ### Return type
 
@@ -187,7 +187,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsPlaylistsGet**
 ```swift
-    open class func searchResultsIdRelationshipsPlaylistsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsPlaylistsGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get playlists relationship (\"to-many\").
@@ -199,14 +199,14 @@ Retrieves playlists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query
+let id = "id_example" // String | Search query string used as the resource identifier
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlists (optional)
 
 // Get playlists relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -222,11 +222,11 @@ SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGet(id: id, countryCode: c
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query | 
+ **id** | **String** | Search query string used as the resource identifier | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **explicitFilter** | **String** | Explicit filter | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlists | [optional] 
+ **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlists | [optional] 
 
 ### Return type
 
@@ -245,7 +245,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsTopHitsGet**
 ```swift
-    open class func searchResultsIdRelationshipsTopHitsGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsTopHitsGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get topHits relationship (\"to-many\").
@@ -257,14 +257,14 @@ Retrieves topHits relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query
+let id = "id_example" // String | Search query string used as the resource identifier
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: topHits (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: topHits (optional)
 
 // Get topHits relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsTopHitsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsTopHitsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -280,11 +280,11 @@ SearchResultsAPI.searchResultsIdRelationshipsTopHitsGet(id: id, countryCode: cou
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query | 
+ **id** | **String** | Search query string used as the resource identifier | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **explicitFilter** | **String** | Explicit filter | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: topHits | [optional] 
+ **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: topHits | [optional] 
 
 ### Return type
 
@@ -303,7 +303,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsTracksGet**
 ```swift
-    open class func searchResultsIdRelationshipsTracksGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsTracksGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get tracks relationship (\"to-many\").
@@ -315,14 +315,14 @@ Retrieves tracks relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query
+let id = "id_example" // String | Search query string used as the resource identifier
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
 
 // Get tracks relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsTracksGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsTracksGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -338,11 +338,11 @@ SearchResultsAPI.searchResultsIdRelationshipsTracksGet(id: id, countryCode: coun
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query | 
+ **id** | **String** | Search query string used as the resource identifier | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **explicitFilter** | **String** | Explicit filter | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
+ **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
 
 ### Return type
 
@@ -361,7 +361,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsVideosGet**
 ```swift
-    open class func searchResultsIdRelationshipsVideosGet(id: String, countryCode: String, explicitFilter: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsVideosGet(id: String, countryCode: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get videos relationship (\"to-many\").
@@ -373,14 +373,14 @@ Retrieves videos relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query
+let id = "id_example" // String | Search query string used as the resource identifier
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
 
 // Get videos relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsVideosGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsVideosGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -396,11 +396,11 @@ SearchResultsAPI.searchResultsIdRelationshipsVideosGet(id: id, countryCode: coun
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query | 
+ **id** | **String** | Search query string used as the resource identifier | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
- **explicitFilter** | **String** | Explicit filter | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
+ **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
 
 ### Return type
 

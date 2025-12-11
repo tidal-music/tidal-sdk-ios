@@ -17,14 +17,14 @@ internal class VideosAPI {
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
-     - parameter filterIsrc: (query) Allows to filter the collection of resources based on isrc attribute value (optional)
-     - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
+     - parameter filterId: (query) Video id (optional)
+     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - returns: VideosMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func videosGet(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> VideosMultiResourceDataDocument {
+    internal class func videosGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil) async throws -> VideosMultiResourceDataDocument {
         do {
-            return try await videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterIsrc: filterIsrc, filterId: filterId).execute().body
+            return try await videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -43,11 +43,11 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
-     - parameter filterIsrc: (query) Allows to filter the collection of resources based on isrc attribute value (optional)
-     - parameter filterId: (query) Allows to filter the collection of resources based on id attribute value (optional)
+     - parameter filterId: (query) Video id (optional)
+     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - returns: RequestBuilder<VideosMultiResourceDataDocument> 
      */
-    internal class func videosGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<VideosMultiResourceDataDocument> {
+    internal class func videosGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil) -> RequestBuilder<VideosMultiResourceDataDocument> {
         let localVariablePath = "/videos"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -56,8 +56,8 @@ internal class VideosAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[isrc]": (wrappedValue: filterIsrc?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[isrc]": (wrappedValue: filterIsrc?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -134,14 +134,14 @@ internal class VideosAPI {
      
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: VideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func videosIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+    internal class func videosIdRelationshipsAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
         do {
-            return try await videosIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+            return try await videosIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -160,11 +160,11 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: RequestBuilder<VideosMultiRelationshipDataDocument> 
      */
-    internal class func videosIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<VideosMultiRelationshipDataDocument> {
+    internal class func videosIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosMultiRelationshipDataDocument> {
         var localVariablePath = "/videos/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -174,9 +174,9 @@ internal class VideosAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -195,14 +195,14 @@ internal class VideosAPI {
      
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: VideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func videosIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+    internal class func videosIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
         do {
-            return try await videosIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+            return try await videosIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -221,11 +221,11 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: RequestBuilder<VideosMultiRelationshipDataDocument> 
      */
-    internal class func videosIdRelationshipsArtistsGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<VideosMultiRelationshipDataDocument> {
+    internal class func videosIdRelationshipsArtistsGetWithRequestBuilder(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosMultiRelationshipDataDocument> {
         var localVariablePath = "/videos/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -235,9 +235,9 @@ internal class VideosAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -256,14 +256,14 @@ internal class VideosAPI {
      
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
      - returns: VideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func videosIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+    internal class func videosIdRelationshipsProvidersGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
         do {
-            return try await videosIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+            return try await videosIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -282,11 +282,11 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
      - returns: RequestBuilder<VideosMultiRelationshipDataDocument> 
      */
-    internal class func videosIdRelationshipsProvidersGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<VideosMultiRelationshipDataDocument> {
+    internal class func videosIdRelationshipsProvidersGetWithRequestBuilder(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosMultiRelationshipDataDocument> {
         var localVariablePath = "/videos/{id}/relationships/providers"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -296,9 +296,9 @@ internal class VideosAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -317,14 +317,14 @@ internal class VideosAPI {
      
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: thumbnailArt (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: thumbnailArt (optional)
      - returns: VideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+    internal class func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
         do {
-            return try await videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+            return try await videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -343,11 +343,11 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: thumbnailArt (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: thumbnailArt (optional)
      - returns: RequestBuilder<VideosMultiRelationshipDataDocument> 
      */
-    internal class func videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<VideosMultiRelationshipDataDocument> {
+    internal class func videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosMultiRelationshipDataDocument> {
         var localVariablePath = "/videos/{id}/relationships/thumbnailArt"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -357,9 +357,9 @@ internal class VideosAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

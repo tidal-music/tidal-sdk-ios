@@ -34,7 +34,7 @@ internal class TrackFilesAPI {
     /**
      Get single trackFile.
      
-     - parameter id: (path)  
+     - parameter id: (path) Track file id 
      - parameter formats: (query)  
      - parameter usage: (query)  
      - returns: TrackFilesSingleResourceDataDocument
@@ -59,7 +59,7 @@ internal class TrackFilesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path)  
+     - parameter id: (path) Track file id 
      - parameter formats: (query)  
      - parameter usage: (query)  
      - returns: RequestBuilder<TrackFilesSingleResourceDataDocument> 

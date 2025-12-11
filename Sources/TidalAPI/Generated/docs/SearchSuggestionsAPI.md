@@ -22,7 +22,7 @@ Retrieves single searchSuggestion by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | Search query string used as the resource identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits (optional)
@@ -44,7 +44,7 @@ SearchSuggestionsAPI.searchSuggestionsIdGet(id: id, explicitFilter: explicitFilt
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | Search query string used as the resource identifier | 
  **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits | [optional] 
@@ -78,7 +78,7 @@ Retrieves directHits relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | 
+let id = "id_example" // String | Search query string used as the resource identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits (optional)
@@ -101,7 +101,7 @@ SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, expli
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
+ **id** | **String** | Search query string used as the resource identifier | 
  **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits | [optional] 

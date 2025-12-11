@@ -16,7 +16,7 @@ internal class TrackStatisticsAPI {
      Get multiple trackStatistics.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) A Tidal catalogue ID (optional)
+     - parameter filterId: (query) Track id (optional)
      - returns: TrackStatisticsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -37,7 +37,7 @@ internal class TrackStatisticsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) A Tidal catalogue ID (optional)
+     - parameter filterId: (query) Track id (optional)
      - returns: RequestBuilder<TrackStatisticsMultiResourceDataDocument> 
      */
     internal class func trackStatisticsGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<TrackStatisticsMultiResourceDataDocument> {
@@ -65,7 +65,7 @@ internal class TrackStatisticsAPI {
     /**
      Get single trackStatistic.
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track statistic id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: TrackStatisticsSingleResourceDataDocument
      */
@@ -86,7 +86,7 @@ internal class TrackStatisticsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track statistic id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: RequestBuilder<TrackStatisticsSingleResourceDataDocument> 
      */
@@ -117,7 +117,7 @@ internal class TrackStatisticsAPI {
     /**
      Get owners relationship (\"to-many\").
      
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track statistic id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: TrackStatisticsMultiRelationshipDataDocument
@@ -139,7 +139,7 @@ internal class TrackStatisticsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) A Tidal catalogue ID 
+     - parameter id: (path) Track statistic id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<TrackStatisticsMultiRelationshipDataDocument> 

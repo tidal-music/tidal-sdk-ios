@@ -22,7 +22,7 @@ Retrieves multiple providers by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | Allows to filter the collection of resources based on id attribute value (optional)
+let filterId = ["inner_example"] // [String] | Provider ID (optional)
 
 // Get multiple providers.
 ProvidersAPI.providersGet(filterId: filterId) { (response, error) in
@@ -41,7 +41,7 @@ ProvidersAPI.providersGet(filterId: filterId) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | Allows to filter the collection of resources based on id attribute value | [optional] 
+ **filterId** | [**[String]**](String.md) | Provider ID | [optional] 
 
 ### Return type
 
@@ -72,7 +72,7 @@ Retrieves single provider by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Provider id
+let id = "id_example" // String | Provider ID
 
 // Get single provider.
 ProvidersAPI.providersIdGet(id: id) { (response, error) in
@@ -91,7 +91,7 @@ ProvidersAPI.providersIdGet(id: id) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Provider id | 
+ **id** | **String** | Provider ID | 
 
 ### Return type
 

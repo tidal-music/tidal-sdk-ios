@@ -19,9 +19,9 @@ public enum VideosAPITidal {
      
      - returns: VideosMultiResourceDataDocument
      */
-	public static func videosGet(countryCode: String, include: [String]? = nil, filterIsrc: [String]? = nil, filterId: [String]? = nil) async throws -> VideosMultiResourceDataDocument {
+	public static func videosGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil) async throws -> VideosMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			VideosAPI.videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterIsrc: filterIsrc, filterId: filterId)
+			VideosAPI.videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum VideosAPITidal {
      
      - returns: VideosMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			VideosAPI.videosIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			VideosAPI.videosIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum VideosAPITidal {
      
      - returns: VideosMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsArtistsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			VideosAPI.videosIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			VideosAPI.videosIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -67,9 +67,9 @@ public enum VideosAPITidal {
      
      - returns: VideosMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsProvidersGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			VideosAPI.videosIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			VideosAPI.videosIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -79,9 +79,9 @@ public enum VideosAPITidal {
      
      - returns: VideosMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			VideosAPI.videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			VideosAPI.videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include)
 		}
 	}
 }

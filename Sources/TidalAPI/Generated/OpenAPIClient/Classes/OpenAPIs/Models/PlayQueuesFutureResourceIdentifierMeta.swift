@@ -15,18 +15,22 @@ public struct PlayQueuesFutureResourceIdentifierMeta: Codable, Hashable {
     public static let itemIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var batchId: UUID
     public var itemId: String
+    public var legacySource: LegacySource?
 
     public init(
         batchId: UUID,
-        itemId: String
+        itemId: String,
+        legacySource: LegacySource? = nil
     ) {
         self.batchId = batchId
         self.itemId = itemId
+        self.legacySource = legacySource
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case batchId
         case itemId
+        case legacySource
     }
 
     // Encodable protocol methods
@@ -35,5 +39,6 @@ public struct PlayQueuesFutureResourceIdentifierMeta: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(batchId, forKey: .batchId)
         try container.encode(itemId, forKey: .itemId)
+        try container.encodeIfPresent(legacySource, forKey: .legacySource)
     }
 }

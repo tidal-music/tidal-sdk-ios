@@ -15,16 +15,16 @@ internal class UserCollectionsAPI {
     /**
      Get single userCollection.
      
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
      - returns: UserCollectionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdGet(id: String, locale: String, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
+    internal class func userCollectionsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
         do {
-            return try await userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, countryCode: countryCode, include: include).execute().body
+            return try await userCollectionsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,13 +38,13 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
      - returns: RequestBuilder<UserCollectionsSingleResourceDataDocument> 
      */
-    internal class func userCollectionsIdGetWithRequestBuilder(id: String, locale: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
+    internal class func userCollectionsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
         var localVariablePath = "/userCollections/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -54,8 +54,8 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -73,7 +73,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from albums relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -94,7 +94,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -136,18 +136,18 @@ internal class UserCollectionsAPI {
     /**
      Get albums relationship (\"to-many\").
      
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: UserCollectionsAlbumsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, locale: locale, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include).execute().body
+            return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -161,15 +161,15 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -179,10 +179,10 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -200,7 +200,7 @@ internal class UserCollectionsAPI {
     /**
      Add to albums relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -222,7 +222,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
@@ -254,7 +254,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from artists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -275,7 +275,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -313,18 +313,18 @@ internal class UserCollectionsAPI {
     /**
      Get artists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: UserCollectionsArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, locale: locale, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include).execute().body
+            return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -338,15 +338,15 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -356,10 +356,10 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -377,7 +377,7 @@ internal class UserCollectionsAPI {
     /**
      Add to artists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -399,7 +399,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
@@ -431,7 +431,7 @@ internal class UserCollectionsAPI {
     /**
      Get owners relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: UserCollectionsMultiRelationshipDataDocument
@@ -453,7 +453,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<UserCollectionsMultiRelationshipDataDocument> 
@@ -486,7 +486,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from playlists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -507,7 +507,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -554,7 +554,7 @@ internal class UserCollectionsAPI {
     /**
      Get playlists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
@@ -578,7 +578,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
@@ -615,7 +615,7 @@ internal class UserCollectionsAPI {
     /**
      Add to playlists relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -636,7 +636,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -664,7 +664,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from tracks relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -685,7 +685,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -729,18 +729,18 @@ internal class UserCollectionsAPI {
     /**
      Get tracks relationship (\"to-many\").
      
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: UserCollectionsTracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsTracksGet(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, locale: locale, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include).execute().body
+            return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -754,15 +754,15 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -772,10 +772,10 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -793,7 +793,7 @@ internal class UserCollectionsAPI {
     /**
      Add to tracks relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -815,7 +815,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
@@ -847,7 +847,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from videos relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
@@ -868,7 +868,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter userCollectionVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
@@ -910,18 +910,18 @@ internal class UserCollectionsAPI {
     /**
      Get videos relationship (\"to-many\").
      
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: UserCollectionsVideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsVideosGet(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, locale: locale, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include).execute().body
+            return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -935,15 +935,15 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
-     - parameter locale: (query) BCP 47 locale 
+     - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, locale: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -953,10 +953,10 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "locale": (wrappedValue: locale.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -974,7 +974,7 @@ internal class UserCollectionsAPI {
     /**
      Add to videos relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
@@ -996,7 +996,7 @@ internal class UserCollectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User collection id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter userCollectionVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
