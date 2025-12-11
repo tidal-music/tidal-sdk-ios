@@ -111,7 +111,7 @@ jobs:
             echo "No changes found. Good bye"
 
       - name: Bump version
-        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
+        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' && steps.check_pr.outputs.existing_pr != 'true' }}
         run: |
           chmod +x ./bin/bump-version.sh
 
@@ -121,7 +121,26 @@ jobs:
           changelog_entry="Generated API code using spec version $api_version"
 
           ./bin/bump-version.sh patch "$changelog_entry"
-      
+
+      - name: Update changelog entry for existing PR
+        if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' && steps.check_pr.outputs.existing_pr == 'true' }}
+        run: |
+          # Extract new API spec version
+          api_spec_file="$API_FOLDER/$INPUT_FOLDER_NAME/tidal-api-oas.json"
+          api_version=$(jq -r '.info.version' "$api_spec_file")
+
+          # Update only the first changelog entry (most recent version) to reference the latest API version
+          # Uses awk to only modify the first occurrence of the pattern
+          awk -v new_version="$api_version" '
+            !done && /Generated API code using spec version .* \(TidalAPI\)/ {
+              sub(/spec version [0-9.]+/, "spec version " new_version)
+              done = 1
+            }
+            { print }
+          ' CHANGELOG.md > CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md
+
+          echo "Updated changelog entry to reference API spec version $api_version"
+
       - name: Prepare git and define a branch name
         id: prepare_git_and_define_branch_name
         if: ${{ steps.check_for_changes.outputs.CHANGES_DETECTED == 'true' }}
