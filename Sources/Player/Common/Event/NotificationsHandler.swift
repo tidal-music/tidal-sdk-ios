@@ -31,6 +31,14 @@ final class NotificationsHandler {
 		}
 	}
 
+	func playbackQualityChanged(to playerItem: PlayerItem?) {
+		if let playbackContext = playerItem?.playbackContext {
+			queue.async {
+				self.listener.playbackQualityChanged(to: playbackContext)
+			}
+		}
+	}
+
 	func streamingPrivilegesLost(to device: String?) {
 		queue.async {
 			self.listener.streamingPrivilegesLost(to: device)

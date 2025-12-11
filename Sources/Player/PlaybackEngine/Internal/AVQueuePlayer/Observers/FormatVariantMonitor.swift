@@ -65,11 +65,6 @@ class FormatVariantMonitor: NSObject {
 			return
 		}
 
-		let previousFormat = lastReportedFormat?.formatString
-		lastReportedFormat = formatMetadata
-		let currentFormat = formatMetadata.formatString
-		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantChanged(from: previousFormat, to: currentFormat))
-
 		// Dispatch callback through configured queue with playerItem validation
 		// to prevent race conditions during player item deallocation
 		queue.addOperation { [weak self] in
@@ -113,14 +108,11 @@ class FormatVariantMonitor: NSObject {
 			}
 		}
 
-		// Return metadata only if we extracted all required fields
-		if let format = formatString,
-		   let sr = sampleRate,
-		   let bd = bitDepth {
-			return AssetPlaybackMetadata(formatString: format, sampleRate: sr, bitDepth: bd)
+		// Return metadata if we have the required format field (sample rate and bit depth are optional)
+		guard let format = formatString else {
+			return nil
 		}
-
-		return nil
+		return AssetPlaybackMetadata(formatString: format, sampleRate: sampleRate, bitDepth: bitDepth)
 	}
 
 	/// Safely parses an integer value from various types (String, NSNumber, Int, etc.)

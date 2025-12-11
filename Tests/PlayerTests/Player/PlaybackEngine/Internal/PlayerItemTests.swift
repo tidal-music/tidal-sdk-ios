@@ -785,7 +785,7 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.playing(asset: asset)
 
 		// FLAC with 24-bit should report HI_RES_LOSSLESS
-		let playbackMeta = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 44100, bitDepth: 24)
+		let playbackMeta = AssetPlaybackMetadata(formatString: "FLAC_HIRES", sampleRate: 44100, bitDepth: 24)
 		playerItem.playbackMetadataChanged(asset: asset, to: playbackMeta)
 
 		let endTimestamp: UInt64 = 20
@@ -831,7 +831,7 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.playing(asset: asset)
 
 		// FLAC with 96 kHz should report HI_RES_LOSSLESS
-		let playbackMeta = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 96000, bitDepth: 16)
+		let playbackMeta = AssetPlaybackMetadata(formatString: "FLAC_HIRES", sampleRate: 96000, bitDepth: 16)
 		playerItem.playbackMetadataChanged(asset: asset, to: playbackMeta)
 
 		let endTimestamp: UInt64 = 20

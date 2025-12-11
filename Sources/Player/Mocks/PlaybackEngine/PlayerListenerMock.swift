@@ -4,8 +4,11 @@ public final class PlayerListenerMock: PlayerListener {
 	var state: State?
 	var numEnds: Int = 0
 	var numTransitions: Int = 0
+	var numQualityChanges: Int = 0
 	var numPrivilegesLost: Int = 0
 	var numErrors: Int = 0
+	var lastTransitionContext: PlaybackContext?
+	var lastQualityChangeContext: PlaybackContext?
 
 	public func stateChanged(to state: State) {
 		self.state = state
@@ -17,6 +20,12 @@ public final class PlayerListenerMock: PlayerListener {
 
 	public func mediaTransitioned(to mediaProduct: MediaProduct, with playbackContext: PlaybackContext) {
 		numTransitions += 1
+		lastTransitionContext = playbackContext
+	}
+
+	public func playbackQualityChanged(to playbackContext: PlaybackContext) {
+		numQualityChanges += 1
+		lastQualityChangeContext = playbackContext
 	}
 
 	public func streamingPrivilegesLost(to device: String?) {

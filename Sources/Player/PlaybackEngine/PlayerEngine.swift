@@ -433,7 +433,7 @@ extension PlayerEngine: PlayerItemMonitor {
 				return
 			}
 
-			self.notificationsHandler?.mediaTransitioned(to: self.currentItem)
+			self.notificationsHandler?.playbackQualityChanged(to: self.currentItem)
 		}
 	}
 }

@@ -240,10 +240,10 @@ extension PlayerEngineTests {
 		assertPlayerLoader(trackPlaybackInfos: [trackPlaybackInfo1])
 	}
 
-func test_setNext_repeated_is_ignored() {
-	// GIVEN
-	let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
-	JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
+	func test_setNext_repeated_is_ignored() {
+		// GIVEN
+		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
 
 		let mediaProduct1 = Constants.mediaProduct1
 		playerEngine.load(mediaProduct1, timestamp: 1, isPreload: false)
@@ -282,8 +282,8 @@ func test_setNext_repeated_is_ignored() {
 		assertPlayerLoader(trackPlaybackInfos: [trackPlaybackInfo1])
 	}
 
-func test_setNext_same_product_but_stored() {
-	// GIVEN
+	func test_setNext_same_product_but_stored() {
+		// GIVEN
 		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
 		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
 
@@ -939,6 +939,140 @@ func test_setNext_same_product_but_stored() {
 		XCTAssertEqual(playerLoader.resetCallCount, 0)
 		XCTAssertEqual(playerEngine.currentItem, nil)
 		XCTAssertEqual(playerEngine.nextItem, nil)
+	}
+
+	// MARK: - playbackQualityChanged
+
+	func test_playbackMetadataChanged_triggersQualityChangedCallback() {
+		// GIVEN
+		let trackPlaybackInfo = Constants.trackPlaybackInfo1
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo)
+
+		let mediaProduct = Constants.mediaProduct1
+		playerEngine.load(mediaProduct, timestamp: 1, isPreload: false)
+
+		// Play it
+		playerEngine.play(timestamp: 1)
+		genericPlayer.playing()
+
+		// Finish loading
+		genericPlayer.loaded()
+		genericPlayer.playing()
+
+		XCTAssertEqual(playerEngine.getState(), .PLAYING)
+
+		// Record initial transition count (from currentItem being set)
+		let initialTransitions = listener.numTransitions
+		let initialQualityChanges = listener.numQualityChanges
+
+		// WHEN
+		// Simulate a quality change via playback metadata change
+		let metadata = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 96000, bitDepth: 24)
+		playerEngine.playbackMetadataChanged(playerItem: playerEngine.currentItem!, to: metadata)
+
+		// Allow async dispatch to complete
+		listenerQueue.sync {}
+
+		// THEN
+		// Quality change callback should be triggered, not media transition
+		XCTAssertEqual(listener.numQualityChanges, initialQualityChanges + 1)
+		XCTAssertEqual(listener.numTransitions, initialTransitions)
+	}
+
+	func test_playbackMetadataChanged_doesNotTriggerMediaTransition() {
+		// GIVEN
+		let trackPlaybackInfo = Constants.trackPlaybackInfo1
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo)
+
+		let mediaProduct = Constants.mediaProduct1
+		playerEngine.load(mediaProduct, timestamp: 1, isPreload: false)
+
+		playerEngine.play(timestamp: 1)
+		genericPlayer.playing()
+		genericPlayer.loaded()
+		genericPlayer.playing()
+
+		let transitionsBeforeQualityChange = listener.numTransitions
+
+		// WHEN
+		let metadata = AssetPlaybackMetadata(formatString: "AAC", sampleRate: 44100, bitDepth: 16)
+		playerEngine.playbackMetadataChanged(playerItem: playerEngine.currentItem!, to: metadata)
+
+		listenerQueue.sync {}
+
+		// THEN
+		// Media transitions should NOT increase on quality change
+		XCTAssertEqual(listener.numTransitions, transitionsBeforeQualityChange)
+	}
+
+	func test_playbackMetadataChanged_forDifferentPlayerItem_isIgnored() {
+		// GIVEN
+		let trackPlaybackInfo1 = Constants.trackPlaybackInfo1
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo1)
+
+		let mediaProduct1 = Constants.mediaProduct1
+		playerEngine.load(mediaProduct1, timestamp: 1, isPreload: false)
+
+		playerEngine.play(timestamp: 1)
+		genericPlayer.playing()
+		genericPlayer.loaded()
+		genericPlayer.playing()
+
+		// Create a different player item that is NOT the current item
+		let differentPlayerItem = PlayerItem.mock(
+			mediaProduct: Constants.mediaProduct2,
+			playerItemMonitor: playerEngine,
+			playerEventSender: playerEventSender,
+			timestamp: 2,
+			featureFlagProvider: featureFlagProvider
+		)
+
+		let qualityChangesBeforeCall = listener.numQualityChanges
+
+		// WHEN
+		// Call playbackMetadataChanged with a different player item (not current)
+		let metadata = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 96000, bitDepth: 24)
+		playerEngine.playbackMetadataChanged(playerItem: differentPlayerItem, to: metadata)
+
+		listenerQueue.sync {}
+
+		// THEN
+		// Quality change should be ignored because it's not for the current item
+		XCTAssertEqual(listener.numQualityChanges, qualityChangesBeforeCall)
+	}
+
+	func test_qualityChange_doesNotAffectTransitionCount() {
+		// GIVEN
+		let trackPlaybackInfo = Constants.trackPlaybackInfo1
+		JsonEncodedResponseURLProtocol.succeed(with: trackPlaybackInfo)
+
+		let mediaProduct = Constants.mediaProduct1
+		playerEngine.load(mediaProduct, timestamp: 1, isPreload: false)
+
+		playerEngine.play(timestamp: 1)
+		genericPlayer.playing()
+		genericPlayer.loaded()
+		genericPlayer.playing()
+
+		listenerQueue.sync {}
+
+		let transitionsAfterLoad = listener.numTransitions
+		let qualityChangesAfterLoad = listener.numQualityChanges
+
+		// WHEN
+		// Multiple quality changes occur
+		let metadata1 = AssetPlaybackMetadata(formatString: "AAC", sampleRate: 44100, bitDepth: 16)
+		playerEngine.playbackMetadataChanged(playerItem: playerEngine.currentItem!, to: metadata1)
+
+		let metadata2 = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 96000, bitDepth: 24)
+		playerEngine.playbackMetadataChanged(playerItem: playerEngine.currentItem!, to: metadata2)
+
+		listenerQueue.sync {}
+
+		// THEN
+		// Transition count should NOT change, only quality change count
+		XCTAssertEqual(listener.numTransitions, transitionsAfterLoad)
+		XCTAssertEqual(listener.numQualityChanges, qualityChangesAfterLoad + 2)
 	}
 }
 
