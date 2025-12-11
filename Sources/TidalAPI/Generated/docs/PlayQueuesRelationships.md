@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**current** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
+**current** | [**PlayQueuesCurrentSingleRelationshipDataDocument**](PlayQueuesCurrentSingleRelationshipDataDocument.md) |  | 
 **future** | [**PlayQueuesFutureMultiRelationshipDataDocument**](PlayQueuesFutureMultiRelationshipDataDocument.md) |  | 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **past** | [**PlayQueuesPastMultiRelationshipDataDocument**](PlayQueuesPastMultiRelationshipDataDocument.md) |  | 

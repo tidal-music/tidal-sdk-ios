@@ -50,7 +50,7 @@ internal class TrackManifestsAPI {
     /**
      Get single trackManifest.
      
-     - parameter id: (path)  
+     - parameter id: (path) Track manifest id 
      - parameter manifestType: (query)  
      - parameter formats: (query)  
      - parameter uriScheme: (query)  
@@ -78,7 +78,7 @@ internal class TrackManifestsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path)  
+     - parameter id: (path) Track manifest id 
      - parameter manifestType: (query)  
      - parameter formats: (query)  
      - parameter uriScheme: (query)  

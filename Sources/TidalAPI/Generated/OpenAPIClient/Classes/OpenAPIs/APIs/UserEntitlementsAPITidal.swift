@@ -19,9 +19,21 @@ public enum UserEntitlementsAPITidal {
      
      - returns: UserEntitlementsSingleResourceDataDocument
      */
-	public static func userEntitlementsIdGet(id: String) async throws -> UserEntitlementsSingleResourceDataDocument {
+	public static func userEntitlementsIdGet(id: String, include: [String]? = nil) async throws -> UserEntitlementsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserEntitlementsAPI.userEntitlementsIdGetWithRequestBuilder(id: id)
+			UserEntitlementsAPI.userEntitlementsIdGetWithRequestBuilder(id: id, include: include)
+		}
+	}
+
+
+	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserEntitlementsMultiRelationshipDataDocument
+     */
+	public static func userEntitlementsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserEntitlementsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserEntitlementsAPI.userEntitlementsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 }

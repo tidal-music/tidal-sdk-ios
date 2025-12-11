@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct ArtistRolesAttributes: Codable, Hashable {
 
-    public var name: String?
+    /** Name of the artist role */
+    public var name: String
 
     public init(
-        name: String? = nil
+        name: String
     ) {
         self.name = name
     }
@@ -28,6 +29,6 @@ public struct ArtistRolesAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(name, forKey: .name)
+        try container.encode(name, forKey: .name)
     }
 }

@@ -19,9 +19,9 @@ public enum GenresAPITidal {
      
      - returns: GenresMultiResourceDataDocument
      */
-	public static func genresGet(pageCursor: String? = nil, filterId: [String]? = nil) async throws -> GenresMultiResourceDataDocument {
+	public static func genresGet(pageCursor: String? = nil, locale: String? = nil, filterId: [String]? = nil) async throws -> GenresMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			GenresAPI.genresGetWithRequestBuilder(pageCursor: pageCursor, filterId: filterId)
+			GenresAPI.genresGetWithRequestBuilder(pageCursor: pageCursor, locale: locale, filterId: filterId)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum GenresAPITidal {
      
      - returns: GenresSingleResourceDataDocument
      */
-	public static func genresIdGet(id: String) async throws -> GenresSingleResourceDataDocument {
+	public static func genresIdGet(id: String, locale: String? = nil) async throws -> GenresSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			GenresAPI.genresIdGetWithRequestBuilder(id: id)
+			GenresAPI.genresIdGetWithRequestBuilder(id: id, locale: locale)
 		}
 	}
 }

@@ -23,7 +23,7 @@ internal class SearchSuggestionsAPI {
     /**
      Get single searchSuggestion.
      
-     - parameter id: (path)  
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
@@ -49,7 +49,7 @@ internal class SearchSuggestionsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path)  
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
@@ -92,7 +92,7 @@ internal class SearchSuggestionsAPI {
     /**
      Get directHits relationship (\"to-many\").
      
-     - parameter id: (path)  
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
@@ -119,7 +119,7 @@ internal class SearchSuggestionsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path)  
+     - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)

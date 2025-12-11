@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**albumType** | **String** |  | [optional] 
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **explicitLyrics** | **Bool** |  | [optional] 
 **releaseDate** | **Date** |  | [optional] 
