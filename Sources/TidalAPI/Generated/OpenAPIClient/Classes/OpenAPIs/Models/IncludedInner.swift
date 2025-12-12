@@ -28,6 +28,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case searchResultsResourceObject(SearchResultsResourceObject)
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
+    case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
     case trackFilesResourceObject(TrackFilesResourceObject)
     case trackManifestsResourceObject(TrackManifestsResourceObject)
     case trackSourceFilesResourceObject(TrackSourceFilesResourceObject)
@@ -77,6 +78,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .searchSuggestionsResourceObject(let value):
             try container.encode(value)
         case .sharesResourceObject(let value):
+            try container.encode(value)
+        case .stripeConnectionsResourceObject(let value):
             try container.encode(value)
         case .trackFilesResourceObject(let value):
             try container.encode(value)
@@ -165,6 +168,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "shares":
             let value = try SharesResourceObject(from: decoder)
             self = .sharesResourceObject(value)
+        case "stripeConnections":
+            let value = try StripeConnectionsResourceObject(from: decoder)
+            self = .stripeConnectionsResourceObject(value)
         case "trackFiles":
             let value = try TrackFilesResourceObject(from: decoder)
             self = .trackFilesResourceObject(value)
@@ -228,6 +234,7 @@ extension IncludedInner: Identifiable {
         case .searchResultsResourceObject(let value): return value.id
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id
+        case .stripeConnectionsResourceObject(let value): return value.id
         case .trackFilesResourceObject(let value): return value.id
         case .trackManifestsResourceObject(let value): return value.id
         case .trackSourceFilesResourceObject(let value): return value.id
