@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.9] - 2025-12-11
+
+### Added
+- New `playbackQualityChanged` callback in PlayerListener that fires when playback quality changes during adaptive bitrate streaming, allowing apps to update UI without triggering heavy operations (Player)
+
 ## [0.10.8] - 2025-12-11
 
 ### Changed
