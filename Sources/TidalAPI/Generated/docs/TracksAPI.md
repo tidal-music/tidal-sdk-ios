@@ -25,7 +25,7 @@ Method | HTTP request | Description
 
 # **tracksGet**
 ```swift
-    open class func tracksGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple tracks.
@@ -43,9 +43,10 @@ let include = ["inner_example"] // [String] | Allows the client to customize whi
 let filterId = ["inner_example"] // [String] | Track id (optional)
 let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get multiple tracks.
-TracksAPI.tracksGet(pageCursor: pageCursor, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId) { (response, error) in
+TracksAPI.tracksGet(pageCursor: pageCursor, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -67,6 +68,7 @@ Name | Type | Description  | Notes
  **filterId** | [**[String]**](String.md) | Track id | [optional] 
  **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -135,7 +137,7 @@ Void (empty response body)
 
 # **tracksIdGet**
 ```swift
-    open class func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single track.
@@ -150,9 +152,10 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get single track.
-TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -171,6 +174,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -241,7 +245,7 @@ Void (empty response body)
 
 # **tracksIdRelationshipsAlbumsGet**
 ```swift
-    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -257,9 +261,10 @@ let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get albums relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+TracksAPI.tracksIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -279,6 +284,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -349,7 +355,7 @@ Void (empty response body)
 
 # **tracksIdRelationshipsArtistsGet**
 ```swift
-    open class func tracksIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -365,9 +371,10 @@ let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get artists relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsArtistsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+TracksAPI.tracksIdRelationshipsArtistsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -387,6 +394,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -405,7 +413,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsGenresGet**
 ```swift
-    open class func tracksIdRelationshipsGenresGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsGenresGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get genres relationship (\"to-many\").
@@ -421,9 +429,10 @@ let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: genres (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get genres relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsGenresGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+TracksAPI.tracksIdRelationshipsGenresGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -443,6 +452,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: genres | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -461,7 +471,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsLyricsGet**
 ```swift
-    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get lyrics relationship (\"to-many\").
@@ -476,9 +486,10 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: lyrics (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get lyrics relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsLyricsGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+TracksAPI.tracksIdRelationshipsLyricsGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -497,6 +508,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: lyrics | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -515,7 +527,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsOwnersGet**
 ```swift
-    open class func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -530,9 +542,10 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get owners relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+TracksAPI.tracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -551,6 +564,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -569,7 +583,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsProvidersGet**
 ```swift
-    open class func tracksIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get providers relationship (\"to-many\").
@@ -585,9 +599,10 @@ let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: providers (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get providers relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+TracksAPI.tracksIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -607,6 +622,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: providers | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -625,7 +641,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsRadioGet**
 ```swift
-    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get radio relationship (\"to-many\").
@@ -640,9 +656,10 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: radio (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get radio relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsRadioGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+TracksAPI.tracksIdRelationshipsRadioGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -661,6 +678,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: radio | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -679,7 +697,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSharesGet**
 ```swift
-    open class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get shares relationship (\"to-many\").
@@ -694,9 +712,10 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: shares (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get shares relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+TracksAPI.tracksIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -715,6 +734,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: shares | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -733,7 +753,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSimilarTracksGet**
 ```swift
-    open class func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarTracks relationship (\"to-many\").
@@ -749,9 +769,10 @@ let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarTracks (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get similarTracks relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsSimilarTracksGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+TracksAPI.tracksIdRelationshipsSimilarTracksGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -771,6 +792,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: similarTracks | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -789,7 +811,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSourceFileGet**
 ```swift
-    open class func tracksIdRelationshipsSourceFileGet(id: String, include: [String]? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSourceFileGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get sourceFile relationship (\"to-one\").
@@ -803,9 +825,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: sourceFile (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get sourceFile relationship (\"to-one\").
-TracksAPI.tracksIdRelationshipsSourceFileGet(id: id, include: include) { (response, error) in
+TracksAPI.tracksIdRelationshipsSourceFileGet(id: id, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -823,6 +846,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: sourceFile | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -841,7 +865,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsTrackStatisticsGet**
 ```swift
-    open class func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get trackStatistics relationship (\"to-one\").
@@ -855,9 +879,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: trackStatistics (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get trackStatistics relationship (\"to-one\").
-TracksAPI.tracksIdRelationshipsTrackStatisticsGet(id: id, include: include) { (response, error) in
+TracksAPI.tracksIdRelationshipsTrackStatisticsGet(id: id, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -875,6 +900,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: trackStatistics | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 

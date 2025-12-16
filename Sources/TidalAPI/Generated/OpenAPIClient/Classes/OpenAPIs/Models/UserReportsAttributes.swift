@@ -21,6 +21,7 @@ public struct UserReportsAttributes: Codable, Hashable {
         case scamsOrFraud = "SCAMS_OR_FRAUD"
         case spam = "SPAM"
         case copyrightInfringement = "COPYRIGHT_INFRINGEMENT"
+        case appeal = "APPEAL"
         case unknown = "UNKNOWN"
     }
     /** Description */

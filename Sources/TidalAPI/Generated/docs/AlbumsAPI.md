@@ -23,7 +23,7 @@ Method | HTTP request | Description
 
 # **albumsGet**
 ```swift
-    open class func albumsGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: AlbumsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumsGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple albums.
@@ -41,9 +41,10 @@ let include = ["inner_example"] // [String] | Allows the client to customize whi
 let filterBarcodeId = ["inner_example"] // [String] | Barcode Id (optional)
 let filterId = ["inner_example"] // [String] | Album id (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get multiple albums.
-AlbumsAPI.albumsGet(pageCursor: pageCursor, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
+AlbumsAPI.albumsGet(pageCursor: pageCursor, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -65,6 +66,7 @@ Name | Type | Description  | Notes
  **filterBarcodeId** | [**[String]**](String.md) | Barcode Id | [optional] 
  **filterId** | [**[String]**](String.md) | Album id | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -133,7 +135,7 @@ Void (empty response body)
 
 # **albumsIdGet**
 ```swift
-    open class func albumsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: AlbumsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdGet(id: String, countryCode: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single album.
@@ -148,9 +150,10 @@ import OpenAPIClient
 let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get single album.
-AlbumsAPI.albumsIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+AlbumsAPI.albumsIdGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -169,6 +172,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Album id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -239,7 +243,7 @@ Void (empty response body)
 
 # **albumsIdRelationshipsArtistsGet**
 ```swift
-    open class func albumsIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -255,9 +259,10 @@ let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get artists relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsArtistsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsArtistsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -277,6 +282,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -295,7 +301,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtGet**
 ```swift
-    open class func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get coverArt relationship (\"to-many\").
@@ -311,9 +317,10 @@ let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: coverArt (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get coverArt relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsCoverArtGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsCoverArtGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -333,6 +340,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: coverArt | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -403,7 +411,7 @@ Void (empty response body)
 
 # **albumsIdRelationshipsGenresGet**
 ```swift
-    open class func albumsIdRelationshipsGenresGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsGenresGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get genres relationship (\"to-many\").
@@ -419,9 +427,10 @@ let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: genres (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get genres relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsGenresGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsGenresGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -441,6 +450,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: genres | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -459,7 +469,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsItemsGet**
 ```swift
-    open class func albumsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -475,9 +485,10 @@ let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get items relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsItemsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsItemsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -497,6 +508,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -567,7 +579,7 @@ Void (empty response body)
 
 # **albumsIdRelationshipsOwnersGet**
 ```swift
-    open class func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -582,9 +594,10 @@ import OpenAPIClient
 let id = "id_example" // String | Album id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get owners relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -603,6 +616,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Album id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -621,7 +635,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsProvidersGet**
 ```swift
-    open class func albumsIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get providers relationship (\"to-many\").
@@ -637,9 +651,10 @@ let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: providers (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get providers relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -659,6 +674,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: providers | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -677,7 +693,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSimilarAlbumsGet**
 ```swift
-    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarAlbums relationship (\"to-many\").
@@ -693,9 +709,10 @@ let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarAlbums (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get similarAlbums relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -715,6 +732,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: similarAlbums | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
@@ -733,7 +751,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSuggestedCoverArtsGet**
 ```swift
-    open class func albumsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get suggestedCoverArts relationship (\"to-many\").
@@ -748,9 +766,10 @@ import OpenAPIClient
 let id = "id_example" // String | Album id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: suggestedCoverArts (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get suggestedCoverArts relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsSuggestedCoverArtsGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsSuggestedCoverArtsGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -769,6 +788,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Album id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: suggestedCoverArts | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
