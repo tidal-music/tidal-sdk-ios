@@ -25,6 +25,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case playlistsResourceObject(PlaylistsResourceObject)
     case providersResourceObject(ProvidersResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
+    case savedSharesResourceObject(SavedSharesResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
@@ -72,6 +73,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .providersResourceObject(let value):
             try container.encode(value)
         case .reactionsResourceObject(let value):
+            try container.encode(value)
+        case .savedSharesResourceObject(let value):
             try container.encode(value)
         case .searchResultsResourceObject(let value):
             try container.encode(value)
@@ -159,6 +162,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "reactions":
             let value = try ReactionsResourceObject(from: decoder)
             self = .reactionsResourceObject(value)
+        case "savedShares":
+            let value = try SavedSharesResourceObject(from: decoder)
+            self = .savedSharesResourceObject(value)
         case "searchResults":
             let value = try SearchResultsResourceObject(from: decoder)
             self = .searchResultsResourceObject(value)
@@ -231,6 +237,7 @@ extension IncludedInner: Identifiable {
         case .playlistsResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
+        case .savedSharesResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id
