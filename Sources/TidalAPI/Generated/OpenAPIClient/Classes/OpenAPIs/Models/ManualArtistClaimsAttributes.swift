@@ -24,8 +24,12 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     public var acceptedTerms: Bool?
     /** Artist ID being claimed */
     public var artistId: String
+    /** Timestamp when the claim was created */
+    public var createdAt: Date?
     /** Distributor name */
     public var distributorName: String?
+    /** Enrollment type */
+    public var enrollmentType: String?
     /** Error reason if claim failed */
     public var errorReason: String?
     /** Label contact email */
@@ -34,6 +38,8 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     public var labelContactName: String?
     /** Label name */
     public var labelName: String?
+    /** Timestamp when the claim was last modified */
+    public var lastModifiedAt: Date?
     /** Legal first name */
     public var legalFirstName: String
     /** Legal last name */
@@ -56,11 +62,14 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     public init(
         acceptedTerms: Bool? = nil,
         artistId: String,
+        createdAt: Date? = nil,
         distributorName: String? = nil,
+        enrollmentType: String? = nil,
         errorReason: String? = nil,
         labelContactEmail: String? = nil,
         labelContactName: String? = nil,
         labelName: String? = nil,
+        lastModifiedAt: Date? = nil,
         legalFirstName: String,
         legalLastName: String,
         managerEmail: String? = nil,
@@ -73,11 +82,14 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     ) {
         self.acceptedTerms = acceptedTerms
         self.artistId = artistId
+        self.createdAt = createdAt
         self.distributorName = distributorName
+        self.enrollmentType = enrollmentType
         self.errorReason = errorReason
         self.labelContactEmail = labelContactEmail
         self.labelContactName = labelContactName
         self.labelName = labelName
+        self.lastModifiedAt = lastModifiedAt
         self.legalFirstName = legalFirstName
         self.legalLastName = legalLastName
         self.managerEmail = managerEmail
@@ -92,11 +104,14 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case acceptedTerms
         case artistId
+        case createdAt
         case distributorName
+        case enrollmentType
         case errorReason
         case labelContactEmail
         case labelContactName
         case labelName
+        case lastModifiedAt
         case legalFirstName
         case legalLastName
         case managerEmail
@@ -114,11 +129,14 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(acceptedTerms, forKey: .acceptedTerms)
         try container.encode(artistId, forKey: .artistId)
+        try container.encodeIfPresent(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(distributorName, forKey: .distributorName)
+        try container.encodeIfPresent(enrollmentType, forKey: .enrollmentType)
         try container.encodeIfPresent(errorReason, forKey: .errorReason)
         try container.encodeIfPresent(labelContactEmail, forKey: .labelContactEmail)
         try container.encodeIfPresent(labelContactName, forKey: .labelContactName)
         try container.encodeIfPresent(labelName, forKey: .labelName)
+        try container.encodeIfPresent(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(legalFirstName, forKey: .legalFirstName)
         try container.encode(legalLastName, forKey: .legalLastName)
         try container.encodeIfPresent(managerEmail, forKey: .managerEmail)

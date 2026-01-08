@@ -5,11 +5,14 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **acceptedTerms** | **Bool** | Accepted terms and conditions | [optional] 
 **artistId** | **String** | Artist ID being claimed | 
+**createdAt** | **Date** | Timestamp when the claim was created | [optional] 
 **distributorName** | **String** | Distributor name | [optional] 
+**enrollmentType** | **String** | Enrollment type | [optional] 
 **errorReason** | **String** | Error reason if claim failed | [optional] 
 **labelContactEmail** | **String** | Label contact email | [optional] 
 **labelContactName** | **String** | Label contact name | [optional] 
 **labelName** | **String** | Label name | [optional] 
+**lastModifiedAt** | **Date** | Timestamp when the claim was last modified | [optional] 
 **legalFirstName** | **String** | Legal first name | 
 **legalLastName** | **String** | Legal last name | 
 **managerEmail** | **String** | Manager email | [optional] 
