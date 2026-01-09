@@ -1,4 +1,4 @@
-# UserCollectionTracksRelationshipAddOperationPayloadDataMeta
+# UserCollectionAlbumsRelationshipAddOperationPayloadDataMeta
 
 ## Properties
 Name | Type | Description | Notes

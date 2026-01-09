@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**addedAt** | **Date** |  | [optional] 
 **id** | **String** |  | 
 **meta** | [**UserCollectionTracksRelationshipAddOperationPayloadDataMeta**](UserCollectionTracksRelationshipAddOperationPayloadDataMeta.md) |  | [optional] 
 **type** | **String** |  | 

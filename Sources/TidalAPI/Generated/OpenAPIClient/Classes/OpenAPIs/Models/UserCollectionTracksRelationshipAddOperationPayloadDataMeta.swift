@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct UserCollectionTracksRelationshipAddOperationPayloadDataMeta: Codable, Hashable {
 
-    public var addedAt: Date
+    public var addedAt: Date?
 
     public init(
-        addedAt: Date
+        addedAt: Date? = nil
     ) {
         self.addedAt = addedAt
     }
@@ -28,6 +28,6 @@ public struct UserCollectionTracksRelationshipAddOperationPayloadDataMeta: Codab
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(addedAt, forKey: .addedAt)
+        try container.encodeIfPresent(addedAt, forKey: .addedAt)
     }
 }
