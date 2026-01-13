@@ -18,6 +18,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistRolesResourceObject(ArtistRolesResourceObject)
     case artistsResourceObject(ArtistsResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
+    case dynamicPagesResourceObject(DynamicPagesResourceObject)
     case genresResourceObject(GenresResourceObject)
     case lyricsResourceObject(LyricsResourceObject)
     case manualArtistClaimsResourceObject(ManualArtistClaimsResourceObject)
@@ -59,6 +60,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .artistsResourceObject(let value):
             try container.encode(value)
         case .artworksResourceObject(let value):
+            try container.encode(value)
+        case .dynamicPagesResourceObject(let value):
             try container.encode(value)
         case .genresResourceObject(let value):
             try container.encode(value)
@@ -141,6 +144,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "artworks":
             let value = try ArtworksResourceObject(from: decoder)
             self = .artworksResourceObject(value)
+        case "dynamicPages":
+            let value = try DynamicPagesResourceObject(from: decoder)
+            self = .dynamicPagesResourceObject(value)
         case "genres":
             let value = try GenresResourceObject(from: decoder)
             self = .genresResourceObject(value)
@@ -230,6 +236,7 @@ extension IncludedInner: Identifiable {
         case .artistRolesResourceObject(let value): return value.id
         case .artistsResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
+        case .dynamicPagesResourceObject(let value): return value.id
         case .genresResourceObject(let value): return value.id
         case .lyricsResourceObject(let value): return value.id
         case .manualArtistClaimsResourceObject(let value): return value.id
