@@ -19,7 +19,7 @@ public enum ArtistBiographiesAPITidal {
      
      - returns: ArtistBiographiesMultiResourceDataDocument
      */
-	public static func artistBiographiesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistBiographiesMultiResourceDataDocument {
+	public static func artistBiographiesGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistBiographiesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistBiographiesAPI.artistBiographiesGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId)
 		}
@@ -31,7 +31,7 @@ public enum ArtistBiographiesAPITidal {
      
      - returns: ArtistBiographiesSingleResourceDataDocument
      */
-	public static func artistBiographiesIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
+	public static func artistBiographiesIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistBiographiesAPI.artistBiographiesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}

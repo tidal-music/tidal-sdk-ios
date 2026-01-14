@@ -19,7 +19,7 @@ public enum UserRecommendationsAPITidal {
      
      - returns: UserRecommendationsSingleResourceDataDocument
      */
-	public static func userRecommendationsIdGet(id: String, countryCode: String, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
+	public static func userRecommendationsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationsAPI.userRecommendationsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
 		}
@@ -31,9 +31,9 @@ public enum UserRecommendationsAPITidal {
      
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
-	public static func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+	public static func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, locale: locale, include: include)
+			UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum UserRecommendationsAPITidal {
      
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
-	public static func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+	public static func userRecommendationsIdRelationshipsMyMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, locale: locale, include: include)
+			UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum UserRecommendationsAPITidal {
      
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
-	public static func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+	public static func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, locale: locale, include: include)
+			UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 }

@@ -67,7 +67,7 @@ public enum TracksAPITidal {
      
      - returns: TracksMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
 		}
@@ -91,9 +91,9 @@ public enum TracksAPITidal {
      
      - returns: TracksMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode)
+			TracksAPI.tracksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 
@@ -103,7 +103,7 @@ public enum TracksAPITidal {
      
      - returns: TracksMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsGenresGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsGenresGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdRelationshipsGenresGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
 		}
@@ -139,7 +139,7 @@ public enum TracksAPITidal {
      
      - returns: TracksMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
 		}
@@ -175,9 +175,9 @@ public enum TracksAPITidal {
      
      - returns: TracksMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsSimilarTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode)
+			TracksAPI.tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 

@@ -27,7 +27,7 @@ Method | HTTP request | Description
 
 # **artistsGet**
 ```swift
-    open class func artistsGet(countryCode: String, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artists.
@@ -39,7 +39,7 @@ Retrieves multiple artists by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 let filterHandle = ["inner_example"] // [String] | Artist handle (optional)
 let filterId = ["inner_example"] // [String] | Artist id (optional)
@@ -61,7 +61,7 @@ ArtistsAPI.artistsGet(countryCode: countryCode, include: include, filterHandle: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
  **filterHandle** | [**[String]**](String.md) | Artist handle | [optional] 
  **filterId** | [**[String]**](String.md) | Artist id | [optional] 
@@ -83,7 +83,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdGet**
 ```swift
-    open class func artistsIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artist.
@@ -96,7 +96,7 @@ Retrieves single artist by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 
 // Get single artist.
@@ -117,7 +117,7 @@ ArtistsAPI.artistsIdGet(id: id, countryCode: countryCode, include: include) { (r
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
 
 ### Return type
@@ -189,7 +189,7 @@ Void (empty response body)
 
 # **artistsIdRelationshipsAlbumsGet**
 ```swift
-    open class func artistsIdRelationshipsAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -202,12 +202,12 @@ Retrieves albums relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
 
 // Get albums relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsAlbumsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -224,8 +224,8 @@ ArtistsAPI.artistsIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, pag
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
 
 ### Return type
@@ -679,7 +679,7 @@ Void (empty response body)
 
 # **artistsIdRelationshipsRadioGet**
 ```swift
-    open class func artistsIdRelationshipsRadioGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsRadioGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get radio relationship (\"to-many\").
@@ -692,12 +692,12 @@ Retrieves radio relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: radio (optional)
 
 // Get radio relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsRadioGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsRadioGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -714,8 +714,8 @@ ArtistsAPI.artistsIdRelationshipsRadioGet(id: id, countryCode: countryCode, page
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: radio | [optional] 
 
 ### Return type
@@ -789,7 +789,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsSimilarArtistsGet**
 ```swift
-    open class func artistsIdRelationshipsSimilarArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsSimilarArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarArtists relationship (\"to-many\").
@@ -802,12 +802,12 @@ Retrieves similarArtists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarArtists (optional)
 
 // Get similarArtists relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsSimilarArtistsGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsSimilarArtistsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -824,8 +824,8 @@ ArtistsAPI.artistsIdRelationshipsSimilarArtistsGet(id: id, countryCode: countryC
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: similarArtists | [optional] 
 
 ### Return type
@@ -899,7 +899,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsTracksGet**
 ```swift
-    open class func artistsIdRelationshipsTracksGet(id: String, collapseBy: CollapseBy_artistsIdRelationshipsTracksGet, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsTracksGet(id: String, collapseBy: CollapseBy_artistsIdRelationshipsTracksGet, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get tracks relationship (\"to-many\").
@@ -913,12 +913,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let collapseBy = "collapseBy_example" // String | Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items.
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
 
 // Get tracks relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsTracksGet(id: id, collapseBy: collapseBy, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsTracksGet(id: id, collapseBy: collapseBy, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -936,8 +936,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
  **collapseBy** | **String** | Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items. | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
 
 ### Return type
@@ -957,7 +957,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsVideosGet**
 ```swift
-    open class func artistsIdRelationshipsVideosGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get videos relationship (\"to-many\").
@@ -970,12 +970,12 @@ Retrieves videos relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
 
 // Get videos relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsVideosGet(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsVideosGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -992,8 +992,8 @@ ArtistsAPI.artistsIdRelationshipsVideosGet(id: id, countryCode: countryCode, pag
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
 
 ### Return type

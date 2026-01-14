@@ -15,13 +15,13 @@ internal class ArtistBiographiesAPI {
     /**
      Get multiple artistBiographies.
      
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter filterId: (query) Artist id (optional)
      - returns: ArtistBiographiesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistBiographiesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistBiographiesMultiResourceDataDocument {
+    internal class func artistBiographiesGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistBiographiesMultiResourceDataDocument {
         do {
             return try await artistBiographiesGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -40,19 +40,19 @@ internal class ArtistBiographiesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter filterId: (query) Artist id (optional)
      - returns: RequestBuilder<ArtistBiographiesMultiResourceDataDocument> 
      */
-    internal class func artistBiographiesGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtistBiographiesMultiResourceDataDocument> {
+    internal class func artistBiographiesGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtistBiographiesMultiResourceDataDocument> {
         let localVariablePath = "/artistBiographies"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
         ])
@@ -72,12 +72,12 @@ internal class ArtistBiographiesAPI {
      Get single artistBiographie.
      
      - parameter id: (path) Artist biography id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: ArtistBiographiesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistBiographiesIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
+    internal class func artistBiographiesIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
         do {
             return try await artistBiographiesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -97,11 +97,11 @@ internal class ArtistBiographiesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artist biography id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: RequestBuilder<ArtistBiographiesSingleResourceDataDocument> 
      */
-    internal class func artistBiographiesIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<ArtistBiographiesSingleResourceDataDocument> {
+    internal class func artistBiographiesIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistBiographiesSingleResourceDataDocument> {
         var localVariablePath = "/artistBiographies/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -111,7 +111,7 @@ internal class ArtistBiographiesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 

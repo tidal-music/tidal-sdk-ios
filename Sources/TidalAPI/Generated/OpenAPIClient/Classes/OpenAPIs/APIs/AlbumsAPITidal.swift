@@ -43,7 +43,7 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsSingleResourceDataDocument
      */
-	public static func albumsIdGet(id: String, countryCode: String, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsSingleResourceDataDocument {
+	public static func albumsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			AlbumsAPI.albumsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
@@ -67,9 +67,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsArtistsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 
@@ -79,9 +79,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsCoverArtGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 
@@ -103,9 +103,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsGenresGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsGenresGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsGenresGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsGenresGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 
@@ -115,9 +115,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsItemsMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsItemsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsItemsMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 
@@ -151,7 +151,7 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsProvidersGet(id: String, countryCode: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			AlbumsAPI.albumsIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
 		}
@@ -163,9 +163,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsSimilarAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, include: include, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 

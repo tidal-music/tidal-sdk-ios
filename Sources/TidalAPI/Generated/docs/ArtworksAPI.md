@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **artworksGet**
 ```swift
-    open class func artworksGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtworksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtworksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artworks.
@@ -24,7 +24,7 @@ Retrieves multiple artworks by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let filterId = ["inner_example"] // [String] | Artwork id (optional)
 
@@ -45,7 +45,7 @@ ArtworksAPI.artworksGet(countryCode: countryCode, include: include, filterId: fi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **filterId** | [**[String]**](String.md) | Artwork id | [optional] 
 
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **artworksIdGet**
 ```swift
-    open class func artworksIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artwork.
@@ -79,7 +79,7 @@ Retrieves single artwork by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Artwork id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 
 // Get single artwork.
@@ -100,7 +100,7 @@ ArtworksAPI.artworksIdGet(id: id, countryCode: countryCode, include: include) { 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artwork id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
 
 ### Return type

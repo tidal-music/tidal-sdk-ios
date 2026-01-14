@@ -120,12 +120,12 @@ internal class StripeConnectionsAPI {
     /**
      Create single stripeConnection.
      
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter stripeConnectionsCreateOperationPayload: (body)  (optional)
      - returns: StripeConnectionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func stripeConnectionsPost(countryCode: String, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) async throws -> StripeConnectionsSingleResourceDataDocument {
+    internal class func stripeConnectionsPost(countryCode: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) async throws -> StripeConnectionsSingleResourceDataDocument {
         do {
             return try await stripeConnectionsPostWithRequestBuilder(countryCode: countryCode, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -141,18 +141,18 @@ internal class StripeConnectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter stripeConnectionsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<StripeConnectionsSingleResourceDataDocument> 
      */
-    internal class func stripeConnectionsPostWithRequestBuilder(countryCode: String, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) -> RequestBuilder<StripeConnectionsSingleResourceDataDocument> {
+    internal class func stripeConnectionsPostWithRequestBuilder(countryCode: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) -> RequestBuilder<StripeConnectionsSingleResourceDataDocument> {
         let localVariablePath = "/stripeConnections"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: stripeConnectionsCreateOperationPayload)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

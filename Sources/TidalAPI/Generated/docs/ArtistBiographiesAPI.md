@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **artistBiographiesGet**
 ```swift
-    open class func artistBiographiesGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistBiographiesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistBiographiesGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistBiographiesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artistBiographies.
@@ -24,7 +24,7 @@ Retrieves multiple artistBiographies by available filters, or without if applica
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let filterId = ["inner_example"] // [String] | Artist id (optional)
 
@@ -45,7 +45,7 @@ ArtistBiographiesAPI.artistBiographiesGet(countryCode: countryCode, include: inc
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **filterId** | [**[String]**](String.md) | Artist id | [optional] 
 
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **artistBiographiesIdGet**
 ```swift
-    open class func artistBiographiesIdGet(id: String, countryCode: String, include: [String]? = nil, completion: @escaping (_ data: ArtistBiographiesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistBiographiesIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistBiographiesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artistBiographie.
@@ -79,7 +79,7 @@ Retrieves single artistBiographie by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist biography id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 
 // Get single artistBiographie.
@@ -100,7 +100,7 @@ ArtistBiographiesAPI.artistBiographiesIdGet(id: id, countryCode: countryCode, in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist biography id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
 
 ### Return type

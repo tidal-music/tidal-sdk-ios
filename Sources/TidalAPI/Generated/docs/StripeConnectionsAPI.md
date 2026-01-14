@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **stripeConnectionsPost**
 ```swift
-    open class func stripeConnectionsPost(countryCode: String, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: StripeConnectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsPost(countryCode: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: StripeConnectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single stripeConnection.
@@ -129,7 +129,7 @@ Creates a new stripeConnection.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let stripeConnectionsCreateOperationPayload = StripeConnectionsCreateOperation_Payload(data: StripeConnectionsCreateOperation_Payload_Data(attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example"), type: "type_example")) // StripeConnectionsCreateOperationPayload |  (optional)
 
 // Create single stripeConnection.
@@ -149,7 +149,7 @@ StripeConnectionsAPI.stripeConnectionsPost(countryCode: countryCode, stripeConne
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **stripeConnectionsCreateOperationPayload** | [**StripeConnectionsCreateOperationPayload**](StripeConnectionsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
