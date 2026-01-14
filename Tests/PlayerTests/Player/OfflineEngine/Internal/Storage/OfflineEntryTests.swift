@@ -76,4 +76,75 @@ final class OfflineEntryTests: XCTestCase {
 		// THEN
 		XCTAssertEqual(offlineEntry.state, .OFFLINED_BUT_EXPIRED)
 	}
+
+	// MARK: - needsLicense
+
+	func test_needsLicense_returnsTrue_whenLicenseSecurityTokenIsSet() {
+		// GIVEN
+		let trackPlaybackInfo = TrackPlaybackInfo.mock(
+			licenseSecurityToken: "some-token",
+			manifestMimeType: MediaTypes.EMU
+		)
+		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(), trackPlaybackInfo: trackPlaybackInfo)
+		let offlineEntry = OfflineEntry.mock(from: playbackInfo)
+
+		// THEN
+		XCTAssertTrue(offlineEntry.needsLicense())
+	}
+
+	func test_needsLicense_returnsTrue_whenTrackWithHLSMediaType() {
+		// GIVEN - HLS track without licenseSecurityToken (new playback endpoints scenario)
+		let trackPlaybackInfo = TrackPlaybackInfo.mock(
+			licenseSecurityToken: nil,
+			manifestMimeType: MediaTypes.HLS
+		)
+		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(productType: .TRACK), trackPlaybackInfo: trackPlaybackInfo)
+		let offlineEntry = OfflineEntry.mock(from: playbackInfo)
+
+		// THEN
+		XCTAssertTrue(offlineEntry.needsLicense())
+	}
+
+	func test_needsLicense_returnsFalse_whenNoTokenAndNotHLSTrack() {
+		// GIVEN - EMU track without licenseSecurityToken
+		let trackPlaybackInfo = TrackPlaybackInfo.mock(
+			licenseSecurityToken: nil,
+			manifestMimeType: MediaTypes.EMU
+		)
+		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(productType: .TRACK), trackPlaybackInfo: trackPlaybackInfo)
+		let offlineEntry = OfflineEntry.mock(from: playbackInfo)
+
+		// THEN
+		XCTAssertFalse(offlineEntry.needsLicense())
+	}
+
+	func test_needsLicense_returnsFalse_whenVideoWithHLSAndNoToken() {
+		// GIVEN - HLS video without licenseSecurityToken (videos don't use this path)
+		let playbackInfo = PlaybackInfo.mock(
+			productType: .VIDEO,
+			mediaType: MediaTypes.HLS,
+			licenseSecurityToken: nil
+		)
+		let offlineEntry = OfflineEntry.mock(from: playbackInfo)
+
+		// THEN
+		XCTAssertFalse(offlineEntry.needsLicense())
+	}
+
+	func test_stateIsOfflinedButNoLicense_whenHLSTrackWithoutLicenseURL() {
+		// GIVEN - HLS track without licenseSecurityToken and no license URL (the bug scenario)
+		let trackPlaybackInfo = TrackPlaybackInfo.mock(
+			licenseSecurityToken: nil,
+			manifestMimeType: MediaTypes.HLS
+		)
+		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(productType: .TRACK), trackPlaybackInfo: trackPlaybackInfo)
+		let offlineEntry = OfflineEntry.mock(
+			from: playbackInfo,
+			assetURL: URL(string: "www.tidal.com")!,
+			licenseURL: nil
+		)
+
+		// THEN
+		XCTAssertEqual(offlineEntry.state, .OFFLINED_BUT_NO_LICENSE)
+	}
 }
