@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.10] - 2026-01-14
+
+### Fixed
+- Fixed offline playback validation for HLS tracks downloaded via new playback endpoints. Tracks were incorrectly reported as valid when missing DRM licenses, causing AVPlayer error -1002 (Player)
+
 ## [0.10.9] - 2025-12-11
 
 ### Added
