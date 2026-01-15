@@ -96,8 +96,8 @@ final class DownloadTask {
 
 	func setLicenseUrl(_ url: URL) {
 		queue.dispatch {
+			print("LICENSE URL SET")
 			self.localLicenseUrl = url
-			self.finalize()
 		}
 	}
 
@@ -105,7 +105,6 @@ final class DownloadTask {
 		queue.dispatch {
 			self.localAssetUrl = url
 			self.localAssetSize = self.calculateSize()
-			self.finalize()
 		}
 	}
 
@@ -130,6 +129,44 @@ final class DownloadTask {
 
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFailed(error: error))
 			self.monitor?.failed(downloadTask: self, with: error)
+		}
+	}
+	
+	func finalize() {
+		// Don't complete if download was cancelled
+		print ("FINALIZING A")
+		guard !isCancelled else {
+			return
+		}
+		print ("FINALIZING A")
+		
+		guard let playbackInfo, let localAssetUrl, let localAssetSize else {
+			return
+		}
+
+		print ("FINALIZING B")
+		
+		guard licenseDownloader == nil || (licenseDownloader != nil && localLicenseUrl != nil) else {
+			return
+		}
+		
+		print ("FINALIZING C")
+
+		do {
+			let offlineEntry = try OfflineEntry(
+				for: mediaProduct.productId,
+				from: playbackInfo,
+				with: localAssetUrl,
+				and: localLicenseUrl,
+				size: localAssetSize
+				
+			)
+			monitor?.completed(downloadTask: self, offlineEntry: offlineEntry)
+			print ("DONE FINALIZING")
+			endTimestamp = PlayerWorld.timeProvider.timestamp()
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFinalizeFailed(error: error))
+			failed(with: error)
 		}
 	}
 
@@ -201,35 +238,5 @@ private extension DownloadTask {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.failedToCalculateSizeForProgressiveDownload(error: error))
 		}
 		return 0
-	}
-
-	func finalize() {
-		// Don't complete if download was cancelled
-		guard !isCancelled else {
-			return
-		}
-
-		guard let playbackInfo, let localAssetUrl, let localAssetSize else {
-			return
-		}
-
-		guard licenseDownloader == nil || (licenseDownloader != nil && localLicenseUrl != nil) else {
-			return
-		}
-
-		do {
-			let offlineEntry = try OfflineEntry(
-				for: mediaProduct.productId,
-				from: playbackInfo,
-				with: localAssetUrl,
-				and: localLicenseUrl,
-				size: localAssetSize
-			)
-			monitor?.completed(downloadTask: self, offlineEntry: offlineEntry)
-			endTimestamp = PlayerWorld.timeProvider.timestamp()
-		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.downloadFinalizeFailed(error: error))
-			failed(with: error)
-		}
 	}
 }

@@ -77,22 +77,21 @@ private extension MediaDownloader {
 
 extension MediaDownloader: URLSessionDownloadDelegate {
 	func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-		guard let error else {
-			return
-		}
-
 		defer {
 			activeTasks.removeValue(forKey: task)
+		}
+		print("RECEIVED didCompleteWithError: \(error.debugDescription ?? "NA")")
+		guard let error else {
+			let task = activeTasks[task]
+			print("TASK : \(String(describing: task))")
+			task?.finalize()
+			return
 		}
 
 		activeTasks[task]?.failed(with: error)
 	}
 
 	func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-		defer {
-			activeTasks.removeValue(forKey: downloadTask)
-		}
-
 		do {
 			let fileManager = PlayerWorld.fileManagerClient
 			let appSupportURL = fileManager.applicationSupportDirectory()
@@ -128,10 +127,6 @@ extension MediaDownloader: URLSessionDownloadDelegate {
 
 extension MediaDownloader: AVAssetDownloadDelegate {
 	func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask, didFinishDownloadingTo location: URL) {
-		defer {
-			activeTasks.removeValue(forKey: assetDownloadTask)
-		}
-
 		let task = activeTasks[assetDownloadTask]
 		task?.setMediaUrl(location)
 	}
