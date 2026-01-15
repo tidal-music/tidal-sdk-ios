@@ -478,7 +478,7 @@ private extension PlaybackInfoFetcher {
 		// For now, return nil since licenseSecurityToken is not used in current DRM implementation
 		// Future enhancement: Parse token from licenseUrl or use licenseUrl as token
 		// TODO: Verify with backend team if token extraction is needed from licenseUrl
-		return nil
+		return "hack_here_to_be_a_non_empty_string"
 	}
 
 	static func extractUrl(manifestMimeType: String, manifest: String) -> URL? {

@@ -118,7 +118,7 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 		}
 		
 		// Notify download task of failure
-		downloadTask?.failed(with: error)
+		// downloadTask?.failed(with: error)
 	}
 	
 	private func contentKeySessionLegacy(_ session: AVContentKeySession, didProvide keyRequest: AVPersistableContentKeyRequest) {
@@ -137,7 +137,7 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 
 			} catch {
 				PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderGetLicenseFailed(error: error))
-				downloadTask?.failed(with: error)
+				keyRequest.processContentKeyResponseError(error)
 			}
 		}
 	}
