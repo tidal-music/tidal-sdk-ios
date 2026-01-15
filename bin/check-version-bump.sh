@@ -23,7 +23,7 @@ verify_file_validity() {
     fi
 }
 
-# Compare two version entries
+# Compare two version entries using proper semantic version comparison
 is_version_bump() {
     result="false"
     old_version=$1
@@ -32,7 +32,10 @@ is_version_bump() {
     old_version=${old_version##*:}
     new_version=${new_version##*:}
 
-    if  [[ "$new_version" > "$old_version" ]]; then
+    # Use sort -V for proper version comparison instead of string comparison
+    # String comparison fails for cases like "0.10.9" vs "0.10.10" where '1' < '9' in ASCII
+    if [[ "$new_version" != "$old_version" ]] && \
+       [[ "$(printf '%s\n' "$old_version" "$new_version" | sort -V | tail -n1)" == "$new_version" ]]; then
         result="true"
     fi
     echo $result
