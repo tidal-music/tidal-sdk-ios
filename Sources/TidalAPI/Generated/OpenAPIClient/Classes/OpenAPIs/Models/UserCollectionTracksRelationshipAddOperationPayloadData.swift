@@ -15,25 +15,21 @@ public struct UserCollectionTracksRelationshipAddOperationPayloadData: Codable, 
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
     }
-    public var addedAt: Date?
     public var id: String
     public var meta: UserCollectionTracksRelationshipAddOperationPayloadDataMeta?
     public var type: ModelType
 
     public init(
-        addedAt: Date? = nil,
         id: String,
         meta: UserCollectionTracksRelationshipAddOperationPayloadDataMeta? = nil,
         type: ModelType
     ) {
-        self.addedAt = addedAt
         self.id = id
         self.meta = meta
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case addedAt
         case id
         case meta
         case type
@@ -43,7 +39,6 @@ public struct UserCollectionTracksRelationshipAddOperationPayloadData: Codable, 
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(addedAt, forKey: .addedAt)
         try container.encode(id, forKey: .id)
         try container.encodeIfPresent(meta, forKey: .meta)
         try container.encode(type, forKey: .type)

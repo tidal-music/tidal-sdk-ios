@@ -159,6 +159,18 @@ public enum AlbumsAPITidal {
 
 
 	/**
+     Get replacement relationship (\&quot;to-one\&quot;).
+     
+     - returns: AlbumsSingleRelationshipDataDocument
+     */
+	public static func albumsIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsReplacementGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Get similarAlbums relationship (\&quot;to-many\&quot;).
      
      - returns: AlbumsMultiRelationshipDataDocument

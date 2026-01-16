@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **radio** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**replacement** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **shares** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **similarTracks** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **sourceFile** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 

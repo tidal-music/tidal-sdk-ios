@@ -17,7 +17,7 @@ internal class AlbumsAPI {
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, replacement, similarAlbums, suggestedCoverArts (optional)
      - parameter filterBarcodeId: (query) Barcode Id (optional)
      - parameter filterId: (query) Album id (optional)
      - parameter filterOwnersId: (query) User id (optional)
@@ -46,7 +46,7 @@ internal class AlbumsAPI {
        - name: Client_Credentials
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, replacement, similarAlbums, suggestedCoverArts (optional)
      - parameter filterBarcodeId: (query) Barcode Id (optional)
      - parameter filterId: (query) Album id (optional)
      - parameter filterOwnersId: (query) User id (optional)
@@ -132,7 +132,7 @@ internal class AlbumsAPI {
      
      - parameter id: (path) Album id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, replacement, similarAlbums, suggestedCoverArts (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: AlbumsSingleResourceDataDocument
      */
@@ -158,7 +158,7 @@ internal class AlbumsAPI {
        - name: Client_Credentials
      - parameter id: (path) Album id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, similarAlbums, suggestedCoverArts (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, replacement, similarAlbums, suggestedCoverArts (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<AlbumsSingleResourceDataDocument> 
      */
@@ -712,6 +712,67 @@ internal class AlbumsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<AlbumsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get replacement relationship (\"to-one\").
+     
+     - parameter id: (path) Album id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - returns: AlbumsSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func albumsIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsSingleRelationshipDataDocument {
+        do {
+            return try await albumsIdRelationshipsReplacementGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get replacement relationship (\"to-one\").
+     - GET /albums/{id}/relationships/replacement
+     - Retrieves replacement relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) Album id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - returns: RequestBuilder<AlbumsSingleRelationshipDataDocument> 
+     */
+    internal class func albumsIdRelationshipsReplacementGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<AlbumsSingleRelationshipDataDocument> {
+        var localVariablePath = "/albums/{id}/relationships/replacement"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AlbumsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **items** | [**AlbumsItemsMultiRelationshipDataDocument**](AlbumsItemsMultiRelationshipDataDocument.md) |  | 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**replacement** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **similarAlbums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **suggestedCoverArts** | [**AlbumsSuggestedCoverArtsMultiRelationshipDataDocument**](AlbumsSuggestedCoverArtsMultiRelationshipDataDocument.md) |  | 
 

@@ -16,7 +16,7 @@ internal class VideosAPI {
      Get multiple videos.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, replacement, thumbnailArt (optional)
      - parameter filterId: (query) Video id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - returns: VideosMultiResourceDataDocument
@@ -42,7 +42,7 @@ internal class VideosAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, replacement, thumbnailArt (optional)
      - parameter filterId: (query) Video id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - returns: RequestBuilder<VideosMultiResourceDataDocument> 
@@ -76,7 +76,7 @@ internal class VideosAPI {
      
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, replacement, thumbnailArt (optional)
      - returns: VideosSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -101,7 +101,7 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, thumbnailArt (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, replacement, thumbnailArt (optional)
      - returns: RequestBuilder<VideosSingleResourceDataDocument> 
      */
     internal class func videosIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosSingleResourceDataDocument> {
@@ -308,6 +308,64 @@ internal class VideosAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<VideosMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get replacement relationship (\"to-one\").
+     
+     - parameter id: (path) Video id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+     - returns: VideosSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func videosIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosSingleRelationshipDataDocument {
+        do {
+            return try await videosIdRelationshipsReplacementGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get replacement relationship (\"to-one\").
+     - GET /videos/{id}/relationships/replacement
+     - Retrieves replacement relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) Video id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+     - returns: RequestBuilder<VideosSingleRelationshipDataDocument> 
+     */
+    internal class func videosIdRelationshipsReplacementGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosSingleRelationshipDataDocument> {
+        var localVariablePath = "/videos/{id}/relationships/replacement"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<VideosSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

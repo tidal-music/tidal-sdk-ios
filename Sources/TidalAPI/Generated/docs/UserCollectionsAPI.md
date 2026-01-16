@@ -207,7 +207,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let userCollectionAlbumsRelationshipAddOperationPayload = UserCollectionAlbumsRelationshipAddOperation_Payload(data: [UserCollectionAlbumsRelationshipAddOperation_Payload_Data(addedAt: Date(), id: "id_example", meta: UserCollectionAlbumsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionAlbumsRelationshipAddOperationPayload |  (optional)
+let userCollectionAlbumsRelationshipAddOperationPayload = UserCollectionAlbumsRelationshipAddOperation_Payload(data: [UserCollectionAlbumsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionAlbumsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionAlbumsRelationshipAddOperationPayload |  (optional)
 
 // Add to albums relationship (\"to-many\").
 UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPost(id: id, countryCode: countryCode, userCollectionAlbumsRelationshipAddOperationPayload: userCollectionAlbumsRelationshipAddOperationPayload) { (response, error) in
@@ -373,7 +373,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let userCollectionArtistsRelationshipAddOperationPayload = UserCollectionArtistsRelationshipAddOperation_Payload(data: [UserCollectionArtistsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionArtistsRelationshipAddOperationPayload |  (optional)
+let userCollectionArtistsRelationshipAddOperationPayload = UserCollectionArtistsRelationshipAddOperation_Payload(data: [UserCollectionArtistsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionArtistsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionArtistsRelationshipAddOperationPayload |  (optional)
 
 // Add to artists relationship (\"to-many\").
 UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPost(id: id, countryCode: countryCode, userCollectionArtistsRelationshipAddOperationPayload: userCollectionArtistsRelationshipAddOperationPayload) { (response, error) in
@@ -755,7 +755,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let userCollectionTracksRelationshipAddOperationPayload = UserCollectionTracksRelationshipAddOperation_Payload(data: [UserCollectionTracksRelationshipAddOperation_Payload_Data(addedAt: Date(), id: "id_example", meta: UserCollectionTracksRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionTracksRelationshipAddOperationPayload |  (optional)
+let userCollectionTracksRelationshipAddOperationPayload = UserCollectionTracksRelationshipAddOperation_Payload(data: [UserCollectionTracksRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionTracksRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionTracksRelationshipAddOperationPayload |  (optional)
 
 // Add to tracks relationship (\"to-many\").
 UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, countryCode: countryCode, userCollectionTracksRelationshipAddOperationPayload: userCollectionTracksRelationshipAddOperationPayload) { (response, error) in

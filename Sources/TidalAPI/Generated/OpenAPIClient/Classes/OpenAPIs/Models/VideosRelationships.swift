@@ -15,17 +15,20 @@ public struct VideosRelationships: Codable, Hashable {
     public var albums: MultiRelationshipDataDocument
     public var artists: MultiRelationshipDataDocument
     public var providers: MultiRelationshipDataDocument
+    public var replacement: SingleRelationshipDataDocument
     public var thumbnailArt: MultiRelationshipDataDocument
 
     public init(
         albums: MultiRelationshipDataDocument,
         artists: MultiRelationshipDataDocument,
         providers: MultiRelationshipDataDocument,
+        replacement: SingleRelationshipDataDocument,
         thumbnailArt: MultiRelationshipDataDocument
     ) {
         self.albums = albums
         self.artists = artists
         self.providers = providers
+        self.replacement = replacement
         self.thumbnailArt = thumbnailArt
     }
 
@@ -33,6 +36,7 @@ public struct VideosRelationships: Codable, Hashable {
         case albums
         case artists
         case providers
+        case replacement
         case thumbnailArt
     }
 
@@ -43,6 +47,7 @@ public struct VideosRelationships: Codable, Hashable {
         try container.encode(albums, forKey: .albums)
         try container.encode(artists, forKey: .artists)
         try container.encode(providers, forKey: .providers)
+        try container.encode(replacement, forKey: .replacement)
         try container.encode(thumbnailArt, forKey: .thumbnailArt)
     }
 }

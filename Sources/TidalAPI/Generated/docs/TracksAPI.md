@@ -16,6 +16,7 @@ Method | HTTP request | Description
 [**tracksIdRelationshipsOwnersGet**](TracksAPI.md#tracksidrelationshipsownersget) | **GET** /tracks/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsProvidersGet**](TracksAPI.md#tracksidrelationshipsprovidersget) | **GET** /tracks/{id}/relationships/providers | Get providers relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsRadioGet**](TracksAPI.md#tracksidrelationshipsradioget) | **GET** /tracks/{id}/relationships/radio | Get radio relationship (\&quot;to-many\&quot;).
+[**tracksIdRelationshipsReplacementGet**](TracksAPI.md#tracksidrelationshipsreplacementget) | **GET** /tracks/{id}/relationships/replacement | Get replacement relationship (\&quot;to-one\&quot;).
 [**tracksIdRelationshipsSharesGet**](TracksAPI.md#tracksidrelationshipssharesget) | **GET** /tracks/{id}/relationships/shares | Get shares relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsSimilarTracksGet**](TracksAPI.md#tracksidrelationshipssimilartracksget) | **GET** /tracks/{id}/relationships/similarTracks | Get similarTracks relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsSourceFileGet**](TracksAPI.md#tracksidrelationshipssourcefileget) | **GET** /tracks/{id}/relationships/sourceFile | Get sourceFile relationship (\&quot;to-one\&quot;).
@@ -39,7 +40,7 @@ import OpenAPIClient
 
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
 let filterId = ["inner_example"] // [String] | Track id (optional)
 let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
@@ -64,7 +65,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics | [optional] 
  **filterId** | [**[String]**](String.md) | Track id | [optional] 
  **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
@@ -151,7 +152,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get single track.
@@ -173,7 +174,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, shares, similarTracks, sourceFile, trackStatistics | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -683,6 +684,62 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **tracksIdRelationshipsReplacementGet**
+```swift
+    open class func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get replacement relationship (\"to-one\").
+
+Retrieves replacement relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Track id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+
+// Get replacement relationship (\"to-one\").
+TracksAPI.tracksIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Track id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: replacement | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+
+### Return type
+
+[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
 
 ### Authorization
 

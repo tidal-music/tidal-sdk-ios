@@ -75,6 +75,18 @@ public enum VideosAPITidal {
 
 
 	/**
+     Get replacement relationship (\&quot;to-one\&quot;).
+     
+     - returns: VideosSingleRelationshipDataDocument
+     */
+	public static func videosIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			VideosAPI.videosIdRelationshipsReplacementGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+		}
+	}
+
+
+	/**
      Get thumbnailArt relationship (\&quot;to-many\&quot;).
      
      - returns: VideosMultiRelationshipDataDocument

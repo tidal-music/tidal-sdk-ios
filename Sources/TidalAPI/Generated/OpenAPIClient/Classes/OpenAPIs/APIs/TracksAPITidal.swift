@@ -159,6 +159,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Get replacement relationship (\&quot;to-one\&quot;).
+     
+     - returns: TracksSingleRelationshipDataDocument
+     */
+	public static func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsReplacementGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Get shares relationship (\&quot;to-many\&quot;).
      
      - returns: TracksMultiRelationshipDataDocument
