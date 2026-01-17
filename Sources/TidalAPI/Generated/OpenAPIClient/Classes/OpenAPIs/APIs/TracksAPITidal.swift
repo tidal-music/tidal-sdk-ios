@@ -99,6 +99,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Get credits relationship (\&quot;to-many\&quot;).
+     
+     - returns: TracksMultiRelationshipDataDocument
+     */
+	public static func tracksIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsCreditsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Get genres relationship (\&quot;to-many\&quot;).
      
      - returns: TracksMultiRelationshipDataDocument

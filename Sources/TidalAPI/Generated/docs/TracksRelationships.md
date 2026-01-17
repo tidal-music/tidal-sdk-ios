@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **albums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **artists** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**credits** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **genres** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **lyrics** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 

@@ -63,6 +63,18 @@ public enum VideosAPITidal {
 
 
 	/**
+     Get credits relationship (\&quot;to-many\&quot;).
+     
+     - returns: VideosMultiRelationshipDataDocument
+     */
+	public static func videosIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			VideosAPI.videosIdRelationshipsCreditsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+		}
+	}
+
+
+	/**
      Get providers relationship (\&quot;to-many\&quot;).
      
      - returns: VideosMultiRelationshipDataDocument
