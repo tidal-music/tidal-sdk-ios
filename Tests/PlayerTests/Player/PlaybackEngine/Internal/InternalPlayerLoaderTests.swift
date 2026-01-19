@@ -40,11 +40,6 @@ final class InternalPlayerLoaderTests: XCTestCase {
 	func testProduct_withDRM_hasLicenseLoader() async throws {
 		// GIVEN
 		let sessionId = "1"
-		let expectedLicenseLoader = StreamingLicenseLoader(
-			fairPlayLicenseFetcher: fairPlayLicenseFetcher,
-			streamingSessionId: sessionId,
-			featureFlagProvider: .mock
-		)
 
 		// WHEN
 		_ = try await internalLoader.load(
@@ -55,7 +50,17 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		// THEN
 		XCTAssertEqual(mockPlayer.loadCallCount, 1)
 		XCTAssertEqual(mockPlayer.licenseLoaders.count, 1)
+		#if targetEnvironment(simulator)
+		// License loader is skipped on simulator since AVContentKeySession doesn't support FairPlay
+		XCTAssertNil(mockPlayer.licenseLoaders.first as? StreamingLicenseLoader)
+		#else
+		let expectedLicenseLoader = StreamingLicenseLoader(
+			fairPlayLicenseFetcher: fairPlayLicenseFetcher,
+			streamingSessionId: sessionId,
+			featureFlagProvider: .mock
+		)
 		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader], [expectedLicenseLoader])
+		#endif
 	}
 
 	func testProduct_withoutDRM_noLicenseLoader() async throws {
