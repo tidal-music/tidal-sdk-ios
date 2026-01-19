@@ -131,6 +131,6 @@ struct OfflineEntry: Codable {
 	}
 
 	func needsLicense() -> Bool {
-		licenseSecurityToken != nil
+		licenseSecurityToken != nil || (productType == .TRACK && mediaType == MediaTypes.HLS)
 	}
 }

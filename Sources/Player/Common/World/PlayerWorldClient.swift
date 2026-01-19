@@ -14,17 +14,28 @@ struct PlayerWorldClient {
 	var fileManagerClient: FileManagerClient
 	var asyncSchedulerFactoryProvider: AsyncSchedulerFactoryProvider
 	var logger: TidalLogger?
+
+	/// Whether the code is running on a simulator. Used to skip DRM license loading
+	/// since AVContentKeySession doesn't support FairPlay on simulator.
+	var isSimulator: Bool
 }
 
 extension PlayerWorldClient {
-	static let live = PlayerWorldClient(
-		audioInfoProvider: .live,
-		deviceInfoProvider: .live,
-		timeProvider: .live,
-		uuidProvider: .live,
-		developmentFeatureFlagProvider: .live,
-		fileManagerClient: .live,
-		asyncSchedulerFactoryProvider: .live,
-		logger: nil
-	)
+	static let live: PlayerWorldClient = {
+		var client = PlayerWorldClient(
+			audioInfoProvider: .live,
+			deviceInfoProvider: .live,
+			timeProvider: .live,
+			uuidProvider: .live,
+			developmentFeatureFlagProvider: .live,
+			fileManagerClient: .live,
+			asyncSchedulerFactoryProvider: .live,
+			logger: nil,
+			isSimulator: false
+		)
+		#if targetEnvironment(simulator)
+		client.isSimulator = true
+		#endif
+		return client
+	}()
 }
