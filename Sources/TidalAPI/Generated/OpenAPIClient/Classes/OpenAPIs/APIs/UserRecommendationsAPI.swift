@@ -16,13 +16,13 @@ internal class UserRecommendationsAPI {
      Get single userRecommendation.
      
      - parameter id: (path) User recommendations id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
      - returns: UserRecommendationsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdGet(id: String, countryCode: String, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
+    internal class func userRecommendationsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
         do {
             return try await userRecommendationsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -39,12 +39,12 @@ internal class UserRecommendationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendations id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
      - returns: RequestBuilder<UserRecommendationsSingleResourceDataDocument> 
      */
-    internal class func userRecommendationsIdGetWithRequestBuilder(id: String, countryCode: String, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsSingleResourceDataDocument> {
+    internal class func userRecommendationsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsSingleResourceDataDocument> {
         var localVariablePath = "/userRecommendations/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -54,7 +54,7 @@ internal class UserRecommendationsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -74,16 +74,16 @@ internal class UserRecommendationsAPI {
      Get discoveryMixes relationship (\"to-many\").
      
      - parameter id: (path) User recommendations id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, countryCode: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, locale: locale, include: include).execute().body
+            return try await userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -98,13 +98,13 @@ internal class UserRecommendationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendations id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: String, countryCode: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
+    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/discoveryMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -115,7 +115,7 @@ internal class UserRecommendationsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -135,16 +135,16 @@ internal class UserRecommendationsAPI {
      Get myMixes relationship (\"to-many\").
      
      - parameter id: (path) User recommendations id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsMyMixesGet(id: String, countryCode: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+    internal class func userRecommendationsIdRelationshipsMyMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, locale: locale, include: include).execute().body
+            return try await userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -159,13 +159,13 @@ internal class UserRecommendationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendations id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: String, countryCode: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
+    internal class func userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/myMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -176,7 +176,7 @@ internal class UserRecommendationsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -196,16 +196,16 @@ internal class UserRecommendationsAPI {
      Get newArrivalMixes relationship (\"to-many\").
      
      - parameter id: (path) User recommendations id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, countryCode: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, countryCode: countryCode, pageCursor: pageCursor, locale: locale, include: include).execute().body
+            return try await userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -220,13 +220,13 @@ internal class UserRecommendationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendations id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: String, countryCode: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
+    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/newArrivalMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -237,7 +237,7 @@ internal class UserRecommendationsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])

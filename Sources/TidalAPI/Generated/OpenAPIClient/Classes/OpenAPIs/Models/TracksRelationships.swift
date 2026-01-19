@@ -14,11 +14,13 @@ public struct TracksRelationships: Codable, Hashable {
 
     public var albums: MultiRelationshipDataDocument
     public var artists: MultiRelationshipDataDocument
+    public var credits: MultiRelationshipDataDocument
     public var genres: MultiRelationshipDataDocument
     public var lyrics: MultiRelationshipDataDocument
     public var owners: MultiRelationshipDataDocument
     public var providers: MultiRelationshipDataDocument
     public var radio: MultiRelationshipDataDocument
+    public var replacement: SingleRelationshipDataDocument
     public var shares: MultiRelationshipDataDocument
     public var similarTracks: MultiRelationshipDataDocument
     public var sourceFile: SingleRelationshipDataDocument
@@ -27,11 +29,13 @@ public struct TracksRelationships: Codable, Hashable {
     public init(
         albums: MultiRelationshipDataDocument,
         artists: MultiRelationshipDataDocument,
+        credits: MultiRelationshipDataDocument,
         genres: MultiRelationshipDataDocument,
         lyrics: MultiRelationshipDataDocument,
         owners: MultiRelationshipDataDocument,
         providers: MultiRelationshipDataDocument,
         radio: MultiRelationshipDataDocument,
+        replacement: SingleRelationshipDataDocument,
         shares: MultiRelationshipDataDocument,
         similarTracks: MultiRelationshipDataDocument,
         sourceFile: SingleRelationshipDataDocument,
@@ -39,11 +43,13 @@ public struct TracksRelationships: Codable, Hashable {
     ) {
         self.albums = albums
         self.artists = artists
+        self.credits = credits
         self.genres = genres
         self.lyrics = lyrics
         self.owners = owners
         self.providers = providers
         self.radio = radio
+        self.replacement = replacement
         self.shares = shares
         self.similarTracks = similarTracks
         self.sourceFile = sourceFile
@@ -53,11 +59,13 @@ public struct TracksRelationships: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albums
         case artists
+        case credits
         case genres
         case lyrics
         case owners
         case providers
         case radio
+        case replacement
         case shares
         case similarTracks
         case sourceFile
@@ -70,11 +78,13 @@ public struct TracksRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(albums, forKey: .albums)
         try container.encode(artists, forKey: .artists)
+        try container.encode(credits, forKey: .credits)
         try container.encode(genres, forKey: .genres)
         try container.encode(lyrics, forKey: .lyrics)
         try container.encode(owners, forKey: .owners)
         try container.encode(providers, forKey: .providers)
         try container.encode(radio, forKey: .radio)
+        try container.encode(replacement, forKey: .replacement)
         try container.encode(shares, forKey: .shares)
         try container.encode(similarTracks, forKey: .similarTracks)
         try container.encode(sourceFile, forKey: .sourceFile)

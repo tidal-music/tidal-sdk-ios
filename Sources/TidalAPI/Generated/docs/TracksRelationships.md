@@ -5,11 +5,13 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **albums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **artists** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**credits** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **genres** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **lyrics** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **radio** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**replacement** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **shares** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **similarTracks** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **sourceFile** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 

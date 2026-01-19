@@ -15,13 +15,13 @@ internal class ArtworksAPI {
     /**
      Get multiple artworks.
      
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter filterId: (query) Artwork id (optional)
      - returns: ArtworksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artworksGet(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtworksMultiResourceDataDocument {
+    internal class func artworksGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtworksMultiResourceDataDocument {
         do {
             return try await artworksGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -40,19 +40,19 @@ internal class ArtworksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter filterId: (query) Artwork id (optional)
      - returns: RequestBuilder<ArtworksMultiResourceDataDocument> 
      */
-    internal class func artworksGetWithRequestBuilder(countryCode: String, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtworksMultiResourceDataDocument> {
+    internal class func artworksGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtworksMultiResourceDataDocument> {
         let localVariablePath = "/artworks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
         ])
@@ -72,12 +72,12 @@ internal class ArtworksAPI {
      Get single artwork.
      
      - parameter id: (path) Artwork id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: ArtworksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artworksIdGet(id: String, countryCode: String, include: [String]? = nil) async throws -> ArtworksSingleResourceDataDocument {
+    internal class func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ArtworksSingleResourceDataDocument {
         do {
             return try await artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -97,11 +97,11 @@ internal class ArtworksAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artwork id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: RequestBuilder<ArtworksSingleResourceDataDocument> 
      */
-    internal class func artworksIdGetWithRequestBuilder(id: String, countryCode: String, include: [String]? = nil) -> RequestBuilder<ArtworksSingleResourceDataDocument> {
+    internal class func artworksIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtworksSingleResourceDataDocument> {
         var localVariablePath = "/artworks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -111,7 +111,7 @@ internal class ArtworksAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
