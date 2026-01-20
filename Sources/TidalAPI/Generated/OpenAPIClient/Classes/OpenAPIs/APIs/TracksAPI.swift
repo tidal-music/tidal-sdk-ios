@@ -17,7 +17,7 @@ internal class TracksAPI {
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
      - parameter filterId: (query) Track id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterOwnersId: (query) User id (optional)
@@ -46,7 +46,7 @@ internal class TracksAPI {
        - name: Client_Credentials
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
      - parameter filterId: (query) Track id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - parameter filterOwnersId: (query) User id (optional)
@@ -132,7 +132,7 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksSingleResourceDataDocument
      */
@@ -158,7 +158,7 @@ internal class TracksAPI {
        - name: Client_Credentials
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksSingleResourceDataDocument> 
      */
@@ -596,6 +596,61 @@ internal class TracksAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<TracksMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get metadataStatus relationship (\"to-one\").
+     
+     - parameter id: (path) Track id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: metadataStatus (optional)
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - returns: TracksSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdRelationshipsMetadataStatusGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+        do {
+            return try await tracksIdRelationshipsMetadataStatusGetWithRequestBuilder(id: id, include: include, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get metadataStatus relationship (\"to-one\").
+     - GET /tracks/{id}/relationships/metadataStatus
+     - Retrieves metadataStatus relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Track id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: metadataStatus (optional)
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - returns: RequestBuilder<TracksSingleRelationshipDataDocument> 
+     */
+    internal class func tracksIdRelationshipsMetadataStatusGetWithRequestBuilder(id: String, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSingleRelationshipDataDocument> {
+        var localVariablePath = "/tracks/{id}/relationships/metadataStatus"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TracksSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

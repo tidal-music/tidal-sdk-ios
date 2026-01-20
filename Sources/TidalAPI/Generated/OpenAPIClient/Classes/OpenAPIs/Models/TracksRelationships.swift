@@ -17,6 +17,7 @@ public struct TracksRelationships: Codable, Hashable {
     public var credits: MultiRelationshipDataDocument
     public var genres: MultiRelationshipDataDocument
     public var lyrics: MultiRelationshipDataDocument
+    public var metadataStatus: SingleRelationshipDataDocument
     public var owners: MultiRelationshipDataDocument
     public var providers: MultiRelationshipDataDocument
     public var radio: MultiRelationshipDataDocument
@@ -32,6 +33,7 @@ public struct TracksRelationships: Codable, Hashable {
         credits: MultiRelationshipDataDocument,
         genres: MultiRelationshipDataDocument,
         lyrics: MultiRelationshipDataDocument,
+        metadataStatus: SingleRelationshipDataDocument,
         owners: MultiRelationshipDataDocument,
         providers: MultiRelationshipDataDocument,
         radio: MultiRelationshipDataDocument,
@@ -46,6 +48,7 @@ public struct TracksRelationships: Codable, Hashable {
         self.credits = credits
         self.genres = genres
         self.lyrics = lyrics
+        self.metadataStatus = metadataStatus
         self.owners = owners
         self.providers = providers
         self.radio = radio
@@ -62,6 +65,7 @@ public struct TracksRelationships: Codable, Hashable {
         case credits
         case genres
         case lyrics
+        case metadataStatus
         case owners
         case providers
         case radio
@@ -81,6 +85,7 @@ public struct TracksRelationships: Codable, Hashable {
         try container.encode(credits, forKey: .credits)
         try container.encode(genres, forKey: .genres)
         try container.encode(lyrics, forKey: .lyrics)
+        try container.encode(metadataStatus, forKey: .metadataStatus)
         try container.encode(owners, forKey: .owners)
         try container.encode(providers, forKey: .providers)
         try container.encode(radio, forKey: .radio)

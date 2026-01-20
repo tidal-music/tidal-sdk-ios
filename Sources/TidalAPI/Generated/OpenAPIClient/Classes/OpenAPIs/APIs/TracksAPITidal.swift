@@ -135,6 +135,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Get metadataStatus relationship (\&quot;to-one\&quot;).
+     
+     - returns: TracksSingleRelationshipDataDocument
+     */
+	public static func tracksIdRelationshipsMetadataStatusGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsMetadataStatusGetWithRequestBuilder(id: id, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: TracksMultiRelationshipDataDocument

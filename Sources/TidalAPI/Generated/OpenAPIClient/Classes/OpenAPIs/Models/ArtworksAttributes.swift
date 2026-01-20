@@ -22,21 +22,25 @@ public struct ArtworksAttributes: Codable, Hashable {
     /** Media type of artwork files */
     public var mediaType: MediaType
     public var sourceFile: ArtworkSourceFile?
+    public var visualMetadata: ArtworkVisualMetadata?
 
     public init(
         files: [ArtworkFile],
         mediaType: MediaType,
-        sourceFile: ArtworkSourceFile? = nil
+        sourceFile: ArtworkSourceFile? = nil,
+        visualMetadata: ArtworkVisualMetadata? = nil
     ) {
         self.files = files
         self.mediaType = mediaType
         self.sourceFile = sourceFile
+        self.visualMetadata = visualMetadata
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case files
         case mediaType
         case sourceFile
+        case visualMetadata
     }
 
     // Encodable protocol methods
@@ -46,5 +50,6 @@ public struct ArtworksAttributes: Codable, Hashable {
         try container.encode(files, forKey: .files)
         try container.encode(mediaType, forKey: .mediaType)
         try container.encodeIfPresent(sourceFile, forKey: .sourceFile)
+        try container.encodeIfPresent(visualMetadata, forKey: .visualMetadata)
     }
 }

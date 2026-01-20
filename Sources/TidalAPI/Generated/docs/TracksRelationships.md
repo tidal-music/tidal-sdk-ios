@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **credits** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **genres** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **lyrics** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**metadataStatus** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **radio** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
