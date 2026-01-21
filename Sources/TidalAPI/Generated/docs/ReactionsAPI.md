@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **reactionsGet**
 ```swift
-    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil, filterReactionType: [String]? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple reactions.
@@ -28,13 +28,13 @@ let stats = "stats_example" // String |  (optional)
 let statsOnly = true // Bool |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+let filterEmoji = ["inner_example"] // [String] | Filter by emoji (optional)
 let filterOwnerId = ["inner_example"] // [String] | Filter by owner id (optional)
 let filterReactedResourceId = ["inner_example"] // [String] | Filter by resource ID (optional)
 let filterReactedResourceType = ["inner_example"] // [String] | Filter by resource type (optional)
-let filterReactionType = ["inner_example"] // [String] | Filter by reaction type (optional)
 
 // Get multiple reactions.
-ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType, filterReactionType: filterReactionType) { (response, error) in
+ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -54,10 +54,10 @@ Name | Type | Description  | Notes
  **statsOnly** | **Bool** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles | [optional] 
+ **filterEmoji** | [**[String]**](String.md) | Filter by emoji | [optional] 
  **filterOwnerId** | [**[String]**](String.md) | Filter by owner id | [optional] 
  **filterReactedResourceId** | [**[String]**](String.md) | Filter by resource ID | [optional] 
  **filterReactedResourceType** | [**[String]**](String.md) | Filter by resource type | [optional] 
- **filterReactionType** | [**[String]**](String.md) | Filter by reaction type | [optional] 
 
 ### Return type
 
@@ -192,7 +192,7 @@ Creates a new reaction.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let createReactionPayload = CreateReactionPayload(data: CreateReactionPayload_Data(attributes: CreateReactionPayload_Data_Attributes(reactionType: "reactionType_example"), relationships: CreateReactionPayload_Data_Relationships(reactedResource: ReactedResourceRelationship(data: ReactedResourceIdentifier(id: "id_example", type: "type_example"))), type: "type_example")) // CreateReactionPayload |  (optional)
+let createReactionPayload = CreateReactionPayload(data: CreateReactionPayload_Data(attributes: CreateReactionPayload_Data_Attributes(emoji: "emoji_example"), relationships: CreateReactionPayload_Data_Relationships(reactedResource: ReactedResourceRelationship(data: ReactedResourceIdentifier(id: "id_example", type: "type_example"))), type: "type_example")) // CreateReactionPayload |  (optional)
 
 // Create single reaction.
 ReactionsAPI.reactionsPost(createReactionPayload: createReactionPayload) { (response, error) in

@@ -36,6 +36,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case trackManifestsResourceObject(TrackManifestsResourceObject)
     case trackSourceFilesResourceObject(TrackSourceFilesResourceObject)
     case trackStatisticsResourceObject(TrackStatisticsResourceObject)
+    case tracksMetadataStatusResourceObject(TracksMetadataStatusResourceObject)
     case tracksResourceObject(TracksResourceObject)
     case userCollectionFoldersResourceObject(UserCollectionFoldersResourceObject)
     case userCollectionsResourceObject(UserCollectionsResourceObject)
@@ -97,6 +98,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .trackSourceFilesResourceObject(let value):
             try container.encode(value)
         case .trackStatisticsResourceObject(let value):
+            try container.encode(value)
+        case .tracksMetadataStatusResourceObject(let value):
             try container.encode(value)
         case .tracksResourceObject(let value):
             try container.encode(value)
@@ -204,6 +207,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "tracks":
             let value = try TracksResourceObject(from: decoder)
             self = .tracksResourceObject(value)
+        case "tracksMetadataStatus":
+            let value = try TracksMetadataStatusResourceObject(from: decoder)
+            self = .tracksMetadataStatusResourceObject(value)
         case "userCollectionFolders":
             let value = try UserCollectionFoldersResourceObject(from: decoder)
             self = .userCollectionFoldersResourceObject(value)
@@ -260,6 +266,7 @@ extension IncludedInner: Identifiable {
         case .trackManifestsResourceObject(let value): return value.id
         case .trackSourceFilesResourceObject(let value): return value.id
         case .trackStatisticsResourceObject(let value): return value.id
+        case .tracksMetadataStatusResourceObject(let value): return value.id
         case .tracksResourceObject(let value): return value.id
         case .userCollectionFoldersResourceObject(let value): return value.id
         case .userCollectionsResourceObject(let value): return value.id

@@ -14,6 +14,7 @@ Method | HTTP request | Description
 [**tracksIdRelationshipsCreditsGet**](TracksAPI.md#tracksidrelationshipscreditsget) | **GET** /tracks/{id}/relationships/credits | Get credits relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsGenresGet**](TracksAPI.md#tracksidrelationshipsgenresget) | **GET** /tracks/{id}/relationships/genres | Get genres relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsLyricsGet**](TracksAPI.md#tracksidrelationshipslyricsget) | **GET** /tracks/{id}/relationships/lyrics | Get lyrics relationship (\&quot;to-many\&quot;).
+[**tracksIdRelationshipsMetadataStatusGet**](TracksAPI.md#tracksidrelationshipsmetadatastatusget) | **GET** /tracks/{id}/relationships/metadataStatus | Get metadataStatus relationship (\&quot;to-one\&quot;).
 [**tracksIdRelationshipsOwnersGet**](TracksAPI.md#tracksidrelationshipsownersget) | **GET** /tracks/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsProvidersGet**](TracksAPI.md#tracksidrelationshipsprovidersget) | **GET** /tracks/{id}/relationships/providers | Get providers relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsRadioGet**](TracksAPI.md#tracksidrelationshipsradioget) | **GET** /tracks/{id}/relationships/radio | Get radio relationship (\&quot;to-many\&quot;).
@@ -41,7 +42,7 @@ import OpenAPIClient
 
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
 let filterId = ["inner_example"] // [String] | Track id (optional)
 let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
@@ -66,7 +67,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics | [optional] 
  **filterId** | [**[String]**](String.md) | Track id | [optional] 
  **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
@@ -153,7 +154,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get single track.
@@ -175,7 +176,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -575,6 +576,60 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **tracksIdRelationshipsMetadataStatusGet**
+```swift
+    open class func tracksIdRelationshipsMetadataStatusGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get metadataStatus relationship (\"to-one\").
+
+Retrieves metadataStatus relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Track id
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: metadataStatus (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+
+// Get metadataStatus relationship (\"to-one\").
+TracksAPI.tracksIdRelationshipsMetadataStatusGet(id: id, include: include, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Track id | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: metadataStatus | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+
+### Return type
+
+[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 
