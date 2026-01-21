@@ -12,29 +12,22 @@ import AnyCodable
 
 public struct CreateReactionPayloadDataAttributes: Codable, Hashable {
 
-    public enum ReactionType: String, Codable, CaseIterable {
-        case thumbUp = "THUMB_UP"
-        case smileyHeartEyes = "SMILEY_HEART_EYES"
-        case smileyHoldingBackTears = "SMILEY_HOLDING_BACK_TEARS"
-        case fire = "FIRE"
-        case shock = "SHOCK"
-    }
-    public var reactionType: ReactionType
+    public var emoji: String
 
     public init(
-        reactionType: ReactionType
+        emoji: String
     ) {
-        self.reactionType = reactionType
+        self.emoji = emoji
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case reactionType
+        case emoji
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(reactionType, forKey: .reactionType)
+        try container.encode(emoji, forKey: .emoji)
     }
 }

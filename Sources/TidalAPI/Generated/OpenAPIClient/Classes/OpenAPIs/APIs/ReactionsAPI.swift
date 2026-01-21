@@ -28,16 +28,16 @@ internal class ReactionsAPI {
      - parameter statsOnly: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+     - parameter filterEmoji: (query) Filter by emoji (optional)
      - parameter filterOwnerId: (query) Filter by owner id (optional)
      - parameter filterReactedResourceId: (query) Filter by resource ID (optional)
      - parameter filterReactedResourceType: (query) Filter by resource type (optional)
-     - parameter filterReactionType: (query) Filter by reaction type (optional)
      - returns: ReactionsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil, filterReactionType: [String]? = nil) async throws -> ReactionsMultiResourceDataDocument {
+    internal class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil) async throws -> ReactionsMultiResourceDataDocument {
         do {
-            return try await reactionsGetWithRequestBuilder(stats: stats, statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType, filterReactionType: filterReactionType).execute().body
+            return try await reactionsGetWithRequestBuilder(stats: stats, statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -55,13 +55,13 @@ internal class ReactionsAPI {
      - parameter statsOnly: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+     - parameter filterEmoji: (query) Filter by emoji (optional)
      - parameter filterOwnerId: (query) Filter by owner id (optional)
      - parameter filterReactedResourceId: (query) Filter by resource ID (optional)
      - parameter filterReactedResourceType: (query) Filter by resource type (optional)
-     - parameter filterReactionType: (query) Filter by reaction type (optional)
      - returns: RequestBuilder<ReactionsMultiResourceDataDocument> 
      */
-    internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil, filterReactionType: [String]? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
+    internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
         let localVariablePath = "/reactions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -72,10 +72,10 @@ internal class ReactionsAPI {
             "statsOnly": (wrappedValue: statsOnly?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[emoji]": (wrappedValue: filterEmoji?.encodeToJSON(), isExplode: true),
             "filter[owner.id]": (wrappedValue: filterOwnerId?.encodeToJSON(), isExplode: true),
             "filter[reactedResource.id]": (wrappedValue: filterReactedResourceId?.encodeToJSON(), isExplode: true),
             "filter[reactedResource.type]": (wrappedValue: filterReactedResourceType?.encodeToJSON(), isExplode: true),
-            "filter[reactionType]": (wrappedValue: filterReactionType?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
