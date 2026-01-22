@@ -13,6 +13,53 @@ import AnyCodable
 internal class ArtistClaimsAPI {
 
     /**
+     Delete single artistClaim.
+     
+     - parameter id: (path) Artist claim id 
+     - returns: Void
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func artistClaimsIdDelete(id: String) async throws {
+        do {
+            return try await artistClaimsIdDeleteWithRequestBuilder(id: id).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Delete single artistClaim.
+     - DELETE /artistClaims/{id}
+     - Deletes existing artistClaim.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Artist claim id 
+     - returns: RequestBuilder<Void> 
+     */
+    internal class func artistClaimsIdDeleteWithRequestBuilder(id: String) -> RequestBuilder<Void> {
+        var localVariablePath = "/artistClaims/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get single artistClaim.
      
      - parameter id: (path) Artist claim id 

@@ -15,6 +15,18 @@ public enum ArtistClaimsAPITidal {
 
 
 	/**
+     Delete single artistClaim.
+     
+     - returns: 
+     */
+	public static func artistClaimsIdDelete(id: String) async throws {
+		return try await RequestHelper.createRequest {
+			ArtistClaimsAPI.artistClaimsIdDeleteWithRequestBuilder(id: id)
+		}
+	}
+
+
+	/**
      Get single artistClaim.
      
      - returns: ArtistClaimsSingleResourceDataDocument

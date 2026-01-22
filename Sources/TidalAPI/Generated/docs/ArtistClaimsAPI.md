@@ -4,6 +4,7 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**artistClaimsIdDelete**](ArtistClaimsAPI.md#artistclaimsiddelete) | **DELETE** /artistClaims/{id} | Delete single artistClaim.
 [**artistClaimsIdGet**](ArtistClaimsAPI.md#artistclaimsidget) | **GET** /artistClaims/{id} | Get single artistClaim.
 [**artistClaimsIdPatch**](ArtistClaimsAPI.md#artistclaimsidpatch) | **PATCH** /artistClaims/{id} | Update single artistClaim.
 [**artistClaimsIdRelationshipsAcceptedArtistsGet**](ArtistClaimsAPI.md#artistclaimsidrelationshipsacceptedartistsget) | **GET** /artistClaims/{id}/relationships/acceptedArtists | Get acceptedArtists relationship (\&quot;to-many\&quot;).
@@ -12,6 +13,56 @@ Method | HTTP request | Description
 [**artistClaimsIdRelationshipsRecommendedArtistsGet**](ArtistClaimsAPI.md#artistclaimsidrelationshipsrecommendedartistsget) | **GET** /artistClaims/{id}/relationships/recommendedArtists | Get recommendedArtists relationship (\&quot;to-many\&quot;).
 [**artistClaimsPost**](ArtistClaimsAPI.md#artistclaimspost) | **POST** /artistClaims | Create single artistClaim.
 
+
+# **artistClaimsIdDelete**
+```swift
+    open class func artistClaimsIdDelete(id: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Delete single artistClaim.
+
+Deletes existing artistClaim.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist claim id
+
+// Delete single artistClaim.
+ArtistClaimsAPI.artistClaimsIdDelete(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist claim id | 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **artistClaimsIdGet**
 ```swift

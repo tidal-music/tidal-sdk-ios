@@ -1,9 +1,9 @@
-# LyricsCreateOperationPayloadDataRelationshipsTrack
+# TrackSourceFilesCreateOperationPayloadDataRelationshipsTrack
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**LyricsCreateOperationPayloadDataRelationshipsTrackData**](LyricsCreateOperationPayloadDataRelationshipsTrackData.md) |  | [optional] 
+**data** | [**TrackSourceFilesCreateOperationPayloadDataRelationshipsTrackData**](TrackSourceFilesCreateOperationPayloadDataRelationshipsTrackData.md) |  | [optional] 
 **id** | **String** |  | [optional] 
 **type** | **String** |  | [optional] 
 

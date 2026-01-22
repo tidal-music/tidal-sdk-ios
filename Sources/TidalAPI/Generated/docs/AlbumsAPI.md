@@ -39,7 +39,7 @@ import OpenAPIClient
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, replacement, similarAlbums, suggestedCoverArts (optional)
-let filterBarcodeId = ["inner_example"] // [String] | Barcode Id (optional)
+let filterBarcodeId = ["inner_example"] // [String] | List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (optional)
 let filterId = ["inner_example"] // [String] | Album id (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, providers, replacement, similarAlbums, suggestedCoverArts | [optional] 
- **filterBarcodeId** | [**[String]**](String.md) | Barcode Id | [optional] 
+ **filterBarcodeId** | [**[String]**](String.md) | List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. | [optional] 
  **filterId** | [**[String]**](String.md) | Album id | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 

@@ -172,13 +172,13 @@ internal class TrackSourceFilesAPI {
     /**
      Create single trackSourceFile.
      
-     - parameter trackSourceFileCreateOperationPayload: (body)  (optional)
+     - parameter trackSourceFilesCreateOperationPayload: (body)  (optional)
      - returns: TrackSourceFilesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackSourceFilesPost(trackSourceFileCreateOperationPayload: TrackSourceFileCreateOperationPayload? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
+    internal class func trackSourceFilesPost(trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
         do {
-            return try await trackSourceFilesPostWithRequestBuilder(trackSourceFileCreateOperationPayload: trackSourceFileCreateOperationPayload).execute().body
+            return try await trackSourceFilesPostWithRequestBuilder(trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -192,13 +192,13 @@ internal class TrackSourceFilesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter trackSourceFileCreateOperationPayload: (body)  (optional)
+     - parameter trackSourceFilesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<TrackSourceFilesSingleResourceDataDocument> 
      */
-    internal class func trackSourceFilesPostWithRequestBuilder(trackSourceFileCreateOperationPayload: TrackSourceFileCreateOperationPayload? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
+    internal class func trackSourceFilesPostWithRequestBuilder(trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
         let localVariablePath = "/trackSourceFiles"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackSourceFileCreateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackSourceFilesCreateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

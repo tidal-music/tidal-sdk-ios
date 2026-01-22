@@ -16,7 +16,7 @@ internal class VideosAPI {
      Get multiple videos.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, thumbnailArt (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt (optional)
      - parameter filterId: (query) Video id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - returns: VideosMultiResourceDataDocument
@@ -42,7 +42,7 @@ internal class VideosAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, thumbnailArt (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt (optional)
      - parameter filterId: (query) Video id (optional)
      - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
      - returns: RequestBuilder<VideosMultiResourceDataDocument> 
@@ -76,7 +76,7 @@ internal class VideosAPI {
      
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, thumbnailArt (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt (optional)
      - returns: VideosSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -101,7 +101,7 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, thumbnailArt (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt (optional)
      - returns: RequestBuilder<VideosSingleResourceDataDocument> 
      */
     internal class func videosIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosSingleResourceDataDocument> {
@@ -424,6 +424,67 @@ internal class VideosAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<VideosSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get similarVideos relationship (\"to-many\").
+     
+     - parameter id: (path) Video id 
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarVideos (optional)
+     - returns: VideosMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func videosIdRelationshipsSimilarVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
+        do {
+            return try await videosIdRelationshipsSimilarVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get similarVideos relationship (\"to-many\").
+     - GET /videos/{id}/relationships/similarVideos
+     - Retrieves similarVideos relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) Video id 
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarVideos (optional)
+     - returns: RequestBuilder<VideosMultiRelationshipDataDocument> 
+     */
+    internal class func videosIdRelationshipsSimilarVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosMultiRelationshipDataDocument> {
+        var localVariablePath = "/videos/{id}/relationships/similarVideos"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<VideosMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

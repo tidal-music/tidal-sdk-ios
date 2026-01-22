@@ -17,6 +17,7 @@ public struct VideosRelationships: Codable, Hashable {
     public var credits: MultiRelationshipDataDocument
     public var providers: MultiRelationshipDataDocument
     public var replacement: SingleRelationshipDataDocument
+    public var similarVideos: MultiRelationshipDataDocument
     public var thumbnailArt: MultiRelationshipDataDocument
 
     public init(
@@ -25,6 +26,7 @@ public struct VideosRelationships: Codable, Hashable {
         credits: MultiRelationshipDataDocument,
         providers: MultiRelationshipDataDocument,
         replacement: SingleRelationshipDataDocument,
+        similarVideos: MultiRelationshipDataDocument,
         thumbnailArt: MultiRelationshipDataDocument
     ) {
         self.albums = albums
@@ -32,6 +34,7 @@ public struct VideosRelationships: Codable, Hashable {
         self.credits = credits
         self.providers = providers
         self.replacement = replacement
+        self.similarVideos = similarVideos
         self.thumbnailArt = thumbnailArt
     }
 
@@ -41,6 +44,7 @@ public struct VideosRelationships: Codable, Hashable {
         case credits
         case providers
         case replacement
+        case similarVideos
         case thumbnailArt
     }
 
@@ -53,6 +57,7 @@ public struct VideosRelationships: Codable, Hashable {
         try container.encode(credits, forKey: .credits)
         try container.encode(providers, forKey: .providers)
         try container.encode(replacement, forKey: .replacement)
+        try container.encode(similarVideos, forKey: .similarVideos)
         try container.encode(thumbnailArt, forKey: .thumbnailArt)
     }
 }

@@ -19,7 +19,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
      - parameter filterId: (query) Track id (optional)
-     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
+     - parameter filterIsrc: (query) List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (optional)
      - parameter filterOwnersId: (query) User id (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiResourceDataDocument
@@ -48,7 +48,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
      - parameter filterId: (query) Track id (optional)
-     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
+     - parameter filterIsrc: (query) List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (optional)
      - parameter filterOwnersId: (query) User id (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiResourceDataDocument> 

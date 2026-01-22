@@ -32,13 +32,34 @@ public enum ReactionsAPITidal {
 	}
 
 	/**
+	 * enum for parameter filterReactedResourceType
+	 */
+	public enum FilterReactedResourceType_reactionsGet: String, CaseIterable {
+		case albums = "albums"
+		case tracks = "tracks"
+		case artists = "artists"
+		case videos = "videos"
+		case playlists = "playlists"
+
+		func toReactionsAPIEnum() -> ReactionsAPI.FilterReactedResourceType_reactionsGet {
+			switch self {
+			case .albums: return .albums
+			case .tracks: return .tracks
+			case .artists: return .artists
+			case .videos: return .videos
+			case .playlists: return .playlists
+			}
+		}
+	}
+
+	/**
      Get multiple reactions.
      
      - returns: ReactionsMultiResourceDataDocument
      */
-	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil) async throws -> ReactionsMultiResourceDataDocument {
+	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [ReactionsAPITidal.FilterReactedResourceType_reactionsGet]? = nil) async throws -> ReactionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType)
+			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType?.compactMap { $0.toReactionsAPIEnum() })
 		}
 	}
 
@@ -72,9 +93,9 @@ public enum ReactionsAPITidal {
      
      - returns: ReactionsSingleResourceDataDocument
      */
-	public static func reactionsPost(createReactionPayload: CreateReactionPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
+	public static func reactionsPost(reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsPostWithRequestBuilder(createReactionPayload: createReactionPayload)
+			ReactionsAPI.reactionsPostWithRequestBuilder(reactionsCreateOperationPayload: reactionsCreateOperationPayload)
 		}
 	}
 }

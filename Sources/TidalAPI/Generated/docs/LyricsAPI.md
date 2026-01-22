@@ -343,7 +343,7 @@ Creates a new lyric.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let lyricsCreateOperationPayload = LyricsCreateOperation_Payload(data: LyricsCreateOperation_Payload_Data(attributes: LyricsCreateOperation_Payload_Data_Attributes(text: "text_example"), relationships: LyricsCreateOperation_Payload_Data_Relationships(track: LyricsCreateOperation_Payload_Data_Relationships_Track(id: "id_example", type: "type_example")), type: "type_example"), meta: LyricsCreateOperation_Payload_Meta(generate: false)) // LyricsCreateOperationPayload |  (optional)
+let lyricsCreateOperationPayload = LyricsCreateOperation_Payload(data: LyricsCreateOperation_Payload_Data(attributes: LyricsCreateOperation_Payload_Data_Attributes(text: "text_example"), relationships: LyricsCreateOperation_Payload_Data_Relationships(track: LyricsCreateOperation_Payload_Data_Relationships_Track(data: LyricsCreateOperation_Payload_Data_Relationships_Track_Data(id: "id_example", type: "type_example"), id: "id_example", type: "type_example")), type: "type_example"), meta: LyricsCreateOperation_Payload_Meta(generate: false)) // LyricsCreateOperationPayload |  (optional)
 
 // Create single lyric.
 LyricsAPI.lyricsPost(lyricsCreateOperationPayload: lyricsCreateOperationPayload) { (response, error) in

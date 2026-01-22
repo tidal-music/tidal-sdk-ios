@@ -30,7 +30,7 @@ Retrieves multiple userCollectionFolders by available filters, or without if app
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-let filterId = [""] // [String] | Folder Id (optional)
+let filterId = ["inner_example"] // [String] | Folder Id (optional)
 
 // Get multiple userCollectionFolders.
 UserCollectionFoldersAPI.userCollectionFoldersGet(include: include, filterId: filterId) { (response, error) in
@@ -223,7 +223,7 @@ Void (empty response body)
 
 # **userCollectionFoldersIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, removePayload: RemovePayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -236,10 +236,10 @@ Deletes item(s) from items relationship.
 import OpenAPIClient
 
 let id = "" // String | Folder Id
-let removePayload = RemovePayload(data: [_Data(id: "id_example", resourceType: "resourceType_example")]) // RemovePayload |  (optional)
+let userCollectionFoldersItemsRelationshipRemoveOperationPayload = UserCollectionFoldersItemsRelationshipRemoveOperation_Payload(data: [UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", resourceType: "resourceType_example")]) // UserCollectionFoldersItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id, removePayload: removePayload) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -256,7 +256,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **removePayload** | [**RemovePayload**](RemovePayload.md) |  | [optional] 
+ **userCollectionFoldersItemsRelationshipRemoveOperationPayload** | [**UserCollectionFoldersItemsRelationshipRemoveOperationPayload**](UserCollectionFoldersItemsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -331,7 +331,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsPost(id: String, addPayload: AddPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsPost(id: String, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -344,10 +344,10 @@ Adds item(s) to items relationship.
 import OpenAPIClient
 
 let id = "" // String | Folder Id
-let addPayload = AddPayload(data: [_Data(id: "id_example", resourceType: "resourceType_example")]) // AddPayload |  (optional)
+let userCollectionFoldersItemsRelationshipAddOperationPayload = UserCollectionFoldersItemsRelationshipAddOperation_Payload(data: [UserCollectionFoldersItemsRelationshipAddOperation_Payload_Data(id: "id_example", resourceType: "resourceType_example")]) // UserCollectionFoldersItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, addPayload: addPayload) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -364,7 +364,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, a
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **addPayload** | [**AddPayload**](AddPayload.md) |  | [optional] 
+ **userCollectionFoldersItemsRelationshipAddOperationPayload** | [**UserCollectionFoldersItemsRelationshipAddOperationPayload**](UserCollectionFoldersItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 

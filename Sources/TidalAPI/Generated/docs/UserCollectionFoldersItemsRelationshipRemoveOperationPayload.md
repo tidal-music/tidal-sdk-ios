@@ -1,9 +1,9 @@
-# ReactedResourceRelationship
+# UserCollectionFoldersItemsRelationshipRemoveOperationPayload
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**ReactedResourceIdentifier**](ReactedResourceIdentifier.md) |  | 
+**data** | [UserCollectionFoldersItemsRelationshipRemoveOperationPayloadData] |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

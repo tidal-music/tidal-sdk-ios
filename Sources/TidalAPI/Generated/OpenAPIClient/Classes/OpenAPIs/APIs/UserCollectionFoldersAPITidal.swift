@@ -67,9 +67,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: 
      */
-	public static func userCollectionFoldersIdRelationshipsItemsDelete(id: String, removePayload: RemovePayload? = nil) async throws {
+	public static func userCollectionFoldersIdRelationshipsItemsDelete(id: String, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, removePayload: removePayload)
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -114,9 +114,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: 
      */
-	public static func userCollectionFoldersIdRelationshipsItemsPost(id: String, addPayload: AddPayload? = nil) async throws {
+	public static func userCollectionFoldersIdRelationshipsItemsPost(id: String, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, addPayload: addPayload)
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload)
 		}
 	}
 

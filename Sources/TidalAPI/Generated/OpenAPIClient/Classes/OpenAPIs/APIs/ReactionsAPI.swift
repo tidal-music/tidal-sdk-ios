@@ -22,6 +22,17 @@ internal class ReactionsAPI {
     }
 
     /**
+     * enum for parameter filterReactedResourceType
+     */
+    public enum FilterReactedResourceType_reactionsGet: String, CaseIterable {
+        case albums = "albums"
+        case tracks = "tracks"
+        case artists = "artists"
+        case videos = "videos"
+        case playlists = "playlists"
+    }
+
+    /**
      Get multiple reactions.
      
      - parameter stats: (query)  (optional)
@@ -30,12 +41,12 @@ internal class ReactionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
      - parameter filterEmoji: (query) Filter by emoji (optional)
      - parameter filterOwnerId: (query) Filter by owner id (optional)
-     - parameter filterReactedResourceId: (query) Filter by resource ID (optional)
-     - parameter filterReactedResourceType: (query) Filter by resource type (optional)
+     - parameter filterReactedResourceId: (query) Filter by reacted resource ID (optional)
+     - parameter filterReactedResourceType: (query) Filter by reacted resource type (optional)
      - returns: ReactionsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil) async throws -> ReactionsMultiResourceDataDocument {
+    internal class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [FilterReactedResourceType_reactionsGet]? = nil) async throws -> ReactionsMultiResourceDataDocument {
         do {
             return try await reactionsGetWithRequestBuilder(stats: stats, statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -57,11 +68,11 @@ internal class ReactionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
      - parameter filterEmoji: (query) Filter by emoji (optional)
      - parameter filterOwnerId: (query) Filter by owner id (optional)
-     - parameter filterReactedResourceId: (query) Filter by resource ID (optional)
-     - parameter filterReactedResourceType: (query) Filter by resource type (optional)
+     - parameter filterReactedResourceId: (query) Filter by reacted resource ID (optional)
+     - parameter filterReactedResourceType: (query) Filter by reacted resource type (optional)
      - returns: RequestBuilder<ReactionsMultiResourceDataDocument> 
      */
-    internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
+    internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [FilterReactedResourceType_reactionsGet]? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
         let localVariablePath = "/reactions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -194,13 +205,13 @@ internal class ReactionsAPI {
     /**
      Create single reaction.
      
-     - parameter createReactionPayload: (body)  (optional)
+     - parameter reactionsCreateOperationPayload: (body)  (optional)
      - returns: ReactionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsPost(createReactionPayload: CreateReactionPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
+    internal class func reactionsPost(reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
         do {
-            return try await reactionsPostWithRequestBuilder(createReactionPayload: createReactionPayload).execute().body
+            return try await reactionsPostWithRequestBuilder(reactionsCreateOperationPayload: reactionsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -214,13 +225,13 @@ internal class ReactionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter createReactionPayload: (body)  (optional)
+     - parameter reactionsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ReactionsSingleResourceDataDocument> 
      */
-    internal class func reactionsPostWithRequestBuilder(createReactionPayload: CreateReactionPayload? = nil) -> RequestBuilder<ReactionsSingleResourceDataDocument> {
+    internal class func reactionsPostWithRequestBuilder(reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) -> RequestBuilder<ReactionsSingleResourceDataDocument> {
         let localVariablePath = "/reactions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createReactionPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: reactionsCreateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

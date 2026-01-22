@@ -1,9 +1,10 @@
-# TrackSourceFileCreateOperationPayloadDataRelationships
+# UserCollectionFoldersItemsRelationshipRemoveOperationPayloadData
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**track** | [**AttachSourceFileToTrack**](AttachSourceFileToTrack.md) |  | 
+**id** | **String** |  | 
+**resourceType** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

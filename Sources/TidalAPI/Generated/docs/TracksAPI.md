@@ -44,7 +44,7 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
 let filterId = ["inner_example"] // [String] | Track id (optional)
-let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
+let filterIsrc = ["inner_example"] // [String] | List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics | [optional] 
  **filterId** | [**[String]**](String.md) | Track id | [optional] 
- **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
+ **filterIsrc** | [**[String]**](String.md) | List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
