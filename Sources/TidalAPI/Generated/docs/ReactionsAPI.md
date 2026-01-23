@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **reactionsGet**
 ```swift
-    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [String]? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [FilterReactedResourceType_reactionsGet]? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple reactions.
@@ -30,8 +30,8 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
 let filterEmoji = ["inner_example"] // [String] | Filter by emoji (optional)
 let filterOwnerId = ["inner_example"] // [String] | Filter by owner id (optional)
-let filterReactedResourceId = ["inner_example"] // [String] | Filter by resource ID (optional)
-let filterReactedResourceType = ["inner_example"] // [String] | Filter by resource type (optional)
+let filterReactedResourceId = ["inner_example"] // [String] | Filter by reacted resource ID (optional)
+let filterReactedResourceType = ["filterReactedResourceType_example"] // [String] | Filter by reacted resource type (optional)
 
 // Get multiple reactions.
 ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType) { (response, error) in
@@ -56,8 +56,8 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles | [optional] 
  **filterEmoji** | [**[String]**](String.md) | Filter by emoji | [optional] 
  **filterOwnerId** | [**[String]**](String.md) | Filter by owner id | [optional] 
- **filterReactedResourceId** | [**[String]**](String.md) | Filter by resource ID | [optional] 
- **filterReactedResourceType** | [**[String]**](String.md) | Filter by resource type | [optional] 
+ **filterReactedResourceId** | [**[String]**](String.md) | Filter by reacted resource ID | [optional] 
+ **filterReactedResourceType** | [**[String]**](String.md) | Filter by reacted resource type | [optional] 
 
 ### Return type
 
@@ -180,7 +180,7 @@ Name | Type | Description  | Notes
 
 # **reactionsPost**
 ```swift
-    open class func reactionsPost(createReactionPayload: CreateReactionPayload? = nil, completion: @escaping (_ data: ReactionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsPost(reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil, completion: @escaping (_ data: ReactionsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single reaction.
@@ -192,10 +192,10 @@ Creates a new reaction.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let createReactionPayload = CreateReactionPayload(data: CreateReactionPayload_Data(attributes: CreateReactionPayload_Data_Attributes(emoji: "emoji_example"), relationships: CreateReactionPayload_Data_Relationships(reactedResource: ReactedResourceRelationship(data: ReactedResourceIdentifier(id: "id_example", type: "type_example"))), type: "type_example")) // CreateReactionPayload |  (optional)
+let reactionsCreateOperationPayload = ReactionsCreateOperation_Payload(data: ReactionsCreateOperation_Payload_Data(attributes: ReactionsCreateOperation_Payload_Data_Attributes(emoji: "emoji_example"), relationships: ReactionsCreateOperation_Payload_Data_Relationships(reactedResource: ReactionsCreateOperation_Payload_Data_Relationships_ReactedResource(data: ReactionsCreateOperation_Payload_Data_Relationships_ReactedResource_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ReactionsCreateOperationPayload |  (optional)
 
 // Create single reaction.
-ReactionsAPI.reactionsPost(createReactionPayload: createReactionPayload) { (response, error) in
+ReactionsAPI.reactionsPost(reactionsCreateOperationPayload: reactionsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -211,7 +211,7 @@ ReactionsAPI.reactionsPost(createReactionPayload: createReactionPayload) { (resp
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **createReactionPayload** | [**CreateReactionPayload**](CreateReactionPayload.md) |  | [optional] 
+ **reactionsCreateOperationPayload** | [**ReactionsCreateOperationPayload**](ReactionsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

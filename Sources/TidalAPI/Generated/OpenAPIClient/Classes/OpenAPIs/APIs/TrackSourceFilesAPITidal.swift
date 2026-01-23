@@ -55,9 +55,9 @@ public enum TrackSourceFilesAPITidal {
      
      - returns: TrackSourceFilesSingleResourceDataDocument
      */
-	public static func trackSourceFilesPost(trackSourceFileCreateOperationPayload: TrackSourceFileCreateOperationPayload? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
+	public static func trackSourceFilesPost(trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackSourceFilesAPI.trackSourceFilesPostWithRequestBuilder(trackSourceFileCreateOperationPayload: trackSourceFileCreateOperationPayload)
+			TrackSourceFilesAPI.trackSourceFilesPostWithRequestBuilder(trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload)
 		}
 	}
 }

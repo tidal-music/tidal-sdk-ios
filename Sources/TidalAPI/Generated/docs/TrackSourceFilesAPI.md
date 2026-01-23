@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 
 # **trackSourceFilesPost**
 ```swift
-    open class func trackSourceFilesPost(trackSourceFileCreateOperationPayload: TrackSourceFileCreateOperationPayload? = nil, completion: @escaping (_ data: TrackSourceFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesPost(trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil, completion: @escaping (_ data: TrackSourceFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single trackSourceFile.
@@ -182,10 +182,10 @@ Create a track source file. <p/> The response contains a upload link that must b
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let trackSourceFileCreateOperationPayload = TrackSourceFileCreateOperation_Payload(data: TrackSourceFileCreateOperation_Payload_Data(attributes: TrackSourceFileCreateOperation_Payload_Data_Attributes(md5Hash: "md5Hash_example", size: 123), relationships: TrackSourceFileCreateOperation_Payload_Data_Relationships(track: AttachSourceFileToTrack(id: "id_example", type: "type_example")), type: "type_example")) // TrackSourceFileCreateOperationPayload |  (optional)
+let trackSourceFilesCreateOperationPayload = TrackSourceFilesCreateOperation_Payload(data: TrackSourceFilesCreateOperation_Payload_Data(attributes: TrackSourceFilesCreateOperation_Payload_Data_Attributes(md5Hash: "md5Hash_example", size: 123), relationships: TrackSourceFilesCreateOperation_Payload_Data_Relationships(track: TrackSourceFilesCreateOperation_Payload_Data_Relationships_Track(data: TrackSourceFilesCreateOperation_Payload_Data_Relationships_Track_Data(id: "id_example", type: "type_example"), id: "id_example", type: "type_example")), type: "type_example")) // TrackSourceFilesCreateOperationPayload |  (optional)
 
 // Create single trackSourceFile.
-TrackSourceFilesAPI.trackSourceFilesPost(trackSourceFileCreateOperationPayload: trackSourceFileCreateOperationPayload) { (response, error) in
+TrackSourceFilesAPI.trackSourceFilesPost(trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -201,7 +201,7 @@ TrackSourceFilesAPI.trackSourceFilesPost(trackSourceFileCreateOperationPayload: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **trackSourceFileCreateOperationPayload** | [**TrackSourceFileCreateOperationPayload**](TrackSourceFileCreateOperationPayload.md) |  | [optional] 
+ **trackSourceFilesCreateOperationPayload** | [**TrackSourceFilesCreateOperationPayload**](TrackSourceFilesCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

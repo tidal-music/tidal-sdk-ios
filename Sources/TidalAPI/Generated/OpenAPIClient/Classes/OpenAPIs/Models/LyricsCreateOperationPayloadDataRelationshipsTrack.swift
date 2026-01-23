@@ -15,18 +15,24 @@ public struct LyricsCreateOperationPayloadDataRelationshipsTrack: Codable, Hasha
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
     }
-    public var id: String
-    public var type: ModelType
+    public var data: LyricsCreateOperationPayloadDataRelationshipsTrackData?
+    @available(*, deprecated, message: "This property is deprecated.")
+    public var id: String?
+    @available(*, deprecated, message: "This property is deprecated.")
+    public var type: ModelType?
 
     public init(
-        id: String,
-        type: ModelType
+        data: LyricsCreateOperationPayloadDataRelationshipsTrackData? = nil,
+        id: String? = nil,
+        type: ModelType? = nil
     ) {
+        self.data = data
         self.id = id
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case data
         case id
         case type
     }
@@ -35,8 +41,9 @@ public struct LyricsCreateOperationPayloadDataRelationshipsTrack: Codable, Hasha
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(type, forKey: .type)
+        try container.encodeIfPresent(data, forKey: .data)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(type, forKey: .type)
     }
 }
 

@@ -214,13 +214,13 @@ internal class UserCollectionFoldersAPI {
      Delete from items relationship (\"to-many\").
      
      - parameter id: (path) Folder Id 
-     - parameter removePayload: (body)  (optional)
+     - parameter userCollectionFoldersItemsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, removePayload: RemovePayload? = nil) async throws {
+    internal class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, removePayload: removePayload).execute().body
+            return try await userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -235,16 +235,16 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
-     - parameter removePayload: (body)  (optional)
+     - parameter userCollectionFoldersItemsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: String, removePayload: RemovePayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: String, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollectionFolders/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: removePayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionFoldersItemsRelationshipRemoveOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -333,13 +333,13 @@ internal class UserCollectionFoldersAPI {
      Add to items relationship (\"to-many\").
      
      - parameter id: (path) Folder Id 
-     - parameter addPayload: (body)  (optional)
+     - parameter userCollectionFoldersItemsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdRelationshipsItemsPost(id: String, addPayload: AddPayload? = nil) async throws {
+    internal class func userCollectionFoldersIdRelationshipsItemsPost(id: String, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, addPayload: addPayload).execute().body
+            return try await userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -354,16 +354,16 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
-     - parameter addPayload: (body)  (optional)
+     - parameter userCollectionFoldersItemsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: String, addPayload: AddPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: String, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollectionFolders/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: addPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionFoldersItemsRelationshipAddOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
