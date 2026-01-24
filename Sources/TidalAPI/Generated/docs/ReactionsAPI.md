@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **reactionsGet**
 ```swift
-    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [FilterReactedResourceType_reactionsGet]? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnersId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [FilterReactedResourceType_reactionsGet]? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple reactions.
@@ -29,12 +29,12 @@ let statsOnly = true // Bool |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
 let filterEmoji = ["inner_example"] // [String] | Filter by emoji (optional)
-let filterOwnerId = ["inner_example"] // [String] | Filter by owner id (optional)
+let filterOwnersId = ["inner_example"] // [String] | Filter by owner id (optional)
 let filterReactedResourceId = ["inner_example"] // [String] | Filter by reacted resource ID (optional)
 let filterReactedResourceType = ["filterReactedResourceType_example"] // [String] | Filter by reacted resource type (optional)
 
 // Get multiple reactions.
-ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType) { (response, error) in
+ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnersId: filterOwnersId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -55,7 +55,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles | [optional] 
  **filterEmoji** | [**[String]**](String.md) | Filter by emoji | [optional] 
- **filterOwnerId** | [**[String]**](String.md) | Filter by owner id | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | Filter by owner id | [optional] 
  **filterReactedResourceId** | [**[String]**](String.md) | Filter by reacted resource ID | [optional] 
  **filterReactedResourceType** | [**[String]**](String.md) | Filter by reacted resource type | [optional] 
 
