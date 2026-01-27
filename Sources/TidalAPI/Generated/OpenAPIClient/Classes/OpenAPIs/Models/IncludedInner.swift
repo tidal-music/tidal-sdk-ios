@@ -20,10 +20,13 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artworksResourceObject(ArtworksResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
+    case dynamicModulesResourceObject(DynamicModulesResourceObject)
     case dynamicPagesResourceObject(DynamicPagesResourceObject)
     case genresResourceObject(GenresResourceObject)
+    case installationsResourceObject(InstallationsResourceObject)
     case lyricsResourceObject(LyricsResourceObject)
     case manualArtistClaimsResourceObject(ManualArtistClaimsResourceObject)
+    case offlineTasksResourceObject(OfflineTasksResourceObject)
     case playQueuesResourceObject(PlayQueuesResourceObject)
     case playlistsResourceObject(PlaylistsResourceObject)
     case providersResourceObject(ProvidersResourceObject)
@@ -68,13 +71,19 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .creditsResourceObject(let value):
             try container.encode(value)
+        case .dynamicModulesResourceObject(let value):
+            try container.encode(value)
         case .dynamicPagesResourceObject(let value):
             try container.encode(value)
         case .genresResourceObject(let value):
             try container.encode(value)
+        case .installationsResourceObject(let value):
+            try container.encode(value)
         case .lyricsResourceObject(let value):
             try container.encode(value)
         case .manualArtistClaimsResourceObject(let value):
+            try container.encode(value)
+        case .offlineTasksResourceObject(let value):
             try container.encode(value)
         case .playQueuesResourceObject(let value):
             try container.encode(value)
@@ -159,18 +168,27 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "credits":
             let value = try CreditsResourceObject(from: decoder)
             self = .creditsResourceObject(value)
+        case "dynamicModules":
+            let value = try DynamicModulesResourceObject(from: decoder)
+            self = .dynamicModulesResourceObject(value)
         case "dynamicPages":
             let value = try DynamicPagesResourceObject(from: decoder)
             self = .dynamicPagesResourceObject(value)
         case "genres":
             let value = try GenresResourceObject(from: decoder)
             self = .genresResourceObject(value)
+        case "installations":
+            let value = try InstallationsResourceObject(from: decoder)
+            self = .installationsResourceObject(value)
         case "lyrics":
             let value = try LyricsResourceObject(from: decoder)
             self = .lyricsResourceObject(value)
         case "manualArtistClaims":
             let value = try ManualArtistClaimsResourceObject(from: decoder)
             self = .manualArtistClaimsResourceObject(value)
+        case "offlineTasks":
+            let value = try OfflineTasksResourceObject(from: decoder)
+            self = .offlineTasksResourceObject(value)
         case "playQueues":
             let value = try PlayQueuesResourceObject(from: decoder)
             self = .playQueuesResourceObject(value)
@@ -256,10 +274,13 @@ extension IncludedInner: Identifiable {
         case .artworksResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
+        case .dynamicModulesResourceObject(let value): return value.id
         case .dynamicPagesResourceObject(let value): return value.id
         case .genresResourceObject(let value): return value.id
+        case .installationsResourceObject(let value): return value.id
         case .lyricsResourceObject(let value): return value.id
         case .manualArtistClaimsResourceObject(let value): return value.id
+        case .offlineTasksResourceObject(let value): return value.id
         case .playQueuesResourceObject(let value): return value.id
         case .playlistsResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id

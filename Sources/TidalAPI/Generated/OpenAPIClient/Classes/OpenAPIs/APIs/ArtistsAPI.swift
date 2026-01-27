@@ -19,12 +19,13 @@ internal class ArtistsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Artist handle (optional)
      - parameter filterId: (query) Artist id (optional)
+     - parameter filterOwnersId: (query) User id (optional)
      - returns: ArtistsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistsMultiResourceDataDocument {
+    internal class func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ArtistsMultiResourceDataDocument {
         do {
-            return try await artistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId).execute().body
+            return try await artistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -45,9 +46,10 @@ internal class ArtistsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Artist handle (optional)
      - parameter filterId: (query) Artist id (optional)
+     - parameter filterOwnersId: (query) User id (optional)
      - returns: RequestBuilder<ArtistsMultiResourceDataDocument> 
      */
-    internal class func artistsGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtistsMultiResourceDataDocument> {
+    internal class func artistsGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<ArtistsMultiResourceDataDocument> {
         let localVariablePath = "/artists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -58,6 +60,7 @@ internal class ArtistsAPI {
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[handle]": (wrappedValue: filterHandle?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
