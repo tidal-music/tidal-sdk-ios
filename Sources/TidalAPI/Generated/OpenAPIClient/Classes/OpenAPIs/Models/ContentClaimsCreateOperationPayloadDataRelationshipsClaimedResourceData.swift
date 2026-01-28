@@ -15,6 +15,7 @@ public struct ContentClaimsCreateOperationPayloadDataRelationshipsClaimedResourc
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
         case albums = "albums"
+        case videos = "videos"
     }
     public var id: String
     public var type: ModelType

@@ -16,6 +16,7 @@ public struct DynamicPagesAttributes: Codable, Hashable {
         case homeStatic = "HOME_STATIC"
         case homeForYou = "HOME_FOR_YOU"
         case homeEditorial = "HOME_EDITORIAL"
+        case homeFree = "HOME_FREE"
         case artist = "ARTIST"
     }
     /** Type of the page eg. home, artist */

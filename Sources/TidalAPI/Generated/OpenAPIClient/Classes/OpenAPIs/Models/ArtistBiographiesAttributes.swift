@@ -12,21 +12,34 @@ import AnyCodable
 
 public struct ArtistBiographiesAttributes: Codable, Hashable {
 
+    public enum Source: String, Codable, CaseIterable {
+        case tidal = "TIDAL"
+        case tiVo = "TiVo"
+        case musicBrainz = "MusicBrainz"
+        case avex = "Avex"
+        case artist = "Artist"
+        case unknown = "UNKNOWN"
+    }
     /** Boolean to indicate if the biography is editable (source = tidal or artist) */
     public var editable: Bool
+    /** Source the biography is coming from */
+    public var source: Source?
     /** Artist biography */
     public var text: String
 
     public init(
         editable: Bool,
+        source: Source? = nil,
         text: String
     ) {
         self.editable = editable
+        self.source = source
         self.text = text
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case editable
+        case source
         case text
     }
 
@@ -35,6 +48,7 @@ public struct ArtistBiographiesAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(editable, forKey: .editable)
+        try container.encodeIfPresent(source, forKey: .source)
         try container.encode(text, forKey: .text)
     }
 }
