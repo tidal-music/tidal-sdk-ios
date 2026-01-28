@@ -33,7 +33,7 @@ struct OfflineCollectionItem {
 	let position: Int
 }
 
-class OfflineRepository {
+final class OfflineRepository {
 	private let databaseQueue: DatabaseQueue
 
 	init(_ databaseQueue: DatabaseQueue) {
