@@ -134,6 +134,22 @@ let package = Package(
 				.process("Resources"),
 			]
 		),
+		.target(
+			name: "Offliner",
+			dependencies: [
+				.GRDB,
+			],
+			resources: [
+				.copy("Database/Resources"),
+			]
+		),
+		.testTarget(
+			name: "OfflinerTests",
+			dependencies: [
+				.offliner,
+				.GRDB,
+			]
+		),
 	]
 )
 
@@ -145,6 +161,7 @@ extension Target.Dependency {
 	static let common = byName(name: "Common")
 	static let auth = byName(name: "Auth")
 	static let player = byName(name: "Player")
+	static let offliner = byName(name: "Offliner")
 	/// External
 	static let GRDB = product(name: "GRDB", package: "GRDB.swift")
 	static let SWXMLHash = product(name: "SWXMLHash", package: "SWXMLHash")
