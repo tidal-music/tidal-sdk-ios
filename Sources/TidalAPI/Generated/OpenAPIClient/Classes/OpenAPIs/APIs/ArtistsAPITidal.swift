@@ -19,9 +19,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsMultiResourceDataDocument
      */
-	public static func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistsMultiResourceDataDocument {
+	public static func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ArtistsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId)
+			ArtistsAPI.artistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId)
 		}
 	}
 
