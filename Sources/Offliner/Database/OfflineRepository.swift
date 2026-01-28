@@ -34,10 +34,10 @@ struct OfflineCollectionItem {
 }
 
 class OfflineRepository {
-	private let dbQueue: DatabaseQueue
+	private let databaseQueue: DatabaseQueue
 
-	init(dbQueue: DatabaseQueue) {
-		self.dbQueue = dbQueue
+	init(_ databaseQueue: DatabaseQueue) {
+		self.databaseQueue = databaseQueue
 	}
 
 	func storeMediaItem(
@@ -54,8 +54,8 @@ class OfflineRepository {
 		let mediaBookmark = try mediaURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 		let licenseBookmark = try licenseURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
-		try dbQueue.inTransaction { db in
-			try db.execute(
+		try databaseQueue.inTransaction { database in
+			try database.execute(
 				sql: """
 					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark)
 					VALUES (?, ?, ?, ?, ?, ?)
@@ -63,7 +63,7 @@ class OfflineRepository {
 				arguments: [id, mediaType.rawValue, resourceId, metadata, mediaBookmark, licenseBookmark]
 			)
 
-			try db.execute(
+			try database.execute(
 				sql: """
 					INSERT INTO offline_item_relationship (collection, member, volume, position)
 					VALUES (?, ?, ?, ?)
@@ -81,8 +81,8 @@ class OfflineRepository {
 		resourceId: String,
 		metadata: String
 	) throws {
-		try dbQueue.write { db in
-			try db.execute(
+		try databaseQueue.write { database in
+			try database.execute(
 				sql: """
 					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark)
 					VALUES (?, ?, ?, ?, NULL, NULL)
@@ -93,13 +93,13 @@ class OfflineRepository {
 	}
 
 	func deleteItem(id: String) throws {
-		try dbQueue.inTransaction { db in
-			try db.execute(
+		try databaseQueue.inTransaction { database in
+			try database.execute(
 				sql: "DELETE FROM offline_item_relationship WHERE collection = ? OR member = ?",
 				arguments: [id, id]
 			)
 
-			try db.execute(
+			try database.execute(
 				sql: "DELETE FROM offline_item WHERE id = ?",
 				arguments: [id]
 			)
@@ -109,9 +109,9 @@ class OfflineRepository {
 	}
 
 	func getMediaItem(mediaType: MediaType, resourceId: String) throws -> OfflineMediaItem? {
-		try dbQueue.write { db in
+		try databaseQueue.write { database in
 			let row = try Row.fetchOne(
-				db,
+				database,
 				sql: """
 					SELECT id, resource_type, resource_id, metadata, media_bookmark, license_bookmark
 					FROM offline_item
@@ -127,16 +127,16 @@ class OfflineRepository {
 				mediaType: MediaType(rawValue: row["resource_type"])!,
 				resourceId: row["resource_id"],
 				metadata: row["metadata"],
-				mediaURL: try resolveBookmark(row, column: "media_bookmark", db: db),
-				licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", db: db)
+				mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
+				licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database)
 			)
 		}
 	}
 
 	func getCollection(collectionType: CollectionType, resourceId: String) throws -> OfflineCollection? {
-		try dbQueue.read { db in
+		try databaseQueue.read { database in
 			let row = try Row.fetchOne(
-				db,
+				database,
 				sql: """
 					SELECT id, resource_type, resource_id, metadata
 					FROM offline_item
@@ -157,9 +157,9 @@ class OfflineRepository {
 	}
 
 	func getMediaItems(mediaType: MediaType) throws -> [OfflineMediaItem] {
-		try dbQueue.write { db in
+		try databaseQueue.write { database in
 			let rows = try Row.fetchAll(
-				db,
+				database,
 				sql: """
 					SELECT id, resource_type, resource_id, metadata, media_bookmark, license_bookmark
 					FROM offline_item
@@ -175,17 +175,17 @@ class OfflineRepository {
 					mediaType: MediaType(rawValue: row["resource_type"])!,
 					resourceId: row["resource_id"],
 					metadata: row["metadata"],
-					mediaURL: try resolveBookmark(row, column: "media_bookmark", db: db),
-					licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", db: db)
+					mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
+					licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database)
 				)
 			}
 		}
 	}
 
 	func getCollections(collectionType: CollectionType) throws -> [OfflineCollection] {
-		try dbQueue.read { db in
+		try databaseQueue.read { database in
 			let rows = try Row.fetchAll(
-				db,
+				database,
 				sql: """
 					SELECT id, resource_type, resource_id, metadata
 					FROM offline_item
@@ -207,9 +207,9 @@ class OfflineRepository {
 	}
 
 	func getCollectionItems(collectionType: CollectionType, resourceId: String) throws -> [OfflineCollectionItem] {
-		try dbQueue.write { db in
+		try databaseQueue.write { database in
 			let rows = try Row.fetchAll(
-				db,
+				database,
 				sql: """
 					SELECT i.id, i.resource_type, i.resource_id, i.metadata, i.media_bookmark, i.license_bookmark,
 					       r.volume, r.position
@@ -229,8 +229,8 @@ class OfflineRepository {
 						mediaType: MediaType(rawValue: row["resource_type"])!,
 						resourceId: row["resource_id"],
 						metadata: row["metadata"],
-						mediaURL: try resolveBookmark(row, column: "media_bookmark", db: db),
-						licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", db: db)
+						mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
+						licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database)
 					),
 					volume: row["volume"],
 					position: row["position"]
@@ -241,7 +241,7 @@ class OfflineRepository {
 }
 
 private extension OfflineRepository {
-	private func resolveBookmark(_ row: Row, column: String, db: GRDB.Database) throws -> URL {
+	private func resolveBookmark(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL {
 		let bookmarkData: Data = row[column]
 		let itemId: String = row["id"]
 
@@ -255,7 +255,7 @@ private extension OfflineRepository {
 
 		if isStale {
 			let updatedBookmark = try url.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
-			try db.execute(
+			try database.execute(
 				sql: "UPDATE offline_item SET \(column) = ? WHERE id = ?",
 				arguments: [updatedBookmark, itemId]
 			)
@@ -264,11 +264,11 @@ private extension OfflineRepository {
 		return url
 	}
 
-	private func resolveBookmarkIfPresent(_ row: Row, column: String, db: GRDB.Database) throws -> URL? {
+	private func resolveBookmarkIfPresent(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL? {
 		guard row[column] != nil else {
 			return nil
 		}
 
-		return try resolveBookmark(row, column: column, db: db)
+		return try resolveBookmark(row, column: column, database)
 	}
 }

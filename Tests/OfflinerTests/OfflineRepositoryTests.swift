@@ -11,9 +11,9 @@ final class OfflineRepositoryTests: XCTestCase {
 		tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
 		try! FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
 		let dbPath = tempDir.appendingPathComponent("test.sqlite").path
-		let dbQueue = try! DatabaseQueue(path: dbPath)
-		try! Migrations.run(dbQueue)
-		repository = OfflineRepository(dbQueue: dbQueue)
+		let databaseQueue = try! DatabaseQueue(path: dbPath)
+		try! Migrations.run(databaseQueue)
+		repository = OfflineRepository(databaseQueue)
 	}
 
 	override func tearDown() {
@@ -131,7 +131,7 @@ final class OfflineRepositoryTests: XCTestCase {
 		XCTAssertNil(collection)
 		XCTAssertEqual(items.count, 0)
 	}
-	
+
 	private func insertCollection(
 		id: String = "collection-1",
 		type: CollectionType = .albums,
