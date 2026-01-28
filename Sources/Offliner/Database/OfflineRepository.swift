@@ -268,7 +268,7 @@ private extension OfflineRepository {
 		guard row[column] != nil else {
 			return nil
 		}
-		
+
 		return try resolveBookmark(row, column: column, db: db)
 	}
 }

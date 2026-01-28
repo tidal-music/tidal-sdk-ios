@@ -53,7 +53,7 @@ private struct Migration {
 		guard filename.hasPrefix("V") else {
 			return nil
 		}
-		
+
 		let versionString = filename.dropFirst().prefix(while: { $0.isNumber })
 		return Int(versionString)
 	}
