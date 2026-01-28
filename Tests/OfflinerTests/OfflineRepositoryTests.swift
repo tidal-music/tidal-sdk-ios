@@ -1,4 +1,4 @@
-@testable import Downloader
+@testable import Offliner
 import GRDB
 import XCTest
 

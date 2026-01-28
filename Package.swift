@@ -135,7 +135,7 @@ let package = Package(
 			]
 		),
 		.target(
-			name: "Downloader",
+			name: "Offliner",
 			dependencies: [
 				.GRDB,
 			],
@@ -144,9 +144,9 @@ let package = Package(
 			]
 		),
 		.testTarget(
-			name: "DownloaderTests",
+			name: "OfflinerTests",
 			dependencies: [
-				.downloader,
+				.offliner,
 				.GRDB,
 			]
 		),
@@ -161,7 +161,7 @@ extension Target.Dependency {
 	static let common = byName(name: "Common")
 	static let auth = byName(name: "Auth")
 	static let player = byName(name: "Player")
-	static let downloader = byName(name: "Downloader")
+	static let offliner = byName(name: "Offliner")
 	/// External
 	static let GRDB = product(name: "GRDB", package: "GRDB.swift")
 	static let SWXMLHash = product(name: "SWXMLHash", package: "SWXMLHash")
