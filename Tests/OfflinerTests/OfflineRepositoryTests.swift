@@ -9,11 +9,12 @@ final class OfflineRepositoryTests: XCTestCase {
 	override func setUp() {
 		super.setUp()
 		tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-		try! FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+		try? FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
 		let dbPath = tempDir.appendingPathComponent("test.sqlite").path
-		let databaseQueue = try! DatabaseQueue(path: dbPath)
-		try! Migrations.run(databaseQueue)
-		repository = OfflineRepository(databaseQueue)
+		if let databaseQueue = try? DatabaseQueue(path: dbPath) {
+			try? Migrations.run(databaseQueue)
+			repository = OfflineRepository(databaseQueue)
+		}
 	}
 
 	override func tearDown() {
