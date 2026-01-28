@@ -138,6 +138,8 @@ let package = Package(
 			name: "Offliner",
 			dependencies: [
 				.GRDB,
+				.tidalAPI,
+				.auth,
 			],
 			resources: [
 				.copy("Database/Resources"),
