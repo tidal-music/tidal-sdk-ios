@@ -2,12 +2,12 @@ CREATE TABLE offline_item
 (
     id TEXT PRIMARY KEY,
 
-    resource_type TEXT NOT NULL,
-    resource_id   TEXT NOT NULL,
+    resource_type    TEXT NOT NULL,
+    resource_id      TEXT NOT NULL,
 
-    metadata      TEXT NOT NULL,
-    media_path    TEXT NOT NULL,
-    license_path  TEXT,
+    metadata         TEXT NOT NULL,
+    media_bookmark   BLOB,
+    license_bookmark BLOB,
 
     created_at    TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at    TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
