@@ -38,16 +38,16 @@ public enum DynamicPagesAPITidal {
 	}
 
 	/**
-	 * enum for parameter platform
+	 * enum for parameter systemType
 	 */
-	public enum Platform_dynamicPagesGet: String, CaseIterable {
+	public enum SystemType_dynamicPagesGet: String, CaseIterable {
 		case android = "ANDROID"
 		case desktop = "DESKTOP"
 		case tesla = "TESLA"
 		case ios = "IOS"
 		case web = "WEB"
 
-		func toDynamicPagesAPIEnum() -> DynamicPagesAPI.Platform_dynamicPagesGet {
+		func toDynamicPagesAPIEnum() -> DynamicPagesAPI.SystemType_dynamicPagesGet {
 			switch self {
 			case .android: return .android
 			case .desktop: return .desktop
@@ -63,9 +63,65 @@ public enum DynamicPagesAPITidal {
      
      - returns: DynamicPagesMultiResourceDataDocument
      */
-	public static func dynamicPagesGet(clientVersion: String, deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesGet, platform: DynamicPagesAPITidal.Platform_dynamicPagesGet, refreshId: Int64? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterPageType: [String]? = nil, filterSubjectId: [String]? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+	public static func dynamicPagesGet(deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesGet, systemType: DynamicPagesAPITidal.SystemType_dynamicPagesGet, clientVersion: String, refreshId: Int64? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterPageType: [String]? = nil, filterSubjectId: [String]? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DynamicPagesAPI.dynamicPagesGetWithRequestBuilder(clientVersion: clientVersion, deviceType: deviceType.toDynamicPagesAPIEnum(), platform: platform.toDynamicPagesAPIEnum(), refreshId: refreshId, countryCode: countryCode, locale: locale, include: include, filterPageType: filterPageType, filterSubjectId: filterSubjectId)
+			DynamicPagesAPI.dynamicPagesGetWithRequestBuilder(deviceType: deviceType.toDynamicPagesAPIEnum(), systemType: systemType.toDynamicPagesAPIEnum(), clientVersion: clientVersion, refreshId: refreshId, countryCode: countryCode, locale: locale, include: include, filterPageType: filterPageType, filterSubjectId: filterSubjectId)
+		}
+	}
+
+
+	/**
+	 * enum for parameter deviceType
+	 */
+	public enum DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet: String, CaseIterable {
+		case browser = "BROWSER"
+		case car = "CAR"
+		case desktop = "DESKTOP"
+		case phone = "PHONE"
+		case tablet = "TABLET"
+		case tv = "TV"
+
+		func toDynamicPagesAPIEnum() -> DynamicPagesAPI.DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet {
+			switch self {
+			case .browser: return .browser
+			case .car: return .car
+			case .desktop: return .desktop
+			case .phone: return .phone
+			case .tablet: return .tablet
+			case .tv: return .tv
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter systemType
+	 */
+	public enum SystemType_dynamicPagesIdRelationshipsDynamicModulesGet: String, CaseIterable {
+		case android = "ANDROID"
+		case desktop = "DESKTOP"
+		case tesla = "TESLA"
+		case ios = "IOS"
+		case web = "WEB"
+
+		func toDynamicPagesAPIEnum() -> DynamicPagesAPI.SystemType_dynamicPagesIdRelationshipsDynamicModulesGet {
+			switch self {
+			case .android: return .android
+			case .desktop: return .desktop
+			case .tesla: return .tesla
+			case .ios: return .ios
+			case .web: return .web
+			}
+		}
+	}
+
+	/**
+     Get dynamicModules relationship (\&quot;to-many\&quot;).
+     
+     - returns: DynamicPagesMultiRelationshipDataDocument
+     */
+	public static func dynamicPagesIdRelationshipsDynamicModulesGet(id: String, deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet, systemType: DynamicPagesAPITidal.SystemType_dynamicPagesIdRelationshipsDynamicModulesGet, clientVersion: String, refreshId: Int64? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicPagesMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			DynamicPagesAPI.dynamicPagesIdRelationshipsDynamicModulesGetWithRequestBuilder(id: id, deviceType: deviceType.toDynamicPagesAPIEnum(), systemType: systemType.toDynamicPagesAPIEnum(), clientVersion: clientVersion, refreshId: refreshId, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
 

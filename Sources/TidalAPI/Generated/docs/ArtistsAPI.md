@@ -27,7 +27,7 @@ Method | HTTP request | Description
 
 # **artistsGet**
 ```swift
-    open class func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtistsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: ArtistsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artists.
@@ -43,9 +43,10 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 let filterHandle = ["inner_example"] // [String] | Artist handle (optional)
 let filterId = ["inner_example"] // [String] | Artist id (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (optional)
 
 // Get multiple artists.
-ArtistsAPI.artistsGet(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId) { (response, error) in
+ArtistsAPI.artistsGet(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -65,6 +66,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
  **filterHandle** | [**[String]**](String.md) | Artist handle | [optional] 
  **filterId** | [**[String]**](String.md) | Artist id | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
 
 ### Return type
 

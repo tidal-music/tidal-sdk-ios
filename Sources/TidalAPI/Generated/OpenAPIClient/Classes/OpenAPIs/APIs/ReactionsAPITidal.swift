@@ -57,9 +57,9 @@ public enum ReactionsAPITidal {
      
      - returns: ReactionsMultiResourceDataDocument
      */
-	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnerId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [ReactionsAPITidal.FilterReactedResourceType_reactionsGet]? = nil) async throws -> ReactionsMultiResourceDataDocument {
+	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnersId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [ReactionsAPITidal.FilterReactedResourceType_reactionsGet]? = nil) async throws -> ReactionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnerId: filterOwnerId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType?.compactMap { $0.toReactionsAPIEnum() })
+			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnersId: filterOwnersId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType?.compactMap { $0.toReactionsAPIEnum() })
 		}
 	}
 
