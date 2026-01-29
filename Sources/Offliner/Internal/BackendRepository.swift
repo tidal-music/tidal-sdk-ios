@@ -23,17 +23,17 @@ enum OfflineTaskAction {
 // MARK: - BackendRepository
 
 final class BackendRepository {
-	private let credentialsProvider: CredentialsProvider
 	private let installationId: String
 
 	init(credentialsProvider: CredentialsProvider, installationId: String) {
-		self.credentialsProvider = credentialsProvider
+		if OpenAPIClientAPI.credentialsProvider == nil {
+			OpenAPIClientAPI.credentialsProvider = credentialsProvider
+		}
+
 		self.installationId = installationId
 	}
 
 	func addItem(type: ResourceType, id: String) async throws {
-		ensureCredentialsProvider()
-
 		let identifier = InstallationsOfflineInventoryItemIdentifier(id: id, type: mapResourceType(type))
 		let payload = InstallationsOfflineInventoryAddPayload(data: [identifier])
 
@@ -44,8 +44,6 @@ final class BackendRepository {
 	}
 
 	func removeItem(type: ResourceType, id: String) async throws {
-		ensureCredentialsProvider()
-
 		let identifier = InstallationsOfflineInventoryItemIdentifier(id: id, type: mapResourceType(type))
 		let payload = InstallationsOfflineInventoryRemovePayload(data: [identifier])
 
@@ -55,44 +53,31 @@ final class BackendRepository {
 		)
 	}
 
-	func getTasks() async throws -> [OfflineTask] {
-		ensureCredentialsProvider()
+	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
+		let response = try await OfflineTasksAPITidal.offlineTasksGet(
+			pageCursor: cursor,
+			filterInstallationId: [installationId]
+		)
 
-		let maxTasks = 500
-		var allTasks: [OfflineTask] = []
-		var pageCursor: String?
-
-		repeat {
-			let response = try await OfflineTasksAPITidal.offlineTasksGet(
-				pageCursor: pageCursor,
-				filterInstallationId: [installationId]
-			)
-
-			let tasks = response.data.compactMap { resourceObject -> OfflineTask? in
-				guard let attributes = resourceObject.attributes else {
-					return nil
-				}
-
-				return OfflineTask(
-					taskId: resourceObject.id,
-					type: resourceObject.type,
-					action: mapAction(attributes.action),
-					state: mapState(attributes.state),
-					index: attributes.index,
-					volume: attributes.volume
-				)
+		let tasks = response.data.compactMap { resourceObject -> OfflineTask? in
+			guard let attributes = resourceObject.attributes else {
+				return nil
 			}
 
-			allTasks.append(contentsOf: tasks)
-			pageCursor = extractNextPageCursor(from: response.links)
-		} while pageCursor != nil && allTasks.count < maxTasks
+			return OfflineTask(
+				taskId: resourceObject.id,
+				type: resourceObject.type,
+				action: mapAction(attributes.action),
+				state: mapState(attributes.state),
+				index: attributes.index,
+				volume: attributes.volume
+			)
+		}
 
-		return Array(allTasks.prefix(maxTasks))
+		return (tasks, response.links.meta?.nextCursor)
 	}
 
 	func updateTask(taskId: String, state: OfflineTaskState) async throws {
-		ensureCredentialsProvider()
-
 		let attributes = OfflineTasksUpdateOperationPayloadDataAttributes(state: mapTaskState(state))
 		let data = OfflineTasksUpdateOperationPayloadData(
 			attributes: attributes,
@@ -111,12 +96,6 @@ final class BackendRepository {
 // MARK: - Private Helpers
 
 private extension BackendRepository {
-	func ensureCredentialsProvider() {
-		if OpenAPIClientAPI.credentialsProvider == nil {
-			OpenAPIClientAPI.credentialsProvider = credentialsProvider
-		}
-	}
-
 	func mapResourceType(_ type: ResourceType) -> InstallationsOfflineInventoryItemIdentifier.ModelType {
 		switch type {
 		case .track:
@@ -169,15 +148,4 @@ private extension BackendRepository {
 			return .completed
 		}
 	}
-
-	func extractNextPageCursor(from links: Links) -> String? {
-		guard let nextLink = links.next,
-		      let urlComponents = URLComponents(string: nextLink)
-		else {
-			return nil
-		}
-		return urlComponents.queryItems?.first { $0.name == "page[cursor]" }?.value
-	}
 }
-
-
