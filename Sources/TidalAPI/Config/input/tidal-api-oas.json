@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.0.53"
+    "version" : "1.0.58"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -8187,8 +8187,8 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "default" : "-createdAt",
               "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
+              "default" : "-createdAt",
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -9670,15 +9670,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Explicit filter",
-          "example" : "INCLUDE/EXCLUDE",
+          "description" : "Explicit filter. Valid values: INCLUDE or EXCLUDE",
+          "example" : "INCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -9764,15 +9764,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Explicit filter",
-          "example" : "INCLUDE/EXCLUDE",
+          "description" : "Explicit filter. Valid values: INCLUDE or EXCLUDE",
+          "example" : "INCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -9866,15 +9866,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Explicit filter",
-          "example" : "INCLUDE/EXCLUDE",
+          "description" : "Explicit filter. Valid values: INCLUDE or EXCLUDE",
+          "example" : "INCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -9968,15 +9968,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Explicit filter",
-          "example" : "INCLUDE/EXCLUDE",
+          "description" : "Explicit filter. Valid values: INCLUDE or EXCLUDE",
+          "example" : "INCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10070,15 +10070,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Explicit filter",
-          "example" : "INCLUDE/EXCLUDE",
+          "description" : "Explicit filter. Valid values: INCLUDE or EXCLUDE",
+          "example" : "INCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10172,15 +10172,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Explicit filter",
-          "example" : "INCLUDE/EXCLUDE",
+          "description" : "Explicit filter. Valid values: INCLUDE or EXCLUDE",
+          "example" : "INCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10274,15 +10274,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Explicit filter",
-          "example" : "INCLUDE/EXCLUDE",
+          "description" : "Explicit filter. Valid values: INCLUDE or EXCLUDE",
+          "example" : "INCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10376,15 +10376,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Explicit filter",
-          "example" : "INCLUDE/EXCLUDE",
+          "description" : "Explicit filter. Valid values: INCLUDE or EXCLUDE",
+          "example" : "INCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -10470,15 +10470,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Explicit filter",
-          "example" : "INCLUDE/EXCLUDE",
+          "description" : "Explicit filter. Valid values: INCLUDE or EXCLUDE",
+          "example" : "INCLUDE",
           "in" : "query",
           "name" : "explicitFilter",
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -14112,8 +14112,8 @@
             "items" : {
               "type" : "string",
               "example" : "items.addedAt",
-              "default" : "items.addedAt",
               "enum" : [ "items.addedAt", "-items.addedAt", "items.lastModifiedAt", "-items.lastModifiedAt", "items.name", "-items.name" ],
+              "default" : "items.addedAt",
               "x-enum-varnames" : [ "ItemsAddedAtAsc", "ItemsAddedAtDesc", "ItemsLastModifiedAtAsc", "ItemsLastModifiedAtDesc", "ItemsNameAsc", "ItemsNameDesc" ]
             }
           }
@@ -14490,8 +14490,8 @@
             "items" : {
               "type" : "string",
               "example" : "albums.addedAt",
-              "default" : "-albums.addedAt",
               "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
+              "default" : "-albums.addedAt",
               "x-enum-varnames" : [ "AlbumsAddedAtAsc", "AlbumsAddedAtDesc", "AlbumsArtistsNameAsc", "AlbumsArtistsNameDesc", "AlbumsReleaseDateAsc", "AlbumsReleaseDateDesc", "AlbumsTitleAsc", "AlbumsTitleDesc" ]
             }
           }
@@ -14725,8 +14725,8 @@
             "items" : {
               "type" : "string",
               "example" : "artists.addedAt",
-              "default" : "-artists.addedAt",
               "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
+              "default" : "-artists.addedAt",
               "x-enum-varnames" : [ "ArtistsAddedAtAsc", "ArtistsAddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc" ]
             }
           }
@@ -15048,8 +15048,8 @@
             "items" : {
               "type" : "string",
               "example" : "playlists.addedAt",
-              "default" : "-playlists.addedAt",
               "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
+              "default" : "-playlists.addedAt",
               "x-enum-varnames" : [ "PlaylistsAddedAtAsc", "PlaylistsAddedAtDesc", "PlaylistsLastUpdatedAtAsc", "PlaylistsLastUpdatedAtDesc", "PlaylistsNameAsc", "PlaylistsNameDesc" ]
             }
           }
@@ -15255,8 +15255,8 @@
             "items" : {
               "type" : "string",
               "example" : "tracks.addedAt",
-              "default" : "-tracks.addedAt",
               "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
+              "default" : "-tracks.addedAt",
               "x-enum-varnames" : [ "TracksAddedAtAsc", "TracksAddedAtDesc", "TracksAlbumsTitleAsc", "TracksAlbumsTitleDesc", "TracksArtistsNameAsc", "TracksArtistsNameDesc", "TracksDurationAsc", "TracksDurationDesc", "TracksTitleAsc", "TracksTitleDesc" ]
             }
           }
@@ -15490,8 +15490,8 @@
             "items" : {
               "type" : "string",
               "example" : "videos.addedAt",
-              "default" : "-videos.addedAt",
               "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
+              "default" : "-videos.addedAt",
               "x-enum-varnames" : [ "VideosAddedAtAsc", "VideosAddedAtDesc", "VideosArtistsNameAsc", "VideosArtistsNameDesc", "VideosDurationAsc", "VideosDurationDesc", "VideosTitleAsc", "VideosTitleDesc" ]
             }
           }
@@ -17286,11 +17286,23 @@
             "type" : "string",
             "enum" : [ "ALBUM", "EP", "SINGLE" ]
           },
+          "barcodeId" : {
+            "maxLength" : 13,
+            "minLength" : 12,
+            "type" : "string",
+            "description" : "Barcode id (EAN-13 or UPC-A)"
+          },
           "copyright" : {
             "$ref" : "#/components/schemas/Copyright"
           },
+          "explicit" : {
+            "type" : "boolean",
+            "description" : "Explicit content"
+          },
           "explicitLyrics" : {
-            "type" : "boolean"
+            "type" : "boolean",
+            "description" : "Explicit content. Deprecated: use 'explicit' instead. This field will be removed in a future version.",
+            "deprecated" : true
           },
           "releaseDate" : {
             "type" : "string",
@@ -17302,7 +17314,9 @@
           "upc" : {
             "maxLength" : 13,
             "minLength" : 12,
-            "type" : "string"
+            "type" : "string",
+            "description" : "Barcode id (EAN-13 or UPC-A). Deprecated: use 'barcodeId' instead. This field will be removed in a future version.",
+            "deprecated" : true
           },
           "version" : {
             "type" : "string"
@@ -17460,8 +17474,14 @@
           "copyright" : {
             "$ref" : "#/components/schemas/Copyright"
           },
+          "explicit" : {
+            "type" : "boolean",
+            "description" : "Explicit content"
+          },
           "explicitLyrics" : {
-            "type" : "boolean"
+            "type" : "boolean",
+            "description" : "Explicit content. Deprecated: use 'explicit' instead. This field will be removed in a future version.",
+            "deprecated" : true
           },
           "releaseDate" : {
             "type" : "string",
@@ -17511,7 +17531,7 @@
         }
       },
       "Albums_Attributes" : {
-        "required" : [ "barcodeId", "duration", "explicit", "mediaTags", "numberOfItems", "numberOfVolumes", "popularity", "title", "type" ],
+        "required" : [ "albumType", "barcodeId", "duration", "explicit", "mediaTags", "numberOfItems", "numberOfVolumes", "popularity", "title" ],
         "type" : "object",
         "properties" : {
           "accessType" : {
@@ -17519,6 +17539,11 @@
             "description" : "Access type",
             "example" : "PRIVATE",
             "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
+          },
+          "albumType" : {
+            "type" : "string",
+            "description" : "Album type",
+            "enum" : [ "ALBUM", "EP", "SINGLE" ]
           },
           "availability" : {
             "type" : "array",
@@ -17592,7 +17617,8 @@
           },
           "type" : {
             "type" : "string",
-            "description" : "Album type",
+            "description" : "Album type. Deprecated: use 'albumType' instead. This field will be removed in a future version.",
+            "deprecated" : true,
             "enum" : [ "ALBUM", "EP", "SINGLE" ]
           },
           "version" : {
@@ -17971,6 +17997,12 @@
             "type" : "boolean",
             "description" : "Boolean to indicate if the biography is editable (source = tidal or artist)",
             "example" : true
+          },
+          "source" : {
+            "type" : "string",
+            "description" : "Source the biography is coming from",
+            "example" : "ARTIST",
+            "enum" : [ "TIDAL", "TiVo", "MusicBrainz", "Avex", "Artist", "UNKNOWN" ]
           },
           "text" : {
             "type" : "string",
@@ -18621,6 +18653,11 @@
             "type" : "string",
             "description" : "Artist name",
             "example" : "JAY Z"
+          },
+          "ownerType" : {
+            "type" : "string",
+            "description" : "Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED: claimed profile with both label and user content. May be null during rollout/backfill.",
+            "enum" : [ "LABEL", "USER", "MIXED" ]
           },
           "popularity" : {
             "type" : "number",
@@ -20069,7 +20106,7 @@
           "technicalFileStatus" : {
             "type" : "string",
             "description" : "Technical status for file",
-            "enum" : [ "UPLOAD_REQUESTED", "PROCESSING", "OK", "ERROR" ]
+            "enum" : [ "UPLOAD_REQUESTED", "PROCESSING", "OK", "ERROR", "DELETED" ]
           }
         },
         "description" : "File status"
@@ -23119,8 +23156,8 @@
             "type" : "string",
             "description" : "Integration type for Stripe onboarding",
             "example" : "REDIRECT",
-            "default" : "REDIRECT",
-            "enum" : [ "REDIRECT", "EMBEDDED" ]
+            "enum" : [ "REDIRECT", "EMBEDDED" ],
+            "default" : "REDIRECT"
           },
           "refreshUrl" : {
             "type" : "string",
@@ -24677,14 +24714,10 @@
         }
       },
       "UserCollectionFolders_Items_Resource_Identifier_Meta" : {
-        "required" : [ "addedAt", "lastModifiedAt" ],
+        "required" : [ "addedAt" ],
         "type" : "object",
         "properties" : {
           "addedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "lastModifiedAt" : {
             "type" : "string",
             "format" : "date-time"
           }

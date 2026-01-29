@@ -13,19 +13,15 @@ import AnyCodable
 public struct UserCollectionFoldersItemsResourceIdentifierMeta: Codable, Hashable {
 
     public var addedAt: Date
-    public var lastModifiedAt: Date
 
     public init(
-        addedAt: Date,
-        lastModifiedAt: Date
+        addedAt: Date
     ) {
         self.addedAt = addedAt
-        self.lastModifiedAt = lastModifiedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case addedAt
-        case lastModifiedAt
     }
 
     // Encodable protocol methods
@@ -33,6 +29,5 @@ public struct UserCollectionFoldersItemsResourceIdentifierMeta: Codable, Hashabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(addedAt, forKey: .addedAt)
-        try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
     }
 }

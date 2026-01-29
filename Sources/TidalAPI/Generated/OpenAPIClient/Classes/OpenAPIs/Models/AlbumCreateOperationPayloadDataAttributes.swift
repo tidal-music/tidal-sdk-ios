@@ -17,18 +17,29 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
         case ep = "EP"
         case single = "SINGLE"
     }
+    public static let barcodeIdRule = StringRule(minLength: 12, maxLength: 13, pattern: nil)
     public static let upcRule = StringRule(minLength: 12, maxLength: 13, pattern: nil)
     public var albumType: AlbumType?
+    /** Barcode id (EAN-13 or UPC-A) */
+    public var barcodeId: String?
     public var copyright: Copyright?
+    /** Explicit content */
+    public var explicit: Bool?
+    /** Explicit content. Deprecated: use 'explicit' instead. This field will be removed in a future version. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var explicitLyrics: Bool?
     public var releaseDate: Date?
     public var title: String
+    /** Barcode id (EAN-13 or UPC-A). Deprecated: use 'barcodeId' instead. This field will be removed in a future version. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var upc: String?
     public var version: String?
 
     public init(
         albumType: AlbumType? = nil,
+        barcodeId: String? = nil,
         copyright: Copyright? = nil,
+        explicit: Bool? = nil,
         explicitLyrics: Bool? = nil,
         releaseDate: Date? = nil,
         title: String,
@@ -36,7 +47,9 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
         version: String? = nil
     ) {
         self.albumType = albumType
+        self.barcodeId = barcodeId
         self.copyright = copyright
+        self.explicit = explicit
         self.explicitLyrics = explicitLyrics
         self.releaseDate = releaseDate
         self.title = title
@@ -46,7 +59,9 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albumType
+        case barcodeId
         case copyright
+        case explicit
         case explicitLyrics
         case releaseDate
         case title
@@ -59,7 +74,9 @@ public struct AlbumCreateOperationPayloadDataAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(albumType, forKey: .albumType)
+        try container.encodeIfPresent(barcodeId, forKey: .barcodeId)
         try container.encodeIfPresent(copyright, forKey: .copyright)
+        try container.encodeIfPresent(explicit, forKey: .explicit)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encode(title, forKey: .title)

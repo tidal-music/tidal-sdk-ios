@@ -24,7 +24,7 @@ internal class SearchSuggestionsAPI {
      Get single searchSuggestion.
      
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - returns: SearchSuggestionsSingleResourceDataDocument
@@ -50,7 +50,7 @@ internal class SearchSuggestionsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - returns: RequestBuilder<SearchSuggestionsSingleResourceDataDocument> 
@@ -93,7 +93,7 @@ internal class SearchSuggestionsAPI {
      Get directHits relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -120,7 +120,7 @@ internal class SearchSuggestionsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)

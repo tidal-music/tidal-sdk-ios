@@ -28,7 +28,7 @@ Retrieves single searchResult by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Search query string used as the resource identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
 
@@ -50,7 +50,7 @@ SearchResultsAPI.searchResultsIdGet(id: id, explicitFilter: explicitFilter, coun
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Search query string used as the resource identifier | 
- **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos | [optional] 
 
@@ -84,7 +84,7 @@ Retrieves albums relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Search query string used as the resource identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
@@ -107,7 +107,7 @@ SearchResultsAPI.searchResultsIdRelationshipsAlbumsGet(id: id, explicitFilter: e
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Search query string used as the resource identifier | 
- **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
@@ -142,7 +142,7 @@ Retrieves artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Search query string used as the resource identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
@@ -165,7 +165,7 @@ SearchResultsAPI.searchResultsIdRelationshipsArtistsGet(id: id, explicitFilter: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Search query string used as the resource identifier | 
- **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
@@ -200,7 +200,7 @@ Retrieves playlists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Search query string used as the resource identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlists (optional)
@@ -223,7 +223,7 @@ SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGet(id: id, explicitFilter
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Search query string used as the resource identifier | 
- **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlists | [optional] 
@@ -258,7 +258,7 @@ Retrieves topHits relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Search query string used as the resource identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: topHits (optional)
@@ -281,7 +281,7 @@ SearchResultsAPI.searchResultsIdRelationshipsTopHitsGet(id: id, explicitFilter: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Search query string used as the resource identifier | 
- **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: topHits | [optional] 
@@ -316,7 +316,7 @@ Retrieves tracks relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Search query string used as the resource identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
@@ -339,7 +339,7 @@ SearchResultsAPI.searchResultsIdRelationshipsTracksGet(id: id, explicitFilter: e
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Search query string used as the resource identifier | 
- **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
@@ -374,7 +374,7 @@ Retrieves videos relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Search query string used as the resource identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
@@ -397,7 +397,7 @@ SearchResultsAPI.searchResultsIdRelationshipsVideosGet(id: id, explicitFilter: e
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Search query string used as the resource identifier | 
- **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 

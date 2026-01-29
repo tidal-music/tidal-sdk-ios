@@ -26,6 +26,10 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public var accessType: AccessType?
     public var albumType: AlbumType?
     public var copyright: Copyright?
+    /** Explicit content */
+    public var explicit: Bool?
+    /** Explicit content. Deprecated: use 'explicit' instead. This field will be removed in a future version. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var explicitLyrics: Bool?
     public var releaseDate: Date?
     public var title: String?
@@ -35,6 +39,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
         accessType: AccessType? = nil,
         albumType: AlbumType? = nil,
         copyright: Copyright? = nil,
+        explicit: Bool? = nil,
         explicitLyrics: Bool? = nil,
         releaseDate: Date? = nil,
         title: String? = nil,
@@ -43,6 +48,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
         self.accessType = accessType
         self.albumType = albumType
         self.copyright = copyright
+        self.explicit = explicit
         self.explicitLyrics = explicitLyrics
         self.releaseDate = releaseDate
         self.title = title
@@ -53,6 +59,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case accessType
         case albumType
         case copyright
+        case explicit
         case explicitLyrics
         case releaseDate
         case title
@@ -66,6 +73,7 @@ public struct AlbumUpdateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(accessType, forKey: .accessType)
         try container.encodeIfPresent(albumType, forKey: .albumType)
         try container.encodeIfPresent(copyright, forKey: .copyright)
+        try container.encodeIfPresent(explicit, forKey: .explicit)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encodeIfPresent(title, forKey: .title)
