@@ -5,6 +5,7 @@ actor TaskRunner {
 
 	private let backendRepository: BackendRepository
 	private let scheduler: Scheduler
+	private var taskExecutor: TaskExecutor?
 
 	private(set) var tasks: [DownloadTask] = []
 	private var taskIds: Set<String> = []
@@ -13,6 +14,10 @@ actor TaskRunner {
 	init(backendRepository: BackendRepository) {
 		self.backendRepository = backendRepository
 		self.scheduler = Scheduler()
+	}
+
+	func setExecutor(_ executor: TaskExecutor) {
+		self.taskExecutor = executor
 	}
 
 	func run() async throws {
@@ -38,11 +43,19 @@ actor TaskRunner {
 		let capacity = max(0, Self.maxConcurrentTasks - tasksInProgress.count)
 		let tasksToStart = Array(tasks.filter { $0.state == .pending }.prefix(capacity))
 
-		tasksToStart.forEach { $0.state = .inProgress }
+		tasksToStart.forEach { $0.updateState(.inProgress) }
 
 		for task in tasksToStart {
 			try await backendRepository.updateTask(taskId: task.id, state: .inProgress)
-			// TODO: Actually start task
+			taskExecutor?.start(
+				task,
+				completion: { [weak self] downloadTask in
+					try await self?.completed(downloadTask)
+				},
+				failure: { [weak self] downloadTask in
+					try await self?.failed(downloadTask)
+				}
+			)
 		}
 	}
 

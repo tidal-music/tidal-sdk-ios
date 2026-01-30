@@ -7,10 +7,12 @@ import TidalAPI
 struct OfflineTask {
 	let taskId: String
 	let type: String
+	let resourceId: String
 	let action: OfflineTaskAction
 	let state: OfflineTaskState?
 	let index: Int?
 	let volume: Int?
+	let collectionId: String?
 }
 
 enum OfflineTaskAction {
@@ -60,17 +62,21 @@ final class BackendRepository {
 		)
 
 		let tasks = response.data.compactMap { resourceObject -> OfflineTask? in
-			guard let attributes = resourceObject.attributes else {
+			guard let attributes = resourceObject.attributes,
+				  let itemData = resourceObject.relationships?.item.data
+			else {
 				return nil
 			}
 
 			return OfflineTask(
 				taskId: resourceObject.id,
-				type: resourceObject.type,
+				type: itemData.type,
+				resourceId: itemData.id,
 				action: mapAction(attributes.action),
 				state: mapState(attributes.state),
 				index: attributes.index,
-				volume: attributes.volume
+				volume: attributes.volume,
+				collectionId: nil
 			)
 		}
 
