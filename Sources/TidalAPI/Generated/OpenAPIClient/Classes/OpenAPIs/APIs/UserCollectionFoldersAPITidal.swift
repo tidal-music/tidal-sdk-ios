@@ -55,9 +55,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: 
      */
-	public static func userCollectionFoldersIdPatch(id: String, folderUpdateOperationPayload: FolderUpdateOperationPayload? = nil) async throws {
+	public static func userCollectionFoldersIdPatch(id: String, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdPatchWithRequestBuilder(id: id, folderUpdateOperationPayload: folderUpdateOperationPayload)
+			UserCollectionFoldersAPI.userCollectionFoldersIdPatchWithRequestBuilder(id: id, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload)
 		}
 	}
 
@@ -138,9 +138,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: UserCollectionFoldersSingleResourceDataDocument
      */
-	public static func userCollectionFoldersPost(folderCreateOperationPayload: FolderCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+	public static func userCollectionFoldersPost(userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersPostWithRequestBuilder(folderCreateOperationPayload: folderCreateOperationPayload)
+			UserCollectionFoldersAPI.userCollectionFoldersPostWithRequestBuilder(userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload)
 		}
 	}
 }

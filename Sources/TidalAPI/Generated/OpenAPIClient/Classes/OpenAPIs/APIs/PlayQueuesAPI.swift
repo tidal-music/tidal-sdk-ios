@@ -168,13 +168,13 @@ internal class PlayQueuesAPI {
      Update single playQueue.
      
      - parameter id: (path) Play queue id 
-     - parameter playQueueUpdateOperationPayload: (body)  (optional)
+     - parameter playQueuesUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdPatch(id: String, playQueueUpdateOperationPayload: PlayQueueUpdateOperationPayload? = nil) async throws {
+    internal class func playQueuesIdPatch(id: String, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) async throws {
         do {
-            return try await playQueuesIdPatchWithRequestBuilder(id: id, playQueueUpdateOperationPayload: playQueueUpdateOperationPayload).execute().body
+            return try await playQueuesIdPatchWithRequestBuilder(id: id, playQueuesUpdateOperationPayload: playQueuesUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -189,16 +189,16 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter playQueueUpdateOperationPayload: (body)  (optional)
+     - parameter playQueuesUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playQueuesIdPatchWithRequestBuilder(id: String, playQueueUpdateOperationPayload: PlayQueueUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playQueuesIdPatchWithRequestBuilder(id: String, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playQueues/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueueUpdateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueuesUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -269,13 +269,13 @@ internal class PlayQueuesAPI {
      Update current relationship (\"to-one\").
      
      - parameter id: (path) Play queue id 
-     - parameter playQueueUpdateCurrentOperationsPayload: (body)  (optional)
+     - parameter playQueuesCurrentRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsCurrentPatch(id: String, playQueueUpdateCurrentOperationsPayload: PlayQueueUpdateCurrentOperationsPayload? = nil) async throws {
+    internal class func playQueuesIdRelationshipsCurrentPatch(id: String, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) async throws {
         do {
-            return try await playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: id, playQueueUpdateCurrentOperationsPayload: playQueueUpdateCurrentOperationsPayload).execute().body
+            return try await playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: id, playQueuesCurrentRelationshipUpdateOperationPayload: playQueuesCurrentRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -290,16 +290,16 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter playQueueUpdateCurrentOperationsPayload: (body)  (optional)
+     - parameter playQueuesCurrentRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: String, playQueueUpdateCurrentOperationsPayload: PlayQueueUpdateCurrentOperationsPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: String, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playQueues/{id}/relationships/current"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueueUpdateCurrentOperationsPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueuesCurrentRelationshipUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -318,13 +318,13 @@ internal class PlayQueuesAPI {
      Delete from future relationship (\"to-many\").
      
      - parameter id: (path) Play queue id 
-     - parameter playQueueRemoveFutureOperationPayload: (body)  (optional)
+     - parameter playQueuesFutureRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsFutureDelete(id: String, playQueueRemoveFutureOperationPayload: PlayQueueRemoveFutureOperationPayload? = nil) async throws {
+    internal class func playQueuesIdRelationshipsFutureDelete(id: String, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await playQueuesIdRelationshipsFutureDeleteWithRequestBuilder(id: id, playQueueRemoveFutureOperationPayload: playQueueRemoveFutureOperationPayload).execute().body
+            return try await playQueuesIdRelationshipsFutureDeleteWithRequestBuilder(id: id, playQueuesFutureRelationshipRemoveOperationPayload: playQueuesFutureRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -339,16 +339,16 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter playQueueRemoveFutureOperationPayload: (body)  (optional)
+     - parameter playQueuesFutureRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playQueuesIdRelationshipsFutureDeleteWithRequestBuilder(id: String, playQueueRemoveFutureOperationPayload: PlayQueueRemoveFutureOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playQueuesIdRelationshipsFutureDeleteWithRequestBuilder(id: String, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playQueues/{id}/relationships/future"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueueRemoveFutureOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueuesFutureRelationshipRemoveOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -422,13 +422,13 @@ internal class PlayQueuesAPI {
      Update future relationship (\"to-many\").
      
      - parameter id: (path) Play queue id 
-     - parameter playQueueUpdateFutureOperationPayload: (body)  (optional)
+     - parameter playQueuesFutureRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsFuturePatch(id: String, playQueueUpdateFutureOperationPayload: PlayQueueUpdateFutureOperationPayload? = nil) async throws {
+    internal class func playQueuesIdRelationshipsFuturePatch(id: String, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) async throws {
         do {
-            return try await playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: id, playQueueUpdateFutureOperationPayload: playQueueUpdateFutureOperationPayload).execute().body
+            return try await playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: id, playQueuesFutureRelationshipUpdateOperationPayload: playQueuesFutureRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -443,16 +443,16 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter playQueueUpdateFutureOperationPayload: (body)  (optional)
+     - parameter playQueuesFutureRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: String, playQueueUpdateFutureOperationPayload: PlayQueueUpdateFutureOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: String, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playQueues/{id}/relationships/future"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueueUpdateFutureOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueuesFutureRelationshipUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -471,13 +471,13 @@ internal class PlayQueuesAPI {
      Add to future relationship (\"to-many\").
      
      - parameter id: (path) Play queue id 
-     - parameter playQueueAddFutureOperationPayload: (body)  (optional)
+     - parameter playQueuesFutureRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsFuturePost(id: String, playQueueAddFutureOperationPayload: PlayQueueAddFutureOperationPayload? = nil) async throws {
+    internal class func playQueuesIdRelationshipsFuturePost(id: String, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: id, playQueueAddFutureOperationPayload: playQueueAddFutureOperationPayload).execute().body
+            return try await playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: id, playQueuesFutureRelationshipAddOperationPayload: playQueuesFutureRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -492,16 +492,16 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter playQueueAddFutureOperationPayload: (body)  (optional)
+     - parameter playQueuesFutureRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: String, playQueueAddFutureOperationPayload: PlayQueueAddFutureOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: String, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playQueues/{id}/relationships/future"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueueAddFutureOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueuesFutureRelationshipAddOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -629,13 +629,13 @@ internal class PlayQueuesAPI {
     /**
      Create single playQueue.
      
-     - parameter playQueueCreateOperationPayload: (body)  (optional)
+     - parameter playQueuesCreateOperationPayload: (body)  (optional)
      - returns: PlayQueuesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesPost(playQueueCreateOperationPayload: PlayQueueCreateOperationPayload? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
+    internal class func playQueuesPost(playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
         do {
-            return try await playQueuesPostWithRequestBuilder(playQueueCreateOperationPayload: playQueueCreateOperationPayload).execute().body
+            return try await playQueuesPostWithRequestBuilder(playQueuesCreateOperationPayload: playQueuesCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -649,13 +649,13 @@ internal class PlayQueuesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter playQueueCreateOperationPayload: (body)  (optional)
+     - parameter playQueuesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlayQueuesSingleResourceDataDocument> 
      */
-    internal class func playQueuesPostWithRequestBuilder(playQueueCreateOperationPayload: PlayQueueCreateOperationPayload? = nil) -> RequestBuilder<PlayQueuesSingleResourceDataDocument> {
+    internal class func playQueuesPostWithRequestBuilder(playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) -> RequestBuilder<PlayQueuesSingleResourceDataDocument> {
         let localVariablePath = "/playQueues"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueueCreateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueuesCreateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

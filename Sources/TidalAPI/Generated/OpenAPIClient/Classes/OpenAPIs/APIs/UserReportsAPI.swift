@@ -15,13 +15,13 @@ internal class UserReportsAPI {
     /**
      Create single userReport.
      
-     - parameter userReportCreateOperationPayload: (body)  (optional)
+     - parameter userReportsCreateOperationPayload: (body)  (optional)
      - returns: UserReportsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) async throws -> UserReportsSingleResourceDataDocument {
+    internal class func userReportsPost(userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil) async throws -> UserReportsSingleResourceDataDocument {
         do {
-            return try await userReportsPostWithRequestBuilder(userReportCreateOperationPayload: userReportCreateOperationPayload).execute().body
+            return try await userReportsPostWithRequestBuilder(userReportsCreateOperationPayload: userReportsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -35,13 +35,13 @@ internal class UserReportsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter userReportCreateOperationPayload: (body)  (optional)
+     - parameter userReportsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserReportsSingleResourceDataDocument> 
      */
-    internal class func userReportsPostWithRequestBuilder(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) -> RequestBuilder<UserReportsSingleResourceDataDocument> {
+    internal class func userReportsPostWithRequestBuilder(userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil) -> RequestBuilder<UserReportsSingleResourceDataDocument> {
         let localVariablePath = "/userReports"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userReportCreateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userReportsCreateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

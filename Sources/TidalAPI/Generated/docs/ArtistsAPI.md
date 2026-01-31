@@ -139,7 +139,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdPatch**
 ```swift
-    open class func artistsIdPatch(id: String, artistUpdateBody: ArtistUpdateBody? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdPatch(id: String, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single artist.
@@ -152,10 +152,10 @@ Updates existing artist.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let artistUpdateBody = ArtistUpdateBody(data: ArtistUpdateBody_Data(attributes: ArtistUpdateBody_Data_Attributes(contributionsEnabled: false, contributionsSalesPitch: "contributionsSalesPitch_example", externalLinks: [External_Link_Payload(href: "href_example", meta: External_Link_Meta(type: "type_example"))], handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistUpdateBody_Meta(dryRun: false)) // ArtistUpdateBody |  (optional)
+let artistsUpdateOperationPayload = ArtistsUpdateOperation_Payload(data: ArtistsUpdateOperation_Payload_Data(attributes: ArtistsUpdateOperation_Payload_Data_Attributes(contributionsEnabled: false, contributionsSalesPitch: "contributionsSalesPitch_example", externalLinks: [External_Link_Payload(href: "href_example", meta: External_Link_Meta(type: "type_example"))], handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistsUpdateOperation_Payload_Meta(dryRun: false)) // ArtistsUpdateOperationPayload |  (optional)
 
 // Update single artist.
-ArtistsAPI.artistsIdPatch(id: id, artistUpdateBody: artistUpdateBody) { (response, error) in
+ArtistsAPI.artistsIdPatch(id: id, artistsUpdateOperationPayload: artistsUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -172,7 +172,7 @@ ArtistsAPI.artistsIdPatch(id: id, artistUpdateBody: artistUpdateBody) { (respons
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **artistUpdateBody** | [**ArtistUpdateBody**](ArtistUpdateBody.md) |  | [optional] 
+ **artistsUpdateOperationPayload** | [**ArtistsUpdateOperationPayload**](ArtistsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -357,7 +357,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingDelete**
 ```swift
-    open class func artistsIdRelationshipsFollowingDelete(id: String, artistFollowingRelationshipRemoveOperationPayload: ArtistFollowingRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsFollowingDelete(id: String, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from following relationship (\"to-many\").
@@ -370,10 +370,10 @@ Deletes item(s) from following relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let artistFollowingRelationshipRemoveOperationPayload = ArtistFollowingRelationshipRemoveOperation_Payload(data: [ArtistFollowingRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistFollowingRelationshipRemoveOperationPayload |  (optional)
+let artistsFollowingRelationshipRemoveOperationPayload = ArtistsFollowingRelationshipRemoveOperation_Payload(data: [ArtistsFollowingRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsFollowingRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from following relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsFollowingDelete(id: id, artistFollowingRelationshipRemoveOperationPayload: artistFollowingRelationshipRemoveOperationPayload) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsFollowingDelete(id: id, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -390,7 +390,7 @@ ArtistsAPI.artistsIdRelationshipsFollowingDelete(id: id, artistFollowingRelation
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **artistFollowingRelationshipRemoveOperationPayload** | [**ArtistFollowingRelationshipRemoveOperationPayload**](ArtistFollowingRelationshipRemoveOperationPayload.md) |  | [optional] 
+ **artistsFollowingRelationshipRemoveOperationPayload** | [**ArtistsFollowingRelationshipRemoveOperationPayload**](ArtistsFollowingRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -465,7 +465,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingPost**
 ```swift
-    open class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, artistFollowingRelationshipAddOperationPayload: ArtistFollowingRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to following relationship (\"to-many\").
@@ -479,10 +479,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let artistFollowingRelationshipAddOperationPayload = ArtistFollowingRelationshipAddOperation_Payload(data: [ArtistFollowingRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistFollowingRelationshipAddOperationPayload |  (optional)
+let artistsFollowingRelationshipAddOperationPayload = ArtistsFollowingRelationshipAddOperation_Payload(data: [ArtistsFollowingRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsFollowingRelationshipAddOperationPayload |  (optional)
 
 // Add to following relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, countryCode: countryCode, artistFollowingRelationshipAddOperationPayload: artistFollowingRelationshipAddOperationPayload) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, countryCode: countryCode, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -500,7 +500,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **artistFollowingRelationshipAddOperationPayload** | [**ArtistFollowingRelationshipAddOperationPayload**](ArtistFollowingRelationshipAddOperationPayload.md) |  | [optional] 
+ **artistsFollowingRelationshipAddOperationPayload** | [**ArtistsFollowingRelationshipAddOperationPayload**](ArtistsFollowingRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -629,7 +629,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsProfileArtPatch**
 ```swift
-    open class func artistsIdRelationshipsProfileArtPatch(id: String, artistProfileArtRelationshipUpdateOperationPayload: ArtistProfileArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsProfileArtPatch(id: String, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update profileArt relationship (\"to-many\").
@@ -642,10 +642,10 @@ Updates profileArt relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let artistProfileArtRelationshipUpdateOperationPayload = ArtistProfileArtRelationshipUpdateOperation_Payload(data: [ArtistProfileArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistProfileArtRelationshipUpdateOperationPayload |  (optional)
+let artistsProfileArtRelationshipUpdateOperationPayload = ArtistsProfileArtRelationshipUpdateOperation_Payload(data: [ArtistsProfileArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsProfileArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update profileArt relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsProfileArtPatch(id: id, artistProfileArtRelationshipUpdateOperationPayload: artistProfileArtRelationshipUpdateOperationPayload) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsProfileArtPatch(id: id, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -662,7 +662,7 @@ ArtistsAPI.artistsIdRelationshipsProfileArtPatch(id: id, artistProfileArtRelatio
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **artistProfileArtRelationshipUpdateOperationPayload** | [**ArtistProfileArtRelationshipUpdateOperationPayload**](ArtistProfileArtRelationshipUpdateOperationPayload.md) |  | [optional] 
+ **artistsProfileArtRelationshipUpdateOperationPayload** | [**ArtistsProfileArtRelationshipUpdateOperationPayload**](ArtistsProfileArtRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -1015,7 +1015,7 @@ Name | Type | Description  | Notes
 
 # **artistsPost**
 ```swift
-    open class func artistsPost(artistCreateOperationPayload: ArtistCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistsPost(artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artist.
@@ -1027,10 +1027,10 @@ Creates a new artist.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let artistCreateOperationPayload = ArtistCreateOperation_Payload(data: ArtistCreateOperation_Payload_Data(attributes: ArtistCreateOperation_Payload_Data_Attributes(handle: "handle_example", name: "name_example"), type: "type_example"), meta: ArtistCreateOperation_Meta(dryRun: false)) // ArtistCreateOperationPayload |  (optional)
+let artistsCreateOperationPayload = ArtistsCreateOperation_Payload(data: ArtistsCreateOperation_Payload_Data(attributes: ArtistsCreateOperation_Payload_Data_Attributes(handle: "handle_example", name: "name_example"), type: "type_example"), meta: ArtistsCreateOperation_Payload_Meta(dryRun: false)) // ArtistsCreateOperationPayload |  (optional)
 
 // Create single artist.
-ArtistsAPI.artistsPost(artistCreateOperationPayload: artistCreateOperationPayload) { (response, error) in
+ArtistsAPI.artistsPost(artistsCreateOperationPayload: artistsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1046,7 +1046,7 @@ ArtistsAPI.artistsPost(artistCreateOperationPayload: artistCreateOperationPayloa
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **artistCreateOperationPayload** | [**ArtistCreateOperationPayload**](ArtistCreateOperationPayload.md) |  | [optional] 
+ **artistsCreateOperationPayload** | [**ArtistsCreateOperationPayload**](ArtistsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

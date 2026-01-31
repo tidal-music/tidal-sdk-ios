@@ -192,13 +192,13 @@ internal class TracksAPI {
      Update single track.
      
      - parameter id: (path) Track id 
-     - parameter trackUpdateOperationPayload: (body)  (optional)
+     - parameter tracksUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdPatch(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil) async throws {
+    internal class func tracksIdPatch(id: String, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws {
         do {
-            return try await tracksIdPatchWithRequestBuilder(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload).execute().body
+            return try await tracksIdPatchWithRequestBuilder(id: id, tracksUpdateOperationPayload: tracksUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -213,16 +213,16 @@ internal class TracksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
-     - parameter trackUpdateOperationPayload: (body)  (optional)
+     - parameter tracksUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func tracksIdPatchWithRequestBuilder(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func tracksIdPatchWithRequestBuilder(id: String, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/tracks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackUpdateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tracksUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -305,13 +305,13 @@ internal class TracksAPI {
      Update albums relationship (\"to-many\").
      
      - parameter id: (path) Track id 
-     - parameter trackAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
+     - parameter tracksAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsAlbumsPatch(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func tracksIdRelationshipsAlbumsPatch(id: String, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
         do {
-            return try await tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, trackAlbumsRelationshipUpdateOperationPayload: trackAlbumsRelationshipUpdateOperationPayload).execute().body
+            return try await tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -326,16 +326,16 @@ internal class TracksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
-     - parameter trackAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
+     - parameter tracksAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: String, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/tracks/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackAlbumsRelationshipUpdateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tracksAlbumsRelationshipUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -1140,13 +1140,13 @@ internal class TracksAPI {
     /**
      Create single track.
      
-     - parameter trackCreateOperationPayload: (body)  (optional)
+     - parameter tracksCreateOperationPayload: (body)  (optional)
      - returns: TracksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksPost(trackCreateOperationPayload: TrackCreateOperationPayload? = nil) async throws -> TracksSingleResourceDataDocument {
+    internal class func tracksPost(tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) async throws -> TracksSingleResourceDataDocument {
         do {
-            return try await tracksPostWithRequestBuilder(trackCreateOperationPayload: trackCreateOperationPayload).execute().body
+            return try await tracksPostWithRequestBuilder(tracksCreateOperationPayload: tracksCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -1160,13 +1160,13 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter trackCreateOperationPayload: (body)  (optional)
+     - parameter tracksCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<TracksSingleResourceDataDocument> 
      */
-    internal class func tracksPostWithRequestBuilder(trackCreateOperationPayload: TrackCreateOperationPayload? = nil) -> RequestBuilder<TracksSingleResourceDataDocument> {
+    internal class func tracksPostWithRequestBuilder(tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) -> RequestBuilder<TracksSingleResourceDataDocument> {
         let localVariablePath = "/tracks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackCreateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tracksCreateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

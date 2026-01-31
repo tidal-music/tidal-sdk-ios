@@ -196,7 +196,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdPatch**
 ```swift
-    open class func tracksIdPatch(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdPatch(id: String, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single track.
@@ -209,10 +209,10 @@ Updates existing track.
 import OpenAPIClient
 
 let id = "id_example" // String | Track id
-let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TrackUpdateOperation_Payload_Data_Relationships(genres: TrackUpdateOperation_Payload_Data_Relationships_Genres(data: [TrackUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackUpdateOperationPayload |  (optional)
+let tracksUpdateOperationPayload = TracksUpdateOperation_Payload(data: TracksUpdateOperation_Payload_Data(attributes: TracksUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TracksUpdateOperation_Payload_Data_Relationships(genres: TracksUpdateOperation_Payload_Data_Relationships_Genres(data: [TracksUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksUpdateOperationPayload |  (optional)
 
 // Update single track.
-TracksAPI.tracksIdPatch(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload) { (response, error) in
+TracksAPI.tracksIdPatch(id: id, tracksUpdateOperationPayload: tracksUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -229,7 +229,7 @@ TracksAPI.tracksIdPatch(id: id, trackUpdateOperationPayload: trackUpdateOperatio
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
- **trackUpdateOperationPayload** | [**TrackUpdateOperationPayload**](TrackUpdateOperationPayload.md) |  | [optional] 
+ **tracksUpdateOperationPayload** | [**TracksUpdateOperationPayload**](TracksUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -306,7 +306,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsAlbumsPatch**
 ```swift
-    open class func tracksIdRelationshipsAlbumsPatch(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsAlbumsPatch(id: String, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update albums relationship (\"to-many\").
@@ -319,10 +319,10 @@ Updates albums relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Track id
-let trackAlbumsRelationshipUpdateOperationPayload = TrackAlbumsRelationshipUpdateOperation_Payload(data: [TrackAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // TrackAlbumsRelationshipUpdateOperationPayload |  (optional)
+let tracksAlbumsRelationshipUpdateOperationPayload = TracksAlbumsRelationshipUpdateOperation_Payload(data: [TracksAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // TracksAlbumsRelationshipUpdateOperationPayload |  (optional)
 
 // Update albums relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, trackAlbumsRelationshipUpdateOperationPayload: trackAlbumsRelationshipUpdateOperationPayload) { (response, error) in
+TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -339,7 +339,7 @@ TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, trackAlbumsRelationshipUpdate
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
- **trackAlbumsRelationshipUpdateOperationPayload** | [**TrackAlbumsRelationshipUpdateOperationPayload**](TrackAlbumsRelationshipUpdateOperationPayload.md) |  | [optional] 
+ **tracksAlbumsRelationshipUpdateOperationPayload** | [**TracksAlbumsRelationshipUpdateOperationPayload**](TracksAlbumsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -1088,7 +1088,7 @@ Name | Type | Description  | Notes
 
 # **tracksPost**
 ```swift
-    open class func tracksPost(trackCreateOperationPayload: TrackCreateOperationPayload? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksPost(tracksCreateOperationPayload: TracksCreateOperationPayload? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single track.
@@ -1100,10 +1100,10 @@ Creates a new track.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let trackCreateOperationPayload = TrackCreateOperation_Payload(data: TrackCreateOperation_Payload_Data(attributes: TrackCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", explicit: false, title: "title_example"), relationships: TrackCreateOperation_Payload_Data_Relationships(albums: TrackCreateOperation_Payload_Data_Relationships_Albums(data: [TrackCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TrackCreateOperation_Payload_Data_Relationships_Artists(data: [TrackCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: TrackCreateOperation_Payload_Data_Relationships_Genres(data: [TrackCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackCreateOperationPayload |  (optional)
+let tracksCreateOperationPayload = TracksCreateOperation_Payload(data: TracksCreateOperation_Payload_Data(attributes: TracksCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", explicit: false, title: "title_example"), relationships: TracksCreateOperation_Payload_Data_Relationships(albums: TracksCreateOperation_Payload_Data_Relationships_Albums(data: [TracksCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TracksCreateOperation_Payload_Data_Relationships_Artists(data: [TracksCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: TracksCreateOperation_Payload_Data_Relationships_Genres(data: [TracksCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksCreateOperationPayload |  (optional)
 
 // Create single track.
-TracksAPI.tracksPost(trackCreateOperationPayload: trackCreateOperationPayload) { (response, error) in
+TracksAPI.tracksPost(tracksCreateOperationPayload: tracksCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1119,7 +1119,7 @@ TracksAPI.tracksPost(trackCreateOperationPayload: trackCreateOperationPayload) {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **trackCreateOperationPayload** | [**TrackCreateOperationPayload**](TrackCreateOperationPayload.md) |  | [optional] 
+ **tracksCreateOperationPayload** | [**TracksCreateOperationPayload**](TracksCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

@@ -165,13 +165,13 @@ internal class UserCollectionFoldersAPI {
      Update single userCollectionFolder.
      
      - parameter id: (path) Folder Id 
-     - parameter folderUpdateOperationPayload: (body)  (optional)
+     - parameter userCollectionFoldersUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdPatch(id: String, folderUpdateOperationPayload: FolderUpdateOperationPayload? = nil) async throws {
+    internal class func userCollectionFoldersIdPatch(id: String, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionFoldersIdPatchWithRequestBuilder(id: id, folderUpdateOperationPayload: folderUpdateOperationPayload).execute().body
+            return try await userCollectionFoldersIdPatchWithRequestBuilder(id: id, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -186,16 +186,16 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
-     - parameter folderUpdateOperationPayload: (body)  (optional)
+     - parameter userCollectionFoldersUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionFoldersIdPatchWithRequestBuilder(id: String, folderUpdateOperationPayload: FolderUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionFoldersIdPatchWithRequestBuilder(id: String, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollectionFolders/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: folderUpdateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionFoldersUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -436,13 +436,13 @@ internal class UserCollectionFoldersAPI {
     /**
      Create single userCollectionFolder.
      
-     - parameter folderCreateOperationPayload: (body)  (optional)
+     - parameter userCollectionFoldersCreateOperationPayload: (body)  (optional)
      - returns: UserCollectionFoldersSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersPost(folderCreateOperationPayload: FolderCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+    internal class func userCollectionFoldersPost(userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
         do {
-            return try await userCollectionFoldersPostWithRequestBuilder(folderCreateOperationPayload: folderCreateOperationPayload).execute().body
+            return try await userCollectionFoldersPostWithRequestBuilder(userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -456,13 +456,13 @@ internal class UserCollectionFoldersAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter folderCreateOperationPayload: (body)  (optional)
+     - parameter userCollectionFoldersCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> 
      */
-    internal class func userCollectionFoldersPostWithRequestBuilder(folderCreateOperationPayload: FolderCreateOperationPayload? = nil) -> RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> {
+    internal class func userCollectionFoldersPostWithRequestBuilder(userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) -> RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> {
         let localVariablePath = "/userCollectionFolders"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: folderCreateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionFoldersCreateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

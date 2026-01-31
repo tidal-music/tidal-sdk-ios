@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.0.58"
+    "version" : "1.0.60"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -234,7 +234,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/AlbumCreateOperation_Payload"
+                "$ref" : "#/components/schemas/AlbumsCreateOperation_Payload"
               }
             }
           }
@@ -439,7 +439,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/AlbumsUpdateOperation_Payload"
               }
             }
           }
@@ -695,7 +695,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/AlbumCoverArtRelationshipUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/AlbumsCoverArtRelationshipUpdateOperation_Payload"
               }
             }
           }
@@ -951,7 +951,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/AlbumItemsRelationshipUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/AlbumsItemsRelationshipUpdateOperation_Payload"
               }
             }
           }
@@ -1708,7 +1708,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ArtistBiographyUpdateBody"
+                "$ref" : "#/components/schemas/ArtistBiographiesUpdateOperation_Payload"
               }
             }
           }
@@ -2187,7 +2187,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload"
               }
             }
           }
@@ -2633,7 +2633,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ArtistCreateOperation_Payload"
+                "$ref" : "#/components/schemas/ArtistsCreateOperation_Payload"
               }
             }
           }
@@ -2782,7 +2782,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ArtistUpdateBody"
+                "$ref" : "#/components/schemas/ArtistsUpdateOperation_Payload"
               }
             }
           }
@@ -3101,7 +3101,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ArtistFollowingRelationshipRemoveOperation_Payload"
+                "$ref" : "#/components/schemas/ArtistsFollowingRelationshipRemoveOperation_Payload"
               }
             }
           }
@@ -3251,7 +3251,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ArtistFollowingRelationshipAddOperation_Payload"
+                "$ref" : "#/components/schemas/ArtistsFollowingRelationshipAddOperation_Payload"
               }
             }
           }
@@ -3480,7 +3480,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ArtistProfileArtRelationshipUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/ArtistsProfileArtRelationshipUpdateOperation_Payload"
               }
             }
           }
@@ -4152,7 +4152,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ArtworkCreateOperation_Payload"
+                "$ref" : "#/components/schemas/ArtworksCreateOperation_Payload"
               }
             }
           }
@@ -7404,7 +7404,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlayQueueCreateOperation_Payload"
+                "$ref" : "#/components/schemas/PlayQueuesCreateOperation_Payload"
               }
             }
           }
@@ -7589,7 +7589,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlayQueueUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/PlayQueuesUpdateOperation_Payload"
               }
             }
           }
@@ -7717,7 +7717,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlayQueueUpdateCurrentOperations_Payload"
+                "$ref" : "#/components/schemas/PlayQueuesCurrentRelationshipUpdateOperation_Payload"
               }
             }
           }
@@ -7775,7 +7775,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlayQueueRemoveFutureOperation_Payload"
+                "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipRemoveOperation_Payload"
               }
             }
           }
@@ -7909,7 +7909,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlayQueueUpdateFutureOperation_Payload"
+                "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipUpdateOperation_Payload"
               }
             }
           }
@@ -7965,7 +7965,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlayQueueAddFutureOperation_Payload"
+                "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipAddOperation_Payload"
               }
             }
           }
@@ -8187,8 +8187,8 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "default" : "-createdAt",
+              "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -8304,7 +8304,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlaylistCreateOperation_Payload"
+                "$ref" : "#/components/schemas/PlaylistsCreateOperation_Payload"
               }
             }
           }
@@ -8509,7 +8509,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlaylistUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/PlaylistsUpdateOperation_Payload"
               }
             }
           }
@@ -8656,7 +8656,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlaylistCoverArtRelationshipUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/PlaylistsCoverArtRelationshipUpdateOperation_Payload"
               }
             }
           }
@@ -8714,7 +8714,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlaylistItemsRelationshipRemoveOperation_Payload"
+                "$ref" : "#/components/schemas/PlaylistsItemsRelationshipRemoveOperation_Payload"
               }
             }
           }
@@ -8859,7 +8859,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlaylistItemsRelationshipReorderOperation_Payload"
+                "$ref" : "#/components/schemas/PlaylistsItemsRelationshipUpdateOperation_Payload"
               }
             }
           }
@@ -8924,7 +8924,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/PlaylistItemsRelationshipAddOperation_Payload"
+                "$ref" : "#/components/schemas/PlaylistsItemsRelationshipAddOperation_Payload"
               }
             }
           }
@@ -9677,8 +9677,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -9771,8 +9771,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -9873,8 +9873,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -9975,8 +9975,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10077,8 +10077,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10179,8 +10179,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10281,8 +10281,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10383,8 +10383,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -10477,8 +10477,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -12005,7 +12005,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/TrackCreateOperation_Payload"
+                "$ref" : "#/components/schemas/TracksCreateOperation_Payload"
               }
             }
           }
@@ -12210,7 +12210,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/TrackUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/TracksUpdateOperation_Payload"
               }
             }
           }
@@ -12366,7 +12366,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/TrackAlbumsRelationshipUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/TracksAlbumsRelationshipUpdateOperation_Payload"
               }
             }
           }
@@ -13800,7 +13800,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/FolderCreateOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionFoldersCreateOperation_Payload"
               }
             }
           }
@@ -13985,7 +13985,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/FolderUpdateOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionFoldersUpdateOperation_Payload"
               }
             }
           }
@@ -14112,8 +14112,8 @@
             "items" : {
               "type" : "string",
               "example" : "items.addedAt",
-              "enum" : [ "items.addedAt", "-items.addedAt", "items.lastModifiedAt", "-items.lastModifiedAt", "items.name", "-items.name" ],
               "default" : "items.addedAt",
+              "enum" : [ "items.addedAt", "-items.addedAt", "items.lastModifiedAt", "-items.lastModifiedAt", "items.name", "-items.name" ],
               "x-enum-varnames" : [ "ItemsAddedAtAsc", "ItemsAddedAtDesc", "ItemsLastModifiedAtAsc", "ItemsLastModifiedAtDesc", "ItemsNameAsc", "ItemsNameDesc" ]
             }
           }
@@ -14421,7 +14421,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionAlbumsRelationshipRemoveOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsAlbumsRelationshipRemoveOperation_Payload"
               }
             }
           }
@@ -14490,8 +14490,8 @@
             "items" : {
               "type" : "string",
               "example" : "albums.addedAt",
-              "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
               "default" : "-albums.addedAt",
+              "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
               "x-enum-varnames" : [ "AlbumsAddedAtAsc", "AlbumsAddedAtDesc", "AlbumsArtistsNameAsc", "AlbumsArtistsNameDesc", "AlbumsReleaseDateAsc", "AlbumsReleaseDateDesc", "AlbumsTitleAsc", "AlbumsTitleDesc" ]
             }
           }
@@ -14598,7 +14598,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionAlbumsRelationshipAddOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsAlbumsRelationshipAddOperation_Payload"
               }
             }
           }
@@ -14656,7 +14656,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionArtistsRelationshipRemoveOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsArtistsRelationshipRemoveOperation_Payload"
               }
             }
           }
@@ -14725,8 +14725,8 @@
             "items" : {
               "type" : "string",
               "example" : "artists.addedAt",
-              "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
               "default" : "-artists.addedAt",
+              "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
               "x-enum-varnames" : [ "ArtistsAddedAtAsc", "ArtistsAddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc" ]
             }
           }
@@ -14833,7 +14833,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionArtistsRelationshipAddOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsArtistsRelationshipAddOperation_Payload"
               }
             }
           }
@@ -14971,7 +14971,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionPlaylistsRelationshipRemoveOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsPlaylistsRelationshipRemoveOperation_Payload"
               }
             }
           }
@@ -15048,8 +15048,8 @@
             "items" : {
               "type" : "string",
               "example" : "playlists.addedAt",
-              "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
               "default" : "-playlists.addedAt",
+              "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
               "x-enum-varnames" : [ "PlaylistsAddedAtAsc", "PlaylistsAddedAtDesc", "PlaylistsLastUpdatedAtAsc", "PlaylistsLastUpdatedAtDesc", "PlaylistsNameAsc", "PlaylistsNameDesc" ]
             }
           }
@@ -15128,7 +15128,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionPlaylistsRelationshipRemoveOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsPlaylistsRelationshipAddOperation_Payload"
               }
             }
           }
@@ -15186,7 +15186,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionTracksRelationshipRemoveOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsTracksRelationshipRemoveOperation_Payload"
               }
             }
           }
@@ -15255,8 +15255,8 @@
             "items" : {
               "type" : "string",
               "example" : "tracks.addedAt",
-              "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
               "default" : "-tracks.addedAt",
+              "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
               "x-enum-varnames" : [ "TracksAddedAtAsc", "TracksAddedAtDesc", "TracksAlbumsTitleAsc", "TracksAlbumsTitleDesc", "TracksArtistsNameAsc", "TracksArtistsNameDesc", "TracksDurationAsc", "TracksDurationDesc", "TracksTitleAsc", "TracksTitleDesc" ]
             }
           }
@@ -15363,7 +15363,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionTracksRelationshipAddOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsTracksRelationshipAddOperation_Payload"
               }
             }
           }
@@ -15421,7 +15421,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionVideosRelationshipRemoveOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsVideosRelationshipRemoveOperation_Payload"
               }
             }
           }
@@ -15490,8 +15490,8 @@
             "items" : {
               "type" : "string",
               "example" : "videos.addedAt",
-              "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
               "default" : "-videos.addedAt",
+              "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
               "x-enum-varnames" : [ "VideosAddedAtAsc", "VideosAddedAtDesc", "VideosArtistsNameAsc", "VideosArtistsNameDesc", "VideosDurationAsc", "VideosDurationDesc", "VideosTitleAsc", "VideosTitleDesc" ]
             }
           }
@@ -15598,7 +15598,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserCollectionVideosRelationshipAddOperation_Payload"
+                "$ref" : "#/components/schemas/UserCollectionsVideosRelationshipAddOperation_Payload"
               }
             }
           }
@@ -16187,7 +16187,7 @@
           "content" : {
             "application/vnd.api+json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UserReportCreateOperation_Payload"
+                "$ref" : "#/components/schemas/UserReportsCreateOperation_Payload"
               }
             }
           }
@@ -17226,7 +17226,7 @@
       }
     },
     "schemas" : {
-      "AlbumCoverArtRelationshipUpdateOperation_Payload" : {
+      "AlbumsCoverArtRelationshipUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -17235,12 +17235,12 @@
             "minItems" : 0,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/AlbumCoverArtRelationshipUpdateOperation_Payload_Data"
+              "$ref" : "#/components/schemas/AlbumsCoverArtRelationshipUpdateOperation_Payload_Data"
             }
           }
         }
       },
-      "AlbumCoverArtRelationshipUpdateOperation_Payload_Data" : {
+      "AlbumsCoverArtRelationshipUpdateOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -17253,24 +17253,24 @@
           }
         }
       },
-      "AlbumCreateOperation_Payload" : {
+      "AlbumsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data"
+            "$ref" : "#/components/schemas/AlbumsCreateOperation_Payload_Data"
           }
         }
       },
-      "AlbumCreateOperation_Payload_Data" : {
+      "AlbumsCreateOperation_Payload_Data" : {
         "required" : [ "attributes", "relationships", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
-            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Attributes"
+            "$ref" : "#/components/schemas/AlbumsCreateOperation_Payload_Data_Attributes"
           },
           "relationships" : {
-            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Relationships"
+            "$ref" : "#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships"
           },
           "type" : {
             "type" : "string",
@@ -17278,7 +17278,7 @@
           }
         }
       },
-      "AlbumCreateOperation_Payload_Data_Attributes" : {
+      "AlbumsCreateOperation_Payload_Data_Attributes" : {
         "required" : [ "title" ],
         "type" : "object",
         "properties" : {
@@ -17323,19 +17323,19 @@
           }
         }
       },
-      "AlbumCreateOperation_Payload_Data_Relationships" : {
+      "AlbumsCreateOperation_Payload_Data_Relationships" : {
         "required" : [ "artists" ],
         "type" : "object",
         "properties" : {
           "artists" : {
-            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Relationships_Artists"
+            "$ref" : "#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships_Artists"
           },
           "genres" : {
-            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Relationships_Genres"
+            "$ref" : "#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships_Genres"
           }
         }
       },
-      "AlbumCreateOperation_Payload_Data_Relationships_Artists" : {
+      "AlbumsCreateOperation_Payload_Data_Relationships_Artists" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -17344,12 +17344,12 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Relationships_Artists_Data"
+              "$ref" : "#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data"
             }
           }
         }
       },
-      "AlbumCreateOperation_Payload_Data_Relationships_Artists_Data" : {
+      "AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -17362,7 +17362,7 @@
           }
         }
       },
-      "AlbumCreateOperation_Payload_Data_Relationships_Genres" : {
+      "AlbumsCreateOperation_Payload_Data_Relationships_Genres" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -17371,12 +17371,12 @@
             "minItems" : 0,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Relationships_Genres_Data"
+              "$ref" : "#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data"
             }
           }
         }
       },
-      "AlbumCreateOperation_Payload_Data_Relationships_Genres_Data" : {
+      "AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -17389,7 +17389,7 @@
           }
         }
       },
-      "AlbumItemsRelationshipUpdateOperation_Payload" : {
+      "AlbumsItemsRelationshipUpdateOperation_Payload" : {
         "required" : [ "data", "meta" ],
         "type" : "object",
         "properties" : {
@@ -17398,15 +17398,15 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/AlbumItemsRelationshipUpdateOperation_Payload_Data"
+              "$ref" : "#/components/schemas/AlbumsItemsRelationshipUpdateOperation_Payload_Data"
             }
           },
           "meta" : {
-            "$ref" : "#/components/schemas/AlbumItemsRelationshipUpdateOperation_Payload_Meta"
+            "$ref" : "#/components/schemas/AlbumsItemsRelationshipUpdateOperation_Payload_Meta"
           }
         }
       },
-      "AlbumItemsRelationshipUpdateOperation_Payload_Data" : {
+      "AlbumsItemsRelationshipUpdateOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -17419,7 +17419,7 @@
           }
         }
       },
-      "AlbumItemsRelationshipUpdateOperation_Payload_Meta" : {
+      "AlbumsItemsRelationshipUpdateOperation_Payload_Meta" : {
         "required" : [ "positionIndex" ],
         "type" : "object",
         "properties" : {
@@ -17430,27 +17430,27 @@
           }
         }
       },
-      "AlbumUpdateOperation_Payload" : {
+      "AlbumsUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload_Data"
+            "$ref" : "#/components/schemas/AlbumsUpdateOperation_Payload_Data"
           }
         }
       },
-      "AlbumUpdateOperation_Payload_Data" : {
+      "AlbumsUpdateOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
-            "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload_Data_Attributes"
+            "$ref" : "#/components/schemas/AlbumsUpdateOperation_Payload_Data_Attributes"
           },
           "id" : {
             "type" : "string"
           },
           "relationships" : {
-            "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload_Data_Relationships"
+            "$ref" : "#/components/schemas/AlbumsUpdateOperation_Payload_Data_Relationships"
           },
           "type" : {
             "type" : "string",
@@ -17458,7 +17458,7 @@
           }
         }
       },
-      "AlbumUpdateOperation_Payload_Data_Attributes" : {
+      "AlbumsUpdateOperation_Payload_Data_Attributes" : {
         "type" : "object",
         "properties" : {
           "accessType" : {
@@ -17495,15 +17495,15 @@
           }
         }
       },
-      "AlbumUpdateOperation_Payload_Data_Relationships" : {
+      "AlbumsUpdateOperation_Payload_Data_Relationships" : {
         "type" : "object",
         "properties" : {
           "genres" : {
-            "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload_Data_Relationships_Genres"
+            "$ref" : "#/components/schemas/AlbumsUpdateOperation_Payload_Data_Relationships_Genres"
           }
         }
       },
-      "AlbumUpdateOperation_Payload_Data_Relationships_Genres" : {
+      "AlbumsUpdateOperation_Payload_Data_Relationships_Genres" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -17512,12 +17512,12 @@
             "minItems" : 0,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload_Data_Relationships_Genres_Data"
+              "$ref" : "#/components/schemas/AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data"
             }
           }
         }
       },
-      "AlbumUpdateOperation_Payload_Data_Relationships_Genres_Data" : {
+      "AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -17855,14 +17855,6 @@
           }
         }
       },
-      "AppreciationsCreateOperation_Meta" : {
-        "type" : "object",
-        "properties" : {
-          "dryRun" : {
-            "type" : "boolean"
-          }
-        }
-      },
       "AppreciationsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -17871,7 +17863,7 @@
             "$ref" : "#/components/schemas/AppreciationsCreateOperation_Payload_Data"
           },
           "meta" : {
-            "$ref" : "#/components/schemas/AppreciationsCreateOperation_Meta"
+            "$ref" : "#/components/schemas/AppreciationsCreateOperation_Payload_Meta"
           }
         }
       },
@@ -17921,6 +17913,14 @@
           "type" : {
             "type" : "string",
             "enum" : [ "artists" ]
+          }
+        }
+      },
+      "AppreciationsCreateOperation_Payload_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "dryRun" : {
+            "type" : "boolean"
           }
         }
       },
@@ -17986,6 +17986,39 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ArtistBiographiesUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ArtistBiographiesUpdateOperation_Payload_Data"
+          }
+        }
+      },
+      "ArtistBiographiesUpdateOperation_Payload_Data" : {
+        "required" : [ "attributes", "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/ArtistBiographiesUpdateOperation_Payload_Data_Attributes"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artistBiographies" ]
+          }
+        }
+      },
+      "ArtistBiographiesUpdateOperation_Payload_Data_Attributes" : {
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "type" : "string"
           }
         }
       },
@@ -18093,40 +18126,7 @@
           }
         }
       },
-      "ArtistBiographyUpdateBody" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/ArtistBiographyUpdateBody_Data"
-          }
-        }
-      },
-      "ArtistBiographyUpdateBody_Data" : {
-        "required" : [ "attributes", "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/ArtistBiographyUpdateBody_Data_Attributes"
-          },
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "artistBiographies" ]
-          }
-        }
-      },
-      "ArtistBiographyUpdateBody_Data_Attributes" : {
-        "type" : "object",
-        "properties" : {
-          "text" : {
-            "type" : "string"
-          }
-        }
-      },
-      "ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload" : {
+      "ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -18135,12 +18135,12 @@
             "minItems" : 0,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload_Data"
+              "$ref" : "#/components/schemas/ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload_Data"
             }
           }
         }
       },
-      "ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload_Data" : {
+      "ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -18375,132 +18375,6 @@
           }
         }
       },
-      "ArtistCreateOperation_Meta" : {
-        "type" : "object",
-        "properties" : {
-          "dryRun" : {
-            "type" : "boolean"
-          }
-        }
-      },
-      "ArtistCreateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/ArtistCreateOperation_Payload_Data"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/ArtistCreateOperation_Meta"
-          }
-        }
-      },
-      "ArtistCreateOperation_Payload_Data" : {
-        "required" : [ "attributes", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/ArtistCreateOperation_Payload_Data_Attributes"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "artists" ]
-          }
-        }
-      },
-      "ArtistCreateOperation_Payload_Data_Attributes" : {
-        "required" : [ "name" ],
-        "type" : "object",
-        "properties" : {
-          "handle" : {
-            "type" : "string"
-          },
-          "name" : {
-            "type" : "string"
-          }
-        }
-      },
-      "ArtistFollowingRelationshipAddOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 1,
-            "minItems" : 0,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ArtistFollowingRelationshipAddOperation_Payload_Data"
-            }
-          }
-        }
-      },
-      "ArtistFollowingRelationshipAddOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "artists" ]
-          }
-        }
-      },
-      "ArtistFollowingRelationshipRemoveOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 1,
-            "minItems" : 0,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ArtistFollowingRelationshipRemoveOperation_Payload_Data"
-            }
-          }
-        }
-      },
-      "ArtistFollowingRelationshipRemoveOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "artists" ]
-          }
-        }
-      },
-      "ArtistProfileArtRelationshipUpdateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 1,
-            "minItems" : 0,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ArtistProfileArtRelationshipUpdateOperation_Payload_Data"
-            }
-          }
-        }
-      },
-      "ArtistProfileArtRelationshipUpdateOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "artworks" ]
-          }
-        }
-      },
       "ArtistRoles_Attributes" : {
         "required" : [ "name" ],
         "type" : "object",
@@ -18564,24 +18438,150 @@
           }
         }
       },
-      "ArtistUpdateBody" : {
+      "ArtistsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/ArtistUpdateBody_Data"
+            "$ref" : "#/components/schemas/ArtistsCreateOperation_Payload_Data"
           },
           "meta" : {
-            "$ref" : "#/components/schemas/ArtistUpdateBody_Meta"
+            "$ref" : "#/components/schemas/ArtistsCreateOperation_Payload_Meta"
           }
         }
       },
-      "ArtistUpdateBody_Data" : {
+      "ArtistsCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/ArtistsCreateOperation_Payload_Data_Attributes"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "ArtistsCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "handle" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ArtistsCreateOperation_Payload_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "dryRun" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "ArtistsFollowingRelationshipAddOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ArtistsFollowingRelationshipAddOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "ArtistsFollowingRelationshipAddOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "ArtistsFollowingRelationshipRemoveOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ArtistsFollowingRelationshipRemoveOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "ArtistsFollowingRelationshipRemoveOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "ArtistsProfileArtRelationshipUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ArtistsProfileArtRelationshipUpdateOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "ArtistsProfileArtRelationshipUpdateOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artworks" ]
+          }
+        }
+      },
+      "ArtistsUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ArtistsUpdateOperation_Payload_Data"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/ArtistsUpdateOperation_Payload_Meta"
+          }
+        }
+      },
+      "ArtistsUpdateOperation_Payload_Data" : {
         "required" : [ "attributes", "id", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
-            "$ref" : "#/components/schemas/ArtistUpdateBody_Data_Attributes"
+            "$ref" : "#/components/schemas/ArtistsUpdateOperation_Payload_Data_Attributes"
           },
           "id" : {
             "type" : "string"
@@ -18592,7 +18592,7 @@
           }
         }
       },
-      "ArtistUpdateBody_Data_Attributes" : {
+      "ArtistsUpdateOperation_Payload_Data_Attributes" : {
         "type" : "object",
         "properties" : {
           "contributionsEnabled" : {
@@ -18615,7 +18615,7 @@
           }
         }
       },
-      "ArtistUpdateBody_Meta" : {
+      "ArtistsUpdateOperation_Payload_Meta" : {
         "type" : "object",
         "properties" : {
           "dryRun" : {
@@ -18957,54 +18957,6 @@
           }
         }
       },
-      "ArtworkCreateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/ArtworkCreateOperation_Payload_Data"
-          }
-        }
-      },
-      "ArtworkCreateOperation_Payload_Data" : {
-        "required" : [ "attributes", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/ArtworkCreateOperation_Payload_Data_Attributes"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "artworks" ]
-          }
-        }
-      },
-      "ArtworkCreateOperation_Payload_Data_Attributes" : {
-        "required" : [ "mediaType", "sourceFile" ],
-        "type" : "object",
-        "properties" : {
-          "mediaType" : {
-            "type" : "string",
-            "enum" : [ "IMAGE", "VIDEO" ]
-          },
-          "sourceFile" : {
-            "$ref" : "#/components/schemas/ArtworkCreateOperation_Payload_Data_Attributes_SourceFile"
-          }
-        }
-      },
-      "ArtworkCreateOperation_Payload_Data_Attributes_SourceFile" : {
-        "required" : [ "md5Hash", "size" ],
-        "type" : "object",
-        "properties" : {
-          "md5Hash" : {
-            "type" : "string"
-          },
-          "size" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        }
-      },
       "Artwork_File" : {
         "required" : [ "href" ],
         "type" : "object",
@@ -19078,6 +19030,54 @@
           }
         },
         "description" : "Color information extracted from artwork"
+      },
+      "ArtworksCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ArtworksCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "ArtworksCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/ArtworksCreateOperation_Payload_Data_Attributes"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artworks" ]
+          }
+        }
+      },
+      "ArtworksCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "mediaType", "sourceFile" ],
+        "type" : "object",
+        "properties" : {
+          "mediaType" : {
+            "type" : "string",
+            "enum" : [ "IMAGE", "VIDEO" ]
+          },
+          "sourceFile" : {
+            "$ref" : "#/components/schemas/ArtworksCreateOperation_Payload_Data_Attributes_SourceFile"
+          }
+        }
+      },
+      "ArtworksCreateOperation_Payload_Data_Attributes_SourceFile" : {
+        "required" : [ "md5Hash", "size" ],
+        "type" : "object",
+        "properties" : {
+          "md5Hash" : {
+            "type" : "string"
+          },
+          "size" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
       },
       "Artworks_Attributes" : {
         "required" : [ "files", "mediaType" ],
@@ -19183,19 +19183,6 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "Attributes" : {
-        "required" : [ "collectionType", "name" ],
-        "type" : "object",
-        "properties" : {
-          "collectionType" : {
-            "type" : "string",
-            "enum" : [ "PLAYLISTS" ]
-          },
-          "name" : {
-            "type" : "string"
           }
         }
       },
@@ -20143,53 +20130,6 @@
           }
         },
         "description" : "metadata for upload link"
-      },
-      "FolderCreateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/FolderCreateOperation_Payload_Data"
-          }
-        }
-      },
-      "FolderCreateOperation_Payload_Data" : {
-        "required" : [ "attributes", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Attributes"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "userCollectionFolders" ]
-          }
-        }
-      },
-      "FolderUpdateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/FolderUpdateOperation_Payload_Data"
-          }
-        }
-      },
-      "FolderUpdateOperation_Payload_Data" : {
-        "required" : [ "attributes", "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/Attributes"
-          },
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "userCollectionFolders" ]
-          }
-        }
       },
       "Genres_Attributes" : {
         "required" : [ "genreName" ],
@@ -21327,7 +21267,60 @@
           }
         }
       },
-      "PlayQueueAddFutureOperation_Payload" : {
+      "PlayQueuesCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/PlayQueuesCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "PlayQueuesCreateOperation_Payload_Data" : {
+        "required" : [ "type" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "playQueues" ]
+          }
+        }
+      },
+      "PlayQueuesCurrentRelationshipUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data"
+          }
+        }
+      },
+      "PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data" : {
+        "required" : [ "id", "meta", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data_Meta"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "tracks", "videos" ]
+          }
+        }
+      },
+      "PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data_Meta" : {
+        "required" : [ "itemId" ],
+        "type" : "object",
+        "properties" : {
+          "itemId" : {
+            "type" : "string"
+          }
+        }
+      },
+      "PlayQueuesFutureRelationshipAddOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -21336,15 +21329,15 @@
             "minItems" : 0,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PlayQueueAddFutureOperation_Payload_Data"
+              "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipAddOperation_Payload_Data"
             }
           },
           "meta" : {
-            "$ref" : "#/components/schemas/PlayQueueAddFutureOperation_Payload_Meta"
+            "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipAddOperation_Payload_Meta"
           }
         }
       },
-      "PlayQueueAddFutureOperation_Payload_Data" : {
+      "PlayQueuesFutureRelationshipAddOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -21357,7 +21350,7 @@
           }
         }
       },
-      "PlayQueueAddFutureOperation_Payload_Meta" : {
+      "PlayQueuesFutureRelationshipAddOperation_Payload_Meta" : {
         "required" : [ "mode" ],
         "type" : "object",
         "properties" : {
@@ -21377,26 +21370,7 @@
           }
         }
       },
-      "PlayQueueCreateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/PlayQueueCreateOperation_Payload_Data"
-          }
-        }
-      },
-      "PlayQueueCreateOperation_Payload_Data" : {
-        "required" : [ "type" ],
-        "type" : "object",
-        "properties" : {
-          "type" : {
-            "type" : "string",
-            "enum" : [ "playQueues" ]
-          }
-        }
-      },
-      "PlayQueueRemoveFutureOperation_Payload" : {
+      "PlayQueuesFutureRelationshipRemoveOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -21405,12 +21379,12 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PlayQueueRemoveFutureOperation_Payload_Data"
+              "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipRemoveOperation_Payload_Data"
             }
           }
         }
       },
-      "PlayQueueRemoveFutureOperation_Payload_Data" : {
+      "PlayQueuesFutureRelationshipRemoveOperation_Payload_Data" : {
         "required" : [ "id", "meta", "type" ],
         "type" : "object",
         "properties" : {
@@ -21418,7 +21392,7 @@
             "type" : "string"
           },
           "meta" : {
-            "$ref" : "#/components/schemas/PlayQueueUpdateRemoveOperation_Payload_Data_Meta"
+            "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipRemoveOperation_Payload_Data_Meta"
           },
           "type" : {
             "type" : "string",
@@ -21426,32 +21400,7 @@
           }
         }
       },
-      "PlayQueueUpdateCurrentOperations_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/PlayQueueUpdateCurrentOperations_Payload_Data"
-          }
-        }
-      },
-      "PlayQueueUpdateCurrentOperations_Payload_Data" : {
-        "required" : [ "id", "meta", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/PlayQueueUpdateCurrentOperations_Payload_Data_Meta"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "tracks", "videos" ]
-          }
-        }
-      },
-      "PlayQueueUpdateCurrentOperations_Payload_Data_Meta" : {
+      "PlayQueuesFutureRelationshipRemoveOperation_Payload_Data_Meta" : {
         "required" : [ "itemId" ],
         "type" : "object",
         "properties" : {
@@ -21460,7 +21409,7 @@
           }
         }
       },
-      "PlayQueueUpdateFutureOperation_Payload" : {
+      "PlayQueuesFutureRelationshipUpdateOperation_Payload" : {
         "required" : [ "data", "meta" ],
         "type" : "object",
         "properties" : {
@@ -21469,15 +21418,15 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PlayQueueUpdateFutureOperation_Payload_Data"
+              "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipUpdateOperation_Payload_Data"
             }
           },
           "meta" : {
-            "$ref" : "#/components/schemas/PlayQueueUpdateFutureOperation_Payload_Meta"
+            "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipUpdateOperation_Payload_Meta"
           }
         }
       },
-      "PlayQueueUpdateFutureOperation_Payload_Data" : {
+      "PlayQueuesFutureRelationshipUpdateOperation_Payload_Data" : {
         "required" : [ "id", "meta", "type" ],
         "type" : "object",
         "properties" : {
@@ -21485,7 +21434,7 @@
             "type" : "string"
           },
           "meta" : {
-            "$ref" : "#/components/schemas/PlayQueueUpdateFutureOperation_Payload_Data_Meta"
+            "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipUpdateOperation_Payload_Data_Meta"
           },
           "type" : {
             "type" : "string",
@@ -21493,7 +21442,7 @@
           }
         }
       },
-      "PlayQueueUpdateFutureOperation_Payload_Data_Meta" : {
+      "PlayQueuesFutureRelationshipUpdateOperation_Payload_Data_Meta" : {
         "required" : [ "itemId" ],
         "type" : "object",
         "properties" : {
@@ -21502,7 +21451,7 @@
           }
         }
       },
-      "PlayQueueUpdateFutureOperation_Payload_Meta" : {
+      "PlayQueuesFutureRelationshipUpdateOperation_Payload_Meta" : {
         "required" : [ "positionBefore" ],
         "type" : "object",
         "properties" : {
@@ -21511,21 +21460,21 @@
           }
         }
       },
-      "PlayQueueUpdateOperation_Payload" : {
+      "PlayQueuesUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/PlayQueueUpdateOperation_Payload_Data"
+            "$ref" : "#/components/schemas/PlayQueuesUpdateOperation_Payload_Data"
           }
         }
       },
-      "PlayQueueUpdateOperation_Payload_Data" : {
+      "PlayQueuesUpdateOperation_Payload_Data" : {
         "required" : [ "attributes", "id", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
-            "$ref" : "#/components/schemas/PlayQueueUpdateOperation_Payload_Data_Attributes"
+            "$ref" : "#/components/schemas/PlayQueuesUpdateOperation_Payload_Data_Attributes"
           },
           "id" : {
             "type" : "string"
@@ -21536,7 +21485,7 @@
           }
         }
       },
-      "PlayQueueUpdateOperation_Payload_Data_Attributes" : {
+      "PlayQueuesUpdateOperation_Payload_Data_Attributes" : {
         "type" : "object",
         "properties" : {
           "repeat" : {
@@ -21545,15 +21494,6 @@
           },
           "shuffled" : {
             "type" : "boolean"
-          }
-        }
-      },
-      "PlayQueueUpdateRemoveOperation_Payload_Data_Meta" : {
-        "required" : [ "itemId" ],
-        "type" : "object",
-        "properties" : {
-          "itemId" : {
-            "type" : "string"
           }
         }
       },
@@ -21847,7 +21787,7 @@
           }
         }
       },
-      "PlaylistCoverArtRelationshipUpdateOperation_Payload" : {
+      "PlaylistsCoverArtRelationshipUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -21856,12 +21796,12 @@
             "minItems" : 0,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PlaylistCoverArtRelationshipUpdateOperation_Payload_Data"
+              "$ref" : "#/components/schemas/PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data"
             }
           }
         }
       },
-      "PlaylistCoverArtRelationshipUpdateOperation_Payload_Data" : {
+      "PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -21874,21 +21814,21 @@
           }
         }
       },
-      "PlaylistCreateOperation_Payload" : {
+      "PlaylistsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/PlaylistCreateOperation_Payload_Data"
+            "$ref" : "#/components/schemas/PlaylistsCreateOperation_Payload_Data"
           }
         }
       },
-      "PlaylistCreateOperation_Payload_Data" : {
+      "PlaylistsCreateOperation_Payload_Data" : {
         "required" : [ "attributes", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
-            "$ref" : "#/components/schemas/PlaylistCreateOperation_Payload_Data_Attributes"
+            "$ref" : "#/components/schemas/PlaylistsCreateOperation_Payload_Data_Attributes"
           },
           "type" : {
             "type" : "string",
@@ -21896,7 +21836,7 @@
           }
         }
       },
-      "PlaylistCreateOperation_Payload_Data_Attributes" : {
+      "PlaylistsCreateOperation_Payload_Data_Attributes" : {
         "required" : [ "name" ],
         "type" : "object",
         "properties" : {
@@ -21914,7 +21854,7 @@
           }
         }
       },
-      "PlaylistItemsRelationshipAddOperation_Payload" : {
+      "PlaylistsItemsRelationshipAddOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -21923,15 +21863,15 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PlaylistItemsRelationshipAddOperation_Payload_Data"
+              "$ref" : "#/components/schemas/PlaylistsItemsRelationshipAddOperation_Payload_Data"
             }
           },
           "meta" : {
-            "$ref" : "#/components/schemas/PlaylistItemsRelationshipAddOperation_Payload_Meta"
+            "$ref" : "#/components/schemas/PlaylistsItemsRelationshipAddOperation_Payload_Meta"
           }
         }
       },
-      "PlaylistItemsRelationshipAddOperation_Payload_Data" : {
+      "PlaylistsItemsRelationshipAddOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -21939,7 +21879,7 @@
             "type" : "string"
           },
           "meta" : {
-            "$ref" : "#/components/schemas/PlaylistItemsRelationshipAddOperation_Payload_Data_Meta"
+            "$ref" : "#/components/schemas/PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta"
           },
           "type" : {
             "type" : "string",
@@ -21947,7 +21887,7 @@
           }
         }
       },
-      "PlaylistItemsRelationshipAddOperation_Payload_Data_Meta" : {
+      "PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta" : {
         "type" : "object",
         "properties" : {
           "addedAt" : {
@@ -21956,7 +21896,7 @@
           }
         }
       },
-      "PlaylistItemsRelationshipAddOperation_Payload_Meta" : {
+      "PlaylistsItemsRelationshipAddOperation_Payload_Meta" : {
         "required" : [ "positionBefore" ],
         "type" : "object",
         "properties" : {
@@ -21965,7 +21905,7 @@
           }
         }
       },
-      "PlaylistItemsRelationshipRemoveOperation_Payload" : {
+      "PlaylistsItemsRelationshipRemoveOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -21974,12 +21914,12 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PlaylistItemsRelationshipRemoveOperation_Payload_Data"
+              "$ref" : "#/components/schemas/PlaylistsItemsRelationshipRemoveOperation_Payload_Data"
             }
           }
         }
       },
-      "PlaylistItemsRelationshipRemoveOperation_Payload_Data" : {
+      "PlaylistsItemsRelationshipRemoveOperation_Payload_Data" : {
         "required" : [ "id", "meta", "type" ],
         "type" : "object",
         "properties" : {
@@ -21987,7 +21927,7 @@
             "type" : "string"
           },
           "meta" : {
-            "$ref" : "#/components/schemas/PlaylistItemsRelationshipRemoveOperation_Payload_Data_Meta"
+            "$ref" : "#/components/schemas/PlaylistsItemsRelationshipRemoveOperation_Payload_Data_Meta"
           },
           "type" : {
             "type" : "string",
@@ -21995,7 +21935,7 @@
           }
         }
       },
-      "PlaylistItemsRelationshipRemoveOperation_Payload_Data_Meta" : {
+      "PlaylistsItemsRelationshipRemoveOperation_Payload_Data_Meta" : {
         "required" : [ "itemId" ],
         "type" : "object",
         "properties" : {
@@ -22004,7 +21944,7 @@
           }
         }
       },
-      "PlaylistItemsRelationshipReorderOperation_Payload" : {
+      "PlaylistsItemsRelationshipUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -22013,15 +21953,15 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PlaylistItemsRelationshipReorderOperation_Payload_Data"
+              "$ref" : "#/components/schemas/PlaylistsItemsRelationshipUpdateOperation_Payload_Data"
             }
           },
           "meta" : {
-            "$ref" : "#/components/schemas/PlaylistItemsRelationshipReorderOperation_Payload_Meta"
+            "$ref" : "#/components/schemas/PlaylistsItemsRelationshipUpdateOperation_Payload_Meta"
           }
         }
       },
-      "PlaylistItemsRelationshipReorderOperation_Payload_Data" : {
+      "PlaylistsItemsRelationshipUpdateOperation_Payload_Data" : {
         "required" : [ "id", "meta", "type" ],
         "type" : "object",
         "properties" : {
@@ -22029,7 +21969,7 @@
             "type" : "string"
           },
           "meta" : {
-            "$ref" : "#/components/schemas/PlaylistItemsRelationshipReorderOperation_Payload_Data_Meta"
+            "$ref" : "#/components/schemas/PlaylistsItemsRelationshipUpdateOperation_Payload_Data_Meta"
           },
           "type" : {
             "type" : "string",
@@ -22037,7 +21977,7 @@
           }
         }
       },
-      "PlaylistItemsRelationshipReorderOperation_Payload_Data_Meta" : {
+      "PlaylistsItemsRelationshipUpdateOperation_Payload_Data_Meta" : {
         "required" : [ "itemId" ],
         "type" : "object",
         "properties" : {
@@ -22046,7 +21986,7 @@
           }
         }
       },
-      "PlaylistItemsRelationshipReorderOperation_Payload_Meta" : {
+      "PlaylistsItemsRelationshipUpdateOperation_Payload_Meta" : {
         "required" : [ "positionBefore" ],
         "type" : "object",
         "properties" : {
@@ -22055,21 +21995,21 @@
           }
         }
       },
-      "PlaylistUpdateOperation_Payload" : {
+      "PlaylistsUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/PlaylistUpdateOperation_Payload_Data"
+            "$ref" : "#/components/schemas/PlaylistsUpdateOperation_Payload_Data"
           }
         }
       },
-      "PlaylistUpdateOperation_Payload_Data" : {
+      "PlaylistsUpdateOperation_Payload_Data" : {
         "required" : [ "attributes", "id", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
-            "$ref" : "#/components/schemas/PlaylistUpdateOperation_Payload_Data_Attributes"
+            "$ref" : "#/components/schemas/PlaylistsUpdateOperation_Payload_Data_Attributes"
           },
           "id" : {
             "type" : "string"
@@ -22080,7 +22020,7 @@
           }
         }
       },
-      "PlaylistUpdateOperation_Payload_Data_Attributes" : {
+      "PlaylistsUpdateOperation_Payload_Data_Attributes" : {
         "type" : "object",
         "properties" : {
           "accessType" : {
@@ -23156,8 +23096,8 @@
             "type" : "string",
             "description" : "Integration type for Stripe onboarding",
             "example" : "REDIRECT",
-            "enum" : [ "REDIRECT", "EMBEDDED" ],
-            "default" : "REDIRECT"
+            "default" : "REDIRECT",
+            "enum" : [ "REDIRECT", "EMBEDDED" ]
           },
           "refreshUrl" : {
             "type" : "string",
@@ -23304,174 +23244,6 @@
         "allOf" : [ {
           "$ref" : "#/components/schemas/LyricsProvider"
         } ]
-      },
-      "TrackAlbumsRelationshipUpdateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 1,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/TrackAlbumsRelationshipUpdateOperation_Payload_Data"
-            }
-          }
-        }
-      },
-      "TrackAlbumsRelationshipUpdateOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "albums" ]
-          }
-        }
-      },
-      "TrackCreateOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data"
-          }
-        }
-      },
-      "TrackCreateOperation_Payload_Data" : {
-        "required" : [ "attributes", "relationships", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Attributes"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "tracks" ]
-          }
-        }
-      },
-      "TrackCreateOperation_Payload_Data_Attributes" : {
-        "required" : [ "accessType", "title" ],
-        "type" : "object",
-        "properties" : {
-          "accessType" : {
-            "type" : "string",
-            "description" : "Access type",
-            "example" : "PRIVATE",
-            "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
-          },
-          "explicit" : {
-            "type" : "boolean",
-            "description" : "Explicit content",
-            "example" : false
-          },
-          "title" : {
-            "type" : "string"
-          }
-        }
-      },
-      "TrackCreateOperation_Payload_Data_Relationships" : {
-        "required" : [ "albums", "artists" ],
-        "type" : "object",
-        "properties" : {
-          "albums" : {
-            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships_Albums"
-          },
-          "artists" : {
-            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships_Artists"
-          },
-          "genres" : {
-            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships_Genres"
-          }
-        }
-      },
-      "TrackCreateOperation_Payload_Data_Relationships_Albums" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 1,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships_Albums_Data"
-            }
-          }
-        }
-      },
-      "TrackCreateOperation_Payload_Data_Relationships_Albums_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "albums" ]
-          }
-        }
-      },
-      "TrackCreateOperation_Payload_Data_Relationships_Artists" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 1,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships_Artists_Data"
-            }
-          }
-        }
-      },
-      "TrackCreateOperation_Payload_Data_Relationships_Artists_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "artists" ]
-          }
-        }
-      },
-      "TrackCreateOperation_Payload_Data_Relationships_Genres" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 3,
-            "minItems" : 0,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships_Genres_Data"
-            }
-          }
-        }
-      },
-      "TrackCreateOperation_Payload_Data_Relationships_Genres_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "genres" ]
-          }
-        }
       },
       "TrackFilesReadById403ResponseBody" : {
         "type" : "object",
@@ -24030,27 +23802,51 @@
           }
         }
       },
-      "TrackUpdateOperation_Payload" : {
+      "TracksAlbumsRelationshipUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/TrackUpdateOperation_Payload_Data"
+            "maxItems" : 1,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TracksAlbumsRelationshipUpdateOperation_Payload_Data"
+            }
           }
         }
       },
-      "TrackUpdateOperation_Payload_Data" : {
+      "TracksAlbumsRelationshipUpdateOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/TrackUpdateOperation_Payload_Data_Attributes"
-          },
           "id" : {
             "type" : "string"
           },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums" ]
+          }
+        }
+      },
+      "TracksCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/TracksCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "TracksCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "relationships", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/TracksCreateOperation_Payload_Data_Attributes"
+          },
           "relationships" : {
-            "$ref" : "#/components/schemas/TrackUpdateOperation_Payload_Data_Relationships"
+            "$ref" : "#/components/schemas/TracksCreateOperation_Payload_Data_Relationships"
           },
           "type" : {
             "type" : "string",
@@ -24058,7 +23854,8 @@
           }
         }
       },
-      "TrackUpdateOperation_Payload_Data_Attributes" : {
+      "TracksCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "accessType", "title" ],
         "type" : "object",
         "properties" : {
           "accessType" : {
@@ -24067,49 +23864,86 @@
             "example" : "PRIVATE",
             "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
           },
-          "bpm" : {
-            "type" : "number",
-            "format" : "float"
-          },
           "explicit" : {
             "type" : "boolean",
             "description" : "Explicit content",
             "example" : false
           },
-          "key" : {
-            "type" : "string",
-            "enum" : [ "UNKNOWN", "C", "CSharp", "D", "Eb", "E", "F", "FSharp", "G", "Ab", "A", "Bb", "B" ]
-          },
-          "keyScale" : {
-            "type" : "string",
-            "enum" : [ "UNKNOWN", "MAJOR", "MINOR", "AEOLIAN", "BLUES", "DORIAN", "HARMONIC_MINOR", "LOCRIAN", "LYDIAN", "MIXOLYDIAN", "PENTATONIC_MAJOR", "PHRYGIAN", "MELODIC_MINOR", "PENTATONIC_MINOR" ]
-          },
           "title" : {
             "type" : "string"
+          }
+        }
+      },
+      "TracksCreateOperation_Payload_Data_Relationships" : {
+        "required" : [ "albums", "artists" ],
+        "type" : "object",
+        "properties" : {
+          "albums" : {
+            "$ref" : "#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Albums"
           },
-          "toneTags" : {
-            "maxItems" : 5,
-            "minItems" : 0,
+          "artists" : {
+            "$ref" : "#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Artists"
+          },
+          "genres" : {
+            "$ref" : "#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Genres"
+          }
+        }
+      },
+      "TracksCreateOperation_Payload_Data_Relationships_Albums" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 1,
             "type" : "array",
             "items" : {
-              "maxLength" : 20,
-              "minLength" : 1,
-              "type" : "string",
-              "description" : "Tone tags",
-              "example" : "happy"
+              "$ref" : "#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Albums_Data"
             }
           }
         }
       },
-      "TrackUpdateOperation_Payload_Data_Relationships" : {
+      "TracksCreateOperation_Payload_Data_Relationships_Albums_Data" : {
+        "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
-          "genres" : {
-            "$ref" : "#/components/schemas/TrackUpdateOperation_Payload_Data_Relationships_Genres"
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums" ]
           }
         }
       },
-      "TrackUpdateOperation_Payload_Data_Relationships_Genres" : {
+      "TracksCreateOperation_Payload_Data_Relationships_Artists" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Artists_Data"
+            }
+          }
+        }
+      },
+      "TracksCreateOperation_Payload_Data_Relationships_Artists_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "TracksCreateOperation_Payload_Data_Relationships_Genres" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -24118,12 +23952,12 @@
             "minItems" : 0,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/TrackUpdateOperation_Payload_Data_Relationships_Genres_Data"
+              "$ref" : "#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Genres_Data"
             }
           }
         }
       },
-      "TrackUpdateOperation_Payload_Data_Relationships_Genres_Data" : {
+      "TracksCreateOperation_Payload_Data_Relationships_Genres_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -24197,6 +24031,112 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "TracksUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/TracksUpdateOperation_Payload_Data"
+          }
+        }
+      },
+      "TracksUpdateOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/TracksUpdateOperation_Payload_Data_Attributes"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/TracksUpdateOperation_Payload_Data_Relationships"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "tracks" ]
+          }
+        }
+      },
+      "TracksUpdateOperation_Payload_Data_Attributes" : {
+        "type" : "object",
+        "properties" : {
+          "accessType" : {
+            "type" : "string",
+            "description" : "Access type",
+            "example" : "PRIVATE",
+            "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
+          },
+          "bpm" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "explicit" : {
+            "type" : "boolean",
+            "description" : "Explicit content",
+            "example" : false
+          },
+          "key" : {
+            "type" : "string",
+            "enum" : [ "UNKNOWN", "C", "CSharp", "D", "Eb", "E", "F", "FSharp", "G", "Ab", "A", "Bb", "B" ]
+          },
+          "keyScale" : {
+            "type" : "string",
+            "enum" : [ "UNKNOWN", "MAJOR", "MINOR", "AEOLIAN", "BLUES", "DORIAN", "HARMONIC_MINOR", "LOCRIAN", "LYDIAN", "MIXOLYDIAN", "PENTATONIC_MAJOR", "PHRYGIAN", "MELODIC_MINOR", "PENTATONIC_MINOR" ]
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "toneTags" : {
+            "maxItems" : 5,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "maxLength" : 20,
+              "minLength" : 1,
+              "type" : "string",
+              "description" : "Tone tags",
+              "example" : "happy"
+            }
+          }
+        }
+      },
+      "TracksUpdateOperation_Payload_Data_Relationships" : {
+        "type" : "object",
+        "properties" : {
+          "genres" : {
+            "$ref" : "#/components/schemas/TracksUpdateOperation_Payload_Data_Relationships_Genres"
+          }
+        }
+      },
+      "TracksUpdateOperation_Payload_Data_Relationships_Genres" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 3,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TracksUpdateOperation_Payload_Data_Relationships_Genres_Data"
+            }
+          }
+        }
+      },
+      "TracksUpdateOperation_Payload_Data_Relationships_Genres_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "genres" ]
           }
         }
       },
@@ -24439,135 +24379,38 @@
           }
         }
       },
-      "UserCollectionAlbumsRelationshipAddOperation_Payload" : {
+      "UserCollectionFoldersCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
           "data" : {
-            "maxItems" : 20,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UserCollectionAlbumsRelationshipAddOperation_Payload_Data"
-            }
+            "$ref" : "#/components/schemas/UserCollectionFoldersCreateOperation_Payload_Data"
           }
         }
       },
-      "UserCollectionAlbumsRelationshipAddOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
+      "UserCollectionFoldersCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "type" ],
         "type" : "object",
         "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/UserCollectionAlbumsRelationshipAddOperation_Payload_Data_Meta"
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserCollectionFoldersCreateOperation_Payload_Data_Attributes"
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "albums" ]
+            "enum" : [ "userCollectionFolders" ]
           }
         }
       },
-      "UserCollectionAlbumsRelationshipAddOperation_Payload_Data_Meta" : {
+      "UserCollectionFoldersCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "collectionType", "name" ],
         "type" : "object",
         "properties" : {
-          "addedAt" : {
+          "collectionType" : {
             "type" : "string",
-            "format" : "date-time"
-          }
-        }
-      },
-      "UserCollectionAlbumsRelationshipRemoveOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 20,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data"
-            }
-          }
-        }
-      },
-      "UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
+            "enum" : [ "PLAYLISTS" ]
+          },
+          "name" : {
             "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "albums" ]
-          }
-        }
-      },
-      "UserCollectionArtistsRelationshipAddOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 20,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UserCollectionArtistsRelationshipAddOperation_Payload_Data"
-            }
-          }
-        }
-      },
-      "UserCollectionArtistsRelationshipAddOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/UserCollectionArtistsRelationshipAddOperation_Payload_Data_Meta"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "artists" ]
-          }
-        }
-      },
-      "UserCollectionArtistsRelationshipAddOperation_Payload_Data_Meta" : {
-        "type" : "object",
-        "properties" : {
-          "addedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
-        }
-      },
-      "UserCollectionArtistsRelationshipRemoveOperation_Payload" : {
-        "required" : [ "data" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "maxItems" : 20,
-            "minItems" : 1,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UserCollectionArtistsRelationshipRemoveOperation_Payload_Data"
-            }
-          }
-        }
-      },
-      "UserCollectionArtistsRelationshipRemoveOperation_Payload_Data" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "artists" ]
           }
         }
       },
@@ -24648,6 +24491,39 @@
           "resourceType" : {
             "type" : "string",
             "deprecated" : true
+          }
+        }
+      },
+      "UserCollectionFoldersUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/UserCollectionFoldersUpdateOperation_Payload_Data"
+          }
+        }
+      },
+      "UserCollectionFoldersUpdateOperation_Payload_Data" : {
+        "required" : [ "attributes", "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserCollectionFoldersUpdateOperation_Payload_Data_Attributes"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "userCollectionFolders" ]
+          }
+        }
+      },
+      "UserCollectionFoldersUpdateOperation_Payload_Data_Attributes" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
           }
         }
       },
@@ -24808,7 +24684,7 @@
           }
         }
       },
-      "UserCollectionPlaylistsRelationshipRemoveOperation_Payload" : {
+      "UserCollectionsAlbumsRelationshipAddOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -24817,12 +24693,144 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/UserCollectionPlaylistsRelationshipRemoveOperation_Payload_Data"
+              "$ref" : "#/components/schemas/UserCollectionsAlbumsRelationshipAddOperation_Payload_Data"
             }
           }
         }
       },
-      "UserCollectionPlaylistsRelationshipRemoveOperation_Payload_Data" : {
+      "UserCollectionsAlbumsRelationshipAddOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/UserCollectionsAlbumsRelationshipAddOperation_Payload_Data_Meta"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums" ]
+          }
+        }
+      },
+      "UserCollectionsAlbumsRelationshipAddOperation_Payload_Data_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "addedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "UserCollectionsAlbumsRelationshipRemoveOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollectionsAlbumsRelationshipRemoveOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "UserCollectionsAlbumsRelationshipRemoveOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums" ]
+          }
+        }
+      },
+      "UserCollectionsArtistsRelationshipAddOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollectionsArtistsRelationshipAddOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "UserCollectionsArtistsRelationshipAddOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/UserCollectionsArtistsRelationshipAddOperation_Payload_Data_Meta"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "UserCollectionsArtistsRelationshipAddOperation_Payload_Data_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "addedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "UserCollectionsArtistsRelationshipRemoveOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollectionsArtistsRelationshipRemoveOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "UserCollectionsArtistsRelationshipRemoveOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "UserCollectionsPlaylistsRelationshipAddOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollectionsPlaylistsRelationshipAddOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "UserCollectionsPlaylistsRelationshipAddOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -24835,7 +24843,7 @@
           }
         }
       },
-      "UserCollectionTracksRelationshipAddOperation_Payload" : {
+      "UserCollectionsPlaylistsRelationshipRemoveOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -24844,12 +24852,39 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/UserCollectionTracksRelationshipAddOperation_Payload_Data"
+              "$ref" : "#/components/schemas/UserCollectionsPlaylistsRelationshipRemoveOperation_Payload_Data"
             }
           }
         }
       },
-      "UserCollectionTracksRelationshipAddOperation_Payload_Data" : {
+      "UserCollectionsPlaylistsRelationshipRemoveOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "playlists" ]
+          }
+        }
+      },
+      "UserCollectionsTracksRelationshipAddOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollectionsTracksRelationshipAddOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "UserCollectionsTracksRelationshipAddOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -24857,7 +24892,7 @@
             "type" : "string"
           },
           "meta" : {
-            "$ref" : "#/components/schemas/UserCollectionTracksRelationshipAddOperation_Payload_Data_Meta"
+            "$ref" : "#/components/schemas/UserCollectionsTracksRelationshipAddOperation_Payload_Data_Meta"
           },
           "type" : {
             "type" : "string",
@@ -24865,7 +24900,7 @@
           }
         }
       },
-      "UserCollectionTracksRelationshipAddOperation_Payload_Data_Meta" : {
+      "UserCollectionsTracksRelationshipAddOperation_Payload_Data_Meta" : {
         "type" : "object",
         "properties" : {
           "addedAt" : {
@@ -24874,7 +24909,7 @@
           }
         }
       },
-      "UserCollectionTracksRelationshipRemoveOperation_Payload" : {
+      "UserCollectionsTracksRelationshipRemoveOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -24883,12 +24918,12 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/UserCollectionTracksRelationshipRemoveOperation_Payload_Data"
+              "$ref" : "#/components/schemas/UserCollectionsTracksRelationshipRemoveOperation_Payload_Data"
             }
           }
         }
       },
-      "UserCollectionTracksRelationshipRemoveOperation_Payload_Data" : {
+      "UserCollectionsTracksRelationshipRemoveOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -24901,7 +24936,7 @@
           }
         }
       },
-      "UserCollectionVideosRelationshipAddOperation_Payload" : {
+      "UserCollectionsVideosRelationshipAddOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -24910,12 +24945,12 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/UserCollectionVideosRelationshipAddOperation_Payload_Data"
+              "$ref" : "#/components/schemas/UserCollectionsVideosRelationshipAddOperation_Payload_Data"
             }
           }
         }
       },
-      "UserCollectionVideosRelationshipAddOperation_Payload_Data" : {
+      "UserCollectionsVideosRelationshipAddOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -24928,7 +24963,7 @@
           }
         }
       },
-      "UserCollectionVideosRelationshipRemoveOperation_Payload" : {
+      "UserCollectionsVideosRelationshipRemoveOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
@@ -24937,12 +24972,12 @@
             "minItems" : 1,
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/UserCollectionVideosRelationshipRemoveOperation_Payload_Data"
+              "$ref" : "#/components/schemas/UserCollectionsVideosRelationshipRemoveOperation_Payload_Data"
             }
           }
         }
       },
-      "UserCollectionVideosRelationshipRemoveOperation_Payload_Data" : {
+      "UserCollectionsVideosRelationshipRemoveOperation_Payload_Data" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -25478,21 +25513,21 @@
           }
         }
       },
-      "UserReportCreateOperation_Payload" : {
+      "UserReportsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/UserReportCreateOperation_Payload_Data"
+            "$ref" : "#/components/schemas/UserReportsCreateOperation_Payload_Data"
           }
         }
       },
-      "UserReportCreateOperation_Payload_Data" : {
+      "UserReportsCreateOperation_Payload_Data" : {
         "required" : [ "attributes", "relationships", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
-            "$ref" : "#/components/schemas/UserReportCreateOperation_Payload_Data_Attributes"
+            "$ref" : "#/components/schemas/UserReportsCreateOperation_Payload_Data_Attributes"
           },
           "relationships" : {
             "$ref" : "#/components/schemas/UserReportsCreateOperation_Payload_Data_Relationships"
@@ -25503,7 +25538,7 @@
           }
         }
       },
-      "UserReportCreateOperation_Payload_Data_Attributes" : {
+      "UserReportsCreateOperation_Payload_Data_Attributes" : {
         "required" : [ "description", "reason" ],
         "type" : "object",
         "properties" : {

@@ -192,7 +192,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdPatch**
 ```swift
-    open class func albumsIdPatch(id: String, albumUpdateOperationPayload: AlbumUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdPatch(id: String, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single album.
@@ -205,10 +205,10 @@ Updates existing album.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let albumUpdateOperationPayload = AlbumUpdateOperation_Payload(data: AlbumUpdateOperation_Payload_Data(attributes: AlbumUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", albumType: "albumType_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumUpdateOperation_Payload_Data_Relationships(genres: AlbumUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumUpdateOperationPayload |  (optional)
+let albumsUpdateOperationPayload = AlbumsUpdateOperation_Payload(data: AlbumsUpdateOperation_Payload_Data(attributes: AlbumsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", albumType: "albumType_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumsUpdateOperation_Payload_Data_Relationships(genres: AlbumsUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsUpdateOperationPayload |  (optional)
 
 // Update single album.
-AlbumsAPI.albumsIdPatch(id: id, albumUpdateOperationPayload: albumUpdateOperationPayload) { (response, error) in
+AlbumsAPI.albumsIdPatch(id: id, albumsUpdateOperationPayload: albumsUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -225,7 +225,7 @@ AlbumsAPI.albumsIdPatch(id: id, albumUpdateOperationPayload: albumUpdateOperatio
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
- **albumUpdateOperationPayload** | [**AlbumUpdateOperationPayload**](AlbumUpdateOperationPayload.md) |  | [optional] 
+ **albumsUpdateOperationPayload** | [**AlbumsUpdateOperationPayload**](AlbumsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -360,7 +360,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtPatch**
 ```swift
-    open class func albumsIdRelationshipsCoverArtPatch(id: String, albumCoverArtRelationshipUpdateOperationPayload: AlbumCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsCoverArtPatch(id: String, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update coverArt relationship (\"to-many\").
@@ -373,10 +373,10 @@ Updates coverArt relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let albumCoverArtRelationshipUpdateOperationPayload = AlbumCoverArtRelationshipUpdateOperation_Payload(data: [AlbumCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // AlbumCoverArtRelationshipUpdateOperationPayload |  (optional)
+let albumsCoverArtRelationshipUpdateOperationPayload = AlbumsCoverArtRelationshipUpdateOperation_Payload(data: [AlbumsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // AlbumsCoverArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update coverArt relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsCoverArtPatch(id: id, albumCoverArtRelationshipUpdateOperationPayload: albumCoverArtRelationshipUpdateOperationPayload) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsCoverArtPatch(id: id, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -393,7 +393,7 @@ AlbumsAPI.albumsIdRelationshipsCoverArtPatch(id: id, albumCoverArtRelationshipUp
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
- **albumCoverArtRelationshipUpdateOperationPayload** | [**AlbumCoverArtRelationshipUpdateOperationPayload**](AlbumCoverArtRelationshipUpdateOperationPayload.md) |  | [optional] 
+ **albumsCoverArtRelationshipUpdateOperationPayload** | [**AlbumsCoverArtRelationshipUpdateOperationPayload**](AlbumsCoverArtRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -528,7 +528,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsItemsPatch**
 ```swift
-    open class func albumsIdRelationshipsItemsPatch(id: String, albumItemsRelationshipUpdateOperationPayload: AlbumItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsItemsPatch(id: String, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update items relationship (\"to-many\").
@@ -541,10 +541,10 @@ Updates items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let albumItemsRelationshipUpdateOperationPayload = AlbumItemsRelationshipUpdateOperation_Payload(data: [AlbumItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumItemsRelationshipUpdateOperation_Payload_Meta(positionIndex: 123)) // AlbumItemsRelationshipUpdateOperationPayload |  (optional)
+let albumsItemsRelationshipUpdateOperationPayload = AlbumsItemsRelationshipUpdateOperation_Payload(data: [AlbumsItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsItemsRelationshipUpdateOperation_Payload_Meta(positionIndex: 123)) // AlbumsItemsRelationshipUpdateOperationPayload |  (optional)
 
 // Update items relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsItemsPatch(id: id, albumItemsRelationshipUpdateOperationPayload: albumItemsRelationshipUpdateOperationPayload) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsItemsPatch(id: id, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -561,7 +561,7 @@ AlbumsAPI.albumsIdRelationshipsItemsPatch(id: id, albumItemsRelationshipUpdateOp
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
- **albumItemsRelationshipUpdateOperationPayload** | [**AlbumItemsRelationshipUpdateOperationPayload**](AlbumItemsRelationshipUpdateOperationPayload.md) |  | [optional] 
+ **albumsItemsRelationshipUpdateOperationPayload** | [**AlbumsItemsRelationshipUpdateOperationPayload**](AlbumsItemsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -864,7 +864,7 @@ Name | Type | Description  | Notes
 
 # **albumsPost**
 ```swift
-    open class func albumsPost(albumCreateOperationPayload: AlbumCreateOperationPayload? = nil, completion: @escaping (_ data: AlbumsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumsPost(albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil, completion: @escaping (_ data: AlbumsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single album.
@@ -876,10 +876,10 @@ Creates a new album.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let albumCreateOperationPayload = AlbumCreateOperation_Payload(data: AlbumCreateOperation_Payload_Data(attributes: AlbumCreateOperation_Payload_Data_Attributes(albumType: "albumType_example", barcodeId: "barcodeId_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", upc: "upc_example", version: "version_example"), relationships: AlbumCreateOperation_Payload_Data_Relationships(artists: AlbumCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumCreateOperationPayload |  (optional)
+let albumsCreateOperationPayload = AlbumsCreateOperation_Payload(data: AlbumsCreateOperation_Payload_Data(attributes: AlbumsCreateOperation_Payload_Data_Attributes(albumType: "albumType_example", barcodeId: "barcodeId_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", upc: "upc_example", version: "version_example"), relationships: AlbumsCreateOperation_Payload_Data_Relationships(artists: AlbumsCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumsCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsCreateOperationPayload |  (optional)
 
 // Create single album.
-AlbumsAPI.albumsPost(albumCreateOperationPayload: albumCreateOperationPayload) { (response, error) in
+AlbumsAPI.albumsPost(albumsCreateOperationPayload: albumsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -895,7 +895,7 @@ AlbumsAPI.albumsPost(albumCreateOperationPayload: albumCreateOperationPayload) {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **albumCreateOperationPayload** | [**AlbumCreateOperationPayload**](AlbumCreateOperationPayload.md) |  | [optional] 
+ **albumsCreateOperationPayload** | [**AlbumsCreateOperationPayload**](AlbumsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

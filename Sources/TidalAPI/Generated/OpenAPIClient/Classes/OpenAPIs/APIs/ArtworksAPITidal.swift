@@ -55,9 +55,9 @@ public enum ArtworksAPITidal {
      
      - returns: ArtworksSingleResourceDataDocument
      */
-	public static func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil) async throws -> ArtworksSingleResourceDataDocument {
+	public static func artworksPost(artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) async throws -> ArtworksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtworksAPI.artworksPostWithRequestBuilder(artworkCreateOperationPayload: artworkCreateOperationPayload)
+			ArtworksAPI.artworksPostWithRequestBuilder(artworksCreateOperationPayload: artworksCreateOperationPayload)
 		}
 	}
 }

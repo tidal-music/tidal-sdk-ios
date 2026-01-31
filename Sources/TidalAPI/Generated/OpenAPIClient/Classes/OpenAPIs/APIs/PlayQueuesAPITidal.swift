@@ -55,9 +55,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: 
      */
-	public static func playQueuesIdPatch(id: String, playQueueUpdateOperationPayload: PlayQueueUpdateOperationPayload? = nil) async throws {
+	public static func playQueuesIdPatch(id: String, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdPatchWithRequestBuilder(id: id, playQueueUpdateOperationPayload: playQueueUpdateOperationPayload)
+			PlayQueuesAPI.playQueuesIdPatchWithRequestBuilder(id: id, playQueuesUpdateOperationPayload: playQueuesUpdateOperationPayload)
 		}
 	}
 
@@ -79,9 +79,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: 
      */
-	public static func playQueuesIdRelationshipsCurrentPatch(id: String, playQueueUpdateCurrentOperationsPayload: PlayQueueUpdateCurrentOperationsPayload? = nil) async throws {
+	public static func playQueuesIdRelationshipsCurrentPatch(id: String, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: id, playQueueUpdateCurrentOperationsPayload: playQueueUpdateCurrentOperationsPayload)
+			PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: id, playQueuesCurrentRelationshipUpdateOperationPayload: playQueuesCurrentRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -91,9 +91,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: 
      */
-	public static func playQueuesIdRelationshipsFutureDelete(id: String, playQueueRemoveFutureOperationPayload: PlayQueueRemoveFutureOperationPayload? = nil) async throws {
+	public static func playQueuesIdRelationshipsFutureDelete(id: String, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdRelationshipsFutureDeleteWithRequestBuilder(id: id, playQueueRemoveFutureOperationPayload: playQueueRemoveFutureOperationPayload)
+			PlayQueuesAPI.playQueuesIdRelationshipsFutureDeleteWithRequestBuilder(id: id, playQueuesFutureRelationshipRemoveOperationPayload: playQueuesFutureRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -115,9 +115,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: 
      */
-	public static func playQueuesIdRelationshipsFuturePatch(id: String, playQueueUpdateFutureOperationPayload: PlayQueueUpdateFutureOperationPayload? = nil) async throws {
+	public static func playQueuesIdRelationshipsFuturePatch(id: String, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: id, playQueueUpdateFutureOperationPayload: playQueueUpdateFutureOperationPayload)
+			PlayQueuesAPI.playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: id, playQueuesFutureRelationshipUpdateOperationPayload: playQueuesFutureRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -127,9 +127,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: 
      */
-	public static func playQueuesIdRelationshipsFuturePost(id: String, playQueueAddFutureOperationPayload: PlayQueueAddFutureOperationPayload? = nil) async throws {
+	public static func playQueuesIdRelationshipsFuturePost(id: String, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: id, playQueueAddFutureOperationPayload: playQueueAddFutureOperationPayload)
+			PlayQueuesAPI.playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: id, playQueuesFutureRelationshipAddOperationPayload: playQueuesFutureRelationshipAddOperationPayload)
 		}
 	}
 
@@ -163,9 +163,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: PlayQueuesSingleResourceDataDocument
      */
-	public static func playQueuesPost(playQueueCreateOperationPayload: PlayQueueCreateOperationPayload? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
+	public static func playQueuesPost(playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesPostWithRequestBuilder(playQueueCreateOperationPayload: playQueueCreateOperationPayload)
+			PlayQueuesAPI.playQueuesPostWithRequestBuilder(playQueuesCreateOperationPayload: playQueuesCreateOperationPayload)
 		}
 	}
 }

@@ -55,9 +55,9 @@ public enum AlbumsAPITidal {
      
      - returns: 
      */
-	public static func albumsIdPatch(id: String, albumUpdateOperationPayload: AlbumUpdateOperationPayload? = nil) async throws {
+	public static func albumsIdPatch(id: String, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdPatchWithRequestBuilder(id: id, albumUpdateOperationPayload: albumUpdateOperationPayload)
+			AlbumsAPI.albumsIdPatchWithRequestBuilder(id: id, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
 		}
 	}
 
@@ -91,9 +91,9 @@ public enum AlbumsAPITidal {
      
      - returns: 
      */
-	public static func albumsIdRelationshipsCoverArtPatch(id: String, albumCoverArtRelationshipUpdateOperationPayload: AlbumCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func albumsIdRelationshipsCoverArtPatch(id: String, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, albumCoverArtRelationshipUpdateOperationPayload: albumCoverArtRelationshipUpdateOperationPayload)
+			AlbumsAPI.albumsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -127,9 +127,9 @@ public enum AlbumsAPITidal {
      
      - returns: 
      */
-	public static func albumsIdRelationshipsItemsPatch(id: String, albumItemsRelationshipUpdateOperationPayload: AlbumItemsRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func albumsIdRelationshipsItemsPatch(id: String, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, albumItemsRelationshipUpdateOperationPayload: albumItemsRelationshipUpdateOperationPayload)
+			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -199,9 +199,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsSingleResourceDataDocument
      */
-	public static func albumsPost(albumCreateOperationPayload: AlbumCreateOperationPayload? = nil) async throws -> AlbumsSingleResourceDataDocument {
+	public static func albumsPost(albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) async throws -> AlbumsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsPostWithRequestBuilder(albumCreateOperationPayload: albumCreateOperationPayload)
+			AlbumsAPI.albumsPostWithRequestBuilder(albumsCreateOperationPayload: albumsCreateOperationPayload)
 		}
 	}
 }
