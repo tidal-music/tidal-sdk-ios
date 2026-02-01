@@ -7,6 +7,6 @@ final class RemoveCollectionHandler {
 		self.offlineRepository = offlineRepository
 	}
 
-	func execute(_ task: DownloadTask) async throws {
+	func execute(_ task: RemoveCollectionTask) async throws {
 	}
 }

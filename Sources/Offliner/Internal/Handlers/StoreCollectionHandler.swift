@@ -7,6 +7,6 @@ final class StoreCollectionHandler {
 		self.offlineRepository = offlineRepository
 	}
 
-	func execute(_ task: DownloadTask) async throws {
+	func execute(_ task: StoreCollectionTask) async throws {
 	}
 }

@@ -1,3 +1,4 @@
+import Auth
 import Foundation
 
 actor TaskRunner {
@@ -5,19 +6,26 @@ actor TaskRunner {
 
 	private let backendRepository: BackendRepository
 	private let scheduler: Scheduler
-	private var taskExecutor: TaskExecutor?
 
-	private(set) var tasks: [DownloadTask] = []
+	private let storeItemHandler: StoreItemHandler
+	private let storeCollectionHandler: StoreCollectionHandler
+	private let removeItemHandler: RemoveItemHandler
+	private let removeCollectionHandler: RemoveCollectionHandler
+
+	private var activeTasks: [String: Task<Void, Never>] = [:]
+	private var tasks: [DownloadTask] = []
 	private var taskIds: Set<String> = []
 	private var taskCursor: String?
 
-	init(backendRepository: BackendRepository) {
+	private(set) var mediaDownloads: [MediaDownload] = []
+
+	init(backendRepository: BackendRepository, offlineRepository: OfflineRepository, credentialsProvider: CredentialsProvider) {
 		self.backendRepository = backendRepository
 		self.scheduler = Scheduler()
-	}
-
-	func setExecutor(_ executor: TaskExecutor) {
-		self.taskExecutor = executor
+		self.storeItemHandler = StoreItemHandler(offlineRepository: offlineRepository, credentialsProvider: credentialsProvider)
+		self.storeCollectionHandler = StoreCollectionHandler(offlineRepository: offlineRepository)
+		self.removeItemHandler = RemoveItemHandler(offlineRepository: offlineRepository)
+		self.removeCollectionHandler = RemoveCollectionHandler(offlineRepository: offlineRepository)
 	}
 
 	func run() async throws {
@@ -47,23 +55,79 @@ actor TaskRunner {
 
 		for task in tasksToStart {
 			try await backendRepository.updateTask(taskId: task.id, state: .inProgress)
-			taskExecutor?.start(
-				task,
-				completion: { [weak self] downloadTask in
-					try await self?.completed(downloadTask)
-				},
-				failure: { [weak self] downloadTask in
-					try await self?.failed(downloadTask)
-				}
-			)
+			switch task.offlineTask {
+			case .storeItem:
+				guard let mediaDownload = task.mediaDownload else { continue }
+				storeItem(task, mediaDownload: mediaDownload)
+			case let .storeCollection(storeCollectionTask):
+				storeCollection(task, storeCollectionTask: storeCollectionTask)
+			case let .removeItem(removeItemTask):
+				removeItem(task, removeItemTask: removeItemTask)
+			case let .removeCollection(removeCollectionTask):
+				removeCollection(task, removeCollectionTask: removeCollectionTask)
+			}
 		}
 	}
 
 	private func finalize(_ task: DownloadTask) async throws {
 		tasks.removeAll { $0.id == task.id }
 		taskIds.remove(task.id)
+		activeTasks.removeValue(forKey: task.id)
+		if let mediaDownload = task.mediaDownload {
+			mediaDownloads.removeAll { $0 === mediaDownload }
+		}
 
 		try await run()
+	}
+
+	private func storeItem(_ task: DownloadTask, mediaDownload: MediaDownload) {
+		storeItemHandler.start(
+			mediaDownload,
+			onComplete: { [weak self, weak task] in
+				guard let task else { return }
+				try? await self?.completed(task)
+			},
+			onFailure: { [weak self, weak task] in
+				guard let task else { return }
+				try? await self?.failed(task)
+			}
+		)
+	}
+
+	private func storeCollection(_ task: DownloadTask, storeCollectionTask: StoreCollectionTask) {
+		activeTasks[task.id] = Task { [weak self] in
+			guard let self else { return }
+			do {
+				try await storeCollectionHandler.execute(storeCollectionTask)
+				try await completed(task)
+			} catch {
+				try? await failed(task)
+			}
+		}
+	}
+
+	private func removeItem(_ task: DownloadTask, removeItemTask: RemoveItemTask) {
+		activeTasks[task.id] = Task { [weak self] in
+			guard let self else { return }
+			do {
+				try await removeItemHandler.execute(removeItemTask)
+				try await completed(task)
+			} catch {
+				try? await failed(task)
+			}
+		}
+	}
+
+	private func removeCollection(_ task: DownloadTask, removeCollectionTask: RemoveCollectionTask) {
+		activeTasks[task.id] = Task { [weak self] in
+			guard let self else { return }
+			do {
+				try await removeCollectionHandler.execute(removeCollectionTask)
+				try await completed(task)
+			} catch {
+				try? await failed(task)
+			}
+		}
 	}
 
 	private func addTasks() async throws {
@@ -75,6 +139,11 @@ actor TaskRunner {
 		let (tasks, cursor) = try await backendRepository.getTasks(cursor: taskCursor)
 		for task in tasks.map(DownloadTask.init) where taskIds.insert(task.id).inserted {
 			self.tasks.append(task)
+			if case let .storeItem(storeItemTask) = task.offlineTask {
+				let mediaDownload = MediaDownload(task: storeItemTask, state: task.state)
+				task.mediaDownload = mediaDownload
+				self.mediaDownloads.append(mediaDownload)
+			}
 		}
 
 		if let c = cursor {

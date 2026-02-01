@@ -1,72 +1,31 @@
 import Foundation
-import TidalAPI
 
-public class DownloadTask: Equatable {
-	public let id: String
-	public let type: DownloadTaskType
-	public private(set) var state: OfflineTaskState
-	public private(set) var progress: Double = 0
+class DownloadTask: Equatable {
+	let id: String
+	let offlineTask: OfflineTask
 
-	let resourceType: String
-	let resourceId: String
-	let volume: Int?
-	let index: Int?
-	let collectionId: String?
+	private(set) var state: OfflineTaskState
+	private(set) var progress: Double = 0
 
-	private var continuation: AsyncStream<DownloadTaskUpdate>.Continuation?
-	public lazy var updates: AsyncStream<DownloadTaskUpdate> = {
-		AsyncStream { continuation in
-			self.continuation = continuation
-		}
-	}()
+	weak var mediaDownload: MediaDownload?
 
-	internal init(from task: OfflineTask) {
-		id = task.taskId
-		type = .from(offlineTask: task)
-		state = .pending
-		resourceType = task.type
-		resourceId = task.resourceId
-		volume = task.volume
-		index = task.index
-		collectionId = task.collectionId
+	init(from task: OfflineTask) {
+		self.id = task.id
+		self.state = .pending
+		self.offlineTask = task
 	}
 
-	internal func updateState(_ newState: OfflineTaskState) {
+	func updateState(_ newState: OfflineTaskState) {
 		state = newState
-		continuation?.yield(.stateChanged(newState))
+		mediaDownload?.updateState(newState)
 	}
 
-	internal func updateProgress(_ newProgress: Double) {
+	func updateProgress(_ newProgress: Double) {
 		progress = newProgress
-		continuation?.yield(.progress(newProgress))
+		mediaDownload?.updateProgress(newProgress)
 	}
 
-	public static func == (lhs: DownloadTask, rhs: DownloadTask) -> Bool {
+	static func == (lhs: DownloadTask, rhs: DownloadTask) -> Bool {
 		lhs.id == rhs.id
-	}
-}
-
-public enum DownloadTaskUpdate {
-	case stateChanged(OfflineTaskState)
-	case progress(Double)
-}
-
-public enum DownloadTaskType {
-	case storeItem
-	case storeCollection
-	case removeItem
-	case removeCollection
-	
-	static func from(offlineTask: OfflineTask) -> DownloadTaskType {
-		switch offlineTask.action {
-		case .storeItem:
-			return .storeItem
-		case .storeCollection:
-			return .storeCollection
-		case .removeItem:
-			return .removeItem
-		case .removeCollection:
-			return .removeCollection
-		}
 	}
 }

@@ -16,7 +16,7 @@ final class StoreItemHandler: NSObject {
 		self.fairPlayLicenseFetcher = FairPlayLicenseFetcher(credentialsProvider: credentialsProvider)
 		self.licenseQueue = DispatchQueue(label: "com.tidal.offliner.license", qos: .userInitiated)
 		super.init()
-		
+
 		self.downloadSession = AVAssetDownloadURLSession(
 			configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.offliner.download.session"),
 			assetDownloadDelegate: self,
@@ -25,26 +25,27 @@ final class StoreItemHandler: NSObject {
 	}
 
 	func start(
-		_ task: DownloadTask,
-		completion: @escaping @Sendable (DownloadTask) async throws -> Void,
-		failure: @escaping @Sendable (DownloadTask) async throws -> Void
+		_ mediaDownload: MediaDownload,
+		onComplete: @escaping @Sendable () async -> Void,
+		onFailure: @escaping @Sendable () async -> Void
 	) {
 		let asset = AVURLAsset(url: URL(string: "http://tidal.com/manifest.m3u8")!)
 		let pending = PendingDownload(
-			task: task,
+			mediaDownload: mediaDownload,
 			asset: asset,
 			licenseQueue: licenseQueue,
 			licenseFetcher: fairPlayLicenseFetcher,
-			completion: completion,
-			failure: failure)
+			onComplete: onComplete,
+			onFailure: onFailure
+		)
 
 		guard let urlSessionTask = downloadSession.makeAssetDownloadTask(
 			asset: asset,
-			assetTitle: task.id,
+			assetTitle: mediaDownload.task.id,
 			assetArtworkData: nil,
 			options: nil
 		) else {
-			Task { try? await failure(task) }
+			Task { await onFailure() }
 			return
 		}
 
@@ -69,45 +70,48 @@ extension StoreItemHandler: AVAssetDownloadDelegate {
 		task: URLSessionTask,
 		didCompleteWithError error: Error?
 	) {
-		guard let offlineTask = pendingByUrlSessionTask[task] else {
+		guard let pending = pendingByUrlSessionTask.removeValue(forKey: task) else {
 			return
 		}
 
-		if let error {
-			offlineTask.task.updateState(.failed)
-			Task { try? await offlineTask.failure(offlineTask.task) }
+		let download = pending.mediaDownload
+
+		if error != nil {
+			download.updateState(.failed)
+			Task { await pending.onFailure() }
 			return
 		}
 
-		guard let mediaLocation = offlineTask.mediaLocation else {
-			offlineTask.task.updateState(.failed)
-			Task { try? await offlineTask.failure(offlineTask.task) }
+		guard let mediaLocation = pending.mediaLocation else {
+			download.updateState(.failed)
+			Task { await pending.onFailure() }
 			return
 		}
 
-		if offlineTask.needsLicense && offlineTask.licenseLocation == nil {
-			offlineTask.task.updateState(.failed)
-			Task { try? await offlineTask.failure(offlineTask.task) }
+		if pending.needsLicense && pending.licenseLocation == nil {
+			download.updateState(.failed)
+			Task { await pending.onFailure() }
 			return
 		}
 
+		let task = download.task
 		do {
 			try offlineRepository.storeMediaItem(
-				id: offlineTask.task.id,
-				mediaType: offlineTask.task.resourceType == "videos" ? .videos : .tracks,
-				resourceId: offlineTask.task.resourceId,
+				id: task.id,
+				mediaType: task.item.resourceType == "videos" ? .videos : .tracks,
+				resourceId: task.item.resourceId,
 				metadata: "",
 				mediaURL: mediaLocation,
-				licenseURL: offlineTask.licenseLocation,
-				collection: offlineTask.task.collectionId ?? offlineTask.task.id,
-				volume: offlineTask.task.volume ?? 1,
-				position: offlineTask.task.index ?? 0
+				licenseURL: pending.licenseLocation,
+				collection: task.collectionId,
+				volume: task.volume,
+				position: task.index
 			)
-			offlineTask.task.updateState(.completed)
-			Task { try? await offlineTask.completion(offlineTask.task) }
+			download.updateState(.completed)
+			Task { await pending.onComplete() }
 		} catch {
-			offlineTask.task.updateState(.failed)
-			Task { try? await offlineTask.failure(offlineTask.task) }
+			download.updateState(.failed)
+			Task { await pending.onFailure() }
 		}
 	}
 
@@ -118,62 +122,61 @@ extension StoreItemHandler: AVAssetDownloadDelegate {
 		totalTimeRangesLoaded loadedTimeRanges: [NSValue],
 		timeRangeExpectedToLoad: CMTimeRange
 	) {
-		guard let offlineTask = pendingByUrlSessionTask[assetDownloadTask] else { return }
+		guard let pending = pendingByUrlSessionTask[assetDownloadTask] else { return }
 
 		let loaded = loadedTimeRanges.reduce(0.0) { $0 + CMTimeGetSeconds($1.timeRangeValue.duration) }
 		let expected = CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
 		let progress = expected > 0 ? loaded / expected : 0
 
-		offlineTask.task.updateProgress(progress)
+		pending.mediaDownload.updateProgress(progress)
 	}
 }
 
 // MARK: - PendingDownload
 
 private final class PendingDownload: NSObject {
-	let task: DownloadTask
+	let mediaDownload: MediaDownload
 	let contentKeySession: AVContentKeySession
 	let licenseFetcher: FairPlayLicenseFetcher
-	let completion: @Sendable (DownloadTask) async throws -> Void
-	let failure: @Sendable (DownloadTask) async throws -> Void
+	let onComplete: @Sendable () async -> Void
+	let onFailure: @Sendable () async -> Void
 
 	var mediaLocation: URL?
 	var licenseLocation: URL?
 	var needsLicense: Bool = false
 
 	init(
-		task: DownloadTask,
+		mediaDownload: MediaDownload,
 		asset: AVURLAsset,
 		licenseQueue: DispatchQueue,
 		licenseFetcher: FairPlayLicenseFetcher,
-		completion: @escaping @Sendable (DownloadTask) async throws -> Void,
-		failure: @escaping @Sendable (DownloadTask) async throws -> Void
+		onComplete: @escaping @Sendable () async -> Void,
+		onFailure: @escaping @Sendable () async -> Void
 	) {
-		self.task = task
+		self.mediaDownload = mediaDownload
 		self.contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
 		self.licenseFetcher = licenseFetcher
-		self.completion = completion
-		self.failure = failure
+		self.onComplete = onComplete
+		self.onFailure = onFailure
 		super.init()
-		
+
 		contentKeySession.setDelegate(self, queue: licenseQueue)
 		contentKeySession.addContentKeyRecipient(asset)
 	}
-	
-	private func store(_ license: Data) throws {
+
+	fileprivate func store(_ license: Data) throws {
 		let licenseDirectory = FileManager.default
 			.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
 			.appendingPathComponent("DownloadedLicenses", isDirectory: true)
-		
+
 		try FileManager.default.createDirectory(at: licenseDirectory, withIntermediateDirectories: true)
-		
-		let url = licenseDirectory.appendingPathComponent("\(task.id).key")
+
+		let url = licenseDirectory.appendingPathComponent("\(mediaDownload.task.id).key")
 		try license.write(to: url, options: .atomic)
-		
+
 		licenseLocation = url
 	}
 }
-
 
 // MARK: - AVContentKeySessionDelegate
 

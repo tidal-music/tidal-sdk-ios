@@ -18,7 +18,7 @@ final class FairPlayLicenseFetcher {
 	func getLicense(for keyRequest: AVPersistableContentKeyRequest) async throws -> Data {
 		let spc = try await createSpc(keyRequest: keyRequest)
 		let license = try await fetchLicense(spc: spc)
-		
+
 		return try keyRequest.persistableContentKey(fromKeyVendorResponse: license)
 	}
 }
@@ -34,7 +34,7 @@ private extension FairPlayLicenseFetcher {
 		if let certificate {
 			return certificate
 		}
-		
+
 		let data = try await httpClient.get(url: Self.certificateURL, headers: [:])
 		self.certificate = data
 		return data
