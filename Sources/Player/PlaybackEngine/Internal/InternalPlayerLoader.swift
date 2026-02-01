@@ -1,18 +1,15 @@
-import Auth
 import AVFoundation
 import Foundation
 
 // MARK: - InternalPlayerLoader
 
-typealias MainPlayerType = GenericMediaPlayer & UCMediaPlayer & VideoPlayer
+typealias MainPlayerType = GenericMediaPlayer & VideoPlayer
 
 // MARK: - InternalPlayerLoader
 
 final class InternalPlayerLoader: PlayerLoader {
 	private let configuration: Configuration
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
-
-	private let credentialsProvider: CredentialsProvider
 
 	private let featureFlagProvider: FeatureFlagProvider
 
@@ -31,13 +28,11 @@ final class InternalPlayerLoader: PlayerLoader {
 		with configuration: Configuration,
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
-		credentialsProvider: CredentialsProvider,
 		mainPlayer: MainPlayerType.Type,
 		externalPlayers: [GenericMediaPlayer.Type]
 	) {
 		self.configuration = configuration
 		fairPlayLicenseFetcher = fairplayLicenseFetcher
-		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
 
 		let fileManager = PlayerWorld.fileManagerClient
@@ -143,16 +138,21 @@ final class InternalPlayerLoader: PlayerLoader {
 				isOfflined: false,
 				type: playbackInfo.productType
 			)
-			return await loadTrack(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: player)
-		case .VIDEO:
-			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: mainPlayer)
-		case .UC:
-			return try await loadUC(
+			return await loadTrack(
 				using: playbackInfo,
-				with: streamingSessionId,
-				and: loudnessNormalizer,
+				with: loudnessNormalizer,
+				and: licenseLoader,
+				player: player
+			)
+		case .VIDEO:
+			return await loadVideo(
+				using: playbackInfo,
+				with: loudnessNormalizer,
+				and: licenseLoader,
 				player: mainPlayer
 			)
+		case .UC:
+			return await loadLocalFile( using: playbackInfo, with: loudnessNormalizer, player: mainPlayer)
 		}
 	}
 
@@ -223,35 +223,22 @@ private extension InternalPlayerLoader {
 		)
 	}
 
-	func loadUC(
+	func loadLocalFile(
 		using playbackInfo: PlaybackInfo,
-		with streamingSessionId: String,
-		and loudnessNormalizer: LoudnessNormalizer?,
-		player: UCMediaPlayer
-	) async throws -> Asset {
-		do {
-			let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-				loudnessNormalizationMode: loudnessNormalizationMode,
-				loudnessNormalizer: loudnessNormalizer
-			)
+		with loudnessNormalizer: LoudnessNormalizer?,
+		player: GenericMediaPlayer
+	) async -> Asset {
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
+			loudnessNormalizationMode: loudnessNormalizationMode,
+			loudnessNormalizer: loudnessNormalizer
+		)
 
-			let token: String = try await credentialsProvider.getAuthBearerToken()
-
-			let headers: [String: String] = [
-				"Authorization": token,
-				"X-Tidal-Streaming-Session-Id": streamingSessionId,
-			]
-
-			return await player.loadUC(
-				playbackInfo.url,
-				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-				headers: headers
-			)
-
-		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.loadUCFailed(error: error))
-			throw error
-		}
+		return await player.load(
+			playbackInfo.url,
+			cacheKey: nil,
+			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+			and: nil
+		)
 	}
 
 	func getPlayer(

@@ -35,22 +35,21 @@ final class PlaybackInfoFetcher {
 	) async throws -> PlaybackInfo {
 		switch mediaProduct.productType {
 		case .TRACK:
-			try await getTrackPlaybackInfo(
+			return try await getTrackPlaybackInfo(
 				trackId: mediaProduct.productId,
 				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
 		case .VIDEO:
-			try await getVideoPlaybackInfo(
+			return try await getVideoPlaybackInfo(
 				videoId: mediaProduct.productId,
 				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
 		case let .UC(url):
-			await getUCPlaybackInfo(
+			return getLocalPlaybackInfo(
 				trackId: mediaProduct.productId,
 				trackURL: url,
-				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
 		}
@@ -327,13 +326,38 @@ private extension PlaybackInfoFetcher {
 
 
 
-	func getUCPlaybackInfo(
+	func getLocalPlaybackInfo(
 		trackId: String,
 		trackURL: URL,
-		playbackMode: PlaybackMode,
 		streamingSessionId: String
-	) async -> PlaybackInfo {
-		PlaybackInfo(
+	) -> PlaybackInfo {
+		guard trackURL.isFileURL else {
+			return PlaybackInfo(
+				productType: .TRACK,
+				productId: trackId,
+				streamType: .ON_DEMAND,
+				assetPresentation: .FULL,
+				audioMode: .STEREO,
+				audioQuality: .LOW,
+				audioCodec: nil,
+				audioSampleRate: nil,
+				audioBitDepth: nil,
+				videoQuality: nil,
+				streamingSessionId: streamingSessionId,
+				contentHash: "",
+				mediaType: MediaTypes.HLS,
+				url: trackURL,
+				licenseSecurityToken: nil,
+				albumReplayGain: nil,
+				albumPeakAmplitude: nil,
+				trackReplayGain: nil,
+				trackPeakAmplitude: nil,
+				offlineRevalidateAt: nil,
+				offlineValidUntil: nil
+			)
+		}
+
+		return PlaybackInfo(
 			productType: .UC(url: trackURL),
 			productId: trackId,
 			streamType: .ON_DEMAND,

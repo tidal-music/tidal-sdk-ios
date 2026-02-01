@@ -1,4 +1,3 @@
-import Auth
 @testable import Player
 import XCTest
 
@@ -28,7 +27,6 @@ final class InternalPlayerLoaderTests: XCTestCase {
 			with: Configuration.mock(),
 			and: fairPlayLicenseFetcher,
 			featureFlagProvider: FeatureFlagProvider.mock,
-			credentialsProvider: CredentialsProviderMock(),
 			mainPlayer: PlayerMock.self,
 			externalPlayers: []
 		)
