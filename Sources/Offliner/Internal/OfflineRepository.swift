@@ -1,5 +1,6 @@
 import Foundation
 import GRDB
+import TidalAPI
 
 enum MediaType: String {
 	case tracks
@@ -13,18 +14,14 @@ enum CollectionType: String {
 
 struct OfflineMediaItem {
 	let id: String
-	let mediaType: MediaType
-	let resourceId: String
-	let metadata: String
+	let item: ItemMetadata
 	let mediaURL: URL
 	let licenseURL: URL?
 }
 
 struct OfflineCollection {
 	let id: String
-	let collectionType: CollectionType
-	let resourceId: String
-	let metadata: String
+	let collection: CollectionMetadata
 }
 
 struct OfflineCollectionItem {
@@ -41,16 +38,12 @@ final class OfflineRepository {
 	}
 
 	func storeMediaItem(
-		id: String,
-		mediaType: MediaType,
-		resourceId: String,
-		metadata: String,
+		task: StoreItemTask,
 		mediaURL: URL,
-		licenseURL: URL?,
-		collection: String,
-		volume: Int,
-		position: Int
+		licenseURL: URL?
 	) throws {
+		let (mediaType, metadataJson) = try task.item.serialize()
+
 		let mediaBookmark = try mediaURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 		let licenseBookmark = try licenseURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
@@ -60,7 +53,7 @@ final class OfflineRepository {
 					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark)
 					VALUES (?, ?, ?, ?, ?, ?)
 					""",
-				arguments: [id, mediaType.rawValue, resourceId, metadata, mediaBookmark, licenseBookmark]
+				arguments: [task.id, mediaType.rawValue, task.item.resourceId, metadataJson, mediaBookmark, licenseBookmark]
 			)
 
 			try database.execute(
@@ -68,26 +61,23 @@ final class OfflineRepository {
 					INSERT INTO offline_item_relationship (collection, member, volume, position)
 					VALUES (?, ?, ?, ?)
 					""",
-				arguments: [collection, id, volume, position]
+				arguments: [task.collectionId, task.id, task.volume, task.index]
 			)
 
 			return .commit
 		}
 	}
 
-	func storeCollection(
-		id: String,
-		collectionType: CollectionType,
-		resourceId: String,
-		metadata: String
-	) throws {
+	func storeCollection(task: StoreCollectionTask) throws {
+		let (collectionType, metadataJson) = try task.collection.serialize()
+
 		try databaseQueue.write { database in
 			try database.execute(
 				sql: """
 					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark)
 					VALUES (?, ?, ?, ?, NULL, NULL)
 					""",
-				arguments: [id, collectionType.rawValue, resourceId, metadata]
+				arguments: [task.id, collectionType.rawValue, task.collection.resourceId, metadataJson]
 			)
 		}
 	}
@@ -122,11 +112,11 @@ final class OfflineRepository {
 
 			guard let row else { return nil }
 
+			let mediaType = MediaType(rawValue: row["resource_type"])!
+
 			return OfflineMediaItem(
 				id: row["id"],
-				mediaType: MediaType(rawValue: row["resource_type"])!,
-				resourceId: row["resource_id"],
-				metadata: row["metadata"],
+				item: try ItemMetadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 				mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
 				licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database)
 			)
@@ -147,11 +137,11 @@ final class OfflineRepository {
 
 			guard let row else { return nil }
 
+			let collectionType = CollectionType(rawValue: row["resource_type"])!
+
 			return OfflineCollection(
 				id: row["id"],
-				collectionType: CollectionType(rawValue: row["resource_type"])!,
-				resourceId: row["resource_id"],
-				metadata: row["metadata"]
+				collection: try CollectionMetadata.deserialize(collectionType: collectionType, json: row["metadata"])
 			)
 		}
 	}
@@ -170,11 +160,11 @@ final class OfflineRepository {
 			)
 
 			return try rows.map { row in
-				OfflineMediaItem(
+				let mediaType = MediaType(rawValue: row["resource_type"])!
+
+				return OfflineMediaItem(
 					id: row["id"],
-					mediaType: MediaType(rawValue: row["resource_type"])!,
-					resourceId: row["resource_id"],
-					metadata: row["metadata"],
+					item: try ItemMetadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 					mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
 					licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database)
 				)
@@ -195,12 +185,12 @@ final class OfflineRepository {
 				arguments: [collectionType.rawValue]
 			)
 
-			return rows.map { row in
-				OfflineCollection(
+			return try rows.map { row in
+				let collectionType = CollectionType(rawValue: row["resource_type"])!
+
+				return OfflineCollection(
 					id: row["id"],
-					collectionType: CollectionType(rawValue: row["resource_type"])!,
-					resourceId: row["resource_id"],
-					metadata: row["metadata"]
+					collection: try CollectionMetadata.deserialize(collectionType: collectionType, json: row["metadata"])
 				)
 			}
 		}
@@ -223,12 +213,12 @@ final class OfflineRepository {
 			)
 
 			return try rows.map { row in
-				OfflineCollectionItem(
+				let mediaType = MediaType(rawValue: row["resource_type"])!
+
+				return OfflineCollectionItem(
 					item: OfflineMediaItem(
 						id: row["id"],
-						mediaType: MediaType(rawValue: row["resource_type"])!,
-						resourceId: row["resource_id"],
-						metadata: row["metadata"],
+						item: try ItemMetadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 						mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
 						licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database)
 					),
@@ -239,6 +229,70 @@ final class OfflineRepository {
 		}
 	}
 }
+
+// MARK: - ItemMetadata Serialization
+
+private extension ItemMetadata {
+	func serialize() throws -> (MediaType, String) {
+		let encoder = JSONEncoder()
+
+		switch self {
+		case .track(let track):
+			let data = try encoder.encode(track)
+			let json = String(data: data, encoding: .utf8)!
+			return (.tracks, json)
+		case .video(let video):
+			let data = try encoder.encode(video)
+			let json = String(data: data, encoding: .utf8)!
+			return (.videos, json)
+		}
+	}
+
+	static func deserialize(mediaType: MediaType, json: String) throws -> ItemMetadata {
+		let decoder = JSONDecoder()
+		let data = json.data(using: .utf8)!
+
+		switch mediaType {
+		case .tracks:
+			return .track(try decoder.decode(TracksResourceObject.self, from: data))
+		case .videos:
+			return .video(try decoder.decode(VideosResourceObject.self, from: data))
+		}
+	}
+}
+
+// MARK: - CollectionMetadata Serialization
+
+private extension CollectionMetadata {
+	func serialize() throws -> (CollectionType, String) {
+		let encoder = JSONEncoder()
+
+		switch self {
+		case .album(let album):
+			let data = try encoder.encode(album)
+			let json = String(data: data, encoding: .utf8)!
+			return (.albums, json)
+		case .playlist(let playlist):
+			let data = try encoder.encode(playlist)
+			let json = String(data: data, encoding: .utf8)!
+			return (.playlists, json)
+		}
+	}
+
+	static func deserialize(collectionType: CollectionType, json: String) throws -> CollectionMetadata {
+		let decoder = JSONDecoder()
+		let data = json.data(using: .utf8)!
+
+		switch collectionType {
+		case .albums:
+			return .album(try decoder.decode(AlbumsResourceObject.self, from: data))
+		case .playlists:
+			return .playlist(try decoder.decode(PlaylistsResourceObject.self, from: data))
+		}
+	}
+}
+
+// MARK: - OfflineRepository Helpers
 
 private extension OfflineRepository {
 	private func resolveBookmark(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL {

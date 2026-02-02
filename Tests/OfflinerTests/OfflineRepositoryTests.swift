@@ -1,5 +1,6 @@
 @testable import Offliner
 import GRDB
+import TidalAPI
 import XCTest
 
 final class OfflineRepositoryTests: XCTestCase {
@@ -40,8 +41,10 @@ final class OfflineRepositoryTests: XCTestCase {
 		let collection = try repository.getCollection(collectionType: .albums, resourceId: resourceId)
 
 		XCTAssertNotNil(collection)
-		XCTAssertEqual(collection?.resourceId, resourceId)
-		XCTAssertEqual(collection?.collectionType, .albums)
+		XCTAssertEqual(collection?.collection.resourceId, resourceId)
+		if case .album = collection?.collection {} else {
+			XCTFail("Expected album collection type")
+		}
 	}
 
 	func testStoreAndGetMediaItem() throws {
@@ -59,7 +62,7 @@ final class OfflineRepositoryTests: XCTestCase {
 		let mediaItem = try repository.getMediaItem(mediaType: .tracks, resourceId: resourceId)
 
 		XCTAssertNotNil(mediaItem)
-		XCTAssertEqual(mediaItem?.resourceId, resourceId)
+		XCTAssertEqual(mediaItem?.item.resourceId, resourceId)
 		XCTAssertEqual(mediaItem?.mediaURL.standardizedFileURL, mediaURL.standardizedFileURL)
 		XCTAssertEqual(mediaItem?.licenseURL?.standardizedFileURL, licenseURL.standardizedFileURL)
 	}
@@ -99,9 +102,9 @@ final class OfflineRepositoryTests: XCTestCase {
 		let items = try repository.getCollectionItems(collectionType: .albums, resourceId: collectionResourceId)
 
 		XCTAssertEqual(items.count, 2)
-		XCTAssertEqual(items[0].item.resourceId, "track-2")
+		XCTAssertEqual(items[0].item.item.resourceId, "track-2")
 		XCTAssertEqual(items[0].position, 1)
-		XCTAssertEqual(items[1].item.resourceId, "track-1")
+		XCTAssertEqual(items[1].item.item.resourceId, "track-1")
 		XCTAssertEqual(items[1].position, 2)
 	}
 
@@ -138,12 +141,16 @@ final class OfflineRepositoryTests: XCTestCase {
 		type: CollectionType = .albums,
 		resourceId: String = "album-123"
 	) throws {
-		try repository.storeCollection(
-			id: id,
-			collectionType: type,
-			resourceId: resourceId,
-			metadata: "{}"
-		)
+		let collection: CollectionMetadata
+		switch type {
+		case .albums:
+			collection = .album(AlbumsResourceObject(id: resourceId, type: "albums"))
+		case .playlists:
+			collection = .playlist(PlaylistsResourceObject(id: resourceId, type: "playlists"))
+		}
+
+		let task = StoreCollectionTask(id: id, collection: collection)
+		try repository.storeCollection(task: task)
 	}
 
 	private func insertMediaItem(
@@ -156,17 +163,16 @@ final class OfflineRepositoryTests: XCTestCase {
 		volume: Int = 1,
 		position: Int = 1
 	) throws {
+		let item: ItemMetadata
+		switch type {
+		case .tracks:
+			item = .track(TracksResourceObject(id: resourceId, type: "tracks"))
+		case .videos:
+			item = .video(VideosResourceObject(id: resourceId, type: "videos"))
+		}
+
 		let url = try mediaURL ?? createTempFile(name: "\(id)-media.m4a").url
-		try repository.storeMediaItem(
-			id: id,
-			mediaType: type,
-			resourceId: resourceId,
-			metadata: "{}",
-			mediaURL: url,
-			licenseURL: licenseURL,
-			collection: collectionId,
-			volume: volume,
-			position: position
-		)
+		let task = StoreItemTask(id: id, item: item, collectionId: collectionId, volume: volume, index: position)
+		try repository.storeMediaItem(task: task, mediaURL: url, licenseURL: licenseURL)
 	}
 }

@@ -94,18 +94,11 @@ extension StoreItemHandler: AVAssetDownloadDelegate {
 			return
 		}
 
-		let task = download.task
 		do {
 			try offlineRepository.storeMediaItem(
-				id: task.id,
-				mediaType: task.item.resourceType == "videos" ? .videos : .tracks,
-				resourceId: task.item.resourceId,
-				metadata: "",
+				task: download.task,
 				mediaURL: mediaLocation,
-				licenseURL: pending.licenseLocation,
-				collection: task.collectionId,
-				volume: task.volume,
-				position: task.index
+				licenseURL: pending.licenseLocation
 			)
 			download.updateState(.completed)
 			Task { await pending.onComplete() }
@@ -188,7 +181,7 @@ extension PendingDownload: AVContentKeySessionDelegate {
 		needsLicense = true
 
 		do {
-			try keyRequest.respondByRequestingPersistableContentKeyRequestAndReturnError()
+			try keyRequest.respondByRequestingPersistableContentKeyRequest()
 		} catch {
 			keyRequest.processContentKeyResponseError(error)
 		}
