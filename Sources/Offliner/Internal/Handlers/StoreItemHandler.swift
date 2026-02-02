@@ -4,6 +4,7 @@ import CoreMedia
 import Foundation
 
 final class StoreItemHandler: NSObject {
+	private let backendRepository: BackendRepository
 	private let offlineRepository: OfflineRepository
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
 	private var licenseQueue: DispatchQueue
@@ -11,7 +12,8 @@ final class StoreItemHandler: NSObject {
 
 	private var pendingByUrlSessionTask: [URLSessionTask: PendingDownload] = [:]
 
-	init(offlineRepository: OfflineRepository, credentialsProvider: CredentialsProvider) {
+	init(backendRepository: BackendRepository, offlineRepository: OfflineRepository, credentialsProvider: CredentialsProvider) {
+		self.backendRepository = backendRepository
 		self.offlineRepository = offlineRepository
 		self.fairPlayLicenseFetcher = FairPlayLicenseFetcher(credentialsProvider: credentialsProvider)
 		self.licenseQueue = DispatchQueue(label: "com.tidal.offliner.license", qos: .userInitiated)
@@ -24,28 +26,34 @@ final class StoreItemHandler: NSObject {
 		)
 	}
 
-	func start(
-		_ mediaDownload: MediaDownload,
-		onComplete: @escaping @Sendable () async -> Void,
-		onFailure: @escaping @Sendable () async -> Void
-	) {
+	func start(_ download: Download, onFinished: @escaping @Sendable () async -> Void) async {
+		let task = download.task
+		do {
+			try await backendRepository.updateTask(taskId: task.id, state: .inProgress)
+			download.updateState(.inProgress)
+		} catch {
+			await onFinished()
+			return
+		}
+
 		let asset = AVURLAsset(url: URL(string: "http://tidal.com/manifest.m3u8")!)
 		let pending = PendingDownload(
-			mediaDownload: mediaDownload,
+			download: download,
 			asset: asset,
 			licenseQueue: licenseQueue,
 			licenseFetcher: fairPlayLicenseFetcher,
-			onComplete: onComplete,
-			onFailure: onFailure
+			backendRepository: backendRepository,
+			offlineRepository: offlineRepository,
+			onFinished: onFinished
 		)
 
 		guard let urlSessionTask = downloadSession.makeAssetDownloadTask(
 			asset: asset,
-			assetTitle: mediaDownload.task.id,
+			assetTitle: task.id,
 			assetArtworkData: nil,
 			options: nil
 		) else {
-			Task { await onFailure() }
+			pending.fail()
 			return
 		}
 
@@ -74,38 +82,12 @@ extension StoreItemHandler: AVAssetDownloadDelegate {
 			return
 		}
 
-		let download = pending.mediaDownload
-
 		if error != nil {
-			download.updateState(.failed)
-			Task { await pending.onFailure() }
+			pending.fail()
 			return
 		}
 
-		guard let mediaLocation = pending.mediaLocation else {
-			download.updateState(.failed)
-			Task { await pending.onFailure() }
-			return
-		}
-
-		if pending.needsLicense && pending.licenseLocation == nil {
-			download.updateState(.failed)
-			Task { await pending.onFailure() }
-			return
-		}
-
-		do {
-			try offlineRepository.storeMediaItem(
-				task: download.task,
-				mediaURL: mediaLocation,
-				licenseURL: pending.licenseLocation
-			)
-			download.updateState(.completed)
-			Task { await pending.onComplete() }
-		} catch {
-			download.updateState(.failed)
-			Task { await pending.onFailure() }
-		}
+		pending.complete()
 	}
 
 	func urlSession(
@@ -121,40 +103,81 @@ extension StoreItemHandler: AVAssetDownloadDelegate {
 		let expected = CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
 		let progress = expected > 0 ? loaded / expected : 0
 
-		pending.mediaDownload.updateProgress(progress)
+		pending.download.updateProgress(progress)
 	}
 }
 
 // MARK: - PendingDownload
 
 private final class PendingDownload: NSObject {
-	let mediaDownload: MediaDownload
+	let download: Download
 	let contentKeySession: AVContentKeySession
 	let licenseFetcher: FairPlayLicenseFetcher
-	let onComplete: @Sendable () async -> Void
-	let onFailure: @Sendable () async -> Void
+	let backendRepository: BackendRepository
+	let offlineRepository: OfflineRepository
+	let onFinished: @Sendable () async -> Void
 
 	var mediaLocation: URL?
 	var licenseLocation: URL?
 	var needsLicense: Bool = false
 
+	private var task: StoreItemTask { download.task }
+
 	init(
-		mediaDownload: MediaDownload,
+		download: Download,
 		asset: AVURLAsset,
 		licenseQueue: DispatchQueue,
 		licenseFetcher: FairPlayLicenseFetcher,
-		onComplete: @escaping @Sendable () async -> Void,
-		onFailure: @escaping @Sendable () async -> Void
+		backendRepository: BackendRepository,
+		offlineRepository: OfflineRepository,
+		onFinished: @escaping @Sendable () async -> Void
 	) {
-		self.mediaDownload = mediaDownload
+		self.download = download
 		self.contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
 		self.licenseFetcher = licenseFetcher
-		self.onComplete = onComplete
-		self.onFailure = onFailure
+		self.backendRepository = backendRepository
+		self.offlineRepository = offlineRepository
+		self.onFinished = onFinished
 		super.init()
 
 		contentKeySession.setDelegate(self, queue: licenseQueue)
 		contentKeySession.addContentKeyRecipient(asset)
+	}
+
+	func complete() {
+		guard let mediaLocation else {
+			fail()
+			return
+		}
+
+		if needsLicense && licenseLocation == nil {
+			fail()
+			return
+		}
+
+		Task {
+			do {
+				try offlineRepository.storeMediaItem(
+					task: task,
+					mediaURL: mediaLocation,
+					licenseURL: licenseLocation
+				)
+				try await backendRepository.updateTask(taskId: task.id, state: .completed)
+				download.updateState(.completed)
+			} catch {
+				try? await backendRepository.updateTask(taskId: task.id, state: .failed)
+				download.updateState(.failed)
+			}
+			await onFinished()
+		}
+	}
+
+	func fail() {
+		Task {
+			try? await backendRepository.updateTask(taskId: task.id, state: .failed)
+			download.updateState(.failed)
+			await onFinished()
+		}
 	}
 
 	fileprivate func store(_ license: Data) throws {
@@ -164,7 +187,7 @@ private final class PendingDownload: NSObject {
 
 		try FileManager.default.createDirectory(at: licenseDirectory, withIntermediateDirectories: true)
 
-		let url = licenseDirectory.appendingPathComponent("\(mediaDownload.task.id).key")
+		let url = licenseDirectory.appendingPathComponent("\(task.id).key")
 		try license.write(to: url, options: .atomic)
 
 		licenseLocation = url
