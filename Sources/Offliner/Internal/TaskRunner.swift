@@ -61,10 +61,10 @@ actor TaskRunner {
 			case .storeItem:
 				Task { [weak self] in
 					guard let download = task.download else {
-						try? await self?.finalize(task);
+						try? await self?.finalize(task)
 						return
 					}
-					
+
 					await self?.storeItemHandler.start(download) { [weak self] in
 						try? await self?.finalize(task)
 					}
