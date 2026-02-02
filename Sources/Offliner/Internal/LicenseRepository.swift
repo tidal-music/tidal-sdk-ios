@@ -2,7 +2,7 @@ import Auth
 import AVFoundation
 import Foundation
 
-final class FairPlayLicenseFetcher {
+final class LicenseRepository {
 	private static let certificateURL = URL(string: "https://fp.fa.tidal.com/certificate")!
 	private static let licenseURL = URL(string: "https://fp.fa.tidal.com/license")!
 
@@ -23,7 +23,7 @@ final class FairPlayLicenseFetcher {
 	}
 }
 
-private extension FairPlayLicenseFetcher {
+private extension LicenseRepository {
 	func createSpc(keyRequest: AVContentKeyRequest) async throws -> Data {
 		let keyId = try keyRequest.getKeyId()
 		let certificate = try await getCertificate()
@@ -42,7 +42,7 @@ private extension FairPlayLicenseFetcher {
 
 	func fetchLicense(spc: Data) async throws -> Data {
 		guard let token = try await credentialsProvider.getCredentials().token else {
-			throw FairPlayLicenseFetcherError.missingAccessToken
+			throw LicenseRepositoryError.missingAccessToken
 		}
 
 		let data = try await httpClient.post(
@@ -117,7 +117,7 @@ private enum HttpClientError: Error {
 	case serverError(statusCode: Int)
 }
 
-enum FairPlayLicenseFetcherError: Error {
+enum LicenseRepositoryError: Error {
 	case emptyLicensePayload
 	case missingAccessToken
 	case licenseRequestFailed
@@ -131,7 +131,7 @@ extension AVContentKeyRequest {
 			let url = URL(string: identifier),
 			let keyId = url.host?.data(using: .utf8)
 		else {
-			throw FairPlayLicenseFetcherError.invalidKeyIdentifier
+			throw LicenseRepositoryError.invalidKeyIdentifier
 		}
 		return keyId
 	}
@@ -148,7 +148,7 @@ extension AVContentKeyRequest {
 				} else if let data {
 					continuation.resume(returning: data)
 				} else {
-					continuation.resume(throwing: FairPlayLicenseFetcherError.emptyLicensePayload)
+					continuation.resume(throwing: LicenseRepositoryError.emptyLicensePayload)
 				}
 			}
 		}

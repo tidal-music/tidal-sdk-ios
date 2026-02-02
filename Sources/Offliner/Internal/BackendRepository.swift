@@ -9,53 +9,21 @@ struct ItemKey: Hashable {
 	let id: String
 }
 
-// MARK: - ItemMetadata
+// MARK: - ResourceType
 
-public enum ItemMetadata {
-	case track(TracksResourceObject)
-	case video(VideosResourceObject)
-
-	public var resourceType: String {
-		switch self {
-		case .track(let obj): return obj.type
-		case .video(let obj): return obj.type
-		}
-	}
-
-	public var resourceId: String {
-		switch self {
-		case .track(let obj): return obj.id
-		case .video(let obj): return obj.id
-		}
-	}
-}
-
-// MARK: - CollectionMetadata
-
-enum CollectionMetadata {
-	case album(AlbumsResourceObject)
-	case playlist(PlaylistsResourceObject)
-
-	var resourceType: String {
-		switch self {
-		case .album(let obj): return obj.type
-		case .playlist(let obj): return obj.type
-		}
-	}
-
-	var resourceId: String {
-		switch self {
-		case .album(let obj): return obj.id
-		case .playlist(let obj): return obj.id
-		}
-	}
+enum ResourceType {
+	case track
+	case video
+	case album
+	case playlist
+	case userCollection
 }
 
 // MARK: - Task Types
 
 struct StoreItemTask {
 	let id: String
-	let item: ItemMetadata
+	let metadata: OfflineMediaItem.Metadata
 	let collectionId: String
 	let volume: Int
 	let index: Int
@@ -63,17 +31,17 @@ struct StoreItemTask {
 
 struct StoreCollectionTask {
 	let id: String
-	let collection: CollectionMetadata
+	let metadata: OfflineCollection.Metadata
 }
 
 struct RemoveItemTask {
 	let id: String
-	let item: ItemMetadata
+	let metadata: OfflineMediaItem.Metadata
 }
 
 struct RemoveCollectionTask {
 	let id: String
-	let collection: CollectionMetadata
+	let metadata: OfflineCollection.Metadata
 }
 
 // MARK: - OfflineTask
@@ -146,38 +114,38 @@ final class BackendRepository {
 
 			switch attributes.action {
 			case .storeItem:
-				guard let item = items[key],
+				guard let metadata = items[key],
 					  let volume = attributes.volume,
 					  let collectionId = Optional("TODO"),
 					  let index = attributes.index else {
 					return nil
 				}
 
-				let task = StoreItemTask(id: resourceObject.id, item: item, collectionId: collectionId, volume: volume, index: index)
+				let task = StoreItemTask(id: resourceObject.id, metadata: metadata, collectionId: collectionId, volume: volume, index: index)
 				return .storeItem(task)
 
 			case .storeCollection:
-				guard let collection = collections[key] else {
+				guard let metadata = collections[key] else {
 					return nil
 				}
 
-				let task = StoreCollectionTask(id: resourceObject.id, collection: collection)
+				let task = StoreCollectionTask(id: resourceObject.id, metadata: metadata)
 				return .storeCollection(task)
 
 			case .removeItem:
-				guard let item = items[key] else {
+				guard let metadata = items[key] else {
 					return nil
 				}
 
-				let task = RemoveItemTask(id: resourceObject.id, item: item)
+				let task = RemoveItemTask(id: resourceObject.id, metadata: metadata)
 				return .removeItem(task)
 
 			case .removeCollection:
-				guard let collection = collections[key] else {
+				guard let metadata = collections[key] else {
 					return nil
 				}
 
-				let task = RemoveCollectionTask(id: resourceObject.id, collection: collection)
+				let task = RemoveCollectionTask(id: resourceObject.id, metadata: metadata)
 				return .removeCollection(task)
 			}
 		}
@@ -185,7 +153,7 @@ final class BackendRepository {
 		return (tasks, response.links.meta?.nextCursor)
 	}
 
-	func updateTask(taskId: String, state: OfflineTaskState) async throws {
+	func updateTask(taskId: String, state: Download.State) async throws {
 		let attributes = OfflineTasksUpdateOperationPayloadDataAttributes(state: mapTaskState(state))
 		let data = OfflineTasksUpdateOperationPayloadData(
 			attributes: attributes,
@@ -204,11 +172,11 @@ final class BackendRepository {
 // MARK: - Private Helpers
 
 private extension BackendRepository {
-	func buildIncludedMaps(from included: [IncludedInner]?) -> (items: [ItemKey: ItemMetadata], collections: [ItemKey: CollectionMetadata]) {
+	func buildIncludedMaps(from included: [IncludedInner]?) -> (items: [ItemKey: OfflineMediaItem.Metadata], collections: [ItemKey: OfflineCollection.Metadata]) {
 		guard let included else { return ([:], [:]) }
 
-		var items: [ItemKey: ItemMetadata] = [:]
-		var collections: [ItemKey: CollectionMetadata] = [:]
+		var items: [ItemKey: OfflineMediaItem.Metadata] = [:]
+		var collections: [ItemKey: OfflineCollection.Metadata] = [:]
 
 		for item in included {
 			switch item {
@@ -243,7 +211,7 @@ private extension BackendRepository {
 		}
 	}
 
-	func mapTaskState(_ state: OfflineTaskState) -> OfflineTasksUpdateOperationPayloadDataAttributes.State {
+	func mapTaskState(_ state: Download.State) -> OfflineTasksUpdateOperationPayloadDataAttributes.State {
 		switch state {
 		case .pending, .inProgress:
 			return .inProgress

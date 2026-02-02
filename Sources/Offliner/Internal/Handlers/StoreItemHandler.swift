@@ -5,17 +5,17 @@ import Foundation
 
 final class StoreItemHandler: NSObject {
 	private let backendRepository: BackendRepository
-	private let offlineRepository: OfflineRepository
-	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
+	private let localRepository: LocalRepository
+	private let licenseRepository: LicenseRepository
 	private var licenseQueue: DispatchQueue
 	private var downloadSession: AVAssetDownloadURLSession!
 
 	private var pendingByUrlSessionTask: [URLSessionTask: PendingDownload] = [:]
 
-	init(backendRepository: BackendRepository, offlineRepository: OfflineRepository, credentialsProvider: CredentialsProvider) {
+	init(backendRepository: BackendRepository, localRepository: LocalRepository, credentialsProvider: CredentialsProvider) {
 		self.backendRepository = backendRepository
-		self.offlineRepository = offlineRepository
-		self.fairPlayLicenseFetcher = FairPlayLicenseFetcher(credentialsProvider: credentialsProvider)
+		self.localRepository = localRepository
+		self.licenseRepository = LicenseRepository(credentialsProvider: credentialsProvider)
 		self.licenseQueue = DispatchQueue(label: "com.tidal.offliner.license", qos: .userInitiated)
 		super.init()
 
@@ -41,9 +41,9 @@ final class StoreItemHandler: NSObject {
 			download: download,
 			asset: asset,
 			licenseQueue: licenseQueue,
-			licenseFetcher: fairPlayLicenseFetcher,
+			licenseRepository: licenseRepository,
 			backendRepository: backendRepository,
-			offlineRepository: offlineRepository,
+			localRepository: localRepository,
 			onFinished: onFinished
 		)
 
@@ -112,9 +112,9 @@ extension StoreItemHandler: AVAssetDownloadDelegate {
 private final class PendingDownload: NSObject {
 	let download: Download
 	let contentKeySession: AVContentKeySession
-	let licenseFetcher: FairPlayLicenseFetcher
+	let licenseRepository: LicenseRepository
 	let backendRepository: BackendRepository
-	let offlineRepository: OfflineRepository
+	let localRepository: LocalRepository
 	let onFinished: @Sendable () async -> Void
 
 	var mediaLocation: URL?
@@ -127,16 +127,16 @@ private final class PendingDownload: NSObject {
 		download: Download,
 		asset: AVURLAsset,
 		licenseQueue: DispatchQueue,
-		licenseFetcher: FairPlayLicenseFetcher,
+		licenseRepository: LicenseRepository,
 		backendRepository: BackendRepository,
-		offlineRepository: OfflineRepository,
+		localRepository: LocalRepository,
 		onFinished: @escaping @Sendable () async -> Void
 	) {
 		self.download = download
 		self.contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
-		self.licenseFetcher = licenseFetcher
+		self.licenseRepository = licenseRepository
 		self.backendRepository = backendRepository
-		self.offlineRepository = offlineRepository
+		self.localRepository = localRepository
 		self.onFinished = onFinished
 		super.init()
 
@@ -157,7 +157,7 @@ private final class PendingDownload: NSObject {
 
 		Task {
 			do {
-				try offlineRepository.storeMediaItem(
+				try localRepository.storeMediaItem(
 					task: task,
 					mediaURL: mediaLocation,
 					licenseURL: licenseLocation
@@ -216,7 +216,7 @@ extension PendingDownload: AVContentKeySessionDelegate {
 	) {
 		Task {
 			do {
-				let license = try await licenseFetcher.getLicense(for: keyRequest)
+				let license = try await licenseRepository.getLicense(for: keyRequest)
 				try store(license)
 
 				let keyResponse = AVContentKeyResponse(fairPlayStreamingKeyResponseData: license)
