@@ -8,14 +8,19 @@ public class Download: Equatable {
 		case completed
 	}
 
+	public enum Event {
+		case state(State)
+		case progress(Double)
+	}
+
 	public var metadata: OfflineMediaItem.Metadata { task.metadata }
 	public private(set) var state: State
 	public private(set) var progress: Double = 0
 
 	let task: StoreItemTask
 
-	private var continuation: AsyncStream<Update>.Continuation?
-	public lazy var updates: AsyncStream<Update> = {
+	private var continuation: AsyncStream<Event>.Continuation?
+	public lazy var events: AsyncStream<Event> = {
 		AsyncStream { continuation in
 			self.continuation = continuation
 		}
@@ -28,7 +33,7 @@ public class Download: Equatable {
 
 	internal func updateState(_ newState: State) {
 		state = newState
-		continuation?.yield(.stateChanged(newState))
+		continuation?.yield(.state(newState))
 	}
 
 	internal func updateProgress(_ newProgress: Double) {
@@ -38,12 +43,5 @@ public class Download: Equatable {
 
 	public static func == (lhs: Download, rhs: Download) -> Bool {
 		lhs.task.id == rhs.task.id
-	}
-}
-
-public extension Download {
-	enum Update {
-		case stateChanged(State)
-		case progress(Double)
 	}
 }
