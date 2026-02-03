@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.0.60"
+    "version" : "1.0.62"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -36,6 +36,8 @@
     "name" : "contentClaims"
   }, {
     "name" : "credits"
+  }, {
+    "name" : "dspSharingLinks"
   }, {
     "name" : "dynamicModules"
   }, {
@@ -5097,6 +5099,171 @@
         }
       }
     },
+    "/dspSharingLinks" : {
+      "get" : {
+        "description" : "Retrieves multiple dspSharingLinks by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: subject",
+          "example" : "subject",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "subject"
+            }
+          }
+        }, {
+          "description" : "The id of the subject resource",
+          "in" : "query",
+          "name" : "filter[subject.id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : null
+            }
+          }
+        }, {
+          "description" : "The type of the subject resource (e.g., albums, tracks, artists)",
+          "example" : "tracks",
+          "in" : "query",
+          "name" : "filter[subject.type]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "tracks",
+              "enum" : [ "tracks", "albums", "artists" ]
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DspSharingLinks_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get multiple dspSharingLinks.",
+        "tags" : [ "dspSharingLinks" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/dspSharingLinks/{id}/relationships/subject" : {
+      "get" : {
+        "description" : "Retrieves subject relationship.",
+        "parameters" : [ {
+          "description" : "DspSharingLinks Id",
+          "example" : "QUxCVU1TOjEyMzQ1",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: subject",
+          "example" : "subject",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "subject"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DspSharingLinks_Single_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get subject relationship (\"to-one\").",
+        "tags" : [ "dspSharingLinks" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
     "/dynamicModules" : {
       "get" : {
         "description" : "Retrieves multiple dynamicModules by available filters, or without if applicable.",
@@ -8187,8 +8354,8 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "default" : "-createdAt",
               "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
+              "default" : "-createdAt",
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -9677,8 +9844,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -9771,8 +9938,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -9873,8 +10040,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -9975,8 +10142,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10077,8 +10244,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10179,8 +10346,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10281,8 +10448,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10383,8 +10550,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -10477,8 +10644,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "INCLUDE",
-            "enum" : [ "INCLUDE", "EXCLUDE" ]
+            "enum" : [ "INCLUDE", "EXCLUDE" ],
+            "default" : "INCLUDE"
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -14112,8 +14279,8 @@
             "items" : {
               "type" : "string",
               "example" : "items.addedAt",
-              "default" : "items.addedAt",
               "enum" : [ "items.addedAt", "-items.addedAt", "items.lastModifiedAt", "-items.lastModifiedAt", "items.name", "-items.name" ],
+              "default" : "items.addedAt",
               "x-enum-varnames" : [ "ItemsAddedAtAsc", "ItemsAddedAtDesc", "ItemsLastModifiedAtAsc", "ItemsLastModifiedAtDesc", "ItemsNameAsc", "ItemsNameDesc" ]
             }
           }
@@ -14490,8 +14657,8 @@
             "items" : {
               "type" : "string",
               "example" : "albums.addedAt",
-              "default" : "-albums.addedAt",
               "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
+              "default" : "-albums.addedAt",
               "x-enum-varnames" : [ "AlbumsAddedAtAsc", "AlbumsAddedAtDesc", "AlbumsArtistsNameAsc", "AlbumsArtistsNameDesc", "AlbumsReleaseDateAsc", "AlbumsReleaseDateDesc", "AlbumsTitleAsc", "AlbumsTitleDesc" ]
             }
           }
@@ -14616,6 +14783,9 @@
           "406" : {
             "$ref" : "#/components/responses/Default406Response"
           },
+          "409" : {
+            "$ref" : "#/components/responses/UserCollectionsAddMultiDataRelationship409Response"
+          },
           "415" : {
             "$ref" : "#/components/responses/Default415Response"
           },
@@ -14725,8 +14895,8 @@
             "items" : {
               "type" : "string",
               "example" : "artists.addedAt",
-              "default" : "-artists.addedAt",
               "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
+              "default" : "-artists.addedAt",
               "x-enum-varnames" : [ "ArtistsAddedAtAsc", "ArtistsAddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc" ]
             }
           }
@@ -14850,6 +15020,9 @@
           },
           "406" : {
             "$ref" : "#/components/responses/Default406Response"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/UserCollectionsAddMultiDataRelationship409Response"
           },
           "415" : {
             "$ref" : "#/components/responses/Default415Response"
@@ -15048,8 +15221,8 @@
             "items" : {
               "type" : "string",
               "example" : "playlists.addedAt",
-              "default" : "-playlists.addedAt",
               "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
+              "default" : "-playlists.addedAt",
               "x-enum-varnames" : [ "PlaylistsAddedAtAsc", "PlaylistsAddedAtDesc", "PlaylistsLastUpdatedAtAsc", "PlaylistsLastUpdatedAtDesc", "PlaylistsNameAsc", "PlaylistsNameDesc" ]
             }
           }
@@ -15145,6 +15318,9 @@
           },
           "406" : {
             "$ref" : "#/components/responses/Default406Response"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/UserCollectionsAddMultiDataRelationship409Response"
           },
           "415" : {
             "$ref" : "#/components/responses/Default415Response"
@@ -15255,8 +15431,8 @@
             "items" : {
               "type" : "string",
               "example" : "tracks.addedAt",
-              "default" : "-tracks.addedAt",
               "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
+              "default" : "-tracks.addedAt",
               "x-enum-varnames" : [ "TracksAddedAtAsc", "TracksAddedAtDesc", "TracksAlbumsTitleAsc", "TracksAlbumsTitleDesc", "TracksArtistsNameAsc", "TracksArtistsNameDesc", "TracksDurationAsc", "TracksDurationDesc", "TracksTitleAsc", "TracksTitleDesc" ]
             }
           }
@@ -15381,6 +15557,9 @@
           "406" : {
             "$ref" : "#/components/responses/Default406Response"
           },
+          "409" : {
+            "$ref" : "#/components/responses/UserCollectionsAddMultiDataRelationship409Response"
+          },
           "415" : {
             "$ref" : "#/components/responses/Default415Response"
           },
@@ -15490,8 +15669,8 @@
             "items" : {
               "type" : "string",
               "example" : "videos.addedAt",
-              "default" : "-videos.addedAt",
               "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
+              "default" : "-videos.addedAt",
               "x-enum-varnames" : [ "VideosAddedAtAsc", "VideosAddedAtDesc", "VideosArtistsNameAsc", "VideosArtistsNameDesc", "VideosDurationAsc", "VideosDurationDesc", "VideosTitleAsc", "VideosTitleDesc" ]
             }
           }
@@ -15615,6 +15794,9 @@
           },
           "406" : {
             "$ref" : "#/components/responses/Default406Response"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/UserCollectionsAddMultiDataRelationship409Response"
           },
           "415" : {
             "$ref" : "#/components/responses/Default415Response"
@@ -17223,6 +17405,16 @@
           }
         },
         "description" : "Cannot delete folder: only empty folders owned by you can be deleted."
+      },
+      "UserCollectionsAddMultiDataRelationship409Response" : {
+        "content" : {
+          "application/vnd.api+json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/UserCollectionsAddMultiDataRelationship409ResponseBody"
+            }
+          }
+        },
+        "description" : "You have reached the maximum number of items allowed for this collection. Please remove some items before adding more.; One or more items you are trying to add are already in your favorites."
       }
     },
     "schemas" : {
@@ -19742,6 +19934,102 @@
         },
         "description" : "DRM data. Absence implies no DRM."
       },
+      "DspSharingLinks_Attributes" : {
+        "type" : "object",
+        "properties" : {
+          "amazonMusic" : {
+            "$ref" : "#/components/schemas/Link_Object"
+          },
+          "appleMusic" : {
+            "$ref" : "#/components/schemas/Link_Object"
+          },
+          "spotify" : {
+            "$ref" : "#/components/schemas/Link_Object"
+          },
+          "youTubeMusic" : {
+            "$ref" : "#/components/schemas/Link_Object"
+          }
+        }
+      },
+      "DspSharingLinks_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/DspSharingLinks_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "DspSharingLinks_Relationships" : {
+        "required" : [ "subject" ],
+        "properties" : {
+          "subject" : {
+            "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
+          }
+        }
+      },
+      "DspSharingLinks_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/DspSharingLinks_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/DspSharingLinks_Relationships"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "DspSharingLinks_Single_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Resource_Identifier"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "DspSharingLinks_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/DspSharingLinks_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
       "DynamicModules_Attributes" : {
         "required" : [ "icons", "layoutType", "moduleType", "sourceType" ],
         "type" : "object",
@@ -20209,6 +20497,7 @@
               "artworks" : "#/components/schemas/Artworks_Resource_Object",
               "contentClaims" : "#/components/schemas/ContentClaims_Resource_Object",
               "credits" : "#/components/schemas/Credits_Resource_Object",
+              "dspSharingLinks" : "#/components/schemas/DspSharingLinks_Resource_Object",
               "dynamicModules" : "#/components/schemas/DynamicModules_Resource_Object",
               "dynamicPages" : "#/components/schemas/DynamicPages_Resource_Object",
               "genres" : "#/components/schemas/Genres_Resource_Object",
@@ -20259,6 +20548,8 @@
             "$ref" : "#/components/schemas/ContentClaims_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/Credits_Resource_Object"
+          }, {
+            "$ref" : "#/components/schemas/DspSharingLinks_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/DynamicModules_Resource_Object"
           }, {
@@ -20558,6 +20849,15 @@
             "type" : "string"
           }
         }
+      },
+      "Link_Object" : {
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string"
+          }
+        },
+        "description" : "A JSON:API link object"
       },
       "Links" : {
         "required" : [ "self" ],
@@ -23096,8 +23396,8 @@
             "type" : "string",
             "description" : "Integration type for Stripe onboarding",
             "example" : "REDIRECT",
-            "default" : "REDIRECT",
-            "enum" : [ "REDIRECT", "EMBEDDED" ]
+            "enum" : [ "REDIRECT", "EMBEDDED" ],
+            "default" : "REDIRECT"
           },
           "refreshUrl" : {
             "type" : "string",
@@ -24683,6 +24983,34 @@
             "$ref" : "#/components/schemas/Links"
           }
         }
+      },
+      "UserCollectionsAddMultiDataRelationship409ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "code" : {
+                  "type" : "string",
+                  "example" : "DUPLICATE_ITEMS_IN_COLLECTION",
+                  "enum" : [ "DUPLICATE_ITEMS_IN_COLLECTION", "TOO_MANY_ITEMS_IN_COLLECTION" ]
+                },
+                "detail" : {
+                  "type" : "string",
+                  "example" : "You have reached the maximum number of items allowed for this collection. Please remove some items before adding more."
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "409"
+                }
+              },
+              "required" : [ "code", "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
       },
       "UserCollectionsAlbumsRelationshipAddOperation_Payload" : {
         "required" : [ "data" ],

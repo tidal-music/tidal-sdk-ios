@@ -20,6 +20,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artworksResourceObject(ArtworksResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
+    case dspSharingLinksResourceObject(DspSharingLinksResourceObject)
     case dynamicModulesResourceObject(DynamicModulesResourceObject)
     case dynamicPagesResourceObject(DynamicPagesResourceObject)
     case genresResourceObject(GenresResourceObject)
@@ -70,6 +71,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .contentClaimsResourceObject(let value):
             try container.encode(value)
         case .creditsResourceObject(let value):
+            try container.encode(value)
+        case .dspSharingLinksResourceObject(let value):
             try container.encode(value)
         case .dynamicModulesResourceObject(let value):
             try container.encode(value)
@@ -168,6 +171,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "credits":
             let value = try CreditsResourceObject(from: decoder)
             self = .creditsResourceObject(value)
+        case "dspSharingLinks":
+            let value = try DspSharingLinksResourceObject(from: decoder)
+            self = .dspSharingLinksResourceObject(value)
         case "dynamicModules":
             let value = try DynamicModulesResourceObject(from: decoder)
             self = .dynamicModulesResourceObject(value)
@@ -274,6 +280,7 @@ extension IncludedInner: Identifiable {
         case .artworksResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
+        case .dspSharingLinksResourceObject(let value): return value.id
         case .dynamicModulesResourceObject(let value): return value.id
         case .dynamicPagesResourceObject(let value): return value.id
         case .genresResourceObject(let value): return value.id
