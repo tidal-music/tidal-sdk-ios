@@ -2,13 +2,6 @@ import Auth
 import Foundation
 import TidalAPI
 
-// MARK: - ItemKey
-
-struct ItemKey: Hashable {
-	let type: String
-	let id: String
-}
-
 // MARK: - ResourceType
 
 enum ResourceType {
@@ -98,11 +91,11 @@ final class BackendRepository {
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
 		let response = try await OfflineTasksAPITidal.offlineTasksGet(
 			pageCursor: cursor,
-			include: ["item"],
+			include: ["item", "item.album.coverArt", "item.coverArt", "item.artists"],
 			filterInstallationId: [installationId]
 		)
 
-		let (items, collections) = buildIncludedMaps(from: response.included)
+		let includedItems = IncludedItemsMap(from: response.included)
 
 		let tasks = response.data.compactMap { resourceObject -> OfflineTask? in
 			guard let attributes = resourceObject.attributes,
@@ -110,11 +103,11 @@ final class BackendRepository {
 				return nil
 			}
 
-			let key = ItemKey(type: itemData.type, id: itemData.id)
+			guard let includedItem = includedItems.get(type: itemData.type, id: itemData.id) else { return nil }
 
 			switch attributes.action {
 			case .storeItem:
-				guard let metadata = items[key],
+				guard let metadata = includedItem.mediaItemMetadata,
 					  let volume = attributes.volume,
 					  let collectionId = Optional("TODO"),
 					  let index = attributes.index else {
@@ -125,7 +118,7 @@ final class BackendRepository {
 				return .storeItem(task)
 
 			case .storeCollection:
-				guard let metadata = collections[key] else {
+				guard let metadata = includedItem.collectionMetadata else {
 					return nil
 				}
 
@@ -133,7 +126,7 @@ final class BackendRepository {
 				return .storeCollection(task)
 
 			case .removeItem:
-				guard let metadata = items[key] else {
+				guard let metadata = includedItem.mediaItemMetadata else {
 					return nil
 				}
 
@@ -141,7 +134,7 @@ final class BackendRepository {
 				return .removeItem(task)
 
 			case .removeCollection:
-				guard let metadata = collections[key] else {
+				guard let metadata = includedItem.collectionMetadata else {
 					return nil
 				}
 
@@ -172,30 +165,6 @@ final class BackendRepository {
 // MARK: - Private Helpers
 
 private extension BackendRepository {
-	func buildIncludedMaps(from included: [IncludedInner]?) -> (items: [ItemKey: OfflineMediaItem.Metadata], collections: [ItemKey: OfflineCollection.Metadata]) {
-		guard let included else { return ([:], [:]) }
-
-		var items: [ItemKey: OfflineMediaItem.Metadata] = [:]
-		var collections: [ItemKey: OfflineCollection.Metadata] = [:]
-
-		for item in included {
-			switch item {
-			case .tracksResourceObject(let track):
-				items[ItemKey(type: track.type, id: track.id)] = .track(track)
-			case .videosResourceObject(let video):
-				items[ItemKey(type: video.type, id: video.id)] = .video(video)
-			case .albumsResourceObject(let album):
-				collections[ItemKey(type: album.type, id: album.id)] = .album(album)
-			case .playlistsResourceObject(let playlist):
-				collections[ItemKey(type: playlist.type, id: playlist.id)] = .playlist(playlist)
-			default:
-				break
-			}
-		}
-
-		return (items, collections)
-	}
-
 	func mapResourceType(_ type: ResourceType) -> InstallationsOfflineInventoryItemIdentifier.ModelType {
 		switch type {
 		case .track:
@@ -219,6 +188,176 @@ private extension BackendRepository {
 			return .failed
 		case .completed:
 			return .completed
+		}
+	}
+}
+
+// MARK: - IncludedItemsMap
+
+private final class IncludedItemsMap {
+	private struct Key: Hashable {
+		let type: String
+		let id: String
+	}
+
+	private var storage: [Key: IncludedItem] = [:]
+
+	init(from included: [IncludedInner]?) {
+		guard let included else { return }
+
+		// First pass: create all IncludedItem nodes
+		for item in included {
+			switch item {
+			case .tracksResourceObject(let track):
+				add(IncludedItem(resource: .track(track)), type: track.type, id: track.id)
+			case .videosResourceObject(let video):
+				add(IncludedItem(resource: .video(video)), type: video.type, id: video.id)
+			case .albumsResourceObject(let album):
+				add(IncludedItem(resource: .album(album)), type: album.type, id: album.id)
+			case .playlistsResourceObject(let playlist):
+				add(IncludedItem(resource: .playlist(playlist)), type: playlist.type, id: playlist.id)
+			case .artworksResourceObject(let artwork):
+				add(IncludedItem(resource: .artwork(artwork)), type: artwork.type, id: artwork.id)
+			case .artistsResourceObject(let artist):
+				add(IncludedItem(resource: .artist(artist)), type: artist.type, id: artist.id)
+			default:
+				break
+			}
+		}
+
+		// Second pass: wire up relationships
+		for item in included {
+			switch item {
+			case .tracksResourceObject(let track):
+				guard let includedItem = get(type: track.type, id: track.id), let rels = track.relationships else { continue }
+				wireRelationships(for: includedItem, albums: rels.albums, artists: rels.artists, coverArt: nil)
+
+			case .videosResourceObject(let video):
+				guard let includedItem = get(type: video.type, id: video.id), let rels = video.relationships else { continue }
+				wireRelationships(for: includedItem, albums: rels.albums, artists: rels.artists, coverArt: rels.thumbnailArt)
+
+			case .albumsResourceObject(let album):
+				guard let includedItem = get(type: album.type, id: album.id), let rels = album.relationships else { continue }
+				wireRelationships(for: includedItem, albums: nil, artists: rels.artists, coverArt: rels.coverArt)
+
+			case .playlistsResourceObject(let playlist):
+				guard let includedItem = get(type: playlist.type, id: playlist.id), let rels = playlist.relationships else { continue }
+				wireRelationships(for: includedItem, albums: nil, artists: nil, coverArt: rels.coverArt)
+
+			default:
+				break
+			}
+		}
+	}
+
+	func get(type: String, id: String) -> IncludedItem? {
+		storage[Key(type: type, id: id)]
+	}
+
+	private func add(_ item: IncludedItem, type: String, id: String) {
+		storage[Key(type: type, id: id)] = item
+	}
+
+	private func wireRelationships(
+		for item: IncludedItem,
+		albums: MultiRelationshipDataDocument?,
+		artists: MultiRelationshipDataDocument?,
+		coverArt: MultiRelationshipDataDocument?
+	) {
+		if let albumData = albums?.data?.first {
+			item.album = get(type: albumData.type, id: albumData.id)
+		}
+
+		if let artistsData = artists?.data, !artistsData.isEmpty {
+			item.artists = artistsData.compactMap { artistData in
+				get(type: artistData.type, id: artistData.id)
+			}
+		}
+
+		if let coverArtData = coverArt?.data?.first {
+			item.coverArt = get(type: coverArtData.type, id: coverArtData.id)
+		}
+	}
+}
+
+// MARK: - IncludedResource
+
+private enum IncludedResource {
+	case track(TracksResourceObject)
+	case video(VideosResourceObject)
+	case album(AlbumsResourceObject)
+	case playlist(PlaylistsResourceObject)
+	case artwork(ArtworksResourceObject)
+	case artist(ArtistsResourceObject)
+}
+
+// MARK: - IncludedItem
+
+private class IncludedItem {
+	let resource: IncludedResource
+	var album: IncludedItem?
+	var coverArt: IncludedItem?
+	var artists: [IncludedItem]?
+
+	init(resource: IncludedResource) {
+		self.resource = resource
+	}
+
+	var mediaItemMetadata: OfflineMediaItem.Metadata? {
+		switch resource {
+		case .track(let track):
+			let artistObjects = artists?.compactMap { item -> ArtistsResourceObject? in
+				if case .artist(let artist) = item.resource { return artist }
+				return nil
+			} ?? []
+			let coverArtObject: ArtworksResourceObject? = {
+				if case .artwork(let artwork) = album?.coverArt?.resource { return artwork }
+				return nil
+			}()
+			let metadata = OfflineMediaItem.TrackMetadata(track: track, artists: artistObjects, coverArt: coverArtObject)
+			return .track(metadata)
+
+		case .video(let video):
+			let artistObjects = artists?.compactMap { item -> ArtistsResourceObject? in
+				if case .artist(let artist) = item.resource { return artist }
+				return nil
+			} ?? []
+			let thumbnailObject: ArtworksResourceObject? = {
+				if case .artwork(let artwork) = coverArt?.resource { return artwork }
+				return nil
+			}()
+			let metadata = OfflineMediaItem.VideoMetadata(video: video, artists: artistObjects, thumbnail: thumbnailObject)
+			return .video(metadata)
+
+		default:
+			return nil
+		}
+	}
+
+	var collectionMetadata: OfflineCollection.Metadata? {
+		switch resource {
+		case .album(let album):
+			let artistObjects = artists?.compactMap { item -> ArtistsResourceObject? in
+				if case .artist(let artist) = item.resource { return artist }
+				return nil
+			} ?? []
+			let coverArtObject: ArtworksResourceObject? = {
+				if case .artwork(let artwork) = coverArt?.resource { return artwork }
+				return nil
+			}()
+			let metadata = OfflineCollection.AlbumMetadata(album: album, artists: artistObjects, coverArt: coverArtObject)
+			return .album(metadata)
+
+		case .playlist(let playlist):
+			let coverArtObject: ArtworksResourceObject? = {
+				if case .artwork(let artwork) = coverArt?.resource { return artwork }
+				return nil
+			}()
+			let metadata = OfflineCollection.PlaylistMetadata(playlist: playlist, coverArt: coverArtObject)
+			return .playlist(metadata)
+
+		default:
+			return nil
 		}
 	}
 }

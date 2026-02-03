@@ -14,7 +14,7 @@ final class LocalRepository {
 		mediaURL: URL,
 		licenseURL: URL?
 	) throws {
-		let (mediaType, metadataJson) = try task.metadata.serialize()
+		let metadataJson = try task.metadata.serialize()
 
 		let mediaBookmark = try mediaURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 		let licenseBookmark = try licenseURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
@@ -25,7 +25,7 @@ final class LocalRepository {
 					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark)
 					VALUES (?, ?, ?, ?, ?, ?)
 					""",
-				arguments: [task.id, mediaType.rawValue, task.metadata.resourceId, metadataJson, mediaBookmark, licenseBookmark]
+				arguments: [task.id, task.resourceType, task.resourceId, metadataJson, mediaBookmark, licenseBookmark]
 			)
 
 			try database.execute(
@@ -41,7 +41,7 @@ final class LocalRepository {
 	}
 
 	func storeCollection(task: StoreCollectionTask) throws {
-		let (collectionType, metadataJson) = try task.metadata.serialize()
+		let metadataJson = try task.metadata.serialize()
 
 		try databaseQueue.write { database in
 			try database.execute(
@@ -49,7 +49,7 @@ final class LocalRepository {
 					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark)
 					VALUES (?, ?, ?, ?, NULL, NULL)
 					""",
-				arguments: [task.id, collectionType.rawValue, task.metadata.resourceId, metadataJson]
+				arguments: [task.id, task.resourceType, task.resourceId, metadataJson]
 			)
 		}
 	}
@@ -202,28 +202,53 @@ final class LocalRepository {
 	}
 }
 
-// MARK: - OfflineMediaItem.Metadata Serialization
+// MARK: - Task Extensions
 
-private extension OfflineMediaItem.Metadata {
+private extension StoreItemTask {
 	var resourceId: String {
-		switch self {
-		case .track(let obj): return obj.id
-		case .video(let obj): return obj.id
+		switch metadata {
+		case .track(let metadata): return metadata.track.id
+		case .video(let metadata): return metadata.video.id
 		}
 	}
 
-	func serialize() throws -> (OfflineMediaItemType, String) {
+	var resourceType: String {
+		switch metadata {
+		case .track: return OfflineMediaItemType.tracks.rawValue
+		case .video: return OfflineMediaItemType.videos.rawValue
+		}
+	}
+}
+
+private extension StoreCollectionTask {
+	var resourceId: String {
+		switch metadata {
+		case .album(let metadata): return metadata.album.id
+		case .playlist(let metadata): return metadata.playlist.id
+		}
+	}
+
+	var resourceType: String {
+		switch metadata {
+		case .album: return OfflineCollectionType.albums.rawValue
+		case .playlist: return OfflineCollectionType.playlists.rawValue
+		}
+	}
+}
+
+// MARK: - OfflineMediaItem.Metadata Serialization
+
+private extension OfflineMediaItem.Metadata {
+	func serialize() throws -> String {
 		let encoder = JSONEncoder()
 
 		switch self {
-		case .track(let track):
-			let data = try encoder.encode(track)
-			let json = String(data: data, encoding: .utf8)!
-			return (.tracks, json)
-		case .video(let video):
-			let data = try encoder.encode(video)
-			let json = String(data: data, encoding: .utf8)!
-			return (.videos, json)
+		case .track(let metadata):
+			let data = try encoder.encode(metadata)
+			return String(data: data, encoding: .utf8)!
+		case .video(let metadata):
+			let data = try encoder.encode(metadata)
+			return String(data: data, encoding: .utf8)!
 		}
 	}
 
@@ -233,9 +258,9 @@ private extension OfflineMediaItem.Metadata {
 
 		switch mediaType {
 		case .tracks:
-			return .track(try decoder.decode(TracksResourceObject.self, from: data))
+			return .track(try decoder.decode(OfflineMediaItem.TrackMetadata.self, from: data))
 		case .videos:
-			return .video(try decoder.decode(VideosResourceObject.self, from: data))
+			return .video(try decoder.decode(OfflineMediaItem.VideoMetadata.self, from: data))
 		}
 	}
 }
@@ -243,25 +268,16 @@ private extension OfflineMediaItem.Metadata {
 // MARK: - OfflineCollection.Metadata Serialization
 
 private extension OfflineCollection.Metadata {
-	var resourceId: String {
-		switch self {
-		case .album(let obj): return obj.id
-		case .playlist(let obj): return obj.id
-		}
-	}
-
-	func serialize() throws -> (OfflineCollectionType, String) {
+	func serialize() throws -> String {
 		let encoder = JSONEncoder()
 
 		switch self {
-		case .album(let album):
-			let data = try encoder.encode(album)
-			let json = String(data: data, encoding: .utf8)!
-			return (.albums, json)
-		case .playlist(let playlist):
-			let data = try encoder.encode(playlist)
-			let json = String(data: data, encoding: .utf8)!
-			return (.playlists, json)
+		case .album(let metadata):
+			let data = try encoder.encode(metadata)
+			return String(data: data, encoding: .utf8)!
+		case .playlist(let metadata):
+			let data = try encoder.encode(metadata)
+			return String(data: data, encoding: .utf8)!
 		}
 	}
 
@@ -271,9 +287,9 @@ private extension OfflineCollection.Metadata {
 
 		switch collectionType {
 		case .albums:
-			return .album(try decoder.decode(AlbumsResourceObject.self, from: data))
+			return .album(try decoder.decode(OfflineCollection.AlbumMetadata.self, from: data))
 		case .playlists:
-			return .playlist(try decoder.decode(PlaylistsResourceObject.self, from: data))
+			return .playlist(try decoder.decode(OfflineCollection.PlaylistMetadata.self, from: data))
 		}
 	}
 }

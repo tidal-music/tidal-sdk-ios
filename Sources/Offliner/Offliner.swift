@@ -16,9 +16,21 @@ public enum OfflineCollectionType: String {
 }
 
 public struct OfflineMediaItem {
+	public struct TrackMetadata: Codable {
+		public let track: TracksResourceObject
+		public let artists: [ArtistsResourceObject]
+		public let coverArt: ArtworksResourceObject?
+	}
+
+	public struct VideoMetadata: Codable {
+		public let video: VideosResourceObject
+		public let artists: [ArtistsResourceObject]
+		public let thumbnail: ArtworksResourceObject?
+	}
+
 	public enum Metadata {
-		case track(TracksResourceObject)
-		case video(VideosResourceObject)
+		case track(TrackMetadata)
+		case video(VideoMetadata)
 	}
 
 	public let id: String
@@ -28,9 +40,20 @@ public struct OfflineMediaItem {
 }
 
 public struct OfflineCollection {
+	public struct AlbumMetadata: Codable {
+		public let album: AlbumsResourceObject
+		public let artists: [ArtistsResourceObject]
+		public let coverArt: ArtworksResourceObject?
+	}
+
+	public struct PlaylistMetadata: Codable {
+		public let playlist: PlaylistsResourceObject
+		public let coverArt: ArtworksResourceObject?
+	}
+
 	public enum Metadata {
-		case album(AlbumsResourceObject)
-		case playlist(PlaylistsResourceObject)
+		case album(AlbumMetadata)
+		case playlist(PlaylistMetadata)
 	}
 
 	public let id: String
