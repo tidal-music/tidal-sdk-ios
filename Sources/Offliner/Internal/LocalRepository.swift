@@ -12,20 +12,22 @@ final class LocalRepository {
 	func storeMediaItem(
 		task: StoreItemTask,
 		mediaURL: URL,
-		licenseURL: URL?
+		licenseURL: URL?,
+		artworkURL: URL?
 	) throws {
 		let metadataJson = try task.metadata.serialize()
 
 		let mediaBookmark = try mediaURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 		let licenseBookmark = try licenseURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
+		let artworkBookmark = try artworkURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
 		try databaseQueue.inTransaction { database in
 			try database.execute(
 				sql: """
-					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark)
-					VALUES (?, ?, ?, ?, ?, ?)
+					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark)
+					VALUES (?, ?, ?, ?, ?, ?, ?)
 					""",
-				arguments: [task.id, task.resourceType, task.resourceId, metadataJson, mediaBookmark, licenseBookmark]
+				arguments: [task.id, task.resourceType, task.resourceId, metadataJson, mediaBookmark, licenseBookmark, artworkBookmark]
 			)
 
 			try database.execute(
@@ -75,7 +77,7 @@ final class LocalRepository {
 			let row = try Row.fetchOne(
 				database,
 				sql: """
-					SELECT id, resource_type, resource_id, metadata, media_bookmark, license_bookmark
+					SELECT id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark
 					FROM offline_item
 					WHERE resource_type = ? AND resource_id = ?
 					""",
@@ -90,7 +92,8 @@ final class LocalRepository {
 				id: row["id"],
 				metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 				mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
-				licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database)
+				licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database),
+				artworkURL: try resolveBookmarkIfPresent(row, column: "artwork_bookmark", database)
 			)
 		}
 	}
@@ -123,7 +126,7 @@ final class LocalRepository {
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
-					SELECT id, resource_type, resource_id, metadata, media_bookmark, license_bookmark
+					SELECT id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark
 					FROM offline_item
 					WHERE resource_type = ?
 					ORDER BY created_at DESC
@@ -138,7 +141,8 @@ final class LocalRepository {
 					id: row["id"],
 					metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 					mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
-					licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database)
+					licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database),
+					artworkURL: try resolveBookmarkIfPresent(row, column: "artwork_bookmark", database)
 				)
 			}
 		}
@@ -173,7 +177,7 @@ final class LocalRepository {
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
-					SELECT i.id, i.resource_type, i.resource_id, i.metadata, i.media_bookmark, i.license_bookmark,
+					SELECT i.id, i.resource_type, i.resource_id, i.metadata, i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
 					       r.volume, r.position
 					FROM offline_item i
 					JOIN offline_item_relationship r ON r.member = i.id
@@ -192,7 +196,8 @@ final class LocalRepository {
 						id: row["id"],
 						metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 						mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
-						licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database)
+						licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database),
+						artworkURL: try resolveBookmarkIfPresent(row, column: "artwork_bookmark", database)
 					),
 					volume: row["volume"],
 					position: row["position"]

@@ -8,6 +8,7 @@ CREATE TABLE offline_item
     metadata         TEXT NOT NULL,
     media_bookmark   BLOB,
     license_bookmark BLOB,
+    artwork_bookmark BLOB,
 
     created_at    TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at    TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,

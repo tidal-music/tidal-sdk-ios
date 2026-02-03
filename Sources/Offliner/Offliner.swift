@@ -37,6 +37,7 @@ public struct OfflineMediaItem {
 	public let metadata: Metadata
 	public let mediaURL: URL
 	public let licenseURL: URL?
+	public let artworkURL: URL?
 }
 
 public struct OfflineCollection {

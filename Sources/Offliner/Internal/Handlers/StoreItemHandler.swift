@@ -7,6 +7,7 @@ final class StoreItemHandler: NSObject {
 	private let backendRepository: BackendRepository
 	private let localRepository: LocalRepository
 	private let licenseRepository: LicenseRepository
+	private let artworkRepository: ArtworkRepository
 	private var licenseQueue: DispatchQueue
 	private var downloadSession: AVAssetDownloadURLSession!
 
@@ -16,6 +17,7 @@ final class StoreItemHandler: NSObject {
 		self.backendRepository = backendRepository
 		self.localRepository = localRepository
 		self.licenseRepository = LicenseRepository(credentialsProvider: credentialsProvider)
+		self.artworkRepository = ArtworkRepository()
 		self.licenseQueue = DispatchQueue(label: "com.tidal.offliner.license", qos: .userInitiated)
 		super.init()
 
@@ -46,6 +48,13 @@ final class StoreItemHandler: NSObject {
 			localRepository: localRepository,
 			onFinished: onFinished
 		)
+
+		do {
+			pending.artworkLocation = try await artworkRepository.downloadArtwork(for: task)
+		} catch {
+			pending.fail()
+			return
+		}
 
 		guard let urlSessionTask = downloadSession.makeAssetDownloadTask(
 			asset: asset,
@@ -117,6 +126,7 @@ private final class PendingDownload: NSObject {
 	let localRepository: LocalRepository
 	let onFinished: @Sendable () async -> Void
 
+	var artworkLocation: URL?
 	var mediaLocation: URL?
 	var licenseLocation: URL?
 	var needsLicense: Bool = false
@@ -160,7 +170,8 @@ private final class PendingDownload: NSObject {
 				try localRepository.storeMediaItem(
 					task: task,
 					mediaURL: mediaLocation,
-					licenseURL: licenseLocation
+					licenseURL: licenseLocation,
+					artworkURL: artworkLocation
 				)
 				try await backendRepository.updateTask(taskId: task.id, state: .completed)
 				download.updateState(.completed)
@@ -180,18 +191,6 @@ private final class PendingDownload: NSObject {
 		}
 	}
 
-	fileprivate func store(_ license: Data) throws {
-		let licenseDirectory = FileManager.default
-			.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-			.appendingPathComponent("DownloadedLicenses", isDirectory: true)
-
-		try FileManager.default.createDirectory(at: licenseDirectory, withIntermediateDirectories: true)
-
-		let url = licenseDirectory.appendingPathComponent("\(task.id).key")
-		try license.write(to: url, options: .atomic)
-
-		licenseLocation = url
-	}
 }
 
 // MARK: - AVContentKeySessionDelegate
@@ -217,7 +216,7 @@ extension PendingDownload: AVContentKeySessionDelegate {
 		Task {
 			do {
 				let license = try await licenseRepository.getLicense(for: keyRequest)
-				try store(license)
+				licenseLocation = try FileRepository.store(license, subdirectory: "Licenses", filename: "\(task.id).key")
 
 				let keyResponse = AVContentKeyResponse(fairPlayStreamingKeyResponseData: license)
 				keyRequest.processContentKeyResponse(keyResponse)
