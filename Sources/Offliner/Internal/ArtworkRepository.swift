@@ -50,7 +50,7 @@ final class ArtworkRepository {
 		let fileExtension = imageURL.pathExtension.isEmpty ? "jpg" : imageURL.pathExtension
 		let filename = "\(artwork.id).\(fileExtension)"
 
-		return try FileRepository.move(from: tempURL, subdirectory: "Artworks", filename: filename)
+		return try FileStorage.move(from: tempURL, subdirectory: "Artworks", filename: filename)
 	}
 }
 

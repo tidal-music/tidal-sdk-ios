@@ -1,6 +1,6 @@
 import Foundation
 
-enum FileRepository {
+enum FileStorage {
 	static func store(_ data: Data, subdirectory: String, filename: String) throws -> URL {
 		let dir = try directory(for: subdirectory)
 		let url = dir.appendingPathComponent(filename)
@@ -17,7 +17,7 @@ enum FileRepository {
 
 	private static func directory(for subdirectory: String) throws -> URL {
 		guard let appSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-			throw FileRepositoryError.noApplicationSupportDirectory
+			throw FileStorageError.noApplicationSupportDirectory
 		}
 		let directory = appSupportDirectory.appendingPathComponent("Offliner/\(subdirectory)", isDirectory: true)
 		try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -25,6 +25,6 @@ enum FileRepository {
 	}
 }
 
-enum FileRepositoryError: Error {
+enum FileStorageError: Error {
 	case noApplicationSupportDirectory
 }

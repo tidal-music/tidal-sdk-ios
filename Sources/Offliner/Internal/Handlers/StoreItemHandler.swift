@@ -216,7 +216,7 @@ extension PendingDownload: AVContentKeySessionDelegate {
 		Task {
 			do {
 				let license = try await licenseRepository.getLicense(for: keyRequest)
-				licenseLocation = try FileRepository.store(license, subdirectory: "Licenses", filename: "\(task.id).key")
+				licenseLocation = try FileStorage.store(license, subdirectory: "Licenses", filename: "\(task.id).key")
 
 				let keyResponse = AVContentKeyResponse(fairPlayStreamingKeyResponseData: license)
 				keyRequest.processContentKeyResponse(keyResponse)
