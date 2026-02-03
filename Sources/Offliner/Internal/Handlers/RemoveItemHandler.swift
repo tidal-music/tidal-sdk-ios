@@ -10,14 +10,5 @@ final class RemoveItemHandler {
 	}
 
 	func execute(_ task: RemoveItemTask) async {
-		do {
-			try await backendRepository.updateTask(taskId: task.id, state: .inProgress)
-
-			// TODO: Implement remove item logic
-
-			try await backendRepository.updateTask(taskId: task.id, state: .completed)
-		} catch {
-			try? await backendRepository.updateTask(taskId: task.id, state: .failed)
-		}
 	}
 }

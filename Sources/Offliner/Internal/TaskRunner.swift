@@ -19,17 +19,20 @@ actor TaskRunner {
 
 	private(set) var downloads: [Download] = []
 
-	init(backendRepository: BackendRepository, localRepository: LocalRepository, credentialsProvider: CredentialsProvider) {
+	init(backendRepository: BackendRepository, localRepository: LocalRepository, artworkRepository: ArtworkRepository, credentialsProvider: CredentialsProvider) {
 		self.backendRepository = backendRepository
 		self.scheduler = Scheduler()
+
 		self.storeItemHandler = StoreItemHandler(
 			backendRepository: backendRepository,
 			localRepository: localRepository,
+			artworkRepository: artworkRepository,
 			credentialsProvider: credentialsProvider
 		)
 		self.storeCollectionHandler = StoreCollectionHandler(
 			backendRepository: backendRepository,
-			localRepository: localRepository
+			localRepository: localRepository,
+			artworkRepository: artworkRepository
 		)
 		self.removeItemHandler = RemoveItemHandler(
 			backendRepository: backendRepository,

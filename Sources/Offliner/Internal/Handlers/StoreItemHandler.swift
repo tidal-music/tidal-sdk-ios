@@ -13,11 +13,11 @@ final class StoreItemHandler: NSObject {
 
 	private var pendingByUrlSessionTask: [URLSessionTask: PendingDownload] = [:]
 
-	init(backendRepository: BackendRepository, localRepository: LocalRepository, credentialsProvider: CredentialsProvider) {
+	init(backendRepository: BackendRepository, localRepository: LocalRepository, artworkRepository: ArtworkRepository, credentialsProvider: CredentialsProvider) {
 		self.backendRepository = backendRepository
 		self.localRepository = localRepository
+		self.artworkRepository = artworkRepository
 		self.licenseRepository = LicenseRepository(credentialsProvider: credentialsProvider)
-		self.artworkRepository = ArtworkRepository()
 		self.licenseQueue = DispatchQueue(label: "com.tidal.offliner.license", qos: .userInitiated)
 		super.init()
 
@@ -155,7 +155,7 @@ private final class PendingDownload: NSObject {
 	}
 
 	func complete() {
-		guard let mediaLocation else {
+		guard let mediaLocation, let artworkLocation else {
 			fail()
 			return
 		}

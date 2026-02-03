@@ -13,13 +13,13 @@ final class LocalRepository {
 		task: StoreItemTask,
 		mediaURL: URL,
 		licenseURL: URL?,
-		artworkURL: URL?
+		artworkURL: URL
 	) throws {
 		let metadataJson = try task.metadata.serialize()
 
 		let mediaBookmark = try mediaURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 		let licenseBookmark = try licenseURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
-		let artworkBookmark = try artworkURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
+		let artworkBookmark = try artworkURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
 		try databaseQueue.inTransaction { database in
 			try database.execute(
@@ -42,16 +42,17 @@ final class LocalRepository {
 		}
 	}
 
-	func storeCollection(task: StoreCollectionTask) throws {
+	func storeCollection(task: StoreCollectionTask, artworkURL: URL) throws {
 		let metadataJson = try task.metadata.serialize()
+		let artworkBookmark = try artworkURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
 		try databaseQueue.write { database in
 			try database.execute(
 				sql: """
-					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark)
-					VALUES (?, ?, ?, ?, NULL, NULL)
+					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark)
+					VALUES (?, ?, ?, ?, NULL, NULL, ?)
 					""",
-				arguments: [task.id, task.resourceType, task.resourceId, metadataJson]
+				arguments: [task.id, task.resourceType, task.resourceId, metadataJson, artworkBookmark]
 			)
 		}
 	}

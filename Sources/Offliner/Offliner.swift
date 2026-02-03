@@ -88,12 +88,14 @@ public final class Offliner {
 			credentialsProvider: credentialsProvider,
 			installationId: installationId
 		)
+		let artworkRepository = ArtworkRepository()
 
 		self.backendRepository = backendRepository
 		self.localRepository = localRepository
 		self.taskRunner = TaskRunner(
 			backendRepository: backendRepository,
 			localRepository: localRepository,
+			artworkRepository: artworkRepository,
 			credentialsProvider: credentialsProvider
 		)
 	}
