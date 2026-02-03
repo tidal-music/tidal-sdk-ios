@@ -1,11 +1,16 @@
 import Foundation
 import TidalAPI
 
-final class ArtworkRepository {
+protocol ArtworkRepositoryProtocol {
+	func downloadArtwork(for task: StoreItemTask) async throws -> URL
+	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL
+}
+
+final class ArtworkRepository: ArtworkRepositoryProtocol {
 	private let urlSession: URLSession
 
-	init() {
-		self.urlSession = .shared
+	init(urlSession: URLSession = .shared) {
+		self.urlSession = urlSession
 	}
 
 	func downloadArtwork(for task: StoreItemTask) async throws -> URL {

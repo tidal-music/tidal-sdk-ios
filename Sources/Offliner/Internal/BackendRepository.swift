@@ -55,9 +55,18 @@ enum OfflineTask {
 	}
 }
 
+// MARK: - BackendRepositoryProtocol
+
+protocol BackendRepositoryProtocol {
+	func addItem(type: ResourceType, id: String) async throws
+	func removeItem(type: ResourceType, id: String) async throws
+	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?)
+	func updateTask(taskId: String, state: Download.State) async throws
+}
+
 // MARK: - BackendRepository
 
-final class BackendRepository {
+final class BackendRepository: BackendRepositoryProtocol {
 	private let installationId: String
 
 	init(credentialsProvider: CredentialsProvider, installationId: String) {

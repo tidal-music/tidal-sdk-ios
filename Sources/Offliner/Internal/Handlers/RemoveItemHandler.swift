@@ -1,10 +1,10 @@
 import Foundation
 
 final class RemoveItemHandler {
-	private let backendRepository: BackendRepository
+	private let backendRepository: BackendRepositoryProtocol
 	private let localRepository: LocalRepository
 
-	init(backendRepository: BackendRepository, localRepository: LocalRepository) {
+	init(backendRepository: BackendRepositoryProtocol, localRepository: LocalRepository) {
 		self.backendRepository = backendRepository
 		self.localRepository = localRepository
 	}

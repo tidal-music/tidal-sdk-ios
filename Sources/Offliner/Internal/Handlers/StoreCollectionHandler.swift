@@ -1,21 +1,21 @@
 import Foundation
 
 final class StoreCollectionHandler {
-	private let backendRepository: BackendRepository
+	private let backendRepository: BackendRepositoryProtocol
 	private let localRepository: LocalRepository
-	private let artworkRepository: ArtworkRepository
+	private let artworkDownloader: ArtworkRepositoryProtocol
 
-	init(backendRepository: BackendRepository, localRepository: LocalRepository, artworkRepository: ArtworkRepository) {
+	init(backendRepository: BackendRepositoryProtocol, localRepository: LocalRepository, artworkDownloader: ArtworkRepositoryProtocol) {
 		self.backendRepository = backendRepository
 		self.localRepository = localRepository
-		self.artworkRepository = artworkRepository
+		self.artworkDownloader = artworkDownloader
 	}
 
 	func execute(_ task: StoreCollectionTask) async {
 		do {
 			try await backendRepository.updateTask(taskId: task.id, state: .inProgress)
 
-			let artworkURL = try await artworkRepository.downloadArtwork(for: task)
+			let artworkURL = try await artworkDownloader.downloadArtwork(for: task)
 			try localRepository.storeCollection(task: task, artworkURL: artworkURL)
 
 			try await backendRepository.updateTask(taskId: task.id, state: .completed)

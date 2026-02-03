@@ -4,7 +4,7 @@ import Foundation
 actor TaskRunner {
 	private static let maxConcurrentTasks = 5
 
-	private let backendRepository: BackendRepository
+	private let backendRepository: BackendRepositoryProtocol
 	private let scheduler: Scheduler
 
 	private let storeItemHandler: StoreItemHandler
@@ -17,22 +17,40 @@ actor TaskRunner {
 	private var taskIds: Set<String> = []
 	private var taskCursor: String?
 
-	private(set) var downloads: [Download] = []
+	private var downloadsList: [Download] = []
+	private var downloadsContinuation: AsyncStream<Download>.Continuation?
 
-	init(backendRepository: BackendRepository, localRepository: LocalRepository, artworkRepository: ArtworkRepository, credentialsProvider: CredentialsProvider) {
+	nonisolated let newDownloads: AsyncStream<Download>
+
+	var currentDownloads: [Download] {
+		downloadsList
+	}
+
+	init(
+		backendRepository: BackendRepositoryProtocol,
+		localRepository: LocalRepository,
+		artworkDownloader: ArtworkRepositoryProtocol,
+		mediaDownloader: MediaDownloaderProtocol
+	) {
 		self.backendRepository = backendRepository
 		self.scheduler = Scheduler()
+
+		var storedContinuation: AsyncStream<Download>.Continuation?
+		self.newDownloads = AsyncStream { continuation in
+			storedContinuation = continuation
+		}
+		self.downloadsContinuation = storedContinuation
 
 		self.storeItemHandler = StoreItemHandler(
 			backendRepository: backendRepository,
 			localRepository: localRepository,
-			artworkRepository: artworkRepository,
-			credentialsProvider: credentialsProvider
+			artworkDownloader: artworkDownloader,
+			mediaDownloader: mediaDownloader
 		)
 		self.storeCollectionHandler = StoreCollectionHandler(
 			backendRepository: backendRepository,
 			localRepository: localRepository,
-			artworkRepository: artworkRepository
+			artworkDownloader: artworkDownloader
 		)
 		self.removeItemHandler = RemoveItemHandler(
 			backendRepository: backendRepository,
@@ -95,7 +113,7 @@ actor TaskRunner {
 		inProgressTasks.removeAll { $0.id == task.id }
 		taskIds.remove(task.id)
 		if let download = task.download {
-			downloads.removeAll { $0 === download }
+			downloadsList.removeAll { $0 === download }
 		}
 
 		try await run()
@@ -112,7 +130,8 @@ actor TaskRunner {
 			if case let .storeItem(storeItemTask) = task.offlineTask {
 				let download = Download(task: storeItemTask, state: .pending)
 				task.download = download
-				downloads.append(download)
+				downloadsList.append(download)
+				downloadsContinuation?.yield(download)
 			}
 		}
 
