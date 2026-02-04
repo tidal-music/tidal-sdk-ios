@@ -23,19 +23,25 @@ protocol MediaDownloaderProtocol {
 
 final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	private let licenseFetcher: LicenseFetcher
-
-	private lazy var session: AVAssetDownloadURLSession = {
-		AVAssetDownloadURLSession(
-			configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.offliner.download.session"),
-			assetDownloadDelegate: self,
-			delegateQueue: nil
-		)
-	}()
-
+	private let queue: DispatchQueue
+	private var session: AVAssetDownloadURLSession!
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 
 	override init() {
 		self.licenseFetcher = LicenseFetcher()
+		self.queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
+
+		super.init()
+
+		let delegateQueue = OperationQueue()
+		delegateQueue.underlyingQueue = queue
+		delegateQueue.maxConcurrentOperationCount = 1
+
+		self.session = AVAssetDownloadURLSession(
+			configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.offliner.download.session"),
+			assetDownloadDelegate: self,
+			delegateQueue: delegateQueue
+		)
 	}
 
 	func download(
@@ -46,32 +52,34 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		let asset = AVURLAsset(url: manifestURL)
 
 		return try await withCheckedThrowingContinuation { continuation in
-			guard let task = session.makeAssetDownloadTask(
-				asset: asset,
-				assetTitle: taskId,
-				assetArtworkData: nil,
-				options: nil
-			) else {
-				continuation.resume(throwing: MediaDownloaderError.failedToCreateTask)
-				return
+			queue.async {
+				guard let task = self.session.makeAssetDownloadTask(
+					asset: asset,
+					assetTitle: taskId,
+					assetArtworkData: nil,
+					options: nil
+				) else {
+					continuation.resume(throwing: MediaDownloaderError.failedToCreateTask)
+					return
+				}
+
+				let contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
+
+				let activeDownload = ActiveDownload(
+					taskId: taskId,
+					continuation: continuation,
+					onProgress: onProgress,
+					contentKeySession: contentKeySession,
+					licenseFetcher: self.licenseFetcher,
+					queue: self.queue
+				)
+
+				contentKeySession.setDelegate(activeDownload, queue: self.queue)
+				contentKeySession.addContentKeyRecipient(asset)
+
+				self.activeDownloads[task.taskIdentifier] = activeDownload
+				task.resume()
 			}
-
-			let licenseQueue = DispatchQueue(label: "com.tidal.offliner.license.\(taskId)", qos: .userInitiated)
-			let contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
-
-			let activeDownload = ActiveDownload(
-				taskId: taskId,
-				continuation: continuation,
-				onProgress: onProgress,
-				contentKeySession: contentKeySession,
-				licenseFetcher: licenseFetcher
-			)
-
-			contentKeySession.setDelegate(activeDownload, queue: licenseQueue)
-			contentKeySession.addContentKeyRecipient(asset)
-
-			activeDownloads[task.taskIdentifier] = activeDownload
-			task.resume()
 		}
 	}
 }
@@ -95,6 +103,8 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		guard let activeDownload = activeDownloads.removeValue(forKey: task.taskIdentifier) else {
 			return
 		}
+
+		activeDownload.contentKeySession.setDelegate(nil, queue: nil)
 
 		if let error {
 			activeDownload.continuation.resume(throwing: error)
@@ -125,15 +135,11 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		totalTimeRangesLoaded loadedTimeRanges: [NSValue],
 		timeRangeExpectedToLoad: CMTimeRange
 	) {
-		guard let activeDownload = activeDownloads[assetDownloadTask.taskIdentifier] else {
-			return
-		}
-
 		let loaded = loadedTimeRanges.reduce(0.0) { $0 + CMTimeGetSeconds($1.timeRangeValue.duration) }
 		let expected = CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
 		let progress = expected > 0 ? loaded / expected : 0
 
-		activeDownload.onProgress(progress)
+		activeDownloads[assetDownloadTask.taskIdentifier]?.onProgress(progress)
 	}
 }
 
@@ -145,6 +151,7 @@ private final class ActiveDownload: NSObject {
 	let onProgress: (Double) -> Void
 	let contentKeySession: AVContentKeySession
 	let licenseFetcher: LicenseFetcher
+	let queue: DispatchQueue
 
 	var downloadedLocation: URL?
 	var licenseLocation: URL?
@@ -155,13 +162,15 @@ private final class ActiveDownload: NSObject {
 		continuation: CheckedContinuation<MediaDownloadResult, Error>,
 		onProgress: @escaping (Double) -> Void,
 		contentKeySession: AVContentKeySession,
-		licenseFetcher: LicenseFetcher
+		licenseFetcher: LicenseFetcher,
+		queue: DispatchQueue
 	) {
 		self.taskId = taskId
 		self.continuation = continuation
 		self.onProgress = onProgress
 		self.contentKeySession = contentKeySession
 		self.licenseFetcher = licenseFetcher
+		self.queue = queue
 	}
 }
 
@@ -185,11 +194,16 @@ extension ActiveDownload: AVContentKeySessionDelegate {
 		_ session: AVContentKeySession,
 		didProvide keyRequest: AVPersistableContentKeyRequest
 	) {
-		Task {
+		queue.dispatch { [weak self] in
+			guard let self else { return }
+
 			do {
 				let license = try await licenseFetcher.getLicense(for: keyRequest)
-				licenseLocation = try FileStorage.store(license, subdirectory: "Licenses", filename: "\(UUID().uuidString).key")
-
+				licenseLocation = try FileStorage.store(
+					license,
+					subdirectory: "Licenses",
+					filename: "\(UUID().uuidString).key"
+				)
 				let keyResponse = AVContentKeyResponse(fairPlayStreamingKeyResponseData: license)
 				keyRequest.processContentKeyResponse(keyResponse)
 			} catch {
@@ -213,4 +227,21 @@ enum MediaDownloaderError: Error {
 	case failedToCreateTask
 	case noDownloadedFile
 	case licenseFailed
+}
+
+// MARK: - DispatchQueue Extension
+
+private extension DispatchQueue {
+	func dispatch(_ work: @escaping () async -> Void) {
+		async {
+			let semaphore = DispatchSemaphore(value: 0)
+
+			Task {
+				await work()
+				semaphore.signal()
+			}
+
+			semaphore.wait()
+		}
+	}
 }

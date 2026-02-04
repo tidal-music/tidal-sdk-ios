@@ -3,12 +3,13 @@ import AVFoundation
 import Foundation
 import TidalAPI
 
-final class LicenseFetcher {
+actor LicenseFetcher {
 	private static let certificateURL = URL(string: "https://fp.fa.tidal.com/certificate")!
 	private static let licenseURL = URL(string: "https://fp.fa.tidal.com/license")!
 
 	private let httpClient: HttpClient
 	private var certificate: Data?
+	private var certificateTask: Task<Data, Error>?
 
 	init() {
 		self.httpClient = HttpClient()
@@ -34,9 +35,24 @@ private extension LicenseFetcher {
 			return certificate
 		}
 
-		let data = try await httpClient.get(url: Self.certificateURL, headers: [:])
-		self.certificate = data
-		return data
+		if let existingTask = certificateTask {
+			return try await existingTask.value
+		}
+
+		let task = Task {
+			try await httpClient.get(url: Self.certificateURL, headers: [:])
+		}
+		certificateTask = task
+
+		do {
+			let data = try await task.value
+			certificate = data
+			certificateTask = nil
+			return data
+		} catch {
+			certificateTask = nil
+			throw error
+		}
 	}
 
 	func fetchLicense(spc: Data) async throws -> Data {

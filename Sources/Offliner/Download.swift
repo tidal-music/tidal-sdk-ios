@@ -1,6 +1,6 @@
 import Foundation
 
-public class Download: Equatable {
+public final class Download {
 	public enum State {
 		case pending
 		case inProgress
@@ -14,41 +14,28 @@ public class Download: Equatable {
 	}
 
 	public var metadata: OfflineMediaItem.Metadata { task.metadata }
-	public private(set) var state: State
-	public private(set) var progress: Double = 0
-
-	let task: StoreItemTask
-
-	private var continuation: AsyncStream<Event>.Continuation?
 	public let events: AsyncStream<Event>
 
-	internal init(task: StoreItemTask, state: State) {
-		self.task = task
-		self.state = state
+	let task: StoreItemTask
+	private let continuation: AsyncStream<Event>.Continuation
 
-		var storedContinuation: AsyncStream<Event>.Continuation?
-		self.events = AsyncStream { continuation in
-			storedContinuation = continuation
-		}
-		self.continuation = storedContinuation
+	internal init(task: StoreItemTask) {
+		self.task = task
+
+		let (stream, continuation) = AsyncStream<Event>.makeStream()
+		self.events = stream
+		self.continuation = continuation
 	}
 
 	internal func updateState(_ newState: State) {
-		state = newState
-		continuation?.yield(.state(newState))
+		continuation.yield(.state(newState))
 
 		if newState == .completed || newState == .failed {
-			continuation?.finish()
-			continuation = nil
+			continuation.finish()
 		}
 	}
 
 	internal func updateProgress(_ newProgress: Double) {
-		progress = newProgress
-		continuation?.yield(.progress(newProgress))
-	}
-
-	public static func == (lhs: Download, rhs: Download) -> Bool {
-		lhs.task.id == rhs.task.id
+		continuation.yield(.progress(newProgress))
 	}
 }

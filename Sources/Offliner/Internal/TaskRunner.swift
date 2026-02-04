@@ -3,9 +3,9 @@ import Foundation
 
 actor TaskRunner {
 	private static let maxConcurrentTasks = 5
+	private static let maxQueueSize = 80
 
 	private let backendClient: BackendClientProtocol
-	private let scheduler: Scheduler
 
 	private let storeItemHandler: StoreItemHandler
 	private let storeCollectionHandler: StoreCollectionHandler
@@ -29,13 +29,10 @@ actor TaskRunner {
 		mediaDownloader: MediaDownloaderProtocol
 	) {
 		self.backendClient = backendClient
-		self.scheduler = Scheduler()
 
-		var storedContinuation: AsyncStream<Download>.Continuation?
-		self.newDownloads = AsyncStream { continuation in
-			storedContinuation = continuation
-		}
-		self.downloadsContinuation = storedContinuation
+		let (stream, continuation) = AsyncStream<Download>.makeStream()
+		self.newDownloads = stream
+		self.downloadsContinuation = continuation
 
 		self.storeItemHandler = StoreItemHandler(
 			backendClient: backendClient,
@@ -59,72 +56,24 @@ actor TaskRunner {
 	}
 
 	func run() async throws {
-		try await scheduler.trigger {
-			try await self.start()
+		if pendingTasks.count < Self.maxQueueSize {
+			try await refresh()
 		}
-	}
 
-	private func start() async throws {
-		try await fetchTasks()
-
-		let capacity = max(0, Self.maxConcurrentTasks - inProgressTasks.count)
-		let tasksToStart = Array(pendingTasks.prefix(capacity))
-
-		for task in tasksToStart {
-			pendingTasks.removeAll { $0.id == task.id }
+		while inProgressTasks.count < Self.maxConcurrentTasks, let task = pendingTasks.first {
+			pendingTasks.removeFirst()
 			inProgressTasks.append(task)
-
-			switch task.offlineTask {
-			case .storeItem:
-				Task { [weak self] in
-					guard let download = task.download else {
-						try? await self?.finalize(task)
-						return
-					}
-
-					await self?.storeItemHandler.start(download) { [weak self] in
-						try? await self?.finalize(task)
-					}
-				}
-			case let .storeCollection(storeCollectionTask):
-				Task { [weak self] in
-					await self?.storeCollectionHandler.execute(storeCollectionTask)
-					try? await self?.finalize(task)
-				}
-			case let .removeItem(removeItemTask):
-				Task { [weak self] in
-					await self?.removeItemHandler.execute(removeItemTask)
-					try? await self?.finalize(task)
-				}
-			case let .removeCollection(removeCollectionTask):
-				Task { [weak self] in
-					await self?.removeCollectionHandler.execute(removeCollectionTask)
-					try? await self?.finalize(task)
-				}
-			}
+			start(task)
 		}
 	}
 
-	private func finalize(_ task: InternalTask) async throws {
-		inProgressTasks.removeAll { $0.id == task.id }
-		taskIds.remove(task.id)
-		if let download = task.download {
-			currentDownloads.removeAll { $0 === download }
-		}
-
-		try await run()
-	}
-
-	private func fetchTasks() async throws {
-		guard pendingTasks.count <= Self.maxConcurrentTasks else {
-			return
-		}
-
+	private func refresh() async throws {
 		let (tasks, cursor) = try await backendClient.getTasks(cursor: taskCursor)
+
 		for task in tasks.map(InternalTask.init) where taskIds.insert(task.id).inserted {
 			pendingTasks.append(task)
 			if case let .storeItem(storeItemTask) = task.offlineTask {
-				let download = Download(task: storeItemTask, state: .pending)
+				let download = Download(task: storeItemTask)
 				task.download = download
 				currentDownloads.append(download)
 				downloadsContinuation?.yield(download)
@@ -135,7 +84,51 @@ actor TaskRunner {
 			taskCursor = newCursor
 		}
 	}
+
+	private func start(_ task: InternalTask) {
+		switch task.offlineTask {
+		case .storeItem:
+			Task { [weak self] in
+				guard let download = task.download else {
+					await self?.finalize(task)
+					return
+				}
+
+				await self?.storeItemHandler.start(download) { [weak self] in
+					await self?.finalize(task)
+				}
+			}
+		case let .storeCollection(storeCollectionTask):
+			Task { [weak self] in
+				await self?.storeCollectionHandler.execute(storeCollectionTask)
+				await self?.finalize(task)
+			}
+		case let .removeItem(removeItemTask):
+			Task { [weak self] in
+				await self?.removeItemHandler.execute(removeItemTask)
+				await self?.finalize(task)
+			}
+		case let .removeCollection(removeCollectionTask):
+			Task { [weak self] in
+				await self?.removeCollectionHandler.execute(removeCollectionTask)
+				await self?.finalize(task)
+			}
+		}
+	}
+
+	private func finalize(_ task: InternalTask) async {
+		inProgressTasks.removeAll { $0.id == task.id }
+		taskIds.remove(task.id)
+		if let download = task.download {
+			currentDownloads.removeAll { $0 === download }
+		}
+
+		// Trigger another run to keep the queue moving
+		try? await run()
+	}
 }
+
+// MARK: - InternalTask
 
 private class InternalTask: Equatable {
 	let id: String
@@ -149,47 +142,5 @@ private class InternalTask: Equatable {
 
 	static func == (lhs: InternalTask, rhs: InternalTask) -> Bool {
 		lhs.id == rhs.id
-	}
-}
-
-private actor Scheduler {
-	private var task: Task<Void, Error>?
-	private var rerun = false
-
-	func trigger(_ work: @Sendable @escaping () async throws -> Void) async throws {
-		if let existingTask = task {
-			rerun = true
-			try await existingTask.value
-			return
-		}
-
-		let newTask = Task<Void, Error> { [weak self] in
-			guard let self else { return }
-
-			do {
-				repeat {
-					try await work()
-				} while !(await self.stop())
-
-				await self.finish()
-			} catch {
-				await self.finish()
-				throw error
-			}
-		}
-
-		task = newTask
-		try await newTask.value
-	}
-
-	private func stop() -> Bool {
-		let shouldContinue = rerun
-		rerun = false
-		return !shouldContinue
-	}
-
-	private func finish() {
-		task = nil
-		rerun = false
 	}
 }

@@ -21,13 +21,14 @@ final class StoreItemHandler {
 		self.mediaDownloader = mediaDownloader
 	}
 
-	func start(_ download: Download, onFinished: @escaping @Sendable () async -> Void) async {
+	func start(_ download: Download, onFinished: @escaping () async -> Void) async {
 		let task = download.task
 
 		do {
 			try await backendClient.updateTask(taskId: task.id, state: .inProgress)
 			download.updateState(.inProgress)
 		} catch {
+			download.updateState(.failed)
 			await onFinished()
 			return
 		}
