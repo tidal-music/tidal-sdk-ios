@@ -27,8 +27,8 @@ final class OfflinerTests: XCTestCase {
 
 	func testDownloadTrackCreatesDownload() async throws {
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
@@ -40,8 +40,8 @@ final class OfflinerTests: XCTestCase {
 
 	func testDownloadTrackCompletesSuccessfully() async throws {
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
@@ -63,8 +63,8 @@ final class OfflinerTests: XCTestCase {
 
 	func testDownloadTrackStoresInLocalDatabase() async throws {
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
@@ -95,11 +95,11 @@ final class OfflinerTests: XCTestCase {
 	}
 
 	func testRedownloadTrackDeletesOldFilesAndStoresNewOnes() async throws {
-		let backend = StubBackendRepository()
-		let artworkDownloader = SucceedingArtworkRepository()
+		let backend = StubBackendClient()
+		let artworkDownloader = SucceedingArtworkDownloader()
 		let mediaDownloader = SucceedingMediaDownloader()
 		let offliner = createOffliner(
-			backendRepository: backend,
+			backendClient: backend,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader)
 
@@ -165,8 +165,8 @@ final class OfflinerTests: XCTestCase {
 
 	func testDownloadTrackFailsWhenMediaDownloadFails() async throws {
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: FailingMediaDownloader())
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
@@ -188,8 +188,8 @@ final class OfflinerTests: XCTestCase {
 
 	func testFailedDownloadDoesNotStoreInLocalDatabase() async throws {
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: FailingMediaDownloader())
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
@@ -214,8 +214,8 @@ final class OfflinerTests: XCTestCase {
 
 	func testDownloadMultipleTracksStoresAllInLocalDatabase() async throws {
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-1")
@@ -264,8 +264,8 @@ final class OfflinerTests: XCTestCase {
 		media.progressValues = [0.25, 0.5, 0.75]
 
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: media)
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
@@ -293,8 +293,8 @@ final class OfflinerTests: XCTestCase {
 
 	func testDownloadTrackFailsWhenArtworkDownloadFails() async throws {
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: FailingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: FailingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
@@ -318,8 +318,8 @@ final class OfflinerTests: XCTestCase {
 
 	func testDownloadVideoStoresInLocalDatabase() async throws {
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(mediaType: .videos, resourceId: "video-456")
@@ -352,8 +352,8 @@ final class OfflinerTests: XCTestCase {
 
 	func testDownloadAlbumDoesNotCreateDownloadObject() async throws {
 		let offliner = createOffliner(
-			backendRepository: StubBackendRepository(),
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: StubBackendClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(collectionType: .albums, resourceId: "album-123")
@@ -364,10 +364,10 @@ final class OfflinerTests: XCTestCase {
 	}
 
 	func testDownloadAlbumStoresInLocalDatabase() async throws {
-		let backend = StubBackendRepository()
+		let backend = StubBackendClient()
 		let offliner = createOffliner(
-			backendRepository: backend,
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(collectionType: .albums, resourceId: "album-123")
@@ -385,10 +385,10 @@ final class OfflinerTests: XCTestCase {
 	}
 
 	func testRedownloadAlbumDeletesOldArtworkAndStoresNewOne() async throws {
-		let backend = StubBackendRepository()
+		let backend = StubBackendClient()
 		let offliner = createOffliner(
-			backendRepository: backend,
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		// First download
@@ -418,10 +418,10 @@ final class OfflinerTests: XCTestCase {
 	}
 
 	func testDownloadAlbumFailsWhenArtworkDownloadFails() async throws {
-		let backend = StubBackendRepository()
+		let backend = StubBackendClient()
 		let offliner = createOffliner(
-			backendRepository: backend,
-			artworkDownloader: FailingArtworkRepository(),
+			backendClient: backend,
+			artworkDownloader: FailingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(collectionType: .albums, resourceId: "album-123")
@@ -435,8 +435,8 @@ final class OfflinerTests: XCTestCase {
 	// MARK: - Backend Failure Tests
 
 	func testDownloadTrackAbortsWhenUpdateTaskToInProgressFails() async throws {
-		let backend = FailOnUpdateToInProgressBackendRepository()
-		let offliner = createOffliner(backendRepository: backend, artworkDownloader: SucceedingArtworkRepository(), mediaDownloader: SucceedingMediaDownloader())
+		let backend = FailOnUpdateToInProgressBackendClient()
+		let offliner = createOffliner(backendClient: backend, artworkDownloader: SucceedingArtworkDownloader(), mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
 
@@ -458,8 +458,8 @@ final class OfflinerTests: XCTestCase {
 	}
 
 	func testDownloadTrackFailsWhenUpdateTaskToCompletedFails() async throws {
-		let backend = FailOnUpdateToCompletedBackendRepository()
-		let offliner = createOffliner(backendRepository: backend, artworkDownloader: SucceedingArtworkRepository(), mediaDownloader: SucceedingMediaDownloader())
+		let backend = FailOnUpdateToCompletedBackendClient()
+		let offliner = createOffliner(backendClient: backend, artworkDownloader: SucceedingArtworkDownloader(), mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
 
@@ -485,7 +485,7 @@ final class OfflinerTests: XCTestCase {
 	}
 
 	func testDownloadTrackFailsWhenAddItemFails() async throws {
-		let offliner = createOffliner(backendRepository: FailingBackendRepository(), artworkDownloader: SucceedingArtworkRepository(), mediaDownloader: SucceedingMediaDownloader())
+		let offliner = createOffliner(backendClient: FailingBackendClient(), artworkDownloader: SucceedingArtworkDownloader(), mediaDownloader: SucceedingMediaDownloader())
 
 		do {
 			try await offliner.download(mediaType: .tracks, resourceId: "track-123")
@@ -499,7 +499,7 @@ final class OfflinerTests: XCTestCase {
 	}
 
 	func testDownloadAlbumFailsWhenAddItemFails() async throws {
-		let offliner = createOffliner(backendRepository: FailingBackendRepository(), artworkDownloader: SucceedingArtworkRepository(), mediaDownloader: SucceedingMediaDownloader())
+		let offliner = createOffliner(backendClient: FailingBackendClient(), artworkDownloader: SucceedingArtworkDownloader(), mediaDownloader: SucceedingMediaDownloader())
 
 		do {
 			try await offliner.download(collectionType: .albums, resourceId: "album-123")
@@ -510,8 +510,8 @@ final class OfflinerTests: XCTestCase {
 	}
 
 	func testGetTasksFailurePropagates() async throws {
-		let backend = FailOnGetTasksBackendRepository()
-		let offliner = createOffliner(backendRepository: backend, artworkDownloader: SucceedingArtworkRepository(), mediaDownloader: SucceedingMediaDownloader())
+		let backend = FailOnGetTasksBackendClient()
+		let offliner = createOffliner(backendClient: backend, artworkDownloader: SucceedingArtworkDownloader(), mediaDownloader: SucceedingMediaDownloader())
 
 		do {
 			try await offliner.run()
@@ -524,10 +524,10 @@ final class OfflinerTests: XCTestCase {
 	// MARK: - Playlist Download Tests
 
 	func testDownloadPlaylistStoresInLocalDatabase() async throws {
-		let backend = StubBackendRepository()
+		let backend = StubBackendClient()
 		let offliner = createOffliner(
-			backendRepository: backend,
-			artworkDownloader: SucceedingArtworkRepository(),
+			backendClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(collectionType: .playlists, resourceId: "playlist-456")
@@ -545,10 +545,10 @@ final class OfflinerTests: XCTestCase {
 	}
 
 	func testDownloadPlaylistFailsWhenArtworkDownloadFails() async throws {
-		let backend = StubBackendRepository()
+		let backend = StubBackendClient()
 		let offliner = createOffliner(
-			backendRepository: backend,
-			artworkDownloader: FailingArtworkRepository(),
+			backendClient: backend,
+			artworkDownloader: FailingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader())
 
 		try await offliner.download(collectionType: .playlists, resourceId: "playlist-456")
@@ -562,18 +562,18 @@ final class OfflinerTests: XCTestCase {
 	// MARK: - Helpers
 
 	private func createOffliner(
-		backendRepository: BackendRepositoryProtocol,
-		artworkDownloader: ArtworkRepositoryProtocol,
+		backendClient: BackendClientProtocol,
+		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
 	) -> Offliner {
 		let dbPath = tempDir.appendingPathComponent("test-\(UUID().uuidString).sqlite").path
 		let databaseQueue = try! DatabaseQueue(path: dbPath)
 		try! Migrations.run(databaseQueue)
-		let localRepository = LocalRepository(databaseQueue)
+		let offlineStore = OfflineStore(databaseQueue)
 
 		return Offliner(
-			backendRepository: backendRepository,
-			localRepository: localRepository,
+			backendClient: backendClient,
+			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader
 		)
@@ -582,7 +582,7 @@ final class OfflinerTests: XCTestCase {
 
 // MARK: - Fakes
 
-final class StubBackendRepository: BackendRepositoryProtocol {
+final class StubBackendClient: BackendClientProtocol {
 	private(set) var tasks: [OfflineTask] = []
 	private var taskIdCounter = 0
 
@@ -672,7 +672,7 @@ final class StubBackendRepository: BackendRepositoryProtocol {
 	}
 }
 
-final class FailingBackendRepository: BackendRepositoryProtocol {
+final class FailingBackendClient: BackendClientProtocol {
 	func addItem(type: ResourceType, id: String) async throws {
 		throw FakeError.backendFailed
 	}
@@ -690,8 +690,8 @@ final class FailingBackendRepository: BackendRepositoryProtocol {
 	}
 }
 
-final class FailOnUpdateToInProgressBackendRepository: BackendRepositoryProtocol {
-	private let stub = StubBackendRepository()
+final class FailOnUpdateToInProgressBackendClient: BackendClientProtocol {
+	private let stub = StubBackendClient()
 
 	func addItem(type: ResourceType, id: String) async throws {
 		try await stub.addItem(type: type, id: id)
@@ -713,8 +713,8 @@ final class FailOnUpdateToInProgressBackendRepository: BackendRepositoryProtocol
 	}
 }
 
-final class FailOnUpdateToCompletedBackendRepository: BackendRepositoryProtocol {
-	private let stub = StubBackendRepository()
+final class FailOnUpdateToCompletedBackendClient: BackendClientProtocol {
+	private let stub = StubBackendClient()
 
 	func addItem(type: ResourceType, id: String) async throws {
 		try await stub.addItem(type: type, id: id)
@@ -736,7 +736,7 @@ final class FailOnUpdateToCompletedBackendRepository: BackendRepositoryProtocol 
 	}
 }
 
-final class FailOnGetTasksBackendRepository: BackendRepositoryProtocol {
+final class FailOnGetTasksBackendClient: BackendClientProtocol {
 	func addItem(type: ResourceType, id: String) async throws {}
 
 	func removeItem(type: ResourceType, id: String) async throws {}
@@ -748,7 +748,7 @@ final class FailOnGetTasksBackendRepository: BackendRepositoryProtocol {
 	func updateTask(taskId: String, state: Download.State) async throws {}
 }
 
-final class SucceedingArtworkRepository: ArtworkRepositoryProtocol {
+final class SucceedingArtworkDownloader: ArtworkDownloaderProtocol {
 	func downloadArtwork(for task: StoreItemTask) async throws -> URL {
 		createArtworkFile()
 	}
@@ -765,7 +765,7 @@ final class SucceedingArtworkRepository: ArtworkRepositoryProtocol {
 	}
 }
 
-final class FailingArtworkRepository: ArtworkRepositoryProtocol {
+final class FailingArtworkDownloader: ArtworkDownloaderProtocol {
 	func downloadArtwork(for task: StoreItemTask) async throws -> URL {
 		throw FakeError.artworkDownloadFailed
 	}

@@ -1,4 +1,3 @@
-import Auth
 import Foundation
 import GRDB
 import TidalAPI
@@ -85,16 +84,13 @@ public final class Offliner {
 		}
 	}
 
-	public init(credentialsProvider: CredentialsProvider, installationId: String) throws {
+	public init(installationId: String) throws {
 		let databaseQueue = try DatabaseQueue()
 
 		let offlineStore = OfflineStore(databaseQueue)
-		let backendClient = BackendClient(
-			credentialsProvider: credentialsProvider,
-			installationId: installationId
-		)
+		let backendClient = BackendClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
-		let mediaDownloader = MediaDownloader(credentialsProvider: credentialsProvider)
+		let mediaDownloader = MediaDownloader()
 
 		self.backendClient = backendClient
 		self.offlineStore = offlineStore

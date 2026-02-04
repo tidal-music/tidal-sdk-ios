@@ -1,4 +1,3 @@
-import Auth
 import AVFoundation
 import CoreMedia
 import Foundation
@@ -35,8 +34,8 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 
-	init(credentialsProvider: CredentialsProvider) {
-		self.licenseFetcher = LicenseFetcher(credentialsProvider: credentialsProvider)
+	override init() {
+		self.licenseFetcher = LicenseFetcher()
 	}
 
 	func download(

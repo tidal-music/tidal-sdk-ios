@@ -1,17 +1,16 @@
 import Auth
 import AVFoundation
 import Foundation
+import TidalAPI
 
 final class LicenseFetcher {
 	private static let certificateURL = URL(string: "https://fp.fa.tidal.com/certificate")!
 	private static let licenseURL = URL(string: "https://fp.fa.tidal.com/license")!
 
-	private let credentialsProvider: CredentialsProvider
 	private let httpClient: HttpClient
 	private var certificate: Data?
 
-	init(credentialsProvider: CredentialsProvider) {
-		self.credentialsProvider = credentialsProvider
+	init() {
 		self.httpClient = HttpClient()
 	}
 
@@ -41,6 +40,10 @@ private extension LicenseFetcher {
 	}
 
 	func fetchLicense(spc: Data) async throws -> Data {
+		guard let credentialsProvider = OpenAPIClientAPI.credentialsProvider else {
+			throw LicenseFetcherError.missingCredentialsProvider
+		}
+
 		guard let token = try await credentialsProvider.getCredentials().token else {
 			throw LicenseFetcherError.missingAccessToken
 		}
@@ -119,6 +122,7 @@ private enum HttpClientError: Error {
 
 enum LicenseFetcherError: Error {
 	case emptyLicensePayload
+	case missingCredentialsProvider
 	case missingAccessToken
 	case licenseRequestFailed
 	case invalidKeyIdentifier

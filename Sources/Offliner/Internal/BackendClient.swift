@@ -69,11 +69,7 @@ protocol BackendClientProtocol {
 final class BackendClient: BackendClientProtocol {
 	private let installationId: String
 
-	init(credentialsProvider: CredentialsProvider, installationId: String) {
-		if OpenAPIClientAPI.credentialsProvider == nil {
-			OpenAPIClientAPI.credentialsProvider = credentialsProvider
-		}
-
+	init(installationId: String) {
 		self.installationId = installationId
 	}
 
