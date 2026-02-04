@@ -71,8 +71,8 @@ public struct OfflineCollectionItem {
 // MARK: - Offliner
 
 public final class Offliner {
-	private let backendRepository: BackendRepositoryProtocol
-	private let localRepository: LocalRepository
+	private let backendClient: BackendClientProtocol
+	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
 
 	public var newDownloads: AsyncStream<Download> {
@@ -88,35 +88,35 @@ public final class Offliner {
 	public init(credentialsProvider: CredentialsProvider, installationId: String) throws {
 		let databaseQueue = try DatabaseQueue()
 
-		let localRepository = LocalRepository(databaseQueue)
-		let backendRepository = BackendRepository(
+		let offlineStore = OfflineStore(databaseQueue)
+		let backendClient = BackendClient(
 			credentialsProvider: credentialsProvider,
 			installationId: installationId
 		)
-		let artworkDownloader = ArtworkRepository()
+		let artworkDownloader = ArtworkDownloader()
 		let mediaDownloader = MediaDownloader(credentialsProvider: credentialsProvider)
 
-		self.backendRepository = backendRepository
-		self.localRepository = localRepository
+		self.backendClient = backendClient
+		self.offlineStore = offlineStore
 		self.taskRunner = TaskRunner(
-			backendRepository: backendRepository,
-			localRepository: localRepository,
+			backendClient: backendClient,
+			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader
 		)
 	}
 
 	init(
-		backendRepository: BackendRepositoryProtocol,
-		localRepository: LocalRepository,
-		artworkDownloader: ArtworkRepositoryProtocol,
+		backendClient: BackendClientProtocol,
+		offlineStore: OfflineStore,
+		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
 	) {
-		self.backendRepository = backendRepository
-		self.localRepository = localRepository
+		self.backendClient = backendClient
+		self.offlineStore = offlineStore
 		self.taskRunner = TaskRunner(
-			backendRepository: backendRepository,
-			localRepository: localRepository,
+			backendClient: backendClient,
+			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader
 		)
@@ -129,41 +129,41 @@ public final class Offliner {
 	// MARK: - Offline Content
 
 	public func getOfflineMediaItem(mediaType: OfflineMediaItemType, resourceId: String) throws -> OfflineMediaItem? {
-		try localRepository.getMediaItem(mediaType: mediaType, resourceId: resourceId)
+		try offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId)
 	}
 
 	public func getOfflineMediaItems(mediaType: OfflineMediaItemType) throws -> [OfflineMediaItem] {
-		try localRepository.getMediaItems(mediaType: mediaType)
+		try offlineStore.getMediaItems(mediaType: mediaType)
 	}
 
 	public func getOfflineCollection(collectionType: OfflineCollectionType, resourceId: String) throws -> OfflineCollection? {
-		try localRepository.getCollection(collectionType: collectionType, resourceId: resourceId)
+		try offlineStore.getCollection(collectionType: collectionType, resourceId: resourceId)
 	}
 
 	public func getOfflineCollections(collectionType: OfflineCollectionType) throws -> [OfflineCollection] {
-		try localRepository.getCollections(collectionType: collectionType)
+		try offlineStore.getCollections(collectionType: collectionType)
 	}
 
 	public func getOfflineCollectionItems(collectionType: OfflineCollectionType, resourceId: String) throws -> [OfflineCollectionItem] {
-		try localRepository.getCollectionItems(collectionType: collectionType, resourceId: resourceId)
+		try offlineStore.getCollectionItems(collectionType: collectionType, resourceId: resourceId)
 	}
 
 	// MARK: - Download/Remove
 
 	public func download(mediaType: OfflineMediaItemType, resourceId: String) async throws {
-		try await backendRepository.addItem(type: mediaType.toResourceType, id: resourceId)
+		try await backendClient.addItem(type: mediaType.toResourceType, id: resourceId)
 	}
 
 	public func download(collectionType: OfflineCollectionType, resourceId: String) async throws {
-		try await backendRepository.addItem(type: collectionType.toResourceType, id: resourceId)
+		try await backendClient.addItem(type: collectionType.toResourceType, id: resourceId)
 	}
 
 	public func remove(mediaType: OfflineMediaItemType, resourceId: String) async throws {
-		try await backendRepository.removeItem(type: mediaType.toResourceType, id: resourceId)
+		try await backendClient.removeItem(type: mediaType.toResourceType, id: resourceId)
 	}
 
 	public func remove(collectionType: OfflineCollectionType, resourceId: String) async throws {
-		try await backendRepository.removeItem(type: collectionType.toResourceType, id: resourceId)
+		try await backendClient.removeItem(type: collectionType.toResourceType, id: resourceId)
 	}
 }
 

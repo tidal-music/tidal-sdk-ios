@@ -1,12 +1,12 @@
 import Foundation
 import TidalAPI
 
-protocol ArtworkRepositoryProtocol {
+protocol ArtworkDownloaderProtocol {
 	func downloadArtwork(for task: StoreItemTask) async throws -> URL
 	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL
 }
 
-final class ArtworkRepository: ArtworkRepositoryProtocol {
+final class ArtworkDownloader: ArtworkDownloaderProtocol {
 	private let urlSession: URLSession
 
 	init(urlSession: URLSession = .shared) {
@@ -20,7 +20,7 @@ final class ArtworkRepository: ArtworkRepositoryProtocol {
 		}
 
 		guard let artwork else {
-			throw ArtworkRepositoryError.missingArtwork
+			throw ArtworkDownloaderError.missingArtwork
 		}
 
 		return try await download(artwork: artwork)
@@ -33,7 +33,7 @@ final class ArtworkRepository: ArtworkRepositoryProtocol {
 		}
 
 		guard let artwork else {
-			throw ArtworkRepositoryError.missingArtwork
+			throw ArtworkDownloaderError.missingArtwork
 		}
 
 		return try await download(artwork: artwork)
@@ -42,14 +42,14 @@ final class ArtworkRepository: ArtworkRepositoryProtocol {
 	private func download(artwork: ArtworksResourceObject) async throws -> URL {
 		guard let file = artwork.attributes?.files.first,
 			  let imageURL = URL(string: file.href) else {
-			throw ArtworkRepositoryError.missingArtworkURL
+			throw ArtworkDownloaderError.missingArtworkURL
 		}
 
 		let (tempURL, response) = try await urlSession.download(from: imageURL)
 
 		guard let httpResponse = response as? HTTPURLResponse,
 			  (200 ... 299).contains(httpResponse.statusCode) else {
-			throw ArtworkRepositoryError.downloadFailed
+			throw ArtworkDownloaderError.downloadFailed
 		}
 
 		let fileExtension = imageURL.pathExtension.isEmpty ? "jpg" : imageURL.pathExtension
@@ -59,7 +59,7 @@ final class ArtworkRepository: ArtworkRepositoryProtocol {
 	}
 }
 
-enum ArtworkRepositoryError: Error {
+enum ArtworkDownloaderError: Error {
 	case missingArtwork
 	case missingArtworkURL
 	case downloadFailed

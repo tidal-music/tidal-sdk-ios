@@ -1,26 +1,26 @@
 import Foundation
 
 final class StoreCollectionHandler {
-	private let backendRepository: BackendRepositoryProtocol
-	private let localRepository: LocalRepository
-	private let artworkDownloader: ArtworkRepositoryProtocol
+	private let backendClient: BackendClientProtocol
+	private let offlineStore: OfflineStore
+	private let artworkDownloader: ArtworkDownloaderProtocol
 
-	init(backendRepository: BackendRepositoryProtocol, localRepository: LocalRepository, artworkDownloader: ArtworkRepositoryProtocol) {
-		self.backendRepository = backendRepository
-		self.localRepository = localRepository
+	init(backendClient: BackendClientProtocol, offlineStore: OfflineStore, artworkDownloader: ArtworkDownloaderProtocol) {
+		self.backendClient = backendClient
+		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 	}
 
 	func execute(_ task: StoreCollectionTask) async {
 		do {
-			try await backendRepository.updateTask(taskId: task.id, state: .inProgress)
+			try await backendClient.updateTask(taskId: task.id, state: .inProgress)
 
 			let artworkURL = try await artworkDownloader.downloadArtwork(for: task)
-			try localRepository.storeCollection(task: task, artworkURL: artworkURL)
+			try offlineStore.storeCollection(task: task, artworkURL: artworkURL)
 
-			try await backendRepository.updateTask(taskId: task.id, state: .completed)
+			try await backendClient.updateTask(taskId: task.id, state: .completed)
 		} catch {
-			try? await backendRepository.updateTask(taskId: task.id, state: .failed)
+			try? await backendClient.updateTask(taskId: task.id, state: .failed)
 		}
 	}
 }

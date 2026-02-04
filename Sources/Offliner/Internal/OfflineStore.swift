@@ -2,7 +2,7 @@ import Foundation
 import GRDB
 import TidalAPI
 
-final class LocalRepository {
+final class OfflineStore {
 	private let databaseQueue: DatabaseQueue
 
 	init(_ databaseQueue: DatabaseQueue) {
@@ -357,9 +357,9 @@ private extension OfflineCollection.Metadata {
 	}
 }
 
-// MARK: - LocalRepository Helpers
+// MARK: - OfflineStore Helpers
 
-private extension LocalRepository {
+private extension OfflineStore {
 	private func resolveAndUpdateBookmark(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL {
 		let bookmarkData: Data = row[column]
 		let itemId: String = row["id"]

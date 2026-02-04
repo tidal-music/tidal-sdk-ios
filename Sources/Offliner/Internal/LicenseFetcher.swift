@@ -2,7 +2,7 @@ import Auth
 import AVFoundation
 import Foundation
 
-final class LicenseRepository {
+final class LicenseFetcher {
 	private static let certificateURL = URL(string: "https://fp.fa.tidal.com/certificate")!
 	private static let licenseURL = URL(string: "https://fp.fa.tidal.com/license")!
 
@@ -23,7 +23,7 @@ final class LicenseRepository {
 	}
 }
 
-private extension LicenseRepository {
+private extension LicenseFetcher {
 	func createSpc(keyRequest: AVContentKeyRequest) async throws -> Data {
 		let keyId = try keyRequest.getKeyId()
 		let certificate = try await getCertificate()
@@ -42,7 +42,7 @@ private extension LicenseRepository {
 
 	func fetchLicense(spc: Data) async throws -> Data {
 		guard let token = try await credentialsProvider.getCredentials().token else {
-			throw LicenseRepositoryError.missingAccessToken
+			throw LicenseFetcherError.missingAccessToken
 		}
 
 		let data = try await httpClient.post(
@@ -117,7 +117,7 @@ private enum HttpClientError: Error {
 	case serverError(statusCode: Int)
 }
 
-enum LicenseRepositoryError: Error {
+enum LicenseFetcherError: Error {
 	case emptyLicensePayload
 	case missingAccessToken
 	case licenseRequestFailed
@@ -131,7 +131,7 @@ extension AVContentKeyRequest {
 			let url = URL(string: identifier),
 			let keyId = url.host?.data(using: .utf8)
 		else {
-			throw LicenseRepositoryError.invalidKeyIdentifier
+			throw LicenseFetcherError.invalidKeyIdentifier
 		}
 		return keyId
 	}

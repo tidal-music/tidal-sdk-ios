@@ -1,12 +1,12 @@
 import Foundation
 
 final class RemoveItemHandler {
-	private let backendRepository: BackendRepositoryProtocol
-	private let localRepository: LocalRepository
+	private let backendClient: BackendClientProtocol
+	private let offlineStore: OfflineStore
 
-	init(backendRepository: BackendRepositoryProtocol, localRepository: LocalRepository) {
-		self.backendRepository = backendRepository
-		self.localRepository = localRepository
+	init(backendClient: BackendClientProtocol, offlineStore: OfflineStore) {
+		self.backendClient = backendClient
+		self.offlineStore = offlineStore
 	}
 
 	func execute(_ task: RemoveItemTask) async {

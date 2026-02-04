@@ -4,7 +4,7 @@ import Foundation
 actor TaskRunner {
 	private static let maxConcurrentTasks = 5
 
-	private let backendRepository: BackendRepositoryProtocol
+	private let backendClient: BackendClientProtocol
 	private let scheduler: Scheduler
 
 	private let storeItemHandler: StoreItemHandler
@@ -27,12 +27,12 @@ actor TaskRunner {
 	}
 
 	init(
-		backendRepository: BackendRepositoryProtocol,
-		localRepository: LocalRepository,
-		artworkDownloader: ArtworkRepositoryProtocol,
+		backendClient: BackendClientProtocol,
+		offlineStore: OfflineStore,
+		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
 	) {
-		self.backendRepository = backendRepository
+		self.backendClient = backendClient
 		self.scheduler = Scheduler()
 
 		var storedContinuation: AsyncStream<Download>.Continuation?
@@ -42,23 +42,23 @@ actor TaskRunner {
 		self.downloadsContinuation = storedContinuation
 
 		self.storeItemHandler = StoreItemHandler(
-			backendRepository: backendRepository,
-			localRepository: localRepository,
+			backendClient: backendClient,
+			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader
 		)
 		self.storeCollectionHandler = StoreCollectionHandler(
-			backendRepository: backendRepository,
-			localRepository: localRepository,
+			backendClient: backendClient,
+			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
 		)
 		self.removeItemHandler = RemoveItemHandler(
-			backendRepository: backendRepository,
-			localRepository: localRepository
+			backendClient: backendClient,
+			offlineStore: offlineStore
 		)
 		self.removeCollectionHandler = RemoveCollectionHandler(
-			backendRepository: backendRepository,
-			localRepository: localRepository
+			backendClient: backendClient,
+			offlineStore: offlineStore
 		)
 	}
 
@@ -124,7 +124,7 @@ actor TaskRunner {
 			return
 		}
 
-		let (tasks, cursor) = try await backendRepository.getTasks(cursor: taskCursor)
+		let (tasks, cursor) = try await backendClient.getTasks(cursor: taskCursor)
 		for task in tasks.map(InternalTask.init) where taskIds.insert(task.id).inserted {
 			pendingTasks.append(task)
 			if case let .storeItem(storeItemTask) = task.offlineTask {
