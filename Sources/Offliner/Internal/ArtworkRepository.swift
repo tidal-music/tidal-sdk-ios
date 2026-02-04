@@ -18,11 +18,11 @@ final class ArtworkRepository: ArtworkRepositoryProtocol {
 		case .track(let trackMetadata): trackMetadata.coverArt
 		case .video(let videoMetadata): videoMetadata.thumbnail
 		}
-		
+
 		guard let artwork else {
 			throw ArtworkRepositoryError.missingArtwork
 		}
-		
+
 		return try await download(artwork: artwork)
 	}
 
@@ -31,11 +31,11 @@ final class ArtworkRepository: ArtworkRepositoryProtocol {
 		case .album(let albumMetadata): albumMetadata.coverArt
 		case .playlist(let playlistMetadata): playlistMetadata.coverArt
 		}
-		
+
 		guard let artwork else {
 			throw ArtworkRepositoryError.missingArtwork
 		}
-		
+
 		return try await download(artwork: artwork)
 	}
 

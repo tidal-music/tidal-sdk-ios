@@ -27,7 +27,7 @@ private extension LicenseRepository {
 	func createSpc(keyRequest: AVContentKeyRequest) async throws -> Data {
 		let keyId = try keyRequest.getKeyId()
 		let certificate = try await getCertificate()
-		return try await keyRequest.createServerPlaybackContext(for: keyId, using: certificate)
+		return try await keyRequest.makeStreamingContentKeyRequestData(forApp: certificate, contentIdentifier: keyId)
 	}
 
 	func getCertificate() async throws -> Data {
@@ -134,23 +134,5 @@ extension AVContentKeyRequest {
 			throw LicenseRepositoryError.invalidKeyIdentifier
 		}
 		return keyId
-	}
-
-	func createServerPlaybackContext(for keyId: Data, using certificate: Data) async throws -> Data {
-		try await withCheckedThrowingContinuation { continuation in
-			makeStreamingContentKeyRequestData(
-				forApp: certificate,
-				contentIdentifier: keyId,
-				options: [AVContentKeyRequestProtocolVersionsKey: [1]]
-			) { data, error in
-				if let error {
-					continuation.resume(throwing: error)
-				} else if let data {
-					continuation.resume(returning: data)
-				} else {
-					continuation.resume(throwing: LicenseRepositoryError.emptyLicensePayload)
-				}
-			}
-		}
 	}
 }
