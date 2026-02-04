@@ -15,6 +15,18 @@ public enum ArtistClaimsAPITidal {
 
 
 	/**
+     Get multiple artistClaims.
+     
+     - returns: ArtistClaimsMultiResourceDataDocument
+     */
+	public static func artistClaimsGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			ArtistClaimsAPI.artistClaimsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId)
+		}
+	}
+
+
+	/**
      Delete single artistClaim.
      
      - returns: 
