@@ -246,7 +246,7 @@ extension ActiveDownload: AVContentKeySessionDelegate {
 		Task {
 			do {
 				let license = try await licenseRepository.getLicense(for: keyRequest)
-				licenseLocation = try FileStorage.store(license, subdirectory: "Licenses", filename: "\(taskId).key")
+				licenseLocation = try FileStorage.store(license, subdirectory: "Licenses", filename: "\(UUID().uuidString).key")
 
 				let keyResponse = AVContentKeyResponse(fairPlayStreamingKeyResponseData: license)
 				keyRequest.processContentKeyResponse(keyResponse)

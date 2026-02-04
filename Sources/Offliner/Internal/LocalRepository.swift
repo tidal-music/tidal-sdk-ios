@@ -21,11 +21,34 @@ final class LocalRepository {
 		let licenseBookmark = try licenseURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 		let artworkBookmark = try artworkURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
+		var replacedBookmarks: [Data] = []
+
 		try databaseQueue.inTransaction { database in
+			let existingRow = try Row.fetchOne(
+				database,
+				sql: """
+					SELECT media_bookmark, license_bookmark, artwork_bookmark
+					FROM offline_item
+					WHERE resource_type = ? AND resource_id = ?
+					""",
+				arguments: [task.resourceType, task.resourceId]
+			)
+
+			if let existingRow {
+				replacedBookmarks = ["media_bookmark", "license_bookmark", "artwork_bookmark"]
+					.compactMap { existingRow[$0] }
+			}
+
 			try database.execute(
 				sql: """
 					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark)
 					VALUES (?, ?, ?, ?, ?, ?, ?)
+					ON CONFLICT (resource_type, resource_id) DO UPDATE SET
+						id = excluded.id,
+						metadata = excluded.metadata,
+						media_bookmark = excluded.media_bookmark,
+						license_bookmark = excluded.license_bookmark,
+						artwork_bookmark = excluded.artwork_bookmark
 					""",
 				arguments: [task.id, task.resourceType, task.resourceId, metadataJson, mediaBookmark, licenseBookmark, artworkBookmark]
 			)
@@ -34,11 +57,17 @@ final class LocalRepository {
 				sql: """
 					INSERT INTO offline_item_relationship (collection, member, volume, position)
 					VALUES (?, ?, ?, ?)
+					ON CONFLICT (collection, volume, position) DO UPDATE SET
+						member = excluded.member
 					""",
 				arguments: [task.collectionId, task.id, task.volume, task.index]
 			)
 
 			return .commit
+		}
+
+		for bookmarkData in replacedBookmarks {
+			try? FileStorage.delete(bookmark: bookmarkData)
 		}
 	}
 
@@ -46,14 +75,40 @@ final class LocalRepository {
 		let metadataJson = try task.metadata.serialize()
 		let artworkBookmark = try artworkURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
-		try databaseQueue.write { database in
+		var replacedArtworkBookmark: Data?
+
+		try databaseQueue.inTransaction { database in
+			let existingRow = try Row.fetchOne(
+				database,
+				sql: """
+					SELECT artwork_bookmark
+					FROM offline_item
+					WHERE resource_type = ? AND resource_id = ?
+					""",
+				arguments: [task.resourceType, task.resourceId]
+			)
+
+			if let existingRow {
+				replacedArtworkBookmark = existingRow["artwork_bookmark"]
+			}
+
 			try database.execute(
 				sql: """
 					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark)
 					VALUES (?, ?, ?, ?, NULL, NULL, ?)
+					ON CONFLICT (resource_type, resource_id) DO UPDATE SET
+						id = excluded.id,
+						metadata = excluded.metadata,
+						artwork_bookmark = excluded.artwork_bookmark
 					""",
 				arguments: [task.id, task.resourceType, task.resourceId, metadataJson, artworkBookmark]
 			)
+
+			return .commit
+		}
+
+		if let replacedArtworkBookmark {
+			try? FileStorage.delete(bookmark: replacedArtworkBookmark)
 		}
 	}
 
@@ -92,19 +147,19 @@ final class LocalRepository {
 			return OfflineMediaItem(
 				id: row["id"],
 				metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
-				mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
-				licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database),
-				artworkURL: try resolveBookmarkIfPresent(row, column: "artwork_bookmark", database)
+				mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
+				licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
+				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 			)
 		}
 	}
 
 	func getCollection(collectionType: OfflineCollectionType, resourceId: String) throws -> OfflineCollection? {
-		try databaseQueue.read { database in
+		try databaseQueue.write { database in
 			let row = try Row.fetchOne(
 				database,
 				sql: """
-					SELECT id, resource_type, resource_id, metadata
+					SELECT id, resource_type, resource_id, metadata, artwork_bookmark
 					FROM offline_item
 					WHERE resource_type = ? AND resource_id = ?
 					""",
@@ -117,7 +172,8 @@ final class LocalRepository {
 
 			return OfflineCollection(
 				id: row["id"],
-				metadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["metadata"])
+				metadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["metadata"]),
+				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 			)
 		}
 	}
@@ -141,20 +197,20 @@ final class LocalRepository {
 				return OfflineMediaItem(
 					id: row["id"],
 					metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
-					mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
-					licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database),
-					artworkURL: try resolveBookmarkIfPresent(row, column: "artwork_bookmark", database)
+					mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
+					licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
+					artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 				)
 			}
 		}
 	}
 
 	func getCollections(collectionType: OfflineCollectionType) throws -> [OfflineCollection] {
-		try databaseQueue.read { database in
+		try databaseQueue.write { database in
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
-					SELECT id, resource_type, resource_id, metadata
+					SELECT id, resource_type, resource_id, metadata, artwork_bookmark
 					FROM offline_item
 					WHERE resource_type = ?
 					ORDER BY created_at DESC
@@ -167,7 +223,8 @@ final class LocalRepository {
 
 				return OfflineCollection(
 					id: row["id"],
-					metadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["metadata"])
+					metadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["metadata"]),
+					artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 				)
 			}
 		}
@@ -196,9 +253,9 @@ final class LocalRepository {
 					item: OfflineMediaItem(
 						id: row["id"],
 						metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
-						mediaURL: try resolveBookmark(row, column: "media_bookmark", database),
-						licenseURL: try resolveBookmarkIfPresent(row, column: "license_bookmark", database),
-						artworkURL: try resolveBookmarkIfPresent(row, column: "artwork_bookmark", database)
+						mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
+						licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
+						artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 					),
 					volume: row["volume"],
 					position: row["position"]
@@ -303,7 +360,7 @@ private extension OfflineCollection.Metadata {
 // MARK: - LocalRepository Helpers
 
 private extension LocalRepository {
-	private func resolveBookmark(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL {
+	private func resolveAndUpdateBookmark(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL {
 		let bookmarkData: Data = row[column]
 		let itemId: String = row["id"]
 
@@ -326,11 +383,11 @@ private extension LocalRepository {
 		return url
 	}
 
-	private func resolveBookmarkIfPresent(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL? {
+	private func resolveAndUpdateBookmarkIfPresent(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL? {
 		guard row[column] != nil else {
 			return nil
 		}
 
-		return try resolveBookmark(row, column: column, database)
+		return try resolveAndUpdateBookmark(row, column: column, database)
 	}
 }

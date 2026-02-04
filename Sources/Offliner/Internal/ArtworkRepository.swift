@@ -53,7 +53,7 @@ final class ArtworkRepository: ArtworkRepositoryProtocol {
 		}
 
 		let fileExtension = imageURL.pathExtension.isEmpty ? "jpg" : imageURL.pathExtension
-		let filename = "\(artwork.id).\(fileExtension)"
+		let filename = "\(UUID().uuidString).\(fileExtension)"
 
 		return try FileStorage.move(from: tempURL, subdirectory: "Artworks", filename: filename)
 	}

@@ -59,6 +59,7 @@ public struct OfflineCollection {
 
 	public let id: String
 	public let metadata: Metadata
+	public let artworkURL: URL?
 }
 
 public struct OfflineCollectionItem {

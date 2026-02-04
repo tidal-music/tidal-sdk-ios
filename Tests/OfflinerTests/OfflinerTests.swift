@@ -94,6 +94,75 @@ final class OfflinerTests: XCTestCase {
 		}
 	}
 
+	func testRedownloadTrackDeletesOldFilesAndStoresNewOnes() async throws {
+		let backend = StubBackendRepository()
+		let artworkDownloader = SucceedingArtworkRepository()
+		let mediaDownloader = SucceedingMediaDownloader()
+		let offliner = createOffliner(
+			backendRepository: backend,
+			artworkDownloader: artworkDownloader,
+			mediaDownloader: mediaDownloader)
+
+		// First download
+		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
+
+		do {
+			let downloads = offliner.newDownloads
+			async let runTask: () = offliner.run()
+
+			for await download in downloads {
+				let events = download.events
+				await assertEventually(events) { event in
+					if case .state(.completed) = event { return true }
+					return false
+				}
+				break
+			}
+
+			try await runTask
+		}
+
+		let firstItem = try XCTUnwrap(offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123"))
+		let firstMediaURL = firstItem.mediaURL
+		let firstArtworkURL = try XCTUnwrap(firstItem.artworkURL)
+		XCTAssertTrue(FileManager.default.fileExists(atPath: firstMediaURL.path))
+		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
+
+		// Second download of the same track
+		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
+
+		do {
+			let downloads = offliner.newDownloads
+			async let runTask: () = offliner.run()
+
+			for await download in downloads {
+				let events = download.events
+				await assertEventually(events) { event in
+					if case .state(.completed) = event { return true }
+					return false
+				}
+				break
+			}
+
+			try await runTask
+		}
+
+		let secondItem = try XCTUnwrap(offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123"))
+		let secondMediaURL = secondItem.mediaURL
+		let secondArtworkURL = try XCTUnwrap(secondItem.artworkURL)
+
+		// Old files should be deleted
+		XCTAssertFalse(FileManager.default.fileExists(atPath: firstMediaURL.path))
+		XCTAssertFalse(FileManager.default.fileExists(atPath: firstArtworkURL.path))
+
+		XCTAssertTrue(FileManager.default.fileExists(atPath: secondMediaURL.path))
+		XCTAssertTrue(FileManager.default.fileExists(atPath: secondArtworkURL.path))
+
+		// URLs should be different
+		XCTAssertNotEqual(firstMediaURL, secondMediaURL)
+		XCTAssertNotEqual(firstArtworkURL, secondArtworkURL)
+	}
+
 	func testDownloadTrackFailsWhenMediaDownloadFails() async throws {
 		let offliner = createOffliner(
 			backendRepository: StubBackendRepository(),
@@ -313,6 +382,39 @@ final class OfflinerTests: XCTestCase {
 		} else {
 			XCTFail("Expected album metadata")
 		}
+	}
+
+	func testRedownloadAlbumDeletesOldArtworkAndStoresNewOne() async throws {
+		let backend = StubBackendRepository()
+		let offliner = createOffliner(
+			backendRepository: backend,
+			artworkDownloader: SucceedingArtworkRepository(),
+			mediaDownloader: SucceedingMediaDownloader())
+
+		// First download
+		try await offliner.download(collectionType: .albums, resourceId: "album-123")
+		try await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let firstCollection = try XCTUnwrap(offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123"))
+		let firstArtworkURL = try XCTUnwrap(firstCollection.artworkURL)
+		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
+
+		// Second download of the same album
+		try await offliner.download(collectionType: .albums, resourceId: "album-123")
+		try await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let secondCollection = try XCTUnwrap(offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123"))
+		let secondArtworkURL = try XCTUnwrap(secondCollection.artworkURL)
+
+		// Old artwork should be deleted
+		XCTAssertFalse(FileManager.default.fileExists(atPath: firstArtworkURL.path))
+
+		XCTAssertTrue(FileManager.default.fileExists(atPath: secondArtworkURL.path))
+
+		// URLs should be different
+		XCTAssertNotEqual(firstArtworkURL, secondArtworkURL)
 	}
 
 	func testDownloadAlbumFailsWhenArtworkDownloadFails() async throws {
@@ -647,20 +749,19 @@ final class FailOnGetTasksBackendRepository: BackendRepositoryProtocol {
 }
 
 final class SucceedingArtworkRepository: ArtworkRepositoryProtocol {
-	let artworkURL: URL
-
-	init() {
-		let tempDir = FileManager.default.temporaryDirectory
-		artworkURL = tempDir.appendingPathComponent("artwork-\(UUID().uuidString).jpg")
-		try? Data().write(to: artworkURL)
-	}
-
 	func downloadArtwork(for task: StoreItemTask) async throws -> URL {
-		artworkURL
+		createArtworkFile()
 	}
 
 	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL {
-		artworkURL
+		createArtworkFile()
+	}
+
+	private func createArtworkFile() -> URL {
+		let tempDir = FileManager.default.temporaryDirectory
+		let url = tempDir.appendingPathComponent("artwork-\(UUID().uuidString).jpg")
+		try? Data("artwork".utf8).write(to: url)
+		return url
 	}
 }
 
@@ -675,14 +776,7 @@ final class FailingArtworkRepository: ArtworkRepositoryProtocol {
 }
 
 final class SucceedingMediaDownloader: MediaDownloaderProtocol {
-	let downloadedFileURL: URL
 	var progressValues: [Double] = []
-
-	init() {
-		let tempDir = FileManager.default.temporaryDirectory
-		downloadedFileURL = tempDir.appendingPathComponent("media-\(UUID().uuidString).m4a")
-		try? Data().write(to: downloadedFileURL)
-	}
 
 	func download(
 		manifestURL: URL,
@@ -693,8 +787,12 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 			onProgress(progress)
 		}
 
+		let tempDir = FileManager.default.temporaryDirectory
+		let url = tempDir.appendingPathComponent("media-\(UUID().uuidString).m4a")
+		try? Data("media".utf8).write(to: url)
+
 		return MediaDownloadResult(
-			mediaURL: downloadedFileURL,
+			mediaURL: url,
 			licenseURL: nil
 		)
 	}

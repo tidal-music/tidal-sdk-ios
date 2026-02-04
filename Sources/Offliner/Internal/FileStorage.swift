@@ -15,6 +15,21 @@ enum FileStorage {
 		return destination
 	}
 
+	static func delete(url: URL) throws {
+		try FileManager.default.removeItem(at: url)
+	}
+
+	static func delete(bookmark: Data) throws {
+		var isStale = false
+		let url = try URL(
+			resolvingBookmarkData: bookmark,
+			options: [],
+			relativeTo: nil,
+			bookmarkDataIsStale: &isStale
+		)
+		try delete(url: url)
+	}
+
 	private static func directory(for subdirectory: String) throws -> URL {
 		guard let appSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
 			throw FileStorageError.noApplicationSupportDirectory
