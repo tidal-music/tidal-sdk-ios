@@ -17,14 +17,10 @@ actor TaskRunner {
 	private var taskIds: Set<String> = []
 	private var taskCursor: String?
 
-	private var downloadsList: [Download] = []
+	private(set) var currentDownloads: [Download] = []
 	private var downloadsContinuation: AsyncStream<Download>.Continuation?
 
 	nonisolated let newDownloads: AsyncStream<Download>
-
-	var currentDownloads: [Download] {
-		downloadsList
-	}
 
 	init(
 		backendClient: BackendClientProtocol,
@@ -113,7 +109,7 @@ actor TaskRunner {
 		inProgressTasks.removeAll { $0.id == task.id }
 		taskIds.remove(task.id)
 		if let download = task.download {
-			downloadsList.removeAll { $0 === download }
+			currentDownloads.removeAll { $0 === download }
 		}
 
 		try await run()
@@ -130,7 +126,7 @@ actor TaskRunner {
 			if case let .storeItem(storeItemTask) = task.offlineTask {
 				let download = Download(task: storeItemTask, state: .pending)
 				task.download = download
-				downloadsList.append(download)
+				currentDownloads.append(download)
 				downloadsContinuation?.yield(download)
 			}
 		}
