@@ -31,7 +31,8 @@ enum FileStorage {
 	}
 
 	private static func directory(for subdirectory: String) throws -> URL {
-		guard let appSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+		let appSupportURLs = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+		guard let appSupportDirectory = appSupportURLs.first else {
 			throw FileStorageError.noApplicationSupportDirectory
 		}
 		let directory = appSupportDirectory.appendingPathComponent("Offliner/\(subdirectory)", isDirectory: true)

@@ -41,7 +41,8 @@ final class OfflineStore {
 
 			try database.execute(
 				sql: """
-					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark)
+					INSERT INTO offline_item \
+					(id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark)
 					VALUES (?, ?, ?, ?, ?, ?, ?)
 					ON CONFLICT (resource_type, resource_id) DO UPDATE SET
 						id = excluded.id,
@@ -50,7 +51,10 @@ final class OfflineStore {
 						license_bookmark = excluded.license_bookmark,
 						artwork_bookmark = excluded.artwork_bookmark
 					""",
-				arguments: [task.id, task.resourceType, task.resourceId, metadataJson, mediaBookmark, licenseBookmark, artworkBookmark]
+				arguments: [
+					task.id, task.resourceType, task.resourceId, metadataJson,
+					mediaBookmark, licenseBookmark, artworkBookmark
+				]
 			)
 
 			try database.execute(
@@ -94,7 +98,8 @@ final class OfflineStore {
 
 			try database.execute(
 				sql: """
-					INSERT INTO offline_item (id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark)
+					INSERT INTO offline_item \
+					(id, resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark)
 					VALUES (?, ?, ?, ?, NULL, NULL, ?)
 					ON CONFLICT (resource_type, resource_id) DO UPDATE SET
 						id = excluded.id,

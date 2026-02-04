@@ -119,7 +119,13 @@ final class BackendClient: BackendClientProtocol {
 					return nil
 				}
 
-				let task = StoreItemTask(id: resourceObject.id, metadata: metadata, collectionId: collectionId, volume: volume, index: index)
+				let task = StoreItemTask(
+					id: resourceObject.id,
+					metadata: metadata,
+					collectionId: collectionId,
+					volume: volume,
+					index: index
+				)
 				return .storeItem(task)
 
 			case .storeCollection:
@@ -209,8 +215,11 @@ private final class IncludedItemsMap {
 
 	init(from included: [IncludedInner]?) {
 		guard let included else { return }
+		populateStorage(from: included)
+		wireAllRelationships(from: included)
+	}
 
-		// First pass: create all IncludedItem nodes
+	private func populateStorage(from included: [IncludedInner]) {
 		for item in included {
 			switch item {
 			case .tracksResourceObject(let track):
@@ -229,24 +238,29 @@ private final class IncludedItemsMap {
 				break
 			}
 		}
+	}
 
-		// Second pass: wire up relationships
+	private func wireAllRelationships(from included: [IncludedInner]) {
 		for item in included {
 			switch item {
 			case .tracksResourceObject(let track):
-				guard let includedItem = get(type: track.type, id: track.id), let rels = track.relationships else { continue }
+				guard let includedItem = get(type: track.type, id: track.id),
+					  let rels = track.relationships else { continue }
 				wireRelationships(for: includedItem, albums: rels.albums, artists: rels.artists, coverArt: nil)
 
 			case .videosResourceObject(let video):
-				guard let includedItem = get(type: video.type, id: video.id), let rels = video.relationships else { continue }
+				guard let includedItem = get(type: video.type, id: video.id),
+					  let rels = video.relationships else { continue }
 				wireRelationships(for: includedItem, albums: rels.albums, artists: rels.artists, coverArt: rels.thumbnailArt)
 
 			case .albumsResourceObject(let album):
-				guard let includedItem = get(type: album.type, id: album.id), let rels = album.relationships else { continue }
+				guard let includedItem = get(type: album.type, id: album.id),
+					  let rels = album.relationships else { continue }
 				wireRelationships(for: includedItem, albums: nil, artists: rels.artists, coverArt: rels.coverArt)
 
 			case .playlistsResourceObject(let playlist):
-				guard let includedItem = get(type: playlist.type, id: playlist.id), let rels = playlist.relationships else { continue }
+				guard let includedItem = get(type: playlist.type, id: playlist.id),
+					  let rels = playlist.relationships else { continue }
 				wireRelationships(for: includedItem, albums: nil, artists: nil, coverArt: rels.coverArt)
 
 			default:

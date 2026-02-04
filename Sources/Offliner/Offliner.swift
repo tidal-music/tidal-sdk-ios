@@ -132,7 +132,10 @@ public final class Offliner {
 		try offlineStore.getMediaItems(mediaType: mediaType)
 	}
 
-	public func getOfflineCollection(collectionType: OfflineCollectionType, resourceId: String) throws -> OfflineCollection? {
+	public func getOfflineCollection(
+		collectionType: OfflineCollectionType,
+		resourceId: String
+	) throws -> OfflineCollection? {
 		try offlineStore.getCollection(collectionType: collectionType, resourceId: resourceId)
 	}
 
@@ -140,7 +143,10 @@ public final class Offliner {
 		try offlineStore.getCollections(collectionType: collectionType)
 	}
 
-	public func getOfflineCollectionItems(collectionType: OfflineCollectionType, resourceId: String) throws -> [OfflineCollectionItem] {
+	public func getOfflineCollectionItems(
+		collectionType: OfflineCollectionType,
+		resourceId: String
+	) throws -> [OfflineCollectionItem] {
 		try offlineStore.getCollectionItems(collectionType: collectionType, resourceId: resourceId)
 	}
 

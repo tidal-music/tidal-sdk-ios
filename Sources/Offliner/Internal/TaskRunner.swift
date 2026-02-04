@@ -135,8 +135,8 @@ actor TaskRunner {
 			}
 		}
 
-		if let c = cursor {
-			taskCursor = c
+		if let newCursor = cursor {
+			taskCursor = newCursor
 		}
 	}
 }
@@ -161,13 +161,13 @@ private actor Scheduler {
 	private var rerun = false
 
 	func trigger(_ work: @Sendable @escaping () async throws -> Void) async throws {
-		if let t = task {
+		if let existingTask = task {
 			rerun = true
-			try await t.value
+			try await existingTask.value
 			return
 		}
 
-		let t = Task<Void, Error> { [weak self] in
+		let newTask = Task<Void, Error> { [weak self] in
 			guard let self else { return }
 
 			do {
@@ -182,8 +182,8 @@ private actor Scheduler {
 			}
 		}
 
-		task = t
-		try await t.value
+		task = newTask
+		try await newTask.value
 	}
 
 	private func stop() -> Bool {
