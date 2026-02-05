@@ -301,7 +301,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowersGet**
 ```swift
-    open class func artistsIdRelationshipsFollowersGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsFollowersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsFollowersGet(id: String, pageCursor: String? = nil, viewerContext: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsFollowersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get followers relationship (\"to-many\").
@@ -314,12 +314,12 @@ Retrieves followers relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let viewerContext = "viewerContext_example" // String |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let viewerContext = "viewerContext_example" // String | Member paths to include viewer-specific information on (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: followers (optional)
 
 // Get followers relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsFollowersGet(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsFollowersGet(id: id, pageCursor: pageCursor, viewerContext: viewerContext, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -336,8 +336,8 @@ ArtistsAPI.artistsIdRelationshipsFollowersGet(id: id, viewerContext: viewerConte
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **viewerContext** | **String** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **viewerContext** | **String** | Member paths to include viewer-specific information on | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: followers | [optional] 
 
 ### Return type
@@ -409,7 +409,7 @@ Void (empty response body)
 
 # **artistsIdRelationshipsFollowingGet**
 ```swift
-    open class func artistsIdRelationshipsFollowingGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsFollowingMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsFollowingGet(id: String, pageCursor: String? = nil, viewerContext: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsFollowingMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get following relationship (\"to-many\").
@@ -422,12 +422,12 @@ Retrieves following relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let viewerContext = "viewerContext_example" // String |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let viewerContext = "viewerContext_example" // String | Member paths to include viewer-specific information on (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: following (optional)
 
 // Get following relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsFollowingGet(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsFollowingGet(id: id, pageCursor: pageCursor, viewerContext: viewerContext, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -444,8 +444,8 @@ ArtistsAPI.artistsIdRelationshipsFollowingGet(id: id, viewerContext: viewerConte
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **viewerContext** | **String** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **viewerContext** | **String** | Member paths to include viewer-specific information on | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: following | [optional] 
 
 ### Return type
