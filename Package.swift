@@ -38,6 +38,10 @@ let package = Package(
 			name: "TidalAPI",
 			targets: ["TidalAPI"]
 		),
+		.library(
+			name: "Offliner",
+			targets: ["Offliner"]
+		),
 	],
 	dependencies: [
 		.package(url: "https://github.com/groue/GRDB.swift.git", from: "6.27.0"),
@@ -138,9 +142,11 @@ let package = Package(
 			name: "Offliner",
 			dependencies: [
 				.GRDB,
+				.tidalAPI,
+				.auth,
 			],
 			resources: [
-				.copy("Database/Resources"),
+				.process("Internal/Resources"),
 			]
 		),
 		.testTarget(

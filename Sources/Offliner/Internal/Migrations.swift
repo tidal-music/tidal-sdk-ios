@@ -1,12 +1,12 @@
 import Foundation
 import GRDB
 
-internal enum Migrations {
+enum Migrations {
 	static func run(_ dbQueue: DatabaseQueue) throws {
 		var migrator = DatabaseMigrator()
 		for migration in try loadMigrations() {
-			migrator.registerMigration(migration.identifier) { db in
-				try db.execute(sql: migration.sql)
+			migrator.registerMigration(migration.identifier) { database in
+				try database.execute(sql: migration.sql)
 			}
 		}
 		try migrator.migrate(dbQueue)
