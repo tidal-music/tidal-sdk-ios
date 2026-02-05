@@ -26,9 +26,9 @@ final class StoreItemHandler {
 
 		do {
 			try await backendClient.updateTask(taskId: task.id, state: .inProgress)
-			download.updateState(.inProgress)
+			await download.updateState(.inProgress)
 		} catch {
-			download.updateState(.failed)
+			await download.updateState(.failed)
 			await onFinished()
 			return
 		}
@@ -40,22 +40,22 @@ final class StoreItemHandler {
 				manifestURL: URL(string: "http://tidal.com/manifest.m3u8")!,
 				taskId: task.id,
 				onProgress: { progress in
-					download.updateProgress(progress)
+					Task { await download.updateProgress(progress) }
 				}
 			)
 
 			try offlineStore.storeMediaItem(
 				task: task,
-				mediaURL: result.mediaURL,
-				licenseURL: result.licenseURL,
+				mediaURL: result.mediaLocation,
+				licenseURL: result.licenseLocation,
 				artworkURL: artworkURL
 			)
 
 			try await backendClient.updateTask(taskId: task.id, state: .completed)
-			download.updateState(.completed)
+			await download.updateState(.completed)
 		} catch {
 			try? await backendClient.updateTask(taskId: task.id, state: .failed)
-			download.updateState(.failed)
+			await download.updateState(.failed)
 		}
 
 		await onFinished()

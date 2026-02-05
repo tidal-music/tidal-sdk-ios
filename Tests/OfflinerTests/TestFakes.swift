@@ -230,8 +230,9 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 		try? Data("media".utf8).write(to: url)
 
 		return MediaDownloadResult(
-			mediaURL: url,
-			licenseURL: nil
+			requiresLicense: false,
+			mediaLocation: url,
+			licenseLocation: nil
 		)
 	}
 }

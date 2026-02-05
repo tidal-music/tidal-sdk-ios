@@ -1,6 +1,6 @@
 import Foundation
 
-public final class Download {
+public actor Download {
 	public enum State {
 		case pending
 		case inProgress
@@ -13,10 +13,10 @@ public final class Download {
 		case progress(Double)
 	}
 
-	public var metadata: OfflineMediaItem.Metadata { task.metadata }
-	public let events: AsyncStream<Event>
+	public nonisolated var metadata: OfflineMediaItem.Metadata { task.metadata }
+	public nonisolated let events: AsyncStream<Event>
 
-	let task: StoreItemTask
+	nonisolated let task: StoreItemTask
 	private let continuation: AsyncStream<Event>.Continuation
 
 	internal init(task: StoreItemTask) {

@@ -12,10 +12,18 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		)
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
-		try await offliner.run()
 
-		let downloads = await offliner.currentDownloads
-		XCTAssertEqual(downloads.count, 1)
+		let downloads = offliner.newDownloads
+		async let runTask: () = offliner.run()
+
+		var downloadCount = 0
+		for await _ in downloads {
+			downloadCount += 1
+			break
+		}
+
+		_ = try await runTask
+		XCTAssertEqual(downloadCount, 1)
 	}
 
 	func testDownloadTrackCompletesSuccessfully() async throws {

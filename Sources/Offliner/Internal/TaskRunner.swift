@@ -17,6 +17,9 @@ actor TaskRunner {
 	private var taskIds: Set<String> = []
 	private var taskCursor: String?
 
+	private var isRunning = false
+	private var needsRun = false
+
 	private(set) var currentDownloads: [Download] = []
 	private var downloadsContinuation: AsyncStream<Download>.Continuation?
 
@@ -56,15 +59,27 @@ actor TaskRunner {
 	}
 
 	func run() async throws {
-		if pendingTasks.count < Self.maxQueueSize {
-			try await refresh()
+		if isRunning {
+			needsRun = true
+			return
 		}
 
-		while inProgressTasks.count < Self.maxConcurrentTasks, let task = pendingTasks.first {
-			pendingTasks.removeFirst()
-			inProgressTasks.append(task)
-			start(task)
-		}
+		isRunning = true
+		defer { isRunning = false }
+
+		repeat {
+			needsRun = false
+
+			if pendingTasks.count < Self.maxQueueSize {
+				try await refresh()
+			}
+
+			while inProgressTasks.count < Self.maxConcurrentTasks, !pendingTasks.isEmpty {
+				let task = pendingTasks.removeFirst()
+				inProgressTasks.append(task)
+				start(task)
+			}
+		} while needsRun
 	}
 
 	private func refresh() async throws {

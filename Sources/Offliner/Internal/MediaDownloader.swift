@@ -5,8 +5,9 @@ import Foundation
 // MARK: - MediaDownloadResult
 
 struct MediaDownloadResult {
-	let mediaURL: URL
-	let licenseURL: URL?
+	let requiresLicense: Bool
+	let mediaLocation: URL
+	let licenseLocation: URL?
 }
 
 // MARK: - MediaDownloaderProtocol
@@ -104,28 +105,36 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 			return
 		}
 
-		activeDownload.contentKeySession.setDelegate(nil, queue: nil)
+		Task { [weak self] in
+			// Wait for license fetch to complete if needed
+			let licenseLocation = await activeDownload.licenseTask?.value
 
-		if let error {
-			activeDownload.continuation.resume(throwing: error)
-			return
+			self?.queue.async {
+				activeDownload.contentKeySession.setDelegate(nil, queue: nil)
+
+				if let error {
+					activeDownload.continuation.resume(throwing: error)
+					return
+				}
+
+				guard let mediaLocation = activeDownload.downloadedLocation else {
+					activeDownload.continuation.resume(throwing: MediaDownloaderError.noDownloadedFile)
+					return
+				}
+
+				if activeDownload.licenseTask != nil && licenseLocation == nil {
+					activeDownload.continuation.resume(throwing: MediaDownloaderError.licenseFailed)
+					return
+				}
+
+				let result = MediaDownloadResult(
+					requiresLicense: activeDownload.licenseTask != nil,
+					mediaLocation: mediaLocation,
+					licenseLocation: licenseLocation
+				)
+				activeDownload.continuation.resume(returning: result)
+			}
 		}
-
-		guard let mediaURL = activeDownload.downloadedLocation else {
-			activeDownload.continuation.resume(throwing: MediaDownloaderError.noDownloadedFile)
-			return
-		}
-
-		if activeDownload.needsLicense && activeDownload.licenseLocation == nil {
-			activeDownload.continuation.resume(throwing: MediaDownloaderError.licenseFailed)
-			return
-		}
-
-		let result = MediaDownloadResult(
-			mediaURL: mediaURL,
-			licenseURL: activeDownload.licenseLocation
-		)
-		activeDownload.continuation.resume(returning: result)
 	}
 
 	func urlSession(
@@ -154,8 +163,7 @@ private final class ActiveDownload: NSObject {
 	let queue: DispatchQueue
 
 	var downloadedLocation: URL?
-	var licenseLocation: URL?
-	var needsLicense: Bool = false
+	var licenseTask: Task<URL?, Never>?
 
 	init(
 		taskId: String,
@@ -181,8 +189,6 @@ extension ActiveDownload: AVContentKeySessionDelegate {
 		_ session: AVContentKeySession,
 		didProvide keyRequest: AVContentKeyRequest
 	) {
-		needsLicense = true
-
 		do {
 			try keyRequest.respondByRequestingPersistableContentKeyRequest()
 		} catch {
@@ -194,20 +200,28 @@ extension ActiveDownload: AVContentKeySessionDelegate {
 		_ session: AVContentKeySession,
 		didProvide keyRequest: AVPersistableContentKeyRequest
 	) {
-		queue.dispatch { [weak self] in
-			guard let self else { return }
+		licenseTask = Task { [weak self] in
+			guard let self else { return nil }
 
 			do {
 				let license = try await licenseFetcher.getLicense(for: keyRequest)
-				licenseLocation = try FileStorage.store(
+				let url = try FileStorage.store(
 					license,
 					subdirectory: "Licenses",
 					filename: "\(UUID().uuidString).key"
 				)
-				let keyResponse = AVContentKeyResponse(fairPlayStreamingKeyResponseData: license)
-				keyRequest.processContentKeyResponse(keyResponse)
+
+				queue.async {
+					let keyResponse = AVContentKeyResponse(fairPlayStreamingKeyResponseData: license)
+					keyRequest.processContentKeyResponse(keyResponse)
+				}
+
+				return url
 			} catch {
-				keyRequest.processContentKeyResponseError(error)
+				queue.async {
+					keyRequest.processContentKeyResponseError(error)
+				}
+				return nil
 			}
 		}
 	}
@@ -229,19 +243,4 @@ enum MediaDownloaderError: Error {
 	case licenseFailed
 }
 
-// MARK: - DispatchQueue Extension
 
-private extension DispatchQueue {
-	func dispatch(_ work: @escaping () async -> Void) {
-		async {
-			let semaphore = DispatchSemaphore(value: 0)
-
-			Task {
-				await work()
-				semaphore.signal()
-			}
-
-			semaphore.wait()
-		}
-	}
-}
