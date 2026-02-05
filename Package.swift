@@ -146,7 +146,7 @@ let package = Package(
 				.auth,
 			],
 			resources: [
-				.copy("Internal/Resources"),
+				.process("Internal/Resources"),
 			]
 		),
 		.testTarget(
