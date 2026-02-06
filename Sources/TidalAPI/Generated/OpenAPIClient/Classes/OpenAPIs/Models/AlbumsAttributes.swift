@@ -36,7 +36,8 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var accessType: AccessType?
     /** Album type */
     public var albumType: AlbumType
-    /** Available usage for this album */
+    /** Available usage for this album. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var availability: [Availability]?
     /** Barcode id (EAN-13 or UPC-A) */
     public var barcodeId: String

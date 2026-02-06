@@ -159,6 +159,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Get priceConfig relationship (\&quot;to-one\&quot;).
+     
+     - returns: TracksSingleRelationshipDataDocument
+     */
+	public static func tracksIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsPriceConfigGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Get providers relationship (\&quot;to-many\&quot;).
      
      - returns: TracksMultiRelationshipDataDocument
@@ -238,6 +250,18 @@ public enum TracksAPITidal {
 	public static func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdRelationshipsTrackStatisticsGetWithRequestBuilder(id: id, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
+     Get usageRules relationship (\&quot;to-one\&quot;).
+     
+     - returns: TracksSingleRelationshipDataDocument
+     */
+	public static func tracksIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsUsageRulesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 

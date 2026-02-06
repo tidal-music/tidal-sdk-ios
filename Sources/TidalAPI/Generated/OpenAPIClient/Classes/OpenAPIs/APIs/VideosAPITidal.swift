@@ -120,4 +120,16 @@ public enum VideosAPITidal {
 			VideosAPI.videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
 		}
 	}
+
+
+	/**
+     Get usageRules relationship (\&quot;to-one\&quot;).
+     
+     - returns: VideosSingleRelationshipDataDocument
+     */
+	public static func videosIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			VideosAPI.videosIdRelationshipsUsageRulesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+		}
+	}
 }

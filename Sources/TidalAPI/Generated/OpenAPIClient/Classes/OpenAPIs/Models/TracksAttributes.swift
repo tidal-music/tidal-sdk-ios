@@ -55,7 +55,8 @@ public struct TracksAttributes: Codable, Hashable {
     }
     /** Access type */
     public var accessType: AccessType?
-    /** Available usage for this track */
+    /** Available usage for this track. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var availability: [Availability]?
     /** Beats per minute */
     public var bpm: Float?

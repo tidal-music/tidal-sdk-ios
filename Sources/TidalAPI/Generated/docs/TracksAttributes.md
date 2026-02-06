@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **accessType** | **String** | Access type | [optional] 
-**availability** | **[String]** | Available usage for this track | [optional] 
+**availability** | **[String]** | Available usage for this track. Deprecated: use &#39;usageRules&#39; instead. This field will be removed in a future version. | [optional] 
 **bpm** | **Float** | Beats per minute | [optional] 
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **createdAt** | **Date** | Datetime of track creation (ISO 8601) | [optional] 
