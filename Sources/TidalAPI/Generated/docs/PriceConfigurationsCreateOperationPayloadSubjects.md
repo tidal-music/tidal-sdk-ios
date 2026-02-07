@@ -1,4 +1,4 @@
-# PriceConfigurationsCreateOperationPayloadSubject
+# PriceConfigurationsCreateOperationPayloadSubjects
 
 ## Properties
 Name | Type | Description | Notes

@@ -545,8 +545,8 @@ internal class UserCollectionsAPI {
     public enum Sort_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
         case PlaylistsAddedAtAsc = "playlists.addedAt"
         case PlaylistsAddedAtDesc = "-playlists.addedAt"
-        case PlaylistsLastUpdatedAtAsc = "playlists.lastUpdatedAt"
-        case PlaylistsLastUpdatedAtDesc = "-playlists.lastUpdatedAt"
+        case PlaylistsLastModifiedAtAsc = "playlists.lastModifiedAt"
+        case PlaylistsLastModifiedAtDesc = "-playlists.lastModifiedAt"
         case PlaylistsNameAsc = "playlists.name"
         case PlaylistsNameDesc = "-playlists.name"
     }

@@ -12,22 +12,23 @@ import AnyCodable
 
 public struct PriceConfigurationsCreateOperationPayloadDataRelationships: Codable, Hashable {
 
-    public var subject: PriceConfigurationsCreateOperationPayloadSubject
+    public static let subjectsRule = ArrayRule(minItems: 1, maxItems: nil, uniqueItems: false)
+    public var subjects: [PriceConfigurationsCreateOperationPayloadSubjects]
 
     public init(
-        subject: PriceConfigurationsCreateOperationPayloadSubject
+        subjects: [PriceConfigurationsCreateOperationPayloadSubjects]
     ) {
-        self.subject = subject
+        self.subjects = subjects
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case subject
+        case subjects
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(subject, forKey: .subject)
+        try container.encode(subjects, forKey: .subjects)
     }
 }

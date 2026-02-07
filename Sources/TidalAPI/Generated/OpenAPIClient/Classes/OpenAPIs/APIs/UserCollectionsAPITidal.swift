@@ -187,8 +187,8 @@ public enum UserCollectionsAPITidal {
 	public enum Sort_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
 		case PlaylistsAddedAtAsc = "playlists.addedAt"
 		case PlaylistsAddedAtDesc = "-playlists.addedAt"
-		case PlaylistsLastUpdatedAtAsc = "playlists.lastUpdatedAt"
-		case PlaylistsLastUpdatedAtDesc = "-playlists.lastUpdatedAt"
+		case PlaylistsLastModifiedAtAsc = "playlists.lastModifiedAt"
+		case PlaylistsLastModifiedAtDesc = "-playlists.lastModifiedAt"
 		case PlaylistsNameAsc = "playlists.name"
 		case PlaylistsNameDesc = "-playlists.name"
 
@@ -196,8 +196,8 @@ public enum UserCollectionsAPITidal {
 			switch self {
 			case .PlaylistsAddedAtAsc: return .PlaylistsAddedAtAsc
 			case .PlaylistsAddedAtDesc: return .PlaylistsAddedAtDesc
-			case .PlaylistsLastUpdatedAtAsc: return .PlaylistsLastUpdatedAtAsc
-			case .PlaylistsLastUpdatedAtDesc: return .PlaylistsLastUpdatedAtDesc
+			case .PlaylistsLastModifiedAtAsc: return .PlaylistsLastModifiedAtAsc
+			case .PlaylistsLastModifiedAtDesc: return .PlaylistsLastModifiedAtDesc
 			case .PlaylistsNameAsc: return .PlaylistsNameAsc
 			case .PlaylistsNameDesc: return .PlaylistsNameDesc
 			}
