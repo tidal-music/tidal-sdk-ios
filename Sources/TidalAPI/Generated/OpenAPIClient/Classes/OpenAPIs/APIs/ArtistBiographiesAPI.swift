@@ -130,13 +130,13 @@ internal class ArtistBiographiesAPI {
      Update single artistBiographie.
      
      - parameter id: (path) Artist biography id 
-     - parameter artistBiographyUpdateBody: (body)  (optional)
+     - parameter artistBiographiesUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistBiographiesIdPatch(id: String, artistBiographyUpdateBody: ArtistBiographyUpdateBody? = nil) async throws {
+    internal class func artistBiographiesIdPatch(id: String, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) async throws {
         do {
-            return try await artistBiographiesIdPatchWithRequestBuilder(id: id, artistBiographyUpdateBody: artistBiographyUpdateBody).execute().body
+            return try await artistBiographiesIdPatchWithRequestBuilder(id: id, artistBiographiesUpdateOperationPayload: artistBiographiesUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -151,16 +151,16 @@ internal class ArtistBiographiesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist biography id 
-     - parameter artistBiographyUpdateBody: (body)  (optional)
+     - parameter artistBiographiesUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func artistBiographiesIdPatchWithRequestBuilder(id: String, artistBiographyUpdateBody: ArtistBiographyUpdateBody? = nil) -> RequestBuilder<Void> {
+    internal class func artistBiographiesIdPatchWithRequestBuilder(id: String, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/artistBiographies/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistBiographyUpdateBody)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistBiographiesUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

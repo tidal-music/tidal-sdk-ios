@@ -78,9 +78,9 @@ public enum PlaylistsAPITidal {
      
      - returns: 
      */
-	public static func playlistsIdPatch(id: String, countryCode: String? = nil, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil) async throws {
+	public static func playlistsIdPatch(id: String, countryCode: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, playlistUpdateOperationPayload: playlistUpdateOperationPayload)
+			PlaylistsAPI.playlistsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, playlistsUpdateOperationPayload: playlistsUpdateOperationPayload)
 		}
 	}
 
@@ -102,9 +102,9 @@ public enum PlaylistsAPITidal {
      
      - returns: 
      */
-	public static func playlistsIdRelationshipsCoverArtPatch(id: String, playlistCoverArtRelationshipUpdateOperationPayload: PlaylistCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsCoverArtPatch(id: String, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, playlistCoverArtRelationshipUpdateOperationPayload: playlistCoverArtRelationshipUpdateOperationPayload)
+			PlaylistsAPI.playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, playlistsCoverArtRelationshipUpdateOperationPayload: playlistsCoverArtRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -114,9 +114,9 @@ public enum PlaylistsAPITidal {
      
      - returns: 
      */
-	public static func playlistsIdRelationshipsItemsDelete(id: String, playlistItemsRelationshipRemoveOperationPayload: PlaylistItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsItemsDelete(id: String, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, playlistItemsRelationshipRemoveOperationPayload: playlistItemsRelationshipRemoveOperationPayload)
+			PlaylistsAPI.playlistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, playlistsItemsRelationshipRemoveOperationPayload: playlistsItemsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -138,9 +138,9 @@ public enum PlaylistsAPITidal {
      
      - returns: 
      */
-	public static func playlistsIdRelationshipsItemsPatch(id: String, playlistItemsRelationshipReorderOperationPayload: PlaylistItemsRelationshipReorderOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsItemsPatch(id: String, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsItemsPatchWithRequestBuilder(id: id, playlistItemsRelationshipReorderOperationPayload: playlistItemsRelationshipReorderOperationPayload)
+			PlaylistsAPI.playlistsIdRelationshipsItemsPatchWithRequestBuilder(id: id, playlistsItemsRelationshipUpdateOperationPayload: playlistsItemsRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -150,9 +150,9 @@ public enum PlaylistsAPITidal {
      
      - returns: 
      */
-	public static func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, playlistItemsRelationshipAddOperationPayload: PlaylistItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, playlistItemsRelationshipAddOperationPayload: playlistItemsRelationshipAddOperationPayload)
+			PlaylistsAPI.playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload)
 		}
 	}
 
@@ -186,9 +186,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsSingleResourceDataDocument
      */
-	public static func playlistsPost(countryCode: String? = nil, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil) async throws -> PlaylistsSingleResourceDataDocument {
+	public static func playlistsPost(countryCode: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil) async throws -> PlaylistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsPostWithRequestBuilder(countryCode: countryCode, playlistCreateOperationPayload: playlistCreateOperationPayload)
+			PlaylistsAPI.playlistsPostWithRequestBuilder(countryCode: countryCode, playlistsCreateOperationPayload: playlistsCreateOperationPayload)
 		}
 	}
 }

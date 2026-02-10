@@ -43,9 +43,9 @@ public enum ArtistBiographiesAPITidal {
      
      - returns: 
      */
-	public static func artistBiographiesIdPatch(id: String, artistBiographyUpdateBody: ArtistBiographyUpdateBody? = nil) async throws {
+	public static func artistBiographiesIdPatch(id: String, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistBiographiesAPI.artistBiographiesIdPatchWithRequestBuilder(id: id, artistBiographyUpdateBody: artistBiographyUpdateBody)
+			ArtistBiographiesAPI.artistBiographiesIdPatchWithRequestBuilder(id: id, artistBiographiesUpdateOperationPayload: artistBiographiesUpdateOperationPayload)
 		}
 	}
 

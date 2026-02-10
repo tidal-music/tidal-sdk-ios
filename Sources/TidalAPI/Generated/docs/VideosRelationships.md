@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **replacement** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **similarVideos** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **thumbnailArt** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**usageRules** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

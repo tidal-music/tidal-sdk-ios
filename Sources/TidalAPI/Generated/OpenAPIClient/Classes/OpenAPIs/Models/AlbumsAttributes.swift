@@ -17,6 +17,11 @@ public struct AlbumsAttributes: Codable, Hashable {
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
     }
+    public enum AlbumType: String, Codable, CaseIterable {
+        case album = "ALBUM"
+        case ep = "EP"
+        case single = "SINGLE"
+    }
     public enum Availability: String, Codable, CaseIterable {
         case stream = "STREAM"
         case dj = "DJ"
@@ -29,7 +34,10 @@ public struct AlbumsAttributes: Codable, Hashable {
     }
     /** Access type */
     public var accessType: AccessType?
-    /** Available usage for this album */
+    /** Album type */
+    public var albumType: AlbumType
+    /** Available usage for this album. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var availability: [Availability]?
     /** Barcode id (EAN-13 or UPC-A) */
     public var barcodeId: String
@@ -51,13 +59,15 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var releaseDate: Date?
     /** Album title */
     public var title: String
-    /** Album type */
-    public var type: ModelType
+    /** Album type. Deprecated: use 'albumType' instead. This field will be removed in a future version. */
+    @available(*, deprecated, message: "This property is deprecated.")
+    public var type: ModelType?
     /** Album version */
     public var version: String?
 
     public init(
         accessType: AccessType? = nil,
+        albumType: AlbumType,
         availability: [Availability]? = nil,
         barcodeId: String,
         copyright: Copyright? = nil,
@@ -70,10 +80,11 @@ public struct AlbumsAttributes: Codable, Hashable {
         popularity: Double,
         releaseDate: Date? = nil,
         title: String,
-        type: ModelType,
+        type: ModelType? = nil,
         version: String? = nil
     ) {
         self.accessType = accessType
+        self.albumType = albumType
         self.availability = availability
         self.barcodeId = barcodeId
         self.copyright = copyright
@@ -92,6 +103,7 @@ public struct AlbumsAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case accessType
+        case albumType
         case availability
         case barcodeId
         case copyright
@@ -113,6 +125,7 @@ public struct AlbumsAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(accessType, forKey: .accessType)
+        try container.encode(albumType, forKey: .albumType)
         try container.encodeIfPresent(availability, forKey: .availability)
         try container.encode(barcodeId, forKey: .barcodeId)
         try container.encodeIfPresent(copyright, forKey: .copyright)
@@ -125,7 +138,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encode(title, forKey: .title)
-        try container.encode(type, forKey: .type)
+        try container.encodeIfPresent(type, forKey: .type)
         try container.encodeIfPresent(version, forKey: .version)
     }
 }

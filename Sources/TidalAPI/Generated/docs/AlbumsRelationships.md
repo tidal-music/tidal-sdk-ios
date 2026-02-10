@@ -8,10 +8,12 @@ Name | Type | Description | Notes
 **genres** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **items** | [**AlbumsItemsMultiRelationshipDataDocument**](AlbumsItemsMultiRelationshipDataDocument.md) |  | 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
+**priceConfig** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **replacement** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **similarAlbums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **suggestedCoverArts** | [**AlbumsSuggestedCoverArtsMultiRelationshipDataDocument**](AlbumsSuggestedCoverArtsMultiRelationshipDataDocument.md) |  | 
+**usageRules** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

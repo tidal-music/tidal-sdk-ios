@@ -4,6 +4,7 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**artistClaimsGet**](ArtistClaimsAPI.md#artistclaimsget) | **GET** /artistClaims | Get multiple artistClaims.
 [**artistClaimsIdDelete**](ArtistClaimsAPI.md#artistclaimsiddelete) | **DELETE** /artistClaims/{id} | Delete single artistClaim.
 [**artistClaimsIdGet**](ArtistClaimsAPI.md#artistclaimsidget) | **GET** /artistClaims/{id} | Get single artistClaim.
 [**artistClaimsIdPatch**](ArtistClaimsAPI.md#artistclaimsidpatch) | **PATCH** /artistClaims/{id} | Update single artistClaim.
@@ -13,6 +14,58 @@ Method | HTTP request | Description
 [**artistClaimsIdRelationshipsRecommendedArtistsGet**](ArtistClaimsAPI.md#artistclaimsidrelationshipsrecommendedartistsget) | **GET** /artistClaims/{id}/relationships/recommendedArtists | Get recommendedArtists relationship (\&quot;to-many\&quot;).
 [**artistClaimsPost**](ArtistClaimsAPI.md#artistclaimspost) | **POST** /artistClaims | Create single artistClaim.
 
+
+# **artistClaimsGet**
+```swift
+    open class func artistClaimsGet(include: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: ArtistClaimsMultiResourceDataDocument?, _ error: Error?) -> Void)
+```
+
+Get multiple artistClaims.
+
+Retrieves multiple artistClaims by available filters, or without if applicable.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+
+// Get multiple artistClaims.
+ArtistClaimsAPI.artistClaimsGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+
+### Return type
+
+[**ArtistClaimsMultiResourceDataDocument**](ArtistClaimsMultiResourceDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **artistClaimsIdDelete**
 ```swift
@@ -226,7 +279,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsPatch**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update acceptedArtists relationship (\"to-many\").
@@ -240,10 +293,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let artistClaimAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
+let artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
 
 // Update acceptedArtists relationship (\"to-many\").
-ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, countryCode: countryCode, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, countryCode: countryCode, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -261,7 +314,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **artistClaimAcceptedArtistsRelationshipUpdateOperationPayload** | [**ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload**](ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload.md) |  | [optional] 
+ **artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload** | [**ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload**](ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

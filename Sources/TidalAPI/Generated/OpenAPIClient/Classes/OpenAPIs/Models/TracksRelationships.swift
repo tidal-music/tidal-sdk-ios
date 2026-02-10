@@ -19,6 +19,7 @@ public struct TracksRelationships: Codable, Hashable {
     public var lyrics: MultiRelationshipDataDocument
     public var metadataStatus: SingleRelationshipDataDocument
     public var owners: MultiRelationshipDataDocument
+    public var priceConfig: SingleRelationshipDataDocument
     public var providers: MultiRelationshipDataDocument
     public var radio: MultiRelationshipDataDocument
     public var replacement: SingleRelationshipDataDocument
@@ -26,6 +27,7 @@ public struct TracksRelationships: Codable, Hashable {
     public var similarTracks: MultiRelationshipDataDocument
     public var sourceFile: SingleRelationshipDataDocument
     public var trackStatistics: SingleRelationshipDataDocument
+    public var usageRules: SingleRelationshipDataDocument
 
     public init(
         albums: MultiRelationshipDataDocument,
@@ -35,13 +37,15 @@ public struct TracksRelationships: Codable, Hashable {
         lyrics: MultiRelationshipDataDocument,
         metadataStatus: SingleRelationshipDataDocument,
         owners: MultiRelationshipDataDocument,
+        priceConfig: SingleRelationshipDataDocument,
         providers: MultiRelationshipDataDocument,
         radio: MultiRelationshipDataDocument,
         replacement: SingleRelationshipDataDocument,
         shares: MultiRelationshipDataDocument,
         similarTracks: MultiRelationshipDataDocument,
         sourceFile: SingleRelationshipDataDocument,
-        trackStatistics: SingleRelationshipDataDocument
+        trackStatistics: SingleRelationshipDataDocument,
+        usageRules: SingleRelationshipDataDocument
     ) {
         self.albums = albums
         self.artists = artists
@@ -50,6 +54,7 @@ public struct TracksRelationships: Codable, Hashable {
         self.lyrics = lyrics
         self.metadataStatus = metadataStatus
         self.owners = owners
+        self.priceConfig = priceConfig
         self.providers = providers
         self.radio = radio
         self.replacement = replacement
@@ -57,6 +62,7 @@ public struct TracksRelationships: Codable, Hashable {
         self.similarTracks = similarTracks
         self.sourceFile = sourceFile
         self.trackStatistics = trackStatistics
+        self.usageRules = usageRules
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -67,6 +73,7 @@ public struct TracksRelationships: Codable, Hashable {
         case lyrics
         case metadataStatus
         case owners
+        case priceConfig
         case providers
         case radio
         case replacement
@@ -74,6 +81,7 @@ public struct TracksRelationships: Codable, Hashable {
         case similarTracks
         case sourceFile
         case trackStatistics
+        case usageRules
     }
 
     // Encodable protocol methods
@@ -87,6 +95,7 @@ public struct TracksRelationships: Codable, Hashable {
         try container.encode(lyrics, forKey: .lyrics)
         try container.encode(metadataStatus, forKey: .metadataStatus)
         try container.encode(owners, forKey: .owners)
+        try container.encode(priceConfig, forKey: .priceConfig)
         try container.encode(providers, forKey: .providers)
         try container.encode(radio, forKey: .radio)
         try container.encode(replacement, forKey: .replacement)
@@ -94,5 +103,6 @@ public struct TracksRelationships: Codable, Hashable {
         try container.encode(similarTracks, forKey: .similarTracks)
         try container.encode(sourceFile, forKey: .sourceFile)
         try container.encode(trackStatistics, forKey: .trackStatistics)
+        try container.encode(usageRules, forKey: .usageRules)
     }
 }

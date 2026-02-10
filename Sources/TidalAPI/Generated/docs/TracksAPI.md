@@ -16,6 +16,7 @@ Method | HTTP request | Description
 [**tracksIdRelationshipsLyricsGet**](TracksAPI.md#tracksidrelationshipslyricsget) | **GET** /tracks/{id}/relationships/lyrics | Get lyrics relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsMetadataStatusGet**](TracksAPI.md#tracksidrelationshipsmetadatastatusget) | **GET** /tracks/{id}/relationships/metadataStatus | Get metadataStatus relationship (\&quot;to-one\&quot;).
 [**tracksIdRelationshipsOwnersGet**](TracksAPI.md#tracksidrelationshipsownersget) | **GET** /tracks/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+[**tracksIdRelationshipsPriceConfigGet**](TracksAPI.md#tracksidrelationshipspriceconfigget) | **GET** /tracks/{id}/relationships/priceConfig | Get priceConfig relationship (\&quot;to-one\&quot;).
 [**tracksIdRelationshipsProvidersGet**](TracksAPI.md#tracksidrelationshipsprovidersget) | **GET** /tracks/{id}/relationships/providers | Get providers relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsRadioGet**](TracksAPI.md#tracksidrelationshipsradioget) | **GET** /tracks/{id}/relationships/radio | Get radio relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsReplacementGet**](TracksAPI.md#tracksidrelationshipsreplacementget) | **GET** /tracks/{id}/relationships/replacement | Get replacement relationship (\&quot;to-one\&quot;).
@@ -23,6 +24,7 @@ Method | HTTP request | Description
 [**tracksIdRelationshipsSimilarTracksGet**](TracksAPI.md#tracksidrelationshipssimilartracksget) | **GET** /tracks/{id}/relationships/similarTracks | Get similarTracks relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsSourceFileGet**](TracksAPI.md#tracksidrelationshipssourcefileget) | **GET** /tracks/{id}/relationships/sourceFile | Get sourceFile relationship (\&quot;to-one\&quot;).
 [**tracksIdRelationshipsTrackStatisticsGet**](TracksAPI.md#tracksidrelationshipstrackstatisticsget) | **GET** /tracks/{id}/relationships/trackStatistics | Get trackStatistics relationship (\&quot;to-one\&quot;).
+[**tracksIdRelationshipsUsageRulesGet**](TracksAPI.md#tracksidrelationshipsusagerulesget) | **GET** /tracks/{id}/relationships/usageRules | Get usageRules relationship (\&quot;to-one\&quot;).
 [**tracksPost**](TracksAPI.md#trackspost) | **POST** /tracks | Create single track.
 
 
@@ -42,7 +44,7 @@ import OpenAPIClient
 
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules (optional)
 let filterId = ["inner_example"] // [String] | Track id (optional)
 let filterIsrc = ["inner_example"] // [String] | List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id (optional)
@@ -67,7 +69,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules | [optional] 
  **filterId** | [**[String]**](String.md) | Track id | [optional] 
  **filterIsrc** | [**[String]**](String.md) | List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
@@ -154,7 +156,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get single track.
@@ -176,7 +178,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -196,7 +198,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdPatch**
 ```swift
-    open class func tracksIdPatch(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdPatch(id: String, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single track.
@@ -209,10 +211,10 @@ Updates existing track.
 import OpenAPIClient
 
 let id = "id_example" // String | Track id
-let trackUpdateOperationPayload = TrackUpdateOperation_Payload(data: TrackUpdateOperation_Payload_Data(attributes: TrackUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TrackUpdateOperation_Payload_Data_Relationships(genres: TrackUpdateOperation_Payload_Data_Relationships_Genres(data: [TrackUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackUpdateOperationPayload |  (optional)
+let tracksUpdateOperationPayload = TracksUpdateOperation_Payload(data: TracksUpdateOperation_Payload_Data(attributes: TracksUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TracksUpdateOperation_Payload_Data_Relationships(genres: TracksUpdateOperation_Payload_Data_Relationships_Genres(data: [TracksUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksUpdateOperationPayload |  (optional)
 
 // Update single track.
-TracksAPI.tracksIdPatch(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload) { (response, error) in
+TracksAPI.tracksIdPatch(id: id, tracksUpdateOperationPayload: tracksUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -229,7 +231,7 @@ TracksAPI.tracksIdPatch(id: id, trackUpdateOperationPayload: trackUpdateOperatio
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
- **trackUpdateOperationPayload** | [**TrackUpdateOperationPayload**](TrackUpdateOperationPayload.md) |  | [optional] 
+ **tracksUpdateOperationPayload** | [**TracksUpdateOperationPayload**](TracksUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -306,7 +308,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsAlbumsPatch**
 ```swift
-    open class func tracksIdRelationshipsAlbumsPatch(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsAlbumsPatch(id: String, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update albums relationship (\"to-many\").
@@ -319,10 +321,10 @@ Updates albums relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Track id
-let trackAlbumsRelationshipUpdateOperationPayload = TrackAlbumsRelationshipUpdateOperation_Payload(data: [TrackAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // TrackAlbumsRelationshipUpdateOperationPayload |  (optional)
+let tracksAlbumsRelationshipUpdateOperationPayload = TracksAlbumsRelationshipUpdateOperation_Payload(data: [TracksAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // TracksAlbumsRelationshipUpdateOperationPayload |  (optional)
 
 // Update albums relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, trackAlbumsRelationshipUpdateOperationPayload: trackAlbumsRelationshipUpdateOperationPayload) { (response, error) in
+TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -339,7 +341,7 @@ TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, trackAlbumsRelationshipUpdate
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
- **trackAlbumsRelationshipUpdateOperationPayload** | [**TrackAlbumsRelationshipUpdateOperationPayload**](TrackAlbumsRelationshipUpdateOperationPayload.md) |  | [optional] 
+ **tracksAlbumsRelationshipUpdateOperationPayload** | [**TracksAlbumsRelationshipUpdateOperationPayload**](TracksAlbumsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -682,6 +684,62 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **tracksIdRelationshipsPriceConfigGet**
+```swift
+    open class func tracksIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get priceConfig relationship (\"to-one\").
+
+Retrieves priceConfig relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Track id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: priceConfig (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+
+// Get priceConfig relationship (\"to-one\").
+TracksAPI.tracksIdRelationshipsPriceConfigGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Track id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: priceConfig | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+
+### Return type
+
+[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -1086,24 +1144,27 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **tracksPost**
+# **tracksIdRelationshipsUsageRulesGet**
 ```swift
-    open class func tracksPost(trackCreateOperationPayload: TrackCreateOperationPayload? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
-Create single track.
+Get usageRules relationship (\"to-one\").
 
-Creates a new track.
+Retrieves usageRules relationship.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let trackCreateOperationPayload = TrackCreateOperation_Payload(data: TrackCreateOperation_Payload_Data(attributes: TrackCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", explicit: false, title: "title_example"), relationships: TrackCreateOperation_Payload_Data_Relationships(albums: TrackCreateOperation_Payload_Data_Relationships_Albums(data: [TrackCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TrackCreateOperation_Payload_Data_Relationships_Artists(data: [TrackCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: TrackCreateOperation_Payload_Data_Relationships_Genres(data: [TrackCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TrackCreateOperationPayload |  (optional)
+let id = "id_example" // String | Track id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: usageRules (optional)
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
-// Create single track.
-TracksAPI.tracksPost(trackCreateOperationPayload: trackCreateOperationPayload) { (response, error) in
+// Get usageRules relationship (\"to-one\").
+TracksAPI.tracksIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1119,7 +1180,60 @@ TracksAPI.tracksPost(trackCreateOperationPayload: trackCreateOperationPayload) {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **trackCreateOperationPayload** | [**TrackCreateOperationPayload**](TrackCreateOperationPayload.md) |  | [optional] 
+ **id** | **String** | Track id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: usageRules | [optional] 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+
+### Return type
+
+[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **tracksPost**
+```swift
+    open class func tracksPost(tracksCreateOperationPayload: TracksCreateOperationPayload? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+```
+
+Create single track.
+
+Creates a new track.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let tracksCreateOperationPayload = TracksCreateOperation_Payload(data: TracksCreateOperation_Payload_Data(attributes: TracksCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", explicit: false, title: "title_example"), relationships: TracksCreateOperation_Payload_Data_Relationships(albums: TracksCreateOperation_Payload_Data_Relationships_Albums(data: [TracksCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TracksCreateOperation_Payload_Data_Relationships_Artists(data: [TracksCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: TracksCreateOperation_Payload_Data_Relationships_Genres(data: [TracksCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksCreateOperationPayload |  (optional)
+
+// Create single track.
+TracksAPI.tracksPost(tracksCreateOperationPayload: tracksCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **tracksCreateOperationPayload** | [**TracksCreateOperationPayload**](TracksCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

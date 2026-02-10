@@ -20,6 +20,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artworksResourceObject(ArtworksResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
+    case dspSharingLinksResourceObject(DspSharingLinksResourceObject)
     case dynamicModulesResourceObject(DynamicModulesResourceObject)
     case dynamicPagesResourceObject(DynamicPagesResourceObject)
     case genresResourceObject(GenresResourceObject)
@@ -29,6 +30,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case offlineTasksResourceObject(OfflineTasksResourceObject)
     case playQueuesResourceObject(PlayQueuesResourceObject)
     case playlistsResourceObject(PlaylistsResourceObject)
+    case priceConfigurationsResourceObject(PriceConfigurationsResourceObject)
     case providersResourceObject(ProvidersResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
@@ -42,7 +44,13 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case trackStatisticsResourceObject(TrackStatisticsResourceObject)
     case tracksMetadataStatusResourceObject(TracksMetadataStatusResourceObject)
     case tracksResourceObject(TracksResourceObject)
+    case usageRulesResourceObject(UsageRulesResourceObject)
+    case userCollectionAlbumsResourceObject(UserCollectionAlbumsResourceObject)
+    case userCollectionArtistsResourceObject(UserCollectionArtistsResourceObject)
     case userCollectionFoldersResourceObject(UserCollectionFoldersResourceObject)
+    case userCollectionPlaylistsResourceObject(UserCollectionPlaylistsResourceObject)
+    case userCollectionTracksResourceObject(UserCollectionTracksResourceObject)
+    case userCollectionVideosResourceObject(UserCollectionVideosResourceObject)
     case userCollectionsResourceObject(UserCollectionsResourceObject)
     case userEntitlementsResourceObject(UserEntitlementsResourceObject)
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
@@ -71,6 +79,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .creditsResourceObject(let value):
             try container.encode(value)
+        case .dspSharingLinksResourceObject(let value):
+            try container.encode(value)
         case .dynamicModulesResourceObject(let value):
             try container.encode(value)
         case .dynamicPagesResourceObject(let value):
@@ -88,6 +98,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .playQueuesResourceObject(let value):
             try container.encode(value)
         case .playlistsResourceObject(let value):
+            try container.encode(value)
+        case .priceConfigurationsResourceObject(let value):
             try container.encode(value)
         case .providersResourceObject(let value):
             try container.encode(value)
@@ -115,7 +127,19 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .tracksResourceObject(let value):
             try container.encode(value)
+        case .usageRulesResourceObject(let value):
+            try container.encode(value)
+        case .userCollectionAlbumsResourceObject(let value):
+            try container.encode(value)
+        case .userCollectionArtistsResourceObject(let value):
+            try container.encode(value)
         case .userCollectionFoldersResourceObject(let value):
+            try container.encode(value)
+        case .userCollectionPlaylistsResourceObject(let value):
+            try container.encode(value)
+        case .userCollectionTracksResourceObject(let value):
+            try container.encode(value)
+        case .userCollectionVideosResourceObject(let value):
             try container.encode(value)
         case .userCollectionsResourceObject(let value):
             try container.encode(value)
@@ -168,6 +192,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "credits":
             let value = try CreditsResourceObject(from: decoder)
             self = .creditsResourceObject(value)
+        case "dspSharingLinks":
+            let value = try DspSharingLinksResourceObject(from: decoder)
+            self = .dspSharingLinksResourceObject(value)
         case "dynamicModules":
             let value = try DynamicModulesResourceObject(from: decoder)
             self = .dynamicModulesResourceObject(value)
@@ -195,6 +222,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "playlists":
             let value = try PlaylistsResourceObject(from: decoder)
             self = .playlistsResourceObject(value)
+        case "priceConfigurations":
+            let value = try PriceConfigurationsResourceObject(from: decoder)
+            self = .priceConfigurationsResourceObject(value)
         case "providers":
             let value = try ProvidersResourceObject(from: decoder)
             self = .providersResourceObject(value)
@@ -234,9 +264,27 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "tracksMetadataStatus":
             let value = try TracksMetadataStatusResourceObject(from: decoder)
             self = .tracksMetadataStatusResourceObject(value)
+        case "usageRules":
+            let value = try UsageRulesResourceObject(from: decoder)
+            self = .usageRulesResourceObject(value)
+        case "userCollectionAlbums":
+            let value = try UserCollectionAlbumsResourceObject(from: decoder)
+            self = .userCollectionAlbumsResourceObject(value)
+        case "userCollectionArtists":
+            let value = try UserCollectionArtistsResourceObject(from: decoder)
+            self = .userCollectionArtistsResourceObject(value)
         case "userCollectionFolders":
             let value = try UserCollectionFoldersResourceObject(from: decoder)
             self = .userCollectionFoldersResourceObject(value)
+        case "userCollectionPlaylists":
+            let value = try UserCollectionPlaylistsResourceObject(from: decoder)
+            self = .userCollectionPlaylistsResourceObject(value)
+        case "userCollectionTracks":
+            let value = try UserCollectionTracksResourceObject(from: decoder)
+            self = .userCollectionTracksResourceObject(value)
+        case "userCollectionVideos":
+            let value = try UserCollectionVideosResourceObject(from: decoder)
+            self = .userCollectionVideosResourceObject(value)
         case "userCollections":
             let value = try UserCollectionsResourceObject(from: decoder)
             self = .userCollectionsResourceObject(value)
@@ -274,6 +322,7 @@ extension IncludedInner: Identifiable {
         case .artworksResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
+        case .dspSharingLinksResourceObject(let value): return value.id
         case .dynamicModulesResourceObject(let value): return value.id
         case .dynamicPagesResourceObject(let value): return value.id
         case .genresResourceObject(let value): return value.id
@@ -283,6 +332,7 @@ extension IncludedInner: Identifiable {
         case .offlineTasksResourceObject(let value): return value.id
         case .playQueuesResourceObject(let value): return value.id
         case .playlistsResourceObject(let value): return value.id
+        case .priceConfigurationsResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
@@ -296,7 +346,13 @@ extension IncludedInner: Identifiable {
         case .trackStatisticsResourceObject(let value): return value.id
         case .tracksMetadataStatusResourceObject(let value): return value.id
         case .tracksResourceObject(let value): return value.id
+        case .usageRulesResourceObject(let value): return value.id
+        case .userCollectionAlbumsResourceObject(let value): return value.id
+        case .userCollectionArtistsResourceObject(let value): return value.id
         case .userCollectionFoldersResourceObject(let value): return value.id
+        case .userCollectionPlaylistsResourceObject(let value): return value.id
+        case .userCollectionTracksResourceObject(let value): return value.id
+        case .userCollectionVideosResourceObject(let value): return value.id
         case .userCollectionsResourceObject(let value): return value.id
         case .userEntitlementsResourceObject(let value): return value.id
         case .userRecommendationsResourceObject(let value): return value.id

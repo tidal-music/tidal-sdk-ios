@@ -30,7 +30,7 @@ Method | HTTP request | Description
 
 Get single userCollection.
 
-Retrieves single userCollection by id.
+Deprecated. Use the dedicated collection resources instead: userCollectionAlbums, userCollectionArtists, userCollectionTracks, userCollectionVideos, or userCollectionPlaylists.
 
 ### Example
 ```swift
@@ -81,12 +81,12 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsAlbumsDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsAlbumsDelete(id: String, userCollectionAlbumsRelationshipRemoveOperationPayload: UserCollectionAlbumsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsAlbumsDelete(id: String, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from albums relationship (\"to-many\").
 
-Deletes item(s) from albums relationship.
+Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -94,10 +94,10 @@ Deletes item(s) from albums relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let userCollectionAlbumsRelationshipRemoveOperationPayload = UserCollectionAlbumsRelationshipRemoveOperation_Payload(data: [UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionAlbumsRelationshipRemoveOperationPayload |  (optional)
+let userCollectionsAlbumsRelationshipRemoveOperationPayload = UserCollectionsAlbumsRelationshipRemoveOperation_Payload(data: [UserCollectionsAlbumsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsAlbumsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from albums relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDelete(id: id, userCollectionAlbumsRelationshipRemoveOperationPayload: userCollectionAlbumsRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDelete(id: id, userCollectionsAlbumsRelationshipRemoveOperationPayload: userCollectionsAlbumsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -114,7 +114,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDelete(id: id, userCollec
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **userCollectionAlbumsRelationshipRemoveOperationPayload** | [**UserCollectionAlbumsRelationshipRemoveOperationPayload**](UserCollectionAlbumsRelationshipRemoveOperationPayload.md) |  | [optional] 
+ **userCollectionsAlbumsRelationshipRemoveOperationPayload** | [**UserCollectionsAlbumsRelationshipRemoveOperationPayload**](UserCollectionsAlbumsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -138,7 +138,7 @@ Void (empty response body)
 
 Get albums relationship (\"to-many\").
 
-Retrieves albums relationship.
+Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -193,12 +193,12 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsAlbumsPost**
 ```swift
-    open class func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, userCollectionAlbumsRelationshipAddOperationPayload: UserCollectionAlbumsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to albums relationship (\"to-many\").
 
-Adds item(s) to albums relationship.
+Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -207,10 +207,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let userCollectionAlbumsRelationshipAddOperationPayload = UserCollectionAlbumsRelationshipAddOperation_Payload(data: [UserCollectionAlbumsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionAlbumsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionAlbumsRelationshipAddOperationPayload |  (optional)
+let userCollectionsAlbumsRelationshipAddOperationPayload = UserCollectionsAlbumsRelationshipAddOperation_Payload(data: [UserCollectionsAlbumsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionsAlbumsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionsAlbumsRelationshipAddOperationPayload |  (optional)
 
 // Add to albums relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPost(id: id, countryCode: countryCode, userCollectionAlbumsRelationshipAddOperationPayload: userCollectionAlbumsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPost(id: id, countryCode: countryCode, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -228,7 +228,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **userCollectionAlbumsRelationshipAddOperationPayload** | [**UserCollectionAlbumsRelationshipAddOperationPayload**](UserCollectionAlbumsRelationshipAddOperationPayload.md) |  | [optional] 
+ **userCollectionsAlbumsRelationshipAddOperationPayload** | [**UserCollectionsAlbumsRelationshipAddOperationPayload**](UserCollectionsAlbumsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -247,12 +247,12 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsArtistsDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsArtistsDelete(id: String, userCollectionArtistsRelationshipRemoveOperationPayload: UserCollectionArtistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsArtistsDelete(id: String, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from artists relationship (\"to-many\").
 
-Deletes item(s) from artists relationship.
+Deprecated. Use the userCollectionArtists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -260,10 +260,10 @@ Deletes item(s) from artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let userCollectionArtistsRelationshipRemoveOperationPayload = UserCollectionArtistsRelationshipRemoveOperation_Payload(data: [UserCollectionArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionArtistsRelationshipRemoveOperationPayload |  (optional)
+let userCollectionsArtistsRelationshipRemoveOperationPayload = UserCollectionsArtistsRelationshipRemoveOperation_Payload(data: [UserCollectionsArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsArtistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from artists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDelete(id: id, userCollectionArtistsRelationshipRemoveOperationPayload: userCollectionArtistsRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDelete(id: id, userCollectionsArtistsRelationshipRemoveOperationPayload: userCollectionsArtistsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -280,7 +280,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDelete(id: id, userColle
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **userCollectionArtistsRelationshipRemoveOperationPayload** | [**UserCollectionArtistsRelationshipRemoveOperationPayload**](UserCollectionArtistsRelationshipRemoveOperationPayload.md) |  | [optional] 
+ **userCollectionsArtistsRelationshipRemoveOperationPayload** | [**UserCollectionsArtistsRelationshipRemoveOperationPayload**](UserCollectionsArtistsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -304,7 +304,7 @@ Void (empty response body)
 
 Get artists relationship (\"to-many\").
 
-Retrieves artists relationship.
+Deprecated. Use the userCollectionArtists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -359,12 +359,12 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsArtistsPost**
 ```swift
-    open class func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, userCollectionArtistsRelationshipAddOperationPayload: UserCollectionArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to artists relationship (\"to-many\").
 
-Adds item(s) to artists relationship.
+Deprecated. Use the userCollectionArtists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -373,10 +373,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let userCollectionArtistsRelationshipAddOperationPayload = UserCollectionArtistsRelationshipAddOperation_Payload(data: [UserCollectionArtistsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionArtistsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionArtistsRelationshipAddOperationPayload |  (optional)
+let userCollectionsArtistsRelationshipAddOperationPayload = UserCollectionsArtistsRelationshipAddOperation_Payload(data: [UserCollectionsArtistsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionsArtistsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionsArtistsRelationshipAddOperationPayload |  (optional)
 
 // Add to artists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPost(id: id, countryCode: countryCode, userCollectionArtistsRelationshipAddOperationPayload: userCollectionArtistsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPost(id: id, countryCode: countryCode, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -394,7 +394,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **userCollectionArtistsRelationshipAddOperationPayload** | [**UserCollectionArtistsRelationshipAddOperationPayload**](UserCollectionArtistsRelationshipAddOperationPayload.md) |  | [optional] 
+ **userCollectionsArtistsRelationshipAddOperationPayload** | [**UserCollectionsArtistsRelationshipAddOperationPayload**](UserCollectionsArtistsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -467,12 +467,12 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsPlaylistsDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsPlaylistsDelete(id: String, userCollectionPlaylistsRelationshipRemoveOperationPayload: UserCollectionPlaylistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsPlaylistsDelete(id: String, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from playlists relationship (\"to-many\").
 
-Deletes item(s) from playlists relationship.
+Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -480,10 +480,10 @@ Deletes item(s) from playlists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let userCollectionPlaylistsRelationshipRemoveOperationPayload = UserCollectionPlaylistsRelationshipRemoveOperation_Payload(data: [UserCollectionPlaylistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionPlaylistsRelationshipRemoveOperationPayload |  (optional)
+let userCollectionsPlaylistsRelationshipRemoveOperationPayload = UserCollectionsPlaylistsRelationshipRemoveOperation_Payload(data: [UserCollectionsPlaylistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsPlaylistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from playlists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDelete(id: id, userCollectionPlaylistsRelationshipRemoveOperationPayload: userCollectionPlaylistsRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDelete(id: id, userCollectionsPlaylistsRelationshipRemoveOperationPayload: userCollectionsPlaylistsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -500,7 +500,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDelete(id: id, userCol
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **userCollectionPlaylistsRelationshipRemoveOperationPayload** | [**UserCollectionPlaylistsRelationshipRemoveOperationPayload**](UserCollectionPlaylistsRelationshipRemoveOperationPayload.md) |  | [optional] 
+ **userCollectionsPlaylistsRelationshipRemoveOperationPayload** | [**UserCollectionsPlaylistsRelationshipRemoveOperationPayload**](UserCollectionsPlaylistsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -524,7 +524,7 @@ Void (empty response body)
 
 Get playlists relationship (\"to-many\").
 
-Retrieves playlists relationship.
+Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -577,12 +577,12 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsPlaylistsPost**
 ```swift
-    open class func userCollectionsIdRelationshipsPlaylistsPost(id: String, userCollectionPlaylistsRelationshipRemoveOperationPayload: UserCollectionPlaylistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsPlaylistsPost(id: String, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to playlists relationship (\"to-many\").
 
-Adds item(s) to playlists relationship.
+Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -590,10 +590,10 @@ Adds item(s) to playlists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let userCollectionPlaylistsRelationshipRemoveOperationPayload = UserCollectionPlaylistsRelationshipRemoveOperation_Payload(data: [UserCollectionPlaylistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionPlaylistsRelationshipRemoveOperationPayload |  (optional)
+let userCollectionsPlaylistsRelationshipAddOperationPayload = UserCollectionsPlaylistsRelationshipAddOperation_Payload(data: [UserCollectionsPlaylistsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsPlaylistsRelationshipAddOperationPayload |  (optional)
 
 // Add to playlists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPost(id: id, userCollectionPlaylistsRelationshipRemoveOperationPayload: userCollectionPlaylistsRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPost(id: id, userCollectionsPlaylistsRelationshipAddOperationPayload: userCollectionsPlaylistsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -610,7 +610,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPost(id: id, userColle
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **userCollectionPlaylistsRelationshipRemoveOperationPayload** | [**UserCollectionPlaylistsRelationshipRemoveOperationPayload**](UserCollectionPlaylistsRelationshipRemoveOperationPayload.md) |  | [optional] 
+ **userCollectionsPlaylistsRelationshipAddOperationPayload** | [**UserCollectionsPlaylistsRelationshipAddOperationPayload**](UserCollectionsPlaylistsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -629,12 +629,12 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsTracksDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsTracksDelete(id: String, userCollectionTracksRelationshipRemoveOperationPayload: UserCollectionTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsTracksDelete(id: String, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from tracks relationship (\"to-many\").
 
-Deletes item(s) from tracks relationship.
+Deprecated. Use the userCollectionTracks resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -642,10 +642,10 @@ Deletes item(s) from tracks relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let userCollectionTracksRelationshipRemoveOperationPayload = UserCollectionTracksRelationshipRemoveOperation_Payload(data: [UserCollectionTracksRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionTracksRelationshipRemoveOperationPayload |  (optional)
+let userCollectionsTracksRelationshipRemoveOperationPayload = UserCollectionsTracksRelationshipRemoveOperation_Payload(data: [UserCollectionsTracksRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsTracksRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from tracks relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsTracksDelete(id: id, userCollectionTracksRelationshipRemoveOperationPayload: userCollectionTracksRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsTracksDelete(id: id, userCollectionsTracksRelationshipRemoveOperationPayload: userCollectionsTracksRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -662,7 +662,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsTracksDelete(id: id, userCollec
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **userCollectionTracksRelationshipRemoveOperationPayload** | [**UserCollectionTracksRelationshipRemoveOperationPayload**](UserCollectionTracksRelationshipRemoveOperationPayload.md) |  | [optional] 
+ **userCollectionsTracksRelationshipRemoveOperationPayload** | [**UserCollectionsTracksRelationshipRemoveOperationPayload**](UserCollectionsTracksRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -686,7 +686,7 @@ Void (empty response body)
 
 Get tracks relationship (\"to-many\").
 
-Retrieves tracks relationship.
+Deprecated. Use the userCollectionTracks resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -741,12 +741,12 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsTracksPost**
 ```swift
-    open class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, userCollectionTracksRelationshipAddOperationPayload: UserCollectionTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to tracks relationship (\"to-many\").
 
-Adds item(s) to tracks relationship.
+Deprecated. Use the userCollectionTracks resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -755,10 +755,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let userCollectionTracksRelationshipAddOperationPayload = UserCollectionTracksRelationshipAddOperation_Payload(data: [UserCollectionTracksRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionTracksRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionTracksRelationshipAddOperationPayload |  (optional)
+let userCollectionsTracksRelationshipAddOperationPayload = UserCollectionsTracksRelationshipAddOperation_Payload(data: [UserCollectionsTracksRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionsTracksRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionsTracksRelationshipAddOperationPayload |  (optional)
 
 // Add to tracks relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, countryCode: countryCode, userCollectionTracksRelationshipAddOperationPayload: userCollectionTracksRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, countryCode: countryCode, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -776,7 +776,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **userCollectionTracksRelationshipAddOperationPayload** | [**UserCollectionTracksRelationshipAddOperationPayload**](UserCollectionTracksRelationshipAddOperationPayload.md) |  | [optional] 
+ **userCollectionsTracksRelationshipAddOperationPayload** | [**UserCollectionsTracksRelationshipAddOperationPayload**](UserCollectionsTracksRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -795,12 +795,12 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsVideosDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsVideosDelete(id: String, userCollectionVideosRelationshipRemoveOperationPayload: UserCollectionVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsVideosDelete(id: String, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from videos relationship (\"to-many\").
 
-Deletes item(s) from videos relationship.
+Deprecated. Use the userCollectionVideos resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -808,10 +808,10 @@ Deletes item(s) from videos relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let userCollectionVideosRelationshipRemoveOperationPayload = UserCollectionVideosRelationshipRemoveOperation_Payload(data: [UserCollectionVideosRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionVideosRelationshipRemoveOperationPayload |  (optional)
+let userCollectionsVideosRelationshipRemoveOperationPayload = UserCollectionsVideosRelationshipRemoveOperation_Payload(data: [UserCollectionsVideosRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsVideosRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from videos relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsVideosDelete(id: id, userCollectionVideosRelationshipRemoveOperationPayload: userCollectionVideosRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsVideosDelete(id: id, userCollectionsVideosRelationshipRemoveOperationPayload: userCollectionsVideosRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -828,7 +828,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsVideosDelete(id: id, userCollec
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **userCollectionVideosRelationshipRemoveOperationPayload** | [**UserCollectionVideosRelationshipRemoveOperationPayload**](UserCollectionVideosRelationshipRemoveOperationPayload.md) |  | [optional] 
+ **userCollectionsVideosRelationshipRemoveOperationPayload** | [**UserCollectionsVideosRelationshipRemoveOperationPayload**](UserCollectionsVideosRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -852,7 +852,7 @@ Void (empty response body)
 
 Get videos relationship (\"to-many\").
 
-Retrieves videos relationship.
+Deprecated. Use the userCollectionVideos resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -907,12 +907,12 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsVideosPost**
 ```swift
-    open class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, userCollectionVideosRelationshipAddOperationPayload: UserCollectionVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to videos relationship (\"to-many\").
 
-Adds item(s) to videos relationship.
+Deprecated. Use the userCollectionVideos resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -921,10 +921,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let userCollectionVideosRelationshipAddOperationPayload = UserCollectionVideosRelationshipAddOperation_Payload(data: [UserCollectionVideosRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionVideosRelationshipAddOperationPayload |  (optional)
+let userCollectionsVideosRelationshipAddOperationPayload = UserCollectionsVideosRelationshipAddOperation_Payload(data: [UserCollectionsVideosRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsVideosRelationshipAddOperationPayload |  (optional)
 
 // Add to videos relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsVideosPost(id: id, countryCode: countryCode, userCollectionVideosRelationshipAddOperationPayload: userCollectionVideosRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsVideosPost(id: id, countryCode: countryCode, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -942,7 +942,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **userCollectionVideosRelationshipAddOperationPayload** | [**UserCollectionVideosRelationshipAddOperationPayload**](UserCollectionVideosRelationshipAddOperationPayload.md) |  | [optional] 
+ **userCollectionsVideosRelationshipAddOperationPayload** | [**UserCollectionsVideosRelationshipAddOperationPayload**](UserCollectionsVideosRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 

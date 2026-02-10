@@ -43,21 +43,42 @@ public enum InstallationsAPITidal {
      
      - returns: 
      */
-	public static func installationsIdRelationshipsOfflineInventoryDelete(id: String, installationsOfflineInventoryRemovePayload: InstallationsOfflineInventoryRemovePayload? = nil) async throws {
+	public static func installationsIdRelationshipsOfflineInventoryDelete(id: String, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, installationsOfflineInventoryRemovePayload: installationsOfflineInventoryRemovePayload)
+			InstallationsAPI.installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload)
 		}
 	}
 
+
+	/**
+	 * enum for parameter filterType
+	 */
+	public enum FilterType_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
+		case tracks = "tracks"
+		case videos = "videos"
+		case albums = "albums"
+		case playlists = "playlists"
+		case usercollections = "userCollections"
+
+		func toInstallationsAPIEnum() -> InstallationsAPI.FilterType_installationsIdRelationshipsOfflineInventoryGet {
+			switch self {
+			case .tracks: return .tracks
+			case .videos: return .videos
+			case .albums: return .albums
+			case .playlists: return .playlists
+			case .usercollections: return .usercollections
+			}
+		}
+	}
 
 	/**
      Get offlineInventory relationship (\&quot;to-many\&quot;).
      
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
-	public static func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
+	public static func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, filterType: filterType?.compactMap { $0.toInstallationsAPIEnum() })
 		}
 	}
 
@@ -67,9 +88,9 @@ public enum InstallationsAPITidal {
      
      - returns: 
      */
-	public static func installationsIdRelationshipsOfflineInventoryPost(id: String, installationsOfflineInventoryAddPayload: InstallationsOfflineInventoryAddPayload? = nil) async throws {
+	public static func installationsIdRelationshipsOfflineInventoryPost(id: String, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, installationsOfflineInventoryAddPayload: installationsOfflineInventoryAddPayload)
+			InstallationsAPI.installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload)
 		}
 	}
 

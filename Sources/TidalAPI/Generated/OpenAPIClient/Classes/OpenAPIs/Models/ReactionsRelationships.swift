@@ -13,15 +13,19 @@ import AnyCodable
 public struct ReactionsRelationships: Codable, Hashable {
 
     public var ownerProfiles: MultiRelationshipDataDocument
+    public var owners: MultiRelationshipDataDocument
 
     public init(
-        ownerProfiles: MultiRelationshipDataDocument
+        ownerProfiles: MultiRelationshipDataDocument,
+        owners: MultiRelationshipDataDocument
     ) {
         self.ownerProfiles = ownerProfiles
+        self.owners = owners
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case ownerProfiles
+        case owners
     }
 
     // Encodable protocol methods
@@ -29,5 +33,6 @@ public struct ReactionsRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(ownerProfiles, forKey: .ownerProfiles)
+        try container.encode(owners, forKey: .owners)
     }
 }

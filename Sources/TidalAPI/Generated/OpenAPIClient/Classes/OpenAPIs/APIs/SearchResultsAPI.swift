@@ -24,7 +24,7 @@ internal class SearchResultsAPI {
      Get single searchResult.
      
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
      - returns: SearchResultsSingleResourceDataDocument
@@ -50,7 +50,7 @@ internal class SearchResultsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
      - returns: RequestBuilder<SearchResultsSingleResourceDataDocument> 
@@ -93,7 +93,7 @@ internal class SearchResultsAPI {
      Get albums relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
@@ -120,7 +120,7 @@ internal class SearchResultsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
@@ -165,7 +165,7 @@ internal class SearchResultsAPI {
      Get artists relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
@@ -192,7 +192,7 @@ internal class SearchResultsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
@@ -237,7 +237,7 @@ internal class SearchResultsAPI {
      Get playlists relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
@@ -264,7 +264,7 @@ internal class SearchResultsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
@@ -309,7 +309,7 @@ internal class SearchResultsAPI {
      Get topHits relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
@@ -336,7 +336,7 @@ internal class SearchResultsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
@@ -381,7 +381,7 @@ internal class SearchResultsAPI {
      Get tracks relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
@@ -408,7 +408,7 @@ internal class SearchResultsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
@@ -453,7 +453,7 @@ internal class SearchResultsAPI {
      Get videos relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
@@ -480,7 +480,7 @@ internal class SearchResultsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Search query string used as the resource identifier 
-     - parameter explicitFilter: (query) Explicit filter (optional, default to .include)
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)

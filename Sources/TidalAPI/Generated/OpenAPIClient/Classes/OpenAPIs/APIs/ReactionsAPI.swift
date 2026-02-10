@@ -38,7 +38,7 @@ internal class ReactionsAPI {
      - parameter stats: (query)  (optional)
      - parameter statsOnly: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners (optional)
      - parameter filterEmoji: (query) Filter by emoji (optional)
      - parameter filterOwnersId: (query) Filter by owner id (optional)
      - parameter filterReactedResourceId: (query) Filter by reacted resource ID (optional)
@@ -65,7 +65,7 @@ internal class ReactionsAPI {
      - parameter stats: (query)  (optional)
      - parameter statsOnly: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners (optional)
      - parameter filterEmoji: (query) Filter by emoji (optional)
      - parameter filterOwnersId: (query) Filter by owner id (optional)
      - parameter filterReactedResourceId: (query) Filter by reacted resource ID (optional)
@@ -179,6 +179,61 @@ internal class ReactionsAPI {
      */
     internal class func reactionsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ReactionsMultiRelationshipDataDocument> {
         var localVariablePath = "/reactions/{id}/relationships/ownerProfiles"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ReactionsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get owners relationship (\"to-many\").
+     
+     - parameter id: (path) Reaction Id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: ReactionsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func reactionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ReactionsMultiRelationshipDataDocument {
+        do {
+            return try await reactionsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get owners relationship (\"to-many\").
+     - GET /reactions/{id}/relationships/owners
+     - Retrieves owners relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Reaction Id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<ReactionsMultiRelationshipDataDocument> 
+     */
+    internal class func reactionsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ReactionsMultiRelationshipDataDocument> {
+        var localVariablePath = "/reactions/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)

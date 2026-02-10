@@ -43,9 +43,9 @@ public enum ArtistsAPITidal {
      
      - returns: 
      */
-	public static func artistsIdPatch(id: String, artistUpdateBody: ArtistUpdateBody? = nil) async throws {
+	public static func artistsIdPatch(id: String, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdPatchWithRequestBuilder(id: id, artistUpdateBody: artistUpdateBody)
+			ArtistsAPI.artistsIdPatchWithRequestBuilder(id: id, artistsUpdateOperationPayload: artistsUpdateOperationPayload)
 		}
 	}
 
@@ -91,9 +91,9 @@ public enum ArtistsAPITidal {
      
      - returns: 
      */
-	public static func artistsIdRelationshipsFollowingDelete(id: String, artistFollowingRelationshipRemoveOperationPayload: ArtistFollowingRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func artistsIdRelationshipsFollowingDelete(id: String, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: id, artistFollowingRelationshipRemoveOperationPayload: artistFollowingRelationshipRemoveOperationPayload)
+			ArtistsAPI.artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: id, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -115,9 +115,9 @@ public enum ArtistsAPITidal {
      
      - returns: 
      */
-	public static func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, artistFollowingRelationshipAddOperationPayload: ArtistFollowingRelationshipAddOperationPayload? = nil) async throws {
+	public static func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, artistFollowingRelationshipAddOperationPayload: artistFollowingRelationshipAddOperationPayload)
+			ArtistsAPI.artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload)
 		}
 	}
 
@@ -151,9 +151,9 @@ public enum ArtistsAPITidal {
      
      - returns: 
      */
-	public static func artistsIdRelationshipsProfileArtPatch(id: String, artistProfileArtRelationshipUpdateOperationPayload: ArtistProfileArtRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func artistsIdRelationshipsProfileArtPatch(id: String, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: id, artistProfileArtRelationshipUpdateOperationPayload: artistProfileArtRelationshipUpdateOperationPayload)
+			ArtistsAPI.artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: id, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -250,9 +250,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsSingleResourceDataDocument
      */
-	public static func artistsPost(artistCreateOperationPayload: ArtistCreateOperationPayload? = nil) async throws -> ArtistsSingleResourceDataDocument {
+	public static func artistsPost(artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> ArtistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsPostWithRequestBuilder(artistCreateOperationPayload: artistCreateOperationPayload)
+			ArtistsAPI.artistsPostWithRequestBuilder(artistsCreateOperationPayload: artistsCreateOperationPayload)
 		}
 	}
 }
