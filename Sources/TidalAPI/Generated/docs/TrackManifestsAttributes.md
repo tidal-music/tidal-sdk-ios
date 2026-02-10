@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **drmData** | [**DrmData**](DrmData.md) |  | [optional] 
 **formats** | **[String]** | Formats present in manifest | [optional] 
 **hash** | **String** | Unique manifest hash | [optional] 
+**previewReason** | **String** | Why a preview is served instead of the full track | [optional] 
 **trackAudioNormalizationData** | [**AudioNormalizationData**](AudioNormalizationData.md) |  | [optional] 
 **trackPresentation** | **String** | Track presentation | [optional] 
 **uri** | **String** | Manifest URI | [optional] 

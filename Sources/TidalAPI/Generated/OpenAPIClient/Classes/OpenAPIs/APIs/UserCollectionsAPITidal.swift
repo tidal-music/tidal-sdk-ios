@@ -31,9 +31,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsAlbumsDelete(id: String, userCollectionAlbumsRelationshipRemoveOperationPayload: UserCollectionAlbumsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsAlbumsDelete(id: String, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDeleteWithRequestBuilder(id: id, userCollectionAlbumsRelationshipRemoveOperationPayload: userCollectionAlbumsRelationshipRemoveOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDeleteWithRequestBuilder(id: id, userCollectionsAlbumsRelationshipRemoveOperationPayload: userCollectionsAlbumsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -42,25 +42,25 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsAlbumsGet: String, CaseIterable {
-		case AlbumsAddedAtAsc = "albums.addedAt"
-		case AlbumsAddedAtDesc = "-albums.addedAt"
-		case AlbumsArtistsNameAsc = "albums.artists.name"
-		case AlbumsArtistsNameDesc = "-albums.artists.name"
-		case AlbumsReleaseDateAsc = "albums.releaseDate"
-		case AlbumsReleaseDateDesc = "-albums.releaseDate"
-		case AlbumsTitleAsc = "albums.title"
-		case AlbumsTitleDesc = "-albums.title"
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case ArtistsNameAsc = "artists.name"
+		case ArtistsNameDesc = "-artists.name"
+		case ReleaseDateAsc = "releaseDate"
+		case ReleaseDateDesc = "-releaseDate"
+		case TitleAsc = "title"
+		case TitleDesc = "-title"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsAlbumsGet {
 			switch self {
-			case .AlbumsAddedAtAsc: return .AlbumsAddedAtAsc
-			case .AlbumsAddedAtDesc: return .AlbumsAddedAtDesc
-			case .AlbumsArtistsNameAsc: return .AlbumsArtistsNameAsc
-			case .AlbumsArtistsNameDesc: return .AlbumsArtistsNameDesc
-			case .AlbumsReleaseDateAsc: return .AlbumsReleaseDateAsc
-			case .AlbumsReleaseDateDesc: return .AlbumsReleaseDateDesc
-			case .AlbumsTitleAsc: return .AlbumsTitleAsc
-			case .AlbumsTitleDesc: return .AlbumsTitleDesc
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .ArtistsNameAsc: return .ArtistsNameAsc
+			case .ArtistsNameDesc: return .ArtistsNameDesc
+			case .ReleaseDateAsc: return .ReleaseDateAsc
+			case .ReleaseDateDesc: return .ReleaseDateDesc
+			case .TitleAsc: return .TitleAsc
+			case .TitleDesc: return .TitleDesc
 			}
 		}
 	}
@@ -82,9 +82,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, userCollectionAlbumsRelationshipAddOperationPayload: UserCollectionAlbumsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionAlbumsRelationshipAddOperationPayload: userCollectionAlbumsRelationshipAddOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload)
 		}
 	}
 
@@ -94,9 +94,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsArtistsDelete(id: String, userCollectionArtistsRelationshipRemoveOperationPayload: UserCollectionArtistsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsArtistsDelete(id: String, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, userCollectionArtistsRelationshipRemoveOperationPayload: userCollectionArtistsRelationshipRemoveOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, userCollectionsArtistsRelationshipRemoveOperationPayload: userCollectionsArtistsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -105,17 +105,17 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsArtistsGet: String, CaseIterable {
-		case ArtistsAddedAtAsc = "artists.addedAt"
-		case ArtistsAddedAtDesc = "-artists.addedAt"
-		case ArtistsNameAsc = "artists.name"
-		case ArtistsNameDesc = "-artists.name"
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case NameAsc = "name"
+		case NameDesc = "-name"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsArtistsGet {
 			switch self {
-			case .ArtistsAddedAtAsc: return .ArtistsAddedAtAsc
-			case .ArtistsAddedAtDesc: return .ArtistsAddedAtDesc
-			case .ArtistsNameAsc: return .ArtistsNameAsc
-			case .ArtistsNameDesc: return .ArtistsNameDesc
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .NameAsc: return .NameAsc
+			case .NameDesc: return .NameDesc
 			}
 		}
 	}
@@ -137,9 +137,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, userCollectionArtistsRelationshipAddOperationPayload: UserCollectionArtistsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionArtistsRelationshipAddOperationPayload: userCollectionArtistsRelationshipAddOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload)
 		}
 	}
 
@@ -161,9 +161,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsPlaylistsDelete(id: String, userCollectionPlaylistsRelationshipRemoveOperationPayload: UserCollectionPlaylistsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsPlaylistsDelete(id: String, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDeleteWithRequestBuilder(id: id, userCollectionPlaylistsRelationshipRemoveOperationPayload: userCollectionPlaylistsRelationshipRemoveOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDeleteWithRequestBuilder(id: id, userCollectionsPlaylistsRelationshipRemoveOperationPayload: userCollectionsPlaylistsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -185,21 +185,21 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
-		case PlaylistsAddedAtAsc = "playlists.addedAt"
-		case PlaylistsAddedAtDesc = "-playlists.addedAt"
-		case PlaylistsLastUpdatedAtAsc = "playlists.lastUpdatedAt"
-		case PlaylistsLastUpdatedAtDesc = "-playlists.lastUpdatedAt"
-		case PlaylistsNameAsc = "playlists.name"
-		case PlaylistsNameDesc = "-playlists.name"
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case LastModifiedAtAsc = "lastModifiedAt"
+		case LastModifiedAtDesc = "-lastModifiedAt"
+		case NameAsc = "name"
+		case NameDesc = "-name"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsPlaylistsGet {
 			switch self {
-			case .PlaylistsAddedAtAsc: return .PlaylistsAddedAtAsc
-			case .PlaylistsAddedAtDesc: return .PlaylistsAddedAtDesc
-			case .PlaylistsLastUpdatedAtAsc: return .PlaylistsLastUpdatedAtAsc
-			case .PlaylistsLastUpdatedAtDesc: return .PlaylistsLastUpdatedAtDesc
-			case .PlaylistsNameAsc: return .PlaylistsNameAsc
-			case .PlaylistsNameDesc: return .PlaylistsNameDesc
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .LastModifiedAtAsc: return .LastModifiedAtAsc
+			case .LastModifiedAtDesc: return .LastModifiedAtDesc
+			case .NameAsc: return .NameAsc
+			case .NameDesc: return .NameDesc
 			}
 		}
 	}
@@ -221,9 +221,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsPlaylistsPost(id: String, userCollectionPlaylistsRelationshipRemoveOperationPayload: UserCollectionPlaylistsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsPlaylistsPost(id: String, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPostWithRequestBuilder(id: id, userCollectionPlaylistsRelationshipRemoveOperationPayload: userCollectionPlaylistsRelationshipRemoveOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPostWithRequestBuilder(id: id, userCollectionsPlaylistsRelationshipAddOperationPayload: userCollectionsPlaylistsRelationshipAddOperationPayload)
 		}
 	}
 
@@ -233,9 +233,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsTracksDelete(id: String, userCollectionTracksRelationshipRemoveOperationPayload: UserCollectionTracksRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsTracksDelete(id: String, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsTracksDeleteWithRequestBuilder(id: id, userCollectionTracksRelationshipRemoveOperationPayload: userCollectionTracksRelationshipRemoveOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsTracksDeleteWithRequestBuilder(id: id, userCollectionsTracksRelationshipRemoveOperationPayload: userCollectionsTracksRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -244,29 +244,29 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsTracksGet: String, CaseIterable {
-		case TracksAddedAtAsc = "tracks.addedAt"
-		case TracksAddedAtDesc = "-tracks.addedAt"
-		case TracksAlbumsTitleAsc = "tracks.albums.title"
-		case TracksAlbumsTitleDesc = "-tracks.albums.title"
-		case TracksArtistsNameAsc = "tracks.artists.name"
-		case TracksArtistsNameDesc = "-tracks.artists.name"
-		case TracksDurationAsc = "tracks.duration"
-		case TracksDurationDesc = "-tracks.duration"
-		case TracksTitleAsc = "tracks.title"
-		case TracksTitleDesc = "-tracks.title"
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case AlbumsTitleAsc = "albums.title"
+		case AlbumsTitleDesc = "-albums.title"
+		case ArtistsNameAsc = "artists.name"
+		case ArtistsNameDesc = "-artists.name"
+		case DurationAsc = "duration"
+		case DurationDesc = "-duration"
+		case TitleAsc = "title"
+		case TitleDesc = "-title"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsTracksGet {
 			switch self {
-			case .TracksAddedAtAsc: return .TracksAddedAtAsc
-			case .TracksAddedAtDesc: return .TracksAddedAtDesc
-			case .TracksAlbumsTitleAsc: return .TracksAlbumsTitleAsc
-			case .TracksAlbumsTitleDesc: return .TracksAlbumsTitleDesc
-			case .TracksArtistsNameAsc: return .TracksArtistsNameAsc
-			case .TracksArtistsNameDesc: return .TracksArtistsNameDesc
-			case .TracksDurationAsc: return .TracksDurationAsc
-			case .TracksDurationDesc: return .TracksDurationDesc
-			case .TracksTitleAsc: return .TracksTitleAsc
-			case .TracksTitleDesc: return .TracksTitleDesc
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .AlbumsTitleAsc: return .AlbumsTitleAsc
+			case .AlbumsTitleDesc: return .AlbumsTitleDesc
+			case .ArtistsNameAsc: return .ArtistsNameAsc
+			case .ArtistsNameDesc: return .ArtistsNameDesc
+			case .DurationAsc: return .DurationAsc
+			case .DurationDesc: return .DurationDesc
+			case .TitleAsc: return .TitleAsc
+			case .TitleDesc: return .TitleDesc
 			}
 		}
 	}
@@ -288,9 +288,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, userCollectionTracksRelationshipAddOperationPayload: UserCollectionTracksRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionTracksRelationshipAddOperationPayload: userCollectionTracksRelationshipAddOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload)
 		}
 	}
 
@@ -300,9 +300,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsVideosDelete(id: String, userCollectionVideosRelationshipRemoveOperationPayload: UserCollectionVideosRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsVideosDelete(id: String, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsVideosDeleteWithRequestBuilder(id: id, userCollectionVideosRelationshipRemoveOperationPayload: userCollectionVideosRelationshipRemoveOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsVideosDeleteWithRequestBuilder(id: id, userCollectionsVideosRelationshipRemoveOperationPayload: userCollectionsVideosRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -311,25 +311,25 @@ public enum UserCollectionsAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionsIdRelationshipsVideosGet: String, CaseIterable {
-		case VideosAddedAtAsc = "videos.addedAt"
-		case VideosAddedAtDesc = "-videos.addedAt"
-		case VideosArtistsNameAsc = "videos.artists.name"
-		case VideosArtistsNameDesc = "-videos.artists.name"
-		case VideosDurationAsc = "videos.duration"
-		case VideosDurationDesc = "-videos.duration"
-		case VideosTitleAsc = "videos.title"
-		case VideosTitleDesc = "-videos.title"
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case ArtistsNameAsc = "artists.name"
+		case ArtistsNameDesc = "-artists.name"
+		case DurationAsc = "duration"
+		case DurationDesc = "-duration"
+		case TitleAsc = "title"
+		case TitleDesc = "-title"
 
 		func toUserCollectionsAPIEnum() -> UserCollectionsAPI.Sort_userCollectionsIdRelationshipsVideosGet {
 			switch self {
-			case .VideosAddedAtAsc: return .VideosAddedAtAsc
-			case .VideosAddedAtDesc: return .VideosAddedAtDesc
-			case .VideosArtistsNameAsc: return .VideosArtistsNameAsc
-			case .VideosArtistsNameDesc: return .VideosArtistsNameDesc
-			case .VideosDurationAsc: return .VideosDurationAsc
-			case .VideosDurationDesc: return .VideosDurationDesc
-			case .VideosTitleAsc: return .VideosTitleAsc
-			case .VideosTitleDesc: return .VideosTitleDesc
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .ArtistsNameAsc: return .ArtistsNameAsc
+			case .ArtistsNameDesc: return .ArtistsNameDesc
+			case .DurationAsc: return .DurationAsc
+			case .DurationDesc: return .DurationDesc
+			case .TitleAsc: return .TitleAsc
+			case .TitleDesc: return .TitleDesc
 			}
 		}
 	}
@@ -351,9 +351,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, userCollectionVideosRelationshipAddOperationPayload: UserCollectionVideosRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionVideosRelationshipAddOperationPayload: userCollectionVideosRelationshipAddOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload)
 		}
 	}
 }

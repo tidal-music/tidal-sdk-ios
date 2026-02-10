@@ -19,9 +19,9 @@ public enum UserReportsAPITidal {
      
      - returns: UserReportsSingleResourceDataDocument
      */
-	public static func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil) async throws -> UserReportsSingleResourceDataDocument {
+	public static func userReportsPost(userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil) async throws -> UserReportsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserReportsAPI.userReportsPostWithRequestBuilder(userReportCreateOperationPayload: userReportCreateOperationPayload)
+			UserReportsAPI.userReportsPostWithRequestBuilder(userReportsCreateOperationPayload: userReportsCreateOperationPayload)
 		}
 	}
 }

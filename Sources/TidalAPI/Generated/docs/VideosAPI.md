@@ -13,6 +13,7 @@ Method | HTTP request | Description
 [**videosIdRelationshipsReplacementGet**](VideosAPI.md#videosidrelationshipsreplacementget) | **GET** /videos/{id}/relationships/replacement | Get replacement relationship (\&quot;to-one\&quot;).
 [**videosIdRelationshipsSimilarVideosGet**](VideosAPI.md#videosidrelationshipssimilarvideosget) | **GET** /videos/{id}/relationships/similarVideos | Get similarVideos relationship (\&quot;to-many\&quot;).
 [**videosIdRelationshipsThumbnailArtGet**](VideosAPI.md#videosidrelationshipsthumbnailartget) | **GET** /videos/{id}/relationships/thumbnailArt | Get thumbnailArt relationship (\&quot;to-many\&quot;).
+[**videosIdRelationshipsUsageRulesGet**](VideosAPI.md#videosidrelationshipsusagerulesget) | **GET** /videos/{id}/relationships/usageRules | Get usageRules relationship (\&quot;to-one\&quot;).
 
 
 # **videosGet**
@@ -30,7 +31,7 @@ Retrieves multiple videos by available filters, or without if applicable.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt, usageRules (optional)
 let filterId = ["inner_example"] // [String] | Video id (optional)
 let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (optional)
 
@@ -52,7 +53,7 @@ VideosAPI.videosGet(countryCode: countryCode, include: include, filterId: filter
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt, usageRules | [optional] 
  **filterId** | [**[String]**](String.md) | Video id | [optional] 
  **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) | [optional] 
 
@@ -87,7 +88,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Video id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt, usageRules (optional)
 
 // Get single video.
 VideosAPI.videosIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
@@ -108,7 +109,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Video id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt, usageRules | [optional] 
 
 ### Return type
 
@@ -501,6 +502,60 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**VideosMultiRelationshipDataDocument**](VideosMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **videosIdRelationshipsUsageRulesGet**
+```swift
+    open class func videosIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: VideosSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get usageRules relationship (\"to-one\").
+
+Retrieves usageRules relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Video id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: usageRules (optional)
+
+// Get usageRules relationship (\"to-one\").
+VideosAPI.videosIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Video id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: usageRules | [optional] 
+
+### Return type
+
+[**VideosSingleRelationshipDataDocument**](VideosSingleRelationshipDataDocument.md)
 
 ### Authorization
 

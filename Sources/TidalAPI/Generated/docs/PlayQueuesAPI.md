@@ -177,7 +177,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdPatch**
 ```swift
-    open class func playQueuesIdPatch(id: String, playQueueUpdateOperationPayload: PlayQueueUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdPatch(id: String, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single playQueue.
@@ -190,10 +190,10 @@ Updates existing playQueue.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueUpdateOperationPayload = PlayQueueUpdateOperation_Payload(data: PlayQueueUpdateOperation_Payload_Data(attributes: PlayQueueUpdateOperation_Payload_Data_Attributes(_repeat: "_repeat_example", shuffled: false), id: "id_example", type: "type_example")) // PlayQueueUpdateOperationPayload |  (optional)
+let playQueuesUpdateOperationPayload = PlayQueuesUpdateOperation_Payload(data: PlayQueuesUpdateOperation_Payload_Data(attributes: PlayQueuesUpdateOperation_Payload_Data_Attributes(_repeat: "_repeat_example", shuffled: false), id: "id_example", type: "type_example")) // PlayQueuesUpdateOperationPayload |  (optional)
 
 // Update single playQueue.
-PlayQueuesAPI.playQueuesIdPatch(id: id, playQueueUpdateOperationPayload: playQueueUpdateOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdPatch(id: id, playQueuesUpdateOperationPayload: playQueuesUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -210,7 +210,7 @@ PlayQueuesAPI.playQueuesIdPatch(id: id, playQueueUpdateOperationPayload: playQue
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **playQueueUpdateOperationPayload** | [**PlayQueueUpdateOperationPayload**](PlayQueueUpdateOperationPayload.md) |  | [optional] 
+ **playQueuesUpdateOperationPayload** | [**PlayQueuesUpdateOperationPayload**](PlayQueuesUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -281,7 +281,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsCurrentPatch**
 ```swift
-    open class func playQueuesIdRelationshipsCurrentPatch(id: String, playQueueUpdateCurrentOperationsPayload: PlayQueueUpdateCurrentOperationsPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsCurrentPatch(id: String, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update current relationship (\"to-one\").
@@ -294,10 +294,10 @@ Updates current relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueUpdateCurrentOperationsPayload = PlayQueueUpdateCurrentOperations_Payload(data: PlayQueueUpdateCurrentOperations_Payload_Data(id: "id_example", meta: PlayQueueUpdateCurrentOperations_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")) // PlayQueueUpdateCurrentOperationsPayload |  (optional)
+let playQueuesCurrentRelationshipUpdateOperationPayload = PlayQueuesCurrentRelationshipUpdateOperation_Payload(data: PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")) // PlayQueuesCurrentRelationshipUpdateOperationPayload |  (optional)
 
 // Update current relationship (\"to-one\").
-PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, playQueueUpdateCurrentOperationsPayload: playQueueUpdateCurrentOperationsPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, playQueuesCurrentRelationshipUpdateOperationPayload: playQueuesCurrentRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -314,7 +314,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, playQueueUpdateCurre
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **playQueueUpdateCurrentOperationsPayload** | [**PlayQueueUpdateCurrentOperationsPayload**](PlayQueueUpdateCurrentOperationsPayload.md) |  | [optional] 
+ **playQueuesCurrentRelationshipUpdateOperationPayload** | [**PlayQueuesCurrentRelationshipUpdateOperationPayload**](PlayQueuesCurrentRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -333,7 +333,7 @@ Void (empty response body)
 
 # **playQueuesIdRelationshipsFutureDelete**
 ```swift
-    open class func playQueuesIdRelationshipsFutureDelete(id: String, playQueueRemoveFutureOperationPayload: PlayQueueRemoveFutureOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFutureDelete(id: String, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from future relationship (\"to-many\").
@@ -346,10 +346,10 @@ Deletes item(s) from future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueRemoveFutureOperationPayload = PlayQueueRemoveFutureOperation_Payload(data: [PlayQueueRemoveFutureOperation_Payload_Data(id: "id_example", meta: PlayQueueUpdateRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlayQueueRemoveFutureOperationPayload |  (optional)
+let playQueuesFutureRelationshipRemoveOperationPayload = PlayQueuesFutureRelationshipRemoveOperation_Payload(data: [PlayQueuesFutureRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: PlayQueuesFutureRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlayQueuesFutureRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from future relationship (\"to-many\").
-PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, playQueueRemoveFutureOperationPayload: playQueueRemoveFutureOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, playQueuesFutureRelationshipRemoveOperationPayload: playQueuesFutureRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -366,7 +366,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, playQueueRemoveFutur
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **playQueueRemoveFutureOperationPayload** | [**PlayQueueRemoveFutureOperationPayload**](PlayQueueRemoveFutureOperationPayload.md) |  | [optional] 
+ **playQueuesFutureRelationshipRemoveOperationPayload** | [**PlayQueuesFutureRelationshipRemoveOperationPayload**](PlayQueuesFutureRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -439,7 +439,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFuturePatch**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePatch(id: String, playQueueUpdateFutureOperationPayload: PlayQueueUpdateFutureOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFuturePatch(id: String, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update future relationship (\"to-many\").
@@ -452,10 +452,10 @@ Updates future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueUpdateFutureOperationPayload = PlayQueueUpdateFutureOperation_Payload(data: [PlayQueueUpdateFutureOperation_Payload_Data(id: "id_example", meta: PlayQueueUpdateFutureOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlayQueueUpdateFutureOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlayQueueUpdateFutureOperationPayload |  (optional)
+let playQueuesFutureRelationshipUpdateOperationPayload = PlayQueuesFutureRelationshipUpdateOperation_Payload(data: [PlayQueuesFutureRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlayQueuesFutureRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlayQueuesFutureRelationshipUpdateOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlayQueuesFutureRelationshipUpdateOperationPayload |  (optional)
 
 // Update future relationship (\"to-many\").
-PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, playQueueUpdateFutureOperationPayload: playQueueUpdateFutureOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, playQueuesFutureRelationshipUpdateOperationPayload: playQueuesFutureRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -472,7 +472,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, playQueueUpdateFuture
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **playQueueUpdateFutureOperationPayload** | [**PlayQueueUpdateFutureOperationPayload**](PlayQueueUpdateFutureOperationPayload.md) |  | [optional] 
+ **playQueuesFutureRelationshipUpdateOperationPayload** | [**PlayQueuesFutureRelationshipUpdateOperationPayload**](PlayQueuesFutureRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -491,7 +491,7 @@ Void (empty response body)
 
 # **playQueuesIdRelationshipsFuturePost**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePost(id: String, playQueueAddFutureOperationPayload: PlayQueueAddFutureOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFuturePost(id: String, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to future relationship (\"to-many\").
@@ -504,10 +504,10 @@ Adds item(s) to future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let playQueueAddFutureOperationPayload = PlayQueueAddFutureOperation_Payload(data: [PlayQueueAddFutureOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlayQueueAddFutureOperation_Payload_Meta(batchId: 123, legacySource: LegacySource(id: "id_example", type: "type_example"), mode: "mode_example", positionBefore: "positionBefore_example")) // PlayQueueAddFutureOperationPayload |  (optional)
+let playQueuesFutureRelationshipAddOperationPayload = PlayQueuesFutureRelationshipAddOperation_Payload(data: [PlayQueuesFutureRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlayQueuesFutureRelationshipAddOperation_Payload_Meta(batchId: 123, legacySource: LegacySource(id: "id_example", type: "type_example"), mode: "mode_example", positionBefore: "positionBefore_example")) // PlayQueuesFutureRelationshipAddOperationPayload |  (optional)
 
 // Add to future relationship (\"to-many\").
-PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, playQueueAddFutureOperationPayload: playQueueAddFutureOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, playQueuesFutureRelationshipAddOperationPayload: playQueuesFutureRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -524,7 +524,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, playQueueAddFutureOper
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **playQueueAddFutureOperationPayload** | [**PlayQueueAddFutureOperationPayload**](PlayQueueAddFutureOperationPayload.md) |  | [optional] 
+ **playQueuesFutureRelationshipAddOperationPayload** | [**PlayQueuesFutureRelationshipAddOperationPayload**](PlayQueuesFutureRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -651,7 +651,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesPost**
 ```swift
-    open class func playQueuesPost(playQueueCreateOperationPayload: PlayQueueCreateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playQueuesPost(playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single playQueue.
@@ -663,10 +663,10 @@ Creates a new playQueue.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let playQueueCreateOperationPayload = PlayQueueCreateOperation_Payload(data: PlayQueueCreateOperation_Payload_Data(type: "type_example")) // PlayQueueCreateOperationPayload |  (optional)
+let playQueuesCreateOperationPayload = PlayQueuesCreateOperation_Payload(data: PlayQueuesCreateOperation_Payload_Data(type: "type_example")) // PlayQueuesCreateOperationPayload |  (optional)
 
 // Create single playQueue.
-PlayQueuesAPI.playQueuesPost(playQueueCreateOperationPayload: playQueueCreateOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesPost(playQueuesCreateOperationPayload: playQueuesCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -682,7 +682,7 @@ PlayQueuesAPI.playQueuesPost(playQueueCreateOperationPayload: playQueueCreateOpe
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **playQueueCreateOperationPayload** | [**PlayQueueCreateOperationPayload**](PlayQueueCreateOperationPayload.md) |  | [optional] 
+ **playQueuesCreateOperationPayload** | [**PlayQueuesCreateOperationPayload**](PlayQueuesCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

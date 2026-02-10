@@ -89,6 +89,18 @@ public enum ReactionsAPITidal {
 
 
 	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: ReactionsMultiRelationshipDataDocument
+     */
+	public static func reactionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ReactionsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ReactionsAPI.reactionsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Create single reaction.
      
      - returns: ReactionsSingleResourceDataDocument

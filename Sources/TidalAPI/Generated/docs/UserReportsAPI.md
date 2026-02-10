@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **userReportsPost**
 ```swift
-    open class func userReportsPost(userReportCreateOperationPayload: UserReportCreateOperationPayload? = nil, completion: @escaping (_ data: UserReportsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userReportsPost(userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil, completion: @escaping (_ data: UserReportsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single userReport.
@@ -21,10 +21,10 @@ Creates a new userReport.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let userReportCreateOperationPayload = UserReportCreateOperation_Payload(data: UserReportCreateOperation_Payload_Data(attributes: UserReportCreateOperation_Payload_Data_Attributes(description: "description_example", reason: "reason_example"), relationships: UserReportsCreateOperation_Payload_Data_Relationships(reportedResources: UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources(data: [UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // UserReportCreateOperationPayload |  (optional)
+let userReportsCreateOperationPayload = UserReportsCreateOperation_Payload(data: UserReportsCreateOperation_Payload_Data(attributes: UserReportsCreateOperation_Payload_Data_Attributes(description: "description_example", reason: "reason_example"), relationships: UserReportsCreateOperation_Payload_Data_Relationships(reportedResources: UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources(data: [UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // UserReportsCreateOperationPayload |  (optional)
 
 // Create single userReport.
-UserReportsAPI.userReportsPost(userReportCreateOperationPayload: userReportCreateOperationPayload) { (response, error) in
+UserReportsAPI.userReportsPost(userReportsCreateOperationPayload: userReportsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -40,7 +40,7 @@ UserReportsAPI.userReportsPost(userReportCreateOperationPayload: userReportCreat
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **userReportCreateOperationPayload** | [**UserReportCreateOperationPayload**](UserReportCreateOperationPayload.md) |  | [optional] 
+ **userReportsCreateOperationPayload** | [**UserReportsCreateOperationPayload**](UserReportsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

@@ -187,13 +187,13 @@ internal class ArtworksAPI {
     /**
      Create single artwork.
      
-     - parameter artworkCreateOperationPayload: (body)  (optional)
+     - parameter artworksCreateOperationPayload: (body)  (optional)
      - returns: ArtworksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil) async throws -> ArtworksSingleResourceDataDocument {
+    internal class func artworksPost(artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) async throws -> ArtworksSingleResourceDataDocument {
         do {
-            return try await artworksPostWithRequestBuilder(artworkCreateOperationPayload: artworkCreateOperationPayload).execute().body
+            return try await artworksPostWithRequestBuilder(artworksCreateOperationPayload: artworksCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -207,13 +207,13 @@ internal class ArtworksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter artworkCreateOperationPayload: (body)  (optional)
+     - parameter artworksCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ArtworksSingleResourceDataDocument> 
      */
-    internal class func artworksPostWithRequestBuilder(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil) -> RequestBuilder<ArtworksSingleResourceDataDocument> {
+    internal class func artworksPostWithRequestBuilder(artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) -> RequestBuilder<ArtworksSingleResourceDataDocument> {
         let localVariablePath = "/artworks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artworkCreateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artworksCreateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

@@ -19,6 +19,7 @@ public struct VideosRelationships: Codable, Hashable {
     public var replacement: SingleRelationshipDataDocument
     public var similarVideos: MultiRelationshipDataDocument
     public var thumbnailArt: MultiRelationshipDataDocument
+    public var usageRules: SingleRelationshipDataDocument
 
     public init(
         albums: MultiRelationshipDataDocument,
@@ -27,7 +28,8 @@ public struct VideosRelationships: Codable, Hashable {
         providers: MultiRelationshipDataDocument,
         replacement: SingleRelationshipDataDocument,
         similarVideos: MultiRelationshipDataDocument,
-        thumbnailArt: MultiRelationshipDataDocument
+        thumbnailArt: MultiRelationshipDataDocument,
+        usageRules: SingleRelationshipDataDocument
     ) {
         self.albums = albums
         self.artists = artists
@@ -36,6 +38,7 @@ public struct VideosRelationships: Codable, Hashable {
         self.replacement = replacement
         self.similarVideos = similarVideos
         self.thumbnailArt = thumbnailArt
+        self.usageRules = usageRules
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -46,6 +49,7 @@ public struct VideosRelationships: Codable, Hashable {
         case replacement
         case similarVideos
         case thumbnailArt
+        case usageRules
     }
 
     // Encodable protocol methods
@@ -59,5 +63,6 @@ public struct VideosRelationships: Codable, Hashable {
         try container.encode(replacement, forKey: .replacement)
         try container.encode(similarVideos, forKey: .similarVideos)
         try container.encode(thumbnailArt, forKey: .thumbnailArt)
+        try container.encode(usageRules, forKey: .usageRules)
     }
 }

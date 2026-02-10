@@ -185,7 +185,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdPatch**
 ```swift
-    open class func playlistsIdPatch(id: String, countryCode: String? = nil, playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdPatch(id: String, countryCode: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single playlist.
@@ -199,10 +199,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let playlistUpdateOperationPayload = PlaylistUpdateOperation_Payload(data: PlaylistUpdateOperation_Payload_Data(attributes: PlaylistUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), id: "id_example", type: "type_example")) // PlaylistUpdateOperationPayload |  (optional)
+let playlistsUpdateOperationPayload = PlaylistsUpdateOperation_Payload(data: PlaylistsUpdateOperation_Payload_Data(attributes: PlaylistsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), id: "id_example", type: "type_example")) // PlaylistsUpdateOperationPayload |  (optional)
 
 // Update single playlist.
-PlaylistsAPI.playlistsIdPatch(id: id, countryCode: countryCode, playlistUpdateOperationPayload: playlistUpdateOperationPayload) { (response, error) in
+PlaylistsAPI.playlistsIdPatch(id: id, countryCode: countryCode, playlistsUpdateOperationPayload: playlistsUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -220,7 +220,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **playlistUpdateOperationPayload** | [**PlaylistUpdateOperationPayload**](PlaylistUpdateOperationPayload.md) |  | [optional] 
+ **playlistsUpdateOperationPayload** | [**PlaylistsUpdateOperationPayload**](PlaylistsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -295,7 +295,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCoverArtPatch**
 ```swift
-    open class func playlistsIdRelationshipsCoverArtPatch(id: String, playlistCoverArtRelationshipUpdateOperationPayload: PlaylistCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCoverArtPatch(id: String, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update coverArt relationship (\"to-many\").
@@ -308,10 +308,10 @@ Updates coverArt relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let playlistCoverArtRelationshipUpdateOperationPayload = PlaylistCoverArtRelationshipUpdateOperation_Payload(data: [PlaylistCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // PlaylistCoverArtRelationshipUpdateOperationPayload |  (optional)
+let playlistsCoverArtRelationshipUpdateOperationPayload = PlaylistsCoverArtRelationshipUpdateOperation_Payload(data: [PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // PlaylistsCoverArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update coverArt relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCoverArtPatch(id: id, playlistCoverArtRelationshipUpdateOperationPayload: playlistCoverArtRelationshipUpdateOperationPayload) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsCoverArtPatch(id: id, playlistsCoverArtRelationshipUpdateOperationPayload: playlistsCoverArtRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -328,7 +328,7 @@ PlaylistsAPI.playlistsIdRelationshipsCoverArtPatch(id: id, playlistCoverArtRelat
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **playlistCoverArtRelationshipUpdateOperationPayload** | [**PlaylistCoverArtRelationshipUpdateOperationPayload**](PlaylistCoverArtRelationshipUpdateOperationPayload.md) |  | [optional] 
+ **playlistsCoverArtRelationshipUpdateOperationPayload** | [**PlaylistsCoverArtRelationshipUpdateOperationPayload**](PlaylistsCoverArtRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -347,7 +347,7 @@ Void (empty response body)
 
 # **playlistsIdRelationshipsItemsDelete**
 ```swift
-    open class func playlistsIdRelationshipsItemsDelete(id: String, playlistItemsRelationshipRemoveOperationPayload: PlaylistItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsDelete(id: String, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -360,10 +360,10 @@ Deletes item(s) from items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let playlistItemsRelationshipRemoveOperationPayload = PlaylistItemsRelationshipRemoveOperation_Payload(data: [PlaylistItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: PlaylistItemsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlaylistItemsRelationshipRemoveOperationPayload |  (optional)
+let playlistsItemsRelationshipRemoveOperationPayload = PlaylistsItemsRelationshipRemoveOperation_Payload(data: [PlaylistsItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlaylistsItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsItemsDelete(id: id, playlistItemsRelationshipRemoveOperationPayload: playlistItemsRelationshipRemoveOperationPayload) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsItemsDelete(id: id, playlistsItemsRelationshipRemoveOperationPayload: playlistsItemsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -380,7 +380,7 @@ PlaylistsAPI.playlistsIdRelationshipsItemsDelete(id: id, playlistItemsRelationsh
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **playlistItemsRelationshipRemoveOperationPayload** | [**PlaylistItemsRelationshipRemoveOperationPayload**](PlaylistItemsRelationshipRemoveOperationPayload.md) |  | [optional] 
+ **playlistsItemsRelationshipRemoveOperationPayload** | [**PlaylistsItemsRelationshipRemoveOperationPayload**](PlaylistsItemsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -455,7 +455,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsItemsPatch**
 ```swift
-    open class func playlistsIdRelationshipsItemsPatch(id: String, playlistItemsRelationshipReorderOperationPayload: PlaylistItemsRelationshipReorderOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsPatch(id: String, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update items relationship (\"to-many\").
@@ -468,10 +468,10 @@ Updates items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let playlistItemsRelationshipReorderOperationPayload = PlaylistItemsRelationshipReorderOperation_Payload(data: [PlaylistItemsRelationshipReorderOperation_Payload_Data(id: "id_example", meta: PlaylistItemsRelationshipReorderOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlaylistItemsRelationshipReorderOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistItemsRelationshipReorderOperationPayload |  (optional)
+let playlistsItemsRelationshipUpdateOperationPayload = PlaylistsItemsRelationshipUpdateOperation_Payload(data: [PlaylistsItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlaylistsItemsRelationshipUpdateOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipUpdateOperationPayload |  (optional)
 
 // Update items relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsItemsPatch(id: id, playlistItemsRelationshipReorderOperationPayload: playlistItemsRelationshipReorderOperationPayload) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsItemsPatch(id: id, playlistsItemsRelationshipUpdateOperationPayload: playlistsItemsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -488,7 +488,7 @@ PlaylistsAPI.playlistsIdRelationshipsItemsPatch(id: id, playlistItemsRelationshi
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **playlistItemsRelationshipReorderOperationPayload** | [**PlaylistItemsRelationshipReorderOperationPayload**](PlaylistItemsRelationshipReorderOperationPayload.md) |  | [optional] 
+ **playlistsItemsRelationshipUpdateOperationPayload** | [**PlaylistsItemsRelationshipUpdateOperationPayload**](PlaylistsItemsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -507,7 +507,7 @@ Void (empty response body)
 
 # **playlistsIdRelationshipsItemsPost**
 ```swift
-    open class func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, playlistItemsRelationshipAddOperationPayload: PlaylistItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -521,10 +521,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let playlistItemsRelationshipAddOperationPayload = PlaylistItemsRelationshipAddOperation_Payload(data: [PlaylistItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: PlaylistItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")], meta: PlaylistItemsRelationshipAddOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistItemsRelationshipAddOperationPayload |  (optional)
+let playlistsItemsRelationshipAddOperationPayload = PlaylistsItemsRelationshipAddOperation_Payload(data: [PlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")], meta: PlaylistsItemsRelationshipAddOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, countryCode: countryCode, playlistItemsRelationshipAddOperationPayload: playlistItemsRelationshipAddOperationPayload) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, countryCode: countryCode, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -542,7 +542,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **playlistItemsRelationshipAddOperationPayload** | [**PlaylistItemsRelationshipAddOperationPayload**](PlaylistItemsRelationshipAddOperationPayload.md) |  | [optional] 
+ **playlistsItemsRelationshipAddOperationPayload** | [**PlaylistsItemsRelationshipAddOperationPayload**](PlaylistsItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -673,7 +673,7 @@ Name | Type | Description  | Notes
 
 # **playlistsPost**
 ```swift
-    open class func playlistsPost(countryCode: String? = nil, playlistCreateOperationPayload: PlaylistCreateOperationPayload? = nil, completion: @escaping (_ data: PlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsPost(countryCode: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil, completion: @escaping (_ data: PlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single playlist.
@@ -686,10 +686,10 @@ Creates a new playlist.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let playlistCreateOperationPayload = PlaylistCreateOperation_Payload(data: PlaylistCreateOperation_Payload_Data(attributes: PlaylistCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), type: "type_example")) // PlaylistCreateOperationPayload |  (optional)
+let playlistsCreateOperationPayload = PlaylistsCreateOperation_Payload(data: PlaylistsCreateOperation_Payload_Data(attributes: PlaylistsCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), type: "type_example")) // PlaylistsCreateOperationPayload |  (optional)
 
 // Create single playlist.
-PlaylistsAPI.playlistsPost(countryCode: countryCode, playlistCreateOperationPayload: playlistCreateOperationPayload) { (response, error) in
+PlaylistsAPI.playlistsPost(countryCode: countryCode, playlistsCreateOperationPayload: playlistsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -706,7 +706,7 @@ PlaylistsAPI.playlistsPost(countryCode: countryCode, playlistCreateOperationPayl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **playlistCreateOperationPayload** | [**PlaylistCreateOperationPayload**](PlaylistCreateOperationPayload.md) |  | [optional] 
+ **playlistsCreateOperationPayload** | [**PlaylistsCreateOperationPayload**](PlaylistsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

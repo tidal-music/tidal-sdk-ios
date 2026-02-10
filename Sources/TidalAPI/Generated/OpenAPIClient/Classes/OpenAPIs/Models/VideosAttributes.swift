@@ -17,7 +17,8 @@ public struct VideosAttributes: Codable, Hashable {
         case dj = "DJ"
         case stem = "STEM"
     }
-    /** Available usage for this video */
+    /** Available usage for this video. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var availability: [Availability]?
     public var copyright: Copyright?
     /** Duration (ISO 8601) */

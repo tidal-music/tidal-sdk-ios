@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**reactionsGet**](ReactionsAPI.md#reactionsget) | **GET** /reactions | Get multiple reactions.
 [**reactionsIdDelete**](ReactionsAPI.md#reactionsiddelete) | **DELETE** /reactions/{id} | Delete single reaction.
 [**reactionsIdRelationshipsOwnerProfilesGet**](ReactionsAPI.md#reactionsidrelationshipsownerprofilesget) | **GET** /reactions/{id}/relationships/ownerProfiles | Get ownerProfiles relationship (\&quot;to-many\&quot;).
+[**reactionsIdRelationshipsOwnersGet**](ReactionsAPI.md#reactionsidrelationshipsownersget) | **GET** /reactions/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**reactionsPost**](ReactionsAPI.md#reactionspost) | **POST** /reactions | Create single reaction.
 
 
@@ -27,7 +28,7 @@ import OpenAPIClient
 let stats = "stats_example" // String |  (optional)
 let statsOnly = true // Bool |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners (optional)
 let filterEmoji = ["inner_example"] // [String] | Filter by emoji (optional)
 let filterOwnersId = ["inner_example"] // [String] | Filter by owner id (optional)
 let filterReactedResourceId = ["inner_example"] // [String] | Filter by reacted resource ID (optional)
@@ -53,7 +54,7 @@ Name | Type | Description  | Notes
  **stats** | **String** |  | [optional] 
  **statsOnly** | **Bool** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners | [optional] 
  **filterEmoji** | [**[String]**](String.md) | Filter by emoji | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | Filter by owner id | [optional] 
  **filterReactedResourceId** | [**[String]**](String.md) | Filter by reacted resource ID | [optional] 
@@ -161,6 +162,60 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Reaction Id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**ReactionsMultiRelationshipDataDocument**](ReactionsMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **reactionsIdRelationshipsOwnersGet**
+```swift
+    open class func reactionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ReactionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get owners relationship (\"to-many\").
+
+Retrieves owners relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Reaction Id
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get owners relationship (\"to-many\").
+ReactionsAPI.reactionsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Reaction Id | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

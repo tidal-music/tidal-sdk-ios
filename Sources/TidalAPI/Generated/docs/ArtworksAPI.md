@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 
 # **artworksPost**
 ```swift
-    open class func artworksPost(artworkCreateOperationPayload: ArtworkCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksPost(artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artwork.
@@ -186,10 +186,10 @@ Creates a new artwork.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let artworkCreateOperationPayload = ArtworkCreateOperation_Payload(data: ArtworkCreateOperation_Payload_Data(attributes: ArtworkCreateOperation_Payload_Data_Attributes(mediaType: "mediaType_example", sourceFile: ArtworkCreateOperation_Payload_Data_Attributes_SourceFile(md5Hash: "md5Hash_example", size: 123)), type: "type_example")) // ArtworkCreateOperationPayload |  (optional)
+let artworksCreateOperationPayload = ArtworksCreateOperation_Payload(data: ArtworksCreateOperation_Payload_Data(attributes: ArtworksCreateOperation_Payload_Data_Attributes(mediaType: "mediaType_example", sourceFile: ArtworksCreateOperation_Payload_Data_Attributes_SourceFile(md5Hash: "md5Hash_example", size: 123)), type: "type_example")) // ArtworksCreateOperationPayload |  (optional)
 
 // Create single artwork.
-ArtworksAPI.artworksPost(artworkCreateOperationPayload: artworkCreateOperationPayload) { (response, error) in
+ArtworksAPI.artworksPost(artworksCreateOperationPayload: artworksCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -205,7 +205,7 @@ ArtworksAPI.artworksPost(artworkCreateOperationPayload: artworkCreateOperationPa
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **artworkCreateOperationPayload** | [**ArtworkCreateOperationPayload**](ArtworkCreateOperationPayload.md) |  | [optional] 
+ **artworksCreateOperationPayload** | [**ArtworksCreateOperationPayload**](ArtworksCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
