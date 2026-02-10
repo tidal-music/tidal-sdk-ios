@@ -136,13 +136,13 @@ internal class ArtistsAPI {
      Update single artist.
      
      - parameter id: (path) Artist id 
-     - parameter artistUpdateBody: (body)  (optional)
+     - parameter artistsUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdPatch(id: String, artistUpdateBody: ArtistUpdateBody? = nil) async throws {
+    internal class func artistsIdPatch(id: String, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) async throws {
         do {
-            return try await artistsIdPatchWithRequestBuilder(id: id, artistUpdateBody: artistUpdateBody).execute().body
+            return try await artistsIdPatchWithRequestBuilder(id: id, artistsUpdateOperationPayload: artistsUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -157,16 +157,16 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter artistUpdateBody: (body)  (optional)
+     - parameter artistsUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func artistsIdPatchWithRequestBuilder(id: String, artistUpdateBody: ArtistUpdateBody? = nil) -> RequestBuilder<Void> {
+    internal class func artistsIdPatchWithRequestBuilder(id: String, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/artists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistUpdateBody)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistsUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -362,13 +362,13 @@ internal class ArtistsAPI {
      Delete from following relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter artistFollowingRelationshipRemoveOperationPayload: (body)  (optional)
+     - parameter artistsFollowingRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsFollowingDelete(id: String, artistFollowingRelationshipRemoveOperationPayload: ArtistFollowingRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func artistsIdRelationshipsFollowingDelete(id: String, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: id, artistFollowingRelationshipRemoveOperationPayload: artistFollowingRelationshipRemoveOperationPayload).execute().body
+            return try await artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: id, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -383,16 +383,16 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter artistFollowingRelationshipRemoveOperationPayload: (body)  (optional)
+     - parameter artistsFollowingRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: String, artistFollowingRelationshipRemoveOperationPayload: ArtistFollowingRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: String, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/artists/{id}/relationships/following"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistFollowingRelationshipRemoveOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistsFollowingRelationshipRemoveOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -470,13 +470,13 @@ internal class ArtistsAPI {
      
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter artistFollowingRelationshipAddOperationPayload: (body)  (optional)
+     - parameter artistsFollowingRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, artistFollowingRelationshipAddOperationPayload: ArtistFollowingRelationshipAddOperationPayload? = nil) async throws {
+    internal class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, artistFollowingRelationshipAddOperationPayload: artistFollowingRelationshipAddOperationPayload).execute().body
+            return try await artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -492,16 +492,16 @@ internal class ArtistsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter artistFollowingRelationshipAddOperationPayload: (body)  (optional)
+     - parameter artistsFollowingRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func artistsIdRelationshipsFollowingPostWithRequestBuilder(id: String, countryCode: String? = nil, artistFollowingRelationshipAddOperationPayload: ArtistFollowingRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistsIdRelationshipsFollowingPostWithRequestBuilder(id: String, countryCode: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/artists/{id}/relationships/following"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistFollowingRelationshipAddOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistsFollowingRelationshipAddOperationPayload)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -642,13 +642,13 @@ internal class ArtistsAPI {
      Update profileArt relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter artistProfileArtRelationshipUpdateOperationPayload: (body)  (optional)
+     - parameter artistsProfileArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsProfileArtPatch(id: String, artistProfileArtRelationshipUpdateOperationPayload: ArtistProfileArtRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func artistsIdRelationshipsProfileArtPatch(id: String, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) async throws {
         do {
-            return try await artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: id, artistProfileArtRelationshipUpdateOperationPayload: artistProfileArtRelationshipUpdateOperationPayload).execute().body
+            return try await artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: id, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -663,16 +663,16 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter artistProfileArtRelationshipUpdateOperationPayload: (body)  (optional)
+     - parameter artistsProfileArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: String, artistProfileArtRelationshipUpdateOperationPayload: ArtistProfileArtRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: String, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/artists/{id}/relationships/profileArt"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistProfileArtRelationshipUpdateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistsProfileArtRelationshipUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -1061,13 +1061,13 @@ internal class ArtistsAPI {
     /**
      Create single artist.
      
-     - parameter artistCreateOperationPayload: (body)  (optional)
+     - parameter artistsCreateOperationPayload: (body)  (optional)
      - returns: ArtistsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsPost(artistCreateOperationPayload: ArtistCreateOperationPayload? = nil) async throws -> ArtistsSingleResourceDataDocument {
+    internal class func artistsPost(artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> ArtistsSingleResourceDataDocument {
         do {
-            return try await artistsPostWithRequestBuilder(artistCreateOperationPayload: artistCreateOperationPayload).execute().body
+            return try await artistsPostWithRequestBuilder(artistsCreateOperationPayload: artistsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -1081,13 +1081,13 @@ internal class ArtistsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter artistCreateOperationPayload: (body)  (optional)
+     - parameter artistsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ArtistsSingleResourceDataDocument> 
      */
-    internal class func artistsPostWithRequestBuilder(artistCreateOperationPayload: ArtistCreateOperationPayload? = nil) -> RequestBuilder<ArtistsSingleResourceDataDocument> {
+    internal class func artistsPostWithRequestBuilder(artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) -> RequestBuilder<ArtistsSingleResourceDataDocument> {
         let localVariablePath = "/artists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistCreateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistsCreateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

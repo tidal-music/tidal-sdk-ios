@@ -171,7 +171,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdPatch**
 ```swift
-    open class func userCollectionFoldersIdPatch(id: String, folderUpdateOperationPayload: FolderUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdPatch(id: String, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single userCollectionFolder.
@@ -184,10 +184,10 @@ Updates existing userCollectionFolder.
 import OpenAPIClient
 
 let id = "" // String | Folder Id
-let folderUpdateOperationPayload = FolderUpdateOperation_Payload(data: FolderUpdateOperation_Payload_Data(attributes: Attributes(collectionType: "collectionType_example", name: "name_example"), id: "id_example", type: "type_example")) // FolderUpdateOperationPayload |  (optional)
+let userCollectionFoldersUpdateOperationPayload = UserCollectionFoldersUpdateOperation_Payload(data: UserCollectionFoldersUpdateOperation_Payload_Data(attributes: UserCollectionFoldersUpdateOperation_Payload_Data_Attributes(name: "name_example"), id: "id_example", type: "type_example")) // UserCollectionFoldersUpdateOperationPayload |  (optional)
 
 // Update single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersIdPatch(id: id, folderUpdateOperationPayload: folderUpdateOperationPayload) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdPatch(id: id, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -204,7 +204,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdPatch(id: id, folderUpdateOperat
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **folderUpdateOperationPayload** | [**FolderUpdateOperationPayload**](FolderUpdateOperationPayload.md) |  | [optional] 
+ **userCollectionFoldersUpdateOperationPayload** | [**UserCollectionFoldersUpdateOperationPayload**](UserCollectionFoldersUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -437,7 +437,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersPost**
 ```swift
-    open class func userCollectionFoldersPost(folderCreateOperationPayload: FolderCreateOperationPayload? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersPost(userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single userCollectionFolder.
@@ -449,10 +449,10 @@ Creates a new userCollectionFolder.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let folderCreateOperationPayload = FolderCreateOperation_Payload(data: FolderCreateOperation_Payload_Data(attributes: Attributes(collectionType: "collectionType_example", name: "name_example"), type: "type_example")) // FolderCreateOperationPayload |  (optional)
+let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(collectionType: "collectionType_example", name: "name_example"), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
 
 // Create single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersPost(folderCreateOperationPayload: folderCreateOperationPayload) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersPost(userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -468,7 +468,7 @@ UserCollectionFoldersAPI.userCollectionFoldersPost(folderCreateOperationPayload:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **folderCreateOperationPayload** | [**FolderCreateOperationPayload**](FolderCreateOperationPayload.md) |  | [optional] 
+ **userCollectionFoldersCreateOperationPayload** | [**UserCollectionFoldersCreateOperationPayload**](UserCollectionFoldersCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
 

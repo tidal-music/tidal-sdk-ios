@@ -13,6 +13,56 @@ import AnyCodable
 internal class ArtistClaimsAPI {
 
     /**
+     Get multiple artistClaims.
+     
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter filterOwnersId: (query) User id (optional)
+     - returns: ArtistClaimsMultiResourceDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func artistClaimsGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
+        do {
+            return try await artistClaimsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get multiple artistClaims.
+     - GET /artistClaims
+     - Retrieves multiple artistClaims by available filters, or without if applicable.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter filterOwnersId: (query) User id (optional)
+     - returns: RequestBuilder<ArtistClaimsMultiResourceDataDocument> 
+     */
+    internal class func artistClaimsGetWithRequestBuilder(include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<ArtistClaimsMultiResourceDataDocument> {
+        let localVariablePath = "/artistClaims"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ArtistClaimsMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Delete single artistClaim.
      
      - parameter id: (path) Artist claim id 
@@ -225,13 +275,13 @@ internal class ArtistClaimsAPI {
      
      - parameter id: (path) Artist claim id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: (body)  (optional)
+     - parameter artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws {
         do {
-            return try await artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload).execute().body
+            return try await artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -247,16 +297,16 @@ internal class ArtistClaimsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist claim id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: (body)  (optional)
+     - parameter artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: String, countryCode: String? = nil, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: String, countryCode: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/artistClaims/{id}/relationships/acceptedArtists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([

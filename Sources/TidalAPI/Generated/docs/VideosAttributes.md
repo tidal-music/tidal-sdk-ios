@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**availability** | **[String]** | Available usage for this video | [optional] 
+**availability** | **[String]** | Available usage for this video. Deprecated: use &#39;usageRules&#39; instead. This field will be removed in a future version. | [optional] 
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **duration** | **String** | Duration (ISO 8601) | 
 **explicit** | **Bool** | Explicit content | 

@@ -13,11 +13,11 @@ import AnyCodable
 public struct InstallationsOfflineInventoryItemIdentifier: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case tracks = "TRACKS"
-        case videos = "VIDEOS"
-        case albums = "ALBUMS"
-        case playlists = "PLAYLISTS"
-        case userCollection = "USER_COLLECTION"
+        case tracks = "tracks"
+        case videos = "videos"
+        case albums = "albums"
+        case playlists = "playlists"
+        case usercollections = "userCollections"
     }
     public var id: String
     public var type: ModelType

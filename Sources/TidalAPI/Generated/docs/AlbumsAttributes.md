@@ -4,7 +4,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **accessType** | **String** | Access type | [optional] 
-**availability** | **[String]** | Available usage for this album | [optional] 
+**albumType** | **String** | Album type | 
+**availability** | **[String]** | Available usage for this album. Deprecated: use &#39;usageRules&#39; instead. This field will be removed in a future version. | [optional] 
 **barcodeId** | **String** | Barcode id (EAN-13 or UPC-A) | 
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **duration** | **String** | Duration (ISO 8601) | 
@@ -16,7 +17,7 @@ Name | Type | Description | Notes
 **popularity** | **Double** | Popularity (0.0 - 1.0) | 
 **releaseDate** | **Date** | Release date (ISO-8601) | [optional] 
 **title** | **String** | Album title | 
-**type** | **String** | Album type | 
+**type** | **String** | Album type. Deprecated: use &#39;albumType&#39; instead. This field will be removed in a future version. | [optional] 
 **version** | **String** | Album version | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

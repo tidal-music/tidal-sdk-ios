@@ -26,6 +26,7 @@ public struct FileStatus: Codable, Hashable {
         case processing = "PROCESSING"
         case ok = "OK"
         case error = "ERROR"
+        case deleted = "DELETED"
     }
     /** Moderation status for file */
     public var moderationFileStatus: ModerationFileStatus

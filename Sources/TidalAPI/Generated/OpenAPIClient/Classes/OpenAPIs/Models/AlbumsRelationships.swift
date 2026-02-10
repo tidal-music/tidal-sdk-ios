@@ -17,10 +17,12 @@ public struct AlbumsRelationships: Codable, Hashable {
     public var genres: MultiRelationshipDataDocument
     public var items: AlbumsItemsMultiRelationshipDataDocument
     public var owners: MultiRelationshipDataDocument
+    public var priceConfig: SingleRelationshipDataDocument
     public var providers: MultiRelationshipDataDocument
     public var replacement: SingleRelationshipDataDocument
     public var similarAlbums: MultiRelationshipDataDocument
     public var suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
+    public var usageRules: SingleRelationshipDataDocument
 
     public init(
         artists: MultiRelationshipDataDocument,
@@ -28,20 +30,24 @@ public struct AlbumsRelationships: Codable, Hashable {
         genres: MultiRelationshipDataDocument,
         items: AlbumsItemsMultiRelationshipDataDocument,
         owners: MultiRelationshipDataDocument,
+        priceConfig: SingleRelationshipDataDocument,
         providers: MultiRelationshipDataDocument,
         replacement: SingleRelationshipDataDocument,
         similarAlbums: MultiRelationshipDataDocument,
-        suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
+        suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument,
+        usageRules: SingleRelationshipDataDocument
     ) {
         self.artists = artists
         self.coverArt = coverArt
         self.genres = genres
         self.items = items
         self.owners = owners
+        self.priceConfig = priceConfig
         self.providers = providers
         self.replacement = replacement
         self.similarAlbums = similarAlbums
         self.suggestedCoverArts = suggestedCoverArts
+        self.usageRules = usageRules
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -50,10 +56,12 @@ public struct AlbumsRelationships: Codable, Hashable {
         case genres
         case items
         case owners
+        case priceConfig
         case providers
         case replacement
         case similarAlbums
         case suggestedCoverArts
+        case usageRules
     }
 
     // Encodable protocol methods
@@ -65,9 +73,11 @@ public struct AlbumsRelationships: Codable, Hashable {
         try container.encode(genres, forKey: .genres)
         try container.encode(items, forKey: .items)
         try container.encode(owners, forKey: .owners)
+        try container.encode(priceConfig, forKey: .priceConfig)
         try container.encode(providers, forKey: .providers)
         try container.encode(replacement, forKey: .replacement)
         try container.encode(similarAlbums, forKey: .similarAlbums)
         try container.encode(suggestedCoverArts, forKey: .suggestedCoverArts)
+        try container.encode(usageRules, forKey: .usageRules)
     }
 }

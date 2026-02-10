@@ -12,6 +12,11 @@ import AnyCodable
 
 public struct ArtistsAttributes: Codable, Hashable {
 
+    public enum OwnerType: String, Codable, CaseIterable {
+        case label = "LABEL"
+        case user = "USER"
+        case mixed = "MIXED"
+    }
     /** Is the artist enabled for contributions? */
     public var contributionsEnabled: Bool?
     /** Contributions sales pitch */
@@ -22,6 +27,8 @@ public struct ArtistsAttributes: Codable, Hashable {
     public var handle: String?
     /** Artist name */
     public var name: String
+    /** Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED: claimed profile with both label and user content. May be null during rollout/backfill. */
+    public var ownerType: OwnerType?
     /** Artist popularity (0.0 - 1.0) */
     public var popularity: Double
     /** Is the artist spotlighted? */
@@ -33,6 +40,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         externalLinks: [ExternalLink]? = nil,
         handle: String? = nil,
         name: String,
+        ownerType: OwnerType? = nil,
         popularity: Double,
         spotlighted: Bool? = nil
     ) {
@@ -41,6 +49,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         self.externalLinks = externalLinks
         self.handle = handle
         self.name = name
+        self.ownerType = ownerType
         self.popularity = popularity
         self.spotlighted = spotlighted
     }
@@ -51,6 +60,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         case externalLinks
         case handle
         case name
+        case ownerType
         case popularity
         case spotlighted
     }
@@ -64,6 +74,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(handle, forKey: .handle)
         try container.encode(name, forKey: .name)
+        try container.encodeIfPresent(ownerType, forKey: .ownerType)
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(spotlighted, forKey: .spotlighted)
     }

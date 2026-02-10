@@ -26,28 +26,38 @@ public struct OfflineTasksAttributes: Codable, Hashable {
     }
     /** Action to perform */
     public var action: Action
-    /** Item index in collection (if applicable) */
-    public var index: Int?
+    /** Collection reference associated with task */
+    public var collection: String
+    /** Collection-member reference associated with task */
+    public var member: String
+    /** Collection position related to member */
+    public var position: Int?
     /** Task state */
     public var state: State?
-    /** Item volume in collection (if applicable) */
+    /** Collection volume related to member */
     public var volume: Int?
 
     public init(
         action: Action,
-        index: Int? = nil,
+        collection: String,
+        member: String,
+        position: Int? = nil,
         state: State? = nil,
         volume: Int? = nil
     ) {
         self.action = action
-        self.index = index
+        self.collection = collection
+        self.member = member
+        self.position = position
         self.state = state
         self.volume = volume
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case action
-        case index
+        case collection
+        case member
+        case position
         case state
         case volume
     }
@@ -57,7 +67,9 @@ public struct OfflineTasksAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(action, forKey: .action)
-        try container.encodeIfPresent(index, forKey: .index)
+        try container.encode(collection, forKey: .collection)
+        try container.encode(member, forKey: .member)
+        try container.encodeIfPresent(position, forKey: .position)
         try container.encodeIfPresent(state, forKey: .state)
         try container.encodeIfPresent(volume, forKey: .volume)
     }

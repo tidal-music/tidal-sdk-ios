@@ -55,9 +55,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: 
      */
-	public static func userCollectionFoldersIdPatch(id: String, folderUpdateOperationPayload: FolderUpdateOperationPayload? = nil) async throws {
+	public static func userCollectionFoldersIdPatch(id: String, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdPatchWithRequestBuilder(id: id, folderUpdateOperationPayload: folderUpdateOperationPayload)
+			UserCollectionFoldersAPI.userCollectionFoldersIdPatchWithRequestBuilder(id: id, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload)
 		}
 	}
 
@@ -78,21 +78,21 @@ public enum UserCollectionFoldersAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionFoldersIdRelationshipsItemsGet: String, CaseIterable {
-		case ItemsAddedAtAsc = "items.addedAt"
-		case ItemsAddedAtDesc = "-items.addedAt"
-		case ItemsLastModifiedAtAsc = "items.lastModifiedAt"
-		case ItemsLastModifiedAtDesc = "-items.lastModifiedAt"
-		case ItemsNameAsc = "items.name"
-		case ItemsNameDesc = "-items.name"
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case LastModifiedAtAsc = "lastModifiedAt"
+		case LastModifiedAtDesc = "-lastModifiedAt"
+		case NameAsc = "name"
+		case NameDesc = "-name"
 
 		func toUserCollectionFoldersAPIEnum() -> UserCollectionFoldersAPI.Sort_userCollectionFoldersIdRelationshipsItemsGet {
 			switch self {
-			case .ItemsAddedAtAsc: return .ItemsAddedAtAsc
-			case .ItemsAddedAtDesc: return .ItemsAddedAtDesc
-			case .ItemsLastModifiedAtAsc: return .ItemsLastModifiedAtAsc
-			case .ItemsLastModifiedAtDesc: return .ItemsLastModifiedAtDesc
-			case .ItemsNameAsc: return .ItemsNameAsc
-			case .ItemsNameDesc: return .ItemsNameDesc
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .LastModifiedAtAsc: return .LastModifiedAtAsc
+			case .LastModifiedAtDesc: return .LastModifiedAtDesc
+			case .NameAsc: return .NameAsc
+			case .NameDesc: return .NameDesc
 			}
 		}
 	}
@@ -138,9 +138,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: UserCollectionFoldersSingleResourceDataDocument
      */
-	public static func userCollectionFoldersPost(folderCreateOperationPayload: FolderCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+	public static func userCollectionFoldersPost(userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersPostWithRequestBuilder(folderCreateOperationPayload: folderCreateOperationPayload)
+			UserCollectionFoldersAPI.userCollectionFoldersPostWithRequestBuilder(userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload)
 		}
 	}
 }

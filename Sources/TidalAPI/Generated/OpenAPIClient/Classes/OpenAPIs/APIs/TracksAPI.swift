@@ -17,7 +17,7 @@ internal class TracksAPI {
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules (optional)
      - parameter filterId: (query) Track id (optional)
      - parameter filterIsrc: (query) List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (optional)
      - parameter filterOwnersId: (query) User id (optional)
@@ -46,7 +46,7 @@ internal class TracksAPI {
        - name: Client_Credentials
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules (optional)
      - parameter filterId: (query) Track id (optional)
      - parameter filterIsrc: (query) List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (optional)
      - parameter filterOwnersId: (query) User id (optional)
@@ -132,7 +132,7 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksSingleResourceDataDocument
      */
@@ -158,7 +158,7 @@ internal class TracksAPI {
        - name: Client_Credentials
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksSingleResourceDataDocument> 
      */
@@ -192,13 +192,13 @@ internal class TracksAPI {
      Update single track.
      
      - parameter id: (path) Track id 
-     - parameter trackUpdateOperationPayload: (body)  (optional)
+     - parameter tracksUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdPatch(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil) async throws {
+    internal class func tracksIdPatch(id: String, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws {
         do {
-            return try await tracksIdPatchWithRequestBuilder(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload).execute().body
+            return try await tracksIdPatchWithRequestBuilder(id: id, tracksUpdateOperationPayload: tracksUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -213,16 +213,16 @@ internal class TracksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
-     - parameter trackUpdateOperationPayload: (body)  (optional)
+     - parameter tracksUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func tracksIdPatchWithRequestBuilder(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func tracksIdPatchWithRequestBuilder(id: String, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/tracks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackUpdateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tracksUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -305,13 +305,13 @@ internal class TracksAPI {
      Update albums relationship (\"to-many\").
      
      - parameter id: (path) Track id 
-     - parameter trackAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
+     - parameter tracksAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsAlbumsPatch(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func tracksIdRelationshipsAlbumsPatch(id: String, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
         do {
-            return try await tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, trackAlbumsRelationshipUpdateOperationPayload: trackAlbumsRelationshipUpdateOperationPayload).execute().body
+            return try await tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -326,16 +326,16 @@ internal class TracksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
-     - parameter trackAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
+     - parameter tracksAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: String, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/tracks/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackAlbumsRelationshipUpdateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tracksAlbumsRelationshipUpdateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -712,6 +712,67 @@ internal class TracksAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<TracksMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get priceConfig relationship (\"to-one\").
+     
+     - parameter id: (path) Track id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: priceConfig (optional)
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - returns: TracksSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+        do {
+            return try await tracksIdRelationshipsPriceConfigGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get priceConfig relationship (\"to-one\").
+     - GET /tracks/{id}/relationships/priceConfig
+     - Retrieves priceConfig relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) Track id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: priceConfig (optional)
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - returns: RequestBuilder<TracksSingleRelationshipDataDocument> 
+     */
+    internal class func tracksIdRelationshipsPriceConfigGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSingleRelationshipDataDocument> {
+        var localVariablePath = "/tracks/{id}/relationships/priceConfig"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TracksSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -1138,15 +1199,76 @@ internal class TracksAPI {
     }
 
     /**
+     Get usageRules relationship (\"to-one\").
+     
+     - parameter id: (path) Track id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: usageRules (optional)
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - returns: TracksSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+        do {
+            return try await tracksIdRelationshipsUsageRulesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get usageRules relationship (\"to-one\").
+     - GET /tracks/{id}/relationships/usageRules
+     - Retrieves usageRules relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) Track id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: usageRules (optional)
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - returns: RequestBuilder<TracksSingleRelationshipDataDocument> 
+     */
+    internal class func tracksIdRelationshipsUsageRulesGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSingleRelationshipDataDocument> {
+        var localVariablePath = "/tracks/{id}/relationships/usageRules"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TracksSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Create single track.
      
-     - parameter trackCreateOperationPayload: (body)  (optional)
+     - parameter tracksCreateOperationPayload: (body)  (optional)
      - returns: TracksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksPost(trackCreateOperationPayload: TrackCreateOperationPayload? = nil) async throws -> TracksSingleResourceDataDocument {
+    internal class func tracksPost(tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) async throws -> TracksSingleResourceDataDocument {
         do {
-            return try await tracksPostWithRequestBuilder(trackCreateOperationPayload: trackCreateOperationPayload).execute().body
+            return try await tracksPostWithRequestBuilder(tracksCreateOperationPayload: tracksCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -1160,13 +1282,13 @@ internal class TracksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter trackCreateOperationPayload: (body)  (optional)
+     - parameter tracksCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<TracksSingleResourceDataDocument> 
      */
-    internal class func tracksPostWithRequestBuilder(trackCreateOperationPayload: TrackCreateOperationPayload? = nil) -> RequestBuilder<TracksSingleResourceDataDocument> {
+    internal class func tracksPostWithRequestBuilder(tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) -> RequestBuilder<TracksSingleResourceDataDocument> {
         let localVariablePath = "/tracks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackCreateOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tracksCreateOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

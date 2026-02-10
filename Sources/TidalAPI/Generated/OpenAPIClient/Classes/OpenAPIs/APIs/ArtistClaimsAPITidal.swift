@@ -15,6 +15,18 @@ public enum ArtistClaimsAPITidal {
 
 
 	/**
+     Get multiple artistClaims.
+     
+     - returns: ArtistClaimsMultiResourceDataDocument
+     */
+	public static func artistClaimsGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			ArtistClaimsAPI.artistClaimsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId)
+		}
+	}
+
+
+	/**
      Delete single artistClaim.
      
      - returns: 
@@ -67,9 +79,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: 
      */
-	public static func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimAcceptedArtistsRelationshipUpdateOperationPayload)
+			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload)
 		}
 	}
 

@@ -55,9 +55,9 @@ public enum TracksAPITidal {
      
      - returns: 
      */
-	public static func tracksIdPatch(id: String, trackUpdateOperationPayload: TrackUpdateOperationPayload? = nil) async throws {
+	public static func tracksIdPatch(id: String, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdPatchWithRequestBuilder(id: id, trackUpdateOperationPayload: trackUpdateOperationPayload)
+			TracksAPI.tracksIdPatchWithRequestBuilder(id: id, tracksUpdateOperationPayload: tracksUpdateOperationPayload)
 		}
 	}
 
@@ -79,9 +79,9 @@ public enum TracksAPITidal {
      
      - returns: 
      */
-	public static func tracksIdRelationshipsAlbumsPatch(id: String, trackAlbumsRelationshipUpdateOperationPayload: TrackAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func tracksIdRelationshipsAlbumsPatch(id: String, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, trackAlbumsRelationshipUpdateOperationPayload: trackAlbumsRelationshipUpdateOperationPayload)
+			TracksAPI.tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -154,6 +154,18 @@ public enum TracksAPITidal {
 	public static func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
+		}
+	}
+
+
+	/**
+     Get priceConfig relationship (\&quot;to-one\&quot;).
+     
+     - returns: TracksSingleRelationshipDataDocument
+     */
+	public static func tracksIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsPriceConfigGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 
@@ -243,13 +255,25 @@ public enum TracksAPITidal {
 
 
 	/**
+     Get usageRules relationship (\&quot;to-one\&quot;).
+     
+     - returns: TracksSingleRelationshipDataDocument
+     */
+	public static func tracksIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsUsageRulesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Create single track.
      
      - returns: TracksSingleResourceDataDocument
      */
-	public static func tracksPost(trackCreateOperationPayload: TrackCreateOperationPayload? = nil) async throws -> TracksSingleResourceDataDocument {
+	public static func tracksPost(tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) async throws -> TracksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksPostWithRequestBuilder(trackCreateOperationPayload: trackCreateOperationPayload)
+			TracksAPI.tracksPostWithRequestBuilder(tracksCreateOperationPayload: tracksCreateOperationPayload)
 		}
 	}
 }

@@ -19,6 +19,11 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         case flacHires = "FLAC_HIRES"
         case eac3Joc = "EAC3_JOC"
     }
+    public enum PreviewReason: String, Codable, CaseIterable {
+        case fullRequiresSubscription = "FULL_REQUIRES_SUBSCRIPTION"
+        case fullRequiresPurchase = "FULL_REQUIRES_PURCHASE"
+        case fullRequiresHigherAccessTier = "FULL_REQUIRES_HIGHER_ACCESS_TIER"
+    }
     public enum TrackPresentation: String, Codable, CaseIterable {
         case full = "FULL"
         case preview = "PREVIEW"
@@ -29,6 +34,8 @@ public struct TrackManifestsAttributes: Codable, Hashable {
     public var formats: [Formats]?
     /** Unique manifest hash */
     public var hash: String?
+    /** Why a preview is served instead of the full track */
+    public var previewReason: PreviewReason?
     public var trackAudioNormalizationData: AudioNormalizationData?
     /** Track presentation */
     public var trackPresentation: TrackPresentation?
@@ -40,6 +47,7 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         drmData: DrmData? = nil,
         formats: [Formats]? = nil,
         hash: String? = nil,
+        previewReason: PreviewReason? = nil,
         trackAudioNormalizationData: AudioNormalizationData? = nil,
         trackPresentation: TrackPresentation? = nil,
         uri: String? = nil
@@ -48,6 +56,7 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         self.drmData = drmData
         self.formats = formats
         self.hash = hash
+        self.previewReason = previewReason
         self.trackAudioNormalizationData = trackAudioNormalizationData
         self.trackPresentation = trackPresentation
         self.uri = uri
@@ -58,6 +67,7 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         case drmData
         case formats
         case hash
+        case previewReason
         case trackAudioNormalizationData
         case trackPresentation
         case uri
@@ -71,6 +81,7 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         try container.encodeIfPresent(drmData, forKey: .drmData)
         try container.encodeIfPresent(formats, forKey: .formats)
         try container.encodeIfPresent(hash, forKey: .hash)
+        try container.encodeIfPresent(previewReason, forKey: .previewReason)
         try container.encodeIfPresent(trackAudioNormalizationData, forKey: .trackAudioNormalizationData)
         try container.encodeIfPresent(trackPresentation, forKey: .trackPresentation)
         try container.encodeIfPresent(uri, forKey: .uri)

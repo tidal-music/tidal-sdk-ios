@@ -23,7 +23,7 @@ Retrieves single searchSuggestion by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Search query string used as the resource identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits (optional)
 
@@ -45,7 +45,7 @@ SearchSuggestionsAPI.searchSuggestionsIdGet(id: id, explicitFilter: explicitFilt
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Search query string used as the resource identifier | 
- **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits | [optional] 
 
@@ -79,7 +79,7 @@ Retrieves directHits relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Search query string used as the resource identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter (optional) (default to .include)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -102,7 +102,7 @@ SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, expli
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Search query string used as the resource identifier | 
- **explicitFilter** | **String** | Explicit filter | [optional] [default to .include]
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
