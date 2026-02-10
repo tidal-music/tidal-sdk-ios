@@ -52,7 +52,7 @@ final class OfflineStore {
 						artwork_bookmark = excluded.artwork_bookmark
 					""",
 				arguments: [
-					task.id, task.resourceType, task.resourceId, metadataJson,
+					task.member, task.resourceType, task.resourceId, metadataJson,
 					mediaBookmark, licenseBookmark, artworkBookmark
 				]
 			)
@@ -64,7 +64,7 @@ final class OfflineStore {
 					ON CONFLICT (collection, volume, position) DO UPDATE SET
 						member = excluded.member
 					""",
-				arguments: [task.collectionId, task.id, task.volume, task.index]
+				arguments: [task.collection, task.member, task.volume, task.position]
 			)
 
 			return .commit

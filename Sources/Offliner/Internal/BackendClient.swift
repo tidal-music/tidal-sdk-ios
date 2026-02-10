@@ -9,7 +9,6 @@ enum ResourceType {
 	case video
 	case album
 	case playlist
-	case userCollection
 }
 
 // MARK: - Task Types
@@ -17,9 +16,10 @@ enum ResourceType {
 struct StoreItemTask {
 	let id: String
 	let metadata: OfflineMediaItem.Metadata
-	let collectionId: String
+	let collection: String
+	let member: String
 	let volume: Int
-	let index: Int
+	let position: Int
 }
 
 struct StoreCollectionTask {
@@ -75,21 +75,21 @@ final class BackendClient: BackendClientProtocol {
 
 	func addItem(type: ResourceType, id: String) async throws {
 		let identifier = InstallationsOfflineInventoryItemIdentifier(id: id, type: mapResourceType(type))
-		let payload = InstallationsOfflineInventoryAddPayload(data: [identifier])
+		let payload = InstallationsOfflineInventoryRelationshipAddOperationPayload(data: [identifier])
 
 		try await InstallationsAPITidal.installationsIdRelationshipsOfflineInventoryPost(
 			id: installationId,
-			installationsOfflineInventoryAddPayload: payload
+			installationsOfflineInventoryRelationshipAddOperationPayload: payload
 		)
 	}
 
 	func removeItem(type: ResourceType, id: String) async throws {
 		let identifier = InstallationsOfflineInventoryItemIdentifier(id: id, type: mapResourceType(type))
-		let payload = InstallationsOfflineInventoryRemovePayload(data: [identifier])
+		let payload = InstallationsOfflineInventoryRelationshipRemoveOperationPayload(data: [identifier])
 
 		try await InstallationsAPITidal.installationsIdRelationshipsOfflineInventoryDelete(
 			id: installationId,
-			installationsOfflineInventoryRemovePayload: payload
+			installationsOfflineInventoryRelationshipRemoveOperationPayload: payload
 		)
 	}
 
@@ -114,17 +114,17 @@ final class BackendClient: BackendClientProtocol {
 			case .storeItem:
 				guard let metadata = includedItem.mediaItemMetadata,
 					  let volume = attributes.volume,
-					  let collectionId = Optional("TODO"),
-					  let index = attributes.index else {
+					  let position = attributes.position else {
 					return nil
 				}
 
 				let task = StoreItemTask(
 					id: resourceObject.id,
 					metadata: metadata,
-					collectionId: collectionId,
+					collection: attributes.collection,
+					member: attributes.member,
 					volume: volume,
-					index: index
+					position: position
 				)
 				return .storeItem(task)
 
@@ -186,8 +186,6 @@ private extension BackendClient {
 			return .albums
 		case .playlist:
 			return .playlists
-		case .userCollection:
-			return .userCollection
 		}
 	}
 
