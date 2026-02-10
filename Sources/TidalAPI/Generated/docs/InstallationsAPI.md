@@ -125,7 +125,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryDelete**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryDelete(id: String, installationsOfflineInventoryRemovePayload: InstallationsOfflineInventoryRemovePayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryDelete(id: String, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from offlineInventory relationship (\"to-many\").
@@ -138,10 +138,10 @@ Deletes item(s) from offlineInventory relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Installation id
-let installationsOfflineInventoryRemovePayload = InstallationsOfflineInventory_RemovePayload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRemovePayload |  (optional)
+let installationsOfflineInventoryRelationshipRemoveOperationPayload = InstallationsOfflineInventoryRelationshipRemoveOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, installationsOfflineInventoryRemovePayload: installationsOfflineInventoryRemovePayload) { (response, error) in
+InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -158,7 +158,7 @@ InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, inst
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Installation id | 
- **installationsOfflineInventoryRemovePayload** | [**InstallationsOfflineInventoryRemovePayload**](InstallationsOfflineInventoryRemovePayload.md) |  | [optional] 
+ **installationsOfflineInventoryRelationshipRemoveOperationPayload** | [**InstallationsOfflineInventoryRelationshipRemoveOperationPayload**](InstallationsOfflineInventoryRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -177,7 +177,7 @@ Void (empty response body)
 
 # **installationsIdRelationshipsOfflineInventoryGet**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: InstallationsOfflineInventoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil, completion: @escaping (_ data: InstallationsOfflineInventoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get offlineInventory relationship (\"to-many\").
@@ -192,9 +192,10 @@ import OpenAPIClient
 let id = "id_example" // String | Installation id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
+let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists, userCollections (optional)
 
 // Get offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, pageCursor: pageCursor, include: include) { (response, error) in
+InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, pageCursor: pageCursor, include: include, filterType: filterType) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -213,6 +214,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Installation id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineInventory | [optional] 
+ **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists, userCollections | [optional] 
 
 ### Return type
 
@@ -231,7 +233,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryPost**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryPost(id: String, installationsOfflineInventoryAddPayload: InstallationsOfflineInventoryAddPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryPost(id: String, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to offlineInventory relationship (\"to-many\").
@@ -244,10 +246,10 @@ Adds item(s) to offlineInventory relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Installation id
-let installationsOfflineInventoryAddPayload = InstallationsOfflineInventory_AddPayload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryAddPayload |  (optional)
+let installationsOfflineInventoryRelationshipAddOperationPayload = InstallationsOfflineInventoryRelationshipAddOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipAddOperationPayload |  (optional)
 
 // Add to offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, installationsOfflineInventoryAddPayload: installationsOfflineInventoryAddPayload) { (response, error) in
+InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -264,7 +266,7 @@ InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, instal
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Installation id | 
- **installationsOfflineInventoryAddPayload** | [**InstallationsOfflineInventoryAddPayload**](InstallationsOfflineInventoryAddPayload.md) |  | [optional] 
+ **installationsOfflineInventoryRelationshipAddOperationPayload** | [**InstallationsOfflineInventoryRelationshipAddOperationPayload**](InstallationsOfflineInventoryRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 

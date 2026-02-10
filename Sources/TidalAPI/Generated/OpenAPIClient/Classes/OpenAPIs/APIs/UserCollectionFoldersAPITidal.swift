@@ -78,21 +78,21 @@ public enum UserCollectionFoldersAPITidal {
 	 * enum for parameter sort
 	 */
 	public enum Sort_userCollectionFoldersIdRelationshipsItemsGet: String, CaseIterable {
-		case ItemsAddedAtAsc = "items.addedAt"
-		case ItemsAddedAtDesc = "-items.addedAt"
-		case ItemsLastModifiedAtAsc = "items.lastModifiedAt"
-		case ItemsLastModifiedAtDesc = "-items.lastModifiedAt"
-		case ItemsNameAsc = "items.name"
-		case ItemsNameDesc = "-items.name"
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case LastModifiedAtAsc = "lastModifiedAt"
+		case LastModifiedAtDesc = "-lastModifiedAt"
+		case NameAsc = "name"
+		case NameDesc = "-name"
 
 		func toUserCollectionFoldersAPIEnum() -> UserCollectionFoldersAPI.Sort_userCollectionFoldersIdRelationshipsItemsGet {
 			switch self {
-			case .ItemsAddedAtAsc: return .ItemsAddedAtAsc
-			case .ItemsAddedAtDesc: return .ItemsAddedAtDesc
-			case .ItemsLastModifiedAtAsc: return .ItemsLastModifiedAtAsc
-			case .ItemsLastModifiedAtDesc: return .ItemsLastModifiedAtDesc
-			case .ItemsNameAsc: return .ItemsNameAsc
-			case .ItemsNameDesc: return .ItemsNameDesc
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .LastModifiedAtAsc: return .LastModifiedAtAsc
+			case .LastModifiedAtDesc: return .LastModifiedAtDesc
+			case .NameAsc: return .NameAsc
+			case .NameDesc: return .NameDesc
 			}
 		}
 	}

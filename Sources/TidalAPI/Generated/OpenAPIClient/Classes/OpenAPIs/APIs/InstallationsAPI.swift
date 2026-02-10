@@ -127,13 +127,13 @@ internal class InstallationsAPI {
      Delete from offlineInventory relationship (\"to-many\").
      
      - parameter id: (path) Installation id 
-     - parameter installationsOfflineInventoryRemovePayload: (body)  (optional)
+     - parameter installationsOfflineInventoryRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryDelete(id: String, installationsOfflineInventoryRemovePayload: InstallationsOfflineInventoryRemovePayload? = nil) async throws {
+    internal class func installationsIdRelationshipsOfflineInventoryDelete(id: String, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, installationsOfflineInventoryRemovePayload: installationsOfflineInventoryRemovePayload).execute().body
+            return try await installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -148,16 +148,16 @@ internal class InstallationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Installation id 
-     - parameter installationsOfflineInventoryRemovePayload: (body)  (optional)
+     - parameter installationsOfflineInventoryRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: String, installationsOfflineInventoryRemovePayload: InstallationsOfflineInventoryRemovePayload? = nil) -> RequestBuilder<Void> {
+    internal class func installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: String, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: installationsOfflineInventoryRemovePayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: installationsOfflineInventoryRelationshipRemoveOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -173,17 +173,29 @@ internal class InstallationsAPI {
     }
 
     /**
+     * enum for parameter filterType
+     */
+    public enum FilterType_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
+        case tracks = "tracks"
+        case videos = "videos"
+        case albums = "albums"
+        case playlists = "playlists"
+        case usercollections = "userCollections"
+    }
+
+    /**
      Get offlineInventory relationship (\"to-many\").
      
      - parameter id: (path) Installation id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollections (optional)
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
+    internal class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
         do {
-            return try await installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+            return try await installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, filterType: filterType).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -200,9 +212,10 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollections (optional)
      - returns: RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {
+    internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -214,6 +227,7 @@ internal class InstallationsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[type]": (wrappedValue: filterType?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -231,13 +245,13 @@ internal class InstallationsAPI {
      Add to offlineInventory relationship (\"to-many\").
      
      - parameter id: (path) Installation id 
-     - parameter installationsOfflineInventoryAddPayload: (body)  (optional)
+     - parameter installationsOfflineInventoryRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryPost(id: String, installationsOfflineInventoryAddPayload: InstallationsOfflineInventoryAddPayload? = nil) async throws {
+    internal class func installationsIdRelationshipsOfflineInventoryPost(id: String, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, installationsOfflineInventoryAddPayload: installationsOfflineInventoryAddPayload).execute().body
+            return try await installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -252,16 +266,16 @@ internal class InstallationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Installation id 
-     - parameter installationsOfflineInventoryAddPayload: (body)  (optional)
+     - parameter installationsOfflineInventoryRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: String, installationsOfflineInventoryAddPayload: InstallationsOfflineInventoryAddPayload? = nil) -> RequestBuilder<Void> {
+    internal class func installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: String, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: installationsOfflineInventoryAddPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: installationsOfflineInventoryRelationshipAddOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

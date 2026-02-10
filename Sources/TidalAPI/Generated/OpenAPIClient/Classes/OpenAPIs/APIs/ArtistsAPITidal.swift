@@ -79,9 +79,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsFollowersMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsFollowersGet(id: String, pageCursor: String? = nil, viewerContext: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowersMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsFollowersGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsFollowersGetWithRequestBuilder(id: id, pageCursor: pageCursor, viewerContext: viewerContext, include: include)
+			ArtistsAPI.artistsIdRelationshipsFollowersGetWithRequestBuilder(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -103,9 +103,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsFollowingMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsFollowingGet(id: String, pageCursor: String? = nil, viewerContext: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowingMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsFollowingGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowingMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsFollowingGetWithRequestBuilder(id: id, pageCursor: pageCursor, viewerContext: viewerContext, include: include)
+			ArtistsAPI.artistsIdRelationshipsFollowingGetWithRequestBuilder(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include)
 		}
 	}
 

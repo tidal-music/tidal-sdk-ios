@@ -304,15 +304,15 @@ internal class ArtistsAPI {
      Get followers relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
+     - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter viewerContext: (query) Member paths to include viewer-specific information on (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: followers (optional)
      - returns: ArtistsFollowersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsFollowersGet(id: String, pageCursor: String? = nil, viewerContext: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowersMultiRelationshipDataDocument {
+    internal class func artistsIdRelationshipsFollowersGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowersMultiRelationshipDataDocument {
         do {
-            return try await artistsIdRelationshipsFollowersGetWithRequestBuilder(id: id, pageCursor: pageCursor, viewerContext: viewerContext, include: include).execute().body
+            return try await artistsIdRelationshipsFollowersGetWithRequestBuilder(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -327,12 +327,12 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
+     - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter viewerContext: (query) Member paths to include viewer-specific information on (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: followers (optional)
      - returns: RequestBuilder<ArtistsFollowersMultiRelationshipDataDocument> 
      */
-    internal class func artistsIdRelationshipsFollowersGetWithRequestBuilder(id: String, pageCursor: String? = nil, viewerContext: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsFollowersMultiRelationshipDataDocument> {
+    internal class func artistsIdRelationshipsFollowersGetWithRequestBuilder(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsFollowersMultiRelationshipDataDocument> {
         var localVariablePath = "/artists/{id}/relationships/followers"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -342,8 +342,8 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "viewerContext": (wrappedValue: viewerContext?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -411,15 +411,15 @@ internal class ArtistsAPI {
      Get following relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
+     - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter viewerContext: (query) Member paths to include viewer-specific information on (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: following (optional)
      - returns: ArtistsFollowingMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsFollowingGet(id: String, pageCursor: String? = nil, viewerContext: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowingMultiRelationshipDataDocument {
+    internal class func artistsIdRelationshipsFollowingGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsFollowingMultiRelationshipDataDocument {
         do {
-            return try await artistsIdRelationshipsFollowingGetWithRequestBuilder(id: id, pageCursor: pageCursor, viewerContext: viewerContext, include: include).execute().body
+            return try await artistsIdRelationshipsFollowingGetWithRequestBuilder(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -434,12 +434,12 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
+     - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter viewerContext: (query) Member paths to include viewer-specific information on (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: following (optional)
      - returns: RequestBuilder<ArtistsFollowingMultiRelationshipDataDocument> 
      */
-    internal class func artistsIdRelationshipsFollowingGetWithRequestBuilder(id: String, pageCursor: String? = nil, viewerContext: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsFollowingMultiRelationshipDataDocument> {
+    internal class func artistsIdRelationshipsFollowingGetWithRequestBuilder(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsFollowingMultiRelationshipDataDocument> {
         var localVariablePath = "/artists/{id}/relationships/following"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -449,8 +449,8 @@ internal class ArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "viewerContext": (wrappedValue: viewerContext?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 

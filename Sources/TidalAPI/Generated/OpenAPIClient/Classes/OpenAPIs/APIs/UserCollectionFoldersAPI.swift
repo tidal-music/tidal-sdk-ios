@@ -263,12 +263,12 @@ internal class UserCollectionFoldersAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionFoldersIdRelationshipsItemsGet: String, CaseIterable {
-        case ItemsAddedAtAsc = "items.addedAt"
-        case ItemsAddedAtDesc = "-items.addedAt"
-        case ItemsLastModifiedAtAsc = "items.lastModifiedAt"
-        case ItemsLastModifiedAtDesc = "-items.lastModifiedAt"
-        case ItemsNameAsc = "items.name"
-        case ItemsNameDesc = "-items.name"
+        case AddedAtAsc = "addedAt"
+        case AddedAtDesc = "-addedAt"
+        case LastModifiedAtAsc = "lastModifiedAt"
+        case LastModifiedAtDesc = "-lastModifiedAt"
+        case NameAsc = "name"
+        case NameDesc = "-name"
     }
 
     /**

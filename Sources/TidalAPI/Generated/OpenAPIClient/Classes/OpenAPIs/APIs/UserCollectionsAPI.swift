@@ -123,14 +123,14 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsAlbumsGet: String, CaseIterable {
-        case AlbumsAddedAtAsc = "albums.addedAt"
-        case AlbumsAddedAtDesc = "-albums.addedAt"
-        case AlbumsArtistsNameAsc = "albums.artists.name"
-        case AlbumsArtistsNameDesc = "-albums.artists.name"
-        case AlbumsReleaseDateAsc = "albums.releaseDate"
-        case AlbumsReleaseDateDesc = "-albums.releaseDate"
-        case AlbumsTitleAsc = "albums.title"
-        case AlbumsTitleDesc = "-albums.title"
+        case AddedAtAsc = "addedAt"
+        case AddedAtDesc = "-addedAt"
+        case ArtistsNameAsc = "artists.name"
+        case ArtistsNameDesc = "-artists.name"
+        case ReleaseDateAsc = "releaseDate"
+        case ReleaseDateDesc = "-releaseDate"
+        case TitleAsc = "title"
+        case TitleDesc = "-title"
     }
 
     /**
@@ -304,10 +304,10 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsArtistsGet: String, CaseIterable {
-        case ArtistsAddedAtAsc = "artists.addedAt"
-        case ArtistsAddedAtDesc = "-artists.addedAt"
-        case ArtistsNameAsc = "artists.name"
-        case ArtistsNameDesc = "-artists.name"
+        case AddedAtAsc = "addedAt"
+        case AddedAtDesc = "-addedAt"
+        case NameAsc = "name"
+        case NameDesc = "-name"
     }
 
     /**
@@ -543,12 +543,12 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsPlaylistsGet: String, CaseIterable {
-        case PlaylistsAddedAtAsc = "playlists.addedAt"
-        case PlaylistsAddedAtDesc = "-playlists.addedAt"
-        case PlaylistsLastModifiedAtAsc = "playlists.lastModifiedAt"
-        case PlaylistsLastModifiedAtDesc = "-playlists.lastModifiedAt"
-        case PlaylistsNameAsc = "playlists.name"
-        case PlaylistsNameDesc = "-playlists.name"
+        case AddedAtAsc = "addedAt"
+        case AddedAtDesc = "-addedAt"
+        case LastModifiedAtAsc = "lastModifiedAt"
+        case LastModifiedAtDesc = "-lastModifiedAt"
+        case NameAsc = "name"
+        case NameDesc = "-name"
     }
 
     /**
@@ -714,16 +714,16 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsTracksGet: String, CaseIterable {
-        case TracksAddedAtAsc = "tracks.addedAt"
-        case TracksAddedAtDesc = "-tracks.addedAt"
-        case TracksAlbumsTitleAsc = "tracks.albums.title"
-        case TracksAlbumsTitleDesc = "-tracks.albums.title"
-        case TracksArtistsNameAsc = "tracks.artists.name"
-        case TracksArtistsNameDesc = "-tracks.artists.name"
-        case TracksDurationAsc = "tracks.duration"
-        case TracksDurationDesc = "-tracks.duration"
-        case TracksTitleAsc = "tracks.title"
-        case TracksTitleDesc = "-tracks.title"
+        case AddedAtAsc = "addedAt"
+        case AddedAtDesc = "-addedAt"
+        case AlbumsTitleAsc = "albums.title"
+        case AlbumsTitleDesc = "-albums.title"
+        case ArtistsNameAsc = "artists.name"
+        case ArtistsNameDesc = "-artists.name"
+        case DurationAsc = "duration"
+        case DurationDesc = "-duration"
+        case TitleAsc = "title"
+        case TitleDesc = "-title"
     }
 
     /**
@@ -897,14 +897,14 @@ internal class UserCollectionsAPI {
      * enum for parameter sort
      */
     public enum Sort_userCollectionsIdRelationshipsVideosGet: String, CaseIterable {
-        case VideosAddedAtAsc = "videos.addedAt"
-        case VideosAddedAtDesc = "-videos.addedAt"
-        case VideosArtistsNameAsc = "videos.artists.name"
-        case VideosArtistsNameDesc = "-videos.artists.name"
-        case VideosDurationAsc = "videos.duration"
-        case VideosDurationDesc = "-videos.duration"
-        case VideosTitleAsc = "videos.title"
-        case VideosTitleDesc = "-videos.title"
+        case AddedAtAsc = "addedAt"
+        case AddedAtDesc = "-addedAt"
+        case ArtistsNameAsc = "artists.name"
+        case ArtistsNameDesc = "-artists.name"
+        case DurationAsc = "duration"
+        case DurationDesc = "-duration"
+        case TitleAsc = "title"
+        case TitleDesc = "-title"
     }
 
     /**
