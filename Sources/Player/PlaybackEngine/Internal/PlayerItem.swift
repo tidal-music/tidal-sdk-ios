@@ -71,7 +71,7 @@ final class PlayerItem {
 		if mediaProduct.extras?[MediaProduct.Extras.Constants.UploadsDictKey] != nil {
 			sessionTags.append(StreamingSessionStart.SessionTag.UPLOAD)
 		}
-		
+
 		playerEventSender.send(StreamingSessionStart(
 			streamingSessionId: id,
 			startReason: playbackStartReason,
@@ -174,7 +174,8 @@ final class PlayerItem {
 			videoQuality: metadata.videoQuality,
 			duration: duration,
 			assetPosition: assetPosition,
-			playbackSessionId: id
+			playbackSessionId: id,
+			previewReason: metadata.previewReason
 		)
 	}
 
@@ -330,15 +331,16 @@ private extension PlayerItem {
 		pbiMetadata: Metadata,
 		playbackMetadata: AssetPlaybackMetadata?
 	) -> AssetPlaybackMetadata {
-		if let playbackMetadata = playbackMetadata {
+		if let playbackMetadata {
 			return playbackMetadata
 		}
-		
+
 		return AssetPlaybackMetadata(
 			audioQuality: pbiMetadata.audioQuality ?? .LOW,
 			audioMode: pbiMetadata.audioMode ?? .STEREO,
 			sampleRate: pbiMetadata.audioSampleRate,
-			bitDepth: pbiMetadata.audioBitDepth)
+			bitDepth: pbiMetadata.audioBitDepth
+		)
 	}
 
 	func emitStreamingMetrics() {
@@ -372,11 +374,10 @@ private extension PlayerItem {
 		}
 
 		let endInfo = metrics.endInfo
-		let actualQuality: String
-		if let playbackContext {
-			actualQuality = mediaProduct.productType.quality(given: playbackContext)
+		let actualQuality: String = if let playbackContext {
+			mediaProduct.productType.quality(given: playbackContext)
 		} else {
-			actualQuality = mediaProduct.productType.quality(given: metadata)
+			mediaProduct.productType.quality(given: metadata)
 		}
 		playerEventSender.send(PlaybackStatistics(
 			streamingSessionId: id,
