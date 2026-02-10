@@ -96,7 +96,7 @@ final class BackendClient: BackendClientProtocol {
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
 		let response = try await OfflineTasksAPITidal.offlineTasksGet(
 			pageCursor: cursor,
-			include: ["item", "item.album.coverArt", "item.coverArt", "item.artists"],
+			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists"],
 			filterInstallationId: [installationId]
 		)
 
