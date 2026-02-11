@@ -30,7 +30,7 @@ Method | HTTP request | Description
 
 Get single userCollection.
 
-Retrieves single userCollection by id.
+Deprecated. Use the dedicated collection resources instead: userCollectionAlbums, userCollectionArtists, userCollectionTracks, userCollectionVideos, or userCollectionPlaylists.
 
 ### Example
 ```swift
@@ -86,7 +86,7 @@ Name | Type | Description  | Notes
 
 Delete from albums relationship (\"to-many\").
 
-Deletes item(s) from albums relationship.
+Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -138,7 +138,7 @@ Void (empty response body)
 
 Get albums relationship (\"to-many\").
 
-Retrieves albums relationship.
+Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -198,7 +198,7 @@ Name | Type | Description  | Notes
 
 Add to albums relationship (\"to-many\").
 
-Adds item(s) to albums relationship.
+Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -252,7 +252,7 @@ Void (empty response body)
 
 Delete from artists relationship (\"to-many\").
 
-Deletes item(s) from artists relationship.
+Deprecated. Use the userCollectionArtists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -304,7 +304,7 @@ Void (empty response body)
 
 Get artists relationship (\"to-many\").
 
-Retrieves artists relationship.
+Deprecated. Use the userCollectionArtists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -364,7 +364,7 @@ Name | Type | Description  | Notes
 
 Add to artists relationship (\"to-many\").
 
-Adds item(s) to artists relationship.
+Deprecated. Use the userCollectionArtists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -472,7 +472,7 @@ Name | Type | Description  | Notes
 
 Delete from playlists relationship (\"to-many\").
 
-Deletes item(s) from playlists relationship.
+Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -524,7 +524,7 @@ Void (empty response body)
 
 Get playlists relationship (\"to-many\").
 
-Retrieves playlists relationship.
+Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -582,7 +582,7 @@ Name | Type | Description  | Notes
 
 Add to playlists relationship (\"to-many\").
 
-Adds item(s) to playlists relationship.
+Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -634,7 +634,7 @@ Void (empty response body)
 
 Delete from tracks relationship (\"to-many\").
 
-Deletes item(s) from tracks relationship.
+Deprecated. Use the userCollectionTracks resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -686,7 +686,7 @@ Void (empty response body)
 
 Get tracks relationship (\"to-many\").
 
-Retrieves tracks relationship.
+Deprecated. Use the userCollectionTracks resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -746,7 +746,7 @@ Name | Type | Description  | Notes
 
 Add to tracks relationship (\"to-many\").
 
-Adds item(s) to tracks relationship.
+Deprecated. Use the userCollectionTracks resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -800,7 +800,7 @@ Void (empty response body)
 
 Delete from videos relationship (\"to-many\").
 
-Deletes item(s) from videos relationship.
+Deprecated. Use the userCollectionVideos resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -852,7 +852,7 @@ Void (empty response body)
 
 Get videos relationship (\"to-many\").
 
-Retrieves videos relationship.
+Deprecated. Use the userCollectionVideos resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -912,7 +912,7 @@ Name | Type | Description  | Notes
 
 Add to videos relationship (\"to-many\").
 
-Adds item(s) to videos relationship.
+Deprecated. Use the userCollectionVideos resource and its items relationship instead.
 
 ### Example
 ```swift

@@ -1,4 +1,4 @@
-# ReactionsCreateOperationPayloadDataRelationshipsReactedResourceData
+# ReactionsCreateOperationPayloadDataRelationshipsSubjectData
 
 ## Properties
 Name | Type | Description | Notes

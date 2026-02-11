@@ -21,6 +21,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
      - returns: UserCollectionsSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
         do {
@@ -34,7 +35,7 @@ internal class UserCollectionsAPI {
     /**
      Get single userCollection.
      - GET /userCollections/{id}
-     - Retrieves single userCollection by id.
+     - Deprecated. Use the dedicated collection resources instead: userCollectionAlbums, userCollectionArtists, userCollectionTracks, userCollectionVideos, or userCollectionPlaylists.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -44,6 +45,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
      - returns: RequestBuilder<UserCollectionsSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
         var localVariablePath = "/userCollections/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -77,6 +79,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsAlbumsDelete(id: String, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil) async throws {
         do {
@@ -90,7 +93,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from albums relationship (\"to-many\").
      - DELETE /userCollections/{id}/relationships/albums
-     - Deletes item(s) from albums relationship.
+     - Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -98,6 +101,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsAlbumsDeleteWithRequestBuilder(id: String, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -144,6 +148,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: UserCollectionsAlbumsMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
         do {
@@ -157,7 +162,7 @@ internal class UserCollectionsAPI {
     /**
      Get albums relationship (\"to-many\").
      - GET /userCollections/{id}/relationships/albums
-     - Retrieves albums relationship.
+     - Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -169,6 +174,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -205,6 +211,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws {
         do {
@@ -218,7 +225,7 @@ internal class UserCollectionsAPI {
     /**
      Add to albums relationship (\"to-many\").
      - POST /userCollections/{id}/relationships/albums
-     - Adds item(s) to albums relationship.
+     - Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -227,6 +234,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: String, countryCode: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -258,6 +266,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsArtistsDelete(id: String, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil) async throws {
         do {
@@ -271,7 +280,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from artists relationship (\"to-many\").
      - DELETE /userCollections/{id}/relationships/artists
-     - Deletes item(s) from artists relationship.
+     - Deprecated. Use the userCollectionArtists resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -279,6 +288,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsArtistsDeleteWithRequestBuilder(id: String, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -321,6 +331,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: UserCollectionsArtistsMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
         do {
@@ -334,7 +345,7 @@ internal class UserCollectionsAPI {
     /**
      Get artists relationship (\"to-many\").
      - GET /userCollections/{id}/relationships/artists
-     - Retrieves artists relationship.
+     - Deprecated. Use the userCollectionArtists resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -346,6 +357,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -382,6 +394,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws {
         do {
@@ -395,7 +408,7 @@ internal class UserCollectionsAPI {
     /**
      Add to artists relationship (\"to-many\").
      - POST /userCollections/{id}/relationships/artists
-     - Adds item(s) to artists relationship.
+     - Deprecated. Use the userCollectionArtists resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -404,6 +417,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: String, countryCode: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -490,6 +504,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsPlaylistsDelete(id: String, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil) async throws {
         do {
@@ -503,7 +518,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from playlists relationship (\"to-many\").
      - DELETE /userCollections/{id}/relationships/playlists
-     - Deletes item(s) from playlists relationship.
+     - Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -511,6 +526,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsPlaylistsDeleteWithRequestBuilder(id: String, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -561,6 +577,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: UserCollectionsPlaylistsMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, collectionView: CollectionView_userCollectionsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
         do {
@@ -574,7 +591,7 @@ internal class UserCollectionsAPI {
     /**
      Get playlists relationship (\"to-many\").
      - GET /userCollections/{id}/relationships/playlists
-     - Retrieves playlists relationship.
+     - Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -585,6 +602,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      - returns: RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, collectionView: CollectionView_userCollectionsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -619,6 +637,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsPlaylistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsPlaylistsPost(id: String, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil) async throws {
         do {
@@ -632,7 +651,7 @@ internal class UserCollectionsAPI {
     /**
      Add to playlists relationship (\"to-many\").
      - POST /userCollections/{id}/relationships/playlists
-     - Adds item(s) to playlists relationship.
+     - Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -640,6 +659,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsPlaylistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsPlaylistsPostWithRequestBuilder(id: String, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -668,6 +688,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsTracksDelete(id: String, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil) async throws {
         do {
@@ -681,7 +702,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from tracks relationship (\"to-many\").
      - DELETE /userCollections/{id}/relationships/tracks
-     - Deletes item(s) from tracks relationship.
+     - Deprecated. Use the userCollectionTracks resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -689,6 +710,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsTracksDeleteWithRequestBuilder(id: String, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -737,6 +759,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: UserCollectionsTracksMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
         do {
@@ -750,7 +773,7 @@ internal class UserCollectionsAPI {
     /**
      Get tracks relationship (\"to-many\").
      - GET /userCollections/{id}/relationships/tracks
-     - Retrieves tracks relationship.
+     - Deprecated. Use the userCollectionTracks resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -762,6 +785,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -798,6 +822,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws {
         do {
@@ -811,7 +836,7 @@ internal class UserCollectionsAPI {
     /**
      Add to tracks relationship (\"to-many\").
      - POST /userCollections/{id}/relationships/tracks
-     - Adds item(s) to tracks relationship.
+     - Deprecated. Use the userCollectionTracks resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -820,6 +845,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: String, countryCode: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -851,6 +877,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsVideosDelete(id: String, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil) async throws {
         do {
@@ -864,7 +891,7 @@ internal class UserCollectionsAPI {
     /**
      Delete from videos relationship (\"to-many\").
      - DELETE /userCollections/{id}/relationships/videos
-     - Deletes item(s) from videos relationship.
+     - Deprecated. Use the userCollectionVideos resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -872,6 +899,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsVideosDeleteWithRequestBuilder(id: String, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -918,6 +946,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: UserCollectionsVideosMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
         do {
@@ -931,7 +960,7 @@ internal class UserCollectionsAPI {
     /**
      Get videos relationship (\"to-many\").
      - GET /userCollections/{id}/relationships/videos
-     - Retrieves videos relationship.
+     - Deprecated. Use the userCollectionVideos resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -943,6 +972,7 @@ internal class UserCollectionsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -979,6 +1009,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws {
         do {
@@ -992,7 +1023,7 @@ internal class UserCollectionsAPI {
     /**
      Add to videos relationship (\"to-many\").
      - POST /userCollections/{id}/relationships/videos
-     - Adds item(s) to videos relationship.
+     - Deprecated. Use the userCollectionVideos resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -1001,6 +1032,7 @@ internal class UserCollectionsAPI {
      - parameter userCollectionsVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: String, countryCode: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"

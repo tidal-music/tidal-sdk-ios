@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct PriceConfigurationsCreateOperationPayloadDataRelationships: Codable, Hashable {
 
-    public static let subjectsRule = ArrayRule(minItems: 1, maxItems: nil, uniqueItems: false)
+    public static let subjectsRule = ArrayRule(minItems: 1, maxItems: 1, uniqueItems: false)
     public var subjects: [PriceConfigurationsCreateOperationPayloadSubjects]
 
     public init(

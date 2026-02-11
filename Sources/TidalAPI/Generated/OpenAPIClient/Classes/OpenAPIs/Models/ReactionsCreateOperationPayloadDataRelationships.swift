@@ -12,22 +12,22 @@ import AnyCodable
 
 public struct ReactionsCreateOperationPayloadDataRelationships: Codable, Hashable {
 
-    public var reactedResource: ReactionsCreateOperationPayloadDataRelationshipsReactedResource
+    public var subject: ReactionsCreateOperationPayloadDataRelationshipsSubject
 
     public init(
-        reactedResource: ReactionsCreateOperationPayloadDataRelationshipsReactedResource
+        subject: ReactionsCreateOperationPayloadDataRelationshipsSubject
     ) {
-        self.reactedResource = reactedResource
+        self.subject = subject
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case reactedResource
+        case subject
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(reactedResource, forKey: .reactedResource)
+        try container.encode(subject, forKey: .subject)
     }
 }
