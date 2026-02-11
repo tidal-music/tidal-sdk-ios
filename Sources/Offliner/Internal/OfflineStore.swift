@@ -272,7 +272,7 @@ final class OfflineStore {
 
 // MARK: - Task Extensions
 
-private extension StoreItemTask {
+extension StoreItemTask {
 	var resourceId: String {
 		switch metadata {
 		case .track(let metadata): return metadata.track.id

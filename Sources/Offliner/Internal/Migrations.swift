@@ -13,20 +13,29 @@ enum Migrations {
 	}
 
 	private static func loadMigrations() throws -> [Migration] {
-		guard let migrationsURL = Bundle.module.url(forResource: "Migrations", withExtension: nil) else {
+		// With .process resources, SQL files are flattened to the bundle root.
+		// Find all SQL files that match the migration naming pattern (V000001_*.sql)
+		let bundle = Bundle.module
+		guard let resourcePath = bundle.resourcePath else {
 			throw MigrationError.migrationsDirectoryNotFound
 		}
 
 		let fileManager = FileManager.default
-		let contents = try fileManager.contentsOfDirectory(
-			at: migrationsURL,
-			includingPropertiesForKeys: nil
-		)
+		let contents = try fileManager.contentsOfDirectory(atPath: resourcePath)
 
 		let migrations = try contents
-			.filter { $0.pathExtension == "sql" }
-			.compactMap { try Migration(url: $0) }
+			.filter { $0.hasSuffix(".sql") && $0.hasPrefix("V") }
+			.compactMap { filename -> Migration? in
+				guard let url = bundle.url(forResource: filename.replacingOccurrences(of: ".sql", with: ""), withExtension: "sql") else {
+					return nil
+				}
+				return try Migration(url: url)
+			}
 			.sorted { $0.version < $1.version }
+
+		guard !migrations.isEmpty else {
+			throw MigrationError.migrationsDirectoryNotFound
+		}
 
 		return migrations
 	}

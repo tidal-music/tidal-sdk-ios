@@ -217,7 +217,7 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	var progressValues: [Double] = []
 
 	func download(
-		manifestURL: URL,
+		trackId: String,
 		taskId: String,
 		onProgress: @escaping (Double) -> Void
 	) async throws -> MediaDownloadResult {
@@ -239,7 +239,7 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 
 final class FailingMediaDownloader: MediaDownloaderProtocol {
 	func download(
-		manifestURL: URL,
+		trackId: String,
 		taskId: String,
 		onProgress: @escaping (Double) -> Void
 	) async throws -> MediaDownloadResult {

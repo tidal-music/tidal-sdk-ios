@@ -28,6 +28,7 @@ final class StoreItemHandler {
 			try await backendClient.updateTask(taskId: task.id, state: .inProgress)
 			await download.updateState(.inProgress)
 		} catch {
+			print("StoreItemHandler error: \(error)")
 			await download.updateState(.failed)
 			await onFinished()
 			return
@@ -37,7 +38,7 @@ final class StoreItemHandler {
 			let artworkURL = try await artworkDownloader.downloadArtwork(for: task)
 
 			let result = try await mediaDownloader.download(
-				manifestURL: URL(string: "http://tidal.com/manifest.m3u8")!,
+				trackId: task.resourceId,
 				taskId: task.id,
 				onProgress: { progress in
 					Task { await download.updateProgress(progress) }
@@ -54,6 +55,7 @@ final class StoreItemHandler {
 			try await backendClient.updateTask(taskId: task.id, state: .completed)
 			await download.updateState(.completed)
 		} catch {
+			print("StoreItemHandler error: \(error)")
 			try? await backendClient.updateTask(taskId: task.id, state: .failed)
 			await download.updateState(.failed)
 		}

@@ -1,6 +1,7 @@
 import AVFoundation
 import CoreMedia
 import Foundation
+import TidalAPI
 
 // MARK: - MediaDownloadResult
 
@@ -14,7 +15,7 @@ struct MediaDownloadResult {
 
 protocol MediaDownloaderProtocol {
 	func download(
-		manifestURL: URL,
+		trackId: String,
 		taskId: String,
 		onProgress: @escaping (Double) -> Void
 	) async throws -> MediaDownloadResult
@@ -46,11 +47,13 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	}
 
 	func download(
-		manifestURL: URL,
+		trackId: String,
 		taskId: String,
 		onProgress: @escaping (Double) -> Void
 	) async throws -> MediaDownloadResult {
+		let (manifestURL, contentKeySession) = try await fetchManifestURL(trackId: trackId)
 		let asset = AVURLAsset(url: manifestURL)
+		contentKeySession?.addContentKeyRecipient(asset)
 
 		return try await withCheckedThrowingContinuation { continuation in
 			queue.async {
@@ -64,8 +67,6 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 					return
 				}
 
-				let contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
-
 				let activeDownload = ActiveDownload(
 					taskId: taskId,
 					continuation: continuation,
@@ -75,8 +76,7 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 					queue: self.queue
 				)
 
-				contentKeySession.setDelegate(activeDownload, queue: self.queue)
-				contentKeySession.addContentKeyRecipient(asset)
+				contentKeySession?.setDelegate(activeDownload, queue: self.queue)
 
 				self.activeDownloads[task.taskIdentifier] = activeDownload
 				task.resume()
@@ -110,7 +110,7 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 			let licenseLocation = await activeDownload.licenseTask?.value
 
 			self?.queue.async {
-				activeDownload.contentKeySession.setDelegate(nil, queue: nil)
+				activeDownload.contentKeySession?.setDelegate(nil, queue: nil)
 
 				if let error {
 					activeDownload.continuation.resume(throwing: error)
@@ -158,7 +158,7 @@ private final class ActiveDownload: NSObject {
 	let taskId: String
 	let continuation: CheckedContinuation<MediaDownloadResult, Error>
 	let onProgress: (Double) -> Void
-	let contentKeySession: AVContentKeySession
+	let contentKeySession: AVContentKeySession?
 	let licenseFetcher: LicenseFetcher
 	let queue: DispatchQueue
 
@@ -169,7 +169,7 @@ private final class ActiveDownload: NSObject {
 		taskId: String,
 		continuation: CheckedContinuation<MediaDownloadResult, Error>,
 		onProgress: @escaping (Double) -> Void,
-		contentKeySession: AVContentKeySession,
+		contentKeySession: AVContentKeySession?,
 		licenseFetcher: LicenseFetcher,
 		queue: DispatchQueue
 	) {
@@ -235,12 +235,36 @@ extension ActiveDownload: AVContentKeySessionDelegate {
 	}
 }
 
+// MARK: - Private Helpers
+
+private extension MediaDownloader {
+	func fetchManifestURL(trackId: String) async throws -> (URL, AVContentKeySession?) {
+		let response = try await TrackManifestsAPITidal.trackManifestsIdGet(
+			id: trackId,
+			manifestType: .hls,
+			formats: [.heaacv1],
+			uriScheme: .data,
+			usage: .download,
+			adaptive: false
+		)
+
+		guard let uriString = response.data.attributes?.uri,
+			  let url = URL(string: uriString) else {
+			throw MediaDownloaderError.manifestNotFound
+		}
+
+		let contentKeySession = response.data.attributes?.drmData
+			.map { _ in AVContentKeySession(keySystem: .fairPlayStreaming)}
+
+		return (url, contentKeySession)
+	}
+}
+
 // MARK: - MediaDownloaderError
 
 enum MediaDownloaderError: Error {
 	case failedToCreateTask
 	case noDownloadedFile
 	case licenseFailed
+	case manifestNotFound
 }
-
-

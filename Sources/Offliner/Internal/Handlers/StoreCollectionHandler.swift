@@ -20,6 +20,7 @@ final class StoreCollectionHandler {
 
 			try await backendClient.updateTask(taskId: task.id, state: .completed)
 		} catch {
+			print("StoreCollectionHandler error: \(error)")
 			try? await backendClient.updateTask(taskId: task.id, state: .failed)
 		}
 	}
