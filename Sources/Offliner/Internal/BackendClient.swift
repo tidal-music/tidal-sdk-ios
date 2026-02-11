@@ -24,6 +24,7 @@ struct StoreItemTask {
 
 struct StoreCollectionTask {
 	let id: String
+	let collection: String
 	let metadata: OfflineCollection.Metadata
 }
 
@@ -133,7 +134,7 @@ final class BackendClient: BackendClientProtocol {
 					return nil
 				}
 
-				let task = StoreCollectionTask(id: resourceObject.id, metadata: metadata)
+				let task = StoreCollectionTask(id: resourceObject.id, collection: attributes.collection, metadata: metadata)
 				return .storeCollection(task)
 
 			case .removeItem:

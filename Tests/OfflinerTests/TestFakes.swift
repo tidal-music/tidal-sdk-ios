@@ -6,11 +6,15 @@ import TidalAPI
 
 final class StubBackendClient: BackendClientProtocol {
 	private(set) var tasks: [OfflineTask] = []
-	private var taskIdCounter = 0
+	var taskIdCounter = 0
+
+	func enqueueTasks(_ newTasks: [OfflineTask]) {
+		tasks.append(contentsOf: newTasks)
+	}
 
 	func addItem(type: ResourceType, id: String) async throws {
 		let taskId = "task-\(taskIdCounter)"
-		let index = taskIdCounter + 1
+		let position = taskIdCounter + 1
 		taskIdCounter += 1
 
 		switch type {
@@ -20,9 +24,10 @@ final class StubBackendClient: BackendClientProtocol {
 			let task = StoreItemTask(
 				id: taskId,
 				metadata: .track(metadata),
-				collectionId: "collection-1",
+				collection: "collection-1",
+				member: taskId,
 				volume: 1,
-				index: index
+				position: position
 			)
 			tasks.append(.storeItem(task))
 
@@ -32,26 +37,24 @@ final class StubBackendClient: BackendClientProtocol {
 			let task = StoreItemTask(
 				id: taskId,
 				metadata: .video(metadata),
-				collectionId: "collection-1",
+				collection: "collection-1",
+				member: taskId,
 				volume: 1,
-				index: index
+				position: position
 			)
 			tasks.append(.storeItem(task))
 
 		case .album:
 			let album = AlbumsResourceObject(id: id, type: "albums")
 			let metadata = OfflineCollection.AlbumMetadata(album: album, artists: [], coverArt: nil)
-			let task = StoreCollectionTask(id: taskId, metadata: .album(metadata))
+			let task = StoreCollectionTask(id: taskId, collection: "collection-\(id)", metadata: .album(metadata))
 			tasks.append(.storeCollection(task))
 
 		case .playlist:
 			let playlist = PlaylistsResourceObject(id: id, type: "playlists")
 			let metadata = OfflineCollection.PlaylistMetadata(playlist: playlist, coverArt: nil)
-			let task = StoreCollectionTask(id: taskId, metadata: .playlist(metadata))
+			let task = StoreCollectionTask(id: taskId, collection: "collection-\(id)", metadata: .playlist(metadata))
 			tasks.append(.storeCollection(task))
-
-		case .userCollection:
-			break
 		}
 	}
 
@@ -83,9 +86,6 @@ final class StubBackendClient: BackendClientProtocol {
 			let metadata = OfflineCollection.PlaylistMetadata(playlist: playlist, coverArt: nil)
 			let task = RemoveCollectionTask(id: taskId, metadata: .playlist(metadata))
 			tasks.append(.removeCollection(task))
-
-		case .userCollection:
-			break
 		}
 	}
 
@@ -219,10 +219,10 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	func download(
 		trackId: String,
 		taskId: String,
-		onProgress: @escaping (Double) -> Void
+		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
 		for progress in progressValues {
-			onProgress(progress)
+			await onProgress(progress)
 		}
 
 		let tempDir = FileManager.default.temporaryDirectory
@@ -241,7 +241,7 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 	func download(
 		trackId: String,
 		taskId: String,
-		onProgress: @escaping (Double) -> Void
+		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
 		throw FakeError.downloadFailed
 	}

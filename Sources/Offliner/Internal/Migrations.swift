@@ -13,31 +13,37 @@ enum Migrations {
 	}
 
 	private static func loadMigrations() throws -> [Migration] {
-		// With .process resources, SQL files are flattened to the bundle root.
-		// Find all SQL files that match the migration naming pattern (V000001_*.sql)
 		let bundle = Bundle.module
-		guard let resourcePath = bundle.resourcePath else {
-			throw MigrationError.migrationsDirectoryNotFound
-		}
-
 		let fileManager = FileManager.default
-		let contents = try fileManager.contentsOfDirectory(atPath: resourcePath)
 
-		let migrations = try contents
-			.filter { $0.hasSuffix(".sql") && $0.hasPrefix("V") }
-			.compactMap { filename -> Migration? in
-				guard let url = bundle.url(forResource: filename.replacingOccurrences(of: ".sql", with: ""), withExtension: "sql") else {
-					return nil
-				}
-				return try Migration(url: url)
-			}
-			.sorted { $0.version < $1.version }
-
-		guard !migrations.isEmpty else {
-			throw MigrationError.migrationsDirectoryNotFound
+		var searchPaths: [String] = []
+		if let resourcePath = bundle.resourcePath {
+			searchPaths.append(resourcePath)
+		}
+		let bundleRoot = bundle.bundlePath
+		if !searchPaths.contains(bundleRoot) {
+			searchPaths.append(bundleRoot)
 		}
 
-		return migrations
+		for path in searchPaths {
+			guard let contents = try? fileManager.contentsOfDirectory(atPath: path) else { continue }
+
+			let migrations = try contents
+				.filter { $0.hasSuffix(".sql") && $0.hasPrefix("V") }
+				.compactMap { filename -> Migration? in
+					guard let url = bundle.url(forResource: filename.replacingOccurrences(of: ".sql", with: ""), withExtension: "sql") else {
+						return nil
+					}
+					return try Migration(url: url)
+				}
+				.sorted { $0.version < $1.version }
+
+			if !migrations.isEmpty {
+				return migrations
+			}
+		}
+
+		throw MigrationError.migrationsDirectoryNotFound
 	}
 }
 

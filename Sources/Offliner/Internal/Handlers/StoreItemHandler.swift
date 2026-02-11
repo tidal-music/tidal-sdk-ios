@@ -41,7 +41,7 @@ final class StoreItemHandler {
 				trackId: task.resourceId,
 				taskId: task.id,
 				onProgress: { progress in
-					Task { await download.updateProgress(progress) }
+					await download.updateProgress(progress)
 				}
 			)
 

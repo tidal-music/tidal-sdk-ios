@@ -106,7 +106,7 @@ final class OfflineStore {
 						metadata = excluded.metadata,
 						artwork_bookmark = excluded.artwork_bookmark
 					""",
-				arguments: [task.id, task.resourceType, task.resourceId, metadataJson, artworkBookmark]
+				arguments: [task.collection, task.resourceType, task.resourceId, metadataJson, artworkBookmark]
 			)
 
 			return .commit
@@ -150,7 +150,7 @@ final class OfflineStore {
 			let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
 
 			return OfflineMediaItem(
-				id: row["id"],
+				id: row["resource_id"],
 				metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 				mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
 				licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
@@ -176,7 +176,7 @@ final class OfflineStore {
 			let collectionType = OfflineCollectionType(rawValue: row["resource_type"])!
 
 			return OfflineCollection(
-				id: row["id"],
+				id: row["resource_id"],
 				metadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["metadata"]),
 				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 			)
@@ -200,7 +200,7 @@ final class OfflineStore {
 				let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
 
 				return OfflineMediaItem(
-					id: row["id"],
+					id: row["resource_id"],
 					metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 					mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
 					licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
@@ -227,7 +227,7 @@ final class OfflineStore {
 				let collectionType = OfflineCollectionType(rawValue: row["resource_type"])!
 
 				return OfflineCollection(
-					id: row["id"],
+					id: row["resource_id"],
 					metadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["metadata"]),
 					artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 				)
@@ -256,7 +256,7 @@ final class OfflineStore {
 
 				return OfflineCollectionItem(
 					item: OfflineMediaItem(
-						id: row["id"],
+						id: row["resource_id"],
 						metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 						mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
 						licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
