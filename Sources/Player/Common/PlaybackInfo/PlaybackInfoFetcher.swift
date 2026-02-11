@@ -72,13 +72,13 @@ private extension PlaybackInfoFetcher {
 		streamingSessionId: String
 	) async throws -> PlaybackInfo {
 		if featureFlagProvider.shouldUseNewPlaybackEndpoints() {
-			return try await getTrackPlaybackInfoFromManifestEndpoint(
+			try await getTrackPlaybackInfoFromManifestEndpoint(
 				trackId: trackId,
 				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
 		} else {
-			return try await getTrackPlaybackInfoFromLegacyEndpoint(
+			try await getTrackPlaybackInfoFromLegacyEndpoint(
 				trackId: trackId,
 				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
@@ -130,7 +130,8 @@ private extension PlaybackInfoFetcher {
 			trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
 			offlineRevalidateAt: playbackInfo.offlineRevalidateAt,
 			offlineValidUntil: playbackInfo.offlineValidUntil,
-			isAdaptivePlaybackEnabled: false
+			isAdaptivePlaybackEnabled: false,
+			previewReason: nil // Legacy endpoint doesn't provide previewReason
 		)
 	}
 
@@ -214,15 +215,16 @@ private extension PlaybackInfoFetcher {
 				trackPeakAmplitude: attributes?.trackAudioNormalizationData?.peakAmplitude,
 				offlineRevalidateAt: nil, // May need to be derived from DRM data
 				offlineValidUntil: nil, // May need to be derived from DRM data
-				isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled
+				isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled,
+				previewReason: convertPreviewReason(attributes?.previewReason)
 			)
-			
+
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.getPlaybackInfoFailed(error: error))
-			
+
 			let convertedError = PlaybackInfoErrorResponseConverter.convert(error)
 			let playerError = PlayerInternalError.from(convertedError)
-			
+
 			let endTimestamp = PlayerWorld.timeProvider.timestamp()
 			playerEventSender.send(
 				PlaybackInfoFetch(
@@ -234,7 +236,7 @@ private extension PlaybackInfoFetcher {
 					errorCode: playerError.code
 				)
 			)
-			
+
 			throw convertedError
 		}
 	}
@@ -303,7 +305,8 @@ private extension PlaybackInfoFetcher {
 			trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
 			offlineRevalidateAt: playbackInfo.offlineRevalidateAt,
 			offlineValidUntil: playbackInfo.offlineValidUntil,
-			isAdaptivePlaybackEnabled: false
+			isAdaptivePlaybackEnabled: false,
+			previewReason: nil // Video playback doesn't use previewReason
 		)
 	}
 
@@ -322,10 +325,6 @@ private extension PlaybackInfoFetcher {
 
 		return VideoQuality.HIGH
 	}
-
-
-
-
 
 	func getUCPlaybackInfo(
 		trackId: String,
@@ -356,7 +355,8 @@ private extension PlaybackInfoFetcher {
 			trackPeakAmplitude: nil,
 			offlineRevalidateAt: nil,
 			offlineValidUntil: nil,
-			isAdaptivePlaybackEnabled: false
+			isAdaptivePlaybackEnabled: false,
+			previewReason: nil // User content doesn't use previewReason
 		)
 	}
 
@@ -424,57 +424,71 @@ private extension PlaybackInfoFetcher {
 	private func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
 		switch presentation {
 		case .full:
-			return .FULL
+			.FULL
 		case .preview:
-			return .PREVIEW
+			.PREVIEW
 		case nil:
-			return .FULL // Default fallback
+			.FULL // Default fallback
 		}
 	}
-	
-	private func getAudioCodecFromFormats(_ formats: [TrackManifestsAttributes.Formats]?) -> AudioCodec? {
-		guard let formats = formats, !formats.isEmpty else {
+
+	private func convertPreviewReason(_ reason: TrackManifestsAttributes.PreviewReason?) -> PreviewReason? {
+		guard let reason else {
 			return nil
 		}
-		
+
+		switch reason {
+		case .fullRequiresSubscription:
+			return .FULL_REQUIRES_SUBSCRIPTION
+		case .fullRequiresPurchase:
+			return .FULL_REQUIRES_PURCHASE
+		case .fullRequiresHigherAccessTier:
+			return .FULL_REQUIRES_HIGHER_ACCESS_TIER
+		}
+	}
+
+	private func getAudioCodecFromFormats(_ formats: [TrackManifestsAttributes.Formats]?) -> AudioCodec? {
+		guard let formats, !formats.isEmpty else {
+			return nil
+		}
+
 		// Define priority order (highest quality first)
 		let codecPriority: [(TrackManifestsAttributes.Formats, AudioCodec)] = [
 			(.flacHires, .FLAC),
 			(.flac, .FLAC),
 			(.aaclc, .AAC_LC),
 			(.heaacv1, .HE_AAC_V1),
-			(.eac3Joc, .EAC3)
+			(.eac3Joc, .EAC3),
 		]
-		
+
 		// Return the highest quality codec available
-		for (format, codec) in codecPriority {
-			if formats.contains(format) {
-				return codec
-			}
+		for (format, codec) in codecPriority where formats.contains(format) {
+			return codec
 		}
-		
+
 		return nil
 	}
 
-    private func getAudioModeFromFormats(_ formats: [TrackManifestsAttributes.Formats]?) -> AudioMode {
-		if let formats = formats, formats.contains(.eac3Joc) {
+	private func getAudioModeFromFormats(_ formats: [TrackManifestsAttributes.Formats]?) -> AudioMode {
+		if let formats, formats.contains(.eac3Joc) {
 			return .DOLBY_ATMOS
 		}
 
 		return .STEREO
-    }
-	
+	}
+
 	/// Extracts license security token from new DRM data format
 	/// Note: Current DRM system doesn't actually use licenseSecurityToken - it uses dynamic URLs
 	private func extractLicenseTokenFromDrmData(_ drmData: DrmData?) -> String? {
 		// The current FairPlayLicenseFetcher doesn't use licenseSecurityToken at all
 		// It makes direct requests to licenseUrl with Authorization header
 		// For compatibility, we could return the licenseUrl itself or extract token from it
-		guard let drmData = drmData,
-		      let _ = drmData.licenseUrl else {
+		guard let drmData,
+		      drmData.licenseUrl != nil
+		else {
 			return nil
 		}
-		
+
 		// For now, return nil since licenseSecurityToken is not used in current DRM implementation
 		// Future enhancement: Parse token from licenseUrl or use licenseUrl as token
 		// TODO: Verify with backend team if token extraction is needed from licenseUrl
@@ -535,9 +549,9 @@ private extension PlaybackInfoFetcher {
 
 extension PlaybackInfoFetcher {
 	private func formats(for audioQuality: AudioQuality) -> [TrackManifestsAPITidal.Formats_trackManifestsIdGet] {
-        var formats: [TrackManifestsAPITidal.Formats_trackManifestsIdGet] = switch audioQuality {
+		var formats: [TrackManifestsAPITidal.Formats_trackManifestsIdGet] = switch audioQuality {
 		case .HI_RES, .HI_RES_LOSSLESS:
-            [.heaacv1, .aaclc, .flac, .flacHires]
+			[.heaacv1, .aaclc, .flac, .flacHires]
 		case .LOSSLESS:
 			[.heaacv1, .aaclc, .flac]
 		case .HIGH:
@@ -545,26 +559,26 @@ extension PlaybackInfoFetcher {
 		case .LOW:
 			[.heaacv1]
 		}
-        
-        if configuration.isImmersiveAudio {
-            formats.append(.eac3Joc)
-        }
-        
-        return formats
+
+		if configuration.isImmersiveAudio {
+			formats.append(.eac3Joc)
+		}
+
+		return formats
 	}
 
 	private static func audioQualities(upTo maxQuality: AudioQuality) -> [AudioQuality] {
 		switch maxQuality {
 		case .LOW:
-			return [.LOW]
+			[.LOW]
 		case .HIGH:
-			return [.LOW, .HIGH]
+			[.LOW, .HIGH]
 		case .LOSSLESS:
-			return [.LOW, .HIGH, .LOSSLESS]
+			[.LOW, .HIGH, .LOSSLESS]
 		case .HI_RES:
-			return [.LOW, .HIGH, .LOSSLESS, .HI_RES]
+			[.LOW, .HIGH, .LOSSLESS, .HI_RES]
 		case .HI_RES_LOSSLESS:
-			return [.LOW, .HIGH, .LOSSLESS, .HI_RES, .HI_RES_LOSSLESS]
+			[.LOW, .HIGH, .LOSSLESS, .HI_RES, .HI_RES_LOSSLESS]
 		}
 	}
 
@@ -630,10 +644,18 @@ extension PlaybackInfoFetcher {
 		guard let formats, formats.isEmpty == false else {
 			return fallback
 		}
-		if formats.contains(.flacHires) { return .HI_RES_LOSSLESS }
-		if formats.contains(.flac) { return .LOSSLESS }
-		if formats.contains(.aaclc) { return .HIGH }
-		if formats.contains(.heaacv1) { return .LOW }
+		if formats.contains(.flacHires) {
+			return .HI_RES_LOSSLESS
+		}
+		if formats.contains(.flac) {
+			return .LOSSLESS
+		}
+		if formats.contains(.aaclc) {
+			return .HIGH
+		}
+		if formats.contains(.heaacv1) {
+			return .LOW
+		}
 		return fallback
 	}
 }
