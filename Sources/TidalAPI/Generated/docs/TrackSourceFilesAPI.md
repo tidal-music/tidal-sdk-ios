@@ -25,7 +25,7 @@ Retrieves multiple trackSourceFiles by available filters, or without if applicab
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterId = ["inner_example"] // [String] | Track source file id (optional)
+let filterId = ["inner_example"] // [String] | Track source file id (e.g. `a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11`) (optional)
 
 // Get multiple trackSourceFiles.
 TrackSourceFilesAPI.trackSourceFilesGet(include: include, filterId: filterId) { (response, error) in
@@ -45,7 +45,7 @@ TrackSourceFilesAPI.trackSourceFilesGet(include: include, filterId: filterId) { 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterId** | [**[String]**](String.md) | Track source file id | [optional] 
+ **filterId** | [**[String]**](String.md) | Track source file id (e.g. &#x60;a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11&#x60;) | [optional] 
 
 ### Return type
 

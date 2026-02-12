@@ -24,7 +24,7 @@ import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
 let filterSubjectId = ["inner_example"] // [String] | The id of the subject resource (optional)
-let filterSubjectType = ["filterSubjectType_example"] // [String] | The type of the subject resource (e.g., albums, tracks, artists) (optional)
+let filterSubjectType = ["filterSubjectType_example"] // [String] | The type of the subject resource (e.g., albums, tracks, artists) (e.g. `tracks`) (optional)
 
 // Get multiple dspSharingLinks.
 DspSharingLinksAPI.dspSharingLinksGet(include: include, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType) { (response, error) in
@@ -45,7 +45,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
  **filterSubjectId** | [**[String]**](String.md) | The id of the subject resource | [optional] 
- **filterSubjectType** | [**[String]**](String.md) | The type of the subject resource (e.g., albums, tracks, artists) | [optional] 
+ **filterSubjectType** | [**[String]**](String.md) | The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) | [optional] 
 
 ### Return type
 

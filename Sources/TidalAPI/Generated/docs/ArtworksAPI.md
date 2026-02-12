@@ -26,7 +26,7 @@ import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterId = ["inner_example"] // [String] | Artwork id (optional)
+let filterId = ["inner_example"] // [String] | Artwork id (e.g. `a468bee88def`) (optional)
 
 // Get multiple artworks.
 ArtworksAPI.artworksGet(countryCode: countryCode, include: include, filterId: filterId) { (response, error) in
@@ -47,7 +47,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterId** | [**[String]**](String.md) | Artwork id | [optional] 
+ **filterId** | [**[String]**](String.md) | Artwork id (e.g. &#x60;a468bee88def&#x60;) | [optional] 
 
 ### Return type
 

@@ -29,7 +29,7 @@ let refreshId = "refreshId_example" // String |  (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
-let filterId = ["inner_example"] // [String] | DynamicModules Id (optional)
+let filterId = ["inner_example"] // [String] | DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`) (optional)
 
 // Get multiple dynamicModules.
 DynamicModulesAPI.dynamicModulesGet(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshId: refreshId, countryCode: countryCode, locale: locale, include: include, filterId: filterId) { (response, error) in
@@ -55,7 +55,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
- **filterId** | [**[String]**](String.md) | DynamicModules Id | [optional] 
+ **filterId** | [**[String]**](String.md) | DynamicModules Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;) | [optional] 
 
 ### Return type
 

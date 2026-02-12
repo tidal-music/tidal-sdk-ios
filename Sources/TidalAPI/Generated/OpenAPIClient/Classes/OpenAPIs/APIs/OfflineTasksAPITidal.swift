@@ -51,6 +51,18 @@ public enum OfflineTasksAPITidal {
 
 
 	/**
+     Get collection relationship (\&quot;to-one\&quot;).
+     
+     - returns: OfflineTasksSingleRelationshipDataDocument
+     */
+	public static func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			OfflineTasksAPI.offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: id, include: include)
+		}
+	}
+
+
+	/**
      Get item relationship (\&quot;to-one\&quot;).
      
      - returns: OfflineTasksSingleRelationshipDataDocument

@@ -16,7 +16,7 @@ internal class LyricsAPI {
      Get multiple lyrics.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
-     - parameter filterId: (query) Lyrics Id (optional)
+     - parameter filterId: (query) Lyrics Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;) (optional)
      - returns: LyricsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -40,7 +40,7 @@ internal class LyricsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
-     - parameter filterId: (query) Lyrics Id (optional)
+     - parameter filterId: (query) Lyrics Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;) (optional)
      - returns: RequestBuilder<LyricsMultiResourceDataDocument> 
      */
     internal class func lyricsGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<LyricsMultiResourceDataDocument> {

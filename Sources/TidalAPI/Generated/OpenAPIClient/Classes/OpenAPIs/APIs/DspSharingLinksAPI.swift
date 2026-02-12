@@ -26,7 +26,7 @@ internal class DspSharingLinksAPI {
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter filterSubjectId: (query) The id of the subject resource (optional)
-     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (optional)
+     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) (optional)
      - returns: DspSharingLinksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -51,7 +51,7 @@ internal class DspSharingLinksAPI {
        - name: Client_Credentials
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter filterSubjectId: (query) The id of the subject resource (optional)
-     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (optional)
+     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) (optional)
      - returns: RequestBuilder<DspSharingLinksMultiResourceDataDocument> 
      */
     internal class func dspSharingLinksGetWithRequestBuilder(include: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil) -> RequestBuilder<DspSharingLinksMultiResourceDataDocument> {

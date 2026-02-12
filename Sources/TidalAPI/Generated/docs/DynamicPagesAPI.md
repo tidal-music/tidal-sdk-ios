@@ -30,8 +30,8 @@ let refreshId = 987 // Int64 |  (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject (optional)
-let filterPageType = ["inner_example"] // [String] | Filter by page type (optional)
-let filterSubjectId = ["inner_example"] // [String] | Filter by subject id (optional)
+let filterPageType = ["inner_example"] // [String] | Filter by page type (e.g. `ARTIST`) (optional)
+let filterSubjectId = ["inner_example"] // [String] | Filter by subject id (e.g. `67890`) (optional)
 
 // Get multiple dynamicPages.
 DynamicPagesAPI.dynamicPagesGet(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshId: refreshId, countryCode: countryCode, locale: locale, include: include, filterPageType: filterPageType, filterSubjectId: filterSubjectId) { (response, error) in
@@ -57,8 +57,8 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject | [optional] 
- **filterPageType** | [**[String]**](String.md) | Filter by page type | [optional] 
- **filterSubjectId** | [**[String]**](String.md) | Filter by subject id | [optional] 
+ **filterPageType** | [**[String]**](String.md) | Filter by page type (e.g. &#x60;ARTIST&#x60;) | [optional] 
+ **filterSubjectId** | [**[String]**](String.md) | Filter by subject id (e.g. &#x60;67890&#x60;) | [optional] 
 
 ### Return type
 

@@ -16,8 +16,8 @@ internal class SharesAPI {
      Get multiple shares.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
-     - parameter filterCode: (query) Share code (optional)
-     - parameter filterId: (query) User share id (optional)
+     - parameter filterCode: (query) Share code (e.g. &#x60;xyz&#x60;) (optional)
+     - parameter filterId: (query) User share id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: SharesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -41,8 +41,8 @@ internal class SharesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
-     - parameter filterCode: (query) Share code (optional)
-     - parameter filterId: (query) User share id (optional)
+     - parameter filterCode: (query) Share code (e.g. &#x60;xyz&#x60;) (optional)
+     - parameter filterId: (query) User share id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: RequestBuilder<SharesMultiResourceDataDocument> 
      */
     internal class func sharesGetWithRequestBuilder(include: [String]? = nil, filterCode: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
