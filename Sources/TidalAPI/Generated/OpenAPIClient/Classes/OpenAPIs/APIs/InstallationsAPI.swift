@@ -17,9 +17,9 @@ internal class InstallationsAPI {
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
-     - parameter filterClientProvidedInstallationId: (query) Client provided installation identifier (optional)
-     - parameter filterId: (query) Installation id (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterClientProvidedInstallationId: (query) Client provided installation identifier (e.g. &#x60;a468bee88def&#x60;) (optional)
+     - parameter filterId: (query) Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: InstallationsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -41,9 +41,9 @@ internal class InstallationsAPI {
        - name: Authorization_Code_PKCE
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
-     - parameter filterClientProvidedInstallationId: (query) Client provided installation identifier (optional)
-     - parameter filterId: (query) Installation id (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterClientProvidedInstallationId: (query) Client provided installation identifier (e.g. &#x60;a468bee88def&#x60;) (optional)
+     - parameter filterId: (query) Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: RequestBuilder<InstallationsMultiResourceDataDocument> 
      */
     internal class func installationsGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<InstallationsMultiResourceDataDocument> {
@@ -188,7 +188,7 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-     - parameter filterType: (query) One of: tracks, videos, albums, playlists (optional)
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;) (optional)
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -211,7 +211,7 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-     - parameter filterType: (query) One of: tracks, videos, albums, playlists (optional)
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;) (optional)
      - returns: RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> 
      */
     internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {

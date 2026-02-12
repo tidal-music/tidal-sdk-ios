@@ -40,9 +40,9 @@ internal class ReactionsAPI {
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners (optional)
-     - parameter filterEmoji: (query) Filter by emoji (optional)
-     - parameter filterSubjectId: (query) Filter by subject resource ID (optional)
-     - parameter filterSubjectType: (query) Filter by subject resource type (optional)
+     - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
+     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
+     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      - returns: ReactionsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -67,9 +67,9 @@ internal class ReactionsAPI {
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners (optional)
-     - parameter filterEmoji: (query) Filter by emoji (optional)
-     - parameter filterSubjectId: (query) Filter by subject resource ID (optional)
-     - parameter filterSubjectType: (query) Filter by subject resource type (optional)
+     - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
+     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
+     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      - returns: RequestBuilder<ReactionsMultiResourceDataDocument> 
      */
     internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {

@@ -29,9 +29,9 @@ import OpenAPIClient
 
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
-let filterClientProvidedInstallationId = ["inner_example"] // [String] | Client provided installation identifier (optional)
-let filterId = ["inner_example"] // [String] | Installation id (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+let filterClientProvidedInstallationId = ["inner_example"] // [String] | Client provided installation identifier (e.g. `a468bee88def`) (optional)
+let filterId = ["inner_example"] // [String] | Installation id (e.g. `a468bee88def`) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
 
 // Get multiple installations.
 InstallationsAPI.installationsGet(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
@@ -52,9 +52,9 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners | [optional] 
- **filterClientProvidedInstallationId** | [**[String]**](String.md) | Client provided installation identifier | [optional] 
- **filterId** | [**[String]**](String.md) | Installation id | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **filterClientProvidedInstallationId** | [**[String]**](String.md) | Client provided installation identifier (e.g. &#x60;a468bee88def&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | Installation id (e.g. &#x60;a468bee88def&#x60;) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
 
 ### Return type
 
@@ -192,7 +192,7 @@ import OpenAPIClient
 let id = "id_example" // String | Installation id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists (optional)
+let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists (e.g. `tracks`) (optional)
 
 // Get offlineInventory relationship (\"to-many\").
 InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, pageCursor: pageCursor, include: include, filterType: filterType) { (response, error) in
@@ -214,7 +214,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Installation id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineInventory | [optional] 
- **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists | [optional] 
+ **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;) | [optional] 
 
 ### Return type
 

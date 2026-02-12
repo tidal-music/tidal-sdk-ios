@@ -16,7 +16,7 @@ internal class TrackSourceFilesAPI {
      Get multiple trackSourceFiles.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Track source file id (optional)
+     - parameter filterId: (query) Track source file id (e.g. &#x60;a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11&#x60;) (optional)
      - returns: TrackSourceFilesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -37,7 +37,7 @@ internal class TrackSourceFilesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Track source file id (optional)
+     - parameter filterId: (query) Track source file id (e.g. &#x60;a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11&#x60;) (optional)
      - returns: RequestBuilder<TrackSourceFilesMultiResourceDataDocument> 
      */
     internal class func trackSourceFilesGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<TrackSourceFilesMultiResourceDataDocument> {

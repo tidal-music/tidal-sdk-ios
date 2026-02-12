@@ -30,9 +30,9 @@ let statsOnly = true // Bool |  (optional)
 let viewerContext = "viewerContext_example" // String |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners (optional)
-let filterEmoji = ["inner_example"] // [String] | Filter by emoji (optional)
-let filterSubjectId = ["inner_example"] // [String] | Filter by subject resource ID (optional)
-let filterSubjectType = ["filterSubjectType_example"] // [String] | Filter by subject resource type (optional)
+let filterEmoji = ["inner_example"] // [String] | Filter by emoji (e.g. `👍`) (optional)
+let filterSubjectId = ["inner_example"] // [String] | Filter by subject resource ID (e.g. `12345`) (optional)
+let filterSubjectType = ["filterSubjectType_example"] // [String] | Filter by subject resource type (e.g. `albums`) (optional)
 
 // Get multiple reactions.
 ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType) { (response, error) in
@@ -56,9 +56,9 @@ Name | Type | Description  | Notes
  **viewerContext** | **String** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners | [optional] 
- **filterEmoji** | [**[String]**](String.md) | Filter by emoji | [optional] 
- **filterSubjectId** | [**[String]**](String.md) | Filter by subject resource ID | [optional] 
- **filterSubjectType** | [**[String]**](String.md) | Filter by subject resource type | [optional] 
+ **filterEmoji** | [**[String]**](String.md) | Filter by emoji (e.g. &#x60;👍&#x60;) | [optional] 
+ **filterSubjectId** | [**[String]**](String.md) | Filter by subject resource ID (e.g. &#x60;12345&#x60;) | [optional] 
+ **filterSubjectType** | [**[String]**](String.md) | Filter by subject resource type (e.g. &#x60;albums&#x60;) | [optional] 
 
 ### Return type
 

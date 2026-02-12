@@ -17,7 +17,7 @@ internal class ArtistBiographiesAPI {
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Artist id (optional)
+     - parameter filterId: (query) Artist id (e.g. &#x60;1566&#x60;) (optional)
      - returns: ArtistBiographiesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -42,7 +42,7 @@ internal class ArtistBiographiesAPI {
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Artist id (optional)
+     - parameter filterId: (query) Artist id (e.g. &#x60;1566&#x60;) (optional)
      - returns: RequestBuilder<ArtistBiographiesMultiResourceDataDocument> 
      */
     internal class func artistBiographiesGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtistBiographiesMultiResourceDataDocument> {

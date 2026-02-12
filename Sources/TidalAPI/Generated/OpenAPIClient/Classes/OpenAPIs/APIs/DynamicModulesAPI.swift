@@ -45,7 +45,7 @@ internal class DynamicModulesAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
-     - parameter filterId: (query) DynamicModules Id (optional)
+     - parameter filterId: (query) DynamicModules Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;) (optional)
      - returns: DynamicModulesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -75,7 +75,7 @@ internal class DynamicModulesAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
-     - parameter filterId: (query) DynamicModules Id (optional)
+     - parameter filterId: (query) DynamicModules Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;) (optional)
      - returns: RequestBuilder<DynamicModulesMultiResourceDataDocument> 
      */
     internal class func dynamicModulesGetWithRequestBuilder(deviceType: DeviceType_dynamicModulesGet, systemType: SystemType_dynamicModulesGet, clientVersion: String, refreshId: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<DynamicModulesMultiResourceDataDocument> {

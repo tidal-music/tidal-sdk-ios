@@ -17,7 +17,7 @@ internal class GenresAPI {
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter filterId: (query) Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (optional)
+     - parameter filterId: (query) Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (e.g. &#x60;&#39;1,2,3&#39; or &#39;USER_SELECTABLE&#39;&#x60;) (optional)
      - returns: GenresMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -42,7 +42,7 @@ internal class GenresAPI {
        - name: Client_Credentials
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter filterId: (query) Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (optional)
+     - parameter filterId: (query) Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (e.g. &#x60;&#39;1,2,3&#39; or &#39;USER_SELECTABLE&#39;&#x60;) (optional)
      - returns: RequestBuilder<GenresMultiResourceDataDocument> 
      */
     internal class func genresGetWithRequestBuilder(pageCursor: String? = nil, locale: String? = nil, filterId: [String]? = nil) -> RequestBuilder<GenresMultiResourceDataDocument> {

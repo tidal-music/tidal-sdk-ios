@@ -23,7 +23,7 @@ Retrieves multiple priceConfigurations by available filters, or without if appli
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | Price configuration id (optional)
+let filterId = ["inner_example"] // [String] | Price configuration id (e.g. `cHJpY2UtY29uZmlnLTEyMzpVUw`) (optional)
 
 // Get multiple priceConfigurations.
 PriceConfigurationsAPI.priceConfigurationsGet(filterId: filterId) { (response, error) in
@@ -42,7 +42,7 @@ PriceConfigurationsAPI.priceConfigurationsGet(filterId: filterId) { (response, e
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | Price configuration id | [optional] 
+ **filterId** | [**[String]**](String.md) | Price configuration id (e.g. &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) | [optional] 
 
 ### Return type
 

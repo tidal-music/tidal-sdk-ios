@@ -18,9 +18,9 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules (optional)
-     - parameter filterId: (query) Track id (optional)
-     - parameter filterIsrc: (query) List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterId: (query) Track id (e.g. &#x60;75413016&#x60;) (optional)
+     - parameter filterIsrc: (query) List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (e.g. &#x60;QMJMT1701237&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiResourceDataDocument
      */
@@ -47,9 +47,9 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules (optional)
-     - parameter filterId: (query) Track id (optional)
-     - parameter filterIsrc: (query) List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterId: (query) Track id (e.g. &#x60;75413016&#x60;) (optional)
+     - parameter filterIsrc: (query) List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (e.g. &#x60;QMJMT1701237&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiResourceDataDocument> 
      */

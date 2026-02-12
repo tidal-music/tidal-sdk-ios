@@ -30,7 +30,7 @@ Retrieves multiple artistClaims by available filters, or without if applicable.
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
 
 // Get multiple artistClaims.
 ArtistClaimsAPI.artistClaimsGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
@@ -50,7 +50,7 @@ ArtistClaimsAPI.artistClaimsGet(include: include, filterOwnersId: filterOwnersId
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
 
 ### Return type
 

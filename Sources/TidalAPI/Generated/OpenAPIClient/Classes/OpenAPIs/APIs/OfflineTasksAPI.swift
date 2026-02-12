@@ -17,8 +17,8 @@ internal class OfflineTasksAPI {
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item, owners (optional)
-     - parameter filterId: (query) Offline task id (optional)
-     - parameter filterInstallationId: (query) Installation id (optional)
+     - parameter filterId: (query) Offline task id (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) (optional)
+     - parameter filterInstallationId: (query) Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: OfflineTasksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -40,8 +40,8 @@ internal class OfflineTasksAPI {
        - name: Authorization_Code_PKCE
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item, owners (optional)
-     - parameter filterId: (query) Offline task id (optional)
-     - parameter filterInstallationId: (query) Installation id (optional)
+     - parameter filterId: (query) Offline task id (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) (optional)
+     - parameter filterInstallationId: (query) Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: RequestBuilder<OfflineTasksMultiResourceDataDocument> 
      */
     internal class func offlineTasksGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterInstallationId: [String]? = nil) -> RequestBuilder<OfflineTasksMultiResourceDataDocument> {
