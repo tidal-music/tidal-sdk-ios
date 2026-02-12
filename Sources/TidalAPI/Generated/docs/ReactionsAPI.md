@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **reactionsGet**
 ```swift
-    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnersId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [FilterReactedResourceType_reactionsGet]? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple reactions.
@@ -27,15 +27,15 @@ import OpenAPIClient
 
 let stats = "stats_example" // String |  (optional)
 let statsOnly = true // Bool |  (optional)
+let viewerContext = "viewerContext_example" // String |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners (optional)
-let filterEmoji = ["inner_example"] // [String] | Filter by emoji (optional)
-let filterOwnersId = ["inner_example"] // [String] | Filter by owner id (optional)
-let filterReactedResourceId = ["inner_example"] // [String] | Filter by reacted resource ID (optional)
-let filterReactedResourceType = ["filterReactedResourceType_example"] // [String] | Filter by reacted resource type (optional)
+let filterEmoji = ["inner_example"] // [String] | Filter by emoji (e.g. `👍`) (optional)
+let filterSubjectId = ["inner_example"] // [String] | Filter by subject resource ID (e.g. `12345`) (optional)
+let filterSubjectType = ["filterSubjectType_example"] // [String] | Filter by subject resource type (e.g. `albums`) (optional)
 
 // Get multiple reactions.
-ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnersId: filterOwnersId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType) { (response, error) in
+ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -53,12 +53,12 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **stats** | **String** |  | [optional] 
  **statsOnly** | **Bool** |  | [optional] 
+ **viewerContext** | **String** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners | [optional] 
- **filterEmoji** | [**[String]**](String.md) | Filter by emoji | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | Filter by owner id | [optional] 
- **filterReactedResourceId** | [**[String]**](String.md) | Filter by reacted resource ID | [optional] 
- **filterReactedResourceType** | [**[String]**](String.md) | Filter by reacted resource type | [optional] 
+ **filterEmoji** | [**[String]**](String.md) | Filter by emoji (e.g. &#x60;👍&#x60;) | [optional] 
+ **filterSubjectId** | [**[String]**](String.md) | Filter by subject resource ID (e.g. &#x60;12345&#x60;) | [optional] 
+ **filterSubjectType** | [**[String]**](String.md) | Filter by subject resource type (e.g. &#x60;albums&#x60;) | [optional] 
 
 ### Return type
 
@@ -247,7 +247,7 @@ Creates a new reaction.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let reactionsCreateOperationPayload = ReactionsCreateOperation_Payload(data: ReactionsCreateOperation_Payload_Data(attributes: ReactionsCreateOperation_Payload_Data_Attributes(emoji: "emoji_example"), relationships: ReactionsCreateOperation_Payload_Data_Relationships(reactedResource: ReactionsCreateOperation_Payload_Data_Relationships_ReactedResource(data: ReactionsCreateOperation_Payload_Data_Relationships_ReactedResource_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ReactionsCreateOperationPayload |  (optional)
+let reactionsCreateOperationPayload = ReactionsCreateOperation_Payload(data: ReactionsCreateOperation_Payload_Data(attributes: ReactionsCreateOperation_Payload_Data_Attributes(emoji: "emoji_example"), relationships: ReactionsCreateOperation_Payload_Data_Relationships(subject: ReactionsCreateOperation_Payload_Data_Relationships_Subject(data: ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ReactionsCreateOperationPayload |  (optional)
 
 // Create single reaction.
 ReactionsAPI.reactionsPost(reactionsCreateOperationPayload: reactionsCreateOperationPayload) { (response, error) in

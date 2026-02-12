@@ -27,27 +27,29 @@ public struct OfflineTasksAttributes: Codable, Hashable {
     /** Action to perform */
     public var action: Action
     /** Collection reference associated with task */
-    public var collection: String
+    @available(*, deprecated, message: "This property is deprecated.")
+    public var collectionReference: String
     /** Collection-member reference associated with task */
-    public var member: String
-    /** Collection position related to member */
+    @available(*, deprecated, message: "This property is deprecated.")
+    public var memberReference: String
+    /** Collection position of item */
     public var position: Int?
     /** Task state */
     public var state: State?
-    /** Collection volume related to member */
+    /** Collection volume of item */
     public var volume: Int?
 
     public init(
         action: Action,
-        collection: String,
-        member: String,
+        collectionReference: String,
+        memberReference: String,
         position: Int? = nil,
         state: State? = nil,
         volume: Int? = nil
     ) {
         self.action = action
-        self.collection = collection
-        self.member = member
+        self.collectionReference = collectionReference
+        self.memberReference = memberReference
         self.position = position
         self.state = state
         self.volume = volume
@@ -55,8 +57,8 @@ public struct OfflineTasksAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case action
-        case collection
-        case member
+        case collectionReference
+        case memberReference
         case position
         case state
         case volume
@@ -67,8 +69,8 @@ public struct OfflineTasksAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(action, forKey: .action)
-        try container.encode(collection, forKey: .collection)
-        try container.encode(member, forKey: .member)
+        try container.encode(collectionReference, forKey: .collectionReference)
+        try container.encode(memberReference, forKey: .memberReference)
         try container.encodeIfPresent(position, forKey: .position)
         try container.encodeIfPresent(state, forKey: .state)
         try container.encodeIfPresent(volume, forKey: .volume)

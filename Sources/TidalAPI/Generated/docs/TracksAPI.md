@@ -45,9 +45,9 @@ import OpenAPIClient
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules (optional)
-let filterId = ["inner_example"] // [String] | Track id (optional)
-let filterIsrc = ["inner_example"] // [String] | List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+let filterId = ["inner_example"] // [String] | Track id (e.g. `75413016`) (optional)
+let filterIsrc = ["inner_example"] // [String] | List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (e.g. `QMJMT1701237`) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get multiple tracks.
@@ -70,9 +70,9 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules | [optional] 
- **filterId** | [**[String]**](String.md) | Track id | [optional] 
- **filterIsrc** | [**[String]**](String.md) | List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **filterId** | [**[String]**](String.md) | Track id (e.g. &#x60;75413016&#x60;) | [optional] 
+ **filterIsrc** | [**[String]**](String.md) | List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC. (e.g. &#x60;QMJMT1701237&#x60;) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type

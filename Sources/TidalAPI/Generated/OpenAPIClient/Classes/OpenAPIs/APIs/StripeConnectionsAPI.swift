@@ -16,7 +16,7 @@ internal class StripeConnectionsAPI {
      Get multiple stripeConnections.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: StripeConnectionsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -37,7 +37,7 @@ internal class StripeConnectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: RequestBuilder<StripeConnectionsMultiResourceDataDocument> 
      */
     internal class func stripeConnectionsGetWithRequestBuilder(include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<StripeConnectionsMultiResourceDataDocument> {

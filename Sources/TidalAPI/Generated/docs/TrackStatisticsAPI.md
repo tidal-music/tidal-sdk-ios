@@ -24,7 +24,7 @@ Retrieves multiple trackStatistics by available filters, or without if applicabl
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterId = ["inner_example"] // [String] | Track id (optional)
+let filterId = ["inner_example"] // [String] | Track id (e.g. `75413016`) (optional)
 
 // Get multiple trackStatistics.
 TrackStatisticsAPI.trackStatisticsGet(include: include, filterId: filterId) { (response, error) in
@@ -44,7 +44,7 @@ TrackStatisticsAPI.trackStatisticsGet(include: include, filterId: filterId) { (r
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterId** | [**[String]**](String.md) | Track id | [optional] 
+ **filterId** | [**[String]**](String.md) | Track id (e.g. &#x60;75413016&#x60;) | [optional] 
 
 ### Return type
 

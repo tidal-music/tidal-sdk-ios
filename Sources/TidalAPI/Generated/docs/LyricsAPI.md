@@ -28,7 +28,7 @@ Retrieves multiple lyrics by available filters, or without if applicable.
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
-let filterId = ["inner_example"] // [String] | Lyrics Id (optional)
+let filterId = ["inner_example"] // [String] | Lyrics Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`) (optional)
 
 // Get multiple lyrics.
 LyricsAPI.lyricsGet(include: include, filterId: filterId) { (response, error) in
@@ -48,7 +48,7 @@ LyricsAPI.lyricsGet(include: include, filterId: filterId) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, track | [optional] 
- **filterId** | [**[String]**](String.md) | Lyrics Id | [optional] 
+ **filterId** | [**[String]**](String.md) | Lyrics Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;) | [optional] 
 
 ### Return type
 

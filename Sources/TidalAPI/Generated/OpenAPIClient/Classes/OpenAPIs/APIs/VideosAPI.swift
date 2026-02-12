@@ -17,8 +17,8 @@ internal class VideosAPI {
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt, usageRules (optional)
-     - parameter filterId: (query) Video id (optional)
-     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
+     - parameter filterId: (query) Video id (e.g. &#x60;75623239&#x60;) (optional)
+     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (e.g. &#x60;QMJMT1701237&#x60;) (optional)
      - returns: VideosMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -43,8 +43,8 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, thumbnailArt, usageRules (optional)
-     - parameter filterId: (query) Video id (optional)
-     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (optional)
+     - parameter filterId: (query) Video id (e.g. &#x60;75623239&#x60;) (optional)
+     - parameter filterIsrc: (query) International Standard Recording Code (ISRC) (e.g. &#x60;QMJMT1701237&#x60;) (optional)
      - returns: RequestBuilder<VideosMultiResourceDataDocument> 
      */
     internal class func videosGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil) -> RequestBuilder<VideosMultiResourceDataDocument> {

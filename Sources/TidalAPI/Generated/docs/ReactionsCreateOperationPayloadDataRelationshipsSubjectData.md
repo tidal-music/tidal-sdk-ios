@@ -1,9 +1,10 @@
-# ReactionsCreateOperationPayloadDataRelationships
+# ReactionsCreateOperationPayloadDataRelationshipsSubjectData
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**subject** | [**ReactionsCreateOperationPayloadDataRelationshipsSubject**](ReactionsCreateOperationPayloadDataRelationshipsSubject.md) |  | 
+**id** | **String** |  | 
+**type** | **String** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

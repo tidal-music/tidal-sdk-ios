@@ -32,16 +32,16 @@ public enum ReactionsAPITidal {
 	}
 
 	/**
-	 * enum for parameter filterReactedResourceType
+	 * enum for parameter filterSubjectType
 	 */
-	public enum FilterReactedResourceType_reactionsGet: String, CaseIterable {
+	public enum FilterSubjectType_reactionsGet: String, CaseIterable {
 		case albums = "albums"
 		case tracks = "tracks"
 		case artists = "artists"
 		case videos = "videos"
 		case playlists = "playlists"
 
-		func toReactionsAPIEnum() -> ReactionsAPI.FilterReactedResourceType_reactionsGet {
+		func toReactionsAPIEnum() -> ReactionsAPI.FilterSubjectType_reactionsGet {
 			switch self {
 			case .albums: return .albums
 			case .tracks: return .tracks
@@ -57,9 +57,9 @@ public enum ReactionsAPITidal {
      
      - returns: ReactionsMultiResourceDataDocument
      */
-	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterOwnersId: [String]? = nil, filterReactedResourceId: [String]? = nil, filterReactedResourceType: [ReactionsAPITidal.FilterReactedResourceType_reactionsGet]? = nil) async throws -> ReactionsMultiResourceDataDocument {
+	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [ReactionsAPITidal.FilterSubjectType_reactionsGet]? = nil) async throws -> ReactionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterOwnersId: filterOwnersId, filterReactedResourceId: filterReactedResourceId, filterReactedResourceType: filterReactedResourceType?.compactMap { $0.toReactionsAPIEnum() })
+			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toReactionsAPIEnum() })
 		}
 	}
 

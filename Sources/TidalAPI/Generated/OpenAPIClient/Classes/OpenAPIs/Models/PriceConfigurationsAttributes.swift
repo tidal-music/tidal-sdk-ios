@@ -17,11 +17,12 @@ public struct PriceConfigurationsAttributes: Codable, Hashable {
     }
     /** Currency code (ISO 4217) */
     public var currency: Currency
-    public var price: Double
+    /** Price amount with max 2 decimal places */
+    public var price: String
 
     public init(
         currency: Currency,
-        price: Double
+        price: String
     ) {
         self.currency = currency
         self.price = price

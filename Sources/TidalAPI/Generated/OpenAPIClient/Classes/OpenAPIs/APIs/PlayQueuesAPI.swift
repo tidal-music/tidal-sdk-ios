@@ -17,7 +17,7 @@ internal class PlayQueuesAPI {
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: PlayQueuesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -39,7 +39,7 @@ internal class PlayQueuesAPI {
        - name: Authorization_Code_PKCE
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: RequestBuilder<PlayQueuesMultiResourceDataDocument> 
      */
     internal class func playQueuesGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<PlayQueuesMultiResourceDataDocument> {
