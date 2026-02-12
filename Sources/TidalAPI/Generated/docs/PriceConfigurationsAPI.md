@@ -123,7 +123,7 @@ Creates a new priceConfiguration.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let priceConfigurationsCreateOperationPayload = PriceConfigurationsCreateOperation_Payload(data: PriceConfigurationsCreateOperation_Payload_Data(attributes: PriceConfigurationsCreateOperation_Payload_Data_Attributes(currency: "currency_example", price: 123), relationships: PriceConfigurationsCreateOperation_Payload_Data_Relationships(subjects: [PriceConfigurationsCreateOperation_Payload_Subjects(id: "id_example", type: "type_example")]), type: "type_example")) // PriceConfigurationsCreateOperationPayload |  (optional)
+let priceConfigurationsCreateOperationPayload = PriceConfigurationsCreateOperation_Payload(data: PriceConfigurationsCreateOperation_Payload_Data(attributes: PriceConfigurationsCreateOperation_Payload_Data_Attributes(currency: "currency_example", price: "price_example"), relationships: PriceConfigurationsCreateOperation_Payload_Data_Relationships(subjects: PriceConfigurationsCreateOperation_Payload_Data_Relationships_Subjects(data: [PriceConfigurationsCreateOperation_Payload_Subjects(id: "id_example", type: "type_example")])), type: "type_example")) // PriceConfigurationsCreateOperationPayload |  (optional)
 
 // Create single priceConfiguration.
 PriceConfigurationsAPI.priceConfigurationsPost(priceConfigurationsCreateOperationPayload: priceConfigurationsCreateOperationPayload) { (response, error) in
