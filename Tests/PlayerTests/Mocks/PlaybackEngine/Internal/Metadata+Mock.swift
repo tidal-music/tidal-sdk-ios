@@ -13,7 +13,8 @@ extension Metadata {
 		videoQuality: VideoQuality? = nil,
 		adaptiveAudioQualities: [AudioQuality]? = nil,
 		playbackSource: PlaybackSource = .INTERNET,
-		isAdaptivePlaybackEnabled: Bool = false
+		isAdaptivePlaybackEnabled: Bool = false,
+		previewReason: PreviewReason? = nil
 	) -> Self {
 		Metadata(
 			productId: productId,
@@ -27,7 +28,8 @@ extension Metadata {
 			videoQuality: videoQuality,
 			adaptiveAudioQualities: adaptiveAudioQualities,
 			playbackSource: playbackSource,
-			isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled
+			isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled,
+			previewReason: previewReason
 		)
 	}
 

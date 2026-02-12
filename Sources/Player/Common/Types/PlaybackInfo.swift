@@ -24,4 +24,5 @@ struct PlaybackInfo: Equatable {
 	let offlineRevalidateAt: UInt64?
 	let offlineValidUntil: UInt64?
 	let isAdaptivePlaybackEnabled: Bool
+	let previewReason: PreviewReason?
 }

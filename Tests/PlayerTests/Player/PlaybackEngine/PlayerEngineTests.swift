@@ -1132,7 +1132,8 @@ extension PlayerEngineTests {
 			trackPeakAmplitude: trackPlaybackInfo.trackPeakAmplitude,
 			offlineRevalidateAt: trackPlaybackInfo.offlineRevalidateAt,
 			offlineValidUntil: trackPlaybackInfo.offlineValidUntil,
-			isAdaptivePlaybackEnabled: false
+			isAdaptivePlaybackEnabled: false,
+			previewReason: nil
 		)
 		return playbackInfo
 	}

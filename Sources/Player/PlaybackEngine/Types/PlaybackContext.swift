@@ -37,6 +37,8 @@ import Foundation
 	/// The playback session id that is used for PlayLog and StreamingMetrics (streamingSessionId)
 	/// for the currently active playback.
 	public let playbackSessionId: String?
+	/// The reason why a track is being played as a preview.
+	public let previewReason: PreviewReason?
 
 	/// Default initializer
 	public init(
@@ -52,7 +54,8 @@ import Foundation
 		videoQuality: VideoQuality?,
 		duration: Double,
 		assetPosition: Double,
-		playbackSessionId: String?
+		playbackSessionId: String?,
+		previewReason: PreviewReason?
 	) {
 		self.productId = productId
 		self.streamType = streamType
@@ -67,6 +70,7 @@ import Foundation
 		self.duration = duration
 		self.assetPosition = assetPosition
 		self.playbackSessionId = playbackSessionId
+		self.previewReason = previewReason
 		super.init()
 	}
 }
