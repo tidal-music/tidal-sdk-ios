@@ -25,7 +25,8 @@ extension PlaybackInfo {
 		trackPeakAmplitude: Float? = nil,
 		offlineRevalidateAt: UInt64? = nil,
 		offlineValidUntil: UInt64? = nil,
-		isAdaptivePlaybackEnabled: Bool = false
+		isAdaptivePlaybackEnabled: Bool = false,
+		previewReason: PreviewReason? = nil
 	) -> Self {
 		PlaybackInfo(
 			productType: productType,
@@ -50,7 +51,8 @@ extension PlaybackInfo {
 			trackPeakAmplitude: trackPeakAmplitude,
 			offlineRevalidateAt: offlineRevalidateAt,
 			offlineValidUntil: offlineValidUntil,
-			isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled
+			isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled,
+			previewReason: previewReason
 		)
 	}
 
@@ -81,7 +83,8 @@ extension PlaybackInfo {
 			trackPeakAmplitude: trackPlaybackInfo.trackPeakAmplitude,
 			offlineRevalidateAt: trackPlaybackInfo.offlineRevalidateAt,
 			offlineValidUntil: trackPlaybackInfo.offlineValidUntil,
-			isAdaptivePlaybackEnabled: false
+			isAdaptivePlaybackEnabled: false,
+			previewReason: nil
 		)
 	}
 }

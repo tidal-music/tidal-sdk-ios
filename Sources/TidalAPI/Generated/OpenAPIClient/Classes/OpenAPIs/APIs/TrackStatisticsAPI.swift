@@ -16,7 +16,7 @@ internal class TrackStatisticsAPI {
      Get multiple trackStatistics.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Track id (optional)
+     - parameter filterId: (query) Track id (e.g. &#x60;75413016&#x60;) (optional)
      - returns: TrackStatisticsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -37,7 +37,7 @@ internal class TrackStatisticsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Track id (optional)
+     - parameter filterId: (query) Track id (e.g. &#x60;75413016&#x60;) (optional)
      - returns: RequestBuilder<TrackStatisticsMultiResourceDataDocument> 
      */
     internal class func trackStatisticsGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<TrackStatisticsMultiResourceDataDocument> {

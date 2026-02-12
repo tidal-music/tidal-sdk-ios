@@ -16,7 +16,7 @@ internal class ArtistClaimsAPI {
      Get multiple artistClaims.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: ArtistClaimsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -37,7 +37,7 @@ internal class ArtistClaimsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: RequestBuilder<ArtistClaimsMultiResourceDataDocument> 
      */
     internal class func artistClaimsGetWithRequestBuilder(include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<ArtistClaimsMultiResourceDataDocument> {

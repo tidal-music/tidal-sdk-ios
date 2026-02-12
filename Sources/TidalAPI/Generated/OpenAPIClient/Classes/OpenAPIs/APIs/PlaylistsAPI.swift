@@ -31,8 +31,8 @@ internal class PlaylistsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners (optional)
-     - parameter filterId: (query) Playlist id (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: PlaylistsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -59,8 +59,8 @@ internal class PlaylistsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners (optional)
-     - parameter filterId: (query) Playlist id (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: RequestBuilder<PlaylistsMultiResourceDataDocument> 
      */
     internal class func playlistsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<PlaylistsMultiResourceDataDocument> {

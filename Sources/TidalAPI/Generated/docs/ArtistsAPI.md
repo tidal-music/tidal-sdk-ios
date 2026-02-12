@@ -41,9 +41,9 @@ import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
-let filterHandle = ["inner_example"] // [String] | Artist handle (optional)
-let filterId = ["inner_example"] // [String] | Artist id (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+let filterHandle = ["inner_example"] // [String] | Artist handle (e.g. `jayz`) (optional)
+let filterId = ["inner_example"] // [String] | Artist id (e.g. `1566`) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
 
 // Get multiple artists.
 ArtistsAPI.artistsGet(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
@@ -64,9 +64,9 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
- **filterHandle** | [**[String]**](String.md) | Artist handle | [optional] 
- **filterId** | [**[String]**](String.md) | Artist id | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **filterHandle** | [**[String]**](String.md) | Artist handle (e.g. &#x60;jayz&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | Artist id (e.g. &#x60;1566&#x60;) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
 
 ### Return type
 

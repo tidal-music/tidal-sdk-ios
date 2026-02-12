@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**collection** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **item** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 

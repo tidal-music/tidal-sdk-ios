@@ -35,7 +35,7 @@ import OpenAPIClient
 
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
 
 // Get multiple playQueues.
 PlayQueuesAPI.playQueuesGet(pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId) { (response, error) in
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
 
 ### Return type
 

@@ -90,7 +90,8 @@ private extension PlayerItemLoader {
 			videoQuality: playableStorageMediaProduct.videoQuality,
 			adaptiveAudioQualities: nil,
 			playbackSource: .LOCAL_STORAGE,
-			isAdaptivePlaybackEnabled: false
+			isAdaptivePlaybackEnabled: false,
+			previewReason: nil
 		)
 	}
 
@@ -107,7 +108,8 @@ private extension PlayerItemLoader {
 			videoQuality: storedMediaProduct.videoQuality,
 			adaptiveAudioQualities: nil,
 			playbackSource: .LOCAL_STORAGE_LEGACY,
-			isAdaptivePlaybackEnabled: false
+			isAdaptivePlaybackEnabled: false,
+			previewReason: nil
 		)
 	}
 
@@ -124,7 +126,8 @@ private extension PlayerItemLoader {
 			videoQuality: playbackInfo.videoQuality,
 			adaptiveAudioQualities: playbackInfo.adaptiveAudioQualities,
 			playbackSource: .INTERNET,
-			isAdaptivePlaybackEnabled: playbackInfo.isAdaptivePlaybackEnabled
+			isAdaptivePlaybackEnabled: playbackInfo.isAdaptivePlaybackEnabled,
+			previewReason: playbackInfo.previewReason
 		)
 	}
 }

@@ -22,7 +22,7 @@ Retrieves multiple tracksMetadataStatus by available filters, or without if appl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | Track id (optional)
+let filterId = ["inner_example"] // [String] | Track id (e.g. `75413016`) (optional)
 
 // Get multiple tracksMetadataStatus.
 TracksMetadataStatusAPI.tracksMetadataStatusGet(filterId: filterId) { (response, error) in
@@ -41,7 +41,7 @@ TracksMetadataStatusAPI.tracksMetadataStatusGet(filterId: filterId) { (response,
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | Track id | [optional] 
+ **filterId** | [**[String]**](String.md) | Track id (e.g. &#x60;75413016&#x60;) | [optional] 
 
 ### Return type
 

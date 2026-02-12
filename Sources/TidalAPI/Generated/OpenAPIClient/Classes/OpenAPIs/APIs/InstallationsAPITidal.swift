@@ -58,7 +58,6 @@ public enum InstallationsAPITidal {
 		case videos = "videos"
 		case albums = "albums"
 		case playlists = "playlists"
-		case usercollections = "userCollections"
 
 		func toInstallationsAPIEnum() -> InstallationsAPI.FilterType_installationsIdRelationshipsOfflineInventoryGet {
 			switch self {
@@ -66,7 +65,6 @@ public enum InstallationsAPITidal {
 			case .videos: return .videos
 			case .albums: return .albums
 			case .playlists: return .playlists
-			case .usercollections: return .usercollections
 			}
 		}
 	}

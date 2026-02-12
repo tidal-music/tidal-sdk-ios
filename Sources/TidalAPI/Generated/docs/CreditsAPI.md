@@ -25,7 +25,7 @@ Retrieves multiple credits by available filters, or without if applicable.
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artist, category (optional)
-let filterId = ["inner_example"] // [String] | Credit id (optional)
+let filterId = ["inner_example"] // [String] | Credit id (e.g. `3fG7kLmN2pQrStUv`) (optional)
 
 // Get multiple credits.
 CreditsAPI.creditsGet(include: include, filterId: filterId) { (response, error) in
@@ -45,7 +45,7 @@ CreditsAPI.creditsGet(include: include, filterId: filterId) { (response, error) 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artist, category | [optional] 
- **filterId** | [**[String]**](String.md) | Credit id | [optional] 
+ **filterId** | [**[String]**](String.md) | Credit id (e.g. &#x60;3fG7kLmN2pQrStUv&#x60;) | [optional] 
 
 ### Return type
 

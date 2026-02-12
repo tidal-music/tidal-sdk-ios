@@ -17,9 +17,9 @@ internal class ArtistsAPI {
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
-     - parameter filterHandle: (query) Artist handle (optional)
-     - parameter filterId: (query) Artist id (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterHandle: (query) Artist handle (e.g. &#x60;jayz&#x60;) (optional)
+     - parameter filterId: (query) Artist id (e.g. &#x60;1566&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: ArtistsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -44,9 +44,9 @@ internal class ArtistsAPI {
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
-     - parameter filterHandle: (query) Artist handle (optional)
-     - parameter filterId: (query) Artist id (optional)
-     - parameter filterOwnersId: (query) User id (optional)
+     - parameter filterHandle: (query) Artist handle (e.g. &#x60;jayz&#x60;) (optional)
+     - parameter filterId: (query) Artist id (e.g. &#x60;1566&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
      - returns: RequestBuilder<ArtistsMultiResourceDataDocument> 
      */
     internal class func artistsGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<ArtistsMultiResourceDataDocument> {

@@ -17,7 +17,7 @@ internal class ArtworksAPI {
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Artwork id (optional)
+     - parameter filterId: (query) Artwork id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: ArtworksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -42,7 +42,7 @@ internal class ArtworksAPI {
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Artwork id (optional)
+     - parameter filterId: (query) Artwork id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: RequestBuilder<ArtworksMultiResourceDataDocument> 
      */
     internal class func artworksGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<ArtworksMultiResourceDataDocument> {

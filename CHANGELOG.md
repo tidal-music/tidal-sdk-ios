@@ -5,7 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.11.2] - 2026-02-12
+
+### Changed
+- Generated API code using spec version 1.1.19 (TidalAPI)
+
+## [0.11.1] - 2026-02-11
+
+### Added
+- Added `PreviewReason` enum to indicate why a track is being played as a preview (Player)
+- Added `previewReason` field to `PlaybackContext` to expose preview reason information from Track Manifests API, enabling apps to distinguish between subscription-required previews, purchase-required previews, and higher-tier-required previews (Player)
+
+## [0.11.0] - 2026-02-10
+
+### Changed
+- Generated API code using spec version 1.1.11 (TidalAPI)
 
 ## [0.10.13] - 2026-01-22
 

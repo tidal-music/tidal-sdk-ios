@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct UsageRulesCreateOperationPayloadDataRelationships: Codable, Hashable {
 
-    public var subject: UsageRulesCreateOperationPayloadSubject
+    public var subject: UsageRulesCreateOperationPayloadDataRelationshipsSubject
 
     public init(
-        subject: UsageRulesCreateOperationPayloadSubject
+        subject: UsageRulesCreateOperationPayloadDataRelationshipsSubject
     ) {
         self.subject = subject
     }

@@ -24,7 +24,7 @@ Retrieves multiple stripeConnections by available filters, or without if applica
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
 
 // Get multiple stripeConnections.
 StripeConnectionsAPI.stripeConnectionsGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
@@ -44,7 +44,7 @@ StripeConnectionsAPI.stripeConnectionsGet(include: include, filterOwnersId: filt
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
 
 ### Return type
 

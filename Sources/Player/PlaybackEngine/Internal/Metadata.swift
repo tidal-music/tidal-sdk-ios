@@ -13,4 +13,5 @@ struct Metadata: Equatable {
 	let adaptiveAudioQualities: [AudioQuality]?
 	let playbackSource: PlaybackSource
 	let isAdaptivePlaybackEnabled: Bool
+	let previewReason: PreviewReason?
 }
