@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.1.18"
+    "version" : "1.1.19"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -7401,8 +7401,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: item, owners",
-          "example" : "item",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collection, item, owners",
+          "example" : "collection",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -7410,7 +7410,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "item"
+              "example" : "collection"
             }
           }
         }, {
@@ -7495,8 +7495,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: item, owners",
-          "example" : "item",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collection, item, owners",
+          "example" : "collection",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -7504,7 +7504,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "item"
+              "example" : "collection"
             }
           }
         } ],
@@ -7604,6 +7604,78 @@
           "Authorization_Code_PKCE" : [ "w_usr" ]
         } ],
         "summary" : "Update single offlineTask.",
+        "tags" : [ "offlineTasks" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/offlineTasks/{id}/relationships/collection" : {
+      "get" : {
+        "description" : "Retrieves collection relationship.",
+        "parameters" : [ {
+          "description" : "Offline task id",
+          "example" : "a468bee8-8def-4a1b-8c1e-123456789abc",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collection",
+          "example" : "collection",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "collection"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OfflineTasks_Single_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get collection relationship (\"to-one\").",
         "tags" : [ "offlineTasks" ],
         "x-path-item-properties" : {
           "required-access-tier" : "INTERNAL"
@@ -24509,7 +24581,7 @@
         }
       },
       "OfflineTasks_Attributes" : {
-        "required" : [ "action", "collection", "member" ],
+        "required" : [ "action", "collectionReference", "memberReference" ],
         "type" : "object",
         "properties" : {
           "action" : {
@@ -24517,17 +24589,19 @@
             "description" : "Action to perform",
             "enum" : [ "STORE_ITEM", "REMOVE_ITEM", "STORE_COLLECTION", "REMOVE_COLLECTION" ]
           },
-          "collection" : {
+          "collectionReference" : {
             "type" : "string",
-            "description" : "Collection reference associated with task"
+            "description" : "Collection reference associated with task",
+            "deprecated" : true
           },
-          "member" : {
+          "memberReference" : {
             "type" : "string",
-            "description" : "Collection-member reference associated with task"
+            "description" : "Collection-member reference associated with task",
+            "deprecated" : true
           },
           "position" : {
             "type" : "integer",
-            "description" : "Collection position related to member",
+            "description" : "Collection position of item",
             "format" : "int32"
           },
           "state" : {
@@ -24537,7 +24611,7 @@
           },
           "volume" : {
             "type" : "integer",
-            "description" : "Collection volume related to member",
+            "description" : "Collection volume of item",
             "format" : "int32"
           }
         }
@@ -24579,8 +24653,11 @@
         }
       },
       "OfflineTasks_Relationships" : {
-        "required" : [ "item", "owners" ],
+        "required" : [ "collection", "item", "owners" ],
         "properties" : {
+          "collection" : {
+            "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
+          },
           "item" : {
             "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
           },

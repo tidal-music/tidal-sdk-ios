@@ -16,7 +16,7 @@ internal class OfflineTasksAPI {
      Get multiple offlineTasks.
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
      - parameter filterId: (query) Offline task id (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) (optional)
      - parameter filterInstallationId: (query) Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: OfflineTasksMultiResourceDataDocument
@@ -39,7 +39,7 @@ internal class OfflineTasksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
      - parameter filterId: (query) Offline task id (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) (optional)
      - parameter filterInstallationId: (query) Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: RequestBuilder<OfflineTasksMultiResourceDataDocument> 
@@ -72,7 +72,7 @@ internal class OfflineTasksAPI {
      Get single offlineTask.
      
      - parameter id: (path) Offline task id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
      - returns: OfflineTasksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -93,7 +93,7 @@ internal class OfflineTasksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Offline task id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
      - returns: RequestBuilder<OfflineTasksSingleResourceDataDocument> 
      */
     internal class func offlineTasksIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<OfflineTasksSingleResourceDataDocument> {
@@ -167,6 +167,58 @@ internal class OfflineTasksAPI {
         let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get collection relationship (\"to-one\").
+     
+     - parameter id: (path) Offline task id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection (optional)
+     - returns: OfflineTasksSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+        do {
+            return try await offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get collection relationship (\"to-one\").
+     - GET /offlineTasks/{id}/relationships/collection
+     - Retrieves collection relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Offline task id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection (optional)
+     - returns: RequestBuilder<OfflineTasksSingleRelationshipDataDocument> 
+     */
+    internal class func offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<OfflineTasksSingleRelationshipDataDocument> {
+        var localVariablePath = "/offlineTasks/{id}/relationships/collection"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<OfflineTasksSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**
