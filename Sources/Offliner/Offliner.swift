@@ -85,7 +85,7 @@ public final class Offliner {
 	}
 
 	public init(installationId: String) throws {
-		let databaseQueue = try DatabaseQueue()
+		let databaseQueue = try DatabaseQueue(path: OfflineStore.url().path)
 		try Migrations.run(databaseQueue)
 
 		let offlineStore = OfflineStore(databaseQueue)

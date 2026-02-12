@@ -5,6 +5,16 @@ import TidalAPI
 final class OfflineStore {
 	private let databaseQueue: DatabaseQueue
 
+	static func url() throws -> URL {
+		let appSupportURLs = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+		guard let appSupportDirectory = appSupportURLs.first else {
+			throw FileStorageError.noApplicationSupportDirectory
+		}
+		let directory = appSupportDirectory.appendingPathComponent("Offliner", isDirectory: true)
+		try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+		return directory.appendingPathComponent("offline.sqlite")
+	}
+
 	init(_ databaseQueue: DatabaseQueue) {
 		self.databaseQueue = databaseQueue
 	}
@@ -150,7 +160,7 @@ final class OfflineStore {
 			let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
 
 			return OfflineMediaItem(
-				id: row["resource_id"],
+				id: row["id"],
 				metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
 				mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
 				licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
