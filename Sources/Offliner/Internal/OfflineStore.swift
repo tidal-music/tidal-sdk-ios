@@ -23,13 +23,13 @@ final class OfflineStore {
 		task: StoreItemTask,
 		mediaURL: URL,
 		licenseURL: URL?,
-		artworkURL: URL
+		artworkURL: URL?
 	) throws {
 		let metadataJson = try task.metadata.serialize()
 
 		let mediaBookmark = try mediaURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 		let licenseBookmark = try licenseURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
-		let artworkBookmark = try artworkURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
+		let artworkBookmark = try artworkURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
 		var replacedBookmarks: [Data] = []
 
@@ -85,9 +85,9 @@ final class OfflineStore {
 		}
 	}
 
-	func storeCollection(task: StoreCollectionTask, artworkURL: URL) throws {
+	func storeCollection(task: StoreCollectionTask, artworkURL: URL?) throws {
 		let metadataJson = try task.metadata.serialize()
-		let artworkBookmark = try artworkURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
+		let artworkBookmark = try artworkURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
 		var replacedArtworkBookmark: Data?
 

@@ -2,8 +2,8 @@ import Foundation
 import TidalAPI
 
 protocol ArtworkDownloaderProtocol {
-	func downloadArtwork(for task: StoreItemTask) async throws -> URL
-	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL
+	func downloadArtwork(for task: StoreItemTask) async throws -> URL?
+	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL?
 }
 
 final class ArtworkDownloader: ArtworkDownloaderProtocol {
@@ -13,28 +13,24 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 		self.urlSession = urlSession
 	}
 
-	func downloadArtwork(for task: StoreItemTask) async throws -> URL {
+	func downloadArtwork(for task: StoreItemTask) async throws -> URL? {
 		let artwork = switch task.metadata {
 		case .track(let trackMetadata): trackMetadata.coverArt
 		case .video(let videoMetadata): videoMetadata.thumbnail
 		}
 
-		guard let artwork else {
-			throw ArtworkDownloaderError.missingArtwork
-		}
+		guard let artwork else { return nil }
 
 		return try await download(artwork: artwork)
 	}
 
-	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL {
+	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL? {
 		let artwork = switch task.metadata {
 		case .album(let albumMetadata): albumMetadata.coverArt
 		case .playlist(let playlistMetadata): playlistMetadata.coverArt
 		}
 
-		guard let artwork else {
-			throw ArtworkDownloaderError.missingArtwork
-		}
+		guard let artwork else { return nil }
 
 		return try await download(artwork: artwork)
 	}
@@ -60,7 +56,6 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 }
 
 enum ArtworkDownloaderError: Error {
-	case missingArtwork
 	case missingArtworkURL
 	case downloadFailed
 }

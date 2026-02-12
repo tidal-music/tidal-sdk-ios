@@ -185,11 +185,11 @@ final class FailOnGetTasksBackendClient: BackendClientProtocol {
 // MARK: - Artwork Downloader Fakes
 
 final class SucceedingArtworkDownloader: ArtworkDownloaderProtocol {
-	func downloadArtwork(for task: StoreItemTask) async throws -> URL {
+	func downloadArtwork(for task: StoreItemTask) async throws -> URL? {
 		createArtworkFile()
 	}
 
-	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL {
+	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL? {
 		createArtworkFile()
 	}
 
@@ -202,11 +202,11 @@ final class SucceedingArtworkDownloader: ArtworkDownloaderProtocol {
 }
 
 final class FailingArtworkDownloader: ArtworkDownloaderProtocol {
-	func downloadArtwork(for task: StoreItemTask) async throws -> URL {
+	func downloadArtwork(for task: StoreItemTask) async throws -> URL? {
 		throw FakeError.artworkDownloadFailed
 	}
 
-	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL {
+	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL? {
 		throw FakeError.artworkDownloadFailed
 	}
 }
