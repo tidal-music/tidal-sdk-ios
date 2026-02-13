@@ -54,6 +54,8 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     public var selectedAlbums: [String]?
     /** Single IDs selected by user */
     public var selectedSingles: [String]?
+    /** Social link */
+    public var socialLink: String?
     /** Claim status */
     public var status: Status?
     /** Website or social link */
@@ -77,6 +79,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         role: String? = nil,
         selectedAlbums: [String]? = nil,
         selectedSingles: [String]? = nil,
+        socialLink: String? = nil,
         status: Status? = nil,
         websiteOrSocialLink: String
     ) {
@@ -97,6 +100,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         self.role = role
         self.selectedAlbums = selectedAlbums
         self.selectedSingles = selectedSingles
+        self.socialLink = socialLink
         self.status = status
         self.websiteOrSocialLink = websiteOrSocialLink
     }
@@ -119,6 +123,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         case role
         case selectedAlbums
         case selectedSingles
+        case socialLink
         case status
         case websiteOrSocialLink
     }
@@ -144,6 +149,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         try container.encodeIfPresent(role, forKey: .role)
         try container.encodeIfPresent(selectedAlbums, forKey: .selectedAlbums)
         try container.encodeIfPresent(selectedSingles, forKey: .selectedSingles)
+        try container.encodeIfPresent(socialLink, forKey: .socialLink)
         try container.encodeIfPresent(status, forKey: .status)
         try container.encode(websiteOrSocialLink, forKey: .websiteOrSocialLink)
     }
