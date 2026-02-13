@@ -13,14 +13,13 @@ public actor Download {
 		case progress(Double)
 	}
 
-	public nonisolated var metadata: OfflineMediaItem.Metadata { task.metadata }
+	public nonisolated let metadata: OfflineMediaItem.Metadata
 	public nonisolated let events: AsyncStream<Event>
 
-	nonisolated let task: StoreItemTask
 	private let continuation: AsyncStream<Event>.Continuation
 
-	internal init(task: StoreItemTask) {
-		self.task = task
+	internal init(metadata: OfflineMediaItem.Metadata) {
+		self.metadata = metadata
 
 		let (stream, continuation) = AsyncStream<Event>.makeStream()
 		self.events = stream

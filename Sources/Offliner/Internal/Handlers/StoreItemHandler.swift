@@ -1,4 +1,3 @@
-import Auth
 import AVFoundation
 import CoreMedia
 import Foundation
@@ -21,45 +20,105 @@ final class StoreItemHandler {
 		self.mediaDownloader = mediaDownloader
 	}
 
-	func start(_ download: Download, onFinished: @escaping () async -> Void) async {
-		let task = download.task
+	func handle(_ task: StoreItemTask) async -> InternalTask? {
+		guard let itemMetadata = task.itemMetadata,
+			  let collectionMetadata = task.collectionMetadata else {
+			print("StoreItemHandler error: missing metadata")
+			try? await backendClient.updateTask(taskId: task.id, state: .failed)
+			return nil
+		}
 
+		return InternalTaskImpl(
+			task: task,
+			itemMetadata: itemMetadata,
+			collectionMetadata: collectionMetadata,
+			download: Download(metadata: itemMetadata),
+			backendClient: backendClient,
+			offlineStore: offlineStore,
+			artworkDownloader: artworkDownloader,
+			mediaDownloader: mediaDownloader
+		)
+	}
+}
+
+private final class InternalTaskImpl: InternalTask {
+	let id: String
+	let download: Download?
+
+	private let task: StoreItemTask
+	private let itemMetadata: OfflineMediaItem.Metadata
+	private let collectionMetadata: OfflineCollection.Metadata
+	private let backendClient: BackendClientProtocol
+	private let offlineStore: OfflineStore
+	private let artworkDownloader: ArtworkDownloaderProtocol
+	private let mediaDownloader: MediaDownloaderProtocol
+
+	private var mediaDownload: Download { download! }
+
+	init(
+		task: StoreItemTask,
+		itemMetadata: OfflineMediaItem.Metadata,
+		collectionMetadata: OfflineCollection.Metadata,
+		download: Download,
+		backendClient: BackendClientProtocol,
+		offlineStore: OfflineStore,
+		artworkDownloader: ArtworkDownloaderProtocol,
+		mediaDownloader: MediaDownloaderProtocol
+	) {
+		self.id = task.id
+		self.task = task
+		self.itemMetadata = itemMetadata
+		self.collectionMetadata = collectionMetadata
+		self.download = download
+		self.backendClient = backendClient
+		self.offlineStore = offlineStore
+		self.artworkDownloader = artworkDownloader
+		self.mediaDownloader = mediaDownloader
+	}
+
+	func run() async {
 		do {
-			try await backendClient.updateTask(taskId: task.id, state: .inProgress)
-			await download.updateState(.inProgress)
+			try await backendClient.updateTask(taskId: id, state: .inProgress)
+			await mediaDownload.updateState(.inProgress)
 		} catch {
 			print("StoreItemHandler error: \(error)")
-			await download.updateState(.failed)
-			await onFinished()
+			await mediaDownload.updateState(.failed)
 			return
 		}
 
 		do {
 			let artworkURL = try await artworkDownloader.downloadArtwork(for: task)
 
-			let result = try await mediaDownloader.download(
-				trackId: task.resourceId,
-				taskId: task.id,
-				onProgress: { progress in
+			let mediaResult = try await mediaDownloader.download(
+				trackId: itemMetadata.resourceId,
+				taskId: id,
+				onProgress: { [weak self] progress in
+					guard let download = self?.download else { return }
 					await download.updateProgress(progress)
 				}
 			)
 
-			try offlineStore.storeMediaItem(
-				task: task,
-				mediaURL: result.mediaLocation,
-				licenseURL: result.licenseLocation,
+			let storeResult = StoreItemTaskResult(
+				resourceType: itemMetadata.resourceType,
+				resourceId: itemMetadata.resourceId,
+				metadata: itemMetadata,
+				collectionResourceType: collectionMetadata.resourceType,
+				collectionResourceId: collectionMetadata.resourceId,
+				volume: task.volume,
+				position: task.position,
+				mediaURL: mediaResult.mediaLocation,
+				licenseURL: mediaResult.licenseLocation,
 				artworkURL: artworkURL
 			)
 
-			try await backendClient.updateTask(taskId: task.id, state: .completed)
-			await download.updateState(.completed)
+			try offlineStore.storeMediaItem(storeResult)
+
+			try await backendClient.updateTask(taskId: id, state: .completed)
+			await mediaDownload.updateState(.completed)
 		} catch {
 			print("StoreItemHandler error: \(error)")
-			try? await backendClient.updateTask(taskId: task.id, state: .failed)
-			await download.updateState(.failed)
+			try? await backendClient.updateTask(taskId: id, state: .failed)
+			await mediaDownload.updateState(.failed)
 		}
-
-		await onFinished()
 	}
 }

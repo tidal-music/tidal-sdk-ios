@@ -14,9 +14,10 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 	}
 
 	func downloadArtwork(for task: StoreItemTask) async throws -> URL? {
-		let artwork = switch task.metadata {
+		let artwork: ArtworksResourceObject? = switch task.itemMetadata {
 		case .track(let trackMetadata): trackMetadata.coverArt
 		case .video(let videoMetadata): videoMetadata.thumbnail
+		case nil: nil
 		}
 
 		guard let artwork else { return nil }
@@ -25,9 +26,10 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 	}
 
 	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL? {
-		let artwork = switch task.metadata {
+		let artwork: ArtworksResourceObject? = switch task.metadata {
 		case .album(let albumMetadata): albumMetadata.coverArt
 		case .playlist(let playlistMetadata): playlistMetadata.coverArt
+		case nil: nil
 		}
 
 		guard let artwork else { return nil }

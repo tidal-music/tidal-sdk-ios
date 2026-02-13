@@ -75,7 +75,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		let storedItem = try offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNotNil(storedItem)
-		XCTAssertEqual(storedItem?.id, "task-0")
+		XCTAssertEqual(storedItem?.id, "track-123")
 
 		if case .track(let metadata) = storedItem?.metadata {
 			XCTAssertEqual(metadata.track.id, "track-123")

@@ -1,21 +1,19 @@
-import Auth
 import Foundation
 
 actor TaskRunner {
 	private static let maxConcurrentTasks = 5
 	private static let maxQueueSize = 80
 
-	private let backendClient: BackendClientProtocol
-
 	private let storeItemHandler: StoreItemHandler
 	private let storeCollectionHandler: StoreCollectionHandler
 	private let removeItemHandler: RemoveItemHandler
 	private let removeCollectionHandler: RemoveCollectionHandler
 
+	private let backendClient: BackendClientProtocol
+
 	private var pendingTasks: [InternalTask] = []
 	private var inProgressTasks: [InternalTask] = []
 	private var taskIds: Set<String> = []
-	private var taskCursor: String?
 
 	private var isRunning = false
 	private var needsRun = false
@@ -83,79 +81,52 @@ actor TaskRunner {
 	}
 
 	private func refresh() async throws {
-		let (tasks, cursor) = try await backendClient.getTasks(cursor: taskCursor)
+		let (tasks, _) = try await backendClient.getTasks(cursor: nil)
 
-		for task in tasks.map(InternalTask.init) where taskIds.insert(task.id).inserted {
-			pendingTasks.append(task)
-			if case let .storeItem(storeItemTask) = task.offlineTask {
-				let download = Download(task: storeItemTask)
-				task.download = download
-				currentDownloads.append(download)
-				downloadsContinuation?.yield(download)
+		for task in tasks where taskIds.insert(task.id).inserted {
+			if let internalTask = await handle(task) {
+				pendingTasks.append(internalTask)
+				if let download = internalTask.download {
+					currentDownloads.append(download)
+					downloadsContinuation?.yield(download)
+				}
 			}
 		}
+	}
 
-		if let newCursor = cursor {
-			taskCursor = newCursor
+	private func handle(_ offlineTask: OfflineTask) async -> InternalTask? {
+		switch offlineTask {
+		case .storeItem(let task): await storeItemHandler.handle(task)
+		case .storeCollection(let task): await storeCollectionHandler.handle(task)
+		case .removeItem(let task): await removeItemHandler.handle(task)
+		case .removeCollection(let task): await removeCollectionHandler.handle(task)
 		}
 	}
 
 	private func start(_ task: InternalTask) {
-		switch task.offlineTask {
-		case .storeItem:
-			Task { [weak self] in
-				guard let download = task.download else {
-					await self?.finalize(task)
-					return
-				}
-
-				await self?.storeItemHandler.start(download) { [weak self] in
-					await self?.finalize(task)
-				}
-			}
-		case let .storeCollection(storeCollectionTask):
-			Task { [weak self] in
-				await self?.storeCollectionHandler.execute(storeCollectionTask)
-				await self?.finalize(task)
-			}
-		case let .removeItem(removeItemTask):
-			Task { [weak self] in
-				await self?.removeItemHandler.execute(removeItemTask)
-				await self?.finalize(task)
-			}
-		case let .removeCollection(removeCollectionTask):
-			Task { [weak self] in
-				await self?.removeCollectionHandler.execute(removeCollectionTask)
-				await self?.finalize(task)
-			}
+		Task { [weak self] in
+			await task.run()
+			await self?.finalize(task)
 		}
 	}
 
 	private func finalize(_ task: InternalTask) async {
-		inProgressTasks.removeAll { $0.id == task.id }
+		inProgressTasks.removeAll { $0 === task }
 		taskIds.remove(task.id)
 		if let download = task.download {
 			currentDownloads.removeAll { $0 === download }
 		}
 
-		// Trigger another run to keep the queue moving
 		try? await run()
 	}
 }
 
-// MARK: - InternalTask
+protocol InternalTask: AnyObject {
+	var id: String { get }
+	var download: Download? { get }
+	func run() async
+}
 
-private class InternalTask: Equatable {
-	let id: String
-	let offlineTask: OfflineTask
-	weak var download: Download?
-
-	init(from task: OfflineTask) {
-		self.id = task.id
-		self.offlineTask = task
-	}
-
-	static func == (lhs: InternalTask, rhs: InternalTask) -> Bool {
-		lhs.id == rhs.id
-	}
+extension InternalTask {
+	var download: Download? { nil }
 }

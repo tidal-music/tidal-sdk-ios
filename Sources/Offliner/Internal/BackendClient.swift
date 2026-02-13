@@ -15,17 +15,15 @@ enum ResourceType {
 
 struct StoreItemTask {
 	let id: String
-	let metadata: OfflineMediaItem.Metadata
-	let collection: String
-	let member: String
+	let itemMetadata: OfflineMediaItem.Metadata?
+	let collectionMetadata: OfflineCollection.Metadata?
 	let volume: Int
 	let position: Int
 }
 
 struct StoreCollectionTask {
 	let id: String
-	let collection: String
-	let metadata: OfflineCollection.Metadata
+	let metadata: OfflineCollection.Metadata?
 }
 
 struct RemoveItemTask {
@@ -52,6 +50,40 @@ enum OfflineTask {
 		case .storeCollection(let task): return task.id
 		case .removeItem(let task): return task.id
 		case .removeCollection(let task): return task.id
+		}
+	}
+}
+
+// MARK: - Metadata Extensions
+
+extension OfflineMediaItem.Metadata {
+	var resourceType: String {
+		switch self {
+		case .track: return OfflineMediaItemType.tracks.rawValue
+		case .video: return OfflineMediaItemType.videos.rawValue
+		}
+	}
+
+	var resourceId: String {
+		switch self {
+		case .track(let metadata): return metadata.track.id
+		case .video(let metadata): return metadata.video.id
+		}
+	}
+}
+
+extension OfflineCollection.Metadata {
+	var resourceType: String {
+		switch self {
+		case .album: return OfflineCollectionType.albums.rawValue
+		case .playlist: return OfflineCollectionType.playlists.rawValue
+		}
+	}
+
+	var resourceId: String {
+		switch self {
+		case .album(let metadata): return metadata.album.id
+		case .playlist(let metadata): return metadata.playlist.id
 		}
 	}
 }
@@ -97,48 +129,45 @@ final class BackendClient: BackendClientProtocol {
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
 		let response = try await OfflineTasksAPITidal.offlineTasksGet(
 			pageCursor: cursor,
-			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists"],
+			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists", "collection"],
 			filterInstallationId: [installationId]
 		)
 
 		let includedItems = IncludedItemsMap(from: response.included)
 
 		let tasks = response.data.compactMap { resourceObject -> OfflineTask? in
-			guard let attributes = resourceObject.attributes,
-				  let itemData = resourceObject.relationships?.item.data else {
+			guard let attributes = resourceObject.attributes else {
 				return nil
 			}
 
-			guard let includedItem = includedItems.get(type: itemData.type, id: itemData.id) else { return nil }
+			let includedItem = resourceObject.relationships?.item.data
+				.flatMap { includedItems.get(type: $0.type, id: $0.id) }
+
+			let includedCollection = resourceObject.relationships?.collection.data
+				.flatMap { includedItems.get(type: $0.type, id: $0.id) }
 
 			switch attributes.action {
 			case .storeItem:
-				guard let metadata = includedItem.mediaItemMetadata,
-					  let volume = attributes.volume,
+				guard let volume = attributes.volume,
 					  let position = attributes.position else {
 					return nil
 				}
 
 				let task = StoreItemTask(
 					id: resourceObject.id,
-					metadata: metadata,
-					collection: attributes.collection,
-					member: attributes.member,
+					itemMetadata: includedItem?.mediaItemMetadata,
+					collectionMetadata: includedCollection?.collectionMetadata,
 					volume: volume,
 					position: position
 				)
 				return .storeItem(task)
 
 			case .storeCollection:
-				guard let metadata = includedItem.collectionMetadata else {
-					return nil
-				}
-
-				let task = StoreCollectionTask(id: resourceObject.id, collection: attributes.collection, metadata: metadata)
+				let task = StoreCollectionTask(id: resourceObject.id, metadata: includedItem?.collectionMetadata)
 				return .storeCollection(task)
 
 			case .removeItem:
-				guard let metadata = includedItem.mediaItemMetadata else {
+				guard let metadata = includedItem?.mediaItemMetadata else {
 					return nil
 				}
 
@@ -146,7 +175,7 @@ final class BackendClient: BackendClientProtocol {
 				return .removeItem(task)
 
 			case .removeCollection:
-				guard let metadata = includedItem.collectionMetadata else {
+				guard let metadata = includedItem?.collectionMetadata else {
 					return nil
 				}
 

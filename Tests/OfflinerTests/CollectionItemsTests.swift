@@ -14,15 +14,15 @@ final class CollectionItemsTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		let collectionTaskId = "offline-task-100"
-		let collectionItemId = "item-album-1"
 		let albumId = "album-1"
 
 		let album = AlbumsResourceObject(id: albumId, type: "albums")
+		let albumMetadata = AlbumMetadata(album: album, artists: [], coverArt: nil)
+		let collectionMetadata = OfflineCollection.Metadata.album(albumMetadata)
+
 		let collectionTask = StoreCollectionTask(
-			id: collectionTaskId,
-			collection: collectionItemId,
-			metadata: .album(AlbumMetadata(album: album, artists: [], coverArt: nil))
+			id: "offline-task-100",
+			metadata: collectionMetadata
 		)
 
 		let track1 = TracksResourceObject(id: "track-1", type: "tracks")
@@ -31,25 +31,22 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let itemTask1 = StoreItemTask(
 			id: "offline-task-101",
-			metadata: .track(TrackMetadata(track: track1, artists: [], coverArt: nil)),
-			collection: collectionItemId,
-			member: "item-track-1",
+			itemMetadata: .track(TrackMetadata(track: track1, artists: [], coverArt: nil)),
+			collectionMetadata: collectionMetadata,
 			volume: 1,
 			position: 1
 		)
 		let itemTask2 = StoreItemTask(
 			id: "offline-task-102",
-			metadata: .track(TrackMetadata(track: track2, artists: [], coverArt: nil)),
-			collection: collectionItemId,
-			member: "item-track-2",
+			itemMetadata: .track(TrackMetadata(track: track2, artists: [], coverArt: nil)),
+			collectionMetadata: collectionMetadata,
 			volume: 1,
 			position: 2
 		)
 		let itemTask3 = StoreItemTask(
 			id: "offline-task-103",
-			metadata: .track(TrackMetadata(track: track3, artists: [], coverArt: nil)),
-			collection: collectionItemId,
-			member: "item-track-3",
+			itemMetadata: .track(TrackMetadata(track: track3, artists: [], coverArt: nil)),
+			collectionMetadata: collectionMetadata,
 			volume: 1,
 			position: 3
 		)
@@ -103,7 +100,6 @@ final class CollectionItemsTests: OfflinerTestCase {
 		let album = AlbumsResourceObject(id: "album-empty", type: "albums")
 		let collectionTask = StoreCollectionTask(
 			id: "empty-collection-task-id",
-			collection: "empty-collection-id",
 			metadata: .album(AlbumMetadata(album: album, artists: [], coverArt: nil))
 		)
 

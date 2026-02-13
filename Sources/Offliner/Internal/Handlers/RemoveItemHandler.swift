@@ -9,6 +9,18 @@ final class RemoveItemHandler {
 		self.offlineStore = offlineStore
 	}
 
-	func execute(_ task: RemoveItemTask) async {
+	func handle(_ task: RemoveItemTask) async -> InternalTask? {
+		InternalTaskImpl(task: task)
+	}
+}
+
+private final class InternalTaskImpl: InternalTask {
+	let id: String
+
+	init(task: RemoveItemTask) {
+		self.id = task.id
+	}
+
+	func run() async {
 	}
 }

@@ -155,18 +155,22 @@ public final class Offliner {
 
 	public func download(mediaType: OfflineMediaItemType, resourceId: String) async throws {
 		try await backendClient.addItem(type: mediaType.toResourceType, id: resourceId)
+		try await taskRunner.run()
 	}
 
 	public func download(collectionType: OfflineCollectionType, resourceId: String) async throws {
 		try await backendClient.addItem(type: collectionType.toResourceType, id: resourceId)
+		try await taskRunner.run()
 	}
 
 	public func remove(mediaType: OfflineMediaItemType, resourceId: String) async throws {
 		try await backendClient.removeItem(type: mediaType.toResourceType, id: resourceId)
+		try await taskRunner.run()
 	}
 
 	public func remove(collectionType: OfflineCollectionType, resourceId: String) async throws {
 		try await backendClient.removeItem(type: collectionType.toResourceType, id: resourceId)
+		try await taskRunner.run()
 	}
 }
 
