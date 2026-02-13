@@ -138,7 +138,24 @@ final class OfflineStore {
 	}
 
 	func deleteItem(resourceType: String, resourceId: String) throws {
+		var bookmarksToDelete: [Data] = []
+
 		try databaseQueue.inTransaction { database in
+			let existingRow = try Row.fetchOne(
+				database,
+				sql: """
+					SELECT media_bookmark, license_bookmark, artwork_bookmark
+					FROM offline_item
+					WHERE resource_type = ? AND resource_id = ?
+					""",
+				arguments: [resourceType, resourceId]
+			)
+
+			if let existingRow {
+				bookmarksToDelete = ["media_bookmark", "license_bookmark", "artwork_bookmark"]
+					.compactMap { existingRow[$0] }
+			}
+
 			try database.execute(
 				sql: """
 					DELETE FROM offline_item_relationship
@@ -154,6 +171,10 @@ final class OfflineStore {
 			)
 
 			return .commit
+		}
+
+		for bookmarkData in bookmarksToDelete {
+			try? FileStorage.delete(bookmark: bookmarkData)
 		}
 	}
 
