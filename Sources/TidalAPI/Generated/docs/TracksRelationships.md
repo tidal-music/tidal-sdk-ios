@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **shares** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **similarTracks** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **sourceFile** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
+**suggestedTracks** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | 
 **trackStatistics** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 **usageRules** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | 
 

@@ -243,6 +243,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Get suggestedTracks relationship (\&quot;to-many\&quot;).
+     
+     - returns: TracksMultiRelationshipDataDocument
+     */
+	public static func tracksIdRelationshipsSuggestedTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsSuggestedTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Get trackStatistics relationship (\&quot;to-one\&quot;).
      
      - returns: TracksSingleRelationshipDataDocument

@@ -26,6 +26,7 @@ public struct TracksRelationships: Codable, Hashable {
     public var shares: MultiRelationshipDataDocument
     public var similarTracks: MultiRelationshipDataDocument
     public var sourceFile: SingleRelationshipDataDocument
+    public var suggestedTracks: MultiRelationshipDataDocument
     public var trackStatistics: SingleRelationshipDataDocument
     public var usageRules: SingleRelationshipDataDocument
 
@@ -44,6 +45,7 @@ public struct TracksRelationships: Codable, Hashable {
         shares: MultiRelationshipDataDocument,
         similarTracks: MultiRelationshipDataDocument,
         sourceFile: SingleRelationshipDataDocument,
+        suggestedTracks: MultiRelationshipDataDocument,
         trackStatistics: SingleRelationshipDataDocument,
         usageRules: SingleRelationshipDataDocument
     ) {
@@ -61,6 +63,7 @@ public struct TracksRelationships: Codable, Hashable {
         self.shares = shares
         self.similarTracks = similarTracks
         self.sourceFile = sourceFile
+        self.suggestedTracks = suggestedTracks
         self.trackStatistics = trackStatistics
         self.usageRules = usageRules
     }
@@ -80,6 +83,7 @@ public struct TracksRelationships: Codable, Hashable {
         case shares
         case similarTracks
         case sourceFile
+        case suggestedTracks
         case trackStatistics
         case usageRules
     }
@@ -102,6 +106,7 @@ public struct TracksRelationships: Codable, Hashable {
         try container.encode(shares, forKey: .shares)
         try container.encode(similarTracks, forKey: .similarTracks)
         try container.encode(sourceFile, forKey: .sourceFile)
+        try container.encode(suggestedTracks, forKey: .suggestedTracks)
         try container.encode(trackStatistics, forKey: .trackStatistics)
         try container.encode(usageRules, forKey: .usageRules)
     }

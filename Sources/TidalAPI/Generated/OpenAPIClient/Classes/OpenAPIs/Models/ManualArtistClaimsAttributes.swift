@@ -19,7 +19,6 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     }
     public static let legalFirstNameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let legalLastNameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
-    public static let websiteOrSocialLinkRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Accepted terms and conditions */
     public var acceptedTerms: Bool?
     /** Artist ID being claimed */
@@ -54,12 +53,10 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     public var selectedAlbums: [String]?
     /** Single IDs selected by user */
     public var selectedSingles: [String]?
-    /** Social link */
-    public var socialLink: String?
+    public var socialLink: LinkObject?
     /** Claim status */
     public var status: Status?
-    /** Website or social link */
-    public var websiteOrSocialLink: String
+    public var websiteOrSocialLink: LinkObject
 
     public init(
         acceptedTerms: Bool? = nil,
@@ -79,9 +76,9 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         role: String? = nil,
         selectedAlbums: [String]? = nil,
         selectedSingles: [String]? = nil,
-        socialLink: String? = nil,
+        socialLink: LinkObject? = nil,
         status: Status? = nil,
-        websiteOrSocialLink: String
+        websiteOrSocialLink: LinkObject
     ) {
         self.acceptedTerms = acceptedTerms
         self.artistId = artistId
