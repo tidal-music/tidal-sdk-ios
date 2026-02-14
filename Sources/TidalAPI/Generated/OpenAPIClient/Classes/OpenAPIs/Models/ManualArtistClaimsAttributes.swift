@@ -19,7 +19,6 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     }
     public static let legalFirstNameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let legalLastNameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
-    public static let websiteOrSocialLinkRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Accepted terms and conditions */
     public var acceptedTerms: Bool?
     /** Artist ID being claimed */
@@ -54,10 +53,10 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     public var selectedAlbums: [String]?
     /** Single IDs selected by user */
     public var selectedSingles: [String]?
+    public var socialLink: LinkObject?
     /** Claim status */
     public var status: Status?
-    /** Website or social link */
-    public var websiteOrSocialLink: String
+    public var websiteOrSocialLink: LinkObject
 
     public init(
         acceptedTerms: Bool? = nil,
@@ -77,8 +76,9 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         role: String? = nil,
         selectedAlbums: [String]? = nil,
         selectedSingles: [String]? = nil,
+        socialLink: LinkObject? = nil,
         status: Status? = nil,
-        websiteOrSocialLink: String
+        websiteOrSocialLink: LinkObject
     ) {
         self.acceptedTerms = acceptedTerms
         self.artistId = artistId
@@ -97,6 +97,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         self.role = role
         self.selectedAlbums = selectedAlbums
         self.selectedSingles = selectedSingles
+        self.socialLink = socialLink
         self.status = status
         self.websiteOrSocialLink = websiteOrSocialLink
     }
@@ -119,6 +120,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         case role
         case selectedAlbums
         case selectedSingles
+        case socialLink
         case status
         case websiteOrSocialLink
     }
@@ -144,6 +146,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         try container.encodeIfPresent(role, forKey: .role)
         try container.encodeIfPresent(selectedAlbums, forKey: .selectedAlbums)
         try container.encodeIfPresent(selectedSingles, forKey: .selectedSingles)
+        try container.encodeIfPresent(socialLink, forKey: .socialLink)
         try container.encodeIfPresent(status, forKey: .status)
         try container.encode(websiteOrSocialLink, forKey: .websiteOrSocialLink)
     }

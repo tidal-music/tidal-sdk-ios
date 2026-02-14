@@ -14,7 +14,6 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
 
     public static let legalFirstNameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let legalLastNameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
-    public static let websiteOrSocialLinkRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var acceptedTerms: Bool?
     public var artistId: String
     public var distributorName: String?
@@ -29,7 +28,8 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
     public var role: String?
     public var selectedAlbums: [String]?
     public var selectedSingles: [String]?
-    public var websiteOrSocialLink: String
+    public var socialLink: LinkObject?
+    public var websiteOrSocialLink: LinkObject
 
     public init(
         acceptedTerms: Bool? = nil,
@@ -46,7 +46,8 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
         role: String? = nil,
         selectedAlbums: [String]? = nil,
         selectedSingles: [String]? = nil,
-        websiteOrSocialLink: String
+        socialLink: LinkObject? = nil,
+        websiteOrSocialLink: LinkObject
     ) {
         self.acceptedTerms = acceptedTerms
         self.artistId = artistId
@@ -62,6 +63,7 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
         self.role = role
         self.selectedAlbums = selectedAlbums
         self.selectedSingles = selectedSingles
+        self.socialLink = socialLink
         self.websiteOrSocialLink = websiteOrSocialLink
     }
 
@@ -80,6 +82,7 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
         case role
         case selectedAlbums
         case selectedSingles
+        case socialLink
         case websiteOrSocialLink
     }
 
@@ -101,6 +104,7 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
         try container.encodeIfPresent(role, forKey: .role)
         try container.encodeIfPresent(selectedAlbums, forKey: .selectedAlbums)
         try container.encodeIfPresent(selectedSingles, forKey: .selectedSingles)
+        try container.encodeIfPresent(socialLink, forKey: .socialLink)
         try container.encode(websiteOrSocialLink, forKey: .websiteOrSocialLink)
     }
 }
