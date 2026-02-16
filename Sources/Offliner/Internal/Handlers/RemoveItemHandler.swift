@@ -9,7 +9,7 @@ final class RemoveItemHandler {
 		self.offlineStore = offlineStore
 	}
 
-	func handle(_ task: RemoveItemTask) async -> InternalTask? {
+	func handle(_ task: RemoveItemTask) -> InternalTask {
 		InternalTaskImpl(
 			task: task,
 			backendClient: backendClient,

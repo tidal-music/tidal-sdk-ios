@@ -17,7 +17,6 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 		let artwork: ArtworksResourceObject? = switch task.itemMetadata {
 		case .track(let trackMetadata): trackMetadata.coverArt
 		case .video(let videoMetadata): videoMetadata.thumbnail
-		case nil: nil
 		}
 
 		guard let artwork else { return nil }
@@ -29,7 +28,6 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 		let artwork: ArtworksResourceObject? = switch task.metadata {
 		case .album(let albumMetadata): albumMetadata.coverArt
 		case .playlist(let playlistMetadata): playlistMetadata.coverArt
-		case nil: nil
 		}
 
 		guard let artwork else { return nil }

@@ -15,15 +15,15 @@ enum ResourceType {
 
 struct StoreItemTask {
 	let id: String
-	let itemMetadata: OfflineMediaItem.Metadata?
-	let collectionMetadata: OfflineCollection.Metadata?
+	let itemMetadata: OfflineMediaItem.Metadata
+	let collectionMetadata: OfflineCollection.Metadata
 	let volume: Int
 	let position: Int
 }
 
 struct StoreCollectionTask {
 	let id: String
-	let metadata: OfflineCollection.Metadata?
+	let metadata: OfflineCollection.Metadata
 }
 
 struct RemoveItemTask {
@@ -133,58 +133,13 @@ final class BackendClient: BackendClientProtocol {
 			filterInstallationId: [installationId]
 		)
 
-		let includedItems = IncludedItemsMap(from: response.included)
+		let tasks = response.createOfflineTaskMap()
 
-		let tasks = response.data.compactMap { resourceObject -> OfflineTask? in
-			guard let attributes = resourceObject.attributes else {
-				return nil
-			}
-
-			let includedItem = resourceObject.relationships?.item.data
-				.flatMap { includedItems.get(type: $0.type, id: $0.id) }
-
-			let includedCollection = resourceObject.relationships?.collection.data
-				.flatMap { includedItems.get(type: $0.type, id: $0.id) }
-
-			switch attributes.action {
-			case .storeItem:
-				guard let volume = attributes.volume,
-					  let position = attributes.position else {
-					return nil
-				}
-
-				let task = StoreItemTask(
-					id: resourceObject.id,
-					itemMetadata: includedItem?.mediaItemMetadata,
-					collectionMetadata: includedCollection?.collectionMetadata,
-					volume: volume,
-					position: position
-				)
-				return .storeItem(task)
-
-			case .storeCollection:
-				let task = StoreCollectionTask(id: resourceObject.id, metadata: includedItem?.collectionMetadata)
-				return .storeCollection(task)
-
-			case .removeItem:
-				guard let metadata = includedItem?.mediaItemMetadata else {
-					return nil
-				}
-
-				let task = RemoveItemTask(id: resourceObject.id, metadata: metadata)
-				return .removeItem(task)
-
-			case .removeCollection:
-				guard let metadata = includedItem?.collectionMetadata else {
-					return nil
-				}
-
-				let task = RemoveCollectionTask(id: resourceObject.id, metadata: metadata)
-				return .removeCollection(task)
-			}
+		for (taskId, task) in tasks where task == nil {
+			try? await updateTask(taskId: taskId, state: .failed)
 		}
 
-		return (tasks, response.links.meta?.nextCursor)
+		return (tasks.compactMap(\.1), response.links.meta?.nextCursor)
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {
@@ -227,6 +182,44 @@ private extension BackendClient {
 			return .failed
 		case .completed:
 			return .completed
+		}
+	}
+}
+
+// MARK: - Response Mapping
+
+private extension OfflineTasksMultiResourceDataDocument {
+	func createOfflineTaskMap() -> [(String, OfflineTask?)] {
+		let includedItems = IncludedItemsMap(from: included)
+		return data.map { ($0.id, $0.createOfflineTask(includedItems: includedItems)) }
+	}
+}
+
+private extension OfflineTasksResourceObject {
+	func createOfflineTask(includedItems: IncludedItemsMap) -> OfflineTask? {
+		guard let attributes else {
+			return nil
+		}
+
+		let includedItem = relationships?.item.data
+			.flatMap { includedItems.get(type: $0.type, id: $0.id) }
+
+		let includedCollection = relationships?.collection.data
+			.flatMap { includedItems.get(type: $0.type, id: $0.id) }
+
+		switch attributes.action {
+		case .storeItem:
+			return StoreItemTask(self, attributes: attributes, item: includedItem, collection: includedCollection)
+				.map { .storeItem($0) }
+		case .storeCollection:
+			return StoreCollectionTask(self, item: includedItem)
+				.map { .storeCollection($0) }
+		case .removeItem:
+			return RemoveItemTask(self, item: includedItem)
+				.map { .removeItem($0) }
+		case .removeCollection:
+			return RemoveCollectionTask(self, item: includedItem)
+				.map { .removeCollection($0) }
 		}
 	}
 }
@@ -406,5 +399,58 @@ private class IncludedItem {
 		default:
 			return nil
 		}
+	}
+}
+
+// MARK: - Task Mapping Extensions
+
+private extension StoreItemTask {
+	init?(
+		_ resourceObject: OfflineTasksResourceObject,
+		attributes: OfflineTasksAttributes,
+		item: IncludedItem?,
+		collection: IncludedItem?
+	) {
+		guard let itemMetadata = item?.mediaItemMetadata,
+			  let collectionMetadata = collection?.collectionMetadata,
+			  let volume = attributes.volume,
+			  let position = attributes.position else {
+			return nil
+		}
+
+		self.init(
+			id: resourceObject.id,
+			itemMetadata: itemMetadata,
+			collectionMetadata: collectionMetadata,
+			volume: volume,
+			position: position
+		)
+	}
+}
+
+private extension StoreCollectionTask {
+	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
+		guard let metadata = item?.collectionMetadata else {
+			return nil
+		}
+		self.init(id: resourceObject.id, metadata: metadata)
+	}
+}
+
+private extension RemoveItemTask {
+	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
+		guard let metadata = item?.mediaItemMetadata else {
+			return nil
+		}
+		self.init(id: resourceObject.id, metadata: metadata)
+	}
+}
+
+private extension RemoveCollectionTask {
+	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
+		guard let metadata = item?.collectionMetadata else {
+			return nil
+		}
+		self.init(id: resourceObject.id, metadata: metadata)
 	}
 }

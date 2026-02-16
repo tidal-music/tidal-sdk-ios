@@ -20,19 +20,10 @@ final class StoreItemHandler {
 		self.mediaDownloader = mediaDownloader
 	}
 
-	func handle(_ task: StoreItemTask) async -> InternalTask? {
-		guard let itemMetadata = task.itemMetadata,
-			  let collectionMetadata = task.collectionMetadata else {
-			print("StoreItemHandler error: missing metadata")
-			try? await backendClient.updateTask(taskId: task.id, state: .failed)
-			return nil
-		}
-
-		return InternalTaskImpl(
+	func handle(_ task: StoreItemTask) -> InternalTask {
+		InternalTaskImpl(
 			task: task,
-			itemMetadata: itemMetadata,
-			collectionMetadata: collectionMetadata,
-			download: Download(metadata: itemMetadata),
+			download: Download(metadata: task.itemMetadata),
 			backendClient: backendClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
@@ -46,8 +37,6 @@ private final class InternalTaskImpl: InternalTask {
 	let download: Download?
 
 	private let task: StoreItemTask
-	private let itemMetadata: OfflineMediaItem.Metadata
-	private let collectionMetadata: OfflineCollection.Metadata
 	private let backendClient: BackendClientProtocol
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
@@ -57,8 +46,6 @@ private final class InternalTaskImpl: InternalTask {
 
 	init(
 		task: StoreItemTask,
-		itemMetadata: OfflineMediaItem.Metadata,
-		collectionMetadata: OfflineCollection.Metadata,
 		download: Download,
 		backendClient: BackendClientProtocol,
 		offlineStore: OfflineStore,
@@ -67,8 +54,6 @@ private final class InternalTaskImpl: InternalTask {
 	) {
 		self.id = task.id
 		self.task = task
-		self.itemMetadata = itemMetadata
-		self.collectionMetadata = collectionMetadata
 		self.download = download
 		self.backendClient = backendClient
 		self.offlineStore = offlineStore
@@ -90,7 +75,7 @@ private final class InternalTaskImpl: InternalTask {
 			let artworkURL = try await artworkDownloader.downloadArtwork(for: task)
 
 			let mediaResult = try await mediaDownloader.download(
-				trackId: itemMetadata.resourceId,
+				trackId: task.itemMetadata.resourceId,
 				taskId: id,
 				onProgress: { [weak self] progress in
 					guard let download = self?.download else { return }
@@ -99,11 +84,11 @@ private final class InternalTaskImpl: InternalTask {
 			)
 
 			let storeResult = StoreItemTaskResult(
-				resourceType: itemMetadata.resourceType,
-				resourceId: itemMetadata.resourceId,
-				metadata: itemMetadata,
-				collectionResourceType: collectionMetadata.resourceType,
-				collectionResourceId: collectionMetadata.resourceId,
+				resourceType: task.itemMetadata.resourceType,
+				resourceId: task.itemMetadata.resourceId,
+				metadata: task.itemMetadata,
+				collectionResourceType: task.collectionMetadata.resourceType,
+				collectionResourceId: task.collectionMetadata.resourceId,
 				volume: task.volume,
 				position: task.position,
 				mediaURL: mediaResult.mediaLocation,

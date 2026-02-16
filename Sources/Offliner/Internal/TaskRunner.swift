@@ -84,22 +84,21 @@ actor TaskRunner {
 		let (tasks, _) = try await backendClient.getTasks(cursor: nil)
 
 		for task in tasks where taskIds.insert(task.id).inserted {
-			if let internalTask = await handle(task) {
-				pendingTasks.append(internalTask)
-				if let download = internalTask.download {
-					currentDownloads.append(download)
-					downloadsContinuation?.yield(download)
-				}
+			let internalTask = handle(task)
+			pendingTasks.append(internalTask)
+			if let download = internalTask.download {
+				currentDownloads.append(download)
+				downloadsContinuation?.yield(download)
 			}
 		}
 	}
 
-	private func handle(_ offlineTask: OfflineTask) async -> InternalTask? {
+	private func handle(_ offlineTask: OfflineTask) -> InternalTask {
 		switch offlineTask {
-		case .storeItem(let task): await storeItemHandler.handle(task)
-		case .storeCollection(let task): await storeCollectionHandler.handle(task)
-		case .removeItem(let task): await removeItemHandler.handle(task)
-		case .removeCollection(let task): await removeCollectionHandler.handle(task)
+		case .storeItem(let task): storeItemHandler.handle(task)
+		case .storeCollection(let task): storeCollectionHandler.handle(task)
+		case .removeItem(let task): removeItemHandler.handle(task)
+		case .removeCollection(let task): removeCollectionHandler.handle(task)
 		}
 	}
 
