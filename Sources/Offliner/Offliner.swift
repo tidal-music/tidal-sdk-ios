@@ -1,5 +1,6 @@
 import Foundation
 import GRDB
+import Player
 import TidalAPI
 
 // MARK: - Public Types
@@ -171,6 +172,31 @@ public final class Offliner {
 	public func remove(collectionType: OfflineCollectionType, resourceId: String) async throws {
 		try await backendClient.removeItem(type: collectionType.toResourceType, id: resourceId)
 		try await taskRunner.run()
+	}
+}
+
+// MARK: - OfflineItemProvider
+
+extension Offliner: OfflineItemProvider {
+	public func get(productType: ProductType, productId: String) throws -> OfflinePlaybackItem? {
+		let mediaType: OfflineMediaItemType
+		switch productType {
+		case .TRACK: mediaType = .tracks
+		case .VIDEO: mediaType = .videos
+		case .UC: return nil
+		}
+
+		guard let item = try getOfflineMediaItem(mediaType: mediaType, resourceId: productId) else {
+			return nil
+		}
+
+		return OfflinePlaybackItem(
+			mediaURL: item.mediaURL,
+			licenseURL: item.licenseURL,
+			format: "HEAACV1",
+			albumReplayGain: nil,
+			albumPeakAmplitude: nil
+		)
 	}
 }
 

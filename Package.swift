@@ -144,6 +144,7 @@ let package = Package(
 				.GRDB,
 				.tidalAPI,
 				.auth,
+				.player,
 			],
 			resources: [
 				.process("Internal/Resources"),

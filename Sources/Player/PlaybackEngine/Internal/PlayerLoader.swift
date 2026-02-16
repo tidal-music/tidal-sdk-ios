@@ -32,6 +32,8 @@ protocol PlayerLoader: AnyObject {
 
 	func load(_ storedMediaProduct: StoredMediaProduct) async throws -> Asset
 
+	func load(_ offlinePlaybackItem: OfflinePlaybackItem) async throws -> Asset
+
 	func load(_ playbackInfo: PlaybackInfo, streamingSessionId: String) async throws -> Asset
 
 	func unload()
