@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **accessType** | **String** | Access type | [optional] 
+**createdAt** | **Date** |  | [optional] 
 **description** | **String** |  | [optional] 
 **name** | **String** |  | 
 
