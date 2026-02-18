@@ -12,46 +12,49 @@ import AnyCodable
 
 public struct TracksRelationships: Codable, Hashable {
 
-    public var albums: MultiRelationshipDataDocument
-    public var artists: MultiRelationshipDataDocument
-    public var credits: MultiRelationshipDataDocument
-    public var genres: MultiRelationshipDataDocument
-    public var lyrics: MultiRelationshipDataDocument
-    public var metadataStatus: SingleRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
-    public var priceConfig: SingleRelationshipDataDocument
-    public var providers: MultiRelationshipDataDocument
-    public var radio: MultiRelationshipDataDocument
-    public var replacement: SingleRelationshipDataDocument
-    public var shares: MultiRelationshipDataDocument
-    public var similarTracks: MultiRelationshipDataDocument
-    public var sourceFile: SingleRelationshipDataDocument
-    public var suggestedTracks: MultiRelationshipDataDocument
-    public var trackStatistics: SingleRelationshipDataDocument
-    public var usageRules: SingleRelationshipDataDocument
+    public var albums: MultiRelationshipDataDocument?
+    public var artists: MultiRelationshipDataDocument?
+    public var credits: MultiRelationshipDataDocument?
+    public var download: SingleRelationshipDataDocument?
+    public var genres: MultiRelationshipDataDocument?
+    public var lyrics: MultiRelationshipDataDocument?
+    public var metadataStatus: SingleRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
+    public var priceConfig: SingleRelationshipDataDocument?
+    public var providers: MultiRelationshipDataDocument?
+    public var radio: MultiRelationshipDataDocument?
+    public var replacement: SingleRelationshipDataDocument?
+    public var shares: MultiRelationshipDataDocument?
+    public var similarTracks: MultiRelationshipDataDocument?
+    public var sourceFile: SingleRelationshipDataDocument?
+    public var suggestedTracks: MultiRelationshipDataDocument?
+    public var trackStatistics: SingleRelationshipDataDocument?
+    public var usageRules: SingleRelationshipDataDocument?
 
     public init(
-        albums: MultiRelationshipDataDocument,
-        artists: MultiRelationshipDataDocument,
-        credits: MultiRelationshipDataDocument,
-        genres: MultiRelationshipDataDocument,
-        lyrics: MultiRelationshipDataDocument,
-        metadataStatus: SingleRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument,
-        priceConfig: SingleRelationshipDataDocument,
-        providers: MultiRelationshipDataDocument,
-        radio: MultiRelationshipDataDocument,
-        replacement: SingleRelationshipDataDocument,
-        shares: MultiRelationshipDataDocument,
-        similarTracks: MultiRelationshipDataDocument,
-        sourceFile: SingleRelationshipDataDocument,
-        suggestedTracks: MultiRelationshipDataDocument,
-        trackStatistics: SingleRelationshipDataDocument,
-        usageRules: SingleRelationshipDataDocument
+        albums: MultiRelationshipDataDocument? = nil,
+        artists: MultiRelationshipDataDocument? = nil,
+        credits: MultiRelationshipDataDocument? = nil,
+        download: SingleRelationshipDataDocument? = nil,
+        genres: MultiRelationshipDataDocument? = nil,
+        lyrics: MultiRelationshipDataDocument? = nil,
+        metadataStatus: SingleRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil,
+        priceConfig: SingleRelationshipDataDocument? = nil,
+        providers: MultiRelationshipDataDocument? = nil,
+        radio: MultiRelationshipDataDocument? = nil,
+        replacement: SingleRelationshipDataDocument? = nil,
+        shares: MultiRelationshipDataDocument? = nil,
+        similarTracks: MultiRelationshipDataDocument? = nil,
+        sourceFile: SingleRelationshipDataDocument? = nil,
+        suggestedTracks: MultiRelationshipDataDocument? = nil,
+        trackStatistics: SingleRelationshipDataDocument? = nil,
+        usageRules: SingleRelationshipDataDocument? = nil
     ) {
         self.albums = albums
         self.artists = artists
         self.credits = credits
+        self.download = download
         self.genres = genres
         self.lyrics = lyrics
         self.metadataStatus = metadataStatus
@@ -72,6 +75,7 @@ public struct TracksRelationships: Codable, Hashable {
         case albums
         case artists
         case credits
+        case download
         case genres
         case lyrics
         case metadataStatus
@@ -92,22 +96,23 @@ public struct TracksRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(albums, forKey: .albums)
-        try container.encode(artists, forKey: .artists)
-        try container.encode(credits, forKey: .credits)
-        try container.encode(genres, forKey: .genres)
-        try container.encode(lyrics, forKey: .lyrics)
-        try container.encode(metadataStatus, forKey: .metadataStatus)
-        try container.encode(owners, forKey: .owners)
-        try container.encode(priceConfig, forKey: .priceConfig)
-        try container.encode(providers, forKey: .providers)
-        try container.encode(radio, forKey: .radio)
-        try container.encode(replacement, forKey: .replacement)
-        try container.encode(shares, forKey: .shares)
-        try container.encode(similarTracks, forKey: .similarTracks)
-        try container.encode(sourceFile, forKey: .sourceFile)
-        try container.encode(suggestedTracks, forKey: .suggestedTracks)
-        try container.encode(trackStatistics, forKey: .trackStatistics)
-        try container.encode(usageRules, forKey: .usageRules)
+        try container.encodeIfPresent(albums, forKey: .albums)
+        try container.encodeIfPresent(artists, forKey: .artists)
+        try container.encodeIfPresent(credits, forKey: .credits)
+        try container.encodeIfPresent(download, forKey: .download)
+        try container.encodeIfPresent(genres, forKey: .genres)
+        try container.encodeIfPresent(lyrics, forKey: .lyrics)
+        try container.encodeIfPresent(metadataStatus, forKey: .metadataStatus)
+        try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(priceConfig, forKey: .priceConfig)
+        try container.encodeIfPresent(providers, forKey: .providers)
+        try container.encodeIfPresent(radio, forKey: .radio)
+        try container.encodeIfPresent(replacement, forKey: .replacement)
+        try container.encodeIfPresent(shares, forKey: .shares)
+        try container.encodeIfPresent(similarTracks, forKey: .similarTracks)
+        try container.encodeIfPresent(sourceFile, forKey: .sourceFile)
+        try container.encodeIfPresent(suggestedTracks, forKey: .suggestedTracks)
+        try container.encodeIfPresent(trackStatistics, forKey: .trackStatistics)
+        try container.encodeIfPresent(usageRules, forKey: .usageRules)
     }
 }

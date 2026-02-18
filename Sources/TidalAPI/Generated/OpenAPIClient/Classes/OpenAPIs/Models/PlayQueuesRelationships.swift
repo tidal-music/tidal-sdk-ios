@@ -12,16 +12,16 @@ import AnyCodable
 
 public struct PlayQueuesRelationships: Codable, Hashable {
 
-    public var current: PlayQueuesCurrentSingleRelationshipDataDocument
-    public var future: PlayQueuesFutureMultiRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
-    public var past: PlayQueuesPastMultiRelationshipDataDocument
+    public var current: PlayQueuesCurrentSingleRelationshipDataDocument?
+    public var future: PlayQueuesFutureMultiRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
+    public var past: PlayQueuesPastMultiRelationshipDataDocument?
 
     public init(
-        current: PlayQueuesCurrentSingleRelationshipDataDocument,
-        future: PlayQueuesFutureMultiRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument,
-        past: PlayQueuesPastMultiRelationshipDataDocument
+        current: PlayQueuesCurrentSingleRelationshipDataDocument? = nil,
+        future: PlayQueuesFutureMultiRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil,
+        past: PlayQueuesPastMultiRelationshipDataDocument? = nil
     ) {
         self.current = current
         self.future = future
@@ -40,9 +40,9 @@ public struct PlayQueuesRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(current, forKey: .current)
-        try container.encode(future, forKey: .future)
-        try container.encode(owners, forKey: .owners)
-        try container.encode(past, forKey: .past)
+        try container.encodeIfPresent(current, forKey: .current)
+        try container.encodeIfPresent(future, forKey: .future)
+        try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(past, forKey: .past)
     }
 }

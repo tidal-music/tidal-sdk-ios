@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct CreditsRelationships: Codable, Hashable {
 
-    public var artist: SingleRelationshipDataDocument
-    public var category: SingleRelationshipDataDocument
+    public var artist: SingleRelationshipDataDocument?
+    public var category: SingleRelationshipDataDocument?
 
     public init(
-        artist: SingleRelationshipDataDocument,
-        category: SingleRelationshipDataDocument
+        artist: SingleRelationshipDataDocument? = nil,
+        category: SingleRelationshipDataDocument? = nil
     ) {
         self.artist = artist
         self.category = category
@@ -32,7 +32,7 @@ public struct CreditsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(artist, forKey: .artist)
-        try container.encode(category, forKey: .category)
+        try container.encodeIfPresent(artist, forKey: .artist)
+        try container.encodeIfPresent(category, forKey: .category)
     }
 }

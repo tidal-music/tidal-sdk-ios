@@ -42,6 +42,8 @@ public struct AlbumsAttributes: Codable, Hashable {
     /** Barcode id (EAN-13 or UPC-A) */
     public var barcodeId: String
     public var copyright: Copyright?
+    /** Datetime of album creation (ISO 8601) */
+    public var createdAt: Date?
     /** Duration (ISO 8601) */
     public var duration: String
     /** Explicit content */
@@ -71,6 +73,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         availability: [Availability]? = nil,
         barcodeId: String,
         copyright: Copyright? = nil,
+        createdAt: Date? = nil,
         duration: String,
         explicit: Bool,
         externalLinks: [ExternalLink]? = nil,
@@ -88,6 +91,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         self.availability = availability
         self.barcodeId = barcodeId
         self.copyright = copyright
+        self.createdAt = createdAt
         self.duration = duration
         self.explicit = explicit
         self.externalLinks = externalLinks
@@ -107,6 +111,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         case availability
         case barcodeId
         case copyright
+        case createdAt
         case duration
         case explicit
         case externalLinks
@@ -129,6 +134,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         try container.encodeIfPresent(availability, forKey: .availability)
         try container.encode(barcodeId, forKey: .barcodeId)
         try container.encodeIfPresent(copyright, forKey: .copyright)
+        try container.encodeIfPresent(createdAt, forKey: .createdAt)
         try container.encode(duration, forKey: .duration)
         try container.encode(explicit, forKey: .explicit)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)

@@ -12,24 +12,26 @@ import AnyCodable
 
 public struct VideosRelationships: Codable, Hashable {
 
-    public var albums: MultiRelationshipDataDocument
-    public var artists: MultiRelationshipDataDocument
-    public var credits: MultiRelationshipDataDocument
-    public var providers: MultiRelationshipDataDocument
-    public var replacement: SingleRelationshipDataDocument
-    public var similarVideos: MultiRelationshipDataDocument
-    public var thumbnailArt: MultiRelationshipDataDocument
-    public var usageRules: SingleRelationshipDataDocument
+    public var albums: MultiRelationshipDataDocument?
+    public var artists: MultiRelationshipDataDocument?
+    public var credits: MultiRelationshipDataDocument?
+    public var providers: MultiRelationshipDataDocument?
+    public var replacement: SingleRelationshipDataDocument?
+    public var similarVideos: MultiRelationshipDataDocument?
+    public var suggestedVideos: MultiRelationshipDataDocument?
+    public var thumbnailArt: MultiRelationshipDataDocument?
+    public var usageRules: SingleRelationshipDataDocument?
 
     public init(
-        albums: MultiRelationshipDataDocument,
-        artists: MultiRelationshipDataDocument,
-        credits: MultiRelationshipDataDocument,
-        providers: MultiRelationshipDataDocument,
-        replacement: SingleRelationshipDataDocument,
-        similarVideos: MultiRelationshipDataDocument,
-        thumbnailArt: MultiRelationshipDataDocument,
-        usageRules: SingleRelationshipDataDocument
+        albums: MultiRelationshipDataDocument? = nil,
+        artists: MultiRelationshipDataDocument? = nil,
+        credits: MultiRelationshipDataDocument? = nil,
+        providers: MultiRelationshipDataDocument? = nil,
+        replacement: SingleRelationshipDataDocument? = nil,
+        similarVideos: MultiRelationshipDataDocument? = nil,
+        suggestedVideos: MultiRelationshipDataDocument? = nil,
+        thumbnailArt: MultiRelationshipDataDocument? = nil,
+        usageRules: SingleRelationshipDataDocument? = nil
     ) {
         self.albums = albums
         self.artists = artists
@@ -37,6 +39,7 @@ public struct VideosRelationships: Codable, Hashable {
         self.providers = providers
         self.replacement = replacement
         self.similarVideos = similarVideos
+        self.suggestedVideos = suggestedVideos
         self.thumbnailArt = thumbnailArt
         self.usageRules = usageRules
     }
@@ -48,6 +51,7 @@ public struct VideosRelationships: Codable, Hashable {
         case providers
         case replacement
         case similarVideos
+        case suggestedVideos
         case thumbnailArt
         case usageRules
     }
@@ -56,13 +60,14 @@ public struct VideosRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(albums, forKey: .albums)
-        try container.encode(artists, forKey: .artists)
-        try container.encode(credits, forKey: .credits)
-        try container.encode(providers, forKey: .providers)
-        try container.encode(replacement, forKey: .replacement)
-        try container.encode(similarVideos, forKey: .similarVideos)
-        try container.encode(thumbnailArt, forKey: .thumbnailArt)
-        try container.encode(usageRules, forKey: .usageRules)
+        try container.encodeIfPresent(albums, forKey: .albums)
+        try container.encodeIfPresent(artists, forKey: .artists)
+        try container.encodeIfPresent(credits, forKey: .credits)
+        try container.encodeIfPresent(providers, forKey: .providers)
+        try container.encodeIfPresent(replacement, forKey: .replacement)
+        try container.encodeIfPresent(similarVideos, forKey: .similarVideos)
+        try container.encodeIfPresent(suggestedVideos, forKey: .suggestedVideos)
+        try container.encodeIfPresent(thumbnailArt, forKey: .thumbnailArt)
+        try container.encodeIfPresent(usageRules, forKey: .usageRules)
     }
 }

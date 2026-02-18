@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct ArtistClaimsRelationships: Codable, Hashable {
 
-    public var acceptedArtists: MultiRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
-    public var recommendedArtists: MultiRelationshipDataDocument
+    public var acceptedArtists: MultiRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
+    public var recommendedArtists: MultiRelationshipDataDocument?
 
     public init(
-        acceptedArtists: MultiRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument,
-        recommendedArtists: MultiRelationshipDataDocument
+        acceptedArtists: MultiRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil,
+        recommendedArtists: MultiRelationshipDataDocument? = nil
     ) {
         self.acceptedArtists = acceptedArtists
         self.owners = owners
@@ -36,8 +36,8 @@ public struct ArtistClaimsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(acceptedArtists, forKey: .acceptedArtists)
-        try container.encode(owners, forKey: .owners)
-        try container.encode(recommendedArtists, forKey: .recommendedArtists)
+        try container.encodeIfPresent(acceptedArtists, forKey: .acceptedArtists)
+        try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(recommendedArtists, forKey: .recommendedArtists)
     }
 }
