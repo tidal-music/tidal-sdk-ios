@@ -65,31 +65,16 @@ final class StubBackendClient: BackendClientProtocol {
 		let taskId = "task-\(taskIdCounter)"
 		taskIdCounter += 1
 
+		let resourceType: String
 		switch type {
-		case .track:
-			let track = TracksResourceObject(id: id, type: "tracks")
-			let metadata = OfflineMediaItem.TrackMetadata(track: track, artists: [], coverArt: nil)
-			let task = RemoveItemTask(id: taskId, metadata: .track(metadata))
-			tasks.append(.removeItem(task))
-
-		case .video:
-			let video = VideosResourceObject(id: id, type: "videos")
-			let metadata = OfflineMediaItem.VideoMetadata(video: video, artists: [], thumbnail: nil)
-			let task = RemoveItemTask(id: taskId, metadata: .video(metadata))
-			tasks.append(.removeItem(task))
-
-		case .album:
-			let album = AlbumsResourceObject(id: id, type: "albums")
-			let metadata = OfflineCollection.AlbumMetadata(album: album, artists: [], coverArt: nil)
-			let task = RemoveCollectionTask(id: taskId, metadata: .album(metadata))
-			tasks.append(.removeCollection(task))
-
-		case .playlist:
-			let playlist = PlaylistsResourceObject(id: id, type: "playlists")
-			let metadata = OfflineCollection.PlaylistMetadata(playlist: playlist, coverArt: nil)
-			let task = RemoveCollectionTask(id: taskId, metadata: .playlist(metadata))
-			tasks.append(.removeCollection(task))
+		case .track: resourceType = "tracks"
+		case .video: resourceType = "videos"
+		case .album: resourceType = "albums"
+		case .playlist: resourceType = "playlists"
 		}
+
+		let task = RemoveTask(id: taskId, resourceType: resourceType, resourceId: id)
+		tasks.append(.remove(task))
 	}
 
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {

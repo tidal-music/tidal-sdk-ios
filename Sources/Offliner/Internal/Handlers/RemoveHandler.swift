@@ -1,6 +1,6 @@
 import Foundation
 
-final class RemoveItemHandler {
+final class RemoveHandler {
 	private let backendClient: BackendClientProtocol
 	private let offlineStore: OfflineStore
 
@@ -9,7 +9,7 @@ final class RemoveItemHandler {
 		self.offlineStore = offlineStore
 	}
 
-	func handle(_ task: RemoveItemTask) -> InternalTask {
+	func handle(_ task: RemoveTask) -> InternalTask {
 		InternalTaskImpl(
 			task: task,
 			backendClient: backendClient,
@@ -21,26 +21,29 @@ final class RemoveItemHandler {
 private final class InternalTaskImpl: InternalTask {
 	let id: String
 
-	private let metadata: OfflineMediaItem.Metadata
+	private let resourceType: String
+	private let resourceId: String
 	private let backendClient: BackendClientProtocol
 	private let offlineStore: OfflineStore
 
-	init(task: RemoveItemTask, backendClient: BackendClientProtocol, offlineStore: OfflineStore) {
+	init(task: RemoveTask, backendClient: BackendClientProtocol, offlineStore: OfflineStore) {
 		self.id = task.id
-		self.metadata = task.metadata
+		self.resourceType = task.resourceType
+		self.resourceId = task.resourceId
 		self.backendClient = backendClient
 		self.offlineStore = offlineStore
 	}
 
 	func run() async {
+		print("RemoveHandler: deleting \(resourceType)/\(resourceId)")
 		do {
 			try offlineStore.deleteItem(
-				resourceType: metadata.resourceType,
-				resourceId: metadata.resourceId
+				resourceType: resourceType,
+				resourceId: resourceId
 			)
 			try await backendClient.updateTask(taskId: id, state: .completed)
 		} catch {
-			print("RemoveItemHandler error: \(error)")
+			print("RemoveHandler error: \(error)")
 			try? await backendClient.updateTask(taskId: id, state: .failed)
 		}
 	}

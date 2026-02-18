@@ -26,14 +26,10 @@ struct StoreCollectionTask {
 	let metadata: OfflineCollection.Metadata
 }
 
-struct RemoveItemTask {
+struct RemoveTask {
 	let id: String
-	let metadata: OfflineMediaItem.Metadata
-}
-
-struct RemoveCollectionTask {
-	let id: String
-	let metadata: OfflineCollection.Metadata
+	let resourceType: String
+	let resourceId: String
 }
 
 // MARK: - OfflineTask
@@ -41,15 +37,13 @@ struct RemoveCollectionTask {
 enum OfflineTask {
 	case storeItem(StoreItemTask)
 	case storeCollection(StoreCollectionTask)
-	case removeItem(RemoveItemTask)
-	case removeCollection(RemoveCollectionTask)
+	case remove(RemoveTask)
 
 	var id: String {
 		switch self {
 		case .storeItem(let task): return task.id
 		case .storeCollection(let task): return task.id
-		case .removeItem(let task): return task.id
-		case .removeCollection(let task): return task.id
+		case .remove(let task): return task.id
 		}
 	}
 }
@@ -214,12 +208,9 @@ private extension OfflineTasksResourceObject {
 		case .storeCollection:
 			return StoreCollectionTask(self, item: includedItem)
 				.map { .storeCollection($0) }
-		case .removeItem:
-			return RemoveItemTask(self, item: includedItem)
-				.map { .removeItem($0) }
-		case .removeCollection:
-			return RemoveCollectionTask(self, item: includedItem)
-				.map { .removeCollection($0) }
+		case .removeItem, .removeCollection:
+			return RemoveTask(self)
+				.map { .remove($0) }
 		}
 	}
 }
@@ -437,20 +428,11 @@ private extension StoreCollectionTask {
 	}
 }
 
-private extension RemoveItemTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
-		guard let metadata = item?.mediaItemMetadata else {
+private extension RemoveTask {
+	init?(_ resourceObject: OfflineTasksResourceObject) {
+		guard let itemData = resourceObject.relationships?.item.data else {
 			return nil
 		}
-		self.init(id: resourceObject.id, metadata: metadata)
-	}
-}
-
-private extension RemoveCollectionTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
-		guard let metadata = item?.collectionMetadata else {
-			return nil
-		}
-		self.init(id: resourceObject.id, metadata: metadata)
+		self.init(id: resourceObject.id, resourceType: itemData.type, resourceId: itemData.id)
 	}
 }
