@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **availability** | **[String]** | Available usage for this album. Deprecated: use &#39;usageRules&#39; instead. This field will be removed in a future version. | [optional] 
 **barcodeId** | **String** | Barcode id (EAN-13 or UPC-A) | 
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 
+**createdAt** | **Date** | Datetime of album creation (ISO 8601) | [optional] 
 **duration** | **String** | Duration (ISO 8601) | 
 **explicit** | **Bool** | Explicit content | 
 **externalLinks** | [ExternalLink] | Album links external to TIDAL API | [optional] 

@@ -12,16 +12,16 @@ import AnyCodable
 
 public struct PlaylistsRelationships: Codable, Hashable {
 
-    public var coverArt: MultiRelationshipDataDocument
-    public var items: PlaylistsItemsMultiRelationshipDataDocument
-    public var ownerProfiles: MultiRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
+    public var coverArt: MultiRelationshipDataDocument?
+    public var items: PlaylistsItemsMultiRelationshipDataDocument?
+    public var ownerProfiles: MultiRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
 
     public init(
-        coverArt: MultiRelationshipDataDocument,
-        items: PlaylistsItemsMultiRelationshipDataDocument,
-        ownerProfiles: MultiRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument
+        coverArt: MultiRelationshipDataDocument? = nil,
+        items: PlaylistsItemsMultiRelationshipDataDocument? = nil,
+        ownerProfiles: MultiRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil
     ) {
         self.coverArt = coverArt
         self.items = items
@@ -40,9 +40,9 @@ public struct PlaylistsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(coverArt, forKey: .coverArt)
-        try container.encode(items, forKey: .items)
-        try container.encode(ownerProfiles, forKey: .ownerProfiles)
-        try container.encode(owners, forKey: .owners)
+        try container.encodeIfPresent(coverArt, forKey: .coverArt)
+        try container.encodeIfPresent(items, forKey: .items)
+        try container.encodeIfPresent(ownerProfiles, forKey: .ownerProfiles)
+        try container.encodeIfPresent(owners, forKey: .owners)
     }
 }

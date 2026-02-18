@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct LyricsRelationships: Codable, Hashable {
 
-    public var owners: MultiRelationshipDataDocument
-    public var track: SingleRelationshipDataDocument
+    public var owners: MultiRelationshipDataDocument?
+    public var track: SingleRelationshipDataDocument?
 
     public init(
-        owners: MultiRelationshipDataDocument,
-        track: SingleRelationshipDataDocument
+        owners: MultiRelationshipDataDocument? = nil,
+        track: SingleRelationshipDataDocument? = nil
     ) {
         self.owners = owners
         self.track = track
@@ -32,7 +32,7 @@ public struct LyricsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(owners, forKey: .owners)
-        try container.encode(track, forKey: .track)
+        try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(track, forKey: .track)
     }
 }

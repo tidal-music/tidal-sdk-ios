@@ -12,32 +12,32 @@ import AnyCodable
 
 public struct ArtistsRelationships: Codable, Hashable {
 
-    public var albums: MultiRelationshipDataDocument
-    public var biography: SingleRelationshipDataDocument
-    public var followers: ArtistsFollowersMultiRelationshipDataDocument
-    public var following: ArtistsFollowingMultiRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
-    public var profileArt: MultiRelationshipDataDocument
-    public var radio: MultiRelationshipDataDocument
-    public var roles: MultiRelationshipDataDocument
-    public var similarArtists: MultiRelationshipDataDocument
-    public var trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument
-    public var tracks: MultiRelationshipDataDocument
-    public var videos: MultiRelationshipDataDocument
+    public var albums: MultiRelationshipDataDocument?
+    public var biography: SingleRelationshipDataDocument?
+    public var followers: ArtistsFollowersMultiRelationshipDataDocument?
+    public var following: ArtistsFollowingMultiRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
+    public var profileArt: MultiRelationshipDataDocument?
+    public var radio: MultiRelationshipDataDocument?
+    public var roles: MultiRelationshipDataDocument?
+    public var similarArtists: MultiRelationshipDataDocument?
+    public var trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument?
+    public var tracks: MultiRelationshipDataDocument?
+    public var videos: MultiRelationshipDataDocument?
 
     public init(
-        albums: MultiRelationshipDataDocument,
-        biography: SingleRelationshipDataDocument,
-        followers: ArtistsFollowersMultiRelationshipDataDocument,
-        following: ArtistsFollowingMultiRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument,
-        profileArt: MultiRelationshipDataDocument,
-        radio: MultiRelationshipDataDocument,
-        roles: MultiRelationshipDataDocument,
-        similarArtists: MultiRelationshipDataDocument,
-        trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument,
-        tracks: MultiRelationshipDataDocument,
-        videos: MultiRelationshipDataDocument
+        albums: MultiRelationshipDataDocument? = nil,
+        biography: SingleRelationshipDataDocument? = nil,
+        followers: ArtistsFollowersMultiRelationshipDataDocument? = nil,
+        following: ArtistsFollowingMultiRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil,
+        profileArt: MultiRelationshipDataDocument? = nil,
+        radio: MultiRelationshipDataDocument? = nil,
+        roles: MultiRelationshipDataDocument? = nil,
+        similarArtists: MultiRelationshipDataDocument? = nil,
+        trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument? = nil,
+        tracks: MultiRelationshipDataDocument? = nil,
+        videos: MultiRelationshipDataDocument? = nil
     ) {
         self.albums = albums
         self.biography = biography
@@ -72,17 +72,17 @@ public struct ArtistsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(albums, forKey: .albums)
-        try container.encode(biography, forKey: .biography)
-        try container.encode(followers, forKey: .followers)
-        try container.encode(following, forKey: .following)
-        try container.encode(owners, forKey: .owners)
-        try container.encode(profileArt, forKey: .profileArt)
-        try container.encode(radio, forKey: .radio)
-        try container.encode(roles, forKey: .roles)
-        try container.encode(similarArtists, forKey: .similarArtists)
-        try container.encode(trackProviders, forKey: .trackProviders)
-        try container.encode(tracks, forKey: .tracks)
-        try container.encode(videos, forKey: .videos)
+        try container.encodeIfPresent(albums, forKey: .albums)
+        try container.encodeIfPresent(biography, forKey: .biography)
+        try container.encodeIfPresent(followers, forKey: .followers)
+        try container.encodeIfPresent(following, forKey: .following)
+        try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(profileArt, forKey: .profileArt)
+        try container.encodeIfPresent(radio, forKey: .radio)
+        try container.encodeIfPresent(roles, forKey: .roles)
+        try container.encodeIfPresent(similarArtists, forKey: .similarArtists)
+        try container.encodeIfPresent(trackProviders, forKey: .trackProviders)
+        try container.encodeIfPresent(tracks, forKey: .tracks)
+        try container.encodeIfPresent(videos, forKey: .videos)
     }
 }

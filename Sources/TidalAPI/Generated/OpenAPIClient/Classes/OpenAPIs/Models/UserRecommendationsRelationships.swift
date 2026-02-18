@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct UserRecommendationsRelationships: Codable, Hashable {
 
-    public var discoveryMixes: MultiRelationshipDataDocument
-    public var myMixes: MultiRelationshipDataDocument
-    public var newArrivalMixes: MultiRelationshipDataDocument
+    public var discoveryMixes: MultiRelationshipDataDocument?
+    public var myMixes: MultiRelationshipDataDocument?
+    public var newArrivalMixes: MultiRelationshipDataDocument?
 
     public init(
-        discoveryMixes: MultiRelationshipDataDocument,
-        myMixes: MultiRelationshipDataDocument,
-        newArrivalMixes: MultiRelationshipDataDocument
+        discoveryMixes: MultiRelationshipDataDocument? = nil,
+        myMixes: MultiRelationshipDataDocument? = nil,
+        newArrivalMixes: MultiRelationshipDataDocument? = nil
     ) {
         self.discoveryMixes = discoveryMixes
         self.myMixes = myMixes
@@ -36,8 +36,8 @@ public struct UserRecommendationsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(discoveryMixes, forKey: .discoveryMixes)
-        try container.encode(myMixes, forKey: .myMixes)
-        try container.encode(newArrivalMixes, forKey: .newArrivalMixes)
+        try container.encodeIfPresent(discoveryMixes, forKey: .discoveryMixes)
+        try container.encodeIfPresent(myMixes, forKey: .myMixes)
+        try container.encodeIfPresent(newArrivalMixes, forKey: .newArrivalMixes)
     }
 }

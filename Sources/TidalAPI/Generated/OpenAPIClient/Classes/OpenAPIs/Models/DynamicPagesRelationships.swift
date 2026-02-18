@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct DynamicPagesRelationships: Codable, Hashable {
 
-    public var dynamicModules: MultiRelationshipDataDocument
-    public var subject: SingleRelationshipDataDocument
+    public var dynamicModules: MultiRelationshipDataDocument?
+    public var subject: SingleRelationshipDataDocument?
 
     public init(
-        dynamicModules: MultiRelationshipDataDocument,
-        subject: SingleRelationshipDataDocument
+        dynamicModules: MultiRelationshipDataDocument? = nil,
+        subject: SingleRelationshipDataDocument? = nil
     ) {
         self.dynamicModules = dynamicModules
         self.subject = subject
@@ -32,7 +32,7 @@ public struct DynamicPagesRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(dynamicModules, forKey: .dynamicModules)
-        try container.encode(subject, forKey: .subject)
+        try container.encodeIfPresent(dynamicModules, forKey: .dynamicModules)
+        try container.encodeIfPresent(subject, forKey: .subject)
     }
 }

@@ -111,6 +111,18 @@ public enum VideosAPITidal {
 
 
 	/**
+     Get suggestedVideos relationship (\&quot;to-many\&quot;).
+     
+     - returns: VideosMultiRelationshipDataDocument
+     */
+	public static func videosIdRelationshipsSuggestedVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			VideosAPI.videosIdRelationshipsSuggestedVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
+		}
+	}
+
+
+	/**
      Get thumbnailArt relationship (\&quot;to-many\&quot;).
      
      - returns: VideosMultiRelationshipDataDocument

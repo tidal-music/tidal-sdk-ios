@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct OfflineTasksRelationships: Codable, Hashable {
 
-    public var collection: SingleRelationshipDataDocument
-    public var item: SingleRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
+    public var collection: SingleRelationshipDataDocument?
+    public var item: SingleRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
 
     public init(
-        collection: SingleRelationshipDataDocument,
-        item: SingleRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument
+        collection: SingleRelationshipDataDocument? = nil,
+        item: SingleRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil
     ) {
         self.collection = collection
         self.item = item
@@ -36,8 +36,8 @@ public struct OfflineTasksRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(collection, forKey: .collection)
-        try container.encode(item, forKey: .item)
-        try container.encode(owners, forKey: .owners)
+        try container.encodeIfPresent(collection, forKey: .collection)
+        try container.encodeIfPresent(item, forKey: .item)
+        try container.encodeIfPresent(owners, forKey: .owners)
     }
 }

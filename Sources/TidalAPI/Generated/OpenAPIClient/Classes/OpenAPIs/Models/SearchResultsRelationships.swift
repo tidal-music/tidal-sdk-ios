@@ -12,20 +12,20 @@ import AnyCodable
 
 public struct SearchResultsRelationships: Codable, Hashable {
 
-    public var albums: MultiRelationshipDataDocument
-    public var artists: MultiRelationshipDataDocument
-    public var playlists: MultiRelationshipDataDocument
-    public var topHits: MultiRelationshipDataDocument
-    public var tracks: MultiRelationshipDataDocument
-    public var videos: MultiRelationshipDataDocument
+    public var albums: MultiRelationshipDataDocument?
+    public var artists: MultiRelationshipDataDocument?
+    public var playlists: MultiRelationshipDataDocument?
+    public var topHits: MultiRelationshipDataDocument?
+    public var tracks: MultiRelationshipDataDocument?
+    public var videos: MultiRelationshipDataDocument?
 
     public init(
-        albums: MultiRelationshipDataDocument,
-        artists: MultiRelationshipDataDocument,
-        playlists: MultiRelationshipDataDocument,
-        topHits: MultiRelationshipDataDocument,
-        tracks: MultiRelationshipDataDocument,
-        videos: MultiRelationshipDataDocument
+        albums: MultiRelationshipDataDocument? = nil,
+        artists: MultiRelationshipDataDocument? = nil,
+        playlists: MultiRelationshipDataDocument? = nil,
+        topHits: MultiRelationshipDataDocument? = nil,
+        tracks: MultiRelationshipDataDocument? = nil,
+        videos: MultiRelationshipDataDocument? = nil
     ) {
         self.albums = albums
         self.artists = artists
@@ -48,11 +48,11 @@ public struct SearchResultsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(albums, forKey: .albums)
-        try container.encode(artists, forKey: .artists)
-        try container.encode(playlists, forKey: .playlists)
-        try container.encode(topHits, forKey: .topHits)
-        try container.encode(tracks, forKey: .tracks)
-        try container.encode(videos, forKey: .videos)
+        try container.encodeIfPresent(albums, forKey: .albums)
+        try container.encodeIfPresent(artists, forKey: .artists)
+        try container.encodeIfPresent(playlists, forKey: .playlists)
+        try container.encodeIfPresent(topHits, forKey: .topHits)
+        try container.encodeIfPresent(tracks, forKey: .tracks)
+        try container.encodeIfPresent(videos, forKey: .videos)
     }
 }

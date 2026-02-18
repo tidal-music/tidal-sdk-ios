@@ -15,13 +15,32 @@ public enum AlbumsAPITidal {
 
 
 	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_albumsGet: String, CaseIterable {
+		case CreatedAtAsc = "createdAt"
+		case CreatedAtDesc = "-createdAt"
+		case TitleAsc = "title"
+		case TitleDesc = "-title"
+
+		func toAlbumsAPIEnum() -> AlbumsAPI.Sort_albumsGet {
+			switch self {
+			case .CreatedAtAsc: return .CreatedAtAsc
+			case .CreatedAtDesc: return .CreatedAtDesc
+			case .TitleAsc: return .TitleAsc
+			case .TitleDesc: return .TitleDesc
+			}
+		}
+	}
+
+	/**
      Get multiple albums.
      
      - returns: AlbumsMultiResourceDataDocument
      */
-	public static func albumsGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiResourceDataDocument {
+	public static func albumsGet(pageCursor: String? = nil, sort: [AlbumsAPITidal.Sort_albumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsGetWithRequestBuilder(pageCursor: pageCursor, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, shareCode: shareCode)
+			AlbumsAPI.albumsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toAlbumsAPIEnum() }, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, shareCode: shareCode)
 		}
 	}
 
