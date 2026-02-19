@@ -686,7 +686,7 @@ Creates a new playlist.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let playlistsCreateOperationPayload = PlaylistsCreateOperation_Payload(data: PlaylistsCreateOperation_Payload_Data(attributes: PlaylistsCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), type: "type_example")) // PlaylistsCreateOperationPayload |  (optional)
+let playlistsCreateOperationPayload = PlaylistsCreateOperation_Payload(data: PlaylistsCreateOperation_Payload_Data(attributes: PlaylistsCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", createdAt: Date(), description: "description_example", name: "name_example"), type: "type_example")) // PlaylistsCreateOperationPayload |  (optional)
 
 // Create single playlist.
 PlaylistsAPI.playlistsPost(countryCode: countryCode, playlistsCreateOperationPayload: playlistsCreateOperationPayload) { (response, error) in

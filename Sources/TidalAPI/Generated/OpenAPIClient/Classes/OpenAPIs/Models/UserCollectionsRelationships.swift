@@ -12,20 +12,20 @@ import AnyCodable
 
 public struct UserCollectionsRelationships: Codable, Hashable {
 
-    public var albums: UserCollectionsAlbumsMultiRelationshipDataDocument
-    public var artists: UserCollectionsArtistsMultiRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
-    public var playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument
-    public var tracks: UserCollectionsTracksMultiRelationshipDataDocument
-    public var videos: UserCollectionsVideosMultiRelationshipDataDocument
+    public var albums: UserCollectionsAlbumsMultiRelationshipDataDocument?
+    public var artists: UserCollectionsArtistsMultiRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
+    public var playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument?
+    public var tracks: UserCollectionsTracksMultiRelationshipDataDocument?
+    public var videos: UserCollectionsVideosMultiRelationshipDataDocument?
 
     public init(
-        albums: UserCollectionsAlbumsMultiRelationshipDataDocument,
-        artists: UserCollectionsArtistsMultiRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument,
-        playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument,
-        tracks: UserCollectionsTracksMultiRelationshipDataDocument,
-        videos: UserCollectionsVideosMultiRelationshipDataDocument
+        albums: UserCollectionsAlbumsMultiRelationshipDataDocument? = nil,
+        artists: UserCollectionsArtistsMultiRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil,
+        playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument? = nil,
+        tracks: UserCollectionsTracksMultiRelationshipDataDocument? = nil,
+        videos: UserCollectionsVideosMultiRelationshipDataDocument? = nil
     ) {
         self.albums = albums
         self.artists = artists
@@ -48,11 +48,11 @@ public struct UserCollectionsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(albums, forKey: .albums)
-        try container.encode(artists, forKey: .artists)
-        try container.encode(owners, forKey: .owners)
-        try container.encode(playlists, forKey: .playlists)
-        try container.encode(tracks, forKey: .tracks)
-        try container.encode(videos, forKey: .videos)
+        try container.encodeIfPresent(albums, forKey: .albums)
+        try container.encodeIfPresent(artists, forKey: .artists)
+        try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(playlists, forKey: .playlists)
+        try container.encodeIfPresent(tracks, forKey: .tracks)
+        try container.encodeIfPresent(videos, forKey: .videos)
     }
 }

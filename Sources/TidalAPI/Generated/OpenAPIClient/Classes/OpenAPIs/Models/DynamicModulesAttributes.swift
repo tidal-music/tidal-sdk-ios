@@ -38,7 +38,6 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case textCard = "TEXT_CARD"
         case linksList = "LINKS_LIST"
         case publicPlaylistList = "PUBLIC_PLAYLIST_LIST"
-        case unknown = "UNKNOWN"
     }
     public enum SourceType: String, Codable, CaseIterable {
         case albumRecommendations = "ALBUM_RECOMMENDATIONS"
@@ -78,7 +77,6 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case artistPublicPlaylist = "ARTIST_PUBLIC_PLAYLIST"
         case artistSimilarArtists = "ARTIST_SIMILAR_ARTISTS"
         case artistTrackUploads = "ARTIST_TRACK_UPLOADS"
-        case artistAlbumUploads = "ARTIST_ALBUM_UPLOADS"
         case artistLinks = "ARTIST_LINKS"
         case artistVideos = "ARTIST_VIDEOS"
         case artistCredits = "ARTIST_CREDITS"
@@ -110,16 +108,8 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case home30GenericTracks1 = "HOME_3_0_GENERIC_TRACKS_1"
         case home30GenericArtists1 = "HOME_3_0_GENERIC_ARTISTS_1"
         case home30GenericVideos1 = "HOME_3_0_GENERIC_VIDEOS_1"
-        case holidayHitsPlaylists = "HOLIDAY_HITS_PLAYLISTS"
-        case holidayDecadesPlaylists = "HOLIDAY_DECADES_PLAYLISTS"
-        case holidayMoodsPlaylists = "HOLIDAY_MOODS_PLAYLISTS"
-        case bestOf2025Playlists = "BEST_OF_2025_PLAYLISTS"
-        case newYearsParty = "NEW_YEARS_PARTY"
-        case newYearsResolutions = "NEW_YEARS_RESOLUTIONS"
-        case songsOfTheYear2026 = "SONGS_OF_THE_YEAR_2026"
-        case backToSchoolMusic101 = "BACK_TO_SCHOOL_MUSIC_101"
-        case backToSchoolGenresForBeginners = "BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS"
-        case headliners2026 = "HEADLINERS_2026"
+        case basedOnYourInterests1 = "BASED_ON_YOUR_INTERESTS_1"
+        case basedOnYourInterests2 = "BASED_ON_YOUR_INTERESTS_2"
         case unknown = "UNKNOWN"
     }
     /** Type of icons the module should show */

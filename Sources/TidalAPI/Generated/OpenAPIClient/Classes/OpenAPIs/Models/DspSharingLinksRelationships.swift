@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct DspSharingLinksRelationships: Codable, Hashable {
 
-    public var subject: SingleRelationshipDataDocument
+    public var subject: SingleRelationshipDataDocument?
 
     public init(
-        subject: SingleRelationshipDataDocument
+        subject: SingleRelationshipDataDocument? = nil
     ) {
         self.subject = subject
     }
@@ -28,6 +28,6 @@ public struct DspSharingLinksRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(subject, forKey: .subject)
+        try container.encodeIfPresent(subject, forKey: .subject)
     }
 }

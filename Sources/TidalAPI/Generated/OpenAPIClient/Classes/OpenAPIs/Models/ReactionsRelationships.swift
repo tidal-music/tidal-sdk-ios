@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct ReactionsRelationships: Codable, Hashable {
 
-    public var ownerProfiles: MultiRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
+    public var ownerProfiles: MultiRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
 
     public init(
-        ownerProfiles: MultiRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument
+        ownerProfiles: MultiRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil
     ) {
         self.ownerProfiles = ownerProfiles
         self.owners = owners
@@ -32,7 +32,7 @@ public struct ReactionsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(ownerProfiles, forKey: .ownerProfiles)
-        try container.encode(owners, forKey: .owners)
+        try container.encodeIfPresent(ownerProfiles, forKey: .ownerProfiles)
+        try container.encodeIfPresent(owners, forKey: .owners)
     }
 }

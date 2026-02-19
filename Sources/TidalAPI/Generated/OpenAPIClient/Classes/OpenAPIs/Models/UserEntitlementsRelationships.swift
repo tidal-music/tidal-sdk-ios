@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct UserEntitlementsRelationships: Codable, Hashable {
 
-    public var owners: MultiRelationshipDataDocument
+    public var owners: MultiRelationshipDataDocument?
 
     public init(
-        owners: MultiRelationshipDataDocument
+        owners: MultiRelationshipDataDocument? = nil
     ) {
         self.owners = owners
     }
@@ -28,6 +28,6 @@ public struct UserEntitlementsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(owners, forKey: .owners)
+        try container.encodeIfPresent(owners, forKey: .owners)
     }
 }

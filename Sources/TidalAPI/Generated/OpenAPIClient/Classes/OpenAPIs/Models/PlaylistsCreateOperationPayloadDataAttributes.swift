@@ -18,21 +18,25 @@ public struct PlaylistsCreateOperationPayloadDataAttributes: Codable, Hashable {
     }
     /** Access type */
     public var accessType: AccessType?
+    public var createdAt: Date?
     public var description: String?
     public var name: String
 
     public init(
         accessType: AccessType? = nil,
+        createdAt: Date? = nil,
         description: String? = nil,
         name: String
     ) {
         self.accessType = accessType
+        self.createdAt = createdAt
         self.description = description
         self.name = name
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case accessType
+        case createdAt
         case description
         case name
     }
@@ -42,6 +46,7 @@ public struct PlaylistsCreateOperationPayloadDataAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(accessType, forKey: .accessType)
+        try container.encodeIfPresent(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(description, forKey: .description)
         try container.encode(name, forKey: .name)
     }

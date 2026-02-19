@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct InstallationsRelationships: Codable, Hashable {
 
-    public var offlineInventory: InstallationsOfflineInventoryMultiRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
+    public var offlineInventory: InstallationsOfflineInventoryMultiRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
 
     public init(
-        offlineInventory: InstallationsOfflineInventoryMultiRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument
+        offlineInventory: InstallationsOfflineInventoryMultiRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil
     ) {
         self.offlineInventory = offlineInventory
         self.owners = owners
@@ -32,7 +32,7 @@ public struct InstallationsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(offlineInventory, forKey: .offlineInventory)
-        try container.encode(owners, forKey: .owners)
+        try container.encodeIfPresent(offlineInventory, forKey: .offlineInventory)
+        try container.encodeIfPresent(owners, forKey: .owners)
     }
 }

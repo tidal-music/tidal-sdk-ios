@@ -20,6 +20,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artworksResourceObject(ArtworksResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
+    case downloadsResourceObject(DownloadsResourceObject)
     case dspSharingLinksResourceObject(DspSharingLinksResourceObject)
     case dynamicModulesResourceObject(DynamicModulesResourceObject)
     case dynamicPagesResourceObject(DynamicPagesResourceObject)
@@ -38,6 +39,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
     case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
+    case stripeDashboardLinksResourceObject(StripeDashboardLinksResourceObject)
     case trackFilesResourceObject(TrackFilesResourceObject)
     case trackManifestsResourceObject(TrackManifestsResourceObject)
     case trackSourceFilesResourceObject(TrackSourceFilesResourceObject)
@@ -79,6 +81,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .creditsResourceObject(let value):
             try container.encode(value)
+        case .downloadsResourceObject(let value):
+            try container.encode(value)
         case .dspSharingLinksResourceObject(let value):
             try container.encode(value)
         case .dynamicModulesResourceObject(let value):
@@ -114,6 +118,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .sharesResourceObject(let value):
             try container.encode(value)
         case .stripeConnectionsResourceObject(let value):
+            try container.encode(value)
+        case .stripeDashboardLinksResourceObject(let value):
             try container.encode(value)
         case .trackFilesResourceObject(let value):
             try container.encode(value)
@@ -192,6 +198,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "credits":
             let value = try CreditsResourceObject(from: decoder)
             self = .creditsResourceObject(value)
+        case "downloads":
+            let value = try DownloadsResourceObject(from: decoder)
+            self = .downloadsResourceObject(value)
         case "dspSharingLinks":
             let value = try DspSharingLinksResourceObject(from: decoder)
             self = .dspSharingLinksResourceObject(value)
@@ -246,6 +255,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "stripeConnections":
             let value = try StripeConnectionsResourceObject(from: decoder)
             self = .stripeConnectionsResourceObject(value)
+        case "stripeDashboardLinks":
+            let value = try StripeDashboardLinksResourceObject(from: decoder)
+            self = .stripeDashboardLinksResourceObject(value)
         case "trackFiles":
             let value = try TrackFilesResourceObject(from: decoder)
             self = .trackFilesResourceObject(value)
@@ -322,6 +334,7 @@ extension IncludedInner: Identifiable {
         case .artworksResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
+        case .downloadsResourceObject(let value): return value.id
         case .dspSharingLinksResourceObject(let value): return value.id
         case .dynamicModulesResourceObject(let value): return value.id
         case .dynamicPagesResourceObject(let value): return value.id
@@ -340,6 +353,7 @@ extension IncludedInner: Identifiable {
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id
         case .stripeConnectionsResourceObject(let value): return value.id
+        case .stripeDashboardLinksResourceObject(let value): return value.id
         case .trackFilesResourceObject(let value): return value.id
         case .trackManifestsResourceObject(let value): return value.id
         case .trackSourceFilesResourceObject(let value): return value.id

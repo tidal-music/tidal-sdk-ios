@@ -13,9 +13,20 @@ import AnyCodable
 internal class AlbumsAPI {
 
     /**
+     * enum for parameter sort
+     */
+    public enum Sort_albumsGet: String, CaseIterable {
+        case CreatedAtAsc = "createdAt"
+        case CreatedAtDesc = "-createdAt"
+        case TitleAsc = "title"
+        case TitleDesc = "-title"
+    }
+
+    /**
      Get multiple albums.
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, priceConfig, providers, replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. &#x60;196589525444&#x60;) (optional)
@@ -25,9 +36,9 @@ internal class AlbumsAPI {
      - returns: AlbumsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func albumsGet(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiResourceDataDocument {
+    internal class func albumsGet(pageCursor: String? = nil, sort: [Sort_albumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsMultiResourceDataDocument {
         do {
-            return try await albumsGetWithRequestBuilder(pageCursor: pageCursor, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, shareCode: shareCode).execute().body
+            return try await albumsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -45,6 +56,7 @@ internal class AlbumsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, priceConfig, providers, replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. &#x60;196589525444&#x60;) (optional)
@@ -53,7 +65,7 @@ internal class AlbumsAPI {
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<AlbumsMultiResourceDataDocument> 
      */
-    internal class func albumsGetWithRequestBuilder(pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<AlbumsMultiResourceDataDocument> {
+    internal class func albumsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_albumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<AlbumsMultiResourceDataDocument> {
         let localVariablePath = "/albums"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -61,6 +73,7 @@ internal class AlbumsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[barcodeId]": (wrappedValue: filterBarcodeId?.encodeToJSON(), isExplode: true),

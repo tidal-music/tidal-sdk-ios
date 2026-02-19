@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct DynamicModulesRelationships: Codable, Hashable {
 
-    public var items: MultiRelationshipDataDocument
+    public var items: MultiRelationshipDataDocument?
 
     public init(
-        items: MultiRelationshipDataDocument
+        items: MultiRelationshipDataDocument? = nil
     ) {
         self.items = items
     }
@@ -28,6 +28,6 @@ public struct DynamicModulesRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(items, forKey: .items)
+        try container.encodeIfPresent(items, forKey: .items)
     }
 }

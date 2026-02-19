@@ -12,30 +12,30 @@ import AnyCodable
 
 public struct AlbumsRelationships: Codable, Hashable {
 
-    public var artists: MultiRelationshipDataDocument
-    public var coverArt: MultiRelationshipDataDocument
-    public var genres: MultiRelationshipDataDocument
-    public var items: AlbumsItemsMultiRelationshipDataDocument
-    public var owners: MultiRelationshipDataDocument
-    public var priceConfig: SingleRelationshipDataDocument
-    public var providers: MultiRelationshipDataDocument
-    public var replacement: SingleRelationshipDataDocument
-    public var similarAlbums: MultiRelationshipDataDocument
-    public var suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
-    public var usageRules: SingleRelationshipDataDocument
+    public var artists: MultiRelationshipDataDocument?
+    public var coverArt: MultiRelationshipDataDocument?
+    public var genres: MultiRelationshipDataDocument?
+    public var items: AlbumsItemsMultiRelationshipDataDocument?
+    public var owners: MultiRelationshipDataDocument?
+    public var priceConfig: SingleRelationshipDataDocument?
+    public var providers: MultiRelationshipDataDocument?
+    public var replacement: SingleRelationshipDataDocument?
+    public var similarAlbums: MultiRelationshipDataDocument?
+    public var suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument?
+    public var usageRules: SingleRelationshipDataDocument?
 
     public init(
-        artists: MultiRelationshipDataDocument,
-        coverArt: MultiRelationshipDataDocument,
-        genres: MultiRelationshipDataDocument,
-        items: AlbumsItemsMultiRelationshipDataDocument,
-        owners: MultiRelationshipDataDocument,
-        priceConfig: SingleRelationshipDataDocument,
-        providers: MultiRelationshipDataDocument,
-        replacement: SingleRelationshipDataDocument,
-        similarAlbums: MultiRelationshipDataDocument,
-        suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument,
-        usageRules: SingleRelationshipDataDocument
+        artists: MultiRelationshipDataDocument? = nil,
+        coverArt: MultiRelationshipDataDocument? = nil,
+        genres: MultiRelationshipDataDocument? = nil,
+        items: AlbumsItemsMultiRelationshipDataDocument? = nil,
+        owners: MultiRelationshipDataDocument? = nil,
+        priceConfig: SingleRelationshipDataDocument? = nil,
+        providers: MultiRelationshipDataDocument? = nil,
+        replacement: SingleRelationshipDataDocument? = nil,
+        similarAlbums: MultiRelationshipDataDocument? = nil,
+        suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = nil,
+        usageRules: SingleRelationshipDataDocument? = nil
     ) {
         self.artists = artists
         self.coverArt = coverArt
@@ -68,16 +68,16 @@ public struct AlbumsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(artists, forKey: .artists)
-        try container.encode(coverArt, forKey: .coverArt)
-        try container.encode(genres, forKey: .genres)
-        try container.encode(items, forKey: .items)
-        try container.encode(owners, forKey: .owners)
-        try container.encode(priceConfig, forKey: .priceConfig)
-        try container.encode(providers, forKey: .providers)
-        try container.encode(replacement, forKey: .replacement)
-        try container.encode(similarAlbums, forKey: .similarAlbums)
-        try container.encode(suggestedCoverArts, forKey: .suggestedCoverArts)
-        try container.encode(usageRules, forKey: .usageRules)
+        try container.encodeIfPresent(artists, forKey: .artists)
+        try container.encodeIfPresent(coverArt, forKey: .coverArt)
+        try container.encodeIfPresent(genres, forKey: .genres)
+        try container.encodeIfPresent(items, forKey: .items)
+        try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(priceConfig, forKey: .priceConfig)
+        try container.encodeIfPresent(providers, forKey: .providers)
+        try container.encodeIfPresent(replacement, forKey: .replacement)
+        try container.encodeIfPresent(similarAlbums, forKey: .similarAlbums)
+        try container.encodeIfPresent(suggestedCoverArts, forKey: .suggestedCoverArts)
+        try container.encodeIfPresent(usageRules, forKey: .usageRules)
     }
 }

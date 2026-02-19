@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct SearchSuggestionsRelationships: Codable, Hashable {
 
-    public var directHits: MultiRelationshipDataDocument
+    public var directHits: MultiRelationshipDataDocument?
 
     public init(
-        directHits: MultiRelationshipDataDocument
+        directHits: MultiRelationshipDataDocument? = nil
     ) {
         self.directHits = directHits
     }
@@ -28,6 +28,6 @@ public struct SearchSuggestionsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(directHits, forKey: .directHits)
+        try container.encodeIfPresent(directHits, forKey: .directHits)
     }
 }
