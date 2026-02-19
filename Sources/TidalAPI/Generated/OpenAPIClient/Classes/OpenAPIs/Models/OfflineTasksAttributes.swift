@@ -13,10 +13,8 @@ import AnyCodable
 public struct OfflineTasksAttributes: Codable, Hashable {
 
     public enum Action: String, Codable, CaseIterable {
-        case storeItem = "STORE_ITEM"
-        case removeItem = "REMOVE_ITEM"
-        case storeCollection = "STORE_COLLECTION"
-        case removeCollection = "REMOVE_COLLECTION"
+        case store = "STORE"
+        case remove = "REMOVE"
     }
     public enum State: String, Codable, CaseIterable {
         case pending = "PENDING"
@@ -26,12 +24,6 @@ public struct OfflineTasksAttributes: Codable, Hashable {
     }
     /** Action to perform */
     public var action: Action
-    /** Collection reference associated with task */
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var collectionReference: String
-    /** Collection-member reference associated with task */
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var memberReference: String
     /** Collection position of item */
     public var position: Int?
     /** Task state */
@@ -41,15 +33,11 @@ public struct OfflineTasksAttributes: Codable, Hashable {
 
     public init(
         action: Action,
-        collectionReference: String,
-        memberReference: String,
         position: Int? = nil,
         state: State? = nil,
         volume: Int? = nil
     ) {
         self.action = action
-        self.collectionReference = collectionReference
-        self.memberReference = memberReference
         self.position = position
         self.state = state
         self.volume = volume
@@ -57,8 +45,6 @@ public struct OfflineTasksAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case action
-        case collectionReference
-        case memberReference
         case position
         case state
         case volume
@@ -69,8 +55,6 @@ public struct OfflineTasksAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(action, forKey: .action)
-        try container.encode(collectionReference, forKey: .collectionReference)
-        try container.encode(memberReference, forKey: .memberReference)
         try container.encodeIfPresent(position, forKey: .position)
         try container.encodeIfPresent(state, forKey: .state)
         try container.encodeIfPresent(volume, forKey: .volume)

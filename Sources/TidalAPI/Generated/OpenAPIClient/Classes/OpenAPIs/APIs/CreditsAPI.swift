@@ -16,7 +16,7 @@ internal class CreditsAPI {
      Get multiple credits.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist, category (optional)
-     - parameter filterId: (query) Credit id (e.g. &#x60;3fG7kLmN2pQrStUv&#x60;) (optional)
+     - parameter filterId: (query) List of credit IDs (e.g. &#x60;3fG7kLmN2pQrStUv&#x60;) (optional)
      - returns: CreditsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -40,7 +40,7 @@ internal class CreditsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist, category (optional)
-     - parameter filterId: (query) Credit id (e.g. &#x60;3fG7kLmN2pQrStUv&#x60;) (optional)
+     - parameter filterId: (query) List of credit IDs (e.g. &#x60;3fG7kLmN2pQrStUv&#x60;) (optional)
      - returns: RequestBuilder<CreditsMultiResourceDataDocument> 
      */
     internal class func creditsGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<CreditsMultiResourceDataDocument> {

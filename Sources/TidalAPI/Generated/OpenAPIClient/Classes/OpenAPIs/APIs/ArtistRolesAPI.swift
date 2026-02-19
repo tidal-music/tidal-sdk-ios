@@ -15,7 +15,7 @@ internal class ArtistRolesAPI {
     /**
      Get multiple artistRoles.
      
-     - parameter filterId: (query) Artist role id (e.g. &#x60;1&#x60;) (optional)
+     - parameter filterId: (query) List of artist role IDs (e.g. &#x60;1&#x60;) (optional)
      - returns: ArtistRolesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -38,7 +38,7 @@ internal class ArtistRolesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterId: (query) Artist role id (e.g. &#x60;1&#x60;) (optional)
+     - parameter filterId: (query) List of artist role IDs (e.g. &#x60;1&#x60;) (optional)
      - returns: RequestBuilder<ArtistRolesMultiResourceDataDocument> 
      */
     internal class func artistRolesGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<ArtistRolesMultiResourceDataDocument> {

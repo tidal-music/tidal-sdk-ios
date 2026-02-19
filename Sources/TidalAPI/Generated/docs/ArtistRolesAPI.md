@@ -22,7 +22,7 @@ Retrieves multiple artistRoles by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | Artist role id (e.g. `1`) (optional)
+let filterId = ["inner_example"] // [String] | List of artist role IDs (e.g. `1`) (optional)
 
 // Get multiple artistRoles.
 ArtistRolesAPI.artistRolesGet(filterId: filterId) { (response, error) in
@@ -41,7 +41,7 @@ ArtistRolesAPI.artistRolesGet(filterId: filterId) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | Artist role id (e.g. &#x60;1&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | List of artist role IDs (e.g. &#x60;1&#x60;) | [optional] 
 
 ### Return type
 

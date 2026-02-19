@@ -195,20 +195,27 @@ private extension OfflineTasksResourceObject {
 			return nil
 		}
 
-		let includedItem = relationships?.item?.data
+		let itemData = relationships?.item?.data
+		let includedItem = itemData
 			.flatMap { includedItems.get(type: $0.type, id: $0.id) }
 
 		let includedCollection = relationships?.collection?.data
 			.flatMap { includedItems.get(type: $0.type, id: $0.id) }
 
 		switch attributes.action {
-		case .storeItem:
-			return StoreItemTask(self, attributes: attributes, item: includedItem, collection: includedCollection)
-				.map { .storeItem($0) }
-		case .storeCollection:
-			return StoreCollectionTask(self, item: includedItem)
-				.map { .storeCollection($0) }
-		case .removeItem, .removeCollection:
+		case .store:
+			guard let itemType = itemData?.type else { return nil }
+			switch itemType {
+			case "tracks", "videos":
+				return StoreItemTask(self, attributes: attributes, item: includedItem, collection: includedCollection)
+					.map { .storeItem($0) }
+			case "albums", "playlists":
+				return StoreCollectionTask(self, item: includedItem)
+					.map { .storeCollection($0) }
+			default:
+				return nil
+			}
+		case .remove:
 			return RemoveTask(self)
 				.map { .remove($0) }
 		}
