@@ -195,10 +195,10 @@ private extension OfflineTasksResourceObject {
 			return nil
 		}
 
-		let includedItem = relationships?.item.data
+		let includedItem = relationships?.item?.data
 			.flatMap { includedItems.get(type: $0.type, id: $0.id) }
 
-		let includedCollection = relationships?.collection.data
+		let includedCollection = relationships?.collection?.data
 			.flatMap { includedItems.get(type: $0.type, id: $0.id) }
 
 		switch attributes.action {
@@ -430,7 +430,7 @@ private extension StoreCollectionTask {
 
 private extension RemoveTask {
 	init?(_ resourceObject: OfflineTasksResourceObject) {
-		guard let itemData = resourceObject.relationships?.item.data else {
+		guard let itemData = resourceObject.relationships?.item?.data else {
 			return nil
 		}
 		self.init(id: resourceObject.id, resourceType: itemData.type, resourceId: itemData.id)
