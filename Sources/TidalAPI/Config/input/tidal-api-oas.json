@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.1.35"
+    "version" : "1.1.36"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -185,8 +185,8 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "enum" : [ "createdAt", "-createdAt", "title", "-title" ],
               "default" : "-createdAt",
+              "enum" : [ "createdAt", "-createdAt", "title", "-title" ],
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -8952,8 +8952,8 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "default" : "-createdAt",
+              "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -10685,8 +10685,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -10779,8 +10779,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10881,8 +10881,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10983,8 +10983,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -11085,8 +11085,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -11187,8 +11187,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -11289,8 +11289,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -11391,8 +11391,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -11485,8 +11485,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -13042,8 +13042,8 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "enum" : [ "createdAt", "-createdAt", "title", "-title" ],
               "default" : "-createdAt",
+              "enum" : [ "createdAt", "-createdAt", "title", "-title" ],
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -15599,8 +15599,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "artists.name", "-artists.name", "releaseDate", "-releaseDate", "title", "-title" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "artists.name", "-artists.name", "releaseDate", "-releaseDate", "title", "-title" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc", "ReleaseDateAsc", "ReleaseDateDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -16008,8 +16008,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "name", "-name" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "name", "-name" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -16632,8 +16632,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "default" : "addedAt",
+              "enum" : [ "addedAt", "-addedAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -17018,8 +17018,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -17399,8 +17399,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "albums.title", "-albums.title", "artists.name", "-artists.name", "duration", "-duration", "title", "-title" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "albums.title", "-albums.title", "artists.name", "-artists.name", "duration", "-duration", "title", "-title" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "AlbumsTitleAsc", "AlbumsTitleDesc", "ArtistsNameAsc", "ArtistsNameDesc", "DurationAsc", "DurationDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -17808,8 +17808,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "artists.name", "-artists.name", "duration", "-duration", "title", "-title" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "artists.name", "-artists.name", "duration", "-duration", "title", "-title" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc", "DurationAsc", "DurationDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -18220,8 +18220,8 @@
             "items" : {
               "type" : "string",
               "example" : "albums.addedAt",
-              "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
               "default" : "-albums.addedAt",
+              "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
               "x-enum-varnames" : [ "AlbumsAddedAtAsc", "AlbumsAddedAtDesc", "AlbumsArtistsNameAsc", "AlbumsArtistsNameDesc", "AlbumsReleaseDateAsc", "AlbumsReleaseDateDesc", "AlbumsTitleAsc", "AlbumsTitleDesc" ]
             }
           }
@@ -18461,8 +18461,8 @@
             "items" : {
               "type" : "string",
               "example" : "artists.addedAt",
-              "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
               "default" : "-artists.addedAt",
+              "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
               "x-enum-varnames" : [ "ArtistsAddedAtAsc", "ArtistsAddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc" ]
             }
           }
@@ -18790,8 +18790,8 @@
             "items" : {
               "type" : "string",
               "example" : "playlists.addedAt",
-              "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
               "default" : "-playlists.addedAt",
+              "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
               "x-enum-varnames" : [ "PlaylistsAddedAtAsc", "PlaylistsAddedAtDesc", "PlaylistsLastUpdatedAtAsc", "PlaylistsLastUpdatedAtDesc", "PlaylistsNameAsc", "PlaylistsNameDesc" ]
             }
           }
@@ -19003,8 +19003,8 @@
             "items" : {
               "type" : "string",
               "example" : "tracks.addedAt",
-              "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
               "default" : "-tracks.addedAt",
+              "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
               "x-enum-varnames" : [ "TracksAddedAtAsc", "TracksAddedAtDesc", "TracksAlbumsTitleAsc", "TracksAlbumsTitleDesc", "TracksArtistsNameAsc", "TracksArtistsNameDesc", "TracksDurationAsc", "TracksDurationDesc", "TracksTitleAsc", "TracksTitleDesc" ]
             }
           }
@@ -19244,8 +19244,8 @@
             "items" : {
               "type" : "string",
               "example" : "videos.addedAt",
-              "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
               "default" : "-videos.addedAt",
+              "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
               "x-enum-varnames" : [ "VideosAddedAtAsc", "VideosAddedAtDesc", "VideosArtistsNameAsc", "VideosArtistsNameDesc", "VideosDurationAsc", "VideosDurationDesc", "VideosTitleAsc", "VideosTitleDesc" ]
             }
           }
@@ -21817,6 +21817,18 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta"
+          }
+        }
+      },
+      "Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "PROCESSING", "ERROR", "OK" ]
           }
         }
       },
@@ -23533,6 +23545,25 @@
             "$ref" : "#/components/schemas/Links"
           }
         }
+      },
+      "CurrentUserReaction" : {
+        "type" : "object",
+        "properties" : {
+          "createdAt" : {
+            "type" : "string",
+            "description" : "When the reaction was created",
+            "format" : "date-time"
+          },
+          "emoji" : {
+            "type" : "string",
+            "description" : "User's emoji reaction"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Reaction ID"
+          }
+        },
+        "description" : "Current user's reaction"
       },
       "Default400ResponseBody" : {
         "type" : "object",
@@ -26693,6 +26724,26 @@
           }
         }
       },
+      "ReactionStats" : {
+        "type" : "object",
+        "properties" : {
+          "countsByType" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "integer",
+              "description" : "Count of reactions by type",
+              "format" : "int32"
+            },
+            "description" : "Count of reactions by type"
+          },
+          "totalCount" : {
+            "type" : "integer",
+            "description" : "Total number of reactions",
+            "format" : "int32"
+          }
+        },
+        "description" : "Reaction statistics"
+      },
       "ReactionsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -26807,8 +26858,23 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Reactions_Multi_Resource_Data_Document_Meta"
           }
         }
+      },
+      "Reactions_Multi_Resource_Data_Document_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "currentUserReaction" : {
+            "$ref" : "#/components/schemas/CurrentUserReaction"
+          },
+          "stats" : {
+            "$ref" : "#/components/schemas/ReactionStats"
+          }
+        },
+        "description" : "Reaction response metadata with stats and current user reaction"
       },
       "Reactions_Relationships" : {
         "properties" : {
@@ -27486,8 +27552,8 @@
             "type" : "string",
             "description" : "Integration type for Stripe onboarding",
             "example" : "REDIRECT",
-            "enum" : [ "REDIRECT", "EMBEDDED" ],
-            "default" : "REDIRECT"
+            "default" : "REDIRECT",
+            "enum" : [ "REDIRECT", "EMBEDDED" ]
           },
           "refreshUrl" : {
             "type" : "string",

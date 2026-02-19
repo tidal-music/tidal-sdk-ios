@@ -15,21 +15,25 @@ public struct ReactionsMultiResourceDataDocument: Codable, Hashable {
     public var data: [ReactionsResourceObject]
     public var included: [IncludedInner]?
     public var links: Links
+    public var meta: ReactionsMultiResourceDataDocumentMeta?
 
     public init(
         data: [ReactionsResourceObject],
         included: [IncludedInner]? = nil,
-        links: Links
+        links: Links,
+        meta: ReactionsMultiResourceDataDocumentMeta? = nil
     ) {
         self.data = data
         self.included = included
         self.links = links
+        self.meta = meta
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case data
         case included
         case links
+        case meta
     }
 
     // Encodable protocol methods
@@ -39,5 +43,6 @@ public struct ReactionsMultiResourceDataDocument: Codable, Hashable {
         try container.encode(data, forKey: .data)
         try container.encodeIfPresent(included, forKey: .included)
         try container.encode(links, forKey: .links)
+        try container.encodeIfPresent(meta, forKey: .meta)
     }
 }

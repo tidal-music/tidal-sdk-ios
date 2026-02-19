@@ -15,21 +15,25 @@ public struct AlbumsSuggestedCoverArtsMultiRelationshipDataDocument: Codable, Ha
     public var data: [AlbumsSuggestedCoverArtsResourceIdentifier]?
     public var included: [IncludedInner]?
     public var links: Links
+    public var meta: AlbumsSuggestedCoverArtsMultiRelationshipDataDocumentMeta?
 
     public init(
         data: [AlbumsSuggestedCoverArtsResourceIdentifier]? = nil,
         included: [IncludedInner]? = nil,
-        links: Links
+        links: Links,
+        meta: AlbumsSuggestedCoverArtsMultiRelationshipDataDocumentMeta? = nil
     ) {
         self.data = data
         self.included = included
         self.links = links
+        self.meta = meta
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case data
         case included
         case links
+        case meta
     }
 
     // Encodable protocol methods
@@ -39,5 +43,6 @@ public struct AlbumsSuggestedCoverArtsMultiRelationshipDataDocument: Codable, Ha
         try container.encodeIfPresent(data, forKey: .data)
         try container.encodeIfPresent(included, forKey: .included)
         try container.encode(links, forKey: .links)
+        try container.encodeIfPresent(meta, forKey: .meta)
     }
 }
