@@ -14,7 +14,7 @@ public struct DynamicPagesAttributes: Codable, Hashable {
 
     public enum PageType: String, Codable, CaseIterable {
         case homeStatic = "HOME_STATIC"
-        case homeForYou = "HOME_FOR_YOU"
+        case homeUploads = "HOME_UPLOADS"
         case homeEditorial = "HOME_EDITORIAL"
         case homeFree = "HOME_FREE"
         case artist = "ARTIST"
