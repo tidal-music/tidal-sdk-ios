@@ -23,7 +23,7 @@ Retrieves multiple usageRules by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | Usage rules id (e.g. `VFJBQ0tTOjEyMzpOTw`) (optional)
+let filterId = ["inner_example"] // [String] | List of usage rules IDs (e.g. `VFJBQ0tTOjEyMzpOTw`) (optional)
 
 // Get multiple usageRules.
 UsageRulesAPI.usageRulesGet(filterId: filterId) { (response, error) in
@@ -42,7 +42,7 @@ UsageRulesAPI.usageRulesGet(filterId: filterId) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | Usage rules id (e.g. &#x60;VFJBQ0tTOjEyMzpOTw&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | List of usage rules IDs (e.g. &#x60;VFJBQ0tTOjEyMzpOTw&#x60;) | [optional] 
 
 ### Return type
 

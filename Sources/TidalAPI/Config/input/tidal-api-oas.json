@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.1.32"
+    "version" : "1.1.36"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -185,8 +185,8 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "enum" : [ "createdAt", "-createdAt", "title", "-title" ],
               "default" : "-createdAt",
+              "enum" : [ "createdAt", "-createdAt", "title", "-title" ],
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -2721,7 +2721,7 @@
       "get" : {
         "description" : "Retrieves multiple artistRoles by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Artist role id (e.g. `1`)",
+          "description" : "List of artist role IDs (e.g. `1`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -5131,7 +5131,7 @@
             }
           }
         }, {
-          "description" : "Credit id (e.g. `3fG7kLmN2pQrStUv`)",
+          "description" : "List of credit IDs (e.g. `3fG7kLmN2pQrStUv`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -5407,6 +5407,80 @@
         } ],
         "summary" : "Get category relationship (\"to-one\").",
         "tags" : [ "credits" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/downloads" : {
+      "get" : {
+        "description" : "Retrieves multiple downloads by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Download id (e.g. `VFJBQ0tTOjEyMzQ1`)",
+          "in" : "query",
+          "name" : "filter[id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Downloads_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get multiple downloads.",
+        "tags" : [ "downloads" ],
         "x-path-item-properties" : {
           "required-access-tier" : "INTERNAL"
         }
@@ -6068,7 +6142,7 @@
             }
           }
         }, {
-          "description" : "Filter by page type (e.g. `ARTIST`)",
+          "description" : "type of the page (e.g. `ARTIST`)",
           "in" : "query",
           "name" : "filter[pageType]",
           "required" : false,
@@ -6079,7 +6153,7 @@
             }
           }
         }, {
-          "description" : "Filter by subject id (e.g. `67890`)",
+          "description" : "the subject id, eg. artistId (e.g. `67890`)",
           "in" : "query",
           "name" : "filter[subject.id]",
           "required" : false,
@@ -6527,7 +6601,7 @@
             }
           }
         }, {
-          "description" : "Client provided installation identifier (e.g. `a468bee88def`)",
+          "description" : "Client-provided installation identifier to filter by (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[clientProvidedInstallationId]",
           "required" : false,
@@ -6538,7 +6612,7 @@
             }
           }
         }, {
-          "description" : "Installation id (e.g. `a468bee88def`)",
+          "description" : "List of installation IDs (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -6549,7 +6623,7 @@
             }
           }
         }, {
-          "description" : "User id (e.g. `123456`)",
+          "description" : "User ID to filter by (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
@@ -7587,7 +7661,7 @@
             }
           }
         }, {
-          "description" : "Offline task id (e.g. `a468bee8-8def-4a1b-8c1e-123456789abc`)",
+          "description" : "List of offline task IDs (e.g. `a468bee8-8def-4a1b-8c1e-123456789abc`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -7598,7 +7672,7 @@
             }
           }
         }, {
-          "description" : "Installation id (e.g. `a468bee88def`)",
+          "description" : "List of offline task IDs (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[installation.id]",
           "required" : false,
@@ -8878,8 +8952,8 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "default" : "-createdAt",
+              "enum" : [ "createdAt", "-createdAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -9838,7 +9912,7 @@
       "get" : {
         "description" : "Retrieves multiple priceConfigurations by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Price configuration id (e.g. `cHJpY2UtY29uZmlnLTEyMzpVUw`)",
+          "description" : "List of price configurations IDs (e.g. `cHJpY2UtY29uZmlnLTEyMzpVUw`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -10019,7 +10093,7 @@
       "get" : {
         "description" : "Retrieves multiple providers by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Provider ID (e.g. `12345`)",
+          "description" : "List of provider IDs (e.g. `12345`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -10611,8 +10685,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -10705,8 +10779,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10807,8 +10881,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -10909,8 +10983,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -11011,8 +11085,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -11113,8 +11187,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -11215,8 +11289,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
@@ -11317,8 +11391,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -11411,8 +11485,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "INCLUDE", "EXCLUDE" ],
-            "default" : "INCLUDE"
+            "default" : "INCLUDE",
+            "enum" : [ "INCLUDE", "EXCLUDE" ]
           }
         }, {
           "description" : "ISO 3166-1 alpha-2 country code",
@@ -11510,7 +11584,7 @@
             }
           }
         }, {
-          "description" : "Share code (e.g. `xyz`)",
+          "description" : "A share code (e.g. `xyz`)",
           "in" : "query",
           "name" : "filter[code]",
           "required" : false,
@@ -11521,7 +11595,7 @@
             }
           }
         }, {
-          "description" : "User share id (e.g. `a468bee88def`)",
+          "description" : "List of shares IDs (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -12738,7 +12812,7 @@
             }
           }
         }, {
-          "description" : "Track id (e.g. `75413016`)",
+          "description" : "List of track IDs (e.g. `75413016`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -12968,8 +13042,8 @@
             "items" : {
               "type" : "string",
               "example" : "createdAt",
-              "enum" : [ "createdAt", "-createdAt", "title", "-title" ],
               "default" : "-createdAt",
+              "enum" : [ "createdAt", "-createdAt", "title", "-title" ],
               "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -12996,7 +13070,7 @@
             }
           }
         }, {
-          "description" : "Track id (e.g. `75413016`)",
+          "description" : "List of track IDs (e.g. `75413016`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -15051,7 +15125,7 @@
       "get" : {
         "description" : "Retrieves multiple tracksMetadataStatus by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Track id (e.g. `75413016`)",
+          "description" : "List of track IDs (e.g. `75413016`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -15171,7 +15245,7 @@
       "get" : {
         "description" : "Retrieves multiple usageRules by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Usage rules id (e.g. `VFJBQ0tTOjEyMzpOTw`)",
+          "description" : "List of usage rules IDs (e.g. `VFJBQ0tTOjEyMzpOTw`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -15525,8 +15599,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "artists.name", "-artists.name", "releaseDate", "-releaseDate", "title", "-title" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "artists.name", "-artists.name", "releaseDate", "-releaseDate", "title", "-title" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc", "ReleaseDateAsc", "ReleaseDateDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -15934,8 +16008,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "name", "-name" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "name", "-name" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -16183,7 +16257,7 @@
             }
           }
         }, {
-          "description" : "Folder Id",
+          "description" : "Folder Id (e.g. `CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -16302,7 +16376,7 @@
         "description" : "Deletes existing userCollectionFolder.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16349,7 +16423,7 @@
         "description" : "Retrieves single userCollectionFolder by id.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16419,7 +16493,7 @@
         "description" : "Updates existing userCollectionFolder.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16477,7 +16551,7 @@
         "description" : "Deletes item(s) from items relationship.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16533,7 +16607,7 @@
         "description" : "Retrieves items relationship.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16558,8 +16632,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "default" : "addedAt",
+              "enum" : [ "addedAt", "-addedAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -16626,7 +16700,7 @@
         "description" : "Adds item(s) to items relationship.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16684,7 +16758,7 @@
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16944,8 +17018,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "lastModifiedAt", "-lastModifiedAt", "name", "-name" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "LastModifiedAtAsc", "LastModifiedAtDesc", "NameAsc", "NameDesc" ]
             }
           }
@@ -17325,8 +17399,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "albums.title", "-albums.title", "artists.name", "-artists.name", "duration", "-duration", "title", "-title" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "albums.title", "-albums.title", "artists.name", "-artists.name", "duration", "-duration", "title", "-title" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "AlbumsTitleAsc", "AlbumsTitleDesc", "ArtistsNameAsc", "ArtistsNameDesc", "DurationAsc", "DurationDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -17734,8 +17808,8 @@
             "items" : {
               "type" : "string",
               "example" : "addedAt",
-              "enum" : [ "addedAt", "-addedAt", "artists.name", "-artists.name", "duration", "-duration", "title", "-title" ],
               "default" : "-addedAt",
+              "enum" : [ "addedAt", "-addedAt", "artists.name", "-artists.name", "duration", "-duration", "title", "-title" ],
               "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc", "DurationAsc", "DurationDesc", "TitleAsc", "TitleDesc" ]
             }
           }
@@ -18146,8 +18220,8 @@
             "items" : {
               "type" : "string",
               "example" : "albums.addedAt",
-              "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
               "default" : "-albums.addedAt",
+              "enum" : [ "albums.addedAt", "-albums.addedAt", "albums.artists.name", "-albums.artists.name", "albums.releaseDate", "-albums.releaseDate", "albums.title", "-albums.title" ],
               "x-enum-varnames" : [ "AlbumsAddedAtAsc", "AlbumsAddedAtDesc", "AlbumsArtistsNameAsc", "AlbumsArtistsNameDesc", "AlbumsReleaseDateAsc", "AlbumsReleaseDateDesc", "AlbumsTitleAsc", "AlbumsTitleDesc" ]
             }
           }
@@ -18387,8 +18461,8 @@
             "items" : {
               "type" : "string",
               "example" : "artists.addedAt",
-              "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
               "default" : "-artists.addedAt",
+              "enum" : [ "artists.addedAt", "-artists.addedAt", "artists.name", "-artists.name" ],
               "x-enum-varnames" : [ "ArtistsAddedAtAsc", "ArtistsAddedAtDesc", "ArtistsNameAsc", "ArtistsNameDesc" ]
             }
           }
@@ -18716,8 +18790,8 @@
             "items" : {
               "type" : "string",
               "example" : "playlists.addedAt",
-              "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
               "default" : "-playlists.addedAt",
+              "enum" : [ "playlists.addedAt", "-playlists.addedAt", "playlists.lastUpdatedAt", "-playlists.lastUpdatedAt", "playlists.name", "-playlists.name" ],
               "x-enum-varnames" : [ "PlaylistsAddedAtAsc", "PlaylistsAddedAtDesc", "PlaylistsLastUpdatedAtAsc", "PlaylistsLastUpdatedAtDesc", "PlaylistsNameAsc", "PlaylistsNameDesc" ]
             }
           }
@@ -18929,8 +19003,8 @@
             "items" : {
               "type" : "string",
               "example" : "tracks.addedAt",
-              "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
               "default" : "-tracks.addedAt",
+              "enum" : [ "tracks.addedAt", "-tracks.addedAt", "tracks.albums.title", "-tracks.albums.title", "tracks.artists.name", "-tracks.artists.name", "tracks.duration", "-tracks.duration", "tracks.title", "-tracks.title" ],
               "x-enum-varnames" : [ "TracksAddedAtAsc", "TracksAddedAtDesc", "TracksAlbumsTitleAsc", "TracksAlbumsTitleDesc", "TracksArtistsNameAsc", "TracksArtistsNameDesc", "TracksDurationAsc", "TracksDurationDesc", "TracksTitleAsc", "TracksTitleDesc" ]
             }
           }
@@ -19170,8 +19244,8 @@
             "items" : {
               "type" : "string",
               "example" : "videos.addedAt",
-              "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
               "default" : "-videos.addedAt",
+              "enum" : [ "videos.addedAt", "-videos.addedAt", "videos.artists.name", "-videos.artists.name", "videos.duration", "-videos.duration", "videos.title", "-videos.title" ],
               "x-enum-varnames" : [ "VideosAddedAtAsc", "VideosAddedAtDesc", "VideosArtistsNameAsc", "VideosArtistsNameDesc", "VideosDurationAsc", "VideosDurationDesc", "VideosTitleAsc", "VideosTitleDesc" ]
             }
           }
@@ -19998,7 +20072,7 @@
             }
           }
         }, {
-          "description" : "Video id (e.g. `75623239`)",
+          "description" : "List of video IDs (e.g. `75623239`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -20009,7 +20083,7 @@
             }
           }
         }, {
-          "description" : "International Standard Recording Code (ISRC) (e.g. `QMJMT1701237`)",
+          "description" : "List of ISRCs (e.g. `QMJMT1701237`)",
           "in" : "query",
           "name" : "filter[isrc]",
           "required" : false,
@@ -21743,6 +21817,18 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta"
+          }
+        }
+      },
+      "Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "PROCESSING", "ERROR", "OK" ]
           }
         }
       },
@@ -23459,6 +23545,25 @@
             "$ref" : "#/components/schemas/Links"
           }
         }
+      },
+      "CurrentUserReaction" : {
+        "type" : "object",
+        "properties" : {
+          "createdAt" : {
+            "type" : "string",
+            "description" : "When the reaction was created",
+            "format" : "date-time"
+          },
+          "emoji" : {
+            "type" : "string",
+            "description" : "User's emoji reaction"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Reaction ID"
+          }
+        },
+        "description" : "Current user's reaction"
       },
       "Default400ResponseBody" : {
         "type" : "object",
@@ -25309,23 +25414,13 @@
         }
       },
       "OfflineTasks_Attributes" : {
-        "required" : [ "action", "collectionReference", "memberReference" ],
+        "required" : [ "action" ],
         "type" : "object",
         "properties" : {
           "action" : {
             "type" : "string",
             "description" : "Action to perform",
-            "enum" : [ "STORE_ITEM", "REMOVE_ITEM", "STORE_COLLECTION", "REMOVE_COLLECTION" ]
-          },
-          "collectionReference" : {
-            "type" : "string",
-            "description" : "Collection reference associated with task",
-            "deprecated" : true
-          },
-          "memberReference" : {
-            "type" : "string",
-            "description" : "Collection-member reference associated with task",
-            "deprecated" : true
+            "enum" : [ "STORE", "REMOVE" ]
           },
           "position" : {
             "type" : "integer",
@@ -26629,6 +26724,26 @@
           }
         }
       },
+      "ReactionStats" : {
+        "type" : "object",
+        "properties" : {
+          "countsByType" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "integer",
+              "description" : "Count of reactions by type",
+              "format" : "int32"
+            },
+            "description" : "Count of reactions by type"
+          },
+          "totalCount" : {
+            "type" : "integer",
+            "description" : "Total number of reactions",
+            "format" : "int32"
+          }
+        },
+        "description" : "Reaction statistics"
+      },
       "ReactionsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -26743,8 +26858,23 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Reactions_Multi_Resource_Data_Document_Meta"
           }
         }
+      },
+      "Reactions_Multi_Resource_Data_Document_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "currentUserReaction" : {
+            "$ref" : "#/components/schemas/CurrentUserReaction"
+          },
+          "stats" : {
+            "$ref" : "#/components/schemas/ReactionStats"
+          }
+        },
+        "description" : "Reaction response metadata with stats and current user reaction"
       },
       "Reactions_Relationships" : {
         "properties" : {
@@ -27422,8 +27552,8 @@
             "type" : "string",
             "description" : "Integration type for Stripe onboarding",
             "example" : "REDIRECT",
-            "enum" : [ "REDIRECT", "EMBEDDED" ],
-            "default" : "REDIRECT"
+            "default" : "REDIRECT",
+            "enum" : [ "REDIRECT", "EMBEDDED" ]
           },
           "refreshUrl" : {
             "type" : "string",

@@ -16,7 +16,7 @@ internal class UserCollectionFoldersAPI {
      Get multiple userCollectionFolders.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-     - parameter filterId: (query) Folder Id (optional)
+     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
      - returns: UserCollectionFoldersMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -37,7 +37,7 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-     - parameter filterId: (query) Folder Id (optional)
+     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
      - returns: RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> 
      */
     internal class func userCollectionFoldersGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> {

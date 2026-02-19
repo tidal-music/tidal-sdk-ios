@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 **data** | [ReactionsResourceObject] |  | 
 **included** | [IncludedInner] |  | [optional] 
 **links** | [**Links**](Links.md) |  | 
+**meta** | [**ReactionsMultiResourceDataDocumentMeta**](ReactionsMultiResourceDataDocumentMeta.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
