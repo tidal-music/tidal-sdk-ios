@@ -15,6 +15,18 @@ public enum DownloadsAPITidal {
 
 
 	/**
+     Get multiple downloads.
+     
+     - returns: DownloadsMultiResourceDataDocument
+     */
+	public static func downloadsGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> DownloadsMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			DownloadsAPI.downloadsGetWithRequestBuilder(include: include, filterId: filterId)
+		}
+	}
+
+
+	/**
      Get single download.
      
      - returns: DownloadsSingleResourceDataDocument

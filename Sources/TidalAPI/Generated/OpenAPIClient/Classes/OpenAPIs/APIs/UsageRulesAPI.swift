@@ -15,7 +15,7 @@ internal class UsageRulesAPI {
     /**
      Get multiple usageRules.
      
-     - parameter filterId: (query) Usage rules id (e.g. &#x60;VFJBQ0tTOjEyMzpOTw&#x60;) (optional)
+     - parameter filterId: (query) List of usage rules IDs (e.g. &#x60;VFJBQ0tTOjEyMzpOTw&#x60;) (optional)
      - returns: UsageRulesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -38,7 +38,7 @@ internal class UsageRulesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterId: (query) Usage rules id (e.g. &#x60;VFJBQ0tTOjEyMzpOTw&#x60;) (optional)
+     - parameter filterId: (query) List of usage rules IDs (e.g. &#x60;VFJBQ0tTOjEyMzpOTw&#x60;) (optional)
      - returns: RequestBuilder<UsageRulesMultiResourceDataDocument> 
      */
     internal class func usageRulesGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<UsageRulesMultiResourceDataDocument> {

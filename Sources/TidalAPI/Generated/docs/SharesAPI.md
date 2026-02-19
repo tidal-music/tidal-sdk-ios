@@ -26,8 +26,8 @@ Retrieves multiple shares by available filters, or without if applicable.
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
-let filterCode = ["inner_example"] // [String] | Share code (e.g. `xyz`) (optional)
-let filterId = ["inner_example"] // [String] | User share id (e.g. `a468bee88def`) (optional)
+let filterCode = ["inner_example"] // [String] | A share code (e.g. `xyz`) (optional)
+let filterId = ["inner_example"] // [String] | List of shares IDs (e.g. `a468bee88def`) (optional)
 
 // Get multiple shares.
 SharesAPI.sharesGet(include: include, filterCode: filterCode, filterId: filterId) { (response, error) in
@@ -47,8 +47,8 @@ SharesAPI.sharesGet(include: include, filterCode: filterCode, filterId: filterId
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, sharedResources | [optional] 
- **filterCode** | [**[String]**](String.md) | Share code (e.g. &#x60;xyz&#x60;) | [optional] 
- **filterId** | [**[String]**](String.md) | User share id (e.g. &#x60;a468bee88def&#x60;) | [optional] 
+ **filterCode** | [**[String]**](String.md) | A share code (e.g. &#x60;xyz&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | List of shares IDs (e.g. &#x60;a468bee88def&#x60;) | [optional] 
 
 ### Return type
 

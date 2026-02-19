@@ -30,7 +30,7 @@ Retrieves multiple userCollectionFolders by available filters, or without if app
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-let filterId = ["inner_example"] // [String] | Folder Id (optional)
+let filterId = ["inner_example"] // [String] | Folder Id (e.g. `CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX`) (optional)
 
 // Get multiple userCollectionFolders.
 UserCollectionFoldersAPI.userCollectionFoldersGet(include: include, filterId: filterId) { (response, error) in
@@ -50,7 +50,7 @@ UserCollectionFoldersAPI.userCollectionFoldersGet(include: include, filterId: fi
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
- **filterId** | [**[String]**](String.md) | Folder Id | [optional] 
+ **filterId** | [**[String]**](String.md) | Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) | [optional] 
 
 ### Return type
 
@@ -81,7 +81,7 @@ Deletes existing userCollectionFolder.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "" // String | Folder Id
+let id = "id_example" // String | Folder Id
 
 // Delete single userCollectionFolder.
 UserCollectionFoldersAPI.userCollectionFoldersIdDelete(id: id) { (response, error) in
@@ -131,7 +131,7 @@ Retrieves single userCollectionFolder by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "" // String | Folder Id
+let id = "id_example" // String | Folder Id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
 
 // Get single userCollectionFolder.
@@ -183,7 +183,7 @@ Updates existing userCollectionFolder.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "" // String | Folder Id
+let id = "id_example" // String | Folder Id
 let userCollectionFoldersUpdateOperationPayload = UserCollectionFoldersUpdateOperation_Payload(data: UserCollectionFoldersUpdateOperation_Payload_Data(attributes: UserCollectionFoldersUpdateOperation_Payload_Data_Attributes(name: "name_example"), id: "id_example", type: "type_example")) // UserCollectionFoldersUpdateOperationPayload |  (optional)
 
 // Update single userCollectionFolder.
@@ -235,7 +235,7 @@ Deletes item(s) from items relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "" // String | Folder Id
+let id = "id_example" // String | Folder Id
 let userCollectionFoldersItemsRelationshipRemoveOperationPayload = UserCollectionFoldersItemsRelationshipRemoveOperation_Payload(data: [UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", resourceType: "resourceType_example")]) // UserCollectionFoldersItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
@@ -287,7 +287,7 @@ Retrieves items relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "" // String | Folder Id
+let id = "id_example" // String | Folder Id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
@@ -343,7 +343,7 @@ Adds item(s) to items relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "" // String | Folder Id
+let id = "id_example" // String | Folder Id
 let userCollectionFoldersItemsRelationshipAddOperationPayload = UserCollectionFoldersItemsRelationshipAddOperation_Payload(data: [UserCollectionFoldersItemsRelationshipAddOperation_Payload_Data(id: "id_example", resourceType: "resourceType_example")]) // UserCollectionFoldersItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
@@ -395,7 +395,7 @@ Retrieves owners relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "" // String | Folder Id
+let id = "id_example" // String | Folder Id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 

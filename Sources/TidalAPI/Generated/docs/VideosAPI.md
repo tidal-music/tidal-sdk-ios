@@ -33,8 +33,8 @@ import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
-let filterId = ["inner_example"] // [String] | Video id (e.g. `75623239`) (optional)
-let filterIsrc = ["inner_example"] // [String] | International Standard Recording Code (ISRC) (e.g. `QMJMT1701237`) (optional)
+let filterId = ["inner_example"] // [String] | List of video IDs (e.g. `75623239`) (optional)
+let filterIsrc = ["inner_example"] // [String] | List of ISRCs (e.g. `QMJMT1701237`) (optional)
 
 // Get multiple videos.
 VideosAPI.videosGet(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc) { (response, error) in
@@ -55,8 +55,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules | [optional] 
- **filterId** | [**[String]**](String.md) | Video id (e.g. &#x60;75623239&#x60;) | [optional] 
- **filterIsrc** | [**[String]**](String.md) | International Standard Recording Code (ISRC) (e.g. &#x60;QMJMT1701237&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | List of video IDs (e.g. &#x60;75623239&#x60;) | [optional] 
+ **filterIsrc** | [**[String]**](String.md) | List of ISRCs (e.g. &#x60;QMJMT1701237&#x60;) | [optional] 
 
 ### Return type
 

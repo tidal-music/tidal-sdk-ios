@@ -45,8 +45,8 @@ internal class DynamicPagesAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject (optional)
-     - parameter filterPageType: (query) Filter by page type (e.g. &#x60;ARTIST&#x60;) (optional)
-     - parameter filterSubjectId: (query) Filter by subject id (e.g. &#x60;67890&#x60;) (optional)
+     - parameter filterPageType: (query) type of the page (e.g. &#x60;ARTIST&#x60;) (optional)
+     - parameter filterSubjectId: (query) the subject id, eg. artistId (e.g. &#x60;67890&#x60;) (optional)
      - returns: DynamicPagesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -76,8 +76,8 @@ internal class DynamicPagesAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject (optional)
-     - parameter filterPageType: (query) Filter by page type (e.g. &#x60;ARTIST&#x60;) (optional)
-     - parameter filterSubjectId: (query) Filter by subject id (e.g. &#x60;67890&#x60;) (optional)
+     - parameter filterPageType: (query) type of the page (e.g. &#x60;ARTIST&#x60;) (optional)
+     - parameter filterSubjectId: (query) the subject id, eg. artistId (e.g. &#x60;67890&#x60;) (optional)
      - returns: RequestBuilder<DynamicPagesMultiResourceDataDocument> 
      */
     internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, refreshId: Int64? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterPageType: [String]? = nil, filterSubjectId: [String]? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {

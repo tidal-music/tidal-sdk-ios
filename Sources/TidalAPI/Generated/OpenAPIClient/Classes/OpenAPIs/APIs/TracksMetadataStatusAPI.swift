@@ -15,7 +15,7 @@ internal class TracksMetadataStatusAPI {
     /**
      Get multiple tracksMetadataStatus.
      
-     - parameter filterId: (query) Track id (e.g. &#x60;75413016&#x60;) (optional)
+     - parameter filterId: (query) List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
      - returns: TracksMetadataStatusMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -35,7 +35,7 @@ internal class TracksMetadataStatusAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterId: (query) Track id (e.g. &#x60;75413016&#x60;) (optional)
+     - parameter filterId: (query) List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
      - returns: RequestBuilder<TracksMetadataStatusMultiResourceDataDocument> 
      */
     internal class func tracksMetadataStatusGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<TracksMetadataStatusMultiResourceDataDocument> {

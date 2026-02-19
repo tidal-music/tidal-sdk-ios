@@ -22,7 +22,7 @@ Retrieves multiple providers by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | Provider ID (e.g. `12345`) (optional)
+let filterId = ["inner_example"] // [String] | List of provider IDs (e.g. `12345`) (optional)
 
 // Get multiple providers.
 ProvidersAPI.providersGet(filterId: filterId) { (response, error) in
@@ -41,7 +41,7 @@ ProvidersAPI.providersGet(filterId: filterId) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | Provider ID (e.g. &#x60;12345&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | List of provider IDs (e.g. &#x60;12345&#x60;) | [optional] 
 
 ### Return type
 
