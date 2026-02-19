@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.1.34"
+    "version" : "1.1.35"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -25383,23 +25383,13 @@
         }
       },
       "OfflineTasks_Attributes" : {
-        "required" : [ "action", "collectionReference", "memberReference" ],
+        "required" : [ "action" ],
         "type" : "object",
         "properties" : {
           "action" : {
             "type" : "string",
             "description" : "Action to perform",
-            "enum" : [ "STORE_ITEM", "REMOVE_ITEM", "STORE_COLLECTION", "REMOVE_COLLECTION" ]
-          },
-          "collectionReference" : {
-            "type" : "string",
-            "description" : "Collection reference associated with task",
-            "deprecated" : true
-          },
-          "memberReference" : {
-            "type" : "string",
-            "description" : "Collection-member reference associated with task",
-            "deprecated" : true
+            "enum" : [ "STORE", "REMOVE" ]
           },
           "position" : {
             "type" : "integer",
