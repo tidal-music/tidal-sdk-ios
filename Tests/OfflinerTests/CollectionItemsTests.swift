@@ -16,36 +16,38 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let albumId = "album-1"
 
-		let album = AlbumsResourceObject(id: albumId, type: "albums")
-		let albumMetadata = AlbumMetadata(album: album, artists: [], coverArt: nil)
-		let collectionMetadata = OfflineCollection.Metadata.album(albumMetadata)
+		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
 
 		let collectionTask = StoreCollectionTask(
 			id: "offline-task-100",
-			metadata: collectionMetadata
+			metadata: collectionMetadata,
+			artists: [],
+			artwork: nil
 		)
-
-		let track1 = TracksResourceObject(id: "track-1", type: "tracks")
-		let track2 = TracksResourceObject(id: "track-2", type: "tracks")
-		let track3 = TracksResourceObject(id: "track-3", type: "tracks")
 
 		let itemTask1 = StoreItemTask(
 			id: "offline-task-101",
-			itemMetadata: .track(TrackMetadata(track: track1, artists: [], coverArt: nil)),
+			itemMetadata: .track(TracksResourceObject(id: "track-1", type: "tracks")),
+			artists: [],
+			artwork: nil,
 			collectionMetadata: collectionMetadata,
 			volume: 1,
 			position: 1
 		)
 		let itemTask2 = StoreItemTask(
 			id: "offline-task-102",
-			itemMetadata: .track(TrackMetadata(track: track2, artists: [], coverArt: nil)),
+			itemMetadata: .track(TracksResourceObject(id: "track-2", type: "tracks")),
+			artists: [],
+			artwork: nil,
 			collectionMetadata: collectionMetadata,
 			volume: 1,
 			position: 2
 		)
 		let itemTask3 = StoreItemTask(
 			id: "offline-task-103",
-			itemMetadata: .track(TrackMetadata(track: track3, artists: [], coverArt: nil)),
+			itemMetadata: .track(TracksResourceObject(id: "track-3", type: "tracks")),
+			artists: [],
+			artwork: nil,
 			collectionMetadata: collectionMetadata,
 			volume: 1,
 			position: 3
@@ -71,12 +73,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		XCTAssertEqual(items.count, 3, "Album should contain 3 tracks")
 		guard items.count == 3 else { return }
 
-		let trackIds = items.map { item -> String in
-			if case .track(let metadata) = item.item.metadata {
-				return metadata.track.id
-			}
-			return ""
-		}
+		let trackIds = items.map(\.item.metadata.id)
 		XCTAssertEqual(trackIds, ["track-1", "track-2", "track-3"])
 
 		XCTAssertEqual(items[0].volume, 1)
@@ -97,10 +94,11 @@ final class CollectionItemsTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		let album = AlbumsResourceObject(id: "album-empty", type: "albums")
 		let collectionTask = StoreCollectionTask(
 			id: "empty-collection-task-id",
-			metadata: .album(AlbumMetadata(album: album, artists: [], coverArt: nil))
+			metadata: .album(AlbumsResourceObject(id: "album-empty", type: "albums")),
+			artists: [],
+			artwork: nil
 		)
 
 		backend.enqueueTasks([.storeCollection(collectionTask)])
@@ -116,10 +114,6 @@ final class CollectionItemsTests: OfflinerTestCase {
 	}
 
 	// MARK: - Helpers
-
-	private typealias TrackMetadata = OfflineMediaItem.TrackMetadata
-	private typealias AlbumMetadata = OfflineCollection.AlbumMetadata
-	private typealias PlaylistMetadata = OfflineCollection.PlaylistMetadata
 
 	private func runAllTasks(_ offliner: Offliner, backend: StubBackendClient, expectedDownloads: Int) async throws {
 		let downloads = offliner.newDownloads

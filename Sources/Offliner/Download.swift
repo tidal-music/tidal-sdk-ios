@@ -14,12 +14,14 @@ public actor Download {
 	}
 
 	public nonisolated let metadata: OfflineMediaItem.Metadata
+	public nonisolated let imageURL: URL?
 	public nonisolated let events: AsyncStream<Event>
 
 	private let continuation: AsyncStream<Event>.Continuation
 
-	internal init(metadata: OfflineMediaItem.Metadata) {
+	internal init(metadata: OfflineMediaItem.Metadata, imageURL: URL?) {
 		self.metadata = metadata
+		self.imageURL = imageURL
 
 		let (stream, continuation) = AsyncStream<Event>.makeStream()
 		self.events = stream

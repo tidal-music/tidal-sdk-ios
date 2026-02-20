@@ -1,6 +1,7 @@
 import AVFoundation
 import CoreMedia
 import Foundation
+import TidalAPI
 
 final class StoreItemHandler {
 	private let backendClient: BackendClientProtocol
@@ -21,9 +22,11 @@ final class StoreItemHandler {
 	}
 
 	func handle(_ task: StoreItemTask) -> InternalTask {
-		InternalTaskImpl(
+		let metadata = OfflineMediaItem.Metadata(from: task)
+		let imageURL = task.artwork?.attributes?.files.first.flatMap { URL(string: $0.href) }
+		return InternalTaskImpl(
 			task: task,
-			download: Download(metadata: task.itemMetadata),
+			download: Download(metadata: metadata, imageURL: imageURL),
 			backendClient: backendClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
@@ -86,7 +89,7 @@ private final class InternalTaskImpl: InternalTask {
 			let storeResult = StoreItemTaskResult(
 				resourceType: task.itemMetadata.resourceType,
 				resourceId: task.itemMetadata.resourceId,
-				metadata: task.itemMetadata,
+				metadata: OfflineMediaItem.Metadata(from: task),
 				collectionResourceType: task.collectionMetadata.resourceType,
 				collectionResourceId: task.collectionMetadata.resourceId,
 				volume: task.volume,
@@ -104,6 +107,30 @@ private final class InternalTaskImpl: InternalTask {
 			print("StoreItemHandler error: \(error)")
 			try? await backendClient.updateTask(taskId: id, state: .failed)
 			await mediaDownload.updateState(.failed)
+		}
+	}
+}
+
+// MARK: - Metadata Conversion
+
+private extension OfflineMediaItem.Metadata {
+	init(from task: StoreItemTask) {
+		let artistNames = task.artists.compactMap(\.attributes?.name)
+		switch task.itemMetadata {
+		case .track(let track):
+			self = .track(OfflineMediaItem.TrackMetadata(
+				id: track.id,
+				title: track.attributes?.title ?? "",
+				artists: artistNames,
+				duration: track.attributes?.duration ?? ""
+			))
+		case .video(let video):
+			self = .video(OfflineMediaItem.VideoMetadata(
+				id: video.id,
+				title: video.attributes?.title ?? "",
+				artists: artistNames,
+				duration: video.attributes?.duration ?? ""
+			))
 		}
 	}
 }

@@ -36,8 +36,8 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		)
 		XCTAssertNotNil(storedCollection)
 
-		if case .album(let metadata) = storedCollection?.metadata {
-			XCTAssertEqual(metadata.album.id, "album-123")
+		XCTAssertEqual(storedCollection?.metadata.id, "album-123")
+		if case .album = storedCollection?.metadata {
 		} else {
 			XCTFail("Expected album metadata")
 		}
@@ -114,8 +114,8 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		)
 		XCTAssertNotNil(storedCollection)
 
-		if case .playlist(let metadata) = storedCollection?.metadata {
-			XCTAssertEqual(metadata.playlist.id, "playlist-456")
+		XCTAssertEqual(storedCollection?.metadata.id, "playlist-456")
+		if case .playlist = storedCollection?.metadata {
 		} else {
 			XCTFail("Expected playlist metadata")
 		}

@@ -1,7 +1,6 @@
 import Foundation
 import GRDB
 import Player
-import TidalAPI
 
 // MARK: - Public Types
 
@@ -17,23 +16,31 @@ public enum OfflineCollectionType: String {
 
 public struct OfflineMediaItem {
 	public struct TrackMetadata: Codable {
-		public let track: TracksResourceObject
-		public let artists: [ArtistsResourceObject]
-		public let coverArt: ArtworksResourceObject?
+		public let id: String
+		public let title: String
+		public let artists: [String]
+		public let duration: String
 	}
 
 	public struct VideoMetadata: Codable {
-		public let video: VideosResourceObject
-		public let artists: [ArtistsResourceObject]
-		public let thumbnail: ArtworksResourceObject?
+		public let id: String
+		public let title: String
+		public let artists: [String]
+		public let duration: String
 	}
 
 	public enum Metadata {
 		case track(TrackMetadata)
 		case video(VideoMetadata)
+
+		public var id: String {
+			switch self {
+			case .track(let metadata): return metadata.id
+			case .video(let metadata): return metadata.id
+			}
+		}
 	}
 
-	public let id: String
 	public let metadata: Metadata
 	public let mediaURL: URL
 	public let licenseURL: URL?
@@ -42,22 +49,29 @@ public struct OfflineMediaItem {
 
 public struct OfflineCollection {
 	public struct AlbumMetadata: Codable {
-		public let album: AlbumsResourceObject
-		public let artists: [ArtistsResourceObject]
-		public let coverArt: ArtworksResourceObject?
+		public let id: String
+		public let title: String
+		public let artists: [String]
+		public let copyright: String?
 	}
 
 	public struct PlaylistMetadata: Codable {
-		public let playlist: PlaylistsResourceObject
-		public let coverArt: ArtworksResourceObject?
+		public let id: String
+		public let title: String
 	}
 
 	public enum Metadata {
 		case album(AlbumMetadata)
 		case playlist(PlaylistMetadata)
+
+		public var id: String {
+			switch self {
+			case .album(let metadata): return metadata.id
+			case .playlist(let metadata): return metadata.id
+			}
+		}
 	}
 
-	public let id: String
 	public let metadata: Metadata
 	public let artworkURL: URL?
 }

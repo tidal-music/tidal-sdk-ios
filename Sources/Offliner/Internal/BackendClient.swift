@@ -11,19 +11,63 @@ enum ResourceType {
 	case playlist
 }
 
+// MARK: - Backend Metadata
+
+enum BackendItemMetadata {
+	case track(TracksResourceObject)
+	case video(VideosResourceObject)
+
+	var resourceType: String {
+		switch self {
+		case .track: return OfflineMediaItemType.tracks.rawValue
+		case .video: return OfflineMediaItemType.videos.rawValue
+		}
+	}
+
+	var resourceId: String {
+		switch self {
+		case .track(let track): return track.id
+		case .video(let video): return video.id
+		}
+	}
+}
+
+enum BackendCollectionMetadata {
+	case album(AlbumsResourceObject)
+	case playlist(PlaylistsResourceObject)
+
+	var resourceType: String {
+		switch self {
+		case .album: return OfflineCollectionType.albums.rawValue
+		case .playlist: return OfflineCollectionType.playlists.rawValue
+		}
+	}
+
+	var resourceId: String {
+		switch self {
+		case .album(let album): return album.id
+		case .playlist(let playlist): return playlist.id
+		}
+	}
+}
+
 // MARK: - Task Types
 
 struct StoreItemTask {
 	let id: String
-	let itemMetadata: OfflineMediaItem.Metadata
-	let collectionMetadata: OfflineCollection.Metadata
+	let itemMetadata: BackendItemMetadata
+	let artists: [ArtistsResourceObject]
+	let artwork: ArtworksResourceObject?
+	let collectionMetadata: BackendCollectionMetadata
 	let volume: Int
 	let position: Int
 }
 
 struct StoreCollectionTask {
 	let id: String
-	let metadata: OfflineCollection.Metadata
+	let metadata: BackendCollectionMetadata
+	let artists: [ArtistsResourceObject]
+	let artwork: ArtworksResourceObject?
 }
 
 struct RemoveTask {
@@ -44,40 +88,6 @@ enum OfflineTask {
 		case .storeItem(let task): return task.id
 		case .storeCollection(let task): return task.id
 		case .remove(let task): return task.id
-		}
-	}
-}
-
-// MARK: - Metadata Extensions
-
-extension OfflineMediaItem.Metadata {
-	var resourceType: String {
-		switch self {
-		case .track: return OfflineMediaItemType.tracks.rawValue
-		case .video: return OfflineMediaItemType.videos.rawValue
-		}
-	}
-
-	var resourceId: String {
-		switch self {
-		case .track(let metadata): return metadata.track.id
-		case .video(let metadata): return metadata.video.id
-		}
-	}
-}
-
-extension OfflineCollection.Metadata {
-	var resourceType: String {
-		switch self {
-		case .album: return OfflineCollectionType.albums.rawValue
-		case .playlist: return OfflineCollectionType.playlists.rawValue
-		}
-	}
-
-	var resourceId: String {
-		switch self {
-		case .album(let metadata): return metadata.album.id
-		case .playlist(let metadata): return metadata.playlist.id
 		}
 	}
 }
@@ -341,62 +351,41 @@ private class IncludedItem {
 		self.resource = resource
 	}
 
-	var mediaItemMetadata: OfflineMediaItem.Metadata? {
+	var backendItemMetadata: BackendItemMetadata? {
 		switch resource {
-		case .track(let track):
-			let artistObjects = artists?.compactMap { item -> ArtistsResourceObject? in
-				if case .artist(let artist) = item.resource { return artist }
-				return nil
-			} ?? []
-			let coverArtObject: ArtworksResourceObject? = {
-				if case .artwork(let artwork) = album?.coverArt?.resource { return artwork }
-				return nil
-			}()
-			let metadata = OfflineMediaItem.TrackMetadata(track: track, artists: artistObjects, coverArt: coverArtObject)
-			return .track(metadata)
-
-		case .video(let video):
-			let artistObjects = artists?.compactMap { item -> ArtistsResourceObject? in
-				if case .artist(let artist) = item.resource { return artist }
-				return nil
-			} ?? []
-			let thumbnailObject: ArtworksResourceObject? = {
-				if case .artwork(let artwork) = coverArt?.resource { return artwork }
-				return nil
-			}()
-			let metadata = OfflineMediaItem.VideoMetadata(video: video, artists: artistObjects, thumbnail: thumbnailObject)
-			return .video(metadata)
-
-		default:
-			return nil
+		case .track(let track): return .track(track)
+		case .video(let video): return .video(video)
+		default: return nil
 		}
 	}
 
-	var collectionMetadata: OfflineCollection.Metadata? {
+	var backendCollectionMetadata: BackendCollectionMetadata? {
 		switch resource {
-		case .album(let album):
-			let artistObjects = artists?.compactMap { item -> ArtistsResourceObject? in
-				if case .artist(let artist) = item.resource { return artist }
-				return nil
-			} ?? []
-			let coverArtObject: ArtworksResourceObject? = {
-				if case .artwork(let artwork) = coverArt?.resource { return artwork }
-				return nil
-			}()
-			let metadata = OfflineCollection.AlbumMetadata(album: album, artists: artistObjects, coverArt: coverArtObject)
-			return .album(metadata)
+		case .album(let album): return .album(album)
+		case .playlist(let playlist): return .playlist(playlist)
+		default: return nil
+		}
+	}
 
-		case .playlist(let playlist):
-			let coverArtObject: ArtworksResourceObject? = {
-				if case .artwork(let artwork) = coverArt?.resource { return artwork }
-				return nil
-			}()
-			let metadata = OfflineCollection.PlaylistMetadata(playlist: playlist, coverArt: coverArtObject)
-			return .playlist(metadata)
+	var artistObjects: [ArtistsResourceObject] {
+		artists?.compactMap { item -> ArtistsResourceObject? in
+			if case .artist(let artist) = item.resource { return artist }
+			return nil
+		} ?? []
+	}
 
-		default:
+	var artworkObject: ArtworksResourceObject? {
+		let artworkItem: IncludedItem? = switch resource {
+		case .track: album?.coverArt
+		case .video: coverArt
+		case .album: coverArt
+		case .playlist: coverArt
+		default: nil
+		}
+		guard let artworkItem, case .artwork(let artwork) = artworkItem.resource else {
 			return nil
 		}
+		return artwork
 	}
 }
 
@@ -409,29 +398,36 @@ private extension StoreItemTask {
 		item: IncludedItem?,
 		collection: IncludedItem?
 	) {
-		guard let itemMetadata = item?.mediaItemMetadata,
-			  let collectionMetadata = collection?.collectionMetadata,
-			  let volume = attributes.volume,
-			  let position = attributes.position else {
+		guard let item,
+			  let itemMetadata = item.backendItemMetadata,
+			  let collection,
+			  let collectionMetadata = collection.backendCollectionMetadata else {
 			return nil
 		}
 
 		self.init(
 			id: resourceObject.id,
 			itemMetadata: itemMetadata,
+			artists: item.artistObjects,
+			artwork: item.artworkObject,
 			collectionMetadata: collectionMetadata,
-			volume: volume,
-			position: position
+			volume: attributes.volume,
+			position: attributes.position
 		)
 	}
 }
 
 private extension StoreCollectionTask {
 	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
-		guard let metadata = item?.collectionMetadata else {
+		guard let item, let metadata = item.backendCollectionMetadata else {
 			return nil
 		}
-		self.init(id: resourceObject.id, metadata: metadata)
+		self.init(
+			id: resourceObject.id,
+			metadata: metadata,
+			artists: item.artistObjects,
+			artwork: item.artworkObject
+		)
 	}
 }
 

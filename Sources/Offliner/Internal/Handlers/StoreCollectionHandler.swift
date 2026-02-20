@@ -1,4 +1,5 @@
 import Foundation
+import TidalAPI
 
 final class StoreCollectionHandler {
 	private let backendClient: BackendClientProtocol
@@ -51,7 +52,7 @@ private final class InternalTaskImpl: InternalTask {
 			let result = StoreCollectionTaskResult(
 				resourceType: task.metadata.resourceType,
 				resourceId: task.metadata.resourceId,
-				metadata: task.metadata,
+				metadata: OfflineCollection.Metadata(from: task),
 				artworkURL: artworkURL
 			)
 
@@ -61,6 +62,28 @@ private final class InternalTaskImpl: InternalTask {
 		} catch {
 			print("StoreCollectionHandler error: \(error)")
 			try? await backendClient.updateTask(taskId: id, state: .failed)
+		}
+	}
+}
+
+// MARK: - Metadata Conversion
+
+private extension OfflineCollection.Metadata {
+	init(from task: StoreCollectionTask) {
+		let artistNames = task.artists.compactMap(\.attributes?.name)
+		switch task.metadata {
+		case .album(let album):
+			self = .album(OfflineCollection.AlbumMetadata(
+				id: album.id,
+				title: album.attributes?.title ?? "",
+				artists: artistNames,
+				copyright: album.attributes?.copyright?.text
+			))
+		case .playlist(let playlist):
+			self = .playlist(OfflineCollection.PlaylistMetadata(
+				id: playlist.id,
+				title: playlist.attributes?.name ?? ""
+			))
 		}
 	}
 }

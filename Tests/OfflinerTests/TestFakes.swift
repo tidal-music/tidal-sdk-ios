@@ -17,18 +17,17 @@ final class StubBackendClient: BackendClientProtocol {
 		let position = taskIdCounter + 1
 		taskIdCounter += 1
 
-		let defaultAlbum = AlbumsResourceObject(id: "stub-album", type: "albums")
-		let defaultCollectionMetadata = OfflineCollection.Metadata.album(
-			OfflineCollection.AlbumMetadata(album: defaultAlbum, artists: [], coverArt: nil)
+		let defaultCollectionMetadata = BackendCollectionMetadata.album(
+			AlbumsResourceObject(id: "stub-album", type: "albums")
 		)
 
 		switch type {
 		case .track:
-			let track = TracksResourceObject(id: id, type: "tracks")
-			let itemMetadata = OfflineMediaItem.TrackMetadata(track: track, artists: [], coverArt: nil)
 			let task = StoreItemTask(
 				id: taskId,
-				itemMetadata: .track(itemMetadata),
+				itemMetadata: .track(TracksResourceObject(id: id, type: "tracks")),
+				artists: [],
+				artwork: nil,
 				collectionMetadata: defaultCollectionMetadata,
 				volume: 1,
 				position: position
@@ -36,11 +35,11 @@ final class StubBackendClient: BackendClientProtocol {
 			tasks.append(.storeItem(task))
 
 		case .video:
-			let video = VideosResourceObject(id: id, type: "videos")
-			let itemMetadata = OfflineMediaItem.VideoMetadata(video: video, artists: [], thumbnail: nil)
 			let task = StoreItemTask(
 				id: taskId,
-				itemMetadata: .video(itemMetadata),
+				itemMetadata: .video(VideosResourceObject(id: id, type: "videos")),
+				artists: [],
+				artwork: nil,
 				collectionMetadata: defaultCollectionMetadata,
 				volume: 1,
 				position: position
@@ -48,15 +47,21 @@ final class StubBackendClient: BackendClientProtocol {
 			tasks.append(.storeItem(task))
 
 		case .album:
-			let album = AlbumsResourceObject(id: id, type: "albums")
-			let metadata = OfflineCollection.AlbumMetadata(album: album, artists: [], coverArt: nil)
-			let task = StoreCollectionTask(id: taskId, metadata: .album(metadata))
+			let task = StoreCollectionTask(
+				id: taskId,
+				metadata: .album(AlbumsResourceObject(id: id, type: "albums")),
+				artists: [],
+				artwork: nil
+			)
 			tasks.append(.storeCollection(task))
 
 		case .playlist:
-			let playlist = PlaylistsResourceObject(id: id, type: "playlists")
-			let metadata = OfflineCollection.PlaylistMetadata(playlist: playlist, coverArt: nil)
-			let task = StoreCollectionTask(id: taskId, metadata: .playlist(metadata))
+			let task = StoreCollectionTask(
+				id: taskId,
+				metadata: .playlist(PlaylistsResourceObject(id: id, type: "playlists")),
+				artists: [],
+				artwork: nil
+			)
 			tasks.append(.storeCollection(task))
 		}
 	}
