@@ -43,12 +43,8 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		delegateQueue.underlyingQueue = queue
 		delegateQueue.maxConcurrentOperationCount = 1
 
-		let sessionConfig = URLSessionConfiguration.background(withIdentifier: "com.tidal.offliner.download.session")
-		sessionConfig.allowsExpensiveNetworkAccess = configuration.allowDownloadsOnExpensiveNetworks
-		sessionConfig.waitsForConnectivity = !configuration.allowDownloadsOnExpensiveNetworks
-
 		self.session = AVAssetDownloadURLSession(
-			configuration: sessionConfig,
+			configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.offliner.download.session"),
 			assetDownloadDelegate: self,
 			delegateQueue: delegateQueue
 		)

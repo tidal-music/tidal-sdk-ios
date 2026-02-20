@@ -95,6 +95,10 @@ public final class Offliner {
 		set { mediaDownloader.audioFormat = newValue }
 	}
 
+	public func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
+		await taskRunner.setAllowDownloadsOnExpensiveNetworks(allowed)
+	}
+
 	public var newDownloads: AsyncStream<Download> {
 		taskRunner.newDownloads
 	}
@@ -118,6 +122,7 @@ public final class Offliner {
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
 		self.taskRunner = TaskRunner(
+			configuration: configuration,
 			backendClient: backendClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
@@ -126,6 +131,7 @@ public final class Offliner {
 	}
 
 	init(
+		configuration: Configuration = Configuration(),
 		backendClient: BackendClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
@@ -135,6 +141,7 @@ public final class Offliner {
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
 		self.taskRunner = TaskRunner(
+			configuration: configuration,
 			backendClient: backendClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,

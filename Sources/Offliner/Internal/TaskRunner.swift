@@ -1,4 +1,5 @@
 import Foundation
+import Network
 
 actor TaskRunner {
 	private static let maxConcurrentTasks = 5
@@ -9,6 +10,7 @@ actor TaskRunner {
 	private let removeHandler: RemoveHandler
 
 	private let backendClient: BackendClientProtocol
+	private let network: Network
 
 	private var pendingTasks: [InternalTask] = []
 	private var inProgressTasks: [InternalTask] = []
@@ -22,13 +24,18 @@ actor TaskRunner {
 
 	nonisolated let newDownloads: AsyncStream<Download>
 
+	var allowDownloadsOnExpensiveNetworks: Bool
+
 	init(
+		configuration: Configuration,
 		backendClient: BackendClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
 	) {
 		self.backendClient = backendClient
+		self.allowDownloadsOnExpensiveNetworks = configuration.allowDownloadsOnExpensiveNetworks
+		self.network = Network()
 
 		let (stream, continuation) = AsyncStream<Download>.makeStream()
 		self.newDownloads = stream
@@ -75,6 +82,13 @@ actor TaskRunner {
 		} while needsRun
 	}
 
+	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
+		allowDownloadsOnExpensiveNetworks = allowed
+		if allowed {
+			try? await run()
+		}
+	}
+
 	private func refresh() async throws {
 		let (tasks, _) = try await backendClient.getTasks(cursor: nil)
 
@@ -97,9 +111,13 @@ actor TaskRunner {
 	}
 
 	private func start(_ task: InternalTask) {
+		let allowDownloadsOnExpensiveNetworks = allowDownloadsOnExpensiveNetworks
+		let network = network
 		Task { [weak self] in
-			await task.run()
-			await self?.finalize(task)
+			if network.isInexpensive || allowDownloadsOnExpensiveNetworks {
+				await task.run()
+				await self?.finalize(task)
+			}
 		}
 	}
 
@@ -113,6 +131,23 @@ actor TaskRunner {
 		try? await run()
 	}
 }
+
+// MARK: - Network
+
+private final class Network {
+	private let monitor = NWPathMonitor()
+	private(set) var isInexpensive = true
+
+	init() {
+		monitor.pathUpdateHandler = { [weak self] path in
+			guard path.status == .satisfied else { return }
+			self?.isInexpensive = !path.isExpensive && !path.isConstrained
+		}
+		monitor.start(queue: DispatchQueue(label: "taskrunner.network.monitor"))
+	}
+}
+
+// MARK: - InternalTask
 
 protocol InternalTask: AnyObject {
 	var id: String { get }
