@@ -1,0 +1,89 @@
+import Foundation
+import TidalAPI
+
+final class StoreCollectionHandler {
+	private let backendClient: BackendClientProtocol
+	private let offlineStore: OfflineStore
+	private let artworkDownloader: ArtworkDownloaderProtocol
+
+	init(backendClient: BackendClientProtocol, offlineStore: OfflineStore, artworkDownloader: ArtworkDownloaderProtocol) {
+		self.backendClient = backendClient
+		self.offlineStore = offlineStore
+		self.artworkDownloader = artworkDownloader
+	}
+
+	func handle(_ task: StoreCollectionTask) -> InternalTask {
+		InternalTaskImpl(
+			task: task,
+			backendClient: backendClient,
+			offlineStore: offlineStore,
+			artworkDownloader: artworkDownloader
+		)
+	}
+}
+
+private final class InternalTaskImpl: InternalTask {
+	let id: String
+
+	private let task: StoreCollectionTask
+	private let backendClient: BackendClientProtocol
+	private let offlineStore: OfflineStore
+	private let artworkDownloader: ArtworkDownloaderProtocol
+
+	init(
+		task: StoreCollectionTask,
+		backendClient: BackendClientProtocol,
+		offlineStore: OfflineStore,
+		artworkDownloader: ArtworkDownloaderProtocol
+	) {
+		self.id = task.id
+		self.task = task
+		self.backendClient = backendClient
+		self.offlineStore = offlineStore
+		self.artworkDownloader = artworkDownloader
+	}
+
+	func run() async {
+		do {
+			try await backendClient.updateTask(taskId: id, state: .inProgress)
+
+			let artworkURL = try await artworkDownloader.downloadArtwork(for: task)
+
+			let result = StoreCollectionTaskResult(
+				resourceType: task.metadata.resourceType,
+				resourceId: task.metadata.resourceId,
+				catalogMetadata: OfflineCollection.Metadata(from: task),
+				artworkURL: artworkURL
+			)
+
+			try offlineStore.storeCollection(result)
+
+			try await backendClient.updateTask(taskId: id, state: .completed)
+		} catch {
+			print("StoreCollectionHandler error: \(error)")
+			try? await backendClient.updateTask(taskId: id, state: .failed)
+		}
+	}
+}
+
+// MARK: - Metadata Conversion
+
+private extension OfflineCollection.Metadata {
+	init(from task: StoreCollectionTask) {
+		let artistNames = task.artists.compactMap(\.attributes?.name)
+		switch task.metadata {
+		case .album(let album):
+			self = .album(OfflineCollection.AlbumMetadata(
+				id: album.id,
+				title: album.attributes?.title ?? "",
+				artists: artistNames,
+				copyright: album.attributes?.copyright?.text
+			))
+		case .playlist(let playlist):
+			self = .playlist(OfflineCollection.PlaylistMetadata(
+				id: playlist.id,
+				title: playlist.attributes?.name ?? ""
+			))
+		}
+	}
+}

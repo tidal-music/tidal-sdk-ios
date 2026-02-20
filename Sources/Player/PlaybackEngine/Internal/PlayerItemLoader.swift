@@ -6,6 +6,7 @@ import Foundation
 final class PlayerItemLoader {
 	private let offlineStorage: OfflineStorage?
 	private let offlinePlaybackPrivilegeCheck: (() -> Bool)?
+	private var offlineItemProvider: OfflineItemProvider?
 	private let playbackInfoFetcher: PlaybackInfoFetcher
 	private var configuration: Configuration
 	private var playerLoader: PlayerLoader
@@ -13,12 +14,14 @@ final class PlayerItemLoader {
 	init(
 		with offlineStorage: OfflineStorage?,
 		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
+		_ offlineItemProvider: OfflineItemProvider?,
 		_ playbackInfoFetcher: PlaybackInfoFetcher,
 		_ configuration: Configuration,
 		and playerLoader: PlayerLoader
 	) {
 		self.offlineStorage = offlineStorage
 		self.offlinePlaybackPrivilegeCheck = offlinePlaybackPrivilegeCheck
+		self.offlineItemProvider = offlineItemProvider
 		self.playbackInfoFetcher = playbackInfoFetcher
 		self.configuration = configuration
 		self.playerLoader = playerLoader
@@ -46,10 +49,18 @@ final class PlayerItemLoader {
 	func updateConfiguration(_ configuration: Configuration) {
 		self.configuration = configuration
 	}
+
+	func setOfflineItemProvider(_ provider: OfflineItemProvider?) {
+		offlineItemProvider = provider
+	}
 }
 
 private extension PlayerItemLoader {
 	func load(_ mediaProduct: MediaProduct, with streamingSessionId: String) async throws -> (Metadata, Asset) {
+		if let offlineItem = try? offlineItemProvider?.get(productType: mediaProduct.productType, productId: mediaProduct.productId) {
+			return try await (metadata(of: offlineItem, productId: mediaProduct.productId), playerLoader.load(offlineItem))
+		}
+
 		let offlinePlaybackAllowed = offlinePlaybackPrivilegeCheck?() ?? false
 		if offlinePlaybackAllowed, let storedMediaProduct = mediaProduct as? StoredMediaProduct {
 			return try await (metadata(of: storedMediaProduct), playerLoader.load(storedMediaProduct))
@@ -108,6 +119,26 @@ private extension PlayerItemLoader {
 			videoQuality: storedMediaProduct.videoQuality,
 			adaptiveAudioQualities: nil,
 			playbackSource: .LOCAL_STORAGE_LEGACY,
+			isAdaptivePlaybackEnabled: false,
+			previewReason: nil
+		)
+	}
+
+	func metadata(of item: OfflinePlaybackItem, productId: String) -> Metadata {
+		let playbackMetadata = item.format.flatMap { AssetPlaybackMetadata(formatString: $0) }
+
+		return Metadata(
+			productId: productId,
+			streamType: .ON_DEMAND,
+			assetPresentation: .FULL,
+			audioMode: playbackMetadata?.audioMode,
+			audioQuality: playbackMetadata?.audioQuality,
+			audioCodec: AudioCodec(from: playbackMetadata?.audioQuality, mode: playbackMetadata?.audioMode),
+			audioSampleRate: playbackMetadata?.sampleRate,
+			audioBitDepth: playbackMetadata?.bitDepth,
+			videoQuality: nil,
+			adaptiveAudioQualities: nil,
+			playbackSource: .LOCAL_STORAGE,
 			isAdaptivePlaybackEnabled: false,
 			previewReason: nil
 		)

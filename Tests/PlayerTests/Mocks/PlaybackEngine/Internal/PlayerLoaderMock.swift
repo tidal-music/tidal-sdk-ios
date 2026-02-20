@@ -8,6 +8,7 @@ final class PlayerLoaderMock: PlayerLoader {
 
 	private(set) var loadPlayableStorageItems = [PlayableOfflinedMediaProduct]()
 	private(set) var loadStoredMediaProducts = [StoredMediaProduct]()
+	private(set) var loadOfflinePlaybackItems = [OfflinePlaybackItem]()
 	private(set) var loadPlaybackInfos = [PlaybackInfo]()
 	private(set) var unloadCallCount = 0
 	private(set) var resetCallCount = 0
@@ -37,6 +38,11 @@ final class PlayerLoaderMock: PlayerLoader {
 
 	func load(_ storedMediaProduct: StoredMediaProduct) async -> Asset {
 		loadStoredMediaProducts.append(storedMediaProduct)
+		return player.load()
+	}
+
+	func load(_ offlinePlaybackItem: OfflinePlaybackItem) async -> Asset {
+		loadOfflinePlaybackItems.append(offlinePlaybackItem)
 		return player.load()
 	}
 

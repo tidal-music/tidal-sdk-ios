@@ -1,34 +1,49 @@
 import Foundation
 import GRDB
 
-internal enum Migrations {
+enum Migrations {
 	static func run(_ dbQueue: DatabaseQueue) throws {
 		var migrator = DatabaseMigrator()
 		for migration in try loadMigrations() {
-			migrator.registerMigration(migration.identifier) { db in
-				try db.execute(sql: migration.sql)
+			migrator.registerMigration(migration.identifier) { database in
+				try database.execute(sql: migration.sql)
 			}
 		}
 		try migrator.migrate(dbQueue)
 	}
 
 	private static func loadMigrations() throws -> [Migration] {
-		guard let migrationsURL = Bundle.module.url(forResource: "Migrations", withExtension: nil) else {
-			throw MigrationError.migrationsDirectoryNotFound
+		let bundle = Bundle.module
+		let fileManager = FileManager.default
+
+		var searchPaths: [String] = []
+		if let resourcePath = bundle.resourcePath {
+			searchPaths.append(resourcePath)
+		}
+		let bundleRoot = bundle.bundlePath
+		if !searchPaths.contains(bundleRoot) {
+			searchPaths.append(bundleRoot)
 		}
 
-		let fileManager = FileManager.default
-		let contents = try fileManager.contentsOfDirectory(
-			at: migrationsURL,
-			includingPropertiesForKeys: nil
-		)
+		for path in searchPaths {
+			guard let contents = try? fileManager.contentsOfDirectory(atPath: path) else { continue }
 
-		let migrations = try contents
-			.filter { $0.pathExtension == "sql" }
-			.compactMap { try Migration(url: $0) }
-			.sorted { $0.version < $1.version }
+			let migrations = try contents
+				.filter { $0.hasSuffix(".sql") && $0.hasPrefix("V") }
+				.compactMap { filename -> Migration? in
+					guard let url = bundle.url(forResource: filename.replacingOccurrences(of: ".sql", with: ""), withExtension: "sql") else {
+						return nil
+					}
+					return try Migration(url: url)
+				}
+				.sorted { $0.version < $1.version }
 
-		return migrations
+			if !migrations.isEmpty {
+				return migrations
+			}
+		}
+
+		throw MigrationError.migrationsDirectoryNotFound
 	}
 }
 

@@ -55,6 +55,7 @@ public final class Player {
 	private var externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?
 	private let credentialsProvider: CredentialsProvider
 	private let offlinePlaybackPrivilegeCheck: (() -> Bool)?
+	private var offlineItemProvider: OfflineItemProvider?
 
 	// MARK: - Initialization
 
@@ -73,7 +74,8 @@ public final class Player {
 		featureFlagProvider: FeatureFlagProvider,
 		externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?,
 		credentialsProvider: CredentialsProvider,
-		offlinePlaybackPrivilegeCheck: (() -> Bool)?
+		offlinePlaybackPrivilegeCheck: (() -> Bool)?,
+		offlineItemProvider: OfflineItemProvider?
 	) {
 		self.queue = queue
 		playerURLSession = urlSession
@@ -90,6 +92,7 @@ public final class Player {
 		self.externalPlayersSupplier = externalPlayersSupplier
 		self.credentialsProvider = credentialsProvider
 		self.offlinePlaybackPrivilegeCheck = offlinePlaybackPrivilegeCheck
+		self.offlineItemProvider = offlineItemProvider
 	}
 }
 
@@ -118,7 +121,8 @@ public extension Player {
 		externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])? = nil,
 		userClientIdSupplier: (() -> Int)? = nil,
 		shouldAddLogging: Bool = false,
-		offlinePlaybackPrivilegeCheck: (() -> Bool)? = nil
+		offlinePlaybackPrivilegeCheck: (() -> Bool)? = nil,
+		offlineItemProvider: OfflineItemProvider? = nil
 	) -> Player? {
 		// When we have logging enabled, we create a logger to be used inside Player module and set it in PlayerWorld.
 		if shouldAddLogging, PlayerWorld.logger == nil {
@@ -198,7 +202,8 @@ public extension Player {
 			featureFlagProvider,
 			externalPlayersSupplier,
 			credentialsProvider,
-			offlinePlaybackPrivilegeCheck
+			offlinePlaybackPrivilegeCheck,
+			offlineItemProvider
 		)
 
 		shared = Player(
@@ -216,7 +221,8 @@ public extension Player {
 			featureFlagProvider: featureFlagProvider,
 			externalPlayersSupplier: externalPlayersSupplier,
 			credentialsProvider: credentialsProvider,
-			offlinePlaybackPrivilegeCheck: offlinePlaybackPrivilegeCheck
+			offlinePlaybackPrivilegeCheck: offlinePlaybackPrivilegeCheck,
+			offlineItemProvider: offlineItemProvider
 		)
 
 		return shared
@@ -224,6 +230,13 @@ public extension Player {
 
 	func shutdown() {
 		reset()
+	}
+
+	/// Sets the offline item provider for playing downloaded content from the new Offliner.
+	/// Call this after bootstrapping when the Offliner has been initialized.
+	func setOfflineItemProvider(_ provider: OfflineItemProvider?) {
+		offlineItemProvider = provider
+		playerEngine.setOfflineItemProvider(provider)
 	}
 
 	func load(_ mediaProduct: MediaProduct) {
@@ -394,7 +407,8 @@ private extension Player {
 			featureFlagProvider,
 			externalPlayersSupplier,
 			credentialsProvider,
-			offlinePlaybackPrivilegeCheck
+			offlinePlaybackPrivilegeCheck,
+			offlineItemProvider
 		)
 	}
 
@@ -409,7 +423,8 @@ private extension Player {
 		_ featureFlagProvider: FeatureFlagProvider,
 		_ externalPlayersSupplier: (() -> [GenericMediaPlayer.Type])?,
 		_ credentialsProvider: CredentialsProvider,
-		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?
+		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
+		_ offlineItemProvider: OfflineItemProvider?
 	) -> PlayerEngine {
 		let internalPlayerLoader = InternalPlayerLoader(
 			with: configuration,
@@ -430,6 +445,7 @@ private extension Player {
 			networkMonitor,
 			offlineStorage,
 			offlinePlaybackPrivilegeCheck,
+			offlineItemProvider,
 			internalPlayerLoader,
 			featureFlagProvider,
 			notificationsHandler

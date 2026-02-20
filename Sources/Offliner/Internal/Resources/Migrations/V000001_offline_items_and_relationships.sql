@@ -1,26 +1,28 @@
 CREATE TABLE offline_item
 (
-    id TEXT PRIMARY KEY,
-
     resource_type    TEXT NOT NULL,
     resource_id      TEXT NOT NULL,
 
-    metadata         TEXT NOT NULL,
-    media_bookmark   BLOB,
+    catalog_metadata  TEXT NOT NULL,
+    playback_metadata TEXT,
+    media_bookmark    BLOB,
     license_bookmark BLOB,
+    artwork_bookmark BLOB,
 
     created_at    TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at    TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    UNIQUE (resource_type, resource_id)
+    PRIMARY KEY (resource_type, resource_id)
 );
 
 CREATE TABLE offline_item_relationship
 (
     id INTEGER PRIMARY KEY,
 
-    collection TEXT NOT NULL,
-    member     TEXT NOT NULL,
+    collection_resource_type TEXT NOT NULL,
+    collection_resource_id   TEXT NOT NULL,
+    member_resource_type     TEXT NOT NULL,
+    member_resource_id       TEXT NOT NULL,
 
     volume     INTEGER NOT NULL,
     position   INTEGER NOT NULL,
@@ -28,11 +30,17 @@ CREATE TABLE offline_item_relationship
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    UNIQUE (collection, volume, position)
+    UNIQUE (collection_resource_type, collection_resource_id, volume, position)
 );
 
 CREATE INDEX idx_rel_collection_order_cover
-ON offline_item_relationship(collection, volume, position, member);
+ON offline_item_relationship(
+    collection_resource_type,
+    collection_resource_id,
+    member_resource_type,
+    member_resource_id,
+    volume,
+    position);
 
 CREATE TRIGGER offline_item_set_updated_at
 AFTER UPDATE ON offline_item
@@ -41,7 +49,7 @@ WHEN NEW.updated_at = OLD.updated_at
 BEGIN
   UPDATE offline_item
   SET updated_at = CURRENT_TIMESTAMP
-  WHERE id = OLD.id;
+  WHERE resource_type = OLD.resource_type AND resource_id = OLD.resource_id;
 END;
 
 CREATE TRIGGER offline_item_relationship_set_updated_at
