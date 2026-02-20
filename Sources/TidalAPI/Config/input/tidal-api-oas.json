@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.1.38"
+    "version" : "1.1.39"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -46,7 +46,7 @@
     "description" : "A credit entry linking a contributor to a track or album.",
     "name" : "credits"
   }, {
-    "description" : "A downloadable content file with its download link.",
+    "description" : "A downloadable content file with its download links.",
     "name" : "downloads"
   }, {
     "description" : "Links to equivalent content on other streaming platforms.",
@@ -23779,8 +23779,11 @@
       "Downloads_Attributes" : {
         "type" : "object",
         "properties" : {
-          "downloadLink" : {
-            "$ref" : "#/components/schemas/Download_Link"
+          "downloadLinks" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Download_Link"
+            }
           }
         }
       },
