@@ -9,12 +9,13 @@ struct MediaDownloadResult {
 	let requiresLicense: Bool
 	let mediaLocation: URL
 	let licenseLocation: URL?
+	let playbackMetadata: OfflineMediaItem.PlaybackMetadata?
 }
 
 // MARK: - MediaDownloaderProtocol
 
 protocol MediaDownloaderProtocol {
-	var audioFormat: AudioFormat { get set }
+	var audioFormats: [AudioFormat] { get set }
 
 	func download(
 		trackId: String,
@@ -26,14 +27,14 @@ protocol MediaDownloaderProtocol {
 // MARK: - MediaDownloader
 
 final class MediaDownloader: NSObject, MediaDownloaderProtocol {
-	var audioFormat: AudioFormat
+	var audioFormats: [AudioFormat]
 	private let licenseFetcher: LicenseFetcher
 	private let queue: DispatchQueue
 	private var session: AVAssetDownloadURLSession!
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 
 	init(configuration: Configuration) {
-		self.audioFormat = configuration.audioFormat
+		self.audioFormats = configuration.audioFormats
 		self.licenseFetcher = LicenseFetcher()
 		self.queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
 
@@ -55,7 +56,7 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		taskId: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
-		let (manifestURL, contentKeySession) = try await fetchManifestURL(trackId: trackId)
+		let (manifestURL, contentKeySession, playbackMetadata) = try await fetchManifestURL(trackId: trackId)
 		let asset = AVURLAsset(url: manifestURL)
 		contentKeySession?.addContentKeyRecipient(asset)
 
@@ -77,7 +78,8 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 					onProgress: onProgress,
 					contentKeySession: contentKeySession,
 					licenseFetcher: self.licenseFetcher,
-					queue: self.queue
+					queue: self.queue,
+					playbackMetadata: playbackMetadata
 				)
 
 				contentKeySession?.setDelegate(activeDownload, queue: self.queue)
@@ -134,7 +136,8 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 				let result = MediaDownloadResult(
 					requiresLicense: activeDownload.licenseTask != nil,
 					mediaLocation: mediaLocation,
-					licenseLocation: licenseLocation
+					licenseLocation: licenseLocation,
+					playbackMetadata: activeDownload.playbackMetadata
 				)
 				activeDownload.continuation.resume(returning: result)
 			}
@@ -167,6 +170,7 @@ private final class ActiveDownload: NSObject {
 	let contentKeySession: AVContentKeySession?
 	let licenseFetcher: LicenseFetcher
 	let queue: DispatchQueue
+	let playbackMetadata: OfflineMediaItem.PlaybackMetadata?
 
 	var downloadedLocation: URL?
 	var licenseTask: Task<URL?, Never>?
@@ -177,7 +181,8 @@ private final class ActiveDownload: NSObject {
 		onProgress: @escaping @Sendable (Double) async -> Void,
 		contentKeySession: AVContentKeySession?,
 		licenseFetcher: LicenseFetcher,
-		queue: DispatchQueue
+		queue: DispatchQueue,
+		playbackMetadata: OfflineMediaItem.PlaybackMetadata?
 	) {
 		self.taskId = taskId
 		self.continuation = continuation
@@ -185,6 +190,7 @@ private final class ActiveDownload: NSObject {
 		self.contentKeySession = contentKeySession
 		self.licenseFetcher = licenseFetcher
 		self.queue = queue
+		self.playbackMetadata = playbackMetadata
 	}
 }
 
@@ -244,25 +250,44 @@ extension ActiveDownload: AVContentKeySessionDelegate {
 // MARK: - Private Helpers
 
 private extension MediaDownloader {
-	func fetchManifestURL(trackId: String) async throws -> (URL, AVContentKeySession?) {
+	func fetchManifestURL(trackId: String) async throws -> (URL, AVContentKeySession?, OfflineMediaItem.PlaybackMetadata?) {
 		let response = try await TrackManifestsAPITidal.trackManifestsIdGet(
 			id: trackId,
 			manifestType: .hls,
-			formats: [audioFormat.toAPIFormat],
+			formats: audioFormats.map(\.toAPIFormat),
 			uriScheme: .data,
 			usage: .download,
 			adaptive: false
 		)
 
-		guard let uriString = response.data.attributes?.uri,
+		let attributes = response.data.attributes
+
+		guard let uriString = attributes?.uri,
 			  let url = URL(string: uriString) else {
 			throw MediaDownloaderError.manifestNotFound
 		}
 
-		let contentKeySession = response.data.attributes?.drmData
+		let contentKeySession = attributes?.drmData
 			.map { _ in AVContentKeySession(keySystem: .fairPlayStreaming)}
 
-		return (url, contentKeySession)
+		let format = attributes?.formats?.first.flatMap { AudioFormat(rawValue: $0.rawValue) }
+
+		let playbackMetadata = format.map { format in
+			OfflineMediaItem.PlaybackMetadata(
+				format: format,
+				albumNormalizationData: .init(attributes?.albumAudioNormalizationData),
+				trackNormalizationData: .init(attributes?.trackAudioNormalizationData)
+			)
+		}
+
+		return (url, contentKeySession, playbackMetadata)
+	}
+}
+
+private extension OfflineMediaItem.NormalizationData {
+	init?(_ apiData: AudioNormalizationData?) {
+		guard let apiData else { return nil }
+		self.init(peakAmplitude: apiData.peakAmplitude, replayGain: apiData.replayGain)
 	}
 }
 

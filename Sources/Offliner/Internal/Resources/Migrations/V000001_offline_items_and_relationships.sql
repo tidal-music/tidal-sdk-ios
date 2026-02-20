@@ -3,8 +3,9 @@ CREATE TABLE offline_item
     resource_type    TEXT NOT NULL,
     resource_id      TEXT NOT NULL,
 
-    metadata         TEXT NOT NULL,
-    media_bookmark   BLOB,
+    catalog_metadata  TEXT NOT NULL,
+    playback_metadata TEXT,
+    media_bookmark    BLOB,
     license_bookmark BLOB,
     artwork_bookmark BLOB,
 

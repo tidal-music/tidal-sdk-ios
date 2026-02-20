@@ -75,9 +75,9 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		let storedItem = try offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNotNil(storedItem)
-		XCTAssertEqual(storedItem?.metadata.id, "track-123")
+		XCTAssertEqual(storedItem?.catalogMetadata.id, "track-123")
 
-		if case .track = storedItem?.metadata {
+		if case .track = storedItem?.catalogMetadata {
 		} else {
 			XCTFail("Expected track metadata")
 		}
@@ -208,7 +208,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		let storedItems = try offliner.getOfflineMediaItems(mediaType: .tracks)
 		XCTAssertEqual(storedItems.count, 3)
 
-		let resourceIds = storedItems.map(\.metadata.id)
+		let resourceIds = storedItems.map(\.catalogMetadata.id)
 		XCTAssertTrue(resourceIds.contains("track-1"))
 		XCTAssertTrue(resourceIds.contains("track-2"))
 		XCTAssertTrue(resourceIds.contains("track-3"))
@@ -299,8 +299,8 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		let storedItem = try offliner.getOfflineMediaItem(mediaType: .videos, resourceId: "video-456")
 		XCTAssertNotNil(storedItem)
 
-		XCTAssertEqual(storedItem?.metadata.id, "video-456")
-		if case .video = storedItem?.metadata {
+		XCTAssertEqual(storedItem?.catalogMetadata.id, "video-456")
+		if case .video = storedItem?.catalogMetadata {
 		} else {
 			XCTFail("Expected video metadata")
 		}

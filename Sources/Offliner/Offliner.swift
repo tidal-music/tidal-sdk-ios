@@ -41,7 +41,19 @@ public struct OfflineMediaItem {
 		}
 	}
 
-	public let metadata: Metadata
+	public struct NormalizationData: Codable {
+		public let peakAmplitude: Float?
+		public let replayGain: Float?
+	}
+
+	public struct PlaybackMetadata: Codable {
+		public let format: AudioFormat
+		public let albumNormalizationData: NormalizationData?
+		public let trackNormalizationData: NormalizationData?
+	}
+
+	public let catalogMetadata: Metadata
+	public let playbackMetadata: PlaybackMetadata?
 	public let mediaURL: URL
 	public let licenseURL: URL?
 	public let artworkURL: URL?
@@ -72,7 +84,7 @@ public struct OfflineCollection {
 		}
 	}
 
-	public let metadata: Metadata
+	public let catalogMetadata: Metadata
 	public let artworkURL: URL?
 }
 
@@ -90,9 +102,9 @@ public final class Offliner {
 	private let taskRunner: TaskRunner
 	private var mediaDownloader: MediaDownloaderProtocol
 
-	public var audioFormat: AudioFormat {
-		get { mediaDownloader.audioFormat }
-		set { mediaDownloader.audioFormat = newValue }
+	public var audioFormats: [AudioFormat] {
+		get { mediaDownloader.audioFormats }
+		set { mediaDownloader.audioFormats = newValue }
 	}
 
 	public func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
@@ -222,9 +234,9 @@ extension Offliner: OfflineItemProvider {
 		return OfflinePlaybackItem(
 			mediaURL: item.mediaURL,
 			licenseURL: item.licenseURL,
-			format: "HEAACV1",
-			albumReplayGain: nil,
-			albumPeakAmplitude: nil
+			format: item.playbackMetadata?.format.rawValue,
+			albumReplayGain: item.playbackMetadata?.albumNormalizationData?.replayGain,
+			albumPeakAmplitude: item.playbackMetadata?.albumNormalizationData?.peakAmplitude
 		)
 	}
 }

@@ -1,7 +1,7 @@
 import Foundation
 import TidalAPI
 
-public enum AudioFormat: String, CaseIterable {
+public enum AudioFormat: String, CaseIterable, Codable {
 	case heaacv1 = "HEAACV1"
 	case aaclc = "AACLC"
 	case flac = "FLAC"
@@ -20,11 +20,11 @@ public enum AudioFormat: String, CaseIterable {
 }
 
 public struct Configuration {
-	let audioFormat: AudioFormat
+	let audioFormats: [AudioFormat]
 	let allowDownloadsOnExpensiveNetworks: Bool
 
-	public init(audioFormat: AudioFormat = .heaacv1, allowDownloadsOnExpensiveNetworks: Bool = true) {
-		self.audioFormat = audioFormat
+	public init(audioFormats: [AudioFormat] = [.heaacv1], allowDownloadsOnExpensiveNetworks: Bool = true) {
+		self.audioFormats = audioFormats
 		self.allowDownloadsOnExpensiveNetworks = allowDownloadsOnExpensiveNetworks
 	}
 }

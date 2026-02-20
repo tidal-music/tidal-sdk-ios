@@ -52,7 +52,7 @@ private final class InternalTaskImpl: InternalTask {
 			let result = StoreCollectionTaskResult(
 				resourceType: task.metadata.resourceType,
 				resourceId: task.metadata.resourceId,
-				metadata: OfflineCollection.Metadata(from: task),
+				catalogMetadata: OfflineCollection.Metadata(from: task),
 				artworkURL: artworkURL
 			)
 

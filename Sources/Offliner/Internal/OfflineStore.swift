@@ -19,7 +19,8 @@ final class OfflineStore {
 	}
 
 	func storeMediaItem(_ result: StoreItemTaskResult) throws {
-		let metadataJson = try result.metadata.serialize()
+		let catalogMetadataJson = try result.catalogMetadata.serialize()
+		let playbackMetadataJson = try result.playbackMetadata?.serialize()
 
 		let mediaBookmark = try result.mediaURL.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 		let licenseBookmark = try result.licenseURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
@@ -46,10 +47,11 @@ final class OfflineStore {
 			try database.execute(
 				sql: """
 					INSERT INTO offline_item \
-					(resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark)
-					VALUES (?, ?, ?, ?, ?, ?)
+					(resource_type, resource_id, catalog_metadata, playback_metadata, media_bookmark, license_bookmark, artwork_bookmark)
+					VALUES (?, ?, ?, ?, ?, ?, ?)
 					ON CONFLICT (resource_type, resource_id) DO UPDATE SET
-						metadata = excluded.metadata,
+						catalog_metadata = excluded.catalog_metadata,
+						playback_metadata = excluded.playback_metadata,
 						media_bookmark = excluded.media_bookmark,
 						license_bookmark = excluded.license_bookmark,
 						artwork_bookmark = excluded.artwork_bookmark
@@ -57,7 +59,8 @@ final class OfflineStore {
 				arguments: [
 					result.resourceType,
 					result.resourceId,
-					metadataJson,
+					catalogMetadataJson,
+					playbackMetadataJson,
 					mediaBookmark,
 					licenseBookmark,
 					artworkBookmark
@@ -96,7 +99,7 @@ final class OfflineStore {
 	}
 
 	func storeCollection(_ result: StoreCollectionTaskResult) throws {
-		let metadataJson = try result.metadata.serialize()
+		let catalogMetadataJson = try result.catalogMetadata.serialize()
 		let artworkBookmark = try result.artworkURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
 		var replacedArtworkBookmark: Data?
@@ -119,13 +122,13 @@ final class OfflineStore {
 			try database.execute(
 				sql: """
 					INSERT INTO offline_item \
-					(resource_type, resource_id, metadata, artwork_bookmark)
+					(resource_type, resource_id, catalog_metadata, artwork_bookmark)
 					VALUES (?, ?, ?, ?)
 					ON CONFLICT (resource_type, resource_id) DO UPDATE SET
-						metadata = excluded.metadata,
+						catalog_metadata = excluded.catalog_metadata,
 						artwork_bookmark = excluded.artwork_bookmark
 					""",
-				arguments: [result.resourceType, result.resourceId, metadataJson, artworkBookmark]
+				arguments: [result.resourceType, result.resourceId, catalogMetadataJson, artworkBookmark]
 			)
 
 			return .commit
@@ -182,7 +185,7 @@ final class OfflineStore {
 			let row = try Row.fetchOne(
 				database,
 				sql: """
-					SELECT resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark
+					SELECT resource_type, resource_id, catalog_metadata, playback_metadata, media_bookmark, license_bookmark, artwork_bookmark
 					FROM offline_item
 					WHERE resource_type = ? AND resource_id = ?
 					""",
@@ -192,9 +195,11 @@ final class OfflineStore {
 			guard let row else { return nil }
 
 			let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
+			let playbackMetadataJson: String? = row["playback_metadata"]
 
 			return OfflineMediaItem(
-				metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
+				catalogMetadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["catalog_metadata"]),
+				playbackMetadata: try playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) },
 				mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
 				licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
 				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
@@ -207,7 +212,7 @@ final class OfflineStore {
 			let row = try Row.fetchOne(
 				database,
 				sql: """
-					SELECT resource_type, resource_id, metadata, artwork_bookmark
+					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark
 					FROM offline_item
 					WHERE resource_type = ? AND resource_id = ?
 					""",
@@ -219,7 +224,7 @@ final class OfflineStore {
 			let collectionType = OfflineCollectionType(rawValue: row["resource_type"])!
 
 			return OfflineCollection(
-				metadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["metadata"]),
+				catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
 				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 			)
 		}
@@ -230,7 +235,7 @@ final class OfflineStore {
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
-					SELECT resource_type, resource_id, metadata, media_bookmark, license_bookmark, artwork_bookmark
+					SELECT resource_type, resource_id, catalog_metadata, playback_metadata, media_bookmark, license_bookmark, artwork_bookmark
 					FROM offline_item
 					WHERE resource_type = ?
 					ORDER BY created_at DESC
@@ -240,9 +245,11 @@ final class OfflineStore {
 
 			return try rows.map { row in
 				let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
+				let playbackMetadataJson: String? = row["playback_metadata"]
 
 				return OfflineMediaItem(
-					metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
+					catalogMetadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["catalog_metadata"]),
+					playbackMetadata: try playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) },
 					mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
 					licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
 					artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
@@ -256,7 +263,7 @@ final class OfflineStore {
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
-					SELECT resource_type, resource_id, metadata, artwork_bookmark
+					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark
 					FROM offline_item
 					WHERE resource_type = ?
 					ORDER BY created_at DESC
@@ -268,7 +275,7 @@ final class OfflineStore {
 				let collectionType = OfflineCollectionType(rawValue: row["resource_type"])!
 
 				return OfflineCollection(
-					metadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["metadata"]),
+					catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
 					artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 				)
 			}
@@ -280,7 +287,8 @@ final class OfflineStore {
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
-					SELECT i.resource_type, i.resource_id, i.metadata, i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
+					SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
+					       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
 					       r.volume, r.position
 					FROM offline_item_relationship r
 					JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
@@ -292,10 +300,12 @@ final class OfflineStore {
 
 			return try rows.map { row in
 				let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
+				let playbackMetadataJson: String? = row["playback_metadata"]
 
 				return OfflineCollectionItem(
 					item: OfflineMediaItem(
-						metadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["metadata"]),
+						catalogMetadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["catalog_metadata"]),
+						playbackMetadata: try playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) },
 						mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
 						licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
 						artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
@@ -313,7 +323,8 @@ final class OfflineStore {
 struct StoreItemTaskResult {
 	let resourceType: String
 	let resourceId: String
-	let metadata: OfflineMediaItem.Metadata
+	let catalogMetadata: OfflineMediaItem.Metadata
+	let playbackMetadata: OfflineMediaItem.PlaybackMetadata?
 	let collectionResourceType: String
 	let collectionResourceId: String
 	let volume: Int
@@ -326,7 +337,7 @@ struct StoreItemTaskResult {
 struct StoreCollectionTaskResult {
 	let resourceType: String
 	let resourceId: String
-	let metadata: OfflineCollection.Metadata
+	let catalogMetadata: OfflineCollection.Metadata
 	let artworkURL: URL?
 }
 
@@ -385,6 +396,20 @@ extension OfflineCollection.Metadata {
 		case .playlists:
 			return .playlist(try decoder.decode(OfflineCollection.PlaylistMetadata.self, from: data))
 		}
+	}
+}
+
+// MARK: - PlaybackMetadata Serialization
+
+private extension OfflineMediaItem.PlaybackMetadata {
+	func serialize() throws -> String {
+		let data = try JSONEncoder().encode(self)
+		return String(data: data, encoding: .utf8)!
+	}
+
+	static func deserialize(_ json: String) throws -> OfflineMediaItem.PlaybackMetadata {
+		let data = json.data(using: .utf8)!
+		return try JSONDecoder().decode(OfflineMediaItem.PlaybackMetadata.self, from: data)
 	}
 }
 

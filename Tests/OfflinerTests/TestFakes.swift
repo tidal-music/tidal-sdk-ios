@@ -207,7 +207,7 @@ final class FailingArtworkDownloader: ArtworkDownloaderProtocol {
 // MARK: - Media Downloader Fakes
 
 final class SucceedingMediaDownloader: MediaDownloaderProtocol {
-	var audioFormat: AudioFormat = .heaacv1
+	var audioFormats: [AudioFormat] = [.heaacv1]
 	var progressValues: [Double] = []
 
 	func download(
@@ -226,13 +226,14 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 		return MediaDownloadResult(
 			requiresLicense: false,
 			mediaLocation: url,
-			licenseLocation: nil
+			licenseLocation: nil,
+			playbackMetadata: nil
 		)
 	}
 }
 
 final class FailingMediaDownloader: MediaDownloaderProtocol {
-	var audioFormat: AudioFormat = .heaacv1
+	var audioFormats: [AudioFormat] = [.heaacv1]
 
 	func download(
 		trackId: String,

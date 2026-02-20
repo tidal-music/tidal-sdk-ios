@@ -89,7 +89,8 @@ private final class InternalTaskImpl: InternalTask {
 			let storeResult = StoreItemTaskResult(
 				resourceType: task.itemMetadata.resourceType,
 				resourceId: task.itemMetadata.resourceId,
-				metadata: OfflineMediaItem.Metadata(from: task),
+				catalogMetadata: OfflineMediaItem.Metadata(from: task),
+				playbackMetadata: mediaResult.playbackMetadata,
 				collectionResourceType: task.collectionMetadata.resourceType,
 				collectionResourceId: task.collectionMetadata.resourceId,
 				volume: task.volume,

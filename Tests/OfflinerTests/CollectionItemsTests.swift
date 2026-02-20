@@ -73,7 +73,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		XCTAssertEqual(items.count, 3, "Album should contain 3 tracks")
 		guard items.count == 3 else { return }
 
-		let trackIds = items.map(\.item.metadata.id)
+		let trackIds = items.map(\.item.catalogMetadata.id)
 		XCTAssertEqual(trackIds, ["track-1", "track-2", "track-3"])
 
 		XCTAssertEqual(items[0].volume, 1)
