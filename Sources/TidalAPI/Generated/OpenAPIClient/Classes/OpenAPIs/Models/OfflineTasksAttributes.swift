@@ -25,17 +25,17 @@ public struct OfflineTasksAttributes: Codable, Hashable {
     /** Action to perform */
     public var action: Action
     /** Collection position of item */
-    public var position: Int?
+    public var position: Int
     /** Task state */
-    public var state: State?
+    public var state: State
     /** Collection volume of item */
-    public var volume: Int?
+    public var volume: Int
 
     public init(
         action: Action,
-        position: Int? = nil,
-        state: State? = nil,
-        volume: Int? = nil
+        position: Int,
+        state: State,
+        volume: Int
     ) {
         self.action = action
         self.position = position
@@ -55,8 +55,8 @@ public struct OfflineTasksAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(action, forKey: .action)
-        try container.encodeIfPresent(position, forKey: .position)
-        try container.encodeIfPresent(state, forKey: .state)
-        try container.encodeIfPresent(volume, forKey: .volume)
+        try container.encode(position, forKey: .position)
+        try container.encode(state, forKey: .state)
+        try container.encode(volume, forKey: .volume)
     }
 }

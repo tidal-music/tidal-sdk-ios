@@ -12,22 +12,22 @@ import AnyCodable
 
 public struct DownloadsAttributes: Codable, Hashable {
 
-    public var downloadLink: DownloadLink?
+    public var downloadLinks: [DownloadLink]?
 
     public init(
-        downloadLink: DownloadLink? = nil
+        downloadLinks: [DownloadLink]? = nil
     ) {
-        self.downloadLink = downloadLink
+        self.downloadLinks = downloadLinks
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case downloadLink
+        case downloadLinks
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(downloadLink, forKey: .downloadLink)
+        try container.encodeIfPresent(downloadLinks, forKey: .downloadLinks)
     }
 }
