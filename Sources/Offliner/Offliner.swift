@@ -88,6 +88,12 @@ public final class Offliner {
 	private let backendClient: BackendClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
+	private var mediaDownloader: MediaDownloaderProtocol
+
+	public var audioFormat: AudioFormat {
+		get { mediaDownloader.audioFormat }
+		set { mediaDownloader.audioFormat = newValue }
+	}
 
 	public var newDownloads: AsyncStream<Download> {
 		taskRunner.newDownloads
@@ -99,17 +105,18 @@ public final class Offliner {
 		}
 	}
 
-	public init(installationId: String) throws {
+	public init(installationId: String, configuration: Configuration) throws {
 		let databaseQueue = try DatabaseQueue(path: OfflineStore.url().path)
 		try Migrations.run(databaseQueue)
 
 		let offlineStore = OfflineStore(databaseQueue)
 		let backendClient = BackendClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
-		let mediaDownloader = MediaDownloader()
+		let mediaDownloader = MediaDownloader(configuration: configuration)
 
 		self.backendClient = backendClient
 		self.offlineStore = offlineStore
+		self.mediaDownloader = mediaDownloader
 		self.taskRunner = TaskRunner(
 			backendClient: backendClient,
 			offlineStore: offlineStore,
@@ -126,6 +133,7 @@ public final class Offliner {
 	) {
 		self.backendClient = backendClient
 		self.offlineStore = offlineStore
+		self.mediaDownloader = mediaDownloader
 		self.taskRunner = TaskRunner(
 			backendClient: backendClient,
 			offlineStore: offlineStore,

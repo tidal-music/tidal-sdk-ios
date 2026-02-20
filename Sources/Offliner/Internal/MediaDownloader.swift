@@ -14,6 +14,8 @@ struct MediaDownloadResult {
 // MARK: - MediaDownloaderProtocol
 
 protocol MediaDownloaderProtocol {
+	var audioFormat: AudioFormat { get set }
+
 	func download(
 		trackId: String,
 		taskId: String,
@@ -24,12 +26,14 @@ protocol MediaDownloaderProtocol {
 // MARK: - MediaDownloader
 
 final class MediaDownloader: NSObject, MediaDownloaderProtocol {
+	var audioFormat: AudioFormat
 	private let licenseFetcher: LicenseFetcher
 	private let queue: DispatchQueue
 	private var session: AVAssetDownloadURLSession!
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 
-	override init() {
+	init(configuration: Configuration) {
+		self.audioFormat = configuration.audioFormat
 		self.licenseFetcher = LicenseFetcher()
 		self.queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
 
@@ -39,8 +43,12 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		delegateQueue.underlyingQueue = queue
 		delegateQueue.maxConcurrentOperationCount = 1
 
+		let sessionConfig = URLSessionConfiguration.background(withIdentifier: "com.tidal.offliner.download.session")
+		sessionConfig.allowsExpensiveNetworkAccess = configuration.allowDownloadsOnExpensiveNetworks
+		sessionConfig.waitsForConnectivity = !configuration.allowDownloadsOnExpensiveNetworks
+
 		self.session = AVAssetDownloadURLSession(
-			configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.offliner.download.session"),
+			configuration: sessionConfig,
 			assetDownloadDelegate: self,
 			delegateQueue: delegateQueue
 		)
@@ -244,7 +252,7 @@ private extension MediaDownloader {
 		let response = try await TrackManifestsAPITidal.trackManifestsIdGet(
 			id: trackId,
 			manifestType: .hls,
-			formats: [.heaacv1],
+			formats: [audioFormat.toAPIFormat],
 			uriScheme: .data,
 			usage: .download,
 			adaptive: false
