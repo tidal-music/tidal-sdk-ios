@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**albumStatistics** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
 **artists** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **coverArt** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **genres** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 

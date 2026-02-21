@@ -82,6 +82,18 @@ public enum AlbumsAPITidal {
 
 
 	/**
+     Get albumStatistics relationship (\&quot;to-one\&quot;).
+     
+     - returns: AlbumsSingleRelationshipDataDocument
+     */
+	public static func albumsIdRelationshipsAlbumStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsAlbumStatisticsGetWithRequestBuilder(id: id, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Get artists relationship (\&quot;to-many\&quot;).
      
      - returns: AlbumsMultiRelationshipDataDocument

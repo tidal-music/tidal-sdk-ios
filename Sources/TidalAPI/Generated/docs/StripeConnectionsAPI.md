@@ -130,7 +130,7 @@ Creates a new stripeConnection.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let stripeConnectionsCreateOperationPayload = StripeConnectionsCreateOperation_Payload(data: StripeConnectionsCreateOperation_Payload_Data(attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example"), type: "type_example")) // StripeConnectionsCreateOperationPayload |  (optional)
+let stripeConnectionsCreateOperationPayload = StripeConnectionsCreateOperation_Payload(data: StripeConnectionsCreateOperation_Payload_Data(attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example"), type: "type_example"), meta: StripeConnectionsCreateOperation_Payload_Meta(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example")) // StripeConnectionsCreateOperationPayload |  (optional)
 
 // Create single stripeConnection.
 StripeConnectionsAPI.stripeConnectionsPost(countryCode: countryCode, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload) { (response, error) in
