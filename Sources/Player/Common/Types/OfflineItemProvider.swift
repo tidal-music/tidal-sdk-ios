@@ -23,5 +23,5 @@ public struct OfflinePlaybackItem {
 }
 
 public protocol OfflineItemProvider {
-	func get(productType: ProductType, productId: String) throws -> OfflinePlaybackItem?
+	func get(productType: ProductType, productId: String) async throws -> OfflinePlaybackItem?
 }

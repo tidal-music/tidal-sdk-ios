@@ -57,7 +57,7 @@ final class PlayerItemLoader {
 
 private extension PlayerItemLoader {
 	func load(_ mediaProduct: MediaProduct, with streamingSessionId: String) async throws -> (Metadata, Asset) {
-		if let offlineItem = try? offlineItemProvider?.get(productType: mediaProduct.productType, productId: mediaProduct.productId) {
+		if let offlineItem = try? await offlineItemProvider?.get(productType: mediaProduct.productType, productId: mediaProduct.productId) {
 			return try await (metadata(of: offlineItem, productId: mediaProduct.productId), playerLoader.load(offlineItem))
 		}
 

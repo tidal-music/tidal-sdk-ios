@@ -172,30 +172,30 @@ public final class Offliner {
 
 	// MARK: - Offline Content
 
-	public func getOfflineMediaItem(mediaType: OfflineMediaItemType, resourceId: String) throws -> OfflineMediaItem? {
-		try offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId)
+	public func getOfflineMediaItem(mediaType: OfflineMediaItemType, resourceId: String) async throws -> OfflineMediaItem? {
+		try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId)
 	}
 
-	public func getOfflineMediaItems(mediaType: OfflineMediaItemType) throws -> [OfflineMediaItem] {
-		try offlineStore.getMediaItems(mediaType: mediaType)
+	public func getOfflineMediaItems(mediaType: OfflineMediaItemType) async throws -> [OfflineMediaItem] {
+		try await offlineStore.getMediaItems(mediaType: mediaType)
 	}
 
 	public func getOfflineCollection(
 		collectionType: OfflineCollectionType,
 		resourceId: String
-	) throws -> OfflineCollection? {
-		try offlineStore.getCollection(collectionType: collectionType, resourceId: resourceId)
+	) async throws -> OfflineCollection? {
+		try await offlineStore.getCollection(collectionType: collectionType, resourceId: resourceId)
 	}
 
-	public func getOfflineCollections(collectionType: OfflineCollectionType) throws -> [OfflineCollection] {
-		try offlineStore.getCollections(collectionType: collectionType)
+	public func getOfflineCollections(collectionType: OfflineCollectionType) async throws -> [OfflineCollection] {
+		try await offlineStore.getCollections(collectionType: collectionType)
 	}
 
 	public func countOfflineCollectionItems(
 		collectionType: OfflineCollectionType,
 		resourceId: String
-	) throws -> Int {
-		try offlineStore.countCollectionItems(collectionType: collectionType, resourceId: resourceId)
+	) async throws -> Int {
+		try await offlineStore.countCollectionItems(collectionType: collectionType, resourceId: resourceId)
 	}
 
 	public func getOfflineCollectionItems(
@@ -203,8 +203,8 @@ public final class Offliner {
 		resourceId: String,
 		limit: Int,
 		after cursor: Int64? = nil
-	) throws -> OfflineCollectionItemsPage {
-		try offlineStore.getCollectionItems(
+	) async throws -> OfflineCollectionItemsPage {
+		try await offlineStore.getCollectionItems(
 			collectionType: collectionType,
 			resourceId: resourceId,
 			limit: limit,
@@ -238,7 +238,7 @@ public final class Offliner {
 // MARK: - OfflineItemProvider
 
 extension Offliner: OfflineItemProvider {
-	public func get(productType: ProductType, productId: String) throws -> OfflinePlaybackItem? {
+	public func get(productType: ProductType, productId: String) async throws -> OfflinePlaybackItem? {
 		let mediaType: OfflineMediaItemType
 		switch productType {
 		case .TRACK: mediaType = .tracks
@@ -246,7 +246,7 @@ extension Offliner: OfflineItemProvider {
 		case .UC: return nil
 		}
 
-		guard let item = try getOfflineMediaItem(mediaType: mediaType, resourceId: productId) else {
+		guard let item = try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: productId) else {
 			return nil
 		}
 

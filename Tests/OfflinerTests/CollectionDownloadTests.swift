@@ -30,7 +30,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try offliner.getOfflineCollection(
+		let storedCollection = try await offliner.getOfflineCollection(
 			collectionType: .albums,
 			resourceId: "album-123"
 		)
@@ -55,9 +55,8 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let firstCollection = try XCTUnwrap(
-			offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123")
-		)
+		let firstCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123")
+		let firstCollection = try XCTUnwrap(firstCollectionOptional)
 		let firstArtworkURL = try XCTUnwrap(firstCollection.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
 
@@ -65,9 +64,8 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let secondCollection = try XCTUnwrap(
-			offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123")
-		)
+		let secondCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123")
+		let secondCollection = try XCTUnwrap(secondCollectionOptional)
 		let secondArtworkURL = try XCTUnwrap(secondCollection.artworkURL)
 
 		XCTAssertFalse(FileManager.default.fileExists(atPath: firstArtworkURL.path))
@@ -87,7 +85,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try offliner.getOfflineCollection(
+		let storedCollection = try await offliner.getOfflineCollection(
 			collectionType: .albums,
 			resourceId: "album-123"
 		)
@@ -108,7 +106,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try offliner.getOfflineCollection(
+		let storedCollection = try await offliner.getOfflineCollection(
 			collectionType: .playlists,
 			resourceId: "playlist-456"
 		)
@@ -133,7 +131,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try offliner.getOfflineCollection(
+		let storedCollection = try await offliner.getOfflineCollection(
 			collectionType: .playlists,
 			resourceId: "playlist-456"
 		)

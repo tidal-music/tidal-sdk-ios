@@ -16,14 +16,14 @@ final class RemoveTests: OfflinerTestCase {
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
 		try await downloadAndWaitForCompletion(offliner)
 
-		let storedItem = try offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNotNil(storedItem)
 
 		try await offliner.remove(mediaType: .tracks, resourceId: "track-123")
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let removedItem = try offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let removedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNil(removedItem)
 	}
 
@@ -38,9 +38,8 @@ final class RemoveTests: OfflinerTestCase {
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
 		try await downloadAndWaitForCompletion(offliner)
 
-		let storedItem = try XCTUnwrap(
-			offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
-		)
+		let storedItemOptional = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let storedItem = try XCTUnwrap(storedItemOptional)
 		let mediaURL = storedItem.mediaURL
 		let artworkURL = try XCTUnwrap(storedItem.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: mediaURL.path))
@@ -65,14 +64,14 @@ final class RemoveTests: OfflinerTestCase {
 		try await offliner.download(mediaType: .videos, resourceId: "video-456")
 		try await downloadAndWaitForCompletion(offliner)
 
-		let storedItem = try offliner.getOfflineMediaItem(mediaType: .videos, resourceId: "video-456")
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .videos, resourceId: "video-456")
 		XCTAssertNotNil(storedItem)
 
 		try await offliner.remove(mediaType: .videos, resourceId: "video-456")
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let removedItem = try offliner.getOfflineMediaItem(mediaType: .videos, resourceId: "video-456")
+		let removedItem = try await offliner.getOfflineMediaItem(mediaType: .videos, resourceId: "video-456")
 		XCTAssertNil(removedItem)
 	}
 
@@ -90,7 +89,7 @@ final class RemoveTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try offliner.getOfflineCollection(
+		let storedCollection = try await offliner.getOfflineCollection(
 			collectionType: .albums,
 			resourceId: "album-123"
 		)
@@ -100,7 +99,7 @@ final class RemoveTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let removedCollection = try offliner.getOfflineCollection(
+		let removedCollection = try await offliner.getOfflineCollection(
 			collectionType: .albums,
 			resourceId: "album-123"
 		)
@@ -119,9 +118,8 @@ final class RemoveTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try XCTUnwrap(
-			offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123")
-		)
+		let storedCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123")
+		let storedCollection = try XCTUnwrap(storedCollectionOptional)
 		let artworkURL = try XCTUnwrap(storedCollection.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: artworkURL.path))
 

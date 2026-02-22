@@ -62,10 +62,10 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
 
-		let collection = try offliner.getOfflineCollection(collectionType: .albums, resourceId: albumId)
+		let collection = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: albumId)
 		XCTAssertNotNil(collection, "Album collection should be stored")
 
-		let page = try offliner.getOfflineCollectionItems(
+		let page = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
 			resourceId: albumId,
 			limit: 100
@@ -107,7 +107,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let page = try offliner.getOfflineCollectionItems(
+		let page = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
 			resourceId: "album-empty",
 			limit: 100
@@ -152,7 +152,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		backend.enqueueTasks(tasks)
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 5)
 
-		let page1 = try offliner.getOfflineCollectionItems(
+		let page1 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
 			resourceId: albumId,
 			limit: 2
@@ -161,7 +161,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		XCTAssertEqual(page1.items.map(\.item.catalogMetadata.id), ["track-1", "track-2"])
 		XCTAssertNotNil(page1.cursor)
 
-		let page2 = try offliner.getOfflineCollectionItems(
+		let page2 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
 			resourceId: albumId,
 			limit: 2,
@@ -171,7 +171,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		XCTAssertEqual(page2.items.map(\.item.catalogMetadata.id), ["track-3", "track-4"])
 		XCTAssertNotNil(page2.cursor)
 
-		let page3 = try offliner.getOfflineCollectionItems(
+		let page3 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
 			resourceId: albumId,
 			limit: 2,
@@ -232,14 +232,14 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
 
-		let page1 = try offliner.getOfflineCollectionItems(
+		let page1 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
 			resourceId: albumId,
 			limit: 2
 		)
 		XCTAssertEqual(page1.items.map(\.item.catalogMetadata.id), ["v1-track-1", "v1-track-2"])
 
-		let page2 = try offliner.getOfflineCollectionItems(
+		let page2 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
 			resourceId: albumId,
 			limit: 2,
@@ -272,7 +272,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let page = try offliner.getOfflineCollectionItems(
+		let page = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
 			resourceId: albumId,
 			limit: 10
@@ -313,7 +313,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 1)
 
-		let page = try offliner.getOfflineCollectionItems(
+		let page = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
 			resourceId: albumId,
 			limit: 10

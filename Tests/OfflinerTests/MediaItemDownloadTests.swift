@@ -73,7 +73,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		try await runTask
 
-		let storedItem = try offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNotNil(storedItem)
 		XCTAssertEqual(storedItem?.catalogMetadata.id, "track-123")
 
@@ -93,22 +93,20 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
 		try await downloadAndWaitForCompletion(offliner)
 
-		let firstItem = try XCTUnwrap(
-			offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
-		)
-		let firstMediaURL = firstItem.mediaURL
-		let firstArtworkURL = try XCTUnwrap(firstItem.artworkURL)
+		let firstItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let firstItemUnwrapped = try XCTUnwrap(firstItem)
+		let firstMediaURL = firstItemUnwrapped.mediaURL
+		let firstArtworkURL = try XCTUnwrap(firstItemUnwrapped.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstMediaURL.path))
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
 		try await downloadAndWaitForCompletion(offliner)
 
-		let secondItem = try XCTUnwrap(
-			offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
-		)
-		let secondMediaURL = secondItem.mediaURL
-		let secondArtworkURL = try XCTUnwrap(secondItem.artworkURL)
+		let secondItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let secondItemUnwrapped = try XCTUnwrap(secondItem)
+		let secondMediaURL = secondItemUnwrapped.mediaURL
+		let secondArtworkURL = try XCTUnwrap(secondItemUnwrapped.artworkURL)
 
 		XCTAssertFalse(FileManager.default.fileExists(atPath: firstMediaURL.path))
 		XCTAssertFalse(FileManager.default.fileExists(atPath: firstArtworkURL.path))
@@ -167,7 +165,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		try await runTask
 
-		let storedItem = try offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNil(storedItem)
 	}
 
@@ -205,7 +203,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		try await runTask
 
-		let storedItems = try offliner.getOfflineMediaItems(mediaType: .tracks)
+		let storedItems = try await offliner.getOfflineMediaItems(mediaType: .tracks)
 		XCTAssertEqual(storedItems.count, 3)
 
 		let resourceIds = storedItems.map(\.catalogMetadata.id)
@@ -296,7 +294,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		try await runTask
 
-		let storedItem = try offliner.getOfflineMediaItem(mediaType: .videos, resourceId: "video-456")
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .videos, resourceId: "video-456")
 		XCTAssertNotNil(storedItem)
 
 		XCTAssertEqual(storedItem?.catalogMetadata.id, "video-456")

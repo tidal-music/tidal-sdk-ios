@@ -23,7 +23,7 @@ final class BackendFailureTests: OfflinerTestCase {
 
 		try await runTask
 
-		let storedItem = try offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNil(storedItem)
 	}
 
@@ -51,7 +51,7 @@ final class BackendFailureTests: OfflinerTestCase {
 
 		try await runTask
 
-		let storedItem = try offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNotNil(storedItem)
 	}
 

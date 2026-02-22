@@ -180,8 +180,31 @@ final class OfflineStore {
 		}
 	}
 
-	func getMediaItem(mediaType: OfflineMediaItemType, resourceId: String) throws -> OfflineMediaItem? {
-		try databaseQueue.write { database in
+	func getCollection(collectionType: OfflineCollectionType, resourceId: String) async throws -> OfflineCollection? {
+		try await databaseQueue.write { [self] database in
+			let row = try Row.fetchOne(
+				database,
+				sql: """
+					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark
+					FROM offline_item
+					WHERE resource_type = ? AND resource_id = ?
+					""",
+				arguments: [collectionType.rawValue, resourceId]
+			)
+
+			guard let row else { return nil }
+
+			let collectionType = OfflineCollectionType(rawValue: row["resource_type"])!
+
+			return OfflineCollection(
+				catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
+				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
+			)
+		}
+	}
+
+	func getMediaItem(mediaType: OfflineMediaItemType, resourceId: String) async throws -> OfflineMediaItem? {
+		try await databaseQueue.write { [self] database in
 			let row = try Row.fetchOne(
 				database,
 				sql: """
@@ -207,31 +230,8 @@ final class OfflineStore {
 		}
 	}
 
-	func getCollection(collectionType: OfflineCollectionType, resourceId: String) throws -> OfflineCollection? {
-		try databaseQueue.write { database in
-			let row = try Row.fetchOne(
-				database,
-				sql: """
-					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark
-					FROM offline_item
-					WHERE resource_type = ? AND resource_id = ?
-					""",
-				arguments: [collectionType.rawValue, resourceId]
-			)
-
-			guard let row else { return nil }
-
-			let collectionType = OfflineCollectionType(rawValue: row["resource_type"])!
-
-			return OfflineCollection(
-				catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
-				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
-			)
-		}
-	}
-
-	func getMediaItems(mediaType: OfflineMediaItemType) throws -> [OfflineMediaItem] {
-		try databaseQueue.write { database in
+	func getMediaItems(mediaType: OfflineMediaItemType) async throws -> [OfflineMediaItem] {
+		try await databaseQueue.write { [self] database in
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
@@ -258,8 +258,8 @@ final class OfflineStore {
 		}
 	}
 
-	func getCollections(collectionType: OfflineCollectionType) throws -> [OfflineCollection] {
-		try databaseQueue.write { database in
+	func getCollections(collectionType: OfflineCollectionType) async throws -> [OfflineCollection] {
+		try await databaseQueue.write { [self] database in
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
@@ -282,8 +282,8 @@ final class OfflineStore {
 		}
 	}
 
-	func countCollectionItems(collectionType: OfflineCollectionType, resourceId: String) throws -> Int {
-		try databaseQueue.read { database in
+	func countCollectionItems(collectionType: OfflineCollectionType, resourceId: String) async throws -> Int {
+		try await databaseQueue.read { database in
 			let count = try Int.fetchOne(
 				database,
 				sql: """
@@ -303,11 +303,11 @@ final class OfflineStore {
 		resourceId: String,
 		limit: Int,
 		after cursor: Int64? = nil
-	) throws -> OfflineCollectionItemsPage {
+	) async throws -> OfflineCollectionItemsPage {
 		let cursorVolume = cursor.map { Int($0 / 1_000_000) } ?? -1
 		let cursorPosition = cursor.map { Int($0 % 1_000_000) } ?? -1
 
-		let items = try databaseQueue.write { database in
+		let items = try await databaseQueue.write { [self] database in
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
