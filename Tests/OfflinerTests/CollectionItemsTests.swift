@@ -65,23 +65,24 @@ final class CollectionItemsTests: OfflinerTestCase {
 		let collection = try offliner.getOfflineCollection(collectionType: .albums, resourceId: albumId)
 		XCTAssertNotNil(collection, "Album collection should be stored")
 
-		let items = try offliner.getOfflineCollectionItems(
+		let page = try offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: albumId
+			resourceId: albumId,
+			limit: 100
 		)
 
-		XCTAssertEqual(items.count, 3, "Album should contain 3 tracks")
-		guard items.count == 3 else { return }
+		XCTAssertEqual(page.items.count, 3, "Album should contain 3 tracks")
+		guard page.items.count == 3 else { return }
 
-		let trackIds = items.map(\.item.catalogMetadata.id)
+		let trackIds = page.items.map(\.item.catalogMetadata.id)
 		XCTAssertEqual(trackIds, ["track-1", "track-2", "track-3"])
 
-		XCTAssertEqual(items[0].volume, 1)
-		XCTAssertEqual(items[0].position, 1)
-		XCTAssertEqual(items[1].volume, 1)
-		XCTAssertEqual(items[1].position, 2)
-		XCTAssertEqual(items[2].volume, 1)
-		XCTAssertEqual(items[2].position, 3)
+		XCTAssertEqual(page.items[0].volume, 1)
+		XCTAssertEqual(page.items[0].position, 1)
+		XCTAssertEqual(page.items[1].volume, 1)
+		XCTAssertEqual(page.items[1].position, 2)
+		XCTAssertEqual(page.items[2].volume, 1)
+		XCTAssertEqual(page.items[2].position, 3)
 	}
 
 	// MARK: - Empty collection
@@ -106,11 +107,220 @@ final class CollectionItemsTests: OfflinerTestCase {
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let items = try offliner.getOfflineCollectionItems(
+		let page = try offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: "album-empty"
+			resourceId: "album-empty",
+			limit: 100
 		)
-		XCTAssertEqual(items.count, 0)
+		XCTAssertEqual(page.items.count, 0)
+		XCTAssertNil(page.cursor)
+	}
+
+	// MARK: - Pagination
+
+	func testPaginationReturnsItemsInPages() async throws {
+		let backend = StubBackendClient()
+		let offliner = createOffliner(
+			backendClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let albumId = "album-paginated"
+		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
+
+		let collectionTask = StoreCollectionTask(
+			id: "offline-task-200",
+			metadata: collectionMetadata,
+			artists: [],
+			artwork: nil
+		)
+
+		var tasks: [OfflineTask] = [.storeCollection(collectionTask)]
+		for i in 1 ... 5 {
+			tasks.append(.storeItem(StoreItemTask(
+				id: "offline-task-20\(i)",
+				itemMetadata: .track(TracksResourceObject(id: "track-\(i)", type: "tracks")),
+				artists: [],
+				artwork: nil,
+				collectionMetadata: collectionMetadata,
+				volume: 1,
+				position: i
+			)))
+		}
+
+		backend.enqueueTasks(tasks)
+		try await runAllTasks(offliner, backend: backend, expectedDownloads: 5)
+
+		let page1 = try offliner.getOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: albumId,
+			limit: 2
+		)
+		XCTAssertEqual(page1.items.count, 2)
+		XCTAssertEqual(page1.items.map(\.item.catalogMetadata.id), ["track-1", "track-2"])
+		XCTAssertNotNil(page1.cursor)
+
+		let page2 = try offliner.getOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: albumId,
+			limit: 2,
+			after: page1.cursor
+		)
+		XCTAssertEqual(page2.items.count, 2)
+		XCTAssertEqual(page2.items.map(\.item.catalogMetadata.id), ["track-3", "track-4"])
+		XCTAssertNotNil(page2.cursor)
+
+		let page3 = try offliner.getOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: albumId,
+			limit: 2,
+			after: page2.cursor
+		)
+		XCTAssertEqual(page3.items.count, 1)
+		XCTAssertEqual(page3.items.map(\.item.catalogMetadata.id), ["track-5"])
+	}
+
+	func testPaginationAcrossVolumes() async throws {
+		let backend = StubBackendClient()
+		let offliner = createOffliner(
+			backendClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let albumId = "album-multi-vol"
+		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
+
+		let collectionTask = StoreCollectionTask(
+			id: "offline-task-300",
+			metadata: collectionMetadata,
+			artists: [],
+			artwork: nil
+		)
+
+		backend.enqueueTasks([
+			.storeCollection(collectionTask),
+			.storeItem(StoreItemTask(
+				id: "offline-task-301",
+				itemMetadata: .track(TracksResourceObject(id: "v1-track-1", type: "tracks")),
+				artists: [],
+				artwork: nil,
+				collectionMetadata: collectionMetadata,
+				volume: 1,
+				position: 1
+			)),
+			.storeItem(StoreItemTask(
+				id: "offline-task-302",
+				itemMetadata: .track(TracksResourceObject(id: "v1-track-2", type: "tracks")),
+				artists: [],
+				artwork: nil,
+				collectionMetadata: collectionMetadata,
+				volume: 1,
+				position: 2
+			)),
+			.storeItem(StoreItemTask(
+				id: "offline-task-303",
+				itemMetadata: .track(TracksResourceObject(id: "v2-track-1", type: "tracks")),
+				artists: [],
+				artwork: nil,
+				collectionMetadata: collectionMetadata,
+				volume: 2,
+				position: 1
+			)),
+		])
+
+		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
+
+		let page1 = try offliner.getOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: albumId,
+			limit: 2
+		)
+		XCTAssertEqual(page1.items.map(\.item.catalogMetadata.id), ["v1-track-1", "v1-track-2"])
+
+		let page2 = try offliner.getOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: albumId,
+			limit: 2,
+			after: page1.cursor
+		)
+		XCTAssertEqual(page2.items.count, 1)
+		XCTAssertEqual(page2.items.map(\.item.catalogMetadata.id), ["v2-track-1"])
+	}
+
+	func testCursorIsNilWhenNoItems() async throws {
+		let backend = StubBackendClient()
+		let offliner = createOffliner(
+			backendClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let albumId = "album-cursor"
+		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
+
+		backend.enqueueTasks([
+			.storeCollection(StoreCollectionTask(
+				id: "offline-task-400",
+				metadata: collectionMetadata,
+				artists: [],
+				artwork: nil
+			)),
+		])
+
+		try await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let page = try offliner.getOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: albumId,
+			limit: 10
+		)
+
+		XCTAssertTrue(page.items.isEmpty)
+		XCTAssertNil(page.cursor)
+	}
+
+	func testCursorIsNonNilWhenItemsExist() async throws {
+		let backend = StubBackendClient()
+		let offliner = createOffliner(
+			backendClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let albumId = "album-cursor"
+		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
+
+		backend.enqueueTasks([
+			.storeCollection(StoreCollectionTask(
+				id: "offline-task-400",
+				metadata: collectionMetadata,
+				artists: [],
+				artwork: nil
+			)),
+			.storeItem(StoreItemTask(
+				id: "offline-task-401",
+				itemMetadata: .track(TracksResourceObject(id: "track-1", type: "tracks")),
+				artists: [],
+				artwork: nil,
+				collectionMetadata: collectionMetadata,
+				volume: 2,
+				position: 3
+			)),
+		])
+
+		try await runAllTasks(offliner, backend: backend, expectedDownloads: 1)
+
+		let page = try offliner.getOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: albumId,
+			limit: 10
+		)
+
+		XCTAssertEqual(page.items.count, 1)
+		XCTAssertNotNil(page.cursor)
 	}
 
 	// MARK: - Helpers

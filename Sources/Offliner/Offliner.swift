@@ -94,6 +94,11 @@ public struct OfflineCollectionItem {
 	public let position: Int
 }
 
+public struct OfflineCollectionItemsPage {
+	public let items: [OfflineCollectionItem]
+	public let cursor: Int64?
+}
+
 // MARK: - Offliner
 
 public final class Offliner {
@@ -186,11 +191,25 @@ public final class Offliner {
 		try offlineStore.getCollections(collectionType: collectionType)
 	}
 
-	public func getOfflineCollectionItems(
+	public func countOfflineCollectionItems(
 		collectionType: OfflineCollectionType,
 		resourceId: String
-	) throws -> [OfflineCollectionItem] {
-		try offlineStore.getCollectionItems(collectionType: collectionType, resourceId: resourceId)
+	) throws -> Int {
+		try offlineStore.countCollectionItems(collectionType: collectionType, resourceId: resourceId)
+	}
+
+	public func getOfflineCollectionItems(
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		limit: Int,
+		after cursor: Int64? = nil
+	) throws -> OfflineCollectionItemsPage {
+		try offlineStore.getCollectionItems(
+			collectionType: collectionType,
+			resourceId: resourceId,
+			limit: limit,
+			after: cursor
+		)
 	}
 
 	// MARK: - Download/Remove

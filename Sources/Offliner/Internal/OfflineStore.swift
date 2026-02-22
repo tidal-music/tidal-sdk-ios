@@ -282,8 +282,32 @@ final class OfflineStore {
 		}
 	}
 
-	func getCollectionItems(collectionType: OfflineCollectionType, resourceId: String) throws -> [OfflineCollectionItem] {
-		try databaseQueue.write { database in
+	func countCollectionItems(collectionType: OfflineCollectionType, resourceId: String) throws -> Int {
+		try databaseQueue.read { database in
+			let count = try Int.fetchOne(
+				database,
+				sql: """
+					SELECT COUNT(*)
+					FROM offline_item_relationship
+					WHERE collection_resource_type = ? AND collection_resource_id = ?
+					  AND (member_resource_type != collection_resource_type OR member_resource_id != collection_resource_id)
+					""",
+				arguments: [collectionType.rawValue, resourceId]
+			)
+			return count ?? 0
+		}
+	}
+
+	func getCollectionItems(
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		limit: Int,
+		after cursor: Int64? = nil
+	) throws -> OfflineCollectionItemsPage {
+		let cursorVolume = cursor.map { Int($0 / 1_000_000) } ?? -1
+		let cursorPosition = cursor.map { Int($0 % 1_000_000) } ?? -1
+
+		let items = try databaseQueue.write { database in
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
@@ -293,28 +317,38 @@ final class OfflineStore {
 					FROM offline_item_relationship r
 					JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
 					WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+					  AND (r.volume > ? OR (r.volume = ? AND r.position > ?))
+					  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
 					ORDER BY r.volume, r.position
+					LIMIT ?
 					""",
-				arguments: [collectionType.rawValue, resourceId]
+				arguments: [collectionType.rawValue, resourceId, cursorVolume, cursorVolume, cursorPosition, limit]
 			)
 
 			return try rows.map { row in
-				let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
-				let playbackMetadataJson: String? = row["playback_metadata"]
-
-				return OfflineCollectionItem(
-					item: OfflineMediaItem(
-						catalogMetadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["catalog_metadata"]),
-						playbackMetadata: try playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) },
-						mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
-						licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
-						artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
-					),
-					volume: row["volume"],
-					position: row["position"]
-				)
+				try makeCollectionItem(from: row, database: database)
 			}
 		}
+
+		let nextCursor = items.last.map { Int64($0.volume) * 1_000_000 + Int64($0.position) }
+		return OfflineCollectionItemsPage(items: items, cursor: nextCursor)
+	}
+
+	private func makeCollectionItem(from row: Row, database: GRDB.Database) throws -> OfflineCollectionItem {
+		let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
+		let playbackMetadataJson: String? = row["playback_metadata"]
+
+		return OfflineCollectionItem(
+			item: OfflineMediaItem(
+				catalogMetadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["catalog_metadata"]),
+				playbackMetadata: try playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) },
+				mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
+				licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
+				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
+			),
+			volume: row["volume"],
+			position: row["position"]
+		)
 	}
 }
 
