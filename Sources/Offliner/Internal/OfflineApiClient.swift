@@ -103,18 +103,18 @@ enum OfflineTask {
 	}
 }
 
-// MARK: - BackendClientProtocol
+// MARK: - OfflineApiClientProtocol
 
-protocol BackendClientProtocol {
+protocol OfflineApiClientProtocol {
 	func addItem(type: ResourceType, id: String) async throws
 	func removeItem(type: ResourceType, id: String) async throws
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?)
 	func updateTask(taskId: String, state: Download.State) async throws
 }
 
-// MARK: - BackendClient
+// MARK: - OfflineApiClient
 
-final class BackendClient: BackendClientProtocol {
+final class OfflineApiClient: OfflineApiClientProtocol {
 	private let installationId: String
 
 	init(installationId: String) {
@@ -175,7 +175,7 @@ final class BackendClient: BackendClientProtocol {
 
 // MARK: - Private Helpers
 
-private extension BackendClient {
+private extension OfflineApiClient {
 	func mapResourceType(_ type: ResourceType) -> InstallationsOfflineInventoryItemIdentifier.ModelType {
 		switch type {
 		case .track:

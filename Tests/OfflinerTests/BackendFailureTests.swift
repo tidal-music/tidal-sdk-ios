@@ -3,9 +3,9 @@ import XCTest
 
 final class BackendFailureTests: OfflinerTestCase {
 	func testDownloadTrackAbortsWhenUpdateTaskToInProgressFails() async throws {
-		let backend = FailOnUpdateToInProgressBackendClient()
+		let backend = FailOnUpdateToInProgressOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -28,9 +28,9 @@ final class BackendFailureTests: OfflinerTestCase {
 	}
 
 	func testDownloadTrackFailsWhenUpdateTaskToCompletedFails() async throws {
-		let backend = FailOnUpdateToCompletedBackendClient()
+		let backend = FailOnUpdateToCompletedOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -57,7 +57,7 @@ final class BackendFailureTests: OfflinerTestCase {
 
 	func testDownloadTrackFailsWhenAddItemFails() async throws {
 		let offliner = createOffliner(
-			backendClient: FailingBackendClient(),
+			offlineApiClient: FailingOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -75,7 +75,7 @@ final class BackendFailureTests: OfflinerTestCase {
 
 	func testDownloadAlbumFailsWhenAddItemFails() async throws {
 		let offliner = createOffliner(
-			backendClient: FailingBackendClient(),
+			offlineApiClient: FailingOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -89,9 +89,9 @@ final class BackendFailureTests: OfflinerTestCase {
 	}
 
 	func testGetTasksFailurePropagates() async throws {
-		let backend = FailOnGetTasksBackendClient()
+		let backend = FailOnGetTasksOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)

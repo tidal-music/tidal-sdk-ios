@@ -19,7 +19,7 @@ class OfflinerTestCase: XCTestCase {
 	}
 
 	func createOffliner(
-		backendClient: BackendClientProtocol,
+		offlineApiClient: OfflineApiClientProtocol,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
 	) -> Offliner {
@@ -31,7 +31,7 @@ class OfflinerTestCase: XCTestCase {
 		let offlineStore = OfflineStore(databaseQueue)
 
 		return Offliner(
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader

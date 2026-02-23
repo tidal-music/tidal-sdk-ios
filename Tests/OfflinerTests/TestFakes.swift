@@ -4,7 +4,7 @@ import TidalAPI
 
 // MARK: - Backend Client Fakes
 
-final class StubBackendClient: BackendClientProtocol {
+final class StubOfflineApiClient: OfflineApiClientProtocol {
 	private(set) var tasks: [OfflineTask] = []
 	var taskIdCounter = 0
 
@@ -117,7 +117,7 @@ final class StubBackendClient: BackendClientProtocol {
 	}
 }
 
-final class FailingBackendClient: BackendClientProtocol {
+final class FailingOfflineApiClient: OfflineApiClientProtocol {
 	func addItem(type: ResourceType, id: String) async throws {
 		throw FakeError.backendFailed
 	}
@@ -135,8 +135,8 @@ final class FailingBackendClient: BackendClientProtocol {
 	}
 }
 
-final class FailOnUpdateToInProgressBackendClient: BackendClientProtocol {
-	private let stub = StubBackendClient()
+final class FailOnUpdateToInProgressOfflineApiClient: OfflineApiClientProtocol {
+	private let stub = StubOfflineApiClient()
 
 	func addItem(type: ResourceType, id: String) async throws {
 		try await stub.addItem(type: type, id: id)
@@ -158,8 +158,8 @@ final class FailOnUpdateToInProgressBackendClient: BackendClientProtocol {
 	}
 }
 
-final class FailOnUpdateToCompletedBackendClient: BackendClientProtocol {
-	private let stub = StubBackendClient()
+final class FailOnUpdateToCompletedOfflineApiClient: OfflineApiClientProtocol {
+	private let stub = StubOfflineApiClient()
 
 	func addItem(type: ResourceType, id: String) async throws {
 		try await stub.addItem(type: type, id: id)
@@ -181,7 +181,7 @@ final class FailOnUpdateToCompletedBackendClient: BackendClientProtocol {
 	}
 }
 
-final class FailOnGetTasksBackendClient: BackendClientProtocol {
+final class FailOnGetTasksOfflineApiClient: OfflineApiClientProtocol {
 	func addItem(type: ResourceType, id: String) async throws {}
 
 	func removeItem(type: ResourceType, id: String) async throws {}

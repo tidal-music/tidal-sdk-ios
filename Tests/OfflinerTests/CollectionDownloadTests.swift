@@ -6,7 +6,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 
 	func testDownloadAlbumDoesNotCreateDownloadObject() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -19,9 +19,9 @@ final class CollectionDownloadTests: OfflinerTestCase {
 	}
 
 	func testDownloadAlbumStoresInLocalDatabase() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -44,9 +44,9 @@ final class CollectionDownloadTests: OfflinerTestCase {
 	}
 
 	func testRedownloadAlbumDeletesOldArtworkAndStoresNewOne() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -74,9 +74,9 @@ final class CollectionDownloadTests: OfflinerTestCase {
 	}
 
 	func testDownloadAlbumFailsWhenArtworkDownloadFails() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: FailingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -95,9 +95,9 @@ final class CollectionDownloadTests: OfflinerTestCase {
 	// MARK: - Playlist Download Tests
 
 	func testDownloadPlaylistStoresInLocalDatabase() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -120,9 +120,9 @@ final class CollectionDownloadTests: OfflinerTestCase {
 	}
 
 	func testDownloadPlaylistFailsWhenArtworkDownloadFails() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: FailingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)

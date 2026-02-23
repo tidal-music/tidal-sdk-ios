@@ -2,12 +2,12 @@ import Foundation
 import TidalAPI
 
 final class StoreCollectionHandler {
-	private let backendClient: BackendClientProtocol
+	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
 
-	init(backendClient: BackendClientProtocol, offlineStore: OfflineStore, artworkDownloader: ArtworkDownloaderProtocol) {
-		self.backendClient = backendClient
+	init(offlineApiClient: OfflineApiClientProtocol, offlineStore: OfflineStore, artworkDownloader: ArtworkDownloaderProtocol) {
+		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 	}
@@ -15,7 +15,7 @@ final class StoreCollectionHandler {
 	func handle(_ task: StoreCollectionTask) -> InternalTask {
 		InternalTaskImpl(
 			task: task,
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
 		)
@@ -26,26 +26,26 @@ private final class InternalTaskImpl: InternalTask {
 	let id: String
 
 	private let task: StoreCollectionTask
-	private let backendClient: BackendClientProtocol
+	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
 
 	init(
 		task: StoreCollectionTask,
-		backendClient: BackendClientProtocol,
+		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol
 	) {
 		self.id = task.id
 		self.task = task
-		self.backendClient = backendClient
+		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 	}
 
 	func run() async {
 		do {
-			try await backendClient.updateTask(taskId: id, state: .inProgress)
+			try await offlineApiClient.updateTask(taskId: id, state: .inProgress)
 
 			let artworkURL = try await artworkDownloader.downloadArtwork(for: task)
 
@@ -58,10 +58,10 @@ private final class InternalTaskImpl: InternalTask {
 
 			try offlineStore.storeCollection(result)
 
-			try await backendClient.updateTask(taskId: id, state: .completed)
+			try await offlineApiClient.updateTask(taskId: id, state: .completed)
 		} catch {
 			print("StoreCollectionHandler error: \(error)")
-			try? await backendClient.updateTask(taskId: id, state: .failed)
+			try? await offlineApiClient.updateTask(taskId: id, state: .failed)
 		}
 	}
 }

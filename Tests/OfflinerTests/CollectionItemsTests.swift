@@ -7,9 +7,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 	// MARK: - Happy Path: Album with tracks
 
 	func testOfflineAlbumWithTracksReturnsAllItems() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -89,9 +89,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 	// MARK: - Empty collection
 
 	func testGetCollectionItemsReturnsEmptyForCollectionWithNoItems() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -120,9 +120,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 	// MARK: - Pagination
 
 	func testPaginationReturnsItemsInPages() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -183,9 +183,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 	}
 
 	func testPaginationAcrossVolumes() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -251,9 +251,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 	}
 
 	func testCursorIsNilWhenNoItems() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -283,9 +283,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 	}
 
 	func testCursorIsNonNilWhenItemsExist() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -325,7 +325,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 	// MARK: - Helpers
 
-	private func runAllTasks(_ offliner: Offliner, backend: StubBackendClient, expectedDownloads: Int) async throws {
+	private func runAllTasks(_ offliner: Offliner, backend: StubOfflineApiClient, expectedDownloads: Int) async throws {
 		let downloads = offliner.newDownloads
 		async let runTask: () = offliner.run()
 

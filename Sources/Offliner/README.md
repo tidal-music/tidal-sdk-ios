@@ -164,7 +164,7 @@ Offliner uses a task-based architecture where the backend is the source of truth
 
 **Key components:**
 
-- **BackendClient**: Communicates with the TIDAL API to register requests and fetch pending tasks
+- **OfflineApiClient**: Communicates with the TIDAL API to register requests and fetch pending tasks
 - **TaskRunner**: Manages concurrent task execution and dispatches to handlers
 - **Handlers**: Execute specific task types (store/remove for items/collections)
 - **MediaDownloader**: Downloads HLS content via `AVAssetDownloadURLSession`

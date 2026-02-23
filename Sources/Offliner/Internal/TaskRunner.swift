@@ -10,7 +10,7 @@ actor TaskRunner {
 	private let removeItemHandler: RemoveItemHandler
 	private let removeCollectionHandler: RemoveCollectionHandler
 
-	private let backendClient: BackendClientProtocol
+	private let offlineApiClient: OfflineApiClientProtocol
 	private let network: Network
 
 	private var pendingTasks: [InternalTask] = []
@@ -29,12 +29,12 @@ actor TaskRunner {
 
 	init(
 		configuration: Configuration,
-		backendClient: BackendClientProtocol,
+		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
 	) {
-		self.backendClient = backendClient
+		self.offlineApiClient = offlineApiClient
 		self.allowDownloadsOnExpensiveNetworks = configuration.allowDownloadsOnExpensiveNetworks
 		self.network = Network()
 
@@ -43,22 +43,22 @@ actor TaskRunner {
 		self.downloadsContinuation = continuation
 
 		self.storeItemHandler = StoreItemHandler(
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader
 		)
 		self.storeCollectionHandler = StoreCollectionHandler(
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
 		)
 		self.removeItemHandler = RemoveItemHandler(
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore
 		)
 		self.removeCollectionHandler = RemoveCollectionHandler(
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore
 		)
 	}
@@ -95,7 +95,7 @@ actor TaskRunner {
 	}
 
 	private func refresh() async throws {
-		let (tasks, _) = try await backendClient.getTasks(cursor: nil)
+		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
 
 		for task in tasks where taskIds.insert(task.id).inserted {
 			let internalTask = handle(task)

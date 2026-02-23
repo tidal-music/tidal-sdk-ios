@@ -1,18 +1,18 @@
 import Foundation
 
 final class RemoveItemHandler {
-	private let backendClient: BackendClientProtocol
+	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 
-	init(backendClient: BackendClientProtocol, offlineStore: OfflineStore) {
-		self.backendClient = backendClient
+	init(offlineApiClient: OfflineApiClientProtocol, offlineStore: OfflineStore) {
+		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 	}
 
 	func handle(_ task: RemoveItemTask) -> InternalTask {
 		InternalTaskImpl(
 			task: task,
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore
 		)
 	}
@@ -22,13 +22,13 @@ private final class InternalTaskImpl: InternalTask {
 	let id: String
 
 	private let task: RemoveItemTask
-	private let backendClient: BackendClientProtocol
+	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 
-	init(task: RemoveItemTask, backendClient: BackendClientProtocol, offlineStore: OfflineStore) {
+	init(task: RemoveItemTask, offlineApiClient: OfflineApiClientProtocol, offlineStore: OfflineStore) {
 		self.id = task.id
 		self.task = task
-		self.backendClient = backendClient
+		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 	}
 
@@ -41,10 +41,10 @@ private final class InternalTaskImpl: InternalTask {
 				fromCollection: task.collectionResourceType,
 				collectionId: task.collectionResourceId
 			)
-			try await backendClient.updateTask(taskId: id, state: .completed)
+			try await offlineApiClient.updateTask(taskId: id, state: .completed)
 		} catch {
 			print("RemoveItemHandler error: \(error)")
-			try? await backendClient.updateTask(taskId: id, state: .failed)
+			try? await offlineApiClient.updateTask(taskId: id, state: .failed)
 		}
 	}
 }

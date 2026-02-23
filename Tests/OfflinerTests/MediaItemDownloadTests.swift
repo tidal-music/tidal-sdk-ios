@@ -6,7 +6,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 	func testDownloadTrackCreatesDownload() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -28,7 +28,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 	func testDownloadTrackCompletesSuccessfully() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -52,7 +52,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 	func testDownloadTrackStoresInLocalDatabase() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -85,7 +85,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 	func testRedownloadTrackDeletesOldFilesAndStoresNewOnes() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -120,7 +120,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 	func testDownloadTrackFailsWhenMediaDownloadFails() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: FailingMediaDownloader()
 		)
@@ -144,7 +144,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 	func testFailedDownloadDoesNotStoreInLocalDatabase() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: FailingMediaDownloader()
 		)
@@ -171,7 +171,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 	func testDownloadMultipleTracksStoresAllInLocalDatabase() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -217,7 +217,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		media.progressValues = [0.25, 0.5, 0.75]
 
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: media
 		)
@@ -247,7 +247,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 	func testDownloadTrackFailsWhenArtworkDownloadFails() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: FailingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -273,7 +273,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 	func testDownloadVideoStoresInLocalDatabase() async throws {
 		let offliner = createOffliner(
-			backendClient: StubBackendClient(),
+			offlineApiClient: StubOfflineApiClient(),
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)

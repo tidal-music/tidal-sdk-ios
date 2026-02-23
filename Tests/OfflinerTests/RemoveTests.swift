@@ -6,9 +6,9 @@ final class RemoveTests: OfflinerTestCase {
 	// MARK: - Remove Media Item
 
 	func testRemoveTrackDeletesFromLocalDatabase() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -28,9 +28,9 @@ final class RemoveTests: OfflinerTestCase {
 	}
 
 	func testRemoveTrackDeletesFiles() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -54,9 +54,9 @@ final class RemoveTests: OfflinerTestCase {
 	}
 
 	func testRemoveVideoDeletesFromLocalDatabase() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -78,9 +78,9 @@ final class RemoveTests: OfflinerTestCase {
 	// MARK: - Remove Collection
 
 	func testRemoveAlbumDeletesFromLocalDatabase() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -107,9 +107,9 @@ final class RemoveTests: OfflinerTestCase {
 	}
 
 	func testRemoveAlbumDeletesArtworkFile() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -131,9 +131,9 @@ final class RemoveTests: OfflinerTestCase {
 	}
 
 	func testRemoveNonExistentItemDoesNotThrow() async throws {
-		let backend = StubBackendClient()
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			backendClient: backend,
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)

@@ -5,7 +5,7 @@ import Player
 // MARK: - Offliner
 
 public final class Offliner {
-	private let backendClient: BackendClientProtocol
+	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
 	private var mediaDownloader: MediaDownloaderProtocol
@@ -34,16 +34,16 @@ public final class Offliner {
 		try Migrations.run(databaseQueue)
 
 		let offlineStore = OfflineStore(databaseQueue)
-		let backendClient = BackendClient(installationId: installationId)
+		let offlineApiClient = OfflineApiClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
 		let mediaDownloader = MediaDownloader(configuration: configuration)
 
-		self.backendClient = backendClient
+		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
 		self.taskRunner = TaskRunner(
 			configuration: configuration,
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader
@@ -52,17 +52,17 @@ public final class Offliner {
 
 	init(
 		configuration: Configuration = Configuration(),
-		backendClient: BackendClientProtocol,
+		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
 	) {
-		self.backendClient = backendClient
+		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
 		self.taskRunner = TaskRunner(
 			configuration: configuration,
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader
@@ -118,22 +118,22 @@ public final class Offliner {
 	// MARK: - Download/Remove
 
 	public func download(mediaType: OfflineMediaItemType, resourceId: String) async throws {
-		try await backendClient.addItem(type: mediaType.toResourceType, id: resourceId)
+		try await offlineApiClient.addItem(type: mediaType.toResourceType, id: resourceId)
 		try await taskRunner.run()
 	}
 
 	public func download(collectionType: OfflineCollectionType, resourceId: String) async throws {
-		try await backendClient.addItem(type: collectionType.toResourceType, id: resourceId)
+		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId)
 		try await taskRunner.run()
 	}
 
 	public func remove(mediaType: OfflineMediaItemType, resourceId: String) async throws {
-		try await backendClient.removeItem(type: mediaType.toResourceType, id: resourceId)
+		try await offlineApiClient.removeItem(type: mediaType.toResourceType, id: resourceId)
 		try await taskRunner.run()
 	}
 
 	public func remove(collectionType: OfflineCollectionType, resourceId: String) async throws {
-		try await backendClient.removeItem(type: collectionType.toResourceType, id: resourceId)
+		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId)
 		try await taskRunner.run()
 	}
 }

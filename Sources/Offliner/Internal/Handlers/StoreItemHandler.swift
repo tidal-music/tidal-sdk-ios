@@ -4,18 +4,18 @@ import Foundation
 import TidalAPI
 
 final class StoreItemHandler {
-	private let backendClient: BackendClientProtocol
+	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
 	private let mediaDownloader: MediaDownloaderProtocol
 
 	init(
-		backendClient: BackendClientProtocol,
+		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
 	) {
-		self.backendClient = backendClient
+		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
@@ -27,7 +27,7 @@ final class StoreItemHandler {
 		return InternalTaskImpl(
 			task: task,
 			download: Download(metadata: metadata, imageURL: imageURL),
-			backendClient: backendClient,
+			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader
@@ -40,7 +40,7 @@ private final class InternalTaskImpl: InternalTask {
 	let download: Download?
 
 	private let task: StoreItemTask
-	private let backendClient: BackendClientProtocol
+	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
 	private let mediaDownloader: MediaDownloaderProtocol
@@ -50,7 +50,7 @@ private final class InternalTaskImpl: InternalTask {
 	init(
 		task: StoreItemTask,
 		download: Download,
-		backendClient: BackendClientProtocol,
+		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
@@ -58,7 +58,7 @@ private final class InternalTaskImpl: InternalTask {
 		self.id = task.id
 		self.task = task
 		self.download = download
-		self.backendClient = backendClient
+		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
@@ -66,7 +66,7 @@ private final class InternalTaskImpl: InternalTask {
 
 	func run() async {
 		do {
-			try await backendClient.updateTask(taskId: id, state: .inProgress)
+			try await offlineApiClient.updateTask(taskId: id, state: .inProgress)
 			await mediaDownload.updateState(.inProgress)
 		} catch {
 			print("StoreItemHandler error: \(error)")
@@ -102,11 +102,11 @@ private final class InternalTaskImpl: InternalTask {
 
 			try offlineStore.storeMediaItem(storeResult)
 
-			try await backendClient.updateTask(taskId: id, state: .completed)
+			try await offlineApiClient.updateTask(taskId: id, state: .completed)
 			await mediaDownload.updateState(.completed)
 		} catch {
 			print("StoreItemHandler error: \(error)")
-			try? await backendClient.updateTask(taskId: id, state: .failed)
+			try? await offlineApiClient.updateTask(taskId: id, state: .failed)
 			await mediaDownload.updateState(.failed)
 		}
 	}
