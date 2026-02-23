@@ -58,7 +58,8 @@ struct StoreItemTask {
 	let itemMetadata: BackendItemMetadata
 	let artists: [ArtistsResourceObject]
 	let artwork: ArtworksResourceObject?
-	let collectionMetadata: BackendCollectionMetadata
+	let collectionResourceType: String
+	let collectionResourceId: String
 	let volume: Int
 	let position: Int
 }
@@ -70,7 +71,15 @@ struct StoreCollectionTask {
 	let artwork: ArtworksResourceObject?
 }
 
-struct RemoveTask {
+struct RemoveItemTask {
+	let id: String
+	let resourceType: String
+	let resourceId: String
+	let collectionResourceType: String
+	let collectionResourceId: String
+}
+
+struct RemoveCollectionTask {
 	let id: String
 	let resourceType: String
 	let resourceId: String
@@ -81,13 +90,15 @@ struct RemoveTask {
 enum OfflineTask {
 	case storeItem(StoreItemTask)
 	case storeCollection(StoreCollectionTask)
-	case remove(RemoveTask)
+	case removeItem(RemoveItemTask)
+	case removeCollection(RemoveCollectionTask)
 
 	var id: String {
 		switch self {
 		case .storeItem(let task): return task.id
 		case .storeCollection(let task): return task.id
-		case .remove(let task): return task.id
+		case .removeItem(let task): return task.id
+		case .removeCollection(let task): return task.id
 		}
 	}
 }
@@ -201,23 +212,19 @@ private extension OfflineTasksMultiResourceDataDocument {
 
 private extension OfflineTasksResourceObject {
 	func createOfflineTask(includedItems: IncludedItemsMap) -> OfflineTask? {
-		guard let attributes else {
+		guard let attributes,
+			  let itemData = relationships?.item?.data else {
 			return nil
 		}
 
-		let itemData = relationships?.item?.data
-		let includedItem = itemData
-			.flatMap { includedItems.get(type: $0.type, id: $0.id) }
-
-		let includedCollection = relationships?.collection?.data
-			.flatMap { includedItems.get(type: $0.type, id: $0.id) }
+		let collectionData = relationships?.collection?.data
+		let includedItem = includedItems.get(type: itemData.type, id: itemData.id)
 
 		switch attributes.action {
 		case .store:
-			guard let itemType = itemData?.type else { return nil }
-			switch itemType {
+			switch itemData.type {
 			case "tracks", "videos":
-				return StoreItemTask(self, attributes: attributes, item: includedItem, collection: includedCollection)
+				return StoreItemTask(self, attributes: attributes, item: includedItem, collectionData: collectionData)
 					.map { .storeItem($0) }
 			case "albums", "playlists":
 				return StoreCollectionTask(self, item: includedItem)
@@ -226,8 +233,15 @@ private extension OfflineTasksResourceObject {
 				return nil
 			}
 		case .remove:
-			return RemoveTask(self)
-				.map { .remove($0) }
+			switch itemData.type {
+			case "tracks", "videos":
+				return RemoveItemTask(self, itemData: itemData, collectionData: collectionData)
+					.map { .removeItem($0) }
+			case "albums", "playlists":
+				return .removeCollection(RemoveCollectionTask(id: id, resourceType: itemData.type, resourceId: itemData.id))
+			default:
+				return nil
+			}
 		}
 	}
 }
@@ -396,12 +410,11 @@ private extension StoreItemTask {
 		_ resourceObject: OfflineTasksResourceObject,
 		attributes: OfflineTasksAttributes,
 		item: IncludedItem?,
-		collection: IncludedItem?
+		collectionData: ResourceIdentifier?
 	) {
 		guard let item,
 			  let itemMetadata = item.backendItemMetadata,
-			  let collection,
-			  let collectionMetadata = collection.backendCollectionMetadata else {
+			  let collectionData else {
 			return nil
 		}
 
@@ -410,9 +423,25 @@ private extension StoreItemTask {
 			itemMetadata: itemMetadata,
 			artists: item.artistObjects,
 			artwork: item.artworkObject,
-			collectionMetadata: collectionMetadata,
+			collectionResourceType: collectionData.type,
+			collectionResourceId: collectionData.id,
 			volume: attributes.volume,
 			position: attributes.position
+		)
+	}
+}
+
+private extension RemoveItemTask {
+	init?(_ resourceObject: OfflineTasksResourceObject, itemData: ResourceIdentifier, collectionData: ResourceIdentifier?) {
+		guard let collectionData else {
+			return nil
+		}
+		self.init(
+			id: resourceObject.id,
+			resourceType: itemData.type,
+			resourceId: itemData.id,
+			collectionResourceType: collectionData.type,
+			collectionResourceId: collectionData.id
 		)
 	}
 }
@@ -431,11 +460,4 @@ private extension StoreCollectionTask {
 	}
 }
 
-private extension RemoveTask {
-	init?(_ resourceObject: OfflineTasksResourceObject) {
-		guard let itemData = resourceObject.relationships?.item?.data else {
-			return nil
-		}
-		self.init(id: resourceObject.id, resourceType: itemData.type, resourceId: itemData.id)
-	}
-}
+

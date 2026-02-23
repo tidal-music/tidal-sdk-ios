@@ -29,20 +29,7 @@ final class OfflineStore {
 		var replacedBookmarks: [Data] = []
 
 		try databaseQueue.inTransaction { database in
-			let existingRow = try Row.fetchOne(
-				database,
-				sql: """
-					SELECT media_bookmark, license_bookmark, artwork_bookmark
-					FROM offline_item
-					WHERE resource_type = ? AND resource_id = ?
-					""",
-				arguments: [result.resourceType, result.resourceId]
-			)
-
-			if let existingRow {
-				replacedBookmarks = ["media_bookmark", "license_bookmark", "artwork_bookmark"]
-					.compactMap { existingRow[$0] }
-			}
+			replacedBookmarks = try collectBookmarks(resourceType: result.resourceType, resourceId: result.resourceId, database: database)
 
 			try database.execute(
 				sql: """
@@ -93,31 +80,17 @@ final class OfflineStore {
 			return .commit
 		}
 
-		for bookmarkData in replacedBookmarks {
-			try? FileStorage.delete(bookmark: bookmarkData)
-		}
+		deleteFiles(for: replacedBookmarks)
 	}
 
 	func storeCollection(_ result: StoreCollectionTaskResult) throws {
 		let catalogMetadataJson = try result.catalogMetadata.serialize()
 		let artworkBookmark = try result.artworkURL?.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
 
-		var replacedArtworkBookmark: Data?
+		var replacedBookmarks: [Data] = []
 
 		try databaseQueue.inTransaction { database in
-			let existingRow = try Row.fetchOne(
-				database,
-				sql: """
-					SELECT artwork_bookmark
-					FROM offline_item
-					WHERE resource_type = ? AND resource_id = ?
-					""",
-				arguments: [result.resourceType, result.resourceId]
-			)
-
-			if let existingRow {
-				replacedArtworkBookmark = existingRow["artwork_bookmark"]
-			}
+			replacedBookmarks = try collectBookmarks(resourceType: result.resourceType, resourceId: result.resourceId, database: database)
 
 			try database.execute(
 				sql: """
@@ -134,37 +107,18 @@ final class OfflineStore {
 			return .commit
 		}
 
-		if let replacedArtworkBookmark {
-			try? FileStorage.delete(bookmark: replacedArtworkBookmark)
-		}
+		deleteFiles(for: replacedBookmarks)
 	}
 
-	func deleteItem(resourceType: String, resourceId: String) throws {
+	func deleteCollection(resourceType: String, resourceId: String) throws {
 		var bookmarksToDelete: [Data] = []
 
 		try databaseQueue.inTransaction { database in
-			let existingRow = try Row.fetchOne(
-				database,
-				sql: """
-					SELECT media_bookmark, license_bookmark, artwork_bookmark
-					FROM offline_item
-					WHERE resource_type = ? AND resource_id = ?
-					""",
-				arguments: [resourceType, resourceId]
-			)
-
-			if let existingRow {
-				bookmarksToDelete = ["media_bookmark", "license_bookmark", "artwork_bookmark"]
-					.compactMap { existingRow[$0] }
-			}
+			bookmarksToDelete = try collectBookmarks(resourceType: resourceType, resourceId: resourceId, database: database)
 
 			try database.execute(
-				sql: """
-					DELETE FROM offline_item_relationship
-					WHERE (collection_resource_type = ? AND collection_resource_id = ?)
-					   OR (member_resource_type = ? AND member_resource_id = ?)
-					""",
-				arguments: [resourceType, resourceId, resourceType, resourceId]
+				sql: "DELETE FROM offline_item_relationship WHERE collection_resource_type = ? AND collection_resource_id = ?",
+				arguments: [resourceType, resourceId]
 			)
 
 			try database.execute(
@@ -175,9 +129,46 @@ final class OfflineStore {
 			return .commit
 		}
 
-		for bookmarkData in bookmarksToDelete {
-			try? FileStorage.delete(bookmark: bookmarkData)
+		deleteFiles(for: bookmarksToDelete)
+	}
+
+	func deleteMediaItem(
+		resourceType: String,
+		resourceId: String,
+		fromCollection collectionType: String,
+		collectionId: String
+	) throws {
+		var bookmarksToDelete: [Data] = []
+
+		try databaseQueue.inTransaction { database in
+			try database.execute(
+				sql: """
+					DELETE FROM offline_item_relationship
+					WHERE collection_resource_type = ? AND collection_resource_id = ?
+					  AND member_resource_type = ? AND member_resource_id = ?
+					""",
+				arguments: [collectionType, collectionId, resourceType, resourceId]
+			)
+
+			let hasRelationships = try Bool.fetchOne(
+				database,
+				sql: "SELECT EXISTS(SELECT 1 FROM offline_item_relationship WHERE member_resource_type = ? AND member_resource_id = ?)",
+				arguments: [resourceType, resourceId]
+			) ?? false
+
+			if !hasRelationships {
+				bookmarksToDelete = try collectBookmarks(resourceType: resourceType, resourceId: resourceId, database: database)
+
+				try database.execute(
+					sql: "DELETE FROM offline_item WHERE resource_type = ? AND resource_id = ?",
+					arguments: [resourceType, resourceId]
+				)
+			}
+
+			return .commit
 		}
+
+		deleteFiles(for: bookmarksToDelete)
 	}
 
 	func getCollection(collectionType: OfflineCollectionType, resourceId: String) async throws -> OfflineCollection? {
@@ -332,6 +323,21 @@ final class OfflineStore {
 
 		let nextCursor = items.last.map { Int64($0.volume) * 1_000_000 + Int64($0.position) }
 		return OfflineCollectionItemsPage(items: items, cursor: nextCursor)
+	}
+
+	private func collectBookmarks(resourceType: String, resourceId: String, database: GRDB.Database) throws -> [Data] {
+		let row = try Row.fetchOne(
+			database,
+			sql: "SELECT media_bookmark, license_bookmark, artwork_bookmark FROM offline_item WHERE resource_type = ? AND resource_id = ?",
+			arguments: [resourceType, resourceId]
+		)
+		return ["media_bookmark", "license_bookmark", "artwork_bookmark"].compactMap { row?[$0] as Data? }
+	}
+
+	private func deleteFiles(for bookmarks: [Data]) {
+		for bookmarkData in bookmarks {
+			try? FileStorage.delete(bookmark: bookmarkData)
+		}
 	}
 
 	private func makeCollectionItem(from row: Row, database: GRDB.Database) throws -> OfflineCollectionItem {

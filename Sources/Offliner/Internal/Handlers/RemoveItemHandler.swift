@@ -1,6 +1,6 @@
 import Foundation
 
-final class RemoveHandler {
+final class RemoveItemHandler {
 	private let backendClient: BackendClientProtocol
 	private let offlineStore: OfflineStore
 
@@ -9,7 +9,7 @@ final class RemoveHandler {
 		self.offlineStore = offlineStore
 	}
 
-	func handle(_ task: RemoveTask) -> InternalTask {
+	func handle(_ task: RemoveItemTask) -> InternalTask {
 		InternalTaskImpl(
 			task: task,
 			backendClient: backendClient,
@@ -21,29 +21,29 @@ final class RemoveHandler {
 private final class InternalTaskImpl: InternalTask {
 	let id: String
 
-	private let resourceType: String
-	private let resourceId: String
+	private let task: RemoveItemTask
 	private let backendClient: BackendClientProtocol
 	private let offlineStore: OfflineStore
 
-	init(task: RemoveTask, backendClient: BackendClientProtocol, offlineStore: OfflineStore) {
+	init(task: RemoveItemTask, backendClient: BackendClientProtocol, offlineStore: OfflineStore) {
 		self.id = task.id
-		self.resourceType = task.resourceType
-		self.resourceId = task.resourceId
+		self.task = task
 		self.backendClient = backendClient
 		self.offlineStore = offlineStore
 	}
 
 	func run() async {
-		print("RemoveHandler: deleting \(resourceType)/\(resourceId)")
+		print("RemoveItemHandler: deleting \(task.resourceType)/\(task.resourceId) from \(task.collectionResourceType)/\(task.collectionResourceId)")
 		do {
-			try offlineStore.deleteItem(
-				resourceType: resourceType,
-				resourceId: resourceId
+			try offlineStore.deleteMediaItem(
+				resourceType: task.resourceType,
+				resourceId: task.resourceId,
+				fromCollection: task.collectionResourceType,
+				collectionId: task.collectionResourceId
 			)
 			try await backendClient.updateTask(taskId: id, state: .completed)
 		} catch {
-			print("RemoveHandler error: \(error)")
+			print("RemoveItemHandler error: \(error)")
 			try? await backendClient.updateTask(taskId: id, state: .failed)
 		}
 	}

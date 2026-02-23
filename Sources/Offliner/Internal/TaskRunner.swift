@@ -7,7 +7,8 @@ actor TaskRunner {
 
 	private let storeItemHandler: StoreItemHandler
 	private let storeCollectionHandler: StoreCollectionHandler
-	private let removeHandler: RemoveHandler
+	private let removeItemHandler: RemoveItemHandler
+	private let removeCollectionHandler: RemoveCollectionHandler
 
 	private let backendClient: BackendClientProtocol
 	private let network: Network
@@ -52,7 +53,11 @@ actor TaskRunner {
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
 		)
-		self.removeHandler = RemoveHandler(
+		self.removeItemHandler = RemoveItemHandler(
+			backendClient: backendClient,
+			offlineStore: offlineStore
+		)
+		self.removeCollectionHandler = RemoveCollectionHandler(
 			backendClient: backendClient,
 			offlineStore: offlineStore
 		)
@@ -106,7 +111,8 @@ actor TaskRunner {
 		switch offlineTask {
 		case .storeItem(let task): storeItemHandler.handle(task)
 		case .storeCollection(let task): storeCollectionHandler.handle(task)
-		case .remove(let task): removeHandler.handle(task)
+		case .removeItem(let task): removeItemHandler.handle(task)
+		case .removeCollection(let task): removeCollectionHandler.handle(task)
 		}
 	}
 

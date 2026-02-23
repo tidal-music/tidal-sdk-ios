@@ -17,10 +17,6 @@ final class StubBackendClient: BackendClientProtocol {
 		let position = taskIdCounter + 1
 		taskIdCounter += 1
 
-		let defaultCollectionMetadata = BackendCollectionMetadata.album(
-			AlbumsResourceObject(id: "stub-album", type: "albums")
-		)
-
 		switch type {
 		case .track:
 			let task = StoreItemTask(
@@ -28,7 +24,8 @@ final class StubBackendClient: BackendClientProtocol {
 				itemMetadata: .track(TracksResourceObject(id: id, type: "tracks")),
 				artists: [],
 				artwork: nil,
-				collectionMetadata: defaultCollectionMetadata,
+				collectionResourceType: "albums",
+				collectionResourceId: "stub-album",
 				volume: 1,
 				position: position
 			)
@@ -40,7 +37,8 @@ final class StubBackendClient: BackendClientProtocol {
 				itemMetadata: .video(VideosResourceObject(id: id, type: "videos")),
 				artists: [],
 				artwork: nil,
-				collectionMetadata: defaultCollectionMetadata,
+				collectionResourceType: "albums",
+				collectionResourceId: "stub-album",
 				volume: 1,
 				position: position
 			)
@@ -70,16 +68,36 @@ final class StubBackendClient: BackendClientProtocol {
 		let taskId = "task-\(taskIdCounter)"
 		taskIdCounter += 1
 
-		let resourceType: String
 		switch type {
-		case .track: resourceType = "tracks"
-		case .video: resourceType = "videos"
-		case .album: resourceType = "albums"
-		case .playlist: resourceType = "playlists"
+		case .track:
+			tasks.append(.removeItem(RemoveItemTask(
+				id: taskId,
+				resourceType: "tracks",
+				resourceId: id,
+				collectionResourceType: "albums",
+				collectionResourceId: "stub-album"
+			)))
+		case .video:
+			tasks.append(.removeItem(RemoveItemTask(
+				id: taskId,
+				resourceType: "videos",
+				resourceId: id,
+				collectionResourceType: "albums",
+				collectionResourceId: "stub-album"
+			)))
+		case .album:
+			tasks.append(.removeCollection(RemoveCollectionTask(
+				id: taskId,
+				resourceType: "albums",
+				resourceId: id
+			)))
+		case .playlist:
+			tasks.append(.removeCollection(RemoveCollectionTask(
+				id: taskId,
+				resourceType: "playlists",
+				resourceId: id
+			)))
 		}
-
-		let task = RemoveTask(id: taskId, resourceType: resourceType, resourceId: id)
-		tasks.append(.remove(task))
 	}
 
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {

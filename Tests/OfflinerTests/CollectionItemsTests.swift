@@ -16,11 +16,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let albumId = "album-1"
 
-		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
-
 		let collectionTask = StoreCollectionTask(
 			id: "offline-task-100",
-			metadata: collectionMetadata,
+			metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
 			artists: [],
 			artwork: nil
 		)
@@ -30,7 +28,8 @@ final class CollectionItemsTests: OfflinerTestCase {
 			itemMetadata: .track(TracksResourceObject(id: "track-1", type: "tracks")),
 			artists: [],
 			artwork: nil,
-			collectionMetadata: collectionMetadata,
+			collectionResourceType: "albums",
+			collectionResourceId: albumId,
 			volume: 1,
 			position: 1
 		)
@@ -39,7 +38,8 @@ final class CollectionItemsTests: OfflinerTestCase {
 			itemMetadata: .track(TracksResourceObject(id: "track-2", type: "tracks")),
 			artists: [],
 			artwork: nil,
-			collectionMetadata: collectionMetadata,
+			collectionResourceType: "albums",
+			collectionResourceId: albumId,
 			volume: 1,
 			position: 2
 		)
@@ -48,7 +48,8 @@ final class CollectionItemsTests: OfflinerTestCase {
 			itemMetadata: .track(TracksResourceObject(id: "track-3", type: "tracks")),
 			artists: [],
 			artwork: nil,
-			collectionMetadata: collectionMetadata,
+			collectionResourceType: "albums",
+			collectionResourceId: albumId,
 			volume: 1,
 			position: 3
 		)
@@ -127,11 +128,10 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 
 		let albumId = "album-paginated"
-		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
 
 		let collectionTask = StoreCollectionTask(
 			id: "offline-task-200",
-			metadata: collectionMetadata,
+			metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
 			artists: [],
 			artwork: nil
 		)
@@ -143,7 +143,8 @@ final class CollectionItemsTests: OfflinerTestCase {
 				itemMetadata: .track(TracksResourceObject(id: "track-\(i)", type: "tracks")),
 				artists: [],
 				artwork: nil,
-				collectionMetadata: collectionMetadata,
+				collectionResourceType: "albums",
+				collectionResourceId: albumId,
 				volume: 1,
 				position: i
 			)))
@@ -190,23 +191,21 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 
 		let albumId = "album-multi-vol"
-		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
-
-		let collectionTask = StoreCollectionTask(
-			id: "offline-task-300",
-			metadata: collectionMetadata,
-			artists: [],
-			artwork: nil
-		)
 
 		backend.enqueueTasks([
-			.storeCollection(collectionTask),
+			.storeCollection(StoreCollectionTask(
+				id: "offline-task-300",
+				metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
+				artists: [],
+				artwork: nil
+			)),
 			.storeItem(StoreItemTask(
 				id: "offline-task-301",
 				itemMetadata: .track(TracksResourceObject(id: "v1-track-1", type: "tracks")),
 				artists: [],
 				artwork: nil,
-				collectionMetadata: collectionMetadata,
+				collectionResourceType: "albums",
+				collectionResourceId: albumId,
 				volume: 1,
 				position: 1
 			)),
@@ -215,7 +214,8 @@ final class CollectionItemsTests: OfflinerTestCase {
 				itemMetadata: .track(TracksResourceObject(id: "v1-track-2", type: "tracks")),
 				artists: [],
 				artwork: nil,
-				collectionMetadata: collectionMetadata,
+				collectionResourceType: "albums",
+				collectionResourceId: albumId,
 				volume: 1,
 				position: 2
 			)),
@@ -224,7 +224,8 @@ final class CollectionItemsTests: OfflinerTestCase {
 				itemMetadata: .track(TracksResourceObject(id: "v2-track-1", type: "tracks")),
 				artists: [],
 				artwork: nil,
-				collectionMetadata: collectionMetadata,
+				collectionResourceType: "albums",
+				collectionResourceId: albumId,
 				volume: 2,
 				position: 1
 			)),
@@ -258,12 +259,11 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 
 		let albumId = "album-cursor"
-		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
 
 		backend.enqueueTasks([
 			.storeCollection(StoreCollectionTask(
 				id: "offline-task-400",
-				metadata: collectionMetadata,
+				metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
 				artists: [],
 				artwork: nil
 			)),
@@ -291,12 +291,11 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 
 		let albumId = "album-cursor"
-		let collectionMetadata = BackendCollectionMetadata.album(AlbumsResourceObject(id: albumId, type: "albums"))
 
 		backend.enqueueTasks([
 			.storeCollection(StoreCollectionTask(
 				id: "offline-task-400",
-				metadata: collectionMetadata,
+				metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
 				artists: [],
 				artwork: nil
 			)),
@@ -305,7 +304,8 @@ final class CollectionItemsTests: OfflinerTestCase {
 				itemMetadata: .track(TracksResourceObject(id: "track-1", type: "tracks")),
 				artists: [],
 				artwork: nil,
-				collectionMetadata: collectionMetadata,
+				collectionResourceType: "albums",
+				collectionResourceId: albumId,
 				volume: 2,
 				position: 3
 			)),
