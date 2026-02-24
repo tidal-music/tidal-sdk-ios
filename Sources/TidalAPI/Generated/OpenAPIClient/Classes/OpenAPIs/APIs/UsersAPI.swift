@@ -13,14 +13,15 @@ import AnyCodable
 internal class UsersAPI {
 
     /**
-     Get current user's user.
+     Get single user.
      
+     - parameter id: (path) User id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - returns: UsersSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func usersMeGet() async throws -> UsersSingleResourceDataDocument {
+    internal class func usersIdGet(id: String) async throws -> UsersSingleResourceDataDocument {
         do {
-            return try await usersMeGetWithRequestBuilder().execute().body
+            return try await usersIdGetWithRequestBuilder(id: id).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -28,16 +29,20 @@ internal class UsersAPI {
     }
 
     /**
-     Get current user's user.
-     - GET /users/me
-     - Retrieves current user's user.
+     Get single user.
+     - GET /users/{id}
+     - Retrieves single user by id.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter id: (path) User id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - returns: RequestBuilder<UsersSingleResourceDataDocument> 
      */
-    internal class func usersMeGetWithRequestBuilder() -> RequestBuilder<UsersSingleResourceDataDocument> {
-        let localVariablePath = "/users/me"
+    internal class func usersIdGetWithRequestBuilder(id: String) -> RequestBuilder<UsersSingleResourceDataDocument> {
+        var localVariablePath = "/users/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 

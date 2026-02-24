@@ -31,9 +31,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: 
      */
-	public static func artistClaimsIdDelete(id: String) async throws {
+	public static func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdDeleteWithRequestBuilder(id: id)
+			ArtistClaimsAPI.artistClaimsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: 
      */
-	public static func artistClaimsIdPatch(id: String, countryCode: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws {
+	public static func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload)
+			ArtistClaimsAPI.artistClaimsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload)
 		}
 	}
 
@@ -79,9 +79,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: 
      */
-	public static func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, countryCode: countryCode, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload)
+			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -115,9 +115,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: ArtistClaimsSingleResourceDataDocument
      */
-	public static func artistClaimsPost(countryCode: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
+	public static func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsPostWithRequestBuilder(countryCode: countryCode, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload)
+			ArtistClaimsAPI.artistClaimsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload)
 		}
 	}
 }

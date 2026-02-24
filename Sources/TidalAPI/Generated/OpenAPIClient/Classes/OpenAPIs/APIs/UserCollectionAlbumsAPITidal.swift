@@ -31,9 +31,9 @@ public enum UserCollectionAlbumsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionAlbumsIdRelationshipsItemsDelete(id: String, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: UserCollectionAlbumsItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionAlbumsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: UserCollectionAlbumsItemsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: userCollectionAlbumsItemsRelationshipRemoveOperationPayload)
+			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: userCollectionAlbumsItemsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -82,9 +82,9 @@ public enum UserCollectionAlbumsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionAlbumsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, userCollectionAlbumsItemsRelationshipAddOperationPayload: UserCollectionAlbumsItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionAlbumsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionAlbumsItemsRelationshipAddOperationPayload: UserCollectionAlbumsItemsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionAlbumsItemsRelationshipAddOperationPayload: userCollectionAlbumsItemsRelationshipAddOperationPayload)
+			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionAlbumsItemsRelationshipAddOperationPayload: userCollectionAlbumsItemsRelationshipAddOperationPayload)
 		}
 	}
 

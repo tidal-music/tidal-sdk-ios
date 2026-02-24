@@ -16,7 +16,7 @@ internal class StripeDashboardLinksAPI {
      Get multiple stripeDashboardLinks.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: StripeDashboardLinksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -37,7 +37,7 @@ internal class StripeDashboardLinksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<StripeDashboardLinksMultiResourceDataDocument> 
      */
     internal class func stripeDashboardLinksGetWithRequestBuilder(include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<StripeDashboardLinksMultiResourceDataDocument> {
@@ -65,7 +65,7 @@ internal class StripeDashboardLinksAPI {
     /**
      Get owners relationship (\"to-many\").
      
-     - parameter id: (path) Stripe dashboard link id (same as user id) 
+     - parameter id: (path) Stripe dashboard link id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: StripeDashboardLinksMultiRelationshipDataDocument
@@ -87,7 +87,7 @@ internal class StripeDashboardLinksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) Stripe dashboard link id (same as user id) 
+     - parameter id: (path) Stripe dashboard link id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<StripeDashboardLinksMultiRelationshipDataDocument> 

@@ -69,9 +69,9 @@ public enum ReactionsAPITidal {
      
      - returns: 
      */
-	public static func reactionsIdDelete(id: String) async throws {
+	public static func reactionsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsIdDeleteWithRequestBuilder(id: id)
+			ReactionsAPI.reactionsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
 	}
 
@@ -105,9 +105,9 @@ public enum ReactionsAPITidal {
      
      - returns: ReactionsSingleResourceDataDocument
      */
-	public static func reactionsPost(reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
+	public static func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsPostWithRequestBuilder(reactionsCreateOperationPayload: reactionsCreateOperationPayload)
+			ReactionsAPI.reactionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, reactionsCreateOperationPayload: reactionsCreateOperationPayload)
 		}
 	}
 }

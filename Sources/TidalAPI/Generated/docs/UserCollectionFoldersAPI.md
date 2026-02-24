@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdDelete**
 ```swift
-    open class func userCollectionFoldersIdDelete(id: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete single userCollectionFolder.
@@ -82,9 +82,10 @@ Deletes existing userCollectionFolder.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 
 // Delete single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersIdDelete(id: id) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -101,6 +102,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdDelete(id: id) { (response, erro
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -171,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdPatch**
 ```swift
-    open class func userCollectionFoldersIdPatch(id: String, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single userCollectionFolder.
@@ -184,10 +186,11 @@ Updates existing userCollectionFolder.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionFoldersUpdateOperationPayload = UserCollectionFoldersUpdateOperation_Payload(data: UserCollectionFoldersUpdateOperation_Payload_Data(attributes: UserCollectionFoldersUpdateOperation_Payload_Data_Attributes(name: "name_example"), id: "id_example", type: "type_example")) // UserCollectionFoldersUpdateOperationPayload |  (optional)
 
 // Update single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersIdPatch(id: id, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdPatch(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -204,6 +207,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdPatch(id: id, userCollectionFold
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionFoldersUpdateOperationPayload** | [**UserCollectionFoldersUpdateOperationPayload**](UserCollectionFoldersUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -223,7 +227,7 @@ Void (empty response body)
 
 # **userCollectionFoldersIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -236,10 +240,11 @@ Deletes item(s) from items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionFoldersItemsRelationshipRemoveOperationPayload = UserCollectionFoldersItemsRelationshipRemoveOperation_Payload(data: [UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", resourceType: "resourceType_example")]) // UserCollectionFoldersItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -256,6 +261,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionFoldersItemsRelationshipRemoveOperationPayload** | [**UserCollectionFoldersItemsRelationshipRemoveOperationPayload**](UserCollectionFoldersItemsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -331,7 +337,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsPost(id: String, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -344,10 +350,11 @@ Adds item(s) to items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionFoldersItemsRelationshipAddOperationPayload = UserCollectionFoldersItemsRelationshipAddOperation_Payload(data: [UserCollectionFoldersItemsRelationshipAddOperation_Payload_Data(id: "id_example", resourceType: "resourceType_example")]) // UserCollectionFoldersItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -364,6 +371,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, u
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionFoldersItemsRelationshipAddOperationPayload** | [**UserCollectionFoldersItemsRelationshipAddOperationPayload**](UserCollectionFoldersItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -437,7 +445,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersPost**
 ```swift
-    open class func userCollectionFoldersPost(userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single userCollectionFolder.
@@ -449,10 +457,11 @@ Creates a new userCollectionFolder.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(collectionType: "collectionType_example", name: "name_example"), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
 
 // Create single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersPost(userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersPost(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -468,6 +477,7 @@ UserCollectionFoldersAPI.userCollectionFoldersPost(userCollectionFoldersCreateOp
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionFoldersCreateOperationPayload** | [**UserCollectionFoldersCreateOperationPayload**](UserCollectionFoldersCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

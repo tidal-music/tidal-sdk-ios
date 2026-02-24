@@ -50,9 +50,9 @@ public enum AlbumsAPITidal {
      
      - returns: 
      */
-	public static func albumsIdDelete(id: String) async throws {
+	public static func albumsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdDeleteWithRequestBuilder(id: id)
+			AlbumsAPI.albumsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
 	}
 
@@ -74,9 +74,9 @@ public enum AlbumsAPITidal {
      
      - returns: 
      */
-	public static func albumsIdPatch(id: String, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws {
+	public static func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdPatchWithRequestBuilder(id: id, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
+			AlbumsAPI.albumsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
 		}
 	}
 
@@ -122,9 +122,9 @@ public enum AlbumsAPITidal {
      
      - returns: 
      */
-	public static func albumsIdRelationshipsCoverArtPatch(id: String, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
+			AlbumsAPI.albumsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -158,9 +158,9 @@ public enum AlbumsAPITidal {
      
      - returns: 
      */
-	public static func albumsIdRelationshipsItemsPatch(id: String, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
+			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -197,18 +197,6 @@ public enum AlbumsAPITidal {
 	public static func albumsIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			AlbumsAPI.albumsIdRelationshipsProvidersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
-		}
-	}
-
-
-	/**
-     Get replacement relationship (\&quot;to-one\&quot;).
-     
-     - returns: AlbumsSingleRelationshipDataDocument
-     */
-	public static func albumsIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsSingleRelationshipDataDocument {
-		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsReplacementGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
 		}
 	}
 
@@ -254,9 +242,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsSingleResourceDataDocument
      */
-	public static func albumsPost(albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) async throws -> AlbumsSingleResourceDataDocument {
+	public static func albumsPost(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) async throws -> AlbumsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsPostWithRequestBuilder(albumsCreateOperationPayload: albumsCreateOperationPayload)
+			AlbumsAPI.albumsPostWithRequestBuilder(idempotencyKey: idempotencyKey, albumsCreateOperationPayload: albumsCreateOperationPayload)
 		}
 	}
 }

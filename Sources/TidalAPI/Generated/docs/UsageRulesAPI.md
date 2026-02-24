@@ -111,7 +111,7 @@ Name | Type | Description  | Notes
 
 # **usageRulesPost**
 ```swift
-    open class func usageRulesPost(usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil, completion: @escaping (_ data: UsageRulesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func usageRulesPost(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil, completion: @escaping (_ data: UsageRulesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single usageRule.
@@ -123,10 +123,11 @@ Creates a new usageRule.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let usageRulesCreateOperationPayload = UsageRulesCreateOperation_Payload(data: UsageRulesCreateOperation_Payload_Data(attributes: UsageRulesCreateOperation_Payload_Data_Attributes(countryCode: "countryCode_example", free: ["free_example"], paid: ["paid_example"], subscription: ["subscription_example"]), relationships: UsageRulesCreateOperation_Payload_Data_Relationships(subject: UsageRulesCreateOperation_Payload_Data_Relationships_Subject(data: UsageRulesCreateOperation_Payload_Subject(id: "id_example", type: "type_example"))), type: "type_example")) // UsageRulesCreateOperationPayload |  (optional)
 
 // Create single usageRule.
-UsageRulesAPI.usageRulesPost(usageRulesCreateOperationPayload: usageRulesCreateOperationPayload) { (response, error) in
+UsageRulesAPI.usageRulesPost(idempotencyKey: idempotencyKey, usageRulesCreateOperationPayload: usageRulesCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -142,6 +143,7 @@ UsageRulesAPI.usageRulesPost(usageRulesCreateOperationPayload: usageRulesCreateO
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **usageRulesCreateOperationPayload** | [**UsageRulesCreateOperationPayload**](UsageRulesCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

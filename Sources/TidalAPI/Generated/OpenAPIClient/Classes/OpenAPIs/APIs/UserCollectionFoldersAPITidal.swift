@@ -31,9 +31,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: 
      */
-	public static func userCollectionFoldersIdDelete(id: String) async throws {
+	public static func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdDeleteWithRequestBuilder(id: id)
+			UserCollectionFoldersAPI.userCollectionFoldersIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: 
      */
-	public static func userCollectionFoldersIdPatch(id: String, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws {
+	public static func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdPatchWithRequestBuilder(id: id, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload)
+			UserCollectionFoldersAPI.userCollectionFoldersIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload)
 		}
 	}
 
@@ -67,9 +67,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: 
      */
-	public static func userCollectionFoldersIdRelationshipsItemsDelete(id: String, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload)
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -114,9 +114,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: 
      */
-	public static func userCollectionFoldersIdRelationshipsItemsPost(id: String, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload)
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload)
 		}
 	}
 
@@ -138,9 +138,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: UserCollectionFoldersSingleResourceDataDocument
      */
-	public static func userCollectionFoldersPost(userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+	public static func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersPostWithRequestBuilder(userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload)
+			UserCollectionFoldersAPI.userCollectionFoldersPostWithRequestBuilder(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload)
 		}
 	}
 }

@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **appreciationsPost**
 ```swift
-    open class func appreciationsPost(appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil, completion: @escaping (_ data: AppreciationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func appreciationsPost(idempotencyKey: String? = nil, appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil, completion: @escaping (_ data: AppreciationsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single appreciation.
@@ -21,10 +21,11 @@ Creates a new appreciation.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let appreciationsCreateOperationPayload = AppreciationsCreateOperation_Payload(data: AppreciationsCreateOperation_Payload_Data(relationships: AppreciationsCreateOperation_Payload_Data_Relationships(appreciatedItems: AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem(data: [AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem_Data(id: "id_example", type: "type_example")])), type: "type_example"), meta: AppreciationsCreateOperation_Payload_Meta(dryRun: false)) // AppreciationsCreateOperationPayload |  (optional)
 
 // Create single appreciation.
-AppreciationsAPI.appreciationsPost(appreciationsCreateOperationPayload: appreciationsCreateOperationPayload) { (response, error) in
+AppreciationsAPI.appreciationsPost(idempotencyKey: idempotencyKey, appreciationsCreateOperationPayload: appreciationsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -40,6 +41,7 @@ AppreciationsAPI.appreciationsPost(appreciationsCreateOperationPayload: apprecia
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **appreciationsCreateOperationPayload** | [**AppreciationsCreateOperationPayload**](AppreciationsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

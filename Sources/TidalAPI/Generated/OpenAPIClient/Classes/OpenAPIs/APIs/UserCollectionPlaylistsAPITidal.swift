@@ -31,9 +31,9 @@ public enum UserCollectionPlaylistsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionPlaylistsIdRelationshipsItemsDelete(id: String, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionPlaylistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: userCollectionPlaylistsItemsRelationshipRemoveOperationPayload)
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: userCollectionPlaylistsItemsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -91,9 +91,9 @@ public enum UserCollectionPlaylistsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsPostWithRequestBuilder(id: id, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload)
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload)
 		}
 	}
 
