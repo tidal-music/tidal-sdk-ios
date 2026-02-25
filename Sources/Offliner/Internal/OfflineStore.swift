@@ -352,6 +352,26 @@ final class OfflineStore {
 		}
 	}
 
+	func getCollectionDuration(
+		collectionType: OfflineCollectionType,
+		resourceId: String
+	) async throws -> Int {
+		try await databaseQueue.read { database in
+			let duration = try Int.fetchOne(
+				database,
+				sql: """
+					SELECT COALESCE(SUM(json_extract(i.catalog_metadata, '$.duration')), 0)
+					FROM offline_item_relationship r
+					JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
+					WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+					  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
+					""",
+				arguments: [collectionType.rawValue, resourceId]
+			)
+			return duration ?? 0
+		}
+	}
+
 	private func collectBookmarks(resourceType: String, resourceId: String, database: GRDB.Database) throws -> [Data] {
 		let row = try Row.fetchOne(
 			database,

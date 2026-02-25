@@ -123,15 +123,38 @@ private extension OfflineMediaItem.Metadata {
 				id: track.id,
 				title: track.attributes?.title ?? "",
 				artists: artistNames,
-				duration: track.attributes?.duration ?? ""
+				duration: parseISO8601Duration(track.attributes?.duration)
 			))
 		case .video(let video):
 			self = .video(OfflineMediaItem.VideoMetadata(
 				id: video.id,
 				title: video.attributes?.title ?? "",
 				artists: artistNames,
-				duration: video.attributes?.duration ?? ""
+				duration: parseISO8601Duration(video.attributes?.duration)
 			))
 		}
 	}
+}
+
+private func parseISO8601Duration(_ duration: String?) -> Int {
+	guard let duration, duration.hasPrefix("PT") else { return 0 }
+
+	var total = 0
+	var current = ""
+	for char in duration.dropFirst(2) {
+		switch char {
+		case "H":
+			total += (Int(current) ?? 0) * 3600
+			current = ""
+		case "M":
+			total += (Int(current) ?? 0) * 60
+			current = ""
+		case "S":
+			total += Int(current) ?? 0
+			current = ""
+		default:
+			current.append(char)
+		}
+	}
+	return total
 }

@@ -22,14 +22,14 @@ public struct OfflineMediaItem {
 		public let id: String
 		public let title: String
 		public let artists: [String]
-		public let duration: String
+		public let duration: Int
 	}
 
 	public struct VideoMetadata: Codable {
 		public let id: String
 		public let title: String
 		public let artists: [String]
-		public let duration: String
+		public let duration: Int
 	}
 
 	public enum Metadata {
