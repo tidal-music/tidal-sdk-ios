@@ -77,7 +77,9 @@ private extension OfflineCollection.Metadata {
 				id: album.id,
 				title: album.attributes?.title ?? "",
 				artists: artistNames,
-				copyright: album.attributes?.copyright?.text
+				copyright: album.attributes?.copyright?.text,
+				releaseDate: album.attributes?.releaseDate,
+				explicit: album.attributes?.explicit ?? false
 			))
 		case .playlist(let playlist):
 			self = .playlist(OfflineCollection.PlaylistMetadata(

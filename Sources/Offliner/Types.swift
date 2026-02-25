@@ -70,6 +70,8 @@ public struct OfflineCollection {
 		public let title: String
 		public let artists: [String]
 		public let copyright: String?
+		public let releaseDate: Date?
+		public let explicit: Bool
 	}
 
 	public struct PlaylistMetadata: Codable {

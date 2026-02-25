@@ -325,6 +325,33 @@ final class OfflineStore {
 		return OfflineCollectionItemsPage(items: items, cursor: nextCursor)
 	}
 
+	func getAudioFormatOfCollection(
+		collectionType: OfflineCollectionType,
+		resourceId: String
+	) async throws -> AudioFormat? {
+		try await databaseQueue.read { database in
+			let row = try Row.fetchOne(
+				database,
+				sql: """
+					SELECT i.playback_metadata
+					FROM offline_item_relationship r
+					JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
+					WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+					  AND r.member_resource_type = ?
+					ORDER BY r.volume, r.position
+					LIMIT 1
+					""",
+					arguments: [collectionType.rawValue, resourceId, OfflineMediaItemType.tracks.rawValue]
+			)
+
+			guard let row else { return nil }
+
+			let playbackMetadataJson: String? = row["playback_metadata"]
+			let playbackMetadata = try playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) }
+			return playbackMetadata?.format
+		}
+	}
+
 	private func collectBookmarks(resourceType: String, resourceId: String, database: GRDB.Database) throws -> [Data] {
 		let row = try Row.fetchOne(
 			database,

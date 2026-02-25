@@ -459,5 +459,3 @@ private extension StoreCollectionTask {
 		)
 	}
 }
-
-

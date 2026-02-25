@@ -115,6 +115,13 @@ public final class Offliner {
 		)
 	}
 
+	public func getAudioFormatOfCollection(
+		collectionType: OfflineCollectionType,
+		resourceId: String
+	) async throws -> AudioFormat? {
+		try await offlineStore.getAudioFormatOfCollection(collectionType: collectionType, resourceId: resourceId)
+	}
+
 	// MARK: - Download/Remove
 
 	public func download(mediaType: OfflineMediaItemType, resourceId: String) async throws {
