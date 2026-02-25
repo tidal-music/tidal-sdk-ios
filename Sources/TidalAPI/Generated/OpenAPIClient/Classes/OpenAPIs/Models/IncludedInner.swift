@@ -19,6 +19,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistRolesResourceObject(ArtistRolesResourceObject)
     case artistsResourceObject(ArtistsResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
+    case commentsResourceObject(CommentsResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
     case downloadsResourceObject(DownloadsResourceObject)
@@ -79,6 +80,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .artistsResourceObject(let value):
             try container.encode(value)
         case .artworksResourceObject(let value):
+            try container.encode(value)
+        case .commentsResourceObject(let value):
             try container.encode(value)
         case .contentClaimsResourceObject(let value):
             try container.encode(value)
@@ -198,6 +201,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "artworks":
             let value = try ArtworksResourceObject(from: decoder)
             self = .artworksResourceObject(value)
+        case "comments":
+            let value = try CommentsResourceObject(from: decoder)
+            self = .commentsResourceObject(value)
         case "contentClaims":
             let value = try ContentClaimsResourceObject(from: decoder)
             self = .contentClaimsResourceObject(value)
@@ -339,6 +345,7 @@ extension IncludedInner: Identifiable {
         case .artistRolesResourceObject(let value): return value.id
         case .artistsResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
+        case .commentsResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
         case .downloadsResourceObject(let value): return value.id

@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.1.47"
+    "version" : "1.1.48"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -42,6 +42,8 @@
   }, {
     "description" : "Artwork images and videos used for albums, artists, tracks, and playlists.",
     "name" : "artworks"
+  }, {
+    "name" : "comments"
   }, {
     "description" : "A claim by an artist asserting ownership of a piece of content.",
     "name" : "contentClaims"
@@ -5038,6 +5040,625 @@
         "tags" : [ "artworks" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/comments" : {
+      "get" : {
+        "description" : "Retrieves multiple comments by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending.",
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "createdAt",
+              "enum" : [ "createdAt", "-createdAt", "likeCount", "-likeCount", "replyCount", "-replyCount", "startTime", "-startTime" ],
+              "default" : "-createdAt",
+              "x-enum-varnames" : [ "CreatedAtAsc", "CreatedAtDesc", "LikeCountAsc", "LikeCountDesc", "ReplyCountAsc", "ReplyCountDesc", "StartTimeAsc", "StartTimeDesc" ]
+            }
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment",
+          "example" : "ownerProfiles",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "ownerProfiles"
+            }
+          }
+        }, {
+          "description" : "Comment Id (e.g. `550e8400-e29b-41d4-a716-446655440000`)",
+          "in" : "query",
+          "name" : "filter[id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "description" : "Filter by parent comment ID to get replies (e.g. `550e8400-e29b-41d4-a716-446655440000`)",
+          "in" : "query",
+          "name" : "filter[parentComment.id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "description" : "Filter by subject resource ID (e.g. `12345`)",
+          "in" : "query",
+          "name" : "filter[subject.id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "description" : "Filter by subject resource type (e.g. `albums`)",
+          "in" : "query",
+          "name" : "filter[subject.type]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "albums", "tracks" ]
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Comments_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get multiple comments.",
+        "tags" : [ "comments" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "post" : {
+        "description" : "Creates a new comment.",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/IdempotencyKey"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CommentsCreateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Comments_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/Idempotency409Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "422" : {
+            "$ref" : "#/components/responses/Idempotency422Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Create single comment.",
+        "tags" : [ "comments" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/comments/{id}" : {
+      "delete" : {
+        "description" : "Deletes existing comment.",
+        "parameters" : [ {
+          "description" : "Comment Id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "$ref" : "#/components/parameters/IdempotencyKey"
+        } ],
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/Idempotency409Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "422" : {
+            "$ref" : "#/components/responses/Idempotency422Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Delete single comment.",
+        "tags" : [ "comments" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "get" : {
+        "description" : "Retrieves single comment by id.",
+        "parameters" : [ {
+          "description" : "Comment Id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment",
+          "example" : "ownerProfiles",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "ownerProfiles"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Comments_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get single comment.",
+        "tags" : [ "comments" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "patch" : {
+        "description" : "Updates existing comment.",
+        "parameters" : [ {
+          "description" : "Comment Id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "$ref" : "#/components/parameters/IdempotencyKey"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CommentsUpdateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/Idempotency409Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "422" : {
+            "$ref" : "#/components/responses/Idempotency422Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Update single comment.",
+        "tags" : [ "comments" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/comments/{id}/relationships/ownerProfiles" : {
+      "get" : {
+        "description" : "Retrieves ownerProfiles relationship.",
+        "parameters" : [ {
+          "description" : "Comment Id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: ownerProfiles",
+          "example" : "ownerProfiles",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "ownerProfiles"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Comments_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get ownerProfiles relationship (\"to-many\").",
+        "tags" : [ "comments" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/comments/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "description" : "Comment Id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Comments_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "tags" : [ "comments" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/comments/{id}/relationships/parentComment" : {
+      "get" : {
+        "description" : "Retrieves parentComment relationship.",
+        "parameters" : [ {
+          "description" : "Comment Id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: parentComment",
+          "example" : "parentComment",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "parentComment"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Comments_Single_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get parentComment relationship (\"to-one\").",
+        "tags" : [ "comments" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -10833,7 +11454,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "enum" : [ "albums", "tracks", "artists", "videos", "playlists" ]
+              "enum" : [ "albums", "tracks", "artists", "videos", "playlists", "comments" ]
             }
           }
         } ],
@@ -24171,6 +24792,295 @@
         "description" : "Barcode Id",
         "example" : 196589525444
       },
+      "CommentsCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/CommentsCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "CommentsCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "relationships", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/CommentsCreateOperation_Payload_Data_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "comments" ]
+          }
+        }
+      },
+      "CommentsCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "message" ],
+        "type" : "object",
+        "properties" : {
+          "endTime" : {
+            "type" : "string"
+          },
+          "message" : {
+            "maxLength" : 2000,
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "startTime" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CommentsCreateOperation_Payload_Data_Relationships" : {
+        "required" : [ "subject" ],
+        "type" : "object",
+        "properties" : {
+          "parentComment" : {
+            "$ref" : "#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships_ParentComment"
+          },
+          "subject" : {
+            "$ref" : "#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships_Subject"
+          }
+        }
+      },
+      "CommentsCreateOperation_Payload_Data_Relationships_ParentComment" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data"
+          }
+        }
+      },
+      "CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "comments" ]
+          }
+        }
+      },
+      "CommentsCreateOperation_Payload_Data_Relationships_Subject" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships_Subject_Data"
+          }
+        }
+      },
+      "CommentsCreateOperation_Payload_Data_Relationships_Subject_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums", "tracks" ]
+          }
+        }
+      },
+      "CommentsUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/CommentsUpdateOperation_Payload_Data"
+          }
+        }
+      },
+      "CommentsUpdateOperation_Payload_Data" : {
+        "required" : [ "attributes", "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/CommentsUpdateOperation_Payload_Data_Attributes"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "comments" ]
+          }
+        }
+      },
+      "CommentsUpdateOperation_Payload_Data_Attributes" : {
+        "type" : "object",
+        "properties" : {
+          "endTime" : {
+            "type" : "string"
+          },
+          "message" : {
+            "maxLength" : 2000,
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "startTime" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Comments_Attributes" : {
+        "required" : [ "createdAt", "lastModifiedAt", "likeCount", "message", "moderationStatus", "replyCount" ],
+        "type" : "object",
+        "properties" : {
+          "createdAt" : {
+            "type" : "string",
+            "description" : "Datetime when the comment was created (ISO 8601)",
+            "format" : "date-time",
+            "example" : "2025-11-17T12:54:48.606Z"
+          },
+          "endTime" : {
+            "type" : "string",
+            "description" : "End time offset for timestamped comments (ISO 8601 duration)",
+            "example" : "PT2M"
+          },
+          "lastModifiedAt" : {
+            "type" : "string",
+            "description" : "Datetime when the comment was last modified (ISO 8601)",
+            "format" : "date-time",
+            "example" : "2025-11-17T12:54:48.606Z"
+          },
+          "likeCount" : {
+            "type" : "integer",
+            "description" : "Number of likes on this comment",
+            "format" : "int32"
+          },
+          "message" : {
+            "maxLength" : 2000,
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "The comment message content"
+          },
+          "moderationStatus" : {
+            "type" : "string",
+            "description" : "Moderation status of the comment",
+            "enum" : [ "NOT_MODERATED", "FLAGGED", "TAKEN_DOWN", "OK", "ERROR" ]
+          },
+          "replyCount" : {
+            "type" : "integer",
+            "description" : "Number of replies to this comment",
+            "format" : "int32"
+          },
+          "startTime" : {
+            "type" : "string",
+            "description" : "Start time offset for timestamped comments (ISO 8601 duration)",
+            "example" : "PT1M30S"
+          }
+        }
+      },
+      "Comments_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Comments_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Comments_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Comments_Relationships" : {
+        "properties" : {
+          "ownerProfiles" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          },
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          },
+          "parentComment" : {
+            "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
+          }
+        }
+      },
+      "Comments_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/Comments_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Comments_Relationships"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "Comments_Single_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Resource_Identifier"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Comments_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Comments_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
       "ContentClaimsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -25452,6 +26362,7 @@
               "artistRoles" : "#/components/schemas/ArtistRoles_Resource_Object",
               "artists" : "#/components/schemas/Artists_Resource_Object",
               "artworks" : "#/components/schemas/Artworks_Resource_Object",
+              "comments" : "#/components/schemas/Comments_Resource_Object",
               "contentClaims" : "#/components/schemas/ContentClaims_Resource_Object",
               "credits" : "#/components/schemas/Credits_Resource_Object",
               "downloads" : "#/components/schemas/Downloads_Resource_Object",
@@ -25512,6 +26423,8 @@
             "$ref" : "#/components/schemas/Artists_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/Artworks_Resource_Object"
+          }, {
+            "$ref" : "#/components/schemas/Comments_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/ContentClaims_Resource_Object"
           }, {
@@ -27820,7 +28733,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "albums", "tracks", "artists", "videos", "playlists" ]
+            "enum" : [ "albums", "tracks", "artists", "videos", "playlists", "comments" ]
           }
         }
       },

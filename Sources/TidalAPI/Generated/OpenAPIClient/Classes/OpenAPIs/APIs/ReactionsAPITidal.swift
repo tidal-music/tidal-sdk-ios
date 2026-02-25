@@ -40,6 +40,7 @@ public enum ReactionsAPITidal {
 		case artists = "artists"
 		case videos = "videos"
 		case playlists = "playlists"
+		case comments = "comments"
 
 		func toReactionsAPIEnum() -> ReactionsAPI.FilterSubjectType_reactionsGet {
 			switch self {
@@ -48,6 +49,7 @@ public enum ReactionsAPITidal {
 			case .artists: return .artists
 			case .videos: return .videos
 			case .playlists: return .playlists
+			case .comments: return .comments
 			}
 		}
 	}

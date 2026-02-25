@@ -30,6 +30,7 @@ internal class ReactionsAPI {
         case artists = "artists"
         case videos = "videos"
         case playlists = "playlists"
+        case comments = "comments"
     }
 
     /**
