@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 # **commentsGet**
 ```swift
-    open class func commentsGet(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterId: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, completion: @escaping (_ data: CommentsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func commentsGet(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, completion: @escaping (_ data: CommentsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple comments.
@@ -31,13 +31,12 @@ import OpenAPIClient
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment (optional)
-let filterId = ["inner_example"] // [String] | Comment Id (e.g. `550e8400-e29b-41d4-a716-446655440000`) (optional)
 let filterParentCommentId = ["inner_example"] // [String] | Filter by parent comment ID to get replies (e.g. `550e8400-e29b-41d4-a716-446655440000`) (optional)
 let filterSubjectId = ["inner_example"] // [String] | Filter by subject resource ID (e.g. `12345`) (optional)
 let filterSubjectType = ["filterSubjectType_example"] // [String] | Filter by subject resource type (e.g. `albums`) (optional)
 
 // Get multiple comments.
-CommentsAPI.commentsGet(pageCursor: pageCursor, sort: sort, include: include, filterId: filterId, filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType) { (response, error) in
+CommentsAPI.commentsGet(pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -56,7 +55,6 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment | [optional] 
- **filterId** | [**[String]**](String.md) | Comment Id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | [optional] 
  **filterParentCommentId** | [**[String]**](String.md) | Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | [optional] 
  **filterSubjectId** | [**[String]**](String.md) | Filter by subject resource ID (e.g. &#x60;12345&#x60;) | [optional] 
  **filterSubjectType** | [**[String]**](String.md) | Filter by subject resource type (e.g. &#x60;albums&#x60;) | [optional] 
