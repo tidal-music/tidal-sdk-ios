@@ -60,6 +60,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
     case userReportsResourceObject(UserReportsResourceObject)
     case usersResourceObject(UsersResourceObject)
+    case videoManifestsResourceObject(VideoManifestsResourceObject)
     case videosResourceObject(VideosResourceObject)
 
     public func encode(to encoder: Encoder) throws {
@@ -162,6 +163,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .userReportsResourceObject(let value):
             try container.encode(value)
         case .usersResourceObject(let value):
+            try container.encode(value)
+        case .videoManifestsResourceObject(let value):
             try container.encode(value)
         case .videosResourceObject(let value):
             try container.encode(value)
@@ -324,6 +327,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "users":
             let value = try UsersResourceObject(from: decoder)
             self = .usersResourceObject(value)
+        case "videoManifests":
+            let value = try VideoManifestsResourceObject(from: decoder)
+            self = .videoManifestsResourceObject(value)
         case "videos":
             let value = try VideosResourceObject(from: decoder)
             self = .videosResourceObject(value)
@@ -386,6 +392,7 @@ extension IncludedInner: Identifiable {
         case .userRecommendationsResourceObject(let value): return value.id
         case .userReportsResourceObject(let value): return value.id
         case .usersResourceObject(let value): return value.id
+        case .videoManifestsResourceObject(let value): return value.id
         case .videosResourceObject(let value): return value.id
         }
     }
