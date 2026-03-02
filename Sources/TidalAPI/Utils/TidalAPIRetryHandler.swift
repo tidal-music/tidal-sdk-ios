@@ -34,6 +34,7 @@ final class TidalAPIRetryHandler<T> {
 		do {
 			return try await executionBlock()
 		} catch let httpError as HTTPErrorResponse {
+			print("HttpError data is: \(String(data: httpError.data!, encoding: .utf8))")
 			try Task.checkCancellation()
 
             let strategy: RetryStrategy = switch httpError.statusCode {

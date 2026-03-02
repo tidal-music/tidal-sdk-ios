@@ -26,6 +26,7 @@ extension PlayerEngine {
 			networkMonitor,
 			storage,
 			nil,
+			nil,
 			playerLoader,
 			featureFlagProvider,
 			notificationsHandler

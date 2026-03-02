@@ -116,6 +116,40 @@ final class InternalPlayerLoader: PlayerLoader {
 		)
 	}
 
+	func load(_ item: OfflinePlaybackItem) async throws -> Asset {
+		let loudnessNormalizer = LoudnessNormalizer(
+			preAmp: configuration.currentPreAmpValue,
+			replayGain: item.albumReplayGain,
+			peakAmplitude: item.albumPeakAmplitude
+		)
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
+			loudnessNormalizationMode: loudnessNormalizationMode,
+			loudnessNormalizer: loudnessNormalizer
+		)
+
+		let playbackMetadata = item.format.flatMap { AssetPlaybackMetadata(formatString: $0) }
+
+		let player = try getPlayer(
+			for: playbackMetadata?.audioMode,
+			and: playbackMetadata?.audioQuality,
+			with: nil,
+			audioCodec: AudioCodec(from: playbackMetadata?.audioQuality, mode: playbackMetadata?.audioMode),
+			isOfflined: true,
+			type: .TRACK
+		)
+
+		let licenseLoader = item.licenseURL.flatMap {
+			StoredLicenseLoader(localLicenseUrl: $0)
+		}
+
+		return await player.load(
+			item.mediaURL,
+			cacheKey: nil,
+			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+			and: licenseLoader
+		)
+	}
+
 	func load(_ playbackInfo: PlaybackInfo, streamingSessionId: String) async throws -> Asset {
 		let loudnessNormalizer = LoudnessNormalizer.create(
 			from: playbackInfo,
