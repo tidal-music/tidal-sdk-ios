@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 
 # **artworksPost**
 ```swift
-    open class func artworksPost(artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksPost(idempotencyKey: String? = nil, artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artwork.
@@ -186,10 +186,11 @@ Creates a new artwork.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artworksCreateOperationPayload = ArtworksCreateOperation_Payload(data: ArtworksCreateOperation_Payload_Data(attributes: ArtworksCreateOperation_Payload_Data_Attributes(mediaType: "mediaType_example", sourceFile: ArtworksCreateOperation_Payload_Data_Attributes_SourceFile(md5Hash: "md5Hash_example", size: 123)), type: "type_example")) // ArtworksCreateOperationPayload |  (optional)
 
 // Create single artwork.
-ArtworksAPI.artworksPost(artworksCreateOperationPayload: artworksCreateOperationPayload) { (response, error) in
+ArtworksAPI.artworksPost(idempotencyKey: idempotencyKey, artworksCreateOperationPayload: artworksCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -205,6 +206,7 @@ ArtworksAPI.artworksPost(artworksCreateOperationPayload: artworksCreateOperation
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artworksCreateOperationPayload** | [**ArtworksCreateOperationPayload**](ArtworksCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

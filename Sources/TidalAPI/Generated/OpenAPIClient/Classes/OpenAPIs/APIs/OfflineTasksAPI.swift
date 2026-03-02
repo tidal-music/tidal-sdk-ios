@@ -124,13 +124,14 @@ internal class OfflineTasksAPI {
      Update single offlineTask.
      
      - parameter id: (path) Offline task id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter offlineTasksUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksIdPatch(id: String, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) async throws {
+    internal class func offlineTasksIdPatch(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) async throws {
         do {
-            return try await offlineTasksIdPatchWithRequestBuilder(id: id, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload).execute().body
+            return try await offlineTasksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -145,10 +146,11 @@ internal class OfflineTasksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Offline task id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter offlineTasksUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func offlineTasksIdPatchWithRequestBuilder(id: String, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func offlineTasksIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/offlineTasks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -160,6 +162,7 @@ internal class OfflineTasksAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

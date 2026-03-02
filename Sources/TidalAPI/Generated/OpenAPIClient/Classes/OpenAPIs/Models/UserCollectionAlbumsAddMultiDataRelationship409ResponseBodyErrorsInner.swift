@@ -14,6 +14,7 @@ public struct UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsI
 
     public enum Code: String, Codable, CaseIterable {
         case duplicateItemsInCollection = "DUPLICATE_ITEMS_IN_COLLECTION"
+        case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
         case tooManyItemsInCollection = "TOO_MANY_ITEMS_IN_COLLECTION"
     }
     public var code: Code

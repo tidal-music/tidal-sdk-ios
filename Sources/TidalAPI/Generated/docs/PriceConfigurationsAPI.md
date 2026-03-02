@@ -111,7 +111,7 @@ Name | Type | Description  | Notes
 
 # **priceConfigurationsPost**
 ```swift
-    open class func priceConfigurationsPost(priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil, completion: @escaping (_ data: PriceConfigurationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func priceConfigurationsPost(idempotencyKey: String? = nil, priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil, completion: @escaping (_ data: PriceConfigurationsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single priceConfiguration.
@@ -123,10 +123,11 @@ Creates a new priceConfiguration.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let priceConfigurationsCreateOperationPayload = PriceConfigurationsCreateOperation_Payload(data: PriceConfigurationsCreateOperation_Payload_Data(attributes: PriceConfigurationsCreateOperation_Payload_Data_Attributes(currency: "currency_example", price: "price_example"), relationships: PriceConfigurationsCreateOperation_Payload_Data_Relationships(subjects: PriceConfigurationsCreateOperation_Payload_Data_Relationships_Subjects(data: [PriceConfigurationsCreateOperation_Payload_Subjects(id: "id_example", type: "type_example")])), type: "type_example")) // PriceConfigurationsCreateOperationPayload |  (optional)
 
 // Create single priceConfiguration.
-PriceConfigurationsAPI.priceConfigurationsPost(priceConfigurationsCreateOperationPayload: priceConfigurationsCreateOperationPayload) { (response, error) in
+PriceConfigurationsAPI.priceConfigurationsPost(idempotencyKey: idempotencyKey, priceConfigurationsCreateOperationPayload: priceConfigurationsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -142,6 +143,7 @@ PriceConfigurationsAPI.priceConfigurationsPost(priceConfigurationsCreateOperatio
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **priceConfigurationsCreateOperationPayload** | [**PriceConfigurationsCreateOperationPayload**](PriceConfigurationsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

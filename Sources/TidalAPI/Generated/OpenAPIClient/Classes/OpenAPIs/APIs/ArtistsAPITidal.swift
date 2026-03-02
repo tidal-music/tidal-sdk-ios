@@ -43,9 +43,9 @@ public enum ArtistsAPITidal {
      
      - returns: 
      */
-	public static func artistsIdPatch(id: String, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) async throws {
+	public static func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdPatchWithRequestBuilder(id: id, artistsUpdateOperationPayload: artistsUpdateOperationPayload)
+			ArtistsAPI.artistsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsUpdateOperationPayload: artistsUpdateOperationPayload)
 		}
 	}
 
@@ -91,9 +91,9 @@ public enum ArtistsAPITidal {
      
      - returns: 
      */
-	public static func artistsIdRelationshipsFollowingDelete(id: String, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: id, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload)
+			ArtistsAPI.artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -115,9 +115,9 @@ public enum ArtistsAPITidal {
      
      - returns: 
      */
-	public static func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws {
+	public static func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload)
+			ArtistsAPI.artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload)
 		}
 	}
 
@@ -151,9 +151,9 @@ public enum ArtistsAPITidal {
      
      - returns: 
      */
-	public static func artistsIdRelationshipsProfileArtPatch(id: String, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: id, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload)
+			ArtistsAPI.artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -250,9 +250,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsSingleResourceDataDocument
      */
-	public static func artistsPost(artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> ArtistsSingleResourceDataDocument {
+	public static func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> ArtistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsPostWithRequestBuilder(artistsCreateOperationPayload: artistsCreateOperationPayload)
+			ArtistsAPI.artistsPostWithRequestBuilder(idempotencyKey: idempotencyKey, artistsCreateOperationPayload: artistsCreateOperationPayload)
 		}
 	}
 }

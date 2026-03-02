@@ -35,7 +35,7 @@ import OpenAPIClient
 
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple playQueues.
 PlayQueuesAPI.playQueuesGet(pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId) { (response, error) in
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 
@@ -75,7 +75,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdDelete**
 ```swift
-    open class func playQueuesIdDelete(id: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete single playQueue.
@@ -88,9 +88,10 @@ Deletes existing playQueue.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 
 // Delete single playQueue.
-PlayQueuesAPI.playQueuesIdDelete(id: id) { (response, error) in
+PlayQueuesAPI.playQueuesIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -107,6 +108,7 @@ PlayQueuesAPI.playQueuesIdDelete(id: id) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -177,7 +179,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdPatch**
 ```swift
-    open class func playQueuesIdPatch(id: String, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single playQueue.
@@ -190,10 +192,11 @@ Updates existing playQueue.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let playQueuesUpdateOperationPayload = PlayQueuesUpdateOperation_Payload(data: PlayQueuesUpdateOperation_Payload_Data(attributes: PlayQueuesUpdateOperation_Payload_Data_Attributes(_repeat: "_repeat_example", shuffled: false), id: "id_example", type: "type_example")) // PlayQueuesUpdateOperationPayload |  (optional)
 
 // Update single playQueue.
-PlayQueuesAPI.playQueuesIdPatch(id: id, playQueuesUpdateOperationPayload: playQueuesUpdateOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdPatch(id: id, idempotencyKey: idempotencyKey, playQueuesUpdateOperationPayload: playQueuesUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -210,6 +213,7 @@ PlayQueuesAPI.playQueuesIdPatch(id: id, playQueuesUpdateOperationPayload: playQu
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **playQueuesUpdateOperationPayload** | [**PlayQueuesUpdateOperationPayload**](PlayQueuesUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -281,7 +285,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsCurrentPatch**
 ```swift
-    open class func playQueuesIdRelationshipsCurrentPatch(id: String, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update current relationship (\"to-one\").
@@ -294,10 +298,11 @@ Updates current relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let playQueuesCurrentRelationshipUpdateOperationPayload = PlayQueuesCurrentRelationshipUpdateOperation_Payload(data: PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")) // PlayQueuesCurrentRelationshipUpdateOperationPayload |  (optional)
 
 // Update current relationship (\"to-one\").
-PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, playQueuesCurrentRelationshipUpdateOperationPayload: playQueuesCurrentRelationshipUpdateOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, idempotencyKey: idempotencyKey, playQueuesCurrentRelationshipUpdateOperationPayload: playQueuesCurrentRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -314,6 +319,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, playQueuesCurrentRel
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **playQueuesCurrentRelationshipUpdateOperationPayload** | [**PlayQueuesCurrentRelationshipUpdateOperationPayload**](PlayQueuesCurrentRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -333,7 +339,7 @@ Void (empty response body)
 
 # **playQueuesIdRelationshipsFutureDelete**
 ```swift
-    open class func playQueuesIdRelationshipsFutureDelete(id: String, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFutureDelete(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from future relationship (\"to-many\").
@@ -346,10 +352,11 @@ Deletes item(s) from future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let playQueuesFutureRelationshipRemoveOperationPayload = PlayQueuesFutureRelationshipRemoveOperation_Payload(data: [PlayQueuesFutureRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: PlayQueuesFutureRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlayQueuesFutureRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from future relationship (\"to-many\").
-PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, playQueuesFutureRelationshipRemoveOperationPayload: playQueuesFutureRelationshipRemoveOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipRemoveOperationPayload: playQueuesFutureRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -366,6 +373,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, playQueuesFutureRela
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **playQueuesFutureRelationshipRemoveOperationPayload** | [**PlayQueuesFutureRelationshipRemoveOperationPayload**](PlayQueuesFutureRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -439,7 +447,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFuturePatch**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePatch(id: String, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update future relationship (\"to-many\").
@@ -452,10 +460,11 @@ Updates future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let playQueuesFutureRelationshipUpdateOperationPayload = PlayQueuesFutureRelationshipUpdateOperation_Payload(data: [PlayQueuesFutureRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlayQueuesFutureRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlayQueuesFutureRelationshipUpdateOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlayQueuesFutureRelationshipUpdateOperationPayload |  (optional)
 
 // Update future relationship (\"to-many\").
-PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, playQueuesFutureRelationshipUpdateOperationPayload: playQueuesFutureRelationshipUpdateOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipUpdateOperationPayload: playQueuesFutureRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -472,6 +481,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, playQueuesFutureRelat
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **playQueuesFutureRelationshipUpdateOperationPayload** | [**PlayQueuesFutureRelationshipUpdateOperationPayload**](PlayQueuesFutureRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -491,7 +501,7 @@ Void (empty response body)
 
 # **playQueuesIdRelationshipsFuturePost**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePost(id: String, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to future relationship (\"to-many\").
@@ -504,10 +514,11 @@ Adds item(s) to future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let playQueuesFutureRelationshipAddOperationPayload = PlayQueuesFutureRelationshipAddOperation_Payload(data: [PlayQueuesFutureRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlayQueuesFutureRelationshipAddOperation_Payload_Meta(batchId: 123, legacySource: LegacySource(id: "id_example", type: "type_example"), mode: "mode_example", positionBefore: "positionBefore_example")) // PlayQueuesFutureRelationshipAddOperationPayload |  (optional)
 
 // Add to future relationship (\"to-many\").
-PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, playQueuesFutureRelationshipAddOperationPayload: playQueuesFutureRelationshipAddOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipAddOperationPayload: playQueuesFutureRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -524,6 +535,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, playQueuesFutureRelati
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **playQueuesFutureRelationshipAddOperationPayload** | [**PlayQueuesFutureRelationshipAddOperationPayload**](PlayQueuesFutureRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -651,7 +663,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesPost**
 ```swift
-    open class func playQueuesPost(playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playQueuesPost(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single playQueue.
@@ -663,10 +675,11 @@ Creates a new playQueue.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let playQueuesCreateOperationPayload = PlayQueuesCreateOperation_Payload(data: PlayQueuesCreateOperation_Payload_Data(type: "type_example")) // PlayQueuesCreateOperationPayload |  (optional)
 
 // Create single playQueue.
-PlayQueuesAPI.playQueuesPost(playQueuesCreateOperationPayload: playQueuesCreateOperationPayload) { (response, error) in
+PlayQueuesAPI.playQueuesPost(idempotencyKey: idempotencyKey, playQueuesCreateOperationPayload: playQueuesCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -682,6 +695,7 @@ PlayQueuesAPI.playQueuesPost(playQueuesCreateOperationPayload: playQueuesCreateO
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **playQueuesCreateOperationPayload** | [**PlayQueuesCreateOperationPayload**](PlayQueuesCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

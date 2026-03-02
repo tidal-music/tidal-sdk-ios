@@ -25,7 +25,7 @@ Retrieves single userCollectionAlbum by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User collection albums id
+let id = "id_example" // String | User collection albums id. Use `me` for the authenticated user's resource
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
@@ -47,7 +47,7 @@ UserCollectionAlbumsAPI.userCollectionAlbumsIdGet(id: id, countryCode: countryCo
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User collection albums id | 
+ **id** | **String** | User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionAlbumsIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionAlbumsIdRelationshipsItemsDelete(id: String, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: UserCollectionAlbumsItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionAlbumsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: UserCollectionAlbumsItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -81,11 +81,12 @@ Deletes item(s) from items relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User collection albums id
+let id = "id_example" // String | User collection albums id. Use `me` for the authenticated user's resource
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionAlbumsItemsRelationshipRemoveOperationPayload = UserCollectionAlbumsItemsRelationshipRemoveOperation_Payload(data: [UserCollectionAlbumsItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionAlbumsItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsDelete(id: id, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: userCollectionAlbumsItemsRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: userCollectionAlbumsItemsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -101,7 +102,8 @@ UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsDelete(id: id, u
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User collection albums id | 
+ **id** | **String** | User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionAlbumsItemsRelationshipRemoveOperationPayload** | [**UserCollectionAlbumsItemsRelationshipRemoveOperationPayload**](UserCollectionAlbumsItemsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -133,7 +135,7 @@ Retrieves items relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User collection albums id
+let id = "id_example" // String | User collection albums id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
@@ -157,7 +159,7 @@ UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsGet(id: id, page
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User collection albums id | 
+ **id** | **String** | User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
@@ -181,7 +183,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionAlbumsIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionAlbumsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, userCollectionAlbumsItemsRelationshipAddOperationPayload: UserCollectionAlbumsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionAlbumsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionAlbumsItemsRelationshipAddOperationPayload: UserCollectionAlbumsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -193,12 +195,13 @@ Adds item(s) to items relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User collection albums id
+let id = "id_example" // String | User collection albums id. Use `me` for the authenticated user's resource
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionAlbumsItemsRelationshipAddOperationPayload = UserCollectionAlbumsItemsRelationshipAddOperation_Payload(data: [UserCollectionAlbumsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionAlbumsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionAlbumsItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsPost(id: id, countryCode: countryCode, userCollectionAlbumsItemsRelationshipAddOperationPayload: userCollectionAlbumsItemsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionAlbumsItemsRelationshipAddOperationPayload: userCollectionAlbumsItemsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -214,8 +217,9 @@ UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsPost(id: id, cou
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User collection albums id | 
+ **id** | **String** | User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionAlbumsItemsRelationshipAddOperationPayload** | [**UserCollectionAlbumsItemsRelationshipAddOperationPayload**](UserCollectionAlbumsItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -247,7 +251,7 @@ Retrieves owners relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User collection albums id
+let id = "id_example" // String | User collection albums id. Use `me` for the authenticated user's resource
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -268,7 +272,7 @@ UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsOwnersGet(id: id, inc
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User collection albums id | 
+ **id** | **String** | User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 

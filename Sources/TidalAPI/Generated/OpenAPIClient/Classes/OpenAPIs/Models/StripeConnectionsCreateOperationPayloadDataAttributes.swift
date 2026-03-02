@@ -16,15 +16,18 @@ public struct StripeConnectionsCreateOperationPayloadDataAttributes: Codable, Ha
         case redirect = "REDIRECT"
         case embedded = "EMBEDDED"
     }
-    /** Integration type for Stripe onboarding */
-    public var integrationType: IntegrationType = .redirect
-    /** REDIRECT only: URL to redirect to if seller drops from onboarding */
+    /** Deprecated: use meta.integrationType instead. */
+    @available(*, deprecated, message: "This property is deprecated.")
+    public var integrationType: IntegrationType? = .redirect
+    /** Deprecated: use meta.refreshUrl instead. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var refreshUrl: String?
-    /** REDIRECT only: URL to redirect to after completed onboarding */
+    /** Deprecated: use meta.returnUrl instead. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var returnUrl: String?
 
     public init(
-        integrationType: IntegrationType = .redirect,
+        integrationType: IntegrationType? = .redirect,
         refreshUrl: String? = nil,
         returnUrl: String? = nil
     ) {
@@ -43,7 +46,7 @@ public struct StripeConnectionsCreateOperationPayloadDataAttributes: Codable, Ha
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(integrationType, forKey: .integrationType)
+        try container.encodeIfPresent(integrationType, forKey: .integrationType)
         try container.encodeIfPresent(refreshUrl, forKey: .refreshUrl)
         try container.encodeIfPresent(returnUrl, forKey: .returnUrl)
     }

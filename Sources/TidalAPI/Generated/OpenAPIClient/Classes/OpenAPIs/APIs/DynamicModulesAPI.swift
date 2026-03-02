@@ -144,7 +144,7 @@ internal class DynamicModulesAPI {
      - returns: DynamicModulesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshId: Int64? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicModulesMultiRelationshipDataDocument {
+    internal class func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshId: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicModulesMultiRelationshipDataDocument {
         do {
             return try await dynamicModulesIdRelationshipsItemsGetWithRequestBuilder(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshId: refreshId, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -174,7 +174,7 @@ internal class DynamicModulesAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
      - returns: RequestBuilder<DynamicModulesMultiRelationshipDataDocument> 
      */
-    internal class func dynamicModulesIdRelationshipsItemsGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshId: Int64? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicModulesMultiRelationshipDataDocument> {
+    internal class func dynamicModulesIdRelationshipsItemsGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshId: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicModulesMultiRelationshipDataDocument> {
         var localVariablePath = "/dynamicModules/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""

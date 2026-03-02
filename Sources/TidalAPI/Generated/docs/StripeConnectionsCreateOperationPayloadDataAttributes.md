@@ -3,9 +3,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**integrationType** | **String** | Integration type for Stripe onboarding | [default to .redirect]
-**refreshUrl** | **String** | REDIRECT only: URL to redirect to if seller drops from onboarding | [optional] 
-**returnUrl** | **String** | REDIRECT only: URL to redirect to after completed onboarding | [optional] 
+**integrationType** | **String** | Deprecated: use meta.integrationType instead. | [optional] [default to .redirect]
+**refreshUrl** | **String** | Deprecated: use meta.refreshUrl instead. | [optional] 
+**returnUrl** | **String** | Deprecated: use meta.returnUrl instead. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

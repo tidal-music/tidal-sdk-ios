@@ -31,9 +31,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: 
      */
-	public static func userCollectionTracksIdRelationshipsItemsDelete(id: String, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionTracksItemsRelationshipRemoveOperationPayload: userCollectionTracksItemsRelationshipRemoveOperationPayload)
+			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipRemoveOperationPayload: userCollectionTracksItemsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -86,9 +86,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: 
      */
-	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
+			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
 		}
 	}
 

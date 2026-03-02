@@ -24,7 +24,7 @@ Retrieves single userRecommendation by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User recommendations id
+let id = "id_example" // String | User recommendations id. Use `me` for the authenticated user's resource
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
@@ -46,7 +46,7 @@ UserRecommendationsAPI.userRecommendationsIdGet(id: id, countryCode: countryCode
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User recommendations id | 
+ **id** | **String** | User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes | [optional] 
@@ -80,7 +80,7 @@ Retrieves discoveryMixes relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User recommendations id
+let id = "id_example" // String | User recommendations id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
@@ -103,7 +103,7 @@ UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGet(id: i
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User recommendations id | 
+ **id** | **String** | User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
@@ -138,7 +138,7 @@ Retrieves myMixes relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User recommendations id
+let id = "id_example" // String | User recommendations id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
@@ -161,7 +161,7 @@ UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGet(id: id, page
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User recommendations id | 
+ **id** | **String** | User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
@@ -196,7 +196,7 @@ Retrieves newArrivalMixes relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User recommendations id
+let id = "id_example" // String | User recommendations id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
@@ -219,7 +219,7 @@ UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGet(id: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User recommendations id | 
+ **id** | **String** | User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]

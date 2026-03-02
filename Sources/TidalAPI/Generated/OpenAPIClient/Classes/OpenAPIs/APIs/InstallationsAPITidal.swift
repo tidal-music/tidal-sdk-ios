@@ -43,9 +43,9 @@ public enum InstallationsAPITidal {
      
      - returns: 
      */
-	public static func installationsIdRelationshipsOfflineInventoryDelete(id: String, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload)
+			InstallationsAPI.installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -86,9 +86,9 @@ public enum InstallationsAPITidal {
      
      - returns: 
      */
-	public static func installationsIdRelationshipsOfflineInventoryPost(id: String, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws {
+	public static func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload)
+			InstallationsAPI.installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload)
 		}
 	}
 
@@ -110,9 +110,9 @@ public enum InstallationsAPITidal {
      
      - returns: InstallationsSingleResourceDataDocument
      */
-	public static func installationsPost(installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsSingleResourceDataDocument {
+	public static func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsPostWithRequestBuilder(installationsCreateOperationPayload: installationsCreateOperationPayload)
+			InstallationsAPI.installationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, installationsCreateOperationPayload: installationsCreateOperationPayload)
 		}
 	}
 }

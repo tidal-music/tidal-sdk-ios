@@ -31,9 +31,9 @@ public enum UserCollectionArtistsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionArtistsIdRelationshipsItemsDelete(id: String, userCollectionArtistsItemsRelationshipRemoveOperationPayload: UserCollectionArtistsItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionArtistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionArtistsItemsRelationshipRemoveOperationPayload: UserCollectionArtistsItemsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionArtistsItemsRelationshipRemoveOperationPayload: userCollectionArtistsItemsRelationshipRemoveOperationPayload)
+			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionArtistsItemsRelationshipRemoveOperationPayload: userCollectionArtistsItemsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -74,9 +74,9 @@ public enum UserCollectionArtistsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionArtistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, userCollectionArtistsItemsRelationshipAddOperationPayload: UserCollectionArtistsItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionArtistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionArtistsItemsRelationshipAddOperationPayload: UserCollectionArtistsItemsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionArtistsItemsRelationshipAddOperationPayload: userCollectionArtistsItemsRelationshipAddOperationPayload)
+			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionArtistsItemsRelationshipAddOperationPayload: userCollectionArtistsItemsRelationshipAddOperationPayload)
 		}
 	}
 

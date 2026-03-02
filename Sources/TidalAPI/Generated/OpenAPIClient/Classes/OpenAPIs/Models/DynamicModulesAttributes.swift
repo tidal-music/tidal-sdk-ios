@@ -57,7 +57,6 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case newTracks = "NEW_TRACKS"
         case popularPlaylists = "POPULAR_PLAYLISTS"
         case recentlyUpdatedFavoritedPlaylist = "RECENTLY_UPDATED_FAVORITED_PLAYLIST"
-        case recommendedEditorialPlaylists = "RECOMMENDED_EDITORIAL_PLAYLISTS"
         case recommendedUsersPlaylists = "RECOMMENDED_USERS_PLAYLISTS"
         case suggestedEssentialPlaylists = "SUGGESTED_ESSENTIAL_PLAYLISTS"
         case suggestedRadiosMixes = "SUGGESTED_RADIOS_MIXES"
@@ -102,6 +101,9 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case featuredRecommendedTracks = "FEATURED_RECOMMENDED_TRACKS"
         case featuredRecommendedAlbums = "FEATURED_RECOMMENDED_ALBUMS"
         case featuredRecommendedClassicAlbums = "FEATURED_RECOMMENDED_CLASSIC_ALBUMS"
+        case backToSchoolMusic101 = "BACK_TO_SCHOOL_MUSIC_101"
+        case backToSchoolGenresForBeginners = "BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS"
+        case headliners2026 = "HEADLINERS_2026"
         case home30GenericPlaylists1 = "HOME_3_0_GENERIC_PLAYLISTS_1"
         case home30GenericPlaylists2 = "HOME_3_0_GENERIC_PLAYLISTS_2"
         case home30GenericAlbums1 = "HOME_3_0_GENERIC_ALBUMS_1"
@@ -110,6 +112,9 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case home30GenericVideos1 = "HOME_3_0_GENERIC_VIDEOS_1"
         case basedOnYourInterests1 = "BASED_ON_YOUR_INTERESTS_1"
         case basedOnYourInterests2 = "BASED_ON_YOUR_INTERESTS_2"
+        case uploadPageSpotlightedPlaylists = "UPLOAD_PAGE_SPOTLIGHTED_PLAYLISTS"
+        case uploadPagePaygatedAlbums = "UPLOAD_PAGE_PAYGATED_ALBUMS"
+        case uploadPageAlbums = "UPLOAD_PAGE_ALBUMS"
         case unknown = "UNKNOWN"
     }
     /** Type of icons the module should show */

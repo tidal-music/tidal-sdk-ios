@@ -69,12 +69,13 @@ internal class LyricsAPI {
      Delete single lyric.
      
      - parameter id: (path) Lyrics Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdDelete(id: String) async throws {
+    internal class func lyricsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
         do {
-            return try await lyricsIdDeleteWithRequestBuilder(id: id).execute().body
+            return try await lyricsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -89,9 +90,10 @@ internal class LyricsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Lyrics Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func lyricsIdDeleteWithRequestBuilder(id: String) -> RequestBuilder<Void> {
+    internal class func lyricsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/lyrics/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -102,7 +104,7 @@ internal class LyricsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -171,13 +173,14 @@ internal class LyricsAPI {
      Update single lyric.
      
      - parameter id: (path) Lyrics Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter lyricsUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdPatch(id: String, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws {
+    internal class func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws {
         do {
-            return try await lyricsIdPatchWithRequestBuilder(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload).execute().body
+            return try await lyricsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -192,10 +195,11 @@ internal class LyricsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Lyrics Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter lyricsUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func lyricsIdPatchWithRequestBuilder(id: String, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func lyricsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/lyrics/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -207,6 +211,7 @@ internal class LyricsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -338,13 +343,14 @@ internal class LyricsAPI {
     /**
      Create single lyric.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter lyricsCreateOperationPayload: (body)  (optional)
      - returns: LyricsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsPost(lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsSingleResourceDataDocument {
+    internal class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsSingleResourceDataDocument {
         do {
-            return try await lyricsPostWithRequestBuilder(lyricsCreateOperationPayload: lyricsCreateOperationPayload).execute().body
+            return try await lyricsPostWithRequestBuilder(idempotencyKey: idempotencyKey, lyricsCreateOperationPayload: lyricsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -358,10 +364,11 @@ internal class LyricsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter lyricsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<LyricsSingleResourceDataDocument> 
      */
-    internal class func lyricsPostWithRequestBuilder(lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) -> RequestBuilder<LyricsSingleResourceDataDocument> {
+    internal class func lyricsPostWithRequestBuilder(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) -> RequestBuilder<LyricsSingleResourceDataDocument> {
         let localVariablePath = "/lyrics"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: lyricsCreateOperationPayload)
@@ -370,6 +377,7 @@ internal class LyricsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

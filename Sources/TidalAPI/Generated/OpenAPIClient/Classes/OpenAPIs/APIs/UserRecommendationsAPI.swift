@@ -15,7 +15,7 @@ internal class UserRecommendationsAPI {
     /**
      Get single userRecommendation.
      
-     - parameter id: (path) User recommendations id 
+     - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
@@ -38,7 +38,7 @@ internal class UserRecommendationsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User recommendations id 
+     - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
@@ -73,7 +73,7 @@ internal class UserRecommendationsAPI {
     /**
      Get discoveryMixes relationship (\"to-many\").
      
-     - parameter id: (path) User recommendations id 
+     - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
@@ -97,7 +97,7 @@ internal class UserRecommendationsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User recommendations id 
+     - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
@@ -134,7 +134,7 @@ internal class UserRecommendationsAPI {
     /**
      Get myMixes relationship (\"to-many\").
      
-     - parameter id: (path) User recommendations id 
+     - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
@@ -158,7 +158,7 @@ internal class UserRecommendationsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User recommendations id 
+     - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
@@ -195,7 +195,7 @@ internal class UserRecommendationsAPI {
     /**
      Get newArrivalMixes relationship (\"to-many\").
      
-     - parameter id: (path) User recommendations id 
+     - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
@@ -219,7 +219,7 @@ internal class UserRecommendationsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User recommendations id 
+     - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")

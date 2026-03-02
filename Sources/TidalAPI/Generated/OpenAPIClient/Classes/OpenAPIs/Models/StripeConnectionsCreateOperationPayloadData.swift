@@ -15,11 +15,11 @@ public struct StripeConnectionsCreateOperationPayloadData: Codable, Hashable {
     public enum ModelType: String, Codable, CaseIterable {
         case stripeconnections = "stripeConnections"
     }
-    public var attributes: StripeConnectionsCreateOperationPayloadDataAttributes
+    public var attributes: StripeConnectionsCreateOperationPayloadDataAttributes?
     public var type: ModelType
 
     public init(
-        attributes: StripeConnectionsCreateOperationPayloadDataAttributes,
+        attributes: StripeConnectionsCreateOperationPayloadDataAttributes? = nil,
         type: ModelType
     ) {
         self.attributes = attributes
@@ -35,7 +35,7 @@ public struct StripeConnectionsCreateOperationPayloadData: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(attributes, forKey: .attributes)
+        try container.encodeIfPresent(attributes, forKey: .attributes)
         try container.encode(type, forKey: .type)
     }
 }

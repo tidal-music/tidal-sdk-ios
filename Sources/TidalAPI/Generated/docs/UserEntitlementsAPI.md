@@ -22,7 +22,7 @@ Retrieves single userEntitlement by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User id
+let id = "id_example" // String | User entitlements id. Use `me` for the authenticated user's resource
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 
 // Get single userEntitlement.
@@ -42,7 +42,7 @@ UserEntitlementsAPI.userEntitlementsIdGet(id: id, include: include) { (response,
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User id | 
+ **id** | **String** | User entitlements id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
 
 ### Return type
@@ -74,7 +74,7 @@ Retrieves owners relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User id
+let id = "id_example" // String | User entitlements id. Use `me` for the authenticated user's resource
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -95,7 +95,7 @@ UserEntitlementsAPI.userEntitlementsIdRelationshipsOwnersGet(id: id, include: in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User id | 
+ **id** | **String** | User entitlements id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 

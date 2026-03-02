@@ -115,13 +115,14 @@ internal class PriceConfigurationsAPI {
     /**
      Create single priceConfiguration.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter priceConfigurationsCreateOperationPayload: (body)  (optional)
      - returns: PriceConfigurationsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func priceConfigurationsPost(priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil) async throws -> PriceConfigurationsSingleResourceDataDocument {
+    internal class func priceConfigurationsPost(idempotencyKey: String? = nil, priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil) async throws -> PriceConfigurationsSingleResourceDataDocument {
         do {
-            return try await priceConfigurationsPostWithRequestBuilder(priceConfigurationsCreateOperationPayload: priceConfigurationsCreateOperationPayload).execute().body
+            return try await priceConfigurationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, priceConfigurationsCreateOperationPayload: priceConfigurationsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -135,10 +136,11 @@ internal class PriceConfigurationsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter priceConfigurationsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PriceConfigurationsSingleResourceDataDocument> 
      */
-    internal class func priceConfigurationsPostWithRequestBuilder(priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil) -> RequestBuilder<PriceConfigurationsSingleResourceDataDocument> {
+    internal class func priceConfigurationsPostWithRequestBuilder(idempotencyKey: String? = nil, priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil) -> RequestBuilder<PriceConfigurationsSingleResourceDataDocument> {
         let localVariablePath = "/priceConfigurations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: priceConfigurationsCreateOperationPayload)
@@ -147,6 +149,7 @@ internal class PriceConfigurationsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

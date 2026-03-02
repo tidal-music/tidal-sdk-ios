@@ -4,26 +4,27 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**usersMeGet**](UsersAPI.md#usersmeget) | **GET** /users/me | Get current user&#39;s user.
+[**usersIdGet**](UsersAPI.md#usersidget) | **GET** /users/{id} | Get single user.
 
 
-# **usersMeGet**
+# **usersIdGet**
 ```swift
-    open class func usersMeGet(completion: @escaping (_ data: UsersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func usersIdGet(id: String, completion: @escaping (_ data: UsersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get current user's user.
+Get single user.
 
-Retrieves current user's user.
+Retrieves single user by id.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let id = "id_example" // String | User id. Use `me` for the authenticated user's resource
 
-// Get current user's user.
-UsersAPI.usersMeGet() { (response, error) in
+// Get single user.
+UsersAPI.usersIdGet(id: id) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -36,7 +37,10 @@ UsersAPI.usersMeGet() { (response, error) in
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | User id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
 
 ### Return type
 

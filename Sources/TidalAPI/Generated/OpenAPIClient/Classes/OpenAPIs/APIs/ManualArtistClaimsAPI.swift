@@ -15,13 +15,14 @@ internal class ManualArtistClaimsAPI {
     /**
      Create single manualArtistClaim.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter manualArtistClaimsCreateOperationPayload: (body)  (optional)
      - returns: ManualArtistClaimsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func manualArtistClaimsPost(manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) async throws -> ManualArtistClaimsSingleResourceDataDocument {
+    internal class func manualArtistClaimsPost(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) async throws -> ManualArtistClaimsSingleResourceDataDocument {
         do {
-            return try await manualArtistClaimsPostWithRequestBuilder(manualArtistClaimsCreateOperationPayload: manualArtistClaimsCreateOperationPayload).execute().body
+            return try await manualArtistClaimsPostWithRequestBuilder(idempotencyKey: idempotencyKey, manualArtistClaimsCreateOperationPayload: manualArtistClaimsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -35,10 +36,11 @@ internal class ManualArtistClaimsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter manualArtistClaimsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ManualArtistClaimsSingleResourceDataDocument> 
      */
-    internal class func manualArtistClaimsPostWithRequestBuilder(manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) -> RequestBuilder<ManualArtistClaimsSingleResourceDataDocument> {
+    internal class func manualArtistClaimsPostWithRequestBuilder(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) -> RequestBuilder<ManualArtistClaimsSingleResourceDataDocument> {
         let localVariablePath = "/manualArtistClaims"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: manualArtistClaimsCreateOperationPayload)
@@ -47,6 +49,7 @@ internal class ManualArtistClaimsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

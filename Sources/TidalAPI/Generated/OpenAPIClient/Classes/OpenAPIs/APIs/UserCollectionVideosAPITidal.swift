@@ -31,9 +31,9 @@ public enum UserCollectionVideosAPITidal {
      
      - returns: 
      */
-	public static func userCollectionVideosIdRelationshipsItemsDelete(id: String, userCollectionVideosItemsRelationshipRemoveOperationPayload: UserCollectionVideosItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionVideosIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipRemoveOperationPayload: UserCollectionVideosItemsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionVideosItemsRelationshipRemoveOperationPayload: userCollectionVideosItemsRelationshipRemoveOperationPayload)
+			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionVideosItemsRelationshipRemoveOperationPayload: userCollectionVideosItemsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -82,9 +82,9 @@ public enum UserCollectionVideosAPITidal {
      
      - returns: 
      */
-	public static func userCollectionVideosIdRelationshipsItemsPost(id: String, countryCode: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionVideosIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionVideosItemsRelationshipAddOperationPayload: userCollectionVideosItemsRelationshipAddOperationPayload)
+			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionVideosItemsRelationshipAddOperationPayload: userCollectionVideosItemsRelationshipAddOperationPayload)
 		}
 	}
 

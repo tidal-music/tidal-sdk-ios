@@ -50,7 +50,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules (optional)
 let filterId = ["inner_example"] // [String] | List of track IDs (e.g. `75413016`) (optional)
 let filterIsrc = ["inner_example"] // [String] | List of ISRCs. When a single ISRC is provided, pagination is supported and multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is returned without pagination. (e.g. `QMJMT1701237`) (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get multiple tracks.
@@ -76,7 +76,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules | [optional] 
  **filterId** | [**[String]**](String.md) | List of track IDs (e.g. &#x60;75413016&#x60;) | [optional] 
  **filterIsrc** | [**[String]**](String.md) | List of ISRCs. When a single ISRC is provided, pagination is supported and multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is returned without pagination. (e.g. &#x60;QMJMT1701237&#x60;) | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdDelete**
 ```swift
-    open class func tracksIdDelete(id: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete single track.
@@ -109,9 +109,10 @@ Deletes existing track.
 import OpenAPIClient
 
 let id = "id_example" // String | Track id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 
 // Delete single track.
-TracksAPI.tracksIdDelete(id: id) { (response, error) in
+TracksAPI.tracksIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -128,6 +129,7 @@ TracksAPI.tracksIdDelete(id: id) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -202,7 +204,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdPatch**
 ```swift
-    open class func tracksIdPatch(id: String, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single track.
@@ -215,10 +217,11 @@ Updates existing track.
 import OpenAPIClient
 
 let id = "id_example" // String | Track id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let tracksUpdateOperationPayload = TracksUpdateOperation_Payload(data: TracksUpdateOperation_Payload_Data(attributes: TracksUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TracksUpdateOperation_Payload_Data_Relationships(genres: TracksUpdateOperation_Payload_Data_Relationships_Genres(data: [TracksUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksUpdateOperationPayload |  (optional)
 
 // Update single track.
-TracksAPI.tracksIdPatch(id: id, tracksUpdateOperationPayload: tracksUpdateOperationPayload) { (response, error) in
+TracksAPI.tracksIdPatch(id: id, idempotencyKey: idempotencyKey, tracksUpdateOperationPayload: tracksUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -235,6 +238,7 @@ TracksAPI.tracksIdPatch(id: id, tracksUpdateOperationPayload: tracksUpdateOperat
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **tracksUpdateOperationPayload** | [**TracksUpdateOperationPayload**](TracksUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -312,7 +316,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsAlbumsPatch**
 ```swift
-    open class func tracksIdRelationshipsAlbumsPatch(id: String, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update albums relationship (\"to-many\").
@@ -325,10 +329,11 @@ Updates albums relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Track id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let tracksAlbumsRelationshipUpdateOperationPayload = TracksAlbumsRelationshipUpdateOperation_Payload(data: [TracksAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // TracksAlbumsRelationshipUpdateOperationPayload |  (optional)
 
 // Update albums relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload) { (response, error) in
+TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, idempotencyKey: idempotencyKey, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -345,6 +350,7 @@ TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, tracksAlbumsRelationshipUpdat
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **tracksAlbumsRelationshipUpdateOperationPayload** | [**TracksAlbumsRelationshipUpdateOperationPayload**](TracksAlbumsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -1318,7 +1324,7 @@ Name | Type | Description  | Notes
 
 # **tracksPost**
 ```swift
-    open class func tracksPost(tracksCreateOperationPayload: TracksCreateOperationPayload? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksPost(idempotencyKey: String? = nil, tracksCreateOperationPayload: TracksCreateOperationPayload? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single track.
@@ -1330,10 +1336,11 @@ Creates a new track.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let tracksCreateOperationPayload = TracksCreateOperation_Payload(data: TracksCreateOperation_Payload_Data(attributes: TracksCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", explicit: false, title: "title_example"), relationships: TracksCreateOperation_Payload_Data_Relationships(albums: TracksCreateOperation_Payload_Data_Relationships_Albums(data: [TracksCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TracksCreateOperation_Payload_Data_Relationships_Artists(data: [TracksCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: TracksCreateOperation_Payload_Data_Relationships_Genres(data: [TracksCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksCreateOperationPayload |  (optional)
 
 // Create single track.
-TracksAPI.tracksPost(tracksCreateOperationPayload: tracksCreateOperationPayload) { (response, error) in
+TracksAPI.tracksPost(idempotencyKey: idempotencyKey, tracksCreateOperationPayload: tracksCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1349,6 +1356,7 @@ TracksAPI.tracksPost(tracksCreateOperationPayload: tracksCreateOperationPayload)
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **tracksCreateOperationPayload** | [**TracksCreateOperationPayload**](TracksCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

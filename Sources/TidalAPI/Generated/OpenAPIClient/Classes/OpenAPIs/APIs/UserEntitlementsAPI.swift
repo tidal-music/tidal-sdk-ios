@@ -15,7 +15,7 @@ internal class UserEntitlementsAPI {
     /**
      Get single userEntitlement.
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User entitlements id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: UserEntitlementsSingleResourceDataDocument
      */
@@ -36,7 +36,7 @@ internal class UserEntitlementsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User entitlements id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - returns: RequestBuilder<UserEntitlementsSingleResourceDataDocument> 
      */
@@ -67,7 +67,7 @@ internal class UserEntitlementsAPI {
     /**
      Get owners relationship (\"to-many\").
      
-     - parameter id: (path) User id 
+     - parameter id: (path) User entitlements id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: UserEntitlementsMultiRelationshipDataDocument
@@ -89,7 +89,7 @@ internal class UserEntitlementsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) User id 
+     - parameter id: (path) User entitlements id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<UserEntitlementsMultiRelationshipDataDocument> 

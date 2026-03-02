@@ -43,9 +43,9 @@ public enum OfflineTasksAPITidal {
      
      - returns: 
      */
-	public static func offlineTasksIdPatch(id: String, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) async throws {
+	public static func offlineTasksIdPatch(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			OfflineTasksAPI.offlineTasksIdPatchWithRequestBuilder(id: id, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload)
+			OfflineTasksAPI.offlineTasksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload)
 		}
 	}
 

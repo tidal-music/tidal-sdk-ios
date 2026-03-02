@@ -67,9 +67,9 @@ public enum SharesAPITidal {
      
      - returns: SharesSingleResourceDataDocument
      */
-	public static func sharesPost(sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) async throws -> SharesSingleResourceDataDocument {
+	public static func sharesPost(idempotencyKey: String? = nil, sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) async throws -> SharesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesPostWithRequestBuilder(sharesCreateOperationPayload: sharesCreateOperationPayload)
+			SharesAPI.sharesPostWithRequestBuilder(idempotencyKey: idempotencyKey, sharesCreateOperationPayload: sharesCreateOperationPayload)
 		}
 	}
 }

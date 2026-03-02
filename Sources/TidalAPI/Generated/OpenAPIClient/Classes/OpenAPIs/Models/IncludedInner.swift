@@ -11,6 +11,7 @@ import AnyCodable
 #endif
 
 public enum IncludedInner: Codable, JSONEncodable, Hashable {
+    case albumStatisticsResourceObject(AlbumStatisticsResourceObject)
     case albumsResourceObject(AlbumsResourceObject)
     case appreciationsResourceObject(AppreciationsResourceObject)
     case artistBiographiesResourceObject(ArtistBiographiesResourceObject)
@@ -18,6 +19,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistRolesResourceObject(ArtistRolesResourceObject)
     case artistsResourceObject(ArtistsResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
+    case commentsResourceObject(CommentsResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
     case downloadsResourceObject(DownloadsResourceObject)
@@ -58,11 +60,14 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
     case userReportsResourceObject(UserReportsResourceObject)
     case usersResourceObject(UsersResourceObject)
+    case videoManifestsResourceObject(VideoManifestsResourceObject)
     case videosResourceObject(VideosResourceObject)
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
+        case .albumStatisticsResourceObject(let value):
+            try container.encode(value)
         case .albumsResourceObject(let value):
             try container.encode(value)
         case .appreciationsResourceObject(let value):
@@ -76,6 +81,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .artistsResourceObject(let value):
             try container.encode(value)
         case .artworksResourceObject(let value):
+            try container.encode(value)
+        case .commentsResourceObject(let value):
             try container.encode(value)
         case .contentClaimsResourceObject(let value):
             try container.encode(value)
@@ -157,6 +164,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .usersResourceObject(let value):
             try container.encode(value)
+        case .videoManifestsResourceObject(let value):
+            try container.encode(value)
         case .videosResourceObject(let value):
             try container.encode(value)
         }
@@ -171,6 +180,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         let type = try container.decode(String.self, forKey: .type)
 
         switch type {
+        case "albumStatistics":
+            let value = try AlbumStatisticsResourceObject(from: decoder)
+            self = .albumStatisticsResourceObject(value)
         case "albums":
             let value = try AlbumsResourceObject(from: decoder)
             self = .albumsResourceObject(value)
@@ -192,6 +204,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "artworks":
             let value = try ArtworksResourceObject(from: decoder)
             self = .artworksResourceObject(value)
+        case "comments":
+            let value = try CommentsResourceObject(from: decoder)
+            self = .commentsResourceObject(value)
         case "contentClaims":
             let value = try ContentClaimsResourceObject(from: decoder)
             self = .contentClaimsResourceObject(value)
@@ -312,6 +327,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "users":
             let value = try UsersResourceObject(from: decoder)
             self = .usersResourceObject(value)
+        case "videoManifests":
+            let value = try VideoManifestsResourceObject(from: decoder)
+            self = .videoManifestsResourceObject(value)
         case "videos":
             let value = try VideosResourceObject(from: decoder)
             self = .videosResourceObject(value)
@@ -325,6 +343,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
 extension IncludedInner: Identifiable {
     public var id: String {
         switch self {
+        case .albumStatisticsResourceObject(let value): return value.id
         case .albumsResourceObject(let value): return value.id
         case .appreciationsResourceObject(let value): return value.id
         case .artistBiographiesResourceObject(let value): return value.id
@@ -332,6 +351,7 @@ extension IncludedInner: Identifiable {
         case .artistRolesResourceObject(let value): return value.id
         case .artistsResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
+        case .commentsResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
         case .downloadsResourceObject(let value): return value.id
@@ -372,6 +392,7 @@ extension IncludedInner: Identifiable {
         case .userRecommendationsResourceObject(let value): return value.id
         case .userReportsResourceObject(let value): return value.id
         case .usersResourceObject(let value): return value.id
+        case .videoManifestsResourceObject(let value): return value.id
         case .videosResourceObject(let value): return value.id
         }
     }

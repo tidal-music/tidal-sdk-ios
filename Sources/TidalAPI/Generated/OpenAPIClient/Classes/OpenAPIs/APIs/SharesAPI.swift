@@ -242,13 +242,14 @@ internal class SharesAPI {
     /**
      Create single share.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter sharesCreateOperationPayload: (body)  (optional)
      - returns: SharesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesPost(sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) async throws -> SharesSingleResourceDataDocument {
+    internal class func sharesPost(idempotencyKey: String? = nil, sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) async throws -> SharesSingleResourceDataDocument {
         do {
-            return try await sharesPostWithRequestBuilder(sharesCreateOperationPayload: sharesCreateOperationPayload).execute().body
+            return try await sharesPostWithRequestBuilder(idempotencyKey: idempotencyKey, sharesCreateOperationPayload: sharesCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -262,10 +263,11 @@ internal class SharesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter sharesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<SharesSingleResourceDataDocument> 
      */
-    internal class func sharesPostWithRequestBuilder(sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) -> RequestBuilder<SharesSingleResourceDataDocument> {
+    internal class func sharesPostWithRequestBuilder(idempotencyKey: String? = nil, sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) -> RequestBuilder<SharesSingleResourceDataDocument> {
         let localVariablePath = "/shares"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sharesCreateOperationPayload)
@@ -274,6 +276,7 @@ internal class SharesAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

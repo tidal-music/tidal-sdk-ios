@@ -43,7 +43,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 let filterHandle = ["inner_example"] // [String] | Artist handle (e.g. `jayz`) (optional)
 let filterId = ["inner_example"] // [String] | Artist id (e.g. `1566`) (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple artists.
 ArtistsAPI.artistsGet(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
  **filterHandle** | [**[String]**](String.md) | Artist handle (e.g. &#x60;jayz&#x60;) | [optional] 
  **filterId** | [**[String]**](String.md) | Artist id (e.g. &#x60;1566&#x60;) | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 
@@ -139,7 +139,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdPatch**
 ```swift
-    open class func artistsIdPatch(id: String, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single artist.
@@ -152,10 +152,11 @@ Updates existing artist.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistsUpdateOperationPayload = ArtistsUpdateOperation_Payload(data: ArtistsUpdateOperation_Payload_Data(attributes: ArtistsUpdateOperation_Payload_Data_Attributes(contributionsEnabled: false, contributionsSalesPitch: "contributionsSalesPitch_example", externalLinks: [External_Link_Payload(href: "href_example", meta: External_Link_Meta(type: "type_example"))], handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistsUpdateOperation_Payload_Meta(dryRun: false)) // ArtistsUpdateOperationPayload |  (optional)
 
 // Update single artist.
-ArtistsAPI.artistsIdPatch(id: id, artistsUpdateOperationPayload: artistsUpdateOperationPayload) { (response, error) in
+ArtistsAPI.artistsIdPatch(id: id, idempotencyKey: idempotencyKey, artistsUpdateOperationPayload: artistsUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -172,6 +173,7 @@ ArtistsAPI.artistsIdPatch(id: id, artistsUpdateOperationPayload: artistsUpdateOp
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistsUpdateOperationPayload** | [**ArtistsUpdateOperationPayload**](ArtistsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -357,7 +359,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingDelete**
 ```swift
-    open class func artistsIdRelationshipsFollowingDelete(id: String, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from following relationship (\"to-many\").
@@ -370,10 +372,11 @@ Deletes item(s) from following relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistsFollowingRelationshipRemoveOperationPayload = ArtistsFollowingRelationshipRemoveOperation_Payload(data: [ArtistsFollowingRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsFollowingRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from following relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsFollowingDelete(id: id, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsFollowingDelete(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -390,6 +393,7 @@ ArtistsAPI.artistsIdRelationshipsFollowingDelete(id: id, artistsFollowingRelatio
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistsFollowingRelationshipRemoveOperationPayload** | [**ArtistsFollowingRelationshipRemoveOperationPayload**](ArtistsFollowingRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -465,7 +469,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingPost**
 ```swift
-    open class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to following relationship (\"to-many\").
@@ -479,10 +483,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistsFollowingRelationshipAddOperationPayload = ArtistsFollowingRelationshipAddOperation_Payload(data: [ArtistsFollowingRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsFollowingRelationshipAddOperationPayload |  (optional)
 
 // Add to following relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, countryCode: countryCode, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -500,6 +505,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistsFollowingRelationshipAddOperationPayload** | [**ArtistsFollowingRelationshipAddOperationPayload**](ArtistsFollowingRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -629,7 +635,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsProfileArtPatch**
 ```swift
-    open class func artistsIdRelationshipsProfileArtPatch(id: String, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update profileArt relationship (\"to-many\").
@@ -642,10 +648,11 @@ Updates profileArt relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistsProfileArtRelationshipUpdateOperationPayload = ArtistsProfileArtRelationshipUpdateOperation_Payload(data: [ArtistsProfileArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsProfileArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update profileArt relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsProfileArtPatch(id: id, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsProfileArtPatch(id: id, idempotencyKey: idempotencyKey, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -662,6 +669,7 @@ ArtistsAPI.artistsIdRelationshipsProfileArtPatch(id: id, artistsProfileArtRelati
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistsProfileArtRelationshipUpdateOperationPayload** | [**ArtistsProfileArtRelationshipUpdateOperationPayload**](ArtistsProfileArtRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -1015,7 +1023,7 @@ Name | Type | Description  | Notes
 
 # **artistsPost**
 ```swift
-    open class func artistsPost(artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artist.
@@ -1027,10 +1035,11 @@ Creates a new artist.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistsCreateOperationPayload = ArtistsCreateOperation_Payload(data: ArtistsCreateOperation_Payload_Data(attributes: ArtistsCreateOperation_Payload_Data_Attributes(handle: "handle_example", name: "name_example"), type: "type_example"), meta: ArtistsCreateOperation_Payload_Meta(dryRun: false)) // ArtistsCreateOperationPayload |  (optional)
 
 // Create single artist.
-ArtistsAPI.artistsPost(artistsCreateOperationPayload: artistsCreateOperationPayload) { (response, error) in
+ArtistsAPI.artistsPost(idempotencyKey: idempotencyKey, artistsCreateOperationPayload: artistsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1046,6 +1055,7 @@ ArtistsAPI.artistsPost(artistsCreateOperationPayload: artistsCreateOperationPayl
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistsCreateOperationPayload** | [**ArtistsCreateOperationPayload**](ArtistsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
