@@ -13,6 +13,7 @@ import AnyCodable
 public struct ManualArtistClaimsAttributes: Codable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
+        case submitted = "SUBMITTED"
         case pending = "PENDING"
         case approved = "APPROVED"
         case rejected = "REJECTED"

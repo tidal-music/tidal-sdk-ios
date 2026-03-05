@@ -12,17 +12,23 @@ import AnyCodable
 
 public struct PlaylistsRelationships: Codable, Hashable {
 
+    public var collaboratorProfiles: MultiRelationshipDataDocument?
+    public var collaborators: MultiRelationshipDataDocument?
     public var coverArt: MultiRelationshipDataDocument?
     public var items: PlaylistsItemsMultiRelationshipDataDocument?
     public var ownerProfiles: MultiRelationshipDataDocument?
     public var owners: MultiRelationshipDataDocument?
 
     public init(
+        collaboratorProfiles: MultiRelationshipDataDocument? = nil,
+        collaborators: MultiRelationshipDataDocument? = nil,
         coverArt: MultiRelationshipDataDocument? = nil,
         items: PlaylistsItemsMultiRelationshipDataDocument? = nil,
         ownerProfiles: MultiRelationshipDataDocument? = nil,
         owners: MultiRelationshipDataDocument? = nil
     ) {
+        self.collaboratorProfiles = collaboratorProfiles
+        self.collaborators = collaborators
         self.coverArt = coverArt
         self.items = items
         self.ownerProfiles = ownerProfiles
@@ -30,6 +36,8 @@ public struct PlaylistsRelationships: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case collaboratorProfiles
+        case collaborators
         case coverArt
         case items
         case ownerProfiles
@@ -40,6 +48,8 @@ public struct PlaylistsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(collaboratorProfiles, forKey: .collaboratorProfiles)
+        try container.encodeIfPresent(collaborators, forKey: .collaborators)
         try container.encodeIfPresent(coverArt, forKey: .coverArt)
         try container.encodeIfPresent(items, forKey: .items)
         try container.encodeIfPresent(ownerProfiles, forKey: .ownerProfiles)
