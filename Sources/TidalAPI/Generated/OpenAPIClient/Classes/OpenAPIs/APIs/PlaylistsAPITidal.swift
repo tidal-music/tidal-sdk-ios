@@ -86,6 +86,54 @@ public enum PlaylistsAPITidal {
 
 
 	/**
+     Delete from collaboratorProfiles relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func playlistsIdRelationshipsCollaboratorProfilesDelete(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: playlistsCollaboratorProfilesRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+     Get collaboratorProfiles relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Add to collaboratorProfiles relationship (\&quot;to-many\&quot;).
+     
+     - returns: 
+     */
+	public static func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) async throws {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipAddOperationPayload: playlistsCollaboratorProfilesRelationshipAddOperationPayload)
+		}
+	}
+
+
+	/**
+     Get collaborators relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsCollaboratorsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Get coverArt relationship (\&quot;to-many\&quot;).
      
      - returns: PlaylistsMultiRelationshipDataDocument
