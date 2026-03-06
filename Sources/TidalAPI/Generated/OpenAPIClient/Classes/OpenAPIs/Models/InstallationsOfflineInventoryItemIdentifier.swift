@@ -17,6 +17,7 @@ public struct InstallationsOfflineInventoryItemIdentifier: Codable, Hashable {
         case videos = "videos"
         case albums = "albums"
         case playlists = "playlists"
+        case usercollectiontracks = "userCollectionTracks"
     }
     public var id: String
     public var type: ModelType
