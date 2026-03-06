@@ -183,6 +183,7 @@ internal class InstallationsAPI {
         case videos = "videos"
         case albums = "albums"
         case playlists = "playlists"
+        case usercollectiontracks = "userCollectionTracks"
     }
 
     /**
@@ -191,7 +192,7 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-     - parameter filterType: (query) One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;) (optional)
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) (optional)
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -214,7 +215,7 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-     - parameter filterType: (query) One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;) (optional)
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) (optional)
      - returns: RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> 
      */
     internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {
