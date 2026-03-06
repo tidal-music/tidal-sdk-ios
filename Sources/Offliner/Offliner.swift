@@ -193,6 +193,7 @@ extension OfflineCollectionType {
 		switch self {
 		case .albums: return .album
 		case .playlists: return .playlist
+		case .userCollectionTracks: return .userCollectionTracks
 		}
 	}
 }

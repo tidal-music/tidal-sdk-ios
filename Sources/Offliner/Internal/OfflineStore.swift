@@ -470,6 +470,9 @@ extension OfflineCollection.Metadata {
 		case .playlist(let metadata):
 			let data = try encoder.encode(metadata)
 			return String(data: data, encoding: .utf8)!
+		case .userCollectionTracks(let id):
+			let data = try encoder.encode(["id": id])
+			return String(data: data, encoding: .utf8)!
 		}
 	}
 
@@ -482,6 +485,9 @@ extension OfflineCollection.Metadata {
 			return .album(try decoder.decode(OfflineCollection.AlbumMetadata.self, from: data))
 		case .playlists:
 			return .playlist(try decoder.decode(OfflineCollection.PlaylistMetadata.self, from: data))
+		case .userCollectionTracks:
+			let container = try decoder.decode([String: String].self, from: data)
+			return .userCollectionTracks(id: container["id"]!)
 		}
 	}
 }
