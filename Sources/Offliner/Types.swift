@@ -23,13 +23,18 @@ public struct OfflineMediaItem {
 		public let id: String
 		public let title: String
 		public let artists: [String]
+		public let artistIds: [String]?
 		public let duration: Int
+		public let explicit: Bool?
+		public let mediaTags: [String]?
+		public let streamStartDate: Date?
 	}
 
 	public struct VideoMetadata: Codable {
 		public let id: String
 		public let title: String
 		public let artists: [String]
+		public let artistIds: [String]?
 		public let duration: Int
 	}
 
@@ -39,8 +44,8 @@ public struct OfflineMediaItem {
 
 		public var id: String {
 			switch self {
-			case .track(let metadata): return metadata.id
-			case .video(let metadata): return metadata.id
+			case let .track(metadata): metadata.id
+			case let .video(metadata): metadata.id
 			}
 		}
 	}
@@ -61,6 +66,7 @@ public struct OfflineMediaItem {
 	public let mediaURL: URL
 	public let licenseURL: URL?
 	public let artworkURL: URL?
+	public let artworkId: String?
 }
 
 // MARK: - OfflineCollection
@@ -70,6 +76,7 @@ public struct OfflineCollection {
 		public let id: String
 		public let title: String
 		public let artists: [String]
+		public let artistIds: [String]?
 		public let copyright: String?
 		public let releaseDate: Date?
 		public let explicit: Bool
@@ -78,6 +85,9 @@ public struct OfflineCollection {
 	public struct PlaylistMetadata: Codable {
 		public let id: String
 		public let title: String
+		public let description: String?
+		public let createdAt: Date?
+		public let lastModifiedAt: Date?
 	}
 
 	public enum Metadata {
@@ -87,15 +97,16 @@ public struct OfflineCollection {
 
 		public var id: String {
 			switch self {
-			case .album(let metadata): return metadata.id
-			case .playlist(let metadata): return metadata.id
-			case .userCollectionTracks(let id): return id
+			case let .album(metadata): metadata.id
+			case let .playlist(metadata): metadata.id
+			case let .userCollectionTracks(id): id
 			}
 		}
 	}
 
 	public let catalogMetadata: Metadata
 	public let artworkURL: URL?
+	public let artworkId: String?
 }
 
 // MARK: - OfflineCollectionItem
