@@ -1,4 +1,5 @@
 @testable import Offliner
+import AVFoundation
 import Foundation
 import TidalAPI
 
@@ -240,11 +241,11 @@ final class FailingArtworkDownloader: ArtworkDownloaderProtocol {
 // MARK: - Media Downloader Fakes
 
 final class SucceedingMediaDownloader: MediaDownloaderProtocol {
-	var audioFormats: [AudioFormat] = [.heaacv1]
 	var progressValues: [Double] = []
 
 	func download(
-		trackId: String,
+		manifestURL: URL,
+		contentKeySession: AVContentKeySession?,
 		taskId: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
@@ -254,22 +255,20 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 
 		let tempDir = FileManager.default.temporaryDirectory
 		let url = tempDir.appendingPathComponent("media-\(UUID().uuidString).m4a")
-		try? Data("media".utf8).write(to: url)
+		try Data("media".utf8).write(to: url)
 
 		return MediaDownloadResult(
-			requiresLicense: false,
+			duration: 120,
 			mediaLocation: url,
-			licenseLocation: nil,
-			playbackMetadata: nil
+			licenseLocation: nil
 		)
 	}
 }
 
 final class FailingMediaDownloader: MediaDownloaderProtocol {
-	var audioFormats: [AudioFormat] = [.heaacv1]
-
 	func download(
-		trackId: String,
+		manifestURL: URL,
+		contentKeySession: AVContentKeySession?,
 		taskId: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {

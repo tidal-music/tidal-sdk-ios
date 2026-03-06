@@ -5,7 +5,8 @@ actor TaskRunner {
 	private static let maxConcurrentTasks = 5
 	private static let maxQueueSize = 80
 
-	private let storeItemHandler: StoreItemHandler
+	private let storeTrackHandler: StoreTrackHandler
+	private let storeVideoHandler: StoreVideoHandler
 	private let storeCollectionHandler: StoreCollectionHandler
 	private let removeItemHandler: RemoveItemHandler
 	private let removeCollectionHandler: RemoveCollectionHandler
@@ -42,7 +43,14 @@ actor TaskRunner {
 		self.newDownloads = stream
 		self.downloadsContinuation = continuation
 
-		self.storeItemHandler = StoreItemHandler(
+		self.storeTrackHandler = StoreTrackHandler(
+			offlineApiClient: offlineApiClient,
+			offlineStore: offlineStore,
+			artworkDownloader: artworkDownloader,
+			mediaDownloader: mediaDownloader,
+			audioFormats: configuration.audioFormats
+		)
+		self.storeVideoHandler = StoreVideoHandler(
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
@@ -87,6 +95,10 @@ actor TaskRunner {
 		} while needsRun
 	}
 
+	func setAudioFormats(_ formats: [AudioFormat]) {
+		storeTrackHandler.audioFormats = formats
+	}
+
 	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
 		allowDownloadsOnExpensiveNetworks = allowed
 		if allowed {
@@ -109,7 +121,11 @@ actor TaskRunner {
 
 	private func handle(_ offlineTask: OfflineTask) -> InternalTask {
 		switch offlineTask {
-		case .storeItem(let task): storeItemHandler.handle(task)
+		case .storeItem(let task):
+			switch task.itemMetadata {
+			case .track: storeTrackHandler.handle(task)
+			case .video: storeVideoHandler.handle(task)
+			}
 		case .storeCollection(let task): storeCollectionHandler.handle(task)
 		case .removeItem(let task): removeItemHandler.handle(task)
 		case .removeCollection(let task): removeCollectionHandler.handle(task)

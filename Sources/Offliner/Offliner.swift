@@ -8,11 +8,11 @@ public final class Offliner {
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
-	private var mediaDownloader: MediaDownloaderProtocol
 
 	public var audioFormats: [AudioFormat] {
-		get { mediaDownloader.audioFormats }
-		set { mediaDownloader.audioFormats = newValue }
+		didSet {
+			Task { await taskRunner.setAudioFormats(audioFormats) }
+		}
 	}
 
 	public func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
@@ -40,7 +40,7 @@ public final class Offliner {
 
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
-		self.mediaDownloader = mediaDownloader
+		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,
@@ -59,7 +59,7 @@ public final class Offliner {
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
-		self.mediaDownloader = mediaDownloader
+		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,

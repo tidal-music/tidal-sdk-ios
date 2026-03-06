@@ -31,6 +31,13 @@ enum BackendItemMetadata {
 		case .video(let video): return video.id
 		}
 	}
+
+	var title: String {
+		switch self {
+		case .track(let track): return track.attributes?.title ?? ""
+		case .video(let video): return video.attributes?.title ?? ""
+		}
+	}
 }
 
 enum BackendCollectionMetadata {
