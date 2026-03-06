@@ -13,6 +13,7 @@ public enum OfflineMediaItemType: String {
 public enum OfflineCollectionType: String {
 	case albums
 	case playlists
+	case userCollectionTracks
 }
 
 // MARK: - OfflineMediaItem
@@ -82,11 +83,13 @@ public struct OfflineCollection {
 	public enum Metadata {
 		case album(AlbumMetadata)
 		case playlist(PlaylistMetadata)
+		case userCollectionTracks(id: String)
 
 		public var id: String {
 			switch self {
 			case .album(let metadata): return metadata.id
 			case .playlist(let metadata): return metadata.id
+			case .userCollectionTracks(let id): return id
 			}
 		}
 	}

@@ -86,6 +86,8 @@ private extension OfflineCollection.Metadata {
 				id: playlist.id,
 				title: playlist.attributes?.name ?? ""
 			))
+		case .userCollectionTracks(let uct):
+			self = .userCollectionTracks(id: uct.id)
 		}
 	}
 }

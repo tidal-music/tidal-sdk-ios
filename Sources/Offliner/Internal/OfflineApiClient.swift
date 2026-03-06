@@ -9,6 +9,7 @@ enum ResourceType {
 	case video
 	case album
 	case playlist
+	case userCollectionTracks
 }
 
 // MARK: - Backend Metadata
@@ -35,11 +36,13 @@ enum BackendItemMetadata {
 enum BackendCollectionMetadata {
 	case album(AlbumsResourceObject)
 	case playlist(PlaylistsResourceObject)
+	case userCollectionTracks(UserCollectionTracksResourceObject)
 
 	var resourceType: String {
 		switch self {
 		case .album: return OfflineCollectionType.albums.rawValue
 		case .playlist: return OfflineCollectionType.playlists.rawValue
+		case .userCollectionTracks: return OfflineCollectionType.userCollectionTracks.rawValue
 		}
 	}
 
@@ -47,6 +50,7 @@ enum BackendCollectionMetadata {
 		switch self {
 		case .album(let album): return album.id
 		case .playlist(let playlist): return playlist.id
+		case .userCollectionTracks(let uct): return uct.id
 		}
 	}
 }
@@ -186,6 +190,8 @@ private extension OfflineApiClient {
 			return .albums
 		case .playlist:
 			return .playlists
+		case .userCollectionTracks:
+			return .usercollectiontracks
 		}
 	}
 
@@ -226,7 +232,7 @@ private extension OfflineTasksResourceObject {
 			case "tracks", "videos":
 				return StoreItemTask(self, attributes: attributes, item: includedItem, collectionData: collectionData)
 					.map { .storeItem($0) }
-			case "albums", "playlists":
+			case "albums", "playlists", "userCollectionTracks":
 				return StoreCollectionTask(self, item: includedItem)
 					.map { .storeCollection($0) }
 			default:
@@ -237,7 +243,7 @@ private extension OfflineTasksResourceObject {
 			case "tracks", "videos":
 				return RemoveItemTask(self, itemData: itemData, collectionData: collectionData)
 					.map { .removeItem($0) }
-			case "albums", "playlists":
+			case "albums", "playlists", "userCollectionTracks":
 				return .removeCollection(RemoveCollectionTask(id: id, resourceType: itemData.type, resourceId: itemData.id))
 			default:
 				return nil
@@ -277,6 +283,8 @@ private final class IncludedItemsMap {
 				add(IncludedItem(resource: .artwork(artwork)), type: artwork.type, id: artwork.id)
 			case .artistsResourceObject(let artist):
 				add(IncludedItem(resource: .artist(artist)), type: artist.type, id: artist.id)
+			case .userCollectionTracksResourceObject(let uct):
+				add(IncludedItem(resource: .userCollectionTracks(uct)), type: uct.type, id: uct.id)
 			default:
 				break
 			}
@@ -351,6 +359,7 @@ private enum IncludedResource {
 	case playlist(PlaylistsResourceObject)
 	case artwork(ArtworksResourceObject)
 	case artist(ArtistsResourceObject)
+	case userCollectionTracks(UserCollectionTracksResourceObject)
 }
 
 // MARK: - IncludedItem
@@ -377,6 +386,7 @@ private class IncludedItem {
 		switch resource {
 		case .album(let album): return .album(album)
 		case .playlist(let playlist): return .playlist(playlist)
+		case .userCollectionTracks(let uct): return .userCollectionTracks(uct)
 		default: return nil
 		}
 	}
@@ -394,6 +404,7 @@ private class IncludedItem {
 		case .video: coverArt
 		case .album: coverArt
 		case .playlist: coverArt
+		case .userCollectionTracks: nil
 		default: nil
 		}
 		guard let artworkItem, case .artwork(let artwork) = artworkItem.resource else {

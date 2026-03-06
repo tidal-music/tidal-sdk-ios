@@ -61,6 +61,15 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 				artwork: nil
 			)
 			tasks.append(.storeCollection(task))
+
+		case .userCollectionTracks:
+			let task = StoreCollectionTask(
+				id: taskId,
+				metadata: .userCollectionTracks(UserCollectionTracksResourceObject(id: id, type: "userCollectionTracks")),
+				artists: [],
+				artwork: nil
+			)
+			tasks.append(.storeCollection(task))
 		}
 	}
 
@@ -95,6 +104,12 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 			tasks.append(.removeCollection(RemoveCollectionTask(
 				id: taskId,
 				resourceType: "playlists",
+				resourceId: id
+			)))
+		case .userCollectionTracks:
+			tasks.append(.removeCollection(RemoveCollectionTask(
+				id: taskId,
+				resourceType: "userCollectionTracks",
 				resourceId: id
 			)))
 		}
