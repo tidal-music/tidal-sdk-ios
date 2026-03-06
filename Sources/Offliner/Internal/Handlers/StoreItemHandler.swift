@@ -3,6 +3,8 @@ import CoreMedia
 import Foundation
 import TidalAPI
 
+// MARK: - StoreItemHandler
+
 final class StoreItemHandler {
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
@@ -35,6 +37,8 @@ final class StoreItemHandler {
 	}
 }
 
+// MARK: - InternalTaskImpl
+
 private final class InternalTaskImpl: InternalTask {
 	let id: String
 	let download: Download?
@@ -55,7 +59,7 @@ private final class InternalTaskImpl: InternalTask {
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol
 	) {
-		self.id = task.id
+		id = task.id
 		self.task = task
 		self.download = download
 		self.offlineApiClient = offlineApiClient
@@ -81,7 +85,9 @@ private final class InternalTaskImpl: InternalTask {
 				trackId: task.itemMetadata.resourceId,
 				taskId: id,
 				onProgress: { [weak self] progress in
-					guard let download = self?.download else { return }
+					guard let download = self?.download else {
+						return
+					}
 					await download.updateProgress(progress)
 				}
 			)
@@ -97,7 +103,8 @@ private final class InternalTaskImpl: InternalTask {
 				position: task.position,
 				mediaURL: mediaResult.mediaLocation,
 				licenseURL: mediaResult.licenseLocation,
-				artworkURL: artworkURL
+				artworkURL: artworkURL,
+				artworkId: task.artwork?.id
 			)
 
 			try offlineStore.storeMediaItem(storeResult)
@@ -117,19 +124,25 @@ private final class InternalTaskImpl: InternalTask {
 private extension OfflineMediaItem.Metadata {
 	init(from task: StoreItemTask) {
 		let artistNames = task.artists.compactMap(\.attributes?.name)
+		let artistIds = task.artists.map(\.id)
 		switch task.itemMetadata {
-		case .track(let track):
+		case let .track(track):
 			self = .track(OfflineMediaItem.TrackMetadata(
 				id: track.id,
 				title: track.attributes?.title ?? "",
 				artists: artistNames,
-				duration: parseISO8601Duration(track.attributes?.duration)
+				artistIds: artistIds,
+				duration: parseISO8601Duration(track.attributes?.duration),
+				explicit: track.attributes?.explicit,
+				mediaTags: track.attributes?.mediaTags,
+				streamStartDate: track.attributes?.createdAt
 			))
-		case .video(let video):
+		case let .video(video):
 			self = .video(OfflineMediaItem.VideoMetadata(
 				id: video.id,
 				title: video.attributes?.title ?? "",
 				artists: artistNames,
+				artistIds: artistIds,
 				duration: parseISO8601Duration(video.attributes?.duration)
 			))
 		}

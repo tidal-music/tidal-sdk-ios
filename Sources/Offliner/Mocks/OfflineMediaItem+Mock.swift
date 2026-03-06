@@ -8,14 +8,16 @@ public extension OfflineMediaItem {
 		playbackMetadata: PlaybackMetadata? = .mock(),
 		mediaURL: URL = URL(string: "file:///mock/media.flac")!,
 		licenseURL: URL? = nil,
-		artworkURL: URL? = URL(string: "https://example.com/track-artwork.jpg")
+		artworkURL: URL? = URL(string: "https://example.com/track-artwork.jpg"),
+		artworkId: String? = "artwork-123"
 	) -> Self {
 		.init(
 			catalogMetadata: catalogMetadata,
 			playbackMetadata: playbackMetadata,
 			mediaURL: mediaURL,
 			licenseURL: licenseURL,
-			artworkURL: artworkURL
+			artworkURL: artworkURL,
+			artworkId: artworkId
 		)
 	}
 }
@@ -27,13 +29,21 @@ public extension OfflineMediaItem.TrackMetadata {
 		id: String = "track-789",
 		title: String = "Mock Track",
 		artists: [String] = ["Mock Artist"],
-		duration: Int = 210
+		artistIds: [String]? = ["artist-1"],
+		duration: Int = 210,
+		explicit: Bool? = false,
+		mediaTags: [String]? = [],
+		streamStartDate: Date? = Date(timeIntervalSince1970: 1_704_067_200)
 	) -> Self {
 		.init(
 			id: id,
 			title: title,
 			artists: artists,
-			duration: duration
+			artistIds: artistIds,
+			duration: duration,
+			explicit: explicit,
+			mediaTags: mediaTags,
+			streamStartDate: streamStartDate
 		)
 	}
 }
@@ -45,12 +55,14 @@ public extension OfflineMediaItem.VideoMetadata {
 		id: String = "video-101",
 		title: String = "Mock Video",
 		artists: [String] = ["Mock Artist"],
+		artistIds: [String]? = ["artist-1"],
 		duration: Int = 300
 	) -> Self {
 		.init(
 			id: id,
 			title: title,
 			artists: artists,
+			artistIds: artistIds,
 			duration: duration
 		)
 	}

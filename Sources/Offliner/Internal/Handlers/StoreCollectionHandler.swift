@@ -1,6 +1,8 @@
 import Foundation
 import TidalAPI
 
+// MARK: - StoreCollectionHandler
+
 final class StoreCollectionHandler {
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
@@ -22,6 +24,8 @@ final class StoreCollectionHandler {
 	}
 }
 
+// MARK: - InternalTaskImpl
+
 private final class InternalTaskImpl: InternalTask {
 	let id: String
 
@@ -36,7 +40,7 @@ private final class InternalTaskImpl: InternalTask {
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol
 	) {
-		self.id = task.id
+		id = task.id
 		self.task = task
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
@@ -53,7 +57,8 @@ private final class InternalTaskImpl: InternalTask {
 				resourceType: task.metadata.resourceType,
 				resourceId: task.metadata.resourceId,
 				catalogMetadata: OfflineCollection.Metadata(from: task),
-				artworkURL: artworkURL
+				artworkURL: artworkURL,
+				artworkId: task.artwork?.id
 			)
 
 			try offlineStore.storeCollection(result)
@@ -71,22 +76,27 @@ private final class InternalTaskImpl: InternalTask {
 private extension OfflineCollection.Metadata {
 	init(from task: StoreCollectionTask) {
 		let artistNames = task.artists.compactMap(\.attributes?.name)
+		let artistIds = task.artists.map(\.id)
 		switch task.metadata {
-		case .album(let album):
+		case let .album(album):
 			self = .album(OfflineCollection.AlbumMetadata(
 				id: album.id,
 				title: album.attributes?.title ?? "",
 				artists: artistNames,
+				artistIds: artistIds,
 				copyright: album.attributes?.copyright?.text,
 				releaseDate: album.attributes?.releaseDate,
 				explicit: album.attributes?.explicit ?? false
 			))
-		case .playlist(let playlist):
+		case let .playlist(playlist):
 			self = .playlist(OfflineCollection.PlaylistMetadata(
 				id: playlist.id,
-				title: playlist.attributes?.name ?? ""
+				title: playlist.attributes?.name ?? "",
+				description: playlist.attributes?.description,
+				createdAt: playlist.attributes?.createdAt,
+				lastModifiedAt: playlist.attributes?.lastModifiedAt
 			))
-		case .userCollectionTracks(let uct):
+		case let .userCollectionTracks(uct):
 			self = .userCollectionTracks(id: uct.id)
 		}
 	}
