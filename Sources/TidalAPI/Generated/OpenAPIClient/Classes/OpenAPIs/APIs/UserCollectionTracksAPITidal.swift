@@ -15,6 +15,18 @@ public enum UserCollectionTracksAPITidal {
 
 
 	/**
+     Get multiple userCollectionTracks.
+     
+     - returns: UserCollectionTracksMultiResourceDataDocument
+     */
+	public static func userCollectionTracksGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> UserCollectionTracksMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionTracksAPI.userCollectionTracksGetWithRequestBuilder(include: include, filterId: filterId)
+		}
+	}
+
+
+	/**
      Get single userCollectionTrack.
      
      - returns: UserCollectionTracksSingleResourceDataDocument
