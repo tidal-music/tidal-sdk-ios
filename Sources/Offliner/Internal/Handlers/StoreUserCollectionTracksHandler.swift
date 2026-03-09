@@ -11,7 +11,7 @@ final class StoreUserCollectionTracksHandler {
 	}
 
 	func handle(_ task: StoreUserCollectionTracksTask) -> InternalTask {
-		InternalTaskImpl(
+		InternalUserCollectionTracksTask(
 			task: task,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore
@@ -19,7 +19,7 @@ final class StoreUserCollectionTracksHandler {
 	}
 }
 
-private final class InternalTaskImpl: InternalTask {
+private final class InternalUserCollectionTracksTask: InternalTask {
 	let id: String
 
 	private let task: StoreUserCollectionTracksTask
@@ -42,7 +42,7 @@ private final class InternalTaskImpl: InternalTask {
 			try await offlineApiClient.updateTask(taskId: id, state: .inProgress)
 
 			let result = StoreCollectionTaskResult(
-				resourceType: OfflineCollectionType.userCollectionTracks.rawValue,
+				resourceType: .userCollectionTracks,
 				resourceId: task.userCollectionTracks.id,
 				catalogMetadata: .userCollectionTracks(id: task.userCollectionTracks.id),
 				artworkURL: nil

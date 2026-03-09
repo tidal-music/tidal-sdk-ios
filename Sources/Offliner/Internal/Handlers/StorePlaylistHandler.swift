@@ -13,7 +13,7 @@ final class StorePlaylistHandler {
 	}
 
 	func handle(_ task: StorePlaylistTask) -> InternalTask {
-		InternalTaskImpl(
+		InternalPlaylistTask(
 			task: task,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
@@ -22,7 +22,7 @@ final class StorePlaylistHandler {
 	}
 }
 
-private final class InternalTaskImpl: InternalTask {
+private final class InternalPlaylistTask: InternalTask {
 	let id: String
 
 	private let task: StorePlaylistTask
@@ -55,7 +55,7 @@ private final class InternalTaskImpl: InternalTask {
 			))
 
 			let result = StoreCollectionTaskResult(
-				resourceType: OfflineCollectionType.playlists.rawValue,
+				resourceType: .playlists,
 				resourceId: task.playlist.id,
 				catalogMetadata: catalogMetadata,
 				artworkURL: artworkURL
