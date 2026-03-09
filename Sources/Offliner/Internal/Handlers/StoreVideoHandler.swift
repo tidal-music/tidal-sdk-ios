@@ -1,5 +1,4 @@
 import AVFoundation
-import CoreMedia
 import Foundation
 import TidalAPI
 
@@ -8,21 +7,24 @@ final class StoreVideoHandler {
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
 	private let mediaDownloader: MediaDownloaderProtocol
+	private let manifestFetcher: VideoManifestFetcherProtocol
 
 	init(
 		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
-		mediaDownloader: MediaDownloaderProtocol
+		mediaDownloader: MediaDownloaderProtocol,
+		manifestFetcher: VideoManifestFetcherProtocol
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
+		self.manifestFetcher = manifestFetcher
 	}
 
-	func handle(_ task: StoreItemTask) -> InternalTask {
-		let title = task.itemMetadata.title
+	func handle(_ task: StoreVideoTask) -> InternalTask {
+		let title = task.video.attributes?.title ?? ""
 		let artists = task.artists.compactMap(\.attributes?.name)
 		let imageURL = task.artwork?.attributes?.files.first.flatMap { URL(string: $0.href) }
 		return InternalTaskImpl(
@@ -31,7 +33,8 @@ final class StoreVideoHandler {
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
-			mediaDownloader: mediaDownloader
+			mediaDownloader: mediaDownloader,
+			manifestFetcher: manifestFetcher
 		)
 	}
 }
@@ -40,21 +43,23 @@ private final class InternalTaskImpl: InternalTask {
 	let id: String
 	let download: Download?
 
-	private let task: StoreItemTask
+	private let task: StoreVideoTask
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
 	private let mediaDownloader: MediaDownloaderProtocol
+	private let manifestFetcher: VideoManifestFetcherProtocol
 
 	private var mediaDownload: Download { download! }
 
 	init(
-		task: StoreItemTask,
+		task: StoreVideoTask,
 		download: Download,
 		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
-		mediaDownloader: MediaDownloaderProtocol
+		mediaDownloader: MediaDownloaderProtocol,
+		manifestFetcher: VideoManifestFetcherProtocol
 	) {
 		self.id = task.id
 		self.task = task
@@ -63,6 +68,7 @@ private final class InternalTaskImpl: InternalTask {
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
+		self.manifestFetcher = manifestFetcher
 	}
 
 	func run() async {
@@ -76,24 +82,31 @@ private final class InternalTaskImpl: InternalTask {
 		}
 
 		do {
-			let artworkURL = try await artworkDownloader.downloadArtwork(for: task)
+			let artworkURL = try await artworkDownloader.downloadArtwork(for: task.artwork)
 
-			let (manifestURL, contentKeySession) = try await fetchManifest()
+			let manifest = try await manifestFetcher.fetchVideoManifest(videoId: task.video.id)
 
 			let mediaResult = try await mediaDownloader.download(
-				manifestURL: manifestURL,
-				contentKeySession: contentKeySession,
-				taskId: id,
+				manifestURL: manifest.manifestURL,
+				contentKeySession: manifest.contentKeySession,
+				title: task.video.attributes?.title ?? "",
 				onProgress: { [weak self] progress in
 					guard let download = self?.download else { return }
 					await download.updateProgress(progress)
 				}
 			)
 
+			let catalogMetadata = OfflineMediaItem.Metadata.video(OfflineMediaItem.VideoMetadata(
+				id: task.video.id,
+				title: task.video.attributes?.title ?? "",
+				artists: task.artists.compactMap(\.attributes?.name),
+				duration: mediaResult.duration
+			))
+
 			let storeResult = StoreItemTaskResult(
-				resourceType: task.itemMetadata.resourceType,
-				resourceId: task.itemMetadata.resourceId,
-				catalogMetadata: OfflineMediaItem.Metadata(from: task, duration: mediaResult.duration),
+				resourceType: OfflineMediaItemType.videos.rawValue,
+				resourceId: task.video.id,
+				catalogMetadata: catalogMetadata,
 				playbackMetadata: nil,
 				collectionResourceType: task.collectionResourceType,
 				collectionResourceId: task.collectionResourceId,
@@ -113,25 +126,5 @@ private final class InternalTaskImpl: InternalTask {
 			try? await offlineApiClient.updateTask(taskId: id, state: .failed)
 			await mediaDownload.updateState(.failed)
 		}
-	}
-
-	private func fetchManifest() async throws -> (URL, AVContentKeySession?) {
-		let response = try await VideoManifestsAPITidal.videoManifestsIdGet(
-			id: task.itemMetadata.resourceId,
-			uriScheme: .data,
-			usage: .download
-		)
-
-		let attributes = response.data.attributes
-
-		guard let hrefString = attributes?.link?.href,
-			  let url = URL(string: hrefString) else {
-			throw MediaDownloaderError.manifestNotFound
-		}
-
-		let contentKeySession = attributes?.drmData
-			.map { _ in AVContentKeySession(keySystem: .fairPlayStreaming) }
-
-		return (url, contentKeySession)
 	}
 }

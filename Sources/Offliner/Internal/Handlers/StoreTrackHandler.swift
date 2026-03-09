@@ -1,5 +1,4 @@
 import AVFoundation
-import CoreMedia
 import Foundation
 import TidalAPI
 
@@ -8,24 +7,24 @@ final class StoreTrackHandler {
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
 	private let mediaDownloader: MediaDownloaderProtocol
-	var audioFormats: [AudioFormat]
+	private let manifestFetcher: TrackManifestFetcherProtocol
 
 	init(
 		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
-		audioFormats: [AudioFormat]
+		manifestFetcher: TrackManifestFetcherProtocol
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
-		self.audioFormats = audioFormats
+		self.manifestFetcher = manifestFetcher
 	}
 
-	func handle(_ task: StoreItemTask) -> InternalTask {
-		let title = task.itemMetadata.title
+	func handle(_ task: StoreTrackTask) -> InternalTask {
+		let title = task.track.attributes?.title ?? ""
 		let artists = task.artists.compactMap(\.attributes?.name)
 		let imageURL = task.artwork?.attributes?.files.first.flatMap { URL(string: $0.href) }
 		return InternalTaskImpl(
@@ -35,7 +34,7 @@ final class StoreTrackHandler {
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
-			audioFormats: audioFormats
+			manifestFetcher: manifestFetcher
 		)
 	}
 }
@@ -44,23 +43,23 @@ private final class InternalTaskImpl: InternalTask {
 	let id: String
 	let download: Download?
 
-	private let task: StoreItemTask
+	private let task: StoreTrackTask
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
 	private let mediaDownloader: MediaDownloaderProtocol
-	private let audioFormats: [AudioFormat]
+	private let manifestFetcher: TrackManifestFetcherProtocol
 
 	private var mediaDownload: Download { download! }
 
 	init(
-		task: StoreItemTask,
+		task: StoreTrackTask,
 		download: Download,
 		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
-		audioFormats: [AudioFormat]
+		manifestFetcher: TrackManifestFetcherProtocol
 	) {
 		self.id = task.id
 		self.task = task
@@ -69,7 +68,7 @@ private final class InternalTaskImpl: InternalTask {
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
-		self.audioFormats = audioFormats
+		self.manifestFetcher = manifestFetcher
 	}
 
 	func run() async {
@@ -83,25 +82,32 @@ private final class InternalTaskImpl: InternalTask {
 		}
 
 		do {
-			let artworkURL = try await artworkDownloader.downloadArtwork(for: task)
+			let artworkURL = try await artworkDownloader.downloadArtwork(for: task.artwork)
 
-			let (manifestURL, contentKeySession, playbackMetadata) = try await fetchManifest()
+			let manifest = try await manifestFetcher.fetchTrackManifest(trackId: task.track.id)
 
 			let mediaResult = try await mediaDownloader.download(
-				manifestURL: manifestURL,
-				contentKeySession: contentKeySession,
-				taskId: id,
+				manifestURL: manifest.manifestURL,
+				contentKeySession: manifest.contentKeySession,
+				title: task.track.attributes?.title ?? "",
 				onProgress: { [weak self] progress in
 					guard let download = self?.download else { return }
 					await download.updateProgress(progress)
 				}
 			)
 
+			let catalogMetadata = OfflineMediaItem.Metadata.track(OfflineMediaItem.TrackMetadata(
+				id: task.track.id,
+				title: task.track.attributes?.title ?? "",
+				artists: task.artists.compactMap(\.attributes?.name),
+				duration: mediaResult.duration
+			))
+
 			let storeResult = StoreItemTaskResult(
-				resourceType: task.itemMetadata.resourceType,
-				resourceId: task.itemMetadata.resourceId,
-				catalogMetadata: OfflineMediaItem.Metadata(from: task, duration: mediaResult.duration),
-				playbackMetadata: playbackMetadata,
+				resourceType: OfflineMediaItemType.tracks.rawValue,
+				resourceId: task.track.id,
+				catalogMetadata: catalogMetadata,
+				playbackMetadata: manifest.playbackMetadata,
 				collectionResourceType: task.collectionResourceType,
 				collectionResourceId: task.collectionResourceId,
 				volume: task.volume,
@@ -120,47 +126,5 @@ private final class InternalTaskImpl: InternalTask {
 			try? await offlineApiClient.updateTask(taskId: id, state: .failed)
 			await mediaDownload.updateState(.failed)
 		}
-	}
-
-	private func fetchManifest() async throws -> (URL, AVContentKeySession?, OfflineMediaItem.PlaybackMetadata?) {
-		let response = try await TrackManifestsAPITidal.trackManifestsIdGet(
-			id: task.itemMetadata.resourceId,
-			manifestType: .hls,
-			formats: audioFormats.map(\.toAPIFormat),
-			uriScheme: .data,
-			usage: .download,
-			adaptive: false
-		)
-
-		let attributes = response.data.attributes
-
-		guard let uriString = attributes?.uri,
-			  let url = URL(string: uriString) else {
-			throw MediaDownloaderError.manifestNotFound
-		}
-
-		let contentKeySession = attributes?.drmData
-			.map { _ in AVContentKeySession(keySystem: .fairPlayStreaming) }
-
-		let format = attributes?.formats?.first.flatMap { AudioFormat(rawValue: $0.rawValue) }
-
-		let playbackMetadata = format.map { format in
-			OfflineMediaItem.PlaybackMetadata(
-				format: format,
-				albumNormalizationData: .init(attributes?.albumAudioNormalizationData),
-				trackNormalizationData: .init(attributes?.trackAudioNormalizationData)
-			)
-		}
-
-		return (url, contentKeySession, playbackMetadata)
-	}
-}
-
-// MARK: - NormalizationData Conversion
-
-private extension OfflineMediaItem.NormalizationData {
-	init?(_ apiData: AudioNormalizationData?) {
-		guard let apiData else { return nil }
-		self.init(peakAmplitude: apiData.peakAmplitude, replayGain: apiData.replayGain)
 	}
 }

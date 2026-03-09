@@ -21,7 +21,9 @@ class OfflinerTestCase: XCTestCase {
 	func createOffliner(
 		offlineApiClient: OfflineApiClientProtocol,
 		artworkDownloader: ArtworkDownloaderProtocol,
-		mediaDownloader: MediaDownloaderProtocol
+		mediaDownloader: MediaDownloaderProtocol,
+		trackManifestFetcher: TrackManifestFetcherProtocol = SucceedingTrackManifestFetcher(),
+		videoManifestFetcher: VideoManifestFetcherProtocol = SucceedingVideoManifestFetcher()
 	) -> Offliner {
 		let dbPath = tempDir.appendingPathComponent("test-\(UUID().uuidString).sqlite").path
 		// swiftlint:disable:next force_try
@@ -34,7 +36,9 @@ class OfflinerTestCase: XCTestCase {
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
-			mediaDownloader: mediaDownloader
+			mediaDownloader: mediaDownloader,
+			trackManifestFetcher: trackManifestFetcher,
+			videoManifestFetcher: videoManifestFetcher
 		)
 	}
 

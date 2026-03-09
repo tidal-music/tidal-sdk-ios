@@ -16,7 +16,7 @@ protocol MediaDownloaderProtocol {
 	func download(
 		manifestURL: URL,
 		contentKeySession: AVContentKeySession?,
-		taskId: String,
+		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult
 }
@@ -49,7 +49,7 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	func download(
 		manifestURL: URL,
 		contentKeySession: AVContentKeySession?,
-		taskId: String,
+		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
 		let asset = AVURLAsset(url: manifestURL)
@@ -61,7 +61,7 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 			queue.async {
 				guard let task = self.session.makeAssetDownloadTask(
 					asset: asset,
-					assetTitle: taskId,
+					assetTitle: title,
 					assetArtworkData: nil,
 					options: nil
 				) else {
@@ -70,7 +70,6 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 				}
 
 				let activeDownload = ActiveDownload(
-					taskId: taskId,
 					duration: duration,
 					continuation: continuation,
 					onProgress: onProgress,
@@ -160,7 +159,6 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 // MARK: - ActiveDownload
 
 private final class ActiveDownload: NSObject {
-	let taskId: String
 	let duration: Int
 	let continuation: CheckedContinuation<MediaDownloadResult, Error>
 	let onProgress: @Sendable (Double) async -> Void
@@ -172,7 +170,6 @@ private final class ActiveDownload: NSObject {
 	var licenseTask: Task<URL?, Never>?
 
 	init(
-		taskId: String,
 		duration: Int,
 		continuation: CheckedContinuation<MediaDownloadResult, Error>,
 		onProgress: @escaping @Sendable (Double) async -> Void,
@@ -180,7 +177,6 @@ private final class ActiveDownload: NSObject {
 		licenseFetcher: LicenseFetcher,
 		queue: DispatchQueue
 	) {
-		self.taskId = taskId
 		self.duration = duration
 		self.continuation = continuation
 		self.onProgress = onProgress

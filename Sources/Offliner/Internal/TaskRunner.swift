@@ -7,7 +7,9 @@ actor TaskRunner {
 
 	private let storeTrackHandler: StoreTrackHandler
 	private let storeVideoHandler: StoreVideoHandler
-	private let storeCollectionHandler: StoreCollectionHandler
+	private let storeAlbumHandler: StoreAlbumHandler
+	private let storePlaylistHandler: StorePlaylistHandler
+	private let storeUserCollectionTracksHandler: StoreUserCollectionTracksHandler
 	private let removeItemHandler: RemoveItemHandler
 	private let removeCollectionHandler: RemoveCollectionHandler
 
@@ -33,7 +35,9 @@ actor TaskRunner {
 		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
-		mediaDownloader: MediaDownloaderProtocol
+		mediaDownloader: MediaDownloaderProtocol,
+		trackManifestFetcher: TrackManifestFetcherProtocol,
+		videoManifestFetcher: VideoManifestFetcherProtocol
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.allowDownloadsOnExpensiveNetworks = configuration.allowDownloadsOnExpensiveNetworks
@@ -48,18 +52,28 @@ actor TaskRunner {
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
-			audioFormats: configuration.audioFormats
+			manifestFetcher: trackManifestFetcher
 		)
 		self.storeVideoHandler = StoreVideoHandler(
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
-			mediaDownloader: mediaDownloader
+			mediaDownloader: mediaDownloader,
+			manifestFetcher: videoManifestFetcher
 		)
-		self.storeCollectionHandler = StoreCollectionHandler(
+		self.storeAlbumHandler = StoreAlbumHandler(
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
+		)
+		self.storePlaylistHandler = StorePlaylistHandler(
+			offlineApiClient: offlineApiClient,
+			offlineStore: offlineStore,
+			artworkDownloader: artworkDownloader
+		)
+		self.storeUserCollectionTracksHandler = StoreUserCollectionTracksHandler(
+			offlineApiClient: offlineApiClient,
+			offlineStore: offlineStore
 		)
 		self.removeItemHandler = RemoveItemHandler(
 			offlineApiClient: offlineApiClient,
@@ -95,10 +109,6 @@ actor TaskRunner {
 		} while needsRun
 	}
 
-	func setAudioFormats(_ formats: [AudioFormat]) {
-		storeTrackHandler.audioFormats = formats
-	}
-
 	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
 		allowDownloadsOnExpensiveNetworks = allowed
 		if allowed {
@@ -121,12 +131,11 @@ actor TaskRunner {
 
 	private func handle(_ offlineTask: OfflineTask) -> InternalTask {
 		switch offlineTask {
-		case .storeItem(let task):
-			switch task.itemMetadata {
-			case .track: storeTrackHandler.handle(task)
-			case .video: storeVideoHandler.handle(task)
-			}
-		case .storeCollection(let task): storeCollectionHandler.handle(task)
+		case .storeTrack(let task): storeTrackHandler.handle(task)
+		case .storeVideo(let task): storeVideoHandler.handle(task)
+		case .storeAlbum(let task): storeAlbumHandler.handle(task)
+		case .storePlaylist(let task): storePlaylistHandler.handle(task)
+		case .storeUserCollectionTracks(let task): storeUserCollectionTracksHandler.handle(task)
 		case .removeItem(let task): removeItemHandler.handle(task)
 		case .removeCollection(let task): removeCollectionHandler.handle(task)
 		}

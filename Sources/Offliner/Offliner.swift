@@ -8,10 +8,11 @@ public final class Offliner {
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
+	private var trackManifestFetcher: TrackManifestFetcherProtocol
 
 	public var audioFormats: [AudioFormat] {
 		didSet {
-			Task { await taskRunner.setAudioFormats(audioFormats) }
+			trackManifestFetcher.audioFormats = audioFormats
 		}
 	}
 
@@ -37,16 +38,21 @@ public final class Offliner {
 		let offlineApiClient = OfflineApiClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
 		let mediaDownloader = MediaDownloader(configuration: configuration)
+		let trackManifestFetcher = TrackManifestFetcher(audioFormats: configuration.audioFormats)
+		let videoManifestFetcher = VideoManifestFetcher()
 
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
+		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
-			mediaDownloader: mediaDownloader
+			mediaDownloader: mediaDownloader,
+			trackManifestFetcher: trackManifestFetcher,
+			videoManifestFetcher: videoManifestFetcher
 		)
 	}
 
@@ -55,17 +61,22 @@ public final class Offliner {
 		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
-		mediaDownloader: MediaDownloaderProtocol
+		mediaDownloader: MediaDownloaderProtocol,
+		trackManifestFetcher: TrackManifestFetcherProtocol,
+		videoManifestFetcher: VideoManifestFetcherProtocol
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
+		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
-			mediaDownloader: mediaDownloader
+			mediaDownloader: mediaDownloader,
+			trackManifestFetcher: trackManifestFetcher,
+			videoManifestFetcher: videoManifestFetcher
 		)
 	}
 

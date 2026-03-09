@@ -20,9 +20,9 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 
 		switch type {
 		case .track:
-			let task = StoreItemTask(
+			let task = StoreTrackTask(
 				id: taskId,
-				itemMetadata: .track(TracksResourceObject(id: id, type: "tracks")),
+				track: TracksResourceObject(id: id, type: "tracks"),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -30,12 +30,12 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 				volume: 1,
 				position: position
 			)
-			tasks.append(.storeItem(task))
+			tasks.append(.storeTrack(task))
 
 		case .video:
-			let task = StoreItemTask(
+			let task = StoreVideoTask(
 				id: taskId,
-				itemMetadata: .video(VideosResourceObject(id: id, type: "videos")),
+				video: VideosResourceObject(id: id, type: "videos"),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -43,34 +43,31 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 				volume: 1,
 				position: position
 			)
-			tasks.append(.storeItem(task))
+			tasks.append(.storeVideo(task))
 
 		case .album:
-			let task = StoreCollectionTask(
+			let task = StoreAlbumTask(
 				id: taskId,
-				metadata: .album(AlbumsResourceObject(id: id, type: "albums")),
+				album: AlbumsResourceObject(id: id, type: "albums"),
 				artists: [],
 				artwork: nil
 			)
-			tasks.append(.storeCollection(task))
+			tasks.append(.storeAlbum(task))
 
 		case .playlist:
-			let task = StoreCollectionTask(
+			let task = StorePlaylistTask(
 				id: taskId,
-				metadata: .playlist(PlaylistsResourceObject(id: id, type: "playlists")),
-				artists: [],
+				playlist: PlaylistsResourceObject(id: id, type: "playlists"),
 				artwork: nil
 			)
-			tasks.append(.storeCollection(task))
+			tasks.append(.storePlaylist(task))
 
 		case .userCollectionTracks:
-			let task = StoreCollectionTask(
+			let task = StoreUserCollectionTracksTask(
 				id: taskId,
-				metadata: .userCollectionTracks(UserCollectionTracksResourceObject(id: id, type: "userCollectionTracks")),
-				artists: [],
-				artwork: nil
+				userCollectionTracks: UserCollectionTracksResourceObject(id: id, type: "userCollectionTracks")
 			)
-			tasks.append(.storeCollection(task))
+			tasks.append(.storeUserCollectionTracks(task))
 		}
 	}
 
@@ -212,15 +209,7 @@ final class FailOnGetTasksOfflineApiClient: OfflineApiClientProtocol {
 // MARK: - Artwork Downloader Fakes
 
 final class SucceedingArtworkDownloader: ArtworkDownloaderProtocol {
-	func downloadArtwork(for task: StoreItemTask) async throws -> URL? {
-		createArtworkFile()
-	}
-
-	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL? {
-		createArtworkFile()
-	}
-
-	private func createArtworkFile() -> URL {
+	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL? {
 		let tempDir = FileManager.default.temporaryDirectory
 		let url = tempDir.appendingPathComponent("artwork-\(UUID().uuidString).jpg")
 		try? Data("artwork".utf8).write(to: url)
@@ -229,11 +218,7 @@ final class SucceedingArtworkDownloader: ArtworkDownloaderProtocol {
 }
 
 final class FailingArtworkDownloader: ArtworkDownloaderProtocol {
-	func downloadArtwork(for task: StoreItemTask) async throws -> URL? {
-		throw FakeError.artworkDownloadFailed
-	}
-
-	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL? {
+	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL? {
 		throw FakeError.artworkDownloadFailed
 	}
 }
@@ -246,7 +231,7 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	func download(
 		manifestURL: URL,
 		contentKeySession: AVContentKeySession?,
-		taskId: String,
+		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
 		for progress in progressValues {
@@ -269,10 +254,34 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 	func download(
 		manifestURL: URL,
 		contentKeySession: AVContentKeySession?,
-		taskId: String,
+		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
 		throw FakeError.downloadFailed
+	}
+}
+
+// MARK: - Manifest Fetcher Fakes
+
+final class SucceedingTrackManifestFetcher: TrackManifestFetcherProtocol {
+	var audioFormats: [AudioFormat] = [.heaacv1]
+
+	func fetchTrackManifest(trackId: String) async throws -> ManifestFetchResult {
+		ManifestFetchResult(
+			manifestURL: URL(string: "data:application/vnd.apple.mpegurl;base64,fake")!,
+			contentKeySession: nil,
+			playbackMetadata: nil
+		)
+	}
+}
+
+final class SucceedingVideoManifestFetcher: VideoManifestFetcherProtocol {
+	func fetchVideoManifest(videoId: String) async throws -> ManifestFetchResult {
+		ManifestFetchResult(
+			manifestURL: URL(string: "data:application/vnd.apple.mpegurl;base64,fake")!,
+			contentKeySession: nil,
+			playbackMetadata: nil
+		)
 	}
 }
 
