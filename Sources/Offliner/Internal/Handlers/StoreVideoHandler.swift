@@ -100,7 +100,8 @@ private final class InternalTaskImpl: InternalTask {
 				id: task.video.id,
 				title: task.video.attributes?.title ?? "",
 				artists: task.artists.compactMap(\.attributes?.name),
-				duration: mediaResult.duration
+				duration: mediaResult.duration,
+				explicit: task.video.attributes?.explicit ?? false
 			))
 
 			let storeResult = StoreItemTaskResult(

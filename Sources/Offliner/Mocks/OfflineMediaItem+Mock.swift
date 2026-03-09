@@ -27,13 +27,15 @@ public extension OfflineMediaItem.TrackMetadata {
 		id: String = "track-789",
 		title: String = "Mock Track",
 		artists: [String] = ["Mock Artist"],
-		duration: Int = 210
+		duration: Int = 210,
+		explicit: Bool = false
 	) -> Self {
 		.init(
 			id: id,
 			title: title,
 			artists: artists,
-			duration: duration
+			duration: duration,
+			explicit: explicit
 		)
 	}
 }
@@ -45,13 +47,15 @@ public extension OfflineMediaItem.VideoMetadata {
 		id: String = "video-101",
 		title: String = "Mock Video",
 		artists: [String] = ["Mock Artist"],
-		duration: Int = 300
+		duration: Int = 300,
+		explicit: Bool = false
 	) -> Self {
 		.init(
 			id: id,
 			title: title,
 			artists: artists,
-			duration: duration
+			duration: duration,
+			explicit: explicit
 		)
 	}
 }

@@ -100,7 +100,8 @@ private final class InternalTaskImpl: InternalTask {
 				id: task.track.id,
 				title: task.track.attributes?.title ?? "",
 				artists: task.artists.compactMap(\.attributes?.name),
-				duration: mediaResult.duration
+				duration: mediaResult.duration,
+				explicit: task.track.attributes?.explicit ?? false
 			))
 
 			let storeResult = StoreItemTaskResult(
