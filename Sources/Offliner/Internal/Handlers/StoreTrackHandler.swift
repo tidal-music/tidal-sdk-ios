@@ -27,7 +27,7 @@ final class StoreTrackHandler {
 		let title = task.track.attributes?.title ?? ""
 		let artists = task.artists.compactMap(\.attributes?.name)
 		let imageURL = task.artwork?.attributes?.files.first.flatMap { URL(string: $0.href) }
-		return InternalTaskImpl(
+		return InternalTrackTask(
 			task: task,
 			download: Download(title: title, artists: artists, imageURL: imageURL),
 			offlineApiClient: offlineApiClient,
@@ -39,7 +39,7 @@ final class StoreTrackHandler {
 	}
 }
 
-private final class InternalTaskImpl: InternalTask {
+private final class InternalTrackTask: InternalTask {
 	let id: String
 	let download: Download?
 

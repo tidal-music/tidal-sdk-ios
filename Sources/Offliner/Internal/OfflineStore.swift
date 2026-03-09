@@ -90,7 +90,7 @@ final class OfflineStore {
 		var replacedBookmarks: [Data] = []
 
 		try databaseQueue.inTransaction { database in
-			replacedBookmarks = try collectBookmarks(resourceType: result.resourceType, resourceId: result.resourceId, database: database)
+			replacedBookmarks = try collectBookmarks(resourceType: result.resourceType.rawValue, resourceId: result.resourceId, database: database)
 
 			try database.execute(
 				sql: """
@@ -101,7 +101,7 @@ final class OfflineStore {
 						catalog_metadata = excluded.catalog_metadata,
 						artwork_bookmark = excluded.artwork_bookmark
 					""",
-				arguments: [result.resourceType, result.resourceId, catalogMetadataJson, artworkBookmark]
+				arguments: [result.resourceType.rawValue, result.resourceId, catalogMetadataJson, artworkBookmark]
 			)
 
 			return .commit
@@ -422,7 +422,7 @@ struct StoreItemTaskResult {
 }
 
 struct StoreCollectionTaskResult {
-	let resourceType: String
+	let resourceType: OfflineCollectionType
 	let resourceId: String
 	let catalogMetadata: OfflineCollection.Metadata
 	let artworkURL: URL?
