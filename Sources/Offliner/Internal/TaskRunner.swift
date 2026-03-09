@@ -22,6 +22,7 @@ actor TaskRunner {
 
 	private var isRunning = false
 	private var needsRun = false
+	private var cursor: String?
 
 	private(set) var currentDownloads: [Download] = []
 	private var downloadsContinuation: AsyncStream<Download>.Continuation?
@@ -117,7 +118,7 @@ actor TaskRunner {
 	}
 
 	private func refresh() async throws {
-		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
+		let (tasks, cursor) = try await offlineApiClient.getTasks(cursor: self.cursor)
 
 		for task in tasks where taskIds.insert(task.id).inserted {
 			let internalTask = handle(task)
@@ -126,6 +127,10 @@ actor TaskRunner {
 				currentDownloads.append(download)
 				downloadsContinuation?.yield(download)
 			}
+		}
+
+		if let cursor {
+			self.cursor = cursor
 		}
 	}
 
