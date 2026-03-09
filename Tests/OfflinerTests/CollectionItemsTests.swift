@@ -16,16 +16,16 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let albumId = "album-1"
 
-		let collectionTask = StoreCollectionTask(
+		let collectionTask = StoreAlbumTask(
 			id: "offline-task-100",
-			metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
+			album: AlbumsResourceObject(id: albumId, type: "albums"),
 			artists: [],
 			artwork: nil
 		)
 
-		let itemTask1 = StoreItemTask(
+		let itemTask1 = StoreTrackTask(
 			id: "offline-task-101",
-			itemMetadata: .track(TracksResourceObject(id: "track-1", type: "tracks")),
+			track: TracksResourceObject(id: "track-1", type: "tracks"),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",
@@ -33,9 +33,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 			volume: 1,
 			position: 1
 		)
-		let itemTask2 = StoreItemTask(
+		let itemTask2 = StoreTrackTask(
 			id: "offline-task-102",
-			itemMetadata: .track(TracksResourceObject(id: "track-2", type: "tracks")),
+			track: TracksResourceObject(id: "track-2", type: "tracks"),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",
@@ -43,9 +43,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 			volume: 1,
 			position: 2
 		)
-		let itemTask3 = StoreItemTask(
+		let itemTask3 = StoreTrackTask(
 			id: "offline-task-103",
-			itemMetadata: .track(TracksResourceObject(id: "track-3", type: "tracks")),
+			track: TracksResourceObject(id: "track-3", type: "tracks"),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",
@@ -55,10 +55,10 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 
 		backend.enqueueTasks([
-			.storeCollection(collectionTask),
-			.storeItem(itemTask1),
-			.storeItem(itemTask2),
-			.storeItem(itemTask3),
+			.storeAlbum(collectionTask),
+			.storeTrack(itemTask1),
+			.storeTrack(itemTask2),
+			.storeTrack(itemTask3),
 		])
 
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
@@ -96,14 +96,14 @@ final class CollectionItemsTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		let collectionTask = StoreCollectionTask(
+		let collectionTask = StoreAlbumTask(
 			id: "empty-collection-task-id",
-			metadata: .album(AlbumsResourceObject(id: "album-empty", type: "albums")),
+			album: AlbumsResourceObject(id: "album-empty", type: "albums"),
 			artists: [],
 			artwork: nil
 		)
 
-		backend.enqueueTasks([.storeCollection(collectionTask)])
+		backend.enqueueTasks([.storeAlbum(collectionTask)])
 
 		try await offliner.run()
 		await backend.waitForTasksToComplete()
@@ -129,18 +129,18 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let albumId = "album-paginated"
 
-		let collectionTask = StoreCollectionTask(
+		let collectionTask = StoreAlbumTask(
 			id: "offline-task-200",
-			metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
+			album: AlbumsResourceObject(id: albumId, type: "albums"),
 			artists: [],
 			artwork: nil
 		)
 
-		var tasks: [OfflineTask] = [.storeCollection(collectionTask)]
+		var tasks: [OfflineTask] = [.storeAlbum(collectionTask)]
 		for i in 1 ... 5 {
-			tasks.append(.storeItem(StoreItemTask(
+			tasks.append(.storeTrack(StoreTrackTask(
 				id: "offline-task-20\(i)",
-				itemMetadata: .track(TracksResourceObject(id: "track-\(i)", type: "tracks")),
+				track: TracksResourceObject(id: "track-\(i)", type: "tracks"),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -193,15 +193,15 @@ final class CollectionItemsTests: OfflinerTestCase {
 		let albumId = "album-multi-vol"
 
 		backend.enqueueTasks([
-			.storeCollection(StoreCollectionTask(
+			.storeAlbum(StoreAlbumTask(
 				id: "offline-task-300",
-				metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
+				album: AlbumsResourceObject(id: albumId, type: "albums"),
 				artists: [],
 				artwork: nil
 			)),
-			.storeItem(StoreItemTask(
+			.storeTrack(StoreTrackTask(
 				id: "offline-task-301",
-				itemMetadata: .track(TracksResourceObject(id: "v1-track-1", type: "tracks")),
+				track: TracksResourceObject(id: "v1-track-1", type: "tracks"),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -209,9 +209,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 				volume: 1,
 				position: 1
 			)),
-			.storeItem(StoreItemTask(
+			.storeTrack(StoreTrackTask(
 				id: "offline-task-302",
-				itemMetadata: .track(TracksResourceObject(id: "v1-track-2", type: "tracks")),
+				track: TracksResourceObject(id: "v1-track-2", type: "tracks"),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -219,9 +219,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 				volume: 1,
 				position: 2
 			)),
-			.storeItem(StoreItemTask(
+			.storeTrack(StoreTrackTask(
 				id: "offline-task-303",
-				itemMetadata: .track(TracksResourceObject(id: "v2-track-1", type: "tracks")),
+				track: TracksResourceObject(id: "v2-track-1", type: "tracks"),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -261,9 +261,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 		let albumId = "album-cursor"
 
 		backend.enqueueTasks([
-			.storeCollection(StoreCollectionTask(
+			.storeAlbum(StoreAlbumTask(
 				id: "offline-task-400",
-				metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
+				album: AlbumsResourceObject(id: albumId, type: "albums"),
 				artists: [],
 				artwork: nil
 			)),
@@ -293,15 +293,15 @@ final class CollectionItemsTests: OfflinerTestCase {
 		let albumId = "album-cursor"
 
 		backend.enqueueTasks([
-			.storeCollection(StoreCollectionTask(
+			.storeAlbum(StoreAlbumTask(
 				id: "offline-task-400",
-				metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
+				album: AlbumsResourceObject(id: albumId, type: "albums"),
 				artists: [],
 				artwork: nil
 			)),
-			.storeItem(StoreItemTask(
+			.storeTrack(StoreTrackTask(
 				id: "offline-task-401",
-				itemMetadata: .track(TracksResourceObject(id: "track-1", type: "tracks")),
+				track: TracksResourceObject(id: "track-1", type: "tracks"),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",

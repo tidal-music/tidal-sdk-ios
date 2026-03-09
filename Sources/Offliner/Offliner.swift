@@ -8,11 +8,12 @@ public final class Offliner {
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
-	private var mediaDownloader: MediaDownloaderProtocol
+	private var trackManifestFetcher: TrackManifestFetcherProtocol
 
 	public var audioFormats: [AudioFormat] {
-		get { mediaDownloader.audioFormats }
-		set { mediaDownloader.audioFormats = newValue }
+		didSet {
+			trackManifestFetcher.audioFormats = audioFormats
+		}
 	}
 
 	public func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
@@ -37,16 +38,21 @@ public final class Offliner {
 		let offlineApiClient = OfflineApiClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
 		let mediaDownloader = MediaDownloader(configuration: configuration)
+		let trackManifestFetcher = TrackManifestFetcher(audioFormats: configuration.audioFormats)
+		let videoManifestFetcher = VideoManifestFetcher()
 
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
-		self.mediaDownloader = mediaDownloader
+		self.trackManifestFetcher = trackManifestFetcher
+		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
-			mediaDownloader: mediaDownloader
+			mediaDownloader: mediaDownloader,
+			trackManifestFetcher: trackManifestFetcher,
+			videoManifestFetcher: videoManifestFetcher
 		)
 	}
 
@@ -55,17 +61,22 @@ public final class Offliner {
 		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
-		mediaDownloader: MediaDownloaderProtocol
+		mediaDownloader: MediaDownloaderProtocol,
+		trackManifestFetcher: TrackManifestFetcherProtocol,
+		videoManifestFetcher: VideoManifestFetcherProtocol
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
-		self.mediaDownloader = mediaDownloader
+		self.trackManifestFetcher = trackManifestFetcher
+		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
-			mediaDownloader: mediaDownloader
+			mediaDownloader: mediaDownloader,
+			trackManifestFetcher: trackManifestFetcher,
+			videoManifestFetcher: videoManifestFetcher
 		)
 	}
 

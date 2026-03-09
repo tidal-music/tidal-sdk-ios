@@ -10,7 +10,7 @@ final class RemoveItemHandler {
 	}
 
 	func handle(_ task: RemoveItemTask) -> InternalTask {
-		InternalTaskImpl(
+		InternalRemoveItemTask(
 			task: task,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore
@@ -18,7 +18,7 @@ final class RemoveItemHandler {
 	}
 }
 
-private final class InternalTaskImpl: InternalTask {
+private final class InternalRemoveItemTask: InternalTask {
 	let id: String
 
 	private let task: RemoveItemTask

@@ -24,6 +24,7 @@ public struct OfflineMediaItem {
 		public let title: String
 		public let artists: [String]
 		public let duration: Int
+		public let explicit: Bool
 	}
 
 	public struct VideoMetadata: Codable {
@@ -31,6 +32,7 @@ public struct OfflineMediaItem {
 		public let title: String
 		public let artists: [String]
 		public let duration: Int
+		public let explicit: Bool
 	}
 
 	public enum Metadata {

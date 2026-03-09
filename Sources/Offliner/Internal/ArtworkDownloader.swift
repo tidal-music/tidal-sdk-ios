@@ -2,8 +2,7 @@ import Foundation
 import TidalAPI
 
 protocol ArtworkDownloaderProtocol {
-	func downloadArtwork(for task: StoreItemTask) async throws -> URL?
-	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL?
+	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL?
 }
 
 final class ArtworkDownloader: ArtworkDownloaderProtocol {
@@ -13,13 +12,8 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 		self.urlSession = urlSession
 	}
 
-	func downloadArtwork(for task: StoreItemTask) async throws -> URL? {
-		guard let artwork = task.artwork else { return nil }
-		return try await download(artwork: artwork)
-	}
-
-	func downloadArtwork(for task: StoreCollectionTask) async throws -> URL? {
-		guard let artwork = task.artwork else { return nil }
+	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL? {
+		guard let artwork else { return nil }
 		return try await download(artwork: artwork)
 	}
 
