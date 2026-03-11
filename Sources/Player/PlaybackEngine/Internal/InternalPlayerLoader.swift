@@ -135,7 +135,7 @@ final class InternalPlayerLoader: PlayerLoader {
 			with: nil,
 			audioCodec: AudioCodec(from: playbackMetadata?.audioQuality, mode: playbackMetadata?.audioMode),
 			isOfflined: true,
-			type: .TRACK
+			type: item.productType
 		)
 
 		let licenseLoader = item.licenseURL.flatMap {

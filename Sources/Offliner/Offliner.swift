@@ -183,7 +183,8 @@ extension Offliner: OfflineItemProvider {
 			licenseURL: item.licenseURL,
 			format: item.playbackMetadata?.format.rawValue,
 			albumReplayGain: item.playbackMetadata?.albumNormalizationData?.replayGain,
-			albumPeakAmplitude: item.playbackMetadata?.albumNormalizationData?.peakAmplitude
+			albumPeakAmplitude: item.playbackMetadata?.albumNormalizationData?.peakAmplitude,
+			productType: productType
 		)
 	}
 }
