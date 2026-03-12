@@ -105,6 +105,9 @@ public final class PlayerMock: GenericMediaPlayer {
 		updateVolumeCallCount += 1
 	}
 
+	public func applyCrossfadeFade(_ direction: CrossfadeDirection, duration: TimeInterval) {}
+	public func clearCrossfadeFade() {}
+
 	public func addMonitoringDelegate(monitoringDelegate: PlayerMonitoringDelegate) {
 		delegates.add(delegate: monitoringDelegate)
 	}

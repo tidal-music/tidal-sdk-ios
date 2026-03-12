@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - GenericMediaPlayer
+
 public protocol GenericMediaPlayer: AnyObject {
 	// swiftlint:disable identifier_name
 	var shouldVerifyItWasPlayingBeforeInterruption: Bool { get }
@@ -34,4 +36,21 @@ public protocol GenericMediaPlayer: AnyObject {
 	func unload()
 
 	func reset()
+
+	/// Applies an AVAudioMix volume ramp for crossfade.
+	func applyCrossfadeFade(_ direction: CrossfadeDirection, duration: TimeInterval)
+	/// Clears any crossfade audioMix.
+	func clearCrossfadeFade()
+}
+
+// MARK: - CrossfadeDirection
+
+public enum CrossfadeDirection {
+	case fadeIn
+	case fadeOut
+}
+
+public extension GenericMediaPlayer {
+	func applyCrossfadeFade(_ direction: CrossfadeDirection, duration: TimeInterval) {}
+	func clearCrossfadeFade() {}
 }
