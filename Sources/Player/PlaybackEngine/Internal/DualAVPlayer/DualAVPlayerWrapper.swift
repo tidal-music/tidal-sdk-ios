@@ -6,6 +6,8 @@ import MediaPlayer
 
 private enum Constants {
 	static let defaultVolume: Float = 1
+	static let crossfadeDuration: Double = 5
+	static let crossfadeVolumeRampInterval: Double = 0.05
 }
 
 // MARK: - DualAVPlayerWrapper
@@ -20,6 +22,7 @@ final class DualAVPlayerWrapper: GenericMediaPlayer {
 
 	/// Tracks which player is currently the "active" one (playing the current track).
 	private var activePlayer: AVPlayer!
+	private var otherPlayer: AVPlayer { activePlayer === playerA ? playerB : playerA }
 
 	private let contentKeyDelegateQueue = DispatchQueue(label: "com.tidal.player.dual.contentkeydelegate.queue")
 	private let playbackTimeProgressQueueA = DispatchQueue(label: "com.tidal.player.dual.playbacktimeprogress.a.queue")
@@ -31,6 +34,14 @@ final class DualAVPlayerWrapper: GenericMediaPlayer {
 
 	/// Maps each AVPlayerItem to the AVPlayer instance that owns it.
 	private var playerItemOwners: [AVPlayerItem: AVPlayer] = [:]
+
+	// MARK: - Crossfade state
+
+	private var crossfadeTimeObserver: Any?
+	private weak var crossfadeObserverPlayer: AVPlayer?
+	private var crossfadeTimer: Timer?
+	private var crossfadeStartTime: CFTimeInterval = 0
+	private var isCrossfading = false
 
 	// MARK: - Convenience properties
 
@@ -118,6 +129,7 @@ final class DualAVPlayerWrapper: GenericMediaPlayer {
 			self.unloadPlayerItem(playerItem)
 
 			if owningPlayer == self.activePlayer, playerItem == self.activePlayer.currentItem {
+				self.cancelCrossfade()
 				guard let (nextPlayerItem, _) = self.playerItemAssets.first else {
 					self.internalReset()
 					return
@@ -130,12 +142,18 @@ final class DualAVPlayerWrapper: GenericMediaPlayer {
 	func play() {
 		queue.dispatch {
 			self.activePlayer.play()
+			if self.isCrossfading {
+				self.otherPlayer.play()
+			}
 		}
 	}
 
 	func pause() {
 		queue.dispatch {
 			self.activePlayer.pause()
+			if self.isCrossfading {
+				self.otherPlayer.pause()
+			}
 		}
 	}
 
@@ -162,6 +180,7 @@ final class DualAVPlayerWrapper: GenericMediaPlayer {
 	func unload() {
 		queue.cancelAllOperations()
 		queue.dispatch {
+			self.cancelCrossfade()
 			self.playerMonitorA = nil
 			self.playerMonitorB = nil
 			self.delegates.removeAll()
@@ -382,6 +401,7 @@ private extension DualAVPlayerWrapper {
 	}
 
 	func internalReset() {
+		cancelCrossfade()
 		playerMonitorA = nil
 		playerMonitorB = nil
 		playerItemMonitors.removeAll()
@@ -402,6 +422,112 @@ private extension DualAVPlayerWrapper {
 	}
 }
 
+// MARK: - Crossfade
+
+private extension DualAVPlayerWrapper {
+	func setupCrossfadeObserver(for player: AVPlayer) {
+		removeCrossfadeObserver()
+
+		guard let currentItem = player.currentItem else {
+			return
+		}
+
+		let duration = CMTimeGetSeconds(currentItem.duration)
+		guard duration.isFinite, duration > Constants.crossfadeDuration else {
+			return
+		}
+
+		let crossfadeStartTime = duration - Constants.crossfadeDuration
+		let boundaryTime = CMTime(seconds: crossfadeStartTime, preferredTimescale: 600)
+		crossfadeObserverPlayer = player
+		crossfadeTimeObserver = player.addBoundaryTimeObserver(
+			forTimes: [NSValue(time: boundaryTime)],
+			queue: nil
+		) { [weak self] in
+			self?.beginCrossfade()
+		}
+	}
+
+	func removeCrossfadeObserver() {
+		if let observer = crossfadeTimeObserver {
+			crossfadeObserverPlayer?.removeTimeObserver(observer)
+			crossfadeTimeObserver = nil
+			crossfadeObserverPlayer = nil
+		}
+	}
+
+	func beginCrossfade() {
+		queue.dispatch {
+			guard !self.isCrossfading else {
+				return
+			}
+
+			guard self.otherPlayer.currentItem != nil else {
+				return
+			}
+
+			let activeVolume = self.normalizedVolume(for: self.activePlayer)
+			let otherVolume = self.normalizedVolume(for: self.otherPlayer)
+
+			self.isCrossfading = true
+			self.otherPlayer.volume = 0
+			self.otherPlayer.play()
+
+			self.crossfadeStartTime = CACurrentMediaTime()
+			DispatchQueue.main.async {
+				self.crossfadeTimer = Timer.scheduledTimer(
+					withTimeInterval: Constants.crossfadeVolumeRampInterval,
+					repeats: true
+				) { [weak self] timer in
+					guard let self else {
+						timer.invalidate()
+						return
+					}
+
+					self.queue.dispatch {
+						let elapsed = CACurrentMediaTime() - self.crossfadeStartTime
+						let progress = min(Float(elapsed / Constants.crossfadeDuration), 1.0)
+
+						self.activePlayer.volume = activeVolume * (1.0 - progress)
+						self.otherPlayer.volume = otherVolume * progress
+
+						if progress >= 1.0 {
+							self.finishCrossfade()
+						}
+					}
+				}
+			}
+		}
+	}
+
+	func normalizedVolume(for player: AVPlayer) -> Float {
+		guard let currentItem = player.currentItem,
+		      let asset = playerItemAssets[currentItem]
+		else {
+			return Constants.defaultVolume
+		}
+		return asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
+			.getScaleFactor() ?? Constants.defaultVolume
+	}
+
+	func finishCrossfade() {
+		crossfadeTimer?.invalidate()
+		crossfadeTimer = nil
+		isCrossfading = false
+		activePlayer.volume = normalizedVolume(for: activePlayer)
+	}
+
+	func cancelCrossfade() {
+		removeCrossfadeObserver()
+		crossfadeTimer?.invalidate()
+		crossfadeTimer = nil
+		isCrossfading = false
+		otherPlayer.pause()
+		otherPlayer.volume = 0
+		activePlayer.volume = normalizedVolume(for: activePlayer)
+	}
+}
+
 // MARK: - AVPlayer Monitoring
 
 private extension DualAVPlayerWrapper {
@@ -413,6 +539,11 @@ private extension DualAVPlayerWrapper {
 
 			self.readPlaybackMetadata(playerItem: playerItem, asset: asset)
 			self.delegates.loaded(asset: asset, with: CMTimeGetSeconds(playerItem.duration))
+
+			let owner = self.playerItemOwners[playerItem]
+			if owner == self.activePlayer {
+				self.setupCrossfadeObserver(for: self.activePlayer)
+			}
 		}
 	}
 
@@ -431,10 +562,11 @@ private extension DualAVPlayerWrapper {
 				$0.assetTrack?.mediaType == .video
 			})
 
-			let volume: Float = asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
-				.getScaleFactor() ?? Constants.defaultVolume
-
-			self.activePlayer.volume = volume
+			if !self.isCrossfading {
+				let volume: Float = asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
+					.getScaleFactor() ?? Constants.defaultVolume
+				self.activePlayer.volume = volume
+			}
 
 			self.delegates.playing(asset: asset)
 		}
@@ -525,6 +657,10 @@ private extension DualAVPlayerWrapper {
 			self.playerItemOwners.removeValue(forKey: playerItem)
 			owner?.replaceCurrentItem(with: nil)
 
+			let wasCrossfading = self.isCrossfading
+			self.finishCrossfade()
+			self.removeCrossfadeObserver()
+
 			guard owner == self.activePlayer else {
 				return
 			}
@@ -536,7 +672,10 @@ private extension DualAVPlayerWrapper {
 			self.delegates.completed(asset: asset)
 
 			if let currentItem = self.activePlayer.currentItem {
-				self.playing(playerItem: currentItem)
+				if !wasCrossfading {
+					self.playing(playerItem: currentItem)
+				}
+				self.setupCrossfadeObserver(for: self.activePlayer)
 			}
 		}
 	}
