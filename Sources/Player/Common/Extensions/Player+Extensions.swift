@@ -5,9 +5,10 @@ extension Player {
 		_ featureFlagProvider: FeatureFlagProvider,
 		configuration: Configuration
 	) -> MainPlayerType.Type {
-		if configuration.isCrossfadeEnabled {
-			return DualAVPlayerWrapper.self
-		}
-		return AVQueuePlayerWrapper.self
+		return DualAVPlayerWrapper.self
+//		if configuration.isCrossfadeEnabled {
+//			return DualAVPlayerWrapper.self
+//		}
+//		return AVQueuePlayerWrapper.self
 	}
 }
