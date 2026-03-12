@@ -1,5 +1,6 @@
 public struct FeatureFlagProvider {
 	public var shouldUseEventProducer: () -> Bool
+	@available(*, deprecated, message: "Content caching has been removed. This flag is no longer used.")
 	public var isContentCachingEnabled: () -> Bool
 	public var shouldPauseAndPlayAroundSeek: () -> Bool
 	public var shouldNotPerformActionAtItemEnd: () -> Bool
@@ -9,7 +10,7 @@ public struct FeatureFlagProvider {
 
 	public init(
 		shouldUseEventProducer: @escaping () -> Bool,
-		isContentCachingEnabled: @escaping () -> Bool,
+		isContentCachingEnabled: @escaping () -> Bool = { false },
 		shouldPauseAndPlayAroundSeek: @escaping () -> Bool,
 		shouldNotPerformActionAtItemEnd: @escaping () -> Bool,
 		shouldUseImprovedDRMHandling: @escaping () -> Bool,

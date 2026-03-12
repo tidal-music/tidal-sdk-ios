@@ -62,9 +62,6 @@ final class PlayerItem {
 		if isPreload {
 			sessionTags.append(StreamingSessionStart.SessionTag.PRELOADED)
 		}
-		if !featureFlagProvider.isContentCachingEnabled() {
-			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_DISABLED)
-		}
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
 			sessionTags.append(StreamingSessionStart.SessionTag.IMPROVED_DRM)
 		}
@@ -357,9 +354,6 @@ private extension PlayerItem {
 		let endTimestamp = metrics.endTime ?? now
 
 		var tags = [PlaybackStatistics.EventTag]()
-		if case .cached = asset?.getCacheState()?.status {
-			tags.append(PlaybackStatistics.EventTag.CACHED)
-		}
 		if metadata.playbackSource == .LOCAL_STORAGE {
 			tags.append(PlaybackStatistics.EventTag.OFFLINER_V2)
 		}

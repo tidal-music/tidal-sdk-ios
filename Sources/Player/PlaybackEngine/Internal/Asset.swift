@@ -10,7 +10,6 @@ open class Asset {
 
 	@Atomic var assetPosition: Double = 0
 	@Atomic var playbackMetadata: AssetPlaybackMetadata?
-	@Atomic var cacheState: AssetCacheState?
 	@Atomic var adaptiveAudioQualities: [AudioQuality]?
 
 	/// Convenience initializer.
@@ -48,18 +47,6 @@ open class Asset {
 	/// - Parameter playbackMetadata: Playback metadata of the asset.
 	public func setPlaybackMetadata(_ playbackMetadata: AssetPlaybackMetadata?) {
 		self.playbackMetadata = playbackMetadata
-	}
-
-	/// Method to get the current caching state
-	/// - Returns: The asset cache state
-	public func getCacheState() -> AssetCacheState? {
-		cacheState
-	}
-
-	/// Method to set the current caching state
-	/// - Parameter state: The new caching state
-	public func setCacheState(_ state: AssetCacheState?) {
-		cacheState = state
 	}
 
 	/// Method to store the adaptive audio quality ladder associated with the asset.

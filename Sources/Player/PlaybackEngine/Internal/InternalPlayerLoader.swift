@@ -214,13 +214,6 @@ private extension InternalPlayerLoader {
 		and licenseLoader: LicenseLoader?,
 		player: GenericMediaPlayer
 	) async -> Asset {
-		var cacheKey: String? = playbackInfo.contentHash
-		if playbackInfo.audioQuality == .HI_RES_LOSSLESS {
-			// We intentionally disable caching for HiRes LossLess due to its large size
-			// and not having the option yet to limit the maximum cache usage
-			cacheKey = nil
-		}
-
 		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
 			loudnessNormalizationMode: loudnessNormalizationMode,
 			loudnessNormalizer: loudnessNormalizer
@@ -228,7 +221,7 @@ private extension InternalPlayerLoader {
 
 		let asset = await player.load(
 			playbackInfo.url,
-			cacheKey: cacheKey,
+			cacheKey: nil,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			and: licenseLoader
 		)
