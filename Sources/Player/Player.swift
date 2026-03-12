@@ -357,6 +357,7 @@ public extension Player {
 	/// The outgoing engine fades out while the incoming engine fades in over `duration` seconds.
 	/// The system handles smooth sample-level interpolation, including in background/lock screen.
 	func beginCrossfade(with handle: PlayerLoaderHandle, duration: TimeInterval) {
+		guard featureFlagProvider.isCrossfadeEnabled() else { return }
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
 			self.outgoingEngine = self.playerEngine
