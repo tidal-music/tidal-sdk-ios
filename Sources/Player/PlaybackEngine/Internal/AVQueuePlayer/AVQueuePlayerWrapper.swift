@@ -13,8 +13,6 @@ private enum Constants {
 // MARK: - AVQueuePlayerWrapper
 
 final class AVQueuePlayerWrapper: GenericMediaPlayer {
-	private let featureFlagProvider: FeatureFlagProvider
-
 	private let queue: OperationQueue
 
 	@Atomic private var player: AVQueuePlayer
@@ -46,13 +44,11 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	// MARK: Initialization
 
 	init(cachePath: URL, featureFlagProvider: FeatureFlagProvider) {
-		self.featureFlagProvider = featureFlagProvider
-
 		queue = OperationQueue()
 		queue.maxConcurrentOperationCount = 1
 		queue.qualityOfService = .userInitiated
 
-		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
+		player = AVQueuePlayerWrapper.createPlayer()
 
 		preparePlayer()
 	}
@@ -250,14 +246,10 @@ extension AVQueuePlayerWrapper: VideoPlayer {
 }
 
 private extension AVQueuePlayerWrapper {
-	static func createPlayer(featureFlagProvider: FeatureFlagProvider) -> AVQueuePlayer {
+	static func createPlayer() -> AVQueuePlayer {
 		let player = AVQueuePlayer()
 		player.automaticallyWaitsToMinimizeStalling = true
-		player.actionAtItemEnd = if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
-			.none
-		} else {
-			.advance
-		}
+		player.actionAtItemEnd = .advance
 		player.allowsExternalPlayback = false
 		return player
 	}
@@ -365,7 +357,7 @@ private extension AVQueuePlayerWrapper {
 		player.pause()
 		player.removeAllItems()
 
-		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
+		player = AVQueuePlayerWrapper.createPlayer()
 		preparePlayer()
 	}
 }
@@ -486,11 +478,8 @@ private extension AVQueuePlayerWrapper {
 		}
 	}
 
-	func playedToEnd(playerItem: AVPlayerItem) {
-		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
-			player.remove(playerItem)
-		}
-	}
+	func playedToEnd(playerItem: AVPlayerItem) {}
+
 }
 
 // MARK: AVQueuePlayerWrapper Error Helpers

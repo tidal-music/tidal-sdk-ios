@@ -4,6 +4,7 @@ public struct FeatureFlagProvider {
 	public var isContentCachingEnabled: () -> Bool
 	/// Deprecated: No longer used in AVQueuePlayerWrapper. Kept for API compatibility.
 	public var shouldPauseAndPlayAroundSeek: () -> Bool
+	/// Deprecated: No longer used in AVQueuePlayerWrapper. Kept for API compatibility.
 	public var shouldNotPerformActionAtItemEnd: () -> Bool
 	public var shouldUseImprovedDRMHandling: () -> Bool
 	public var shouldUseNewPlaybackEndpoints: () -> Bool
