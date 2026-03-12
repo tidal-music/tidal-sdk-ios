@@ -6,6 +6,7 @@ public struct FeatureFlagProvider {
 	public var shouldUseImprovedDRMHandling: () -> Bool
 	public var shouldUseNewPlaybackEndpoints: () -> Bool
 	public var shouldSupportABRPlayback: () -> Bool
+	public var isCrossfadeEnabled: () -> Bool
 
 	public init(
 		shouldUseEventProducer: @escaping () -> Bool,
@@ -14,7 +15,8 @@ public struct FeatureFlagProvider {
 		shouldNotPerformActionAtItemEnd: @escaping () -> Bool,
 		shouldUseImprovedDRMHandling: @escaping () -> Bool,
 		shouldUseNewPlaybackEndpoints: @escaping () -> Bool,
-		shouldSupportABRPlayback: @escaping () -> Bool
+		shouldSupportABRPlayback: @escaping () -> Bool,
+		isCrossfadeEnabled: @escaping () -> Bool = { false }
 	) {
 		self.shouldUseEventProducer = shouldUseEventProducer
 		self.isContentCachingEnabled = isContentCachingEnabled
@@ -23,5 +25,6 @@ public struct FeatureFlagProvider {
 		self.shouldUseImprovedDRMHandling = shouldUseImprovedDRMHandling
 		self.shouldUseNewPlaybackEndpoints = shouldUseNewPlaybackEndpoints
 		self.shouldSupportABRPlayback = shouldSupportABRPlayback
+		self.isCrossfadeEnabled = isCrossfadeEnabled
 	}
 }

@@ -29,6 +29,13 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	private var playerItemAssets: [AVPlayerItem: AVPlayerAsset] = [AVPlayerItem: AVPlayerAsset]()
 	private var delegates: PlayerMonitoringDelegates = PlayerMonitoringDelegates()
 
+	// MARK: - Crossfade state
+
+	/// When true, a fade-in audioMix has been set before playback starts and
+	/// `playing(playerItem:)` should restore `player.volume` instead of applying
+	/// it directly (the audioMix ramp handles the actual fade).
+	private var pendingFadeInRestore: Bool = false
+
 	// MARK: - Convenience properties
 
 	private var isContentCachingEnabled: Bool {
@@ -217,19 +224,21 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		}
 	}
 
-    func unload() {
-        queue.cancelAllOperations()
-        queue.dispatch {
-            self.playerMonitor = nil
-            self.delegates.removeAll()
-            self.playerItemMonitors.removeAll()
-            self.playerItemAssets.removeAll()
+	func unload() {
+		queue.cancelAllOperations()
+		queue.dispatch {
+			self.pendingFadeInRestore = false
 
-            self.assetFactory.reset()
+			self.playerMonitor = nil
+			self.delegates.removeAll()
+			self.playerItemMonitors.removeAll()
+			self.playerItemAssets.removeAll()
 
-            self.player.pause()
-            self.player.removeAllItems()
-        }
+			self.assetFactory.reset()
+
+			self.player.pause()
+			self.player.removeAllItems()
+		}
 	}
 
 	func reset() {
@@ -242,7 +251,55 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 	func updateVolume(loudnessNormalizer: LoudnessNormalizer?) {
 		queue.dispatch {
+			guard !self.pendingFadeInRestore else {
+				return
+			}
 			self.player.volume = loudnessNormalizer?.getScaleFactor() ?? 1.0
+		}
+	}
+
+	func applyCrossfadeFade(_ direction: CrossfadeDirection, duration: TimeInterval) {
+		queue.dispatch {
+			guard let playerItem = self.player.currentItem else {
+				return
+			}
+
+			let audioMix = AVMutableAudioMix()
+			let params = AVMutableAudioMixInputParameters()
+
+			if let trackID = playerItem.asset.tracks(withMediaType: .audio).first?.trackID {
+				params.trackID = trackID
+			}
+
+			let rampDuration = CMTime(seconds: duration, preferredTimescale: 600)
+
+			switch direction {
+			case .fadeIn:
+				params.setVolumeRamp(
+					fromStartVolume: 0.0,
+					toEndVolume: 1.0,
+					timeRange: CMTimeRange(start: .zero, duration: rampDuration)
+				)
+				self.player.volume = 0
+				self.pendingFadeInRestore = true
+			case .fadeOut:
+				let currentTime = playerItem.currentTime()
+				params.setVolumeRamp(
+					fromStartVolume: 1.0,
+					toEndVolume: 0.0,
+					timeRange: CMTimeRange(start: currentTime, duration: rampDuration)
+				)
+			}
+
+			audioMix.inputParameters = [params]
+			playerItem.audioMix = audioMix
+		}
+	}
+
+	func clearCrossfadeFade() {
+		queue.dispatch {
+			self.pendingFadeInRestore = false
+			self.player.currentItem?.audioMix = nil
 		}
 	}
 
@@ -387,11 +444,11 @@ private extension AVQueuePlayerWrapper {
 					return
 				}
 
-				guard let asset = self.playerItemAssets[item] else {
+				guard let asset = playerItemAssets[item] else {
 					return
 				}
 
-				self.delegates.playbackMetadataChanged(asset: asset, to: metadata)
+				delegates.playbackMetadataChanged(asset: asset, to: metadata)
 			}
 		)
 	}
@@ -438,6 +495,8 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	func internalReset() {
+		pendingFadeInRestore = false
+
 		playerMonitor = nil
 		playerItemMonitors.removeAll()
 		playerItemAssets.removeAll()
@@ -478,6 +537,9 @@ private extension AVQueuePlayerWrapper {
 			let volume: Float = asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
 				.getScaleFactor() ?? Constants.defaultVolume
 
+			if self.pendingFadeInRestore {
+				self.pendingFadeInRestore = false
+			}
 			self.player.volume = volume
 
 			self.delegates.playing(asset: asset)

@@ -8,6 +8,7 @@ public extension FeatureFlagProvider {
 		shouldNotPerformActionAtItemEnd: { false },
 		shouldUseImprovedDRMHandling: { false },
 		shouldUseNewPlaybackEndpoints: { false },
-		shouldSupportABRPlayback: { false }
+		shouldSupportABRPlayback: { false },
+		isCrossfadeEnabled: { false }
 	)
 }

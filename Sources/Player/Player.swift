@@ -26,6 +26,10 @@ public final class Player {
 	@Atomic
 	private(set) var offlineEngine: OfflineEngine
 
+	/// Engine that is fading out during a crossfade transition.
+	@Atomic
+	private var outgoingEngine: PlayerEngine?
+
 	// MARK: - Properties
 
 	private let queue: OperationQueue
@@ -344,6 +348,58 @@ public extension Player {
 	func renderVideo(in view: AVPlayerLayer) {
 		queue.dispatch {
 			self.playerEngine.renderVideo(in: view)
+		}
+	}
+
+	// MARK: - Crossfade
+
+	/// Begins a crossfade transition using AVAudioMix volume ramps.
+	/// The outgoing engine fades out while the incoming engine fades in over `duration` seconds.
+	/// The system handles smooth sample-level interpolation, including in background/lock screen.
+	func beginCrossfade(with handle: PlayerLoaderHandle, duration: TimeInterval) {
+		guard featureFlagProvider.isCrossfadeEnabled() else { return }
+		let time = PlayerWorld.timeProvider.timestamp()
+		queue.dispatch {
+			self.outgoingEngine = self.playerEngine
+			self.outgoingEngine?.notificationsHandler = nil
+			self.outgoingEngine?.applyCrossfadeFade(.fadeOut, duration: duration)
+
+			self.playerEngine = handle.player
+			self.playerEngine.notificationsHandler = self.notificationsHandler
+			self.streamingPrivilegesHandler.delegate = self.playerEngine
+			self.playerEngine.applyCrossfadeFade(.fadeIn, duration: duration)
+			self.playerEngine.play(timestamp: time)
+
+			SafeTask {
+				await self.streamingPrivilegesHandler.notify()
+			}
+		}
+	}
+
+	/// Completes the crossfade: clears the audio mix on the incoming engine and tears down the outgoing one.
+	func completeCrossfade() {
+		queue.dispatch {
+			self.playerEngine.clearCrossfadeFade()
+			self.outgoingEngine?.resetOrUnload()
+			self.outgoingEngine = nil
+		}
+	}
+
+	/// Cancels an in-progress crossfade, restoring the outgoing engine as the active one.
+	func cancelCrossfade() {
+		queue.dispatch {
+			guard let outgoing = self.outgoingEngine else {
+				return
+			}
+
+			self.playerEngine.notificationsHandler = nil
+			self.playerEngine.resetOrUnload()
+
+			self.playerEngine = outgoing
+			self.playerEngine.notificationsHandler = self.notificationsHandler
+			self.playerEngine.clearCrossfadeFade()
+			self.streamingPrivilegesHandler.delegate = self.playerEngine
+			self.outgoingEngine = nil
 		}
 	}
 

@@ -313,6 +313,14 @@ final class PlayerEngine {
 		currentItem?.asset?.player
 	}
 
+	func applyCrossfadeFade(_ direction: CrossfadeDirection, duration: TimeInterval) {
+		currentPlayer()?.applyCrossfadeFade(direction, duration: duration)
+	}
+
+	func clearCrossfadeFade() {
+		currentPlayer()?.clearCrossfadeFade()
+	}
+
 	func mediaServicesWereReset() {
 		// When media services are reset, Apple recommends to reinitialize the app's audio objects, which is out case is the player,
 		// and which is performed directly by the SDK. It's also recommended to reset the audio session’s category, options, and mode
