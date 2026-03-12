@@ -2,8 +2,12 @@ import Foundation
 
 extension Player {
 	static func mainPlayerType(
-		_ featureFlagProvider: FeatureFlagProvider
+		_ featureFlagProvider: FeatureFlagProvider,
+		configuration: Configuration
 	) -> MainPlayerType.Type {
-		AVQueuePlayerWrapper.self
+		if configuration.isCrossfadeEnabled {
+			return DualAVPlayerWrapper.self
+		}
+		return AVQueuePlayerWrapper.self
 	}
 }

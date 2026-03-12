@@ -1497,7 +1497,7 @@ private extension PlayLogTests {
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
-			mainPlayer: Player.mainPlayerType(featureFlagProvider),
+			mainPlayer: Player.mainPlayerType(featureFlagProvider, configuration: configuration),
 			externalPlayers: []
 		)
 

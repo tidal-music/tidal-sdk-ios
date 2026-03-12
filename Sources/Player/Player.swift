@@ -431,7 +431,7 @@ private extension Player {
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
-			mainPlayer: Player.mainPlayerType(featureFlagProvider),
+			mainPlayer: Player.mainPlayerType(featureFlagProvider, configuration: configuration),
 			externalPlayers: externalPlayersSupplier?() ?? []
 		)
 
