@@ -4,19 +4,16 @@ import Foundation
 
 // MARK: - InternalPlayerLoader
 
-typealias MainPlayerType = GenericMediaPlayer & UCMediaPlayer & VideoPlayer
-
-// MARK: - InternalPlayerLoader
-
 final class InternalPlayerLoader: PlayerLoader {
-	private let configuration: Configuration
+	private var configuration: Configuration
 	private let fairPlayLicenseFetcher: FairPlayLicenseFetcher
 
 	private let credentialsProvider: CredentialsProvider
 
 	private let featureFlagProvider: FeatureFlagProvider
 
-	let mainPlayer: MainPlayerType
+	private let crossfadePlayer: CrossfadingPlayerWrapper
+	private let videoPlayer: AVQueuePlayerWrapper
 	var players: [GenericMediaPlayer] = []
 
 	// MARK: - Convenience properties
@@ -32,30 +29,37 @@ final class InternalPlayerLoader: PlayerLoader {
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
 		credentialsProvider: CredentialsProvider,
-		mainPlayer: MainPlayerType.Type,
+		avQueuePlayerWrapper: AVQueuePlayerWrapper,
+		crossfadingPlayerWrapper: CrossfadingPlayerWrapper,
 		externalPlayers: [GenericMediaPlayer.Type]
 	) {
 		self.configuration = configuration
 		fairPlayLicenseFetcher = fairplayLicenseFetcher
 		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
+		crossfadePlayer = crossfadingPlayerWrapper
+		crossfadePlayer.crossfadeDuration = configuration.crossfadeDuration ?? 0
+		videoPlayer = avQueuePlayerWrapper
 
 		let fileManager = PlayerWorld.fileManagerClient
-		self.mainPlayer = mainPlayer.init(
-			cachePath: fileManager.cachesDirectory(),
-			featureFlagProvider: featureFlagProvider
-		)
-
-		registerPlayer(self.mainPlayer)
+		let cachePath = fileManager.cachesDirectory()
 
 		externalPlayers.forEach { externalPlayerType in
 			registerPlayer(
 				externalPlayerType.init(
-					cachePath: fileManager.cachesDirectory(),
+					cachePath: cachePath,
 					featureFlagProvider: featureFlagProvider
 				)
 			)
 		}
+
+		registerPlayer(crossfadingPlayerWrapper)
+		registerPlayer(videoPlayer)
+	}
+
+	func updateConfiguration(_ configuration: Configuration) {
+		self.configuration = configuration
+		crossfadePlayer.crossfadeDuration = configuration.crossfadeDuration ?? 0
 	}
 
 	func load(_ offlinedProduct: PlayableOfflinedMediaProduct) async throws -> Asset {
@@ -179,13 +183,13 @@ final class InternalPlayerLoader: PlayerLoader {
 			)
 			return await loadTrack(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: player)
 		case .VIDEO:
-			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: mainPlayer)
+			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: videoPlayer)
 		case .UC:
 			return try await loadUC(
 				using: playbackInfo,
 				with: streamingSessionId,
 				and: loudnessNormalizer,
-				player: mainPlayer
+				player: videoPlayer
 			)
 		}
 	}
@@ -199,7 +203,7 @@ final class InternalPlayerLoader: PlayerLoader {
 	}
 
 	func renderVideo(in view: AVPlayerLayer) {
-		mainPlayer.renderVideo(in: view)
+		videoPlayer.renderVideo(in: view)
 	}
 }
 
@@ -297,7 +301,8 @@ private extension InternalPlayerLoader {
 					mode: audioMode
 				),
 				mediaType: mediaType,
-				isOfflined: isOfflined
+				isOfflined: isOfflined,
+				crossfade: configuration.crossfadeDuration != nil
 			)
 		}
 
