@@ -34,7 +34,6 @@ final class PlayerItemTests: XCTestCase {
 	}
 
 	private var timestamp: UInt64 = 1
-	private var isContentCachingEnabled: Bool = true
 	private var shouldUseImprovedDRMHandling: Bool = false
 
 	override func setUp() {
@@ -52,7 +51,6 @@ final class PlayerItemTests: XCTestCase {
 		PlayerWorld = PlayerWorldClient.mock(timeProvider: timeProvider, uuidProvider: uuidProvider)
 
 		featureFlagProvider = FeatureFlagProvider.mock
-		featureFlagProvider.isContentCachingEnabled = { self.isContentCachingEnabled }
 		featureFlagProvider.shouldUseImprovedDRMHandling = { self.shouldUseImprovedDRMHandling }
 
 		monitor = PlayerItemMonitorMock()
@@ -137,8 +135,6 @@ final class PlayerItemTests: XCTestCase {
 
 	func test_init_cachingDisabled() {
 		// GIVEN
-		isContentCachingEnabled = false
-
 		let mediaProduct = MediaProduct.mock()
 		_ = PlayerItem.mock(
 			startReason: .EXPLICIT,
@@ -162,7 +158,7 @@ final class PlayerItemTests: XCTestCase {
 			sessionType: .PLAYBACK,
 			sessionProductType: mediaProduct.productType,
 			sessionProductId: mediaProduct.productId,
-			sessionTags: [StreamingSessionStart.SessionTag.CACHING_DISABLED]
+			sessionTags: nil
 		)
 
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)

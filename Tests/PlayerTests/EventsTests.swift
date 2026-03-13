@@ -50,8 +50,6 @@ final class EventsTests: XCTestCase {
 	private var player: PlayerMock!
 	private var shouldUseEventProducer: Bool = false
 	private var featureFlagProvider: FeatureFlagProvider!
-	private var isContentCachingEnabled: Bool = true
-
 	override func setUp() {
 		let timeProvider = TimeProvider.mock(
 			timestamp: {
@@ -75,9 +73,6 @@ final class EventsTests: XCTestCase {
 		featureFlagProvider = FeatureFlagProvider.mock
 		featureFlagProvider.shouldUseEventProducer = {
 			self.shouldUseEventProducer
-		}
-		featureFlagProvider.isContentCachingEnabled = {
-			self.isContentCachingEnabled
 		}
 
 		// Set up EventSender
@@ -752,7 +747,6 @@ final class EventsTests: XCTestCase {
 
 	func testPlayCurrentSucceeds_withCachingDisabled() {
 		shouldUseEventProducer = true
-		isContentCachingEnabled = false
 
 		let playbackInfo = Constants.trackPlaybackInfo
 		JsonEncodedResponseURLProtocol.succeed(with: playbackInfo)
@@ -780,7 +774,7 @@ final class EventsTests: XCTestCase {
 		XCTAssertEqual(playerEventSender.playLogEvents.count, 1)
 
 		let actualStreamingSessionStartEvent = events[0] as! StreamingSessionStart
-		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT, sessionTags: [.CACHING_DISABLED])
+		let expectedStreamingSessionStartEvent = mockStreamingSessionStart(startReason: .EXPLICIT, sessionTags: nil)
 		validateStreamingSessionStart(event: actualStreamingSessionStartEvent, expectedEvent: expectedStreamingSessionStartEvent)
 
 		let actualPlaybackInfoFetch = events[1] as! PlaybackInfoFetch
