@@ -62,7 +62,7 @@ public struct Configuration {
 	/// Duration of the crossfade between tracks, in seconds.
 	/// When set, the ending track's volume fades out while the next track's volume fades in.
 	/// When `nil`, crossfade is disabled.
-	public var crossfadeDuration: Double? = 10.0
+	public var crossfadeDuration: Double?
 
 	init(clientVersion: String = Bundle.main.appVersion) {
 		self.clientVersion = clientVersion
