@@ -109,9 +109,7 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 	}
 
 	func seek(to time: Double) {
-		guard !isCrossfading else {
-			return
-		}
+		cancelCrossfade()
 		currentPlayer.seek(to: time)
 	}
 
@@ -199,6 +197,7 @@ extension CrossfadingPlayerWrapper {
 		}
 		isCrossfading = false
 		nextPlayer.pause()
+		nextPlayer.seek(to: 0)
 		nextPlayer.player.volume = 0
 		currentPlayer.player.volume = normalizedVolume(for: currentPlayer)
 	}
