@@ -86,7 +86,7 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 	}
 
 	func unload(asset: Asset) {
-		cancelCrossfade()
+		resetCrossfade()
 		if nextPlayer.currentAsset === asset as? AVPlayerAsset {
 			nextPlayer.unload(asset: asset)
 		} else {
@@ -109,19 +109,19 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 	}
 
 	func seek(to time: Double) {
-		cancelCrossfade()
+		resetCrossfade()
 		currentPlayer.seek(to: time)
 	}
 
 	func unload() {
-		cancelCrossfade()
+		resetCrossfade()
 		currentPlayer.unload()
 		nextPlayer.unload()
 		delegates.removeAll()
 	}
 
 	func reset() {
-		cancelCrossfade()
+		resetCrossfade()
 		currentPlayer.reset()
 		nextPlayer.reset()
 		delegates.removeAll()
@@ -159,6 +159,7 @@ extension CrossfadingPlayerWrapper {
 			}
 			isCrossfading = true
 			nextPlayer.player.volume = 0
+			nextPlayer.seek(to: max(0, position - crossfadeStart))
 			nextPlayer.play()
 		}
 
@@ -191,10 +192,7 @@ extension CrossfadingPlayerWrapper {
 		}
 	}
 
-	fileprivate func cancelCrossfade() {
-		guard isCrossfading else {
-			return
-		}
+	fileprivate func resetCrossfade() {
 		isCrossfading = false
 		nextPlayer.pause()
 		nextPlayer.seek(to: 0)
@@ -281,7 +279,7 @@ private final class PlayerDelegate: PlayerMonitoringDelegate {
 	func failed(asset: Asset?, with error: Error) {
 		guard let owner else { return }
 		if !isCurrent {
-			owner.cancelCrossfade()
+			owner.resetCrossfade()
 		}
 		owner.delegates.failed(asset: asset, with: error)
 	}
