@@ -10,11 +10,11 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 	private let cachePath: URL
 	private let featureFlagProvider: FeatureFlagProvider
 	var crossfadeDuration: Double = 0
-	fileprivate var activeWrapper: AVQueuePlayerWrapper
-	fileprivate var incomingWrapper: AVQueuePlayerWrapper
+	fileprivate var currentPlayer: AVQueuePlayerWrapper
+	fileprivate var nextPlayer: AVQueuePlayerWrapper
 
-	private var wrapperDelegateA: WrapperDelegate!
-	private var wrapperDelegateB: WrapperDelegate!
+	private var playerDelegateA: PlayerDelegate!
+	private var playerDelegateB: PlayerDelegate!
 
 	fileprivate var isCrossfading = false
 
@@ -29,17 +29,17 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 		self.cachePath = cachePath
 		self.featureFlagProvider = featureFlagProvider
 
-		activeWrapper = AVQueuePlayerWrapper(cachePath: cachePath, featureFlagProvider: featureFlagProvider)
-		incomingWrapper = AVQueuePlayerWrapper(cachePath: cachePath, featureFlagProvider: featureFlagProvider)
+		currentPlayer = AVQueuePlayerWrapper(cachePath: cachePath, featureFlagProvider: featureFlagProvider)
+		nextPlayer = AVQueuePlayerWrapper(cachePath: cachePath, featureFlagProvider: featureFlagProvider)
 
-		activeWrapper.externalVolumeControl = true
-		incomingWrapper.externalVolumeControl = true
+		currentPlayer.externalVolumeControl = true
+		nextPlayer.externalVolumeControl = true
 
-		wrapperDelegateA = WrapperDelegate(owner: self, wrapper: activeWrapper)
-		wrapperDelegateB = WrapperDelegate(owner: self, wrapper: incomingWrapper)
+		playerDelegateA = PlayerDelegate(owner: self, player: currentPlayer)
+		playerDelegateB = PlayerDelegate(owner: self, player: nextPlayer)
 
-		activeWrapper.addMonitoringDelegate(monitoringDelegate: wrapperDelegateA)
-		incomingWrapper.addMonitoringDelegate(monitoringDelegate: wrapperDelegateB)
+		currentPlayer.addMonitoringDelegate(monitoringDelegate: playerDelegateA)
+		nextPlayer.addMonitoringDelegate(monitoringDelegate: playerDelegateB)
 
 		setupProgressCallback()
 	}
@@ -60,7 +60,7 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 		if case .UC = productType {
 			return false
 		}
-		return activeWrapper.canPlay(
+		return currentPlayer.canPlay(
 			productType: productType,
 			codec: codec,
 			mediaType: mediaType,
@@ -75,8 +75,8 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		and licenseLoader: LicenseLoader?
 	) async -> Asset {
-		let targetWrapper = activeWrapper.player.currentItem == nil ? activeWrapper : incomingWrapper
-		return await targetWrapper.load(
+		let target = currentPlayer.player.currentItem == nil ? currentPlayer : nextPlayer
+		return await target.load(
 			url,
 			cacheKey: cacheKey,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
@@ -85,51 +85,51 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 	}
 
 	func unload(asset: Asset) {
-		if asset.player === incomingWrapper {
+		if asset.player === nextPlayer {
 			cancelCrossfade()
-			incomingWrapper.unload(asset: asset)
+			nextPlayer.unload(asset: asset)
 			return
 		}
 		cancelCrossfade()
-		activeWrapper.unload(asset: asset)
+		currentPlayer.unload(asset: asset)
 	}
 
 	func play() {
-		activeWrapper.play()
+		currentPlayer.play()
 		if isCrossfading {
-			incomingWrapper.play()
+			nextPlayer.play()
 		}
 	}
 
 	func pause() {
-		activeWrapper.pause()
+		currentPlayer.pause()
 		if isCrossfading {
-			incomingWrapper.pause()
+			nextPlayer.pause()
 		}
 	}
 
 	func seek(to time: Double) {
 		cancelCrossfade()
-		activeWrapper.seek(to: time)
+		currentPlayer.seek(to: time)
 	}
 
 	func unload() {
 		cancelCrossfade()
-		activeWrapper.unload()
-		incomingWrapper.unload()
+		currentPlayer.unload()
+		nextPlayer.unload()
 		delegates.removeAll()
 	}
 
 	func reset() {
 		cancelCrossfade()
-		activeWrapper.reset()
-		incomingWrapper.reset()
+		currentPlayer.reset()
+		nextPlayer.reset()
 		delegates.removeAll()
 	}
 
 	func updateVolume(loudnessNormalizer: LoudnessNormalizer?) {
 		if !isCrossfading {
-			activeWrapper.updateVolume(loudnessNormalizer: loudnessNormalizer)
+			currentPlayer.updateVolume(loudnessNormalizer: loudnessNormalizer)
 		}
 	}
 
@@ -142,7 +142,7 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 
 extension CrossfadingPlayerWrapper {
 	fileprivate func setupProgressCallback() {
-		activeWrapper.onPlaybackProgress = { [weak self] position, duration in
+		currentPlayer.onPlaybackProgress = { [weak self] position, duration in
 			self?.handlePlaybackProgress(position: position, duration: duration)
 		}
 	}
@@ -154,40 +154,40 @@ extension CrossfadingPlayerWrapper {
 		}
 
 		if !isCrossfading {
-			guard incomingWrapper.player.currentItem != nil else {
+			guard nextPlayer.player.currentItem != nil else {
 				return
 			}
 			isCrossfading = true
-			incomingWrapper.player.volume = 0
-			incomingWrapper.play()
+			nextPlayer.player.volume = 0
+			nextPlayer.play()
 		}
 
 		let elapsed = position - crossfadeStart
 		let progress = min(Float(elapsed / crossfadeDuration), 1.0)
 
-		activeWrapper.player.volume = normalizedVolume(for: activeWrapper) * (1.0 - progress)
-		incomingWrapper.player.volume = normalizedVolume(for: incomingWrapper) * progress
+		currentPlayer.player.volume = normalizedVolume(for: currentPlayer) * (1.0 - progress)
+		nextPlayer.player.volume = normalizedVolume(for: nextPlayer) * progress
 	}
 
-	fileprivate func handleActiveCompleted(asset: Asset?) {
+	fileprivate func handleCurrentCompleted(asset: Asset?) {
 		isCrossfading = false
 		delegates.completed(asset: asset)
 
-		let temp = activeWrapper
-		activeWrapper = incomingWrapper
-		incomingWrapper = temp
+		let temp = currentPlayer
+		currentPlayer = nextPlayer
+		nextPlayer = temp
 
-		activeWrapper.player.volume = normalizedVolume(for: activeWrapper)
+		currentPlayer.player.volume = normalizedVolume(for: currentPlayer)
 		setupProgressCallback()
 
-		incomingWrapper.reset()
-		let incomingDelegate = delegateForWrapper(incomingWrapper)
-		if let incomingDelegate {
-			incomingWrapper.addMonitoringDelegate(monitoringDelegate: incomingDelegate)
+		nextPlayer.reset()
+		let nextDelegate = delegateForPlayer(nextPlayer)
+		if let nextDelegate {
+			nextPlayer.addMonitoringDelegate(monitoringDelegate: nextDelegate)
 		}
 
-		if activeWrapper.player.timeControlStatus == .playing {
-			delegates.playing(asset: activeWrapper.currentAsset)
+		if currentPlayer.player.timeControlStatus == .playing {
+			delegates.playing(asset: currentPlayer.currentAsset)
 		}
 	}
 
@@ -196,40 +196,40 @@ extension CrossfadingPlayerWrapper {
 			return
 		}
 		isCrossfading = false
-		incomingWrapper.pause()
-		incomingWrapper.player.volume = 0
-		activeWrapper.player.volume = normalizedVolume(for: activeWrapper)
+		nextPlayer.pause()
+		nextPlayer.player.volume = 0
+		currentPlayer.player.volume = normalizedVolume(for: currentPlayer)
 	}
 
-	fileprivate func normalizedVolume(for wrapper: AVQueuePlayerWrapper) -> Float {
-		wrapper.currentAsset?.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
+	fileprivate func normalizedVolume(for player: AVQueuePlayerWrapper) -> Float {
+		player.currentAsset?.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
 			.getScaleFactor() ?? Constants.defaultVolume
 	}
 
-	private func delegateForWrapper(_ wrapper: AVQueuePlayerWrapper) -> WrapperDelegate? {
-		if wrapperDelegateA.wrapper === wrapper {
-			return wrapperDelegateA
+	private func delegateForPlayer(_ player: AVQueuePlayerWrapper) -> PlayerDelegate? {
+		if playerDelegateA.player === player {
+			return playerDelegateA
 		}
-		if wrapperDelegateB.wrapper === wrapper {
-			return wrapperDelegateB
+		if playerDelegateB.player === player {
+			return playerDelegateB
 		}
 		return nil
 	}
 }
 
-// MARK: - WrapperDelegate
+// MARK: - PlayerDelegate
 
-private final class WrapperDelegate: PlayerMonitoringDelegate {
+private final class PlayerDelegate: PlayerMonitoringDelegate {
 	private weak var owner: CrossfadingPlayerWrapper?
-	let wrapper: AVQueuePlayerWrapper
+	let player: AVQueuePlayerWrapper
 
-	private var isActive: Bool {
-		owner?.activeWrapper === wrapper
+	private var isCurrent: Bool {
+		owner?.currentPlayer === player
 	}
 
-	init(owner: CrossfadingPlayerWrapper, wrapper: AVQueuePlayerWrapper) {
+	init(owner: CrossfadingPlayerWrapper, player: AVQueuePlayerWrapper) {
 		self.owner = owner
-		self.wrapper = wrapper
+		self.player = player
 	}
 
 	func loaded(asset: Asset?, with duration: Double) {
@@ -238,40 +238,40 @@ private final class WrapperDelegate: PlayerMonitoringDelegate {
 	}
 
 	func playing(asset: Asset?) {
-		guard let owner, isActive, !owner.isCrossfading else { return }
-		wrapper.player.volume = owner.normalizedVolume(for: wrapper)
+		guard let owner, isCurrent, !owner.isCrossfading else { return }
+		player.player.volume = owner.normalizedVolume(for: player)
 		owner.delegates.playing(asset: asset)
 	}
 
 	func paused(asset: Asset?) {
-		guard let owner, isActive else { return }
+		guard let owner, isCurrent else { return }
 		owner.delegates.paused(asset: asset)
 	}
 
 	func seeking(in asset: Asset?) {
-		guard let owner, isActive else { return }
+		guard let owner, isCurrent else { return }
 		owner.delegates.seeking(in: asset)
 	}
 
 	func stall(in asset: Asset?) {
-		guard let owner, isActive else { return }
+		guard let owner, isCurrent else { return }
 		owner.delegates.stall(in: asset)
 	}
 
 	func waiting(for asset: Asset?) {
-		guard let owner, isActive else { return }
+		guard let owner, isCurrent else { return }
 		owner.delegates.waiting(for: asset)
 	}
 
 	func downloaded(asset: Asset?) {
-		guard let owner, isActive else { return }
+		guard let owner, isCurrent else { return }
 		owner.delegates.downloaded(asset: asset)
 	}
 
 	func completed(asset: Asset?) {
 		guard let owner else { return }
-		if isActive {
-			owner.handleActiveCompleted(asset: asset)
+		if isCurrent {
+			owner.handleCurrentCompleted(asset: asset)
 		} else {
 			owner.delegates.completed(asset: asset)
 		}
@@ -279,7 +279,7 @@ private final class WrapperDelegate: PlayerMonitoringDelegate {
 
 	func failed(asset: Asset?, with error: Error) {
 		guard let owner else { return }
-		if !isActive {
+		if !isCurrent {
 			owner.cancelCrossfade()
 		}
 		owner.delegates.failed(asset: asset, with: error)
