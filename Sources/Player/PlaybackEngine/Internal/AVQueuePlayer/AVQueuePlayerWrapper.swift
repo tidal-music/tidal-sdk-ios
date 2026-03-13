@@ -94,6 +94,16 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		and licenseLoader: LicenseLoader?
 	) async -> Asset {
+		await load(url, cacheKey: cacheKey, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration, and: licenseLoader, player: self)
+	}
+
+	func load(
+		_ url: URL,
+		cacheKey: String?,
+		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
+		and licenseLoader: LicenseLoader?,
+		player: GenericMediaPlayer
+	) async -> Asset {
 		await withCheckedContinuation { continuation in
 			queue.dispatch {
 				let urlAsset = AVURLAsset(url: url, options: [
@@ -104,7 +114,8 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 					and: licenseLoader as? AVContentKeySessionDelegate,
-					AVPlayerAsset.self
+					AVPlayerAsset.self,
+					player: player
 				)
 
 				continuation.resume(returning: asset)
@@ -233,7 +244,8 @@ extension AVQueuePlayerWrapper: UCMediaPlayer {
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 					and: nil,
-					AVPlayerAsset.self
+					AVPlayerAsset.self,
+					player: self
 				)
 
 				continuation.resume(returning: asset)
@@ -279,7 +291,8 @@ private extension AVQueuePlayerWrapper {
 		_ urlAsset: AVURLAsset,
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		and contentKeySessionDelegate: AVContentKeySessionDelegate?,
-		_ type: AVPlayerAsset.Type
+		_ type: AVPlayerAsset.Type,
+		player: GenericMediaPlayer
 	) -> AVPlayerAsset {
 		let contentKeySession = contentKeySessionDelegate.map { delegate -> AVContentKeySession in
 			let session = AVContentKeySession(keySystem: .fairPlayStreaming)
@@ -290,7 +303,7 @@ private extension AVQueuePlayerWrapper {
 		}
 
 		let asset = type.init(
-			with: self,
+			with: player,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			contentKeySession,
 			and: contentKeySessionDelegate

@@ -80,18 +80,18 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 			url,
 			cacheKey: cacheKey,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-			and: licenseLoader
+			and: licenseLoader,
+			player: self
 		)
 	}
 
 	func unload(asset: Asset) {
-		if asset.player === nextPlayer {
-			cancelCrossfade()
-			nextPlayer.unload(asset: asset)
-			return
-		}
 		cancelCrossfade()
-		currentPlayer.unload(asset: asset)
+		if nextPlayer.currentAsset === asset as? AVPlayerAsset {
+			nextPlayer.unload(asset: asset)
+		} else {
+			currentPlayer.unload(asset: asset)
+		}
 	}
 
 	func play() {
@@ -109,7 +109,9 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 	}
 
 	func seek(to time: Double) {
-		cancelCrossfade()
+		guard !isCrossfading else {
+			return
+		}
 		currentPlayer.seek(to: time)
 	}
 
