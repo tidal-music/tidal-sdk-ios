@@ -13,13 +13,10 @@ private enum Constants {
 // MARK: - AVQueuePlayerWrapper
 
 final class AVQueuePlayerWrapper: GenericMediaPlayer {
-	private let featureFlagProvider: FeatureFlagProvider
-
 	private let queue: OperationQueue
 
 	@Atomic private var player: AVQueuePlayer
 	private var playerMonitor: AVPlayerMonitor?
-	private var isSeeking = false
 
 	private let contentKeyDelegateQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.contentkeydelegate.queue")
 	private let playbackTimeProgressQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.playbacktimeprogress.queue")
@@ -29,10 +26,6 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	private var delegates: PlayerMonitoringDelegates = PlayerMonitoringDelegates()
 
 	// MARK: - Convenience properties
-
-	private var shouldPauseAndPlayAroundSeek: Bool {
-		featureFlagProvider.shouldPauseAndPlayAroundSeek()
-	}
 
 	private let supportedCodecs: [PlayerAudioCodec] = [
 		PlayerAudioCodec.AAC,
@@ -51,13 +44,11 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	// MARK: Initialization
 
 	init(cachePath: URL, featureFlagProvider: FeatureFlagProvider) {
-		self.featureFlagProvider = featureFlagProvider
-
 		queue = OperationQueue()
 		queue.maxConcurrentOperationCount = 1
 		queue.qualityOfService = .userInitiated
 
-		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
+		player = AVQueuePlayerWrapper.createPlayer()
 
 		preparePlayer()
 	}
@@ -159,30 +150,13 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 			self.delegates.seeking(in: asset)
 
-			if self.shouldPauseAndPlayAroundSeek {
-				if self.player.timeControlStatus == .playing {
-					self.isSeeking = true
-					await self.player.pause()
-				}
-
-				let completed = await self.player.seek(to: time)
-				self.isSeeking = false
-				await self.player.play()
-
-				guard completed, currentItem == self.player.currentItem else {
-					return
-				}
-
-				asset.setAssetPosition(currentItem)
-			} else {
-				let completed = await self.player.seek(to: time)
-				guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
-					return
-				}
-
-				asset.setAssetPosition(currentItem)
-				self.delegates.playing(asset: asset)
+			let completed = await self.player.seek(to: time)
+			guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
+				return
 			}
+
+			asset.setAssetPosition(currentItem)
+			self.delegates.playing(asset: asset)
 		}
 	}
 
@@ -272,14 +246,10 @@ extension AVQueuePlayerWrapper: VideoPlayer {
 }
 
 private extension AVQueuePlayerWrapper {
-	static func createPlayer(featureFlagProvider: FeatureFlagProvider) -> AVQueuePlayer {
+	static func createPlayer() -> AVQueuePlayer {
 		let player = AVQueuePlayer()
 		player.automaticallyWaitsToMinimizeStalling = true
-		player.actionAtItemEnd = if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
-			.none
-		} else {
-			.advance
-		}
+		player.actionAtItemEnd = .advance
 		player.allowsExternalPlayback = false
 		return player
 	}
@@ -387,7 +357,7 @@ private extension AVQueuePlayerWrapper {
 		player.pause()
 		player.removeAllItems()
 
-		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
+		player = AVQueuePlayerWrapper.createPlayer()
 		preparePlayer()
 	}
 }
@@ -425,9 +395,6 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	func paused(playerItem: AVPlayerItem) {
-		guard !isSeeking else {
-			return
-		}
 		queue.dispatch {
 			guard let asset = self.playerItemAssets[playerItem] else {
 				return
@@ -511,11 +478,8 @@ private extension AVQueuePlayerWrapper {
 		}
 	}
 
-	func playedToEnd(playerItem: AVPlayerItem) {
-		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
-			player.remove(playerItem)
-		}
-	}
+	func playedToEnd(playerItem: AVPlayerItem) {}
+
 }
 
 // MARK: AVQueuePlayerWrapper Error Helpers
