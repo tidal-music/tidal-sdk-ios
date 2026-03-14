@@ -15,7 +15,7 @@ private enum Constants {
 final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	private let queue: OperationQueue
 
-	@Atomic private var player: AVQueuePlayer
+	@Atomic private(set) var player: AVQueuePlayer
 	private var playerMonitor: AVPlayerMonitor?
 
 	private let contentKeyDelegateQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.contentkeydelegate.queue")
@@ -24,6 +24,14 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	private var playerItemMonitors: [AVPlayerItem: AVPlayerItemMonitor] = [AVPlayerItem: AVPlayerItemMonitor]()
 	private var playerItemAssets: [AVPlayerItem: AVPlayerAsset] = [AVPlayerItem: AVPlayerAsset]()
 	private var delegates: PlayerMonitoringDelegates = PlayerMonitoringDelegates()
+
+	var onPlaybackProgress: ((Double, Double) -> Void)?
+
+	var externalVolumeControl = false
+
+	var currentAsset: AVPlayerAsset? {
+		player.currentItem.flatMap { playerItemAssets[$0] }
+	}
 
 	// MARK: - Convenience properties
 
@@ -57,8 +65,13 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		productType: ProductType,
 		codec: AudioCodec?,
 		mediaType: String?,
-		isOfflined: Bool
+		isOfflined: Bool,
+		crossfade: Bool
 	) -> Bool {
+		if crossfade {
+			return false
+		}
+
 		if productType == .VIDEO {
 			return true
 		}
@@ -81,6 +94,16 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		and licenseLoader: LicenseLoader?
 	) async -> Asset {
+		await load(url, cacheKey: cacheKey, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration, and: licenseLoader, player: self)
+	}
+
+	func load(
+		_ url: URL,
+		cacheKey: String?,
+		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
+		and licenseLoader: LicenseLoader?,
+		player: GenericMediaPlayer
+	) async -> Asset {
 		await withCheckedContinuation { continuation in
 			queue.dispatch {
 				let urlAsset = AVURLAsset(url: url, options: [
@@ -91,7 +114,8 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 					and: licenseLoader as? AVContentKeySessionDelegate,
-					AVPlayerAsset.self
+					AVPlayerAsset.self,
+					player: player
 				)
 
 				continuation.resume(returning: asset)
@@ -220,7 +244,8 @@ extension AVQueuePlayerWrapper: UCMediaPlayer {
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 					and: nil,
-					AVPlayerAsset.self
+					AVPlayerAsset.self,
+					player: self
 				)
 
 				continuation.resume(returning: asset)
@@ -266,7 +291,8 @@ private extension AVQueuePlayerWrapper {
 		_ urlAsset: AVURLAsset,
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		and contentKeySessionDelegate: AVContentKeySessionDelegate?,
-		_ type: AVPlayerAsset.Type
+		_ type: AVPlayerAsset.Type,
+		player: GenericMediaPlayer
 	) -> AVPlayerAsset {
 		let contentKeySession = contentKeySessionDelegate.map { delegate -> AVContentKeySession in
 			let session = AVContentKeySession(keySystem: .fairPlayStreaming)
@@ -277,7 +303,7 @@ private extension AVQueuePlayerWrapper {
 		}
 
 		let asset = type.init(
-			with: self,
+			with: player,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			contentKeySession,
 			and: contentKeySessionDelegate
@@ -353,6 +379,7 @@ private extension AVQueuePlayerWrapper {
 		playerMonitor = nil
 		playerItemMonitors.removeAll()
 		playerItemAssets.removeAll()
+		onPlaybackProgress = nil
 
 		player.pause()
 		player.removeAllItems()
@@ -385,10 +412,12 @@ private extension AVQueuePlayerWrapper {
 
 			self.player.allowsExternalPlayback = playerItem.tracks.contains(where: { $0.assetTrack?.mediaType == .video })
 
-			let volume: Float = asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
-				.getScaleFactor() ?? Constants.defaultVolume
+			if !self.externalVolumeControl {
+				let volume: Float = asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
+					.getScaleFactor() ?? Constants.defaultVolume
 
-			self.player.volume = volume
+				self.player.volume = volume
+			}
 
 			self.delegates.playing(asset: asset)
 		}
@@ -475,11 +504,16 @@ private extension AVQueuePlayerWrapper {
 			}
 
 			asset.setAssetPosition(playerItem)
+
+			let position = CMTimeGetSeconds(playerItem.currentTime())
+			let duration = CMTimeGetSeconds(playerItem.duration)
+			if position.isFinite, duration.isFinite {
+				self.onPlaybackProgress?(position, duration)
+			}
 		}
 	}
 
 	func playedToEnd(playerItem: AVPlayerItem) {}
-
 }
 
 // MARK: AVQueuePlayerWrapper Error Helpers

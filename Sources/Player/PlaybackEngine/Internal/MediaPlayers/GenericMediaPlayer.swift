@@ -12,7 +12,8 @@ public protocol GenericMediaPlayer: AnyObject {
 		productType: ProductType,
 		codec: AudioCodec?,
 		mediaType: String?,
-		isOfflined: Bool
+		isOfflined: Bool,
+		crossfade: Bool
 	) -> Bool
 
 	func load(

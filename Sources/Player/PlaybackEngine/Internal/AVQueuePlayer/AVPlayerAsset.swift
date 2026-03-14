@@ -8,7 +8,7 @@ class AVPlayerAsset: Asset {
 	private let contentKeySessionDelegate: AVContentKeySessionDelegate?
 
 	required init(
-		with player: AVQueuePlayerWrapper,
+		with player: GenericMediaPlayer,
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		_ contentKeySession: AVContentKeySession?,
 		and contentKeySessionDelegate: AVContentKeySessionDelegate?

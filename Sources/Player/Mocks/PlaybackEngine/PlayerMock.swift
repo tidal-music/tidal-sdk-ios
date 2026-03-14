@@ -45,7 +45,8 @@ public final class PlayerMock: GenericMediaPlayer {
 		productType: PlayerProductType,
 		codec: PlayerAudioCodec?,
 		mediaType: String?,
-		isOfflined: Bool
+		isOfflined: Bool,
+		crossfade: Bool
 	) -> Bool {
 		true
 	}
