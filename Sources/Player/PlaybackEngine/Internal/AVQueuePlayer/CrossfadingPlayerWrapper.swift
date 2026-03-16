@@ -1,3 +1,4 @@
+import AVFoundation
 import Foundation
 
 private enum Constants {
@@ -52,6 +53,9 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 		crossfade: Bool
 	) -> Bool {
 		guard crossfade else {
+			return false
+		}
+		if PlayerWorld.audioInfoProvider.isAirPlayOutputRoute() || PlayerWorld.audioInfoProvider.isCarPlayOutputRoute() {
 			return false
 		}
 		if productType == .VIDEO {
@@ -149,29 +153,45 @@ extension CrossfadingPlayerWrapper {
 
 	fileprivate func handlePlaybackProgress(position: Double, duration: Double) {
 		let crossfadeStart = max(0, duration - crossfadeDuration)
-		guard position >= crossfadeStart else {
+		guard position >= crossfadeStart,
+		      !isCrossfading,
+		      !PlayerWorld.audioInfoProvider.isAirPlayOutputRoute(),
+		      !PlayerWorld.audioInfoProvider.isCarPlayOutputRoute(),
+		      nextPlayer.player.currentItem != nil
+		else {
 			return
 		}
 
-		if !isCrossfading {
-			guard nextPlayer.player.currentItem != nil else {
-				return
-			}
-			isCrossfading = true
-			nextPlayer.player.volume = 0
-			nextPlayer.seek(to: max(0, position - crossfadeStart))
-			nextPlayer.play()
-		}
+		isCrossfading = true
 
-		let elapsed = position - crossfadeStart
-		let progress = min(Float(elapsed / crossfadeDuration), 1.0)
+		let remainingDuration = duration - position
+		let nextPlayerPosition = max(0, position - crossfadeStart)
 
-		currentPlayer.player.volume = normalizedVolume(for: currentPlayer) * (1.0 - progress)
-		nextPlayer.player.volume = normalizedVolume(for: nextPlayer) * progress
+		nextPlayer.player.volume = normalizedVolume(for: nextPlayer)
+
+		setVolumeRamp(
+			from: 1.0,
+			to: 0,
+			startTime: position,
+			duration: remainingDuration,
+			on: currentPlayer
+		)
+		setVolumeRamp(
+			from: 0,
+			to: 1.0,
+			startTime: 0,
+			duration: remainingDuration,
+			on: nextPlayer
+		)
+
+		nextPlayer.seek(to: nextPlayerPosition)
+		nextPlayer.play()
 	}
 
 	fileprivate func handleCurrentCompleted(asset: Asset?) {
 		isCrossfading = false
+		currentPlayer.player.currentItem?.audioMix = nil
+		nextPlayer.player.currentItem?.audioMix = nil
 		delegates.completed(asset: asset)
 
 		let temp = currentPlayer
@@ -194,6 +214,8 @@ extension CrossfadingPlayerWrapper {
 
 	fileprivate func resetCrossfade() {
 		isCrossfading = false
+		currentPlayer.player.currentItem?.audioMix = nil
+		nextPlayer.player.currentItem?.audioMix = nil
 		nextPlayer.pause()
 		nextPlayer.seek(to: 0)
 		nextPlayer.player.volume = 0
@@ -203,6 +225,33 @@ extension CrossfadingPlayerWrapper {
 	fileprivate func normalizedVolume(for player: AVQueuePlayerWrapper) -> Float {
 		player.currentAsset?.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
 			.getScaleFactor() ?? Constants.defaultVolume
+	}
+
+	fileprivate func setVolumeRamp(
+		from startVolume: Float,
+		to endVolume: Float,
+		startTime: Double,
+		duration: Double,
+		on player: AVQueuePlayerWrapper
+	) {
+		guard let playerItem = player.player.currentItem else {
+			return
+		}
+
+		let timescale: CMTimeScale = 600
+		let start = CMTime(seconds: startTime, preferredTimescale: timescale)
+		let rampDuration = CMTime(seconds: duration, preferredTimescale: timescale)
+
+		let inputParameters = AVMutableAudioMixInputParameters()
+		inputParameters.setVolumeRamp(
+			fromStartVolume: startVolume,
+			toEndVolume: endVolume,
+			timeRange: CMTimeRange(start: start, duration: rampDuration)
+		)
+
+		let audioMix = AVMutableAudioMix()
+		audioMix.inputParameters = [inputParameters]
+		playerItem.audioMix = audioMix
 	}
 
 	private func delegateForPlayer(_ player: AVQueuePlayerWrapper) -> PlayerDelegate? {
@@ -234,6 +283,7 @@ private final class PlayerDelegate: PlayerMonitoringDelegate {
 	func loaded(asset: Asset?, with duration: Double) {
 		guard let owner else { return }
 		owner.delegates.loaded(asset: asset, with: duration)
+		owner.delegates.downloaded(asset: asset)
 	}
 
 	func playing(asset: Asset?) {
