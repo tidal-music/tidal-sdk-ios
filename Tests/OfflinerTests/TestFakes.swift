@@ -228,6 +228,8 @@ final class FailingArtworkDownloader: ArtworkDownloaderProtocol {
 final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	var progressValues: [Double] = []
 
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+
 	func download(
 		manifestURL: URL,
 		contentKeySession: AVContentKeySession?,
@@ -251,6 +253,8 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 }
 
 final class FailingMediaDownloader: MediaDownloaderProtocol {
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+
 	func download(
 		manifestURL: URL,
 		contentKeySession: AVContentKeySession?,

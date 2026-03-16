@@ -2,7 +2,7 @@
 import XCTest
 
 final class BackendFailureTests: OfflinerTestCase {
-	func testDownloadTrackAbortsWhenUpdateTaskToInProgressFails() async throws {
+	func testDownloadTrackCompletesLocallyEvenWhenBackendInProgressUpdateFails() async throws {
 		let backend = FailOnUpdateToInProgressOfflineApiClient()
 		let offliner = createOffliner(
 			offlineApiClient: backend,
@@ -11,23 +11,13 @@ final class BackendFailureTests: OfflinerTestCase {
 		)
 
 		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
-
-		let downloads = offliner.newDownloads
-		async let runTask: () = offliner.run()
-
-		for await download in downloads {
-			// Download exists but hasn't started processing yet
-			XCTAssertNotNil(download)
-			break
-		}
-
-		try await runTask
+		try await downloadAndWaitForCompletion(offliner)
 
 		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
-		XCTAssertNil(storedItem)
+		XCTAssertNotNil(storedItem)
 	}
 
-	func testDownloadTrackFailsWhenUpdateTaskToCompletedFails() async throws {
+	func testDownloadTrackCompletesLocallyEvenWhenBackendUpdateFails() async throws {
 		let backend = FailOnUpdateToCompletedOfflineApiClient()
 		let offliner = createOffliner(
 			offlineApiClient: backend,
@@ -43,7 +33,7 @@ final class BackendFailureTests: OfflinerTestCase {
 		for await download in downloads {
 			let events = download.events
 			await assertEventually(events) { event in
-				if case .state(.failed) = event { return true }
+				if case .state(.completed) = event { return true }
 				return false
 			}
 			break

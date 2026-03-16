@@ -1,20 +1,14 @@
 import Foundation
 
 final class RemoveCollectionHandler {
-	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 
-	init(offlineApiClient: OfflineApiClientProtocol, offlineStore: OfflineStore) {
-		self.offlineApiClient = offlineApiClient
+	init(offlineStore: OfflineStore) {
 		self.offlineStore = offlineStore
 	}
 
 	func handle(_ task: RemoveCollectionTask) -> InternalTask {
-		InternalRemoveCollectionTask(
-			task: task,
-			offlineApiClient: offlineApiClient,
-			offlineStore: offlineStore
-		)
+		InternalRemoveCollectionTask(task: task, offlineStore: offlineStore)
 	}
 }
 
@@ -22,24 +16,16 @@ private final class InternalRemoveCollectionTask: InternalTask {
 	let id: String
 
 	private let task: RemoveCollectionTask
-	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 
-	init(task: RemoveCollectionTask, offlineApiClient: OfflineApiClientProtocol, offlineStore: OfflineStore) {
+	init(task: RemoveCollectionTask, offlineStore: OfflineStore) {
 		self.id = task.id
 		self.task = task
-		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 	}
 
-	func run() async {
+	func run() async throws {
 		print("RemoveCollectionHandler: deleting \(task.resourceType)/\(task.resourceId)")
-		do {
-			try offlineStore.deleteCollection(resourceType: task.resourceType, resourceId: task.resourceId)
-			try await offlineApiClient.updateTask(taskId: id, state: .completed)
-		} catch {
-			print("RemoveCollectionHandler error: \(error)")
-			try? await offlineApiClient.updateTask(taskId: id, state: .failed)
-		}
+		try offlineStore.deleteCollection(resourceType: task.resourceType, resourceId: task.resourceId)
 	}
 }

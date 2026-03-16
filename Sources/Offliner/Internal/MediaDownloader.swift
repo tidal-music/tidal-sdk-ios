@@ -19,15 +19,20 @@ protocol MediaDownloaderProtocol {
 		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult
+
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void)
 }
 
 // MARK: - MediaDownloader
 
 final class MediaDownloader: NSObject, MediaDownloaderProtocol {
+	static let backgroundSessionIdentifier = "com.tidal.offliner.download.session"
+
 	private let licenseFetcher: LicenseFetcher
 	private let queue: DispatchQueue
 	private var session: AVAssetDownloadURLSession!
 	private var activeDownloads: [Int: ActiveDownload] = [:]
+	private var backgroundCompletionHandler: (() -> Void)?
 
 	init(configuration: Configuration) {
 		self.licenseFetcher = LicenseFetcher()
@@ -40,10 +45,17 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		delegateQueue.maxConcurrentOperationCount = 1
 
 		self.session = AVAssetDownloadURLSession(
-			configuration: URLSessionConfiguration.background(withIdentifier: "com.tidal.offliner.download.session"),
+			configuration: URLSessionConfiguration.background(withIdentifier: Self.backgroundSessionIdentifier),
 			assetDownloadDelegate: self,
 			delegateQueue: delegateQueue
 		)
+	}
+
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {
+		guard identifier == Self.backgroundSessionIdentifier else { return }
+		queue.async {
+			self.backgroundCompletionHandler = completionHandler
+		}
 	}
 
 	func download(
@@ -152,6 +164,13 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 
 		if let onProgress = activeDownloads[assetDownloadTask.taskIdentifier]?.onProgress {
 			Task { await onProgress(progress) }
+		}
+	}
+
+	func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+		DispatchQueue.main.async { [weak self] in
+			self?.backgroundCompletionHandler?()
+			self?.backgroundCompletionHandler = nil
 		}
 	}
 }
