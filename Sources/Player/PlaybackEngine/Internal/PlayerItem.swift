@@ -366,6 +366,14 @@ private extension PlayerItem {
 		if metadata.isAdaptivePlaybackEnabled {
 			tags.append(PlaybackStatistics.EventTag.ADAPTIVE_PLAYBACK)
 		}
+		switch asset?.player {
+		case is CrossfadingPlayerWrapper:
+			tags.append(.CROSSFADE_PLAYER)
+		case is AVQueuePlayerWrapper:
+			tags.append(.DEFAULT_PLAYER)
+		default:
+			break
+		}
 
 		let endInfo = metrics.endInfo
 		let actualQuality: String = if let playbackContext {
