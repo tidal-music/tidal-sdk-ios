@@ -23,6 +23,10 @@ public protocol PlayerListener: AnyObject {
 	/// This occurs when the HLS adaptive bitrate switches to a different quality variant mid-playback.
 	/// - Parameter playbackContext: The updated playback context with new quality information
 	func playbackQualityChanged(to playbackContext: PlaybackContext)
+
+	/// Called when a crossfade transition begins — the incoming track is now playing
+	/// alongside the outgoing track. The client should advance the play queue.
+	func crossfadeStarted()
 }
 
 // MARK: - Optional methods
@@ -30,4 +34,5 @@ public protocol PlayerListener: AnyObject {
 public extension PlayerListener {
 	func streamingPrivilegesLost(to device: String?) {}
 	func playbackQualityChanged(to playbackContext: PlaybackContext) {}
+	func crossfadeStarted() {}
 }

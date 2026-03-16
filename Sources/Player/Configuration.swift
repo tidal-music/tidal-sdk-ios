@@ -59,6 +59,10 @@ public struct Configuration {
 	/// Determines if the user allows adaptive (variable) bitrate playback for streaming audio.
 	public var allowVariablePlayback: Bool = true
 
+	/// Crossfade duration in seconds. When set to a positive value and the crossfade feature flag
+	/// is enabled, tracks will crossfade using AVAudioMix volume ramps. Set to `nil` to disable.
+	public var crossfadeDuration: TimeInterval?
+
 	init(clientVersion: String = Bundle.main.appVersion) {
 		self.clientVersion = clientVersion
 	}

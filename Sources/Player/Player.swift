@@ -30,6 +30,9 @@ public final class Player {
 	@Atomic
 	private var outgoingEngine: PlayerEngine?
 
+	/// Internal crossfade orchestrator — handles timing, state, and completion.
+	private let crossfadeController = CrossfadeController()
+
 	// MARK: - Properties
 
 	private let queue: OperationQueue
@@ -271,7 +274,18 @@ public extension Player {
 	func setNext(_ mediaProduct: MediaProduct?) {
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
-			self.playerEngine.setNext(mediaProduct, timestamp: time)
+			if let mediaProduct, let duration = self.configuration.crossfadeDuration, duration > 0,
+			   self.featureFlagProvider.isCrossfadeEnabled()
+			{
+				// Crossfade mode: preload into a separate engine and clear gapless queue.
+				self.playerEngine.setNext(nil, timestamp: time)
+				let handle = self.preload(mediaProduct)
+				self.crossfadeController.preload(handle)
+			} else {
+				// Standard gapless mode: queue in the same AVQueuePlayer.
+				self.crossfadeController.clearPreload()
+				self.playerEngine.setNext(mediaProduct, timestamp: time)
+			}
 		}
 	}
 
@@ -284,6 +298,7 @@ public extension Player {
 
 	func reset() {
 		queue.dispatch {
+			self.crossfadeController.invalidate(player: self)
 			self.playerEngine.reset()
 		}
 	}
@@ -292,6 +307,7 @@ public extension Player {
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
 			self.playerEngine.play(timestamp: time)
+			self.outgoingEngine?.play(timestamp: time)
 
 			SafeTask {
 				await self.streamingPrivilegesHandler.notify()
@@ -320,17 +336,38 @@ public extension Player {
 	func pause() {
 		queue.dispatch {
 			self.playerEngine.pause()
+			self.outgoingEngine?.pause()
 		}
 	}
 
 	func seek(_ time: Double) {
 		queue.dispatch {
+			self.crossfadeController.finishImmediately(player: self)
 			self.playerEngine.seek(time)
 		}
 	}
 
 	func getAssetPosition() -> Double? {
 		playerEngine.getAssetPosition()
+	}
+
+	/// Reports the current playback position to the SDK for crossfade monitoring.
+	/// Call this periodically from the playback position timer.
+	func updatePlaybackPosition(currentTime: TimeInterval, duration: TimeInterval) {
+		guard let crossfadeDuration = configuration.crossfadeDuration, crossfadeDuration > 0,
+		      featureFlagProvider.isCrossfadeEnabled()
+		else {
+			return
+		}
+		let didStart = crossfadeController.update(
+			player: self,
+			currentTime: currentTime,
+			duration: duration,
+			crossfadeDuration: crossfadeDuration
+		)
+		if didStart {
+			notificationsHandler.crossfadeStarted()
+		}
 	}
 
 	func getActiveMediaProduct() -> MediaProduct? {
@@ -357,7 +394,9 @@ public extension Player {
 	/// The outgoing engine fades out while the incoming engine fades in over `duration` seconds.
 	/// The system handles smooth sample-level interpolation, including in background/lock screen.
 	func beginCrossfade(with handle: PlayerLoaderHandle, duration: TimeInterval) {
-		guard featureFlagProvider.isCrossfadeEnabled() else { return }
+		guard featureFlagProvider.isCrossfadeEnabled() else {
+			return
+		}
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
 			self.outgoingEngine = self.playerEngine

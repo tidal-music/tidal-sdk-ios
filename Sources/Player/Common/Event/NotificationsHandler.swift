@@ -87,6 +87,12 @@ final class NotificationsHandler {
 		}
 	}
 
+	func crossfadeStarted() {
+		queue.async {
+			self.listener.crossfadeStarted()
+		}
+	}
+
 	func mediaServicesWereReset() {
 		queue.async {
 			self.listener.mediaServicesWereReset()
