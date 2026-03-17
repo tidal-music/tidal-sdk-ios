@@ -52,8 +52,8 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	}
 
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {
-		guard identifier == Self.backgroundSessionIdentifier else { return }
 		DispatchQueue.main.async {
+			guard identifier == Self.backgroundSessionIdentifier else { return }
 			self.backgroundCompletionHandler = completionHandler
 		}
 	}
