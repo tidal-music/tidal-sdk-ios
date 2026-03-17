@@ -9,12 +9,6 @@ private enum Constants {
 	static let defaultPreAmp: Float = 4
 }
 
-extension InternalPlayerLoader {
-	func getMainPlayerInstance() -> GenericMediaPlayer {
-		mainPlayer
-	}
-}
-
 // MARK: - InternalPlayerLoaderTests
 
 final class InternalPlayerLoaderTests: XCTestCase {
@@ -24,15 +18,17 @@ final class InternalPlayerLoaderTests: XCTestCase {
 
 	override func setUpWithError() throws {
 		fairPlayLicenseFetcher = FairPlayLicenseFetcher.mock()
+		let cachePath = URL(fileURLWithPath: NSTemporaryDirectory())
 		internalLoader = InternalPlayerLoader(
 			with: Configuration.mock(),
 			and: fairPlayLicenseFetcher,
 			featureFlagProvider: FeatureFlagProvider.mock,
 			credentialsProvider: CredentialsProviderMock(),
-			mainPlayer: PlayerMock.self,
-			externalPlayers: []
+			avQueuePlayerWrapper: AVQueuePlayerWrapper(cachePath: cachePath, featureFlagProvider: .mock),
+			crossfadingPlayerWrapper: CrossfadingPlayerWrapper(cachePath: cachePath, featureFlagProvider: .mock),
+			externalPlayers: [PlayerMock.self]
 		)
-		mockPlayer = internalLoader.getMainPlayerInstance() as? PlayerMock
+		mockPlayer = internalLoader.players.first { $0 is PlayerMock } as? PlayerMock
 	}
 
 	override func tearDown() {

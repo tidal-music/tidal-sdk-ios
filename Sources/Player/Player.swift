@@ -426,13 +426,19 @@ private extension Player {
 		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
 		_ offlineItemProvider: OfflineItemProvider?
 	) -> PlayerEngine {
+		let fileManager = PlayerWorld.fileManagerClient
+		let cachePath = fileManager.cachesDirectory()
+		let avQueuePlayerWrapper = AVQueuePlayerWrapper(cachePath: cachePath, featureFlagProvider: featureFlagProvider)
+		let crossfadingPlayerWrapper = CrossfadingPlayerWrapper(cachePath: cachePath, featureFlagProvider: featureFlagProvider)
+
 		let internalPlayerLoader = InternalPlayerLoader(
 			with: configuration,
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
-			mainPlayer: Player.mainPlayerType(featureFlagProvider),
-			externalPlayers: externalPlayersSupplier?() ?? []
+			avQueuePlayerWrapper: avQueuePlayerWrapper,
+			crossfadingPlayerWrapper: crossfadingPlayerWrapper,
+			externalPlayers: []
 		)
 
 		let playerInstance = PlayerEngine(
