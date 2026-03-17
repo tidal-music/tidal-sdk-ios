@@ -13,14 +13,10 @@ private enum Constants {
 // MARK: - AVQueuePlayerWrapper
 
 final class AVQueuePlayerWrapper: GenericMediaPlayer {
-	private let featureFlagProvider: FeatureFlagProvider
-
 	private let queue: OperationQueue
-	private let assetFactory: AVURLAssetFactory
 
-	@Atomic private var player: AVQueuePlayer
+	@Atomic private(set) var player: AVQueuePlayer
 	private var playerMonitor: AVPlayerMonitor?
-	private var isSeeking = false
 
 	private let contentKeyDelegateQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.contentkeydelegate.queue")
 	private let playbackTimeProgressQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.playbacktimeprogress.queue")
@@ -29,15 +25,15 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	private var playerItemAssets: [AVPlayerItem: AVPlayerAsset] = [AVPlayerItem: AVPlayerAsset]()
 	private var delegates: PlayerMonitoringDelegates = PlayerMonitoringDelegates()
 
+	var onPlaybackProgress: ((Double, Double) -> Void)?
+
+	var externalVolumeControl = false
+
+	var currentAsset: AVPlayerAsset? {
+		player.currentItem.flatMap { playerItemAssets[$0] }
+	}
+
 	// MARK: - Convenience properties
-
-	private var isContentCachingEnabled: Bool {
-		featureFlagProvider.isContentCachingEnabled()
-	}
-
-	private var shouldPauseAndPlayAroundSeek: Bool {
-		featureFlagProvider.shouldPauseAndPlayAroundSeek()
-	}
 
 	private let supportedCodecs: [PlayerAudioCodec] = [
 		PlayerAudioCodec.AAC,
@@ -56,25 +52,26 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	// MARK: Initialization
 
 	init(cachePath: URL, featureFlagProvider: FeatureFlagProvider) {
-		self.featureFlagProvider = featureFlagProvider
-
 		queue = OperationQueue()
 		queue.maxConcurrentOperationCount = 1
 		queue.qualityOfService = .userInitiated
 
-		assetFactory = AVURLAssetFactory()
-		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
+		player = AVQueuePlayerWrapper.createPlayer()
 
 		preparePlayer()
-		preparePlayerCache()
 	}
 
 	func canPlay(
 		productType: ProductType,
 		codec: AudioCodec?,
 		mediaType: String?,
-		isOfflined: Bool
+		isOfflined: Bool,
+		crossfade: Bool
 	) -> Bool {
+		if crossfade {
+			return false
+		}
+
 		if productType == .VIDEO {
 			return true
 		}
@@ -97,37 +94,28 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		and licenseLoader: LicenseLoader?
 	) async -> Asset {
+		await load(url, cacheKey: cacheKey, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration, and: licenseLoader, player: self)
+	}
+
+	func load(
+		_ url: URL,
+		cacheKey: String?,
+		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
+		and licenseLoader: LicenseLoader?,
+		player: GenericMediaPlayer
+	) async -> Asset {
 		await withCheckedContinuation { continuation in
 			queue.dispatch {
-				let key = self.isContentCachingEnabled ? cacheKey : nil
-
-				var urlAsset: AVURLAsset
-				var cacheState = self.assetFactory.get(with: key)
-				switch cacheState {
-				case .none:
-					urlAsset = AVURLAsset(url: url, options: [
-						AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL,
-					])
-				case let .some(state):
-					switch state.status {
-					case .notCached:
-						urlAsset = AVURLAsset(url: url)
-					case let .cached(cachedURL):
-						urlAsset = AVURLAsset(url: cachedURL)
-						if !urlAsset.isPlayableOffline {
-							self.assetFactory.delete(state.key)
-							cacheState = AssetCacheState(key: state.key, status: .notCached)
-							urlAsset = AVURLAsset(url: url)
-						}
-					}
-				}
+				let urlAsset = AVURLAsset(url: url, options: [
+					AVURLAssetPreferPreciseDurationAndTimingKey: url.isFileURL,
+				])
 
 				let asset = self.load(
-					cacheState,
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 					and: licenseLoader as? AVContentKeySessionDelegate,
-					AVPlayerAsset.self
+					AVPlayerAsset.self,
+					player: player
 				)
 
 				continuation.resume(returning: asset)
@@ -139,10 +127,6 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		queue.dispatch {
 			guard let (playerItem, _) = self.playerItemAssets.first(where: { _, a in a === asset }) else {
 				return
-			}
-
-			if let key = asset.cacheState?.key {
-				self.assetFactory.cancel(with: key)
 			}
 
 			self.unload(playerItem: playerItem)
@@ -190,30 +174,13 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 
 			self.delegates.seeking(in: asset)
 
-			if self.shouldPauseAndPlayAroundSeek {
-				if self.player.timeControlStatus == .playing {
-					self.isSeeking = true
-					await self.player.pause()
-				}
-
-				let completed = await self.player.seek(to: time)
-				self.isSeeking = false
-				await self.player.play()
-
-				guard completed, currentItem == self.player.currentItem else {
-					return
-				}
-
-				asset.setAssetPosition(currentItem)
-			} else {
-				let completed = await self.player.seek(to: time)
-				guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
-					return
-				}
-
-				asset.setAssetPosition(currentItem)
-				self.delegates.playing(asset: asset)
+			let completed = await self.player.seek(to: time)
+			guard completed, currentItem == self.player.currentItem, self.player.timeControlStatus == .playing else {
+				return
 			}
+
+			asset.setAssetPosition(currentItem)
+			self.delegates.playing(asset: asset)
 		}
 	}
 
@@ -224,8 +191,6 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
             self.delegates.removeAll()
             self.playerItemMonitors.removeAll()
             self.playerItemAssets.removeAll()
-
-            self.assetFactory.reset()
 
             self.player.pause()
             self.player.removeAllItems()
@@ -276,11 +241,11 @@ extension AVQueuePlayerWrapper: UCMediaPlayer {
 				let urlAsset = AVURLAsset(url: url, options: options)
 
 				let asset = self.load(
-					nil,
 					urlAsset,
 					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 					and: nil,
-					AVPlayerAsset.self
+					AVPlayerAsset.self,
+					player: self
 				)
 
 				continuation.resume(returning: asset)
@@ -306,14 +271,10 @@ extension AVQueuePlayerWrapper: VideoPlayer {
 }
 
 private extension AVQueuePlayerWrapper {
-	static func createPlayer(featureFlagProvider: FeatureFlagProvider) -> AVQueuePlayer {
+	static func createPlayer() -> AVQueuePlayer {
 		let player = AVQueuePlayer()
 		player.automaticallyWaitsToMinimizeStalling = true
-		player.actionAtItemEnd = if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
-			.none
-		} else {
-			.advance
-		}
+		player.actionAtItemEnd = .advance
 		player.allowsExternalPlayback = false
 		return player
 	}
@@ -327,11 +288,11 @@ private extension AVQueuePlayerWrapper {
 	}
 
 	func load(
-		_ cacheState: AssetCacheState?,
 		_ urlAsset: AVURLAsset,
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		and contentKeySessionDelegate: AVContentKeySessionDelegate?,
-		_ type: AVPlayerAsset.Type
+		_ type: AVPlayerAsset.Type,
+		player: GenericMediaPlayer
 	) -> AVPlayerAsset {
 		let contentKeySession = contentKeySessionDelegate.map { delegate -> AVContentKeySession in
 			let session = AVContentKeySession(keySystem: .fairPlayStreaming)
@@ -342,32 +303,16 @@ private extension AVQueuePlayerWrapper {
 		}
 
 		let asset = type.init(
-			with: self,
+			with: player,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			contentKeySession,
 			and: contentKeySessionDelegate
 		)
 
-		asset.setCacheState(cacheState)
-
 		let playerItem = AVQueuePlayerWrapper.createPlayerItem(urlAsset)
 		register(playerItem: playerItem, for: asset)
 
-		// Items in the AVPlayer queue are not downloaded in advance
-		// This way the next item in the queue can be downloaded in advance.
-		if cacheState == nil {
-			enqueue(playerItem: playerItem)
-		} else if let state = cacheState {
-			switch state.status {
-			case .notCached:
-				assetFactory.cacheAsset(urlAsset, for: state.key)
-				if player.items().isEmpty {
-					enqueue(playerItem: playerItem)
-				}
-			case .cached:
-				enqueue(playerItem: playerItem)
-			}
-		}
+		enqueue(playerItem: playerItem)
 
 		return asset
 	}
@@ -409,13 +354,6 @@ private extension AVQueuePlayerWrapper {
 		)
 	}
 
-	func preparePlayerCache() {
-		assetFactory.delegate = self
-		if !isContentCachingEnabled {
-			assetFactory.clearCache()
-		}
-	}
-
 	func unload(playerItem: AVPlayerItem) {
 		playerItemMonitors.removeValue(forKey: playerItem)
 		playerItemAssets.removeValue(forKey: playerItem)
@@ -441,13 +379,12 @@ private extension AVQueuePlayerWrapper {
 		playerMonitor = nil
 		playerItemMonitors.removeAll()
 		playerItemAssets.removeAll()
-
-		assetFactory.reset()
+		onPlaybackProgress = nil
 
 		player.pause()
 		player.removeAllItems()
 
-		player = AVQueuePlayerWrapper.createPlayer(featureFlagProvider: featureFlagProvider)
+		player = AVQueuePlayerWrapper.createPlayer()
 		preparePlayer()
 	}
 }
@@ -475,19 +412,18 @@ private extension AVQueuePlayerWrapper {
 
 			self.player.allowsExternalPlayback = playerItem.tracks.contains(where: { $0.assetTrack?.mediaType == .video })
 
-			let volume: Float = asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
-				.getScaleFactor() ?? Constants.defaultVolume
+			if !self.externalVolumeControl {
+				let volume: Float = asset.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
+					.getScaleFactor() ?? Constants.defaultVolume
 
-			self.player.volume = volume
+				self.player.volume = volume
+			}
 
 			self.delegates.playing(asset: asset)
 		}
 	}
 
 	func paused(playerItem: AVPlayerItem) {
-		guard !isSeeking else {
-			return
-		}
 		queue.dispatch {
 			guard let asset = self.playerItemAssets[playerItem] else {
 				return
@@ -568,39 +504,16 @@ private extension AVQueuePlayerWrapper {
 			}
 
 			asset.setAssetPosition(playerItem)
-		}
-	}
 
-	func playedToEnd(playerItem: AVPlayerItem) {
-		if featureFlagProvider.shouldNotPerformActionAtItemEnd() {
-			player.remove(playerItem)
-		}
-	}
-}
-
-// MARK: AssetFactoryDelegate
-
-extension AVQueuePlayerWrapper: AssetFactoryDelegate {
-	func assetFinishedDownloading(_ urlAsset: AVURLAsset, to location: URL, for cacheKey: String) {
-		queue.dispatch {
-			guard
-				let (oldPlayerItem, asset) = self.playerItemAssets.first(where: { $0.value.cacheState?.key == cacheKey }),
-				self.player.canInsert(oldPlayerItem, after: nil)
-			else {
-				return
+			let position = CMTimeGetSeconds(playerItem.currentTime())
+			let duration = CMTimeGetSeconds(playerItem.duration)
+			if position.isFinite, duration.isFinite {
+				self.onPlaybackProgress?(position, duration)
 			}
-
-			self.unload(playerItem: oldPlayerItem)
-
-			let cacheState = AssetCacheState(key: cacheKey, status: .cached(cachedURL: location))
-			asset.setCacheState(cacheState)
-
-			let cachedPlayerItem = AVQueuePlayerWrapper.createPlayerItem(urlAsset)
-			self.register(playerItem: cachedPlayerItem, for: asset)
-
-			self.enqueue(playerItem: cachedPlayerItem)
 		}
 	}
+
+	func playedToEnd(playerItem: AVPlayerItem) {}
 }
 
 // MARK: AVQueuePlayerWrapper Error Helpers

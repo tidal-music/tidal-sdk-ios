@@ -4,11 +4,13 @@ import Foundation
 
 public extension Download {
 	static func mock(
-		metadata: OfflineMediaItem.Metadata = .track(.mock()),
+		title: String = "Mock Track",
+		artists: [String] = ["Mock Artist"],
 		imageURL: URL? = URL(string: "https://example.com/download-artwork.jpg")
 	) -> Download {
 		Download(
-			metadata: metadata,
+			title: title,
+			artists: artists,
 			imageURL: imageURL
 		)
 	}

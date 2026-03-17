@@ -12,54 +12,11 @@ enum ResourceType {
 	case userCollectionTracks
 }
 
-// MARK: - Backend Metadata
-
-enum BackendItemMetadata {
-	case track(TracksResourceObject)
-	case video(VideosResourceObject)
-
-	var resourceType: String {
-		switch self {
-		case .track: return OfflineMediaItemType.tracks.rawValue
-		case .video: return OfflineMediaItemType.videos.rawValue
-		}
-	}
-
-	var resourceId: String {
-		switch self {
-		case .track(let track): return track.id
-		case .video(let video): return video.id
-		}
-	}
-}
-
-enum BackendCollectionMetadata {
-	case album(AlbumsResourceObject)
-	case playlist(PlaylistsResourceObject)
-	case userCollectionTracks(UserCollectionTracksResourceObject)
-
-	var resourceType: String {
-		switch self {
-		case .album: return OfflineCollectionType.albums.rawValue
-		case .playlist: return OfflineCollectionType.playlists.rawValue
-		case .userCollectionTracks: return OfflineCollectionType.userCollectionTracks.rawValue
-		}
-	}
-
-	var resourceId: String {
-		switch self {
-		case .album(let album): return album.id
-		case .playlist(let playlist): return playlist.id
-		case .userCollectionTracks(let uct): return uct.id
-		}
-	}
-}
-
 // MARK: - Task Types
 
-struct StoreItemTask {
+struct StoreTrackTask {
 	let id: String
-	let itemMetadata: BackendItemMetadata
+	let track: TracksResourceObject
 	let artists: [ArtistsResourceObject]
 	let artwork: ArtworksResourceObject?
 	let collectionResourceType: String
@@ -68,11 +25,33 @@ struct StoreItemTask {
 	let position: Int
 }
 
-struct StoreCollectionTask {
+struct StoreVideoTask {
 	let id: String
-	let metadata: BackendCollectionMetadata
+	let video: VideosResourceObject
 	let artists: [ArtistsResourceObject]
 	let artwork: ArtworksResourceObject?
+	let collectionResourceType: String
+	let collectionResourceId: String
+	let volume: Int
+	let position: Int
+}
+
+struct StoreAlbumTask {
+	let id: String
+	let album: AlbumsResourceObject
+	let artists: [ArtistsResourceObject]
+	let artwork: ArtworksResourceObject?
+}
+
+struct StorePlaylistTask {
+	let id: String
+	let playlist: PlaylistsResourceObject
+	let artwork: ArtworksResourceObject?
+}
+
+struct StoreUserCollectionTracksTask {
+	let id: String
+	let userCollectionTracks: UserCollectionTracksResourceObject
 }
 
 struct RemoveItemTask {
@@ -92,15 +71,21 @@ struct RemoveCollectionTask {
 // MARK: - OfflineTask
 
 enum OfflineTask {
-	case storeItem(StoreItemTask)
-	case storeCollection(StoreCollectionTask)
+	case storeTrack(StoreTrackTask)
+	case storeVideo(StoreVideoTask)
+	case storeAlbum(StoreAlbumTask)
+	case storePlaylist(StorePlaylistTask)
+	case storeUserCollectionTracks(StoreUserCollectionTracksTask)
 	case removeItem(RemoveItemTask)
 	case removeCollection(RemoveCollectionTask)
 
 	var id: String {
 		switch self {
-		case .storeItem(let task): return task.id
-		case .storeCollection(let task): return task.id
+		case .storeTrack(let task): return task.id
+		case .storeVideo(let task): return task.id
+		case .storeAlbum(let task): return task.id
+		case .storePlaylist(let task): return task.id
+		case .storeUserCollectionTracks(let task): return task.id
 		case .removeItem(let task): return task.id
 		case .removeCollection(let task): return task.id
 		}
@@ -229,12 +214,21 @@ private extension OfflineTasksResourceObject {
 		switch attributes.action {
 		case .store:
 			switch itemData.type {
-			case "tracks", "videos":
-				return StoreItemTask(self, attributes: attributes, item: includedItem, collectionData: collectionData)
-					.map { .storeItem($0) }
-			case "albums", "playlists", "userCollectionTracks":
-				return StoreCollectionTask(self, item: includedItem)
-					.map { .storeCollection($0) }
+			case "tracks":
+				return StoreTrackTask(self, attributes: attributes, item: includedItem, collectionData: collectionData)
+					.map { .storeTrack($0) }
+			case "videos":
+				return StoreVideoTask(self, attributes: attributes, item: includedItem, collectionData: collectionData)
+					.map { .storeVideo($0) }
+			case "albums":
+				return StoreAlbumTask(self, item: includedItem)
+					.map { .storeAlbum($0) }
+			case "playlists":
+				return StorePlaylistTask(self, item: includedItem)
+					.map { .storePlaylist($0) }
+			case "userCollectionTracks":
+				return StoreUserCollectionTracksTask(self, item: includedItem)
+					.map { .storeUserCollectionTracks($0) }
 			default:
 				return nil
 			}
@@ -374,23 +368,6 @@ private class IncludedItem {
 		self.resource = resource
 	}
 
-	var backendItemMetadata: BackendItemMetadata? {
-		switch resource {
-		case .track(let track): return .track(track)
-		case .video(let video): return .video(video)
-		default: return nil
-		}
-	}
-
-	var backendCollectionMetadata: BackendCollectionMetadata? {
-		switch resource {
-		case .album(let album): return .album(album)
-		case .playlist(let playlist): return .playlist(playlist)
-		case .userCollectionTracks(let uct): return .userCollectionTracks(uct)
-		default: return nil
-		}
-	}
-
 	var artistObjects: [ArtistsResourceObject] {
 		artists?.compactMap { item -> ArtistsResourceObject? in
 			if case .artist(let artist) = item.resource { return artist }
@@ -416,22 +393,12 @@ private class IncludedItem {
 
 // MARK: - Task Mapping Extensions
 
-private extension StoreItemTask {
-	init?(
-		_ resourceObject: OfflineTasksResourceObject,
-		attributes: OfflineTasksAttributes,
-		item: IncludedItem?,
-		collectionData: ResourceIdentifier?
-	) {
-		guard let item,
-			  let itemMetadata = item.backendItemMetadata,
-			  let collectionData else {
-			return nil
-		}
-
+private extension StoreTrackTask {
+	init?(_ resourceObject: OfflineTasksResourceObject, attributes: OfflineTasksAttributes, item: IncludedItem?, collectionData: ResourceIdentifier?) {
+		guard let item, case .track(let track) = item.resource, let collectionData else { return nil }
 		self.init(
 			id: resourceObject.id,
-			itemMetadata: itemMetadata,
+			track: track,
 			artists: item.artistObjects,
 			artwork: item.artworkObject,
 			collectionResourceType: collectionData.type,
@@ -439,6 +406,43 @@ private extension StoreItemTask {
 			volume: attributes.volume,
 			position: attributes.position
 		)
+	}
+}
+
+private extension StoreVideoTask {
+	init?(_ resourceObject: OfflineTasksResourceObject, attributes: OfflineTasksAttributes, item: IncludedItem?, collectionData: ResourceIdentifier?) {
+		guard let item, case .video(let video) = item.resource, let collectionData else { return nil }
+		self.init(
+			id: resourceObject.id,
+			video: video,
+			artists: item.artistObjects,
+			artwork: item.artworkObject,
+			collectionResourceType: collectionData.type,
+			collectionResourceId: collectionData.id,
+			volume: attributes.volume,
+			position: attributes.position
+		)
+	}
+}
+
+private extension StoreAlbumTask {
+	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
+		guard let item, case .album(let album) = item.resource else { return nil }
+		self.init(id: resourceObject.id, album: album, artists: item.artistObjects, artwork: item.artworkObject)
+	}
+}
+
+private extension StorePlaylistTask {
+	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
+		guard let item, case .playlist(let playlist) = item.resource else { return nil }
+		self.init(id: resourceObject.id, playlist: playlist, artwork: item.artworkObject)
+	}
+}
+
+private extension StoreUserCollectionTracksTask {
+	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
+		guard let item, case .userCollectionTracks(let uct) = item.resource else { return nil }
+		self.init(id: resourceObject.id, userCollectionTracks: uct)
 	}
 }
 
@@ -453,20 +457,6 @@ private extension RemoveItemTask {
 			resourceId: itemData.id,
 			collectionResourceType: collectionData.type,
 			collectionResourceId: collectionData.id
-		)
-	}
-}
-
-private extension StoreCollectionTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
-		guard let item, let metadata = item.backendCollectionMetadata else {
-			return nil
-		}
-		self.init(
-			id: resourceObject.id,
-			metadata: metadata,
-			artists: item.artistObjects,
-			artwork: item.artworkObject
 		)
 	}
 }

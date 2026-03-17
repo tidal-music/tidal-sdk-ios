@@ -59,6 +59,11 @@ public struct Configuration {
 	/// Determines if the user allows adaptive (variable) bitrate playback for streaming audio.
 	public var allowVariablePlayback: Bool = true
 
+	/// Duration of the crossfade between tracks, in seconds.
+	/// When set, the ending track's volume fades out while the next track's volume fades in.
+	/// When `0`, crossfade is disabled.
+	public var crossfadeDuration: Int = 0
+
 	init(clientVersion: String = Bundle.main.appVersion) {
 		self.clientVersion = clientVersion
 	}

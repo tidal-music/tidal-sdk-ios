@@ -706,7 +706,6 @@ final class PlaybackInfoFetcherTests: XCTestCase {
 	) -> FeatureFlagProvider {
 		FeatureFlagProvider(
 			shouldUseEventProducer: { true },
-			isContentCachingEnabled: { true },
 			shouldPauseAndPlayAroundSeek: { false },
 			shouldNotPerformActionAtItemEnd: { false },
 			shouldUseImprovedDRMHandling: { false },

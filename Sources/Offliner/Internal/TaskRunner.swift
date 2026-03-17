@@ -5,8 +5,11 @@ actor TaskRunner {
 	private static let maxConcurrentTasks = 5
 	private static let maxQueueSize = 80
 
-	private let storeItemHandler: StoreItemHandler
-	private let storeCollectionHandler: StoreCollectionHandler
+	private let storeTrackHandler: StoreTrackHandler
+	private let storeVideoHandler: StoreVideoHandler
+	private let storeAlbumHandler: StoreAlbumHandler
+	private let storePlaylistHandler: StorePlaylistHandler
+	private let storeUserCollectionTracksHandler: StoreUserCollectionTracksHandler
 	private let removeItemHandler: RemoveItemHandler
 	private let removeCollectionHandler: RemoveCollectionHandler
 
@@ -19,6 +22,7 @@ actor TaskRunner {
 
 	private var isRunning = false
 	private var needsRun = false
+	private var cursor: String?
 
 	private(set) var currentDownloads: [Download] = []
 	private var downloadsContinuation: AsyncStream<Download>.Continuation?
@@ -32,7 +36,9 @@ actor TaskRunner {
 		offlineApiClient: OfflineApiClientProtocol,
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
-		mediaDownloader: MediaDownloaderProtocol
+		mediaDownloader: MediaDownloaderProtocol,
+		trackManifestFetcher: TrackManifestFetcherProtocol,
+		videoManifestFetcher: VideoManifestFetcherProtocol
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.allowDownloadsOnExpensiveNetworks = configuration.allowDownloadsOnExpensiveNetworks
@@ -42,16 +48,33 @@ actor TaskRunner {
 		self.newDownloads = stream
 		self.downloadsContinuation = continuation
 
-		self.storeItemHandler = StoreItemHandler(
+		self.storeTrackHandler = StoreTrackHandler(
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
-			mediaDownloader: mediaDownloader
+			mediaDownloader: mediaDownloader,
+			manifestFetcher: trackManifestFetcher
 		)
-		self.storeCollectionHandler = StoreCollectionHandler(
+		self.storeVideoHandler = StoreVideoHandler(
+			offlineApiClient: offlineApiClient,
+			offlineStore: offlineStore,
+			artworkDownloader: artworkDownloader,
+			mediaDownloader: mediaDownloader,
+			manifestFetcher: videoManifestFetcher
+		)
+		self.storeAlbumHandler = StoreAlbumHandler(
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
+		)
+		self.storePlaylistHandler = StorePlaylistHandler(
+			offlineApiClient: offlineApiClient,
+			offlineStore: offlineStore,
+			artworkDownloader: artworkDownloader
+		)
+		self.storeUserCollectionTracksHandler = StoreUserCollectionTracksHandler(
+			offlineApiClient: offlineApiClient,
+			offlineStore: offlineStore
 		)
 		self.removeItemHandler = RemoveItemHandler(
 			offlineApiClient: offlineApiClient,
@@ -95,7 +118,7 @@ actor TaskRunner {
 	}
 
 	private func refresh() async throws {
-		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
+		let (tasks, cursor) = try await offlineApiClient.getTasks(cursor: self.cursor)
 
 		for task in tasks where taskIds.insert(task.id).inserted {
 			let internalTask = handle(task)
@@ -105,12 +128,19 @@ actor TaskRunner {
 				downloadsContinuation?.yield(download)
 			}
 		}
+
+		if let cursor {
+			self.cursor = cursor
+		}
 	}
 
 	private func handle(_ offlineTask: OfflineTask) -> InternalTask {
 		switch offlineTask {
-		case .storeItem(let task): storeItemHandler.handle(task)
-		case .storeCollection(let task): storeCollectionHandler.handle(task)
+		case .storeTrack(let task): storeTrackHandler.handle(task)
+		case .storeVideo(let task): storeVideoHandler.handle(task)
+		case .storeAlbum(let task): storeAlbumHandler.handle(task)
+		case .storePlaylist(let task): storePlaylistHandler.handle(task)
+		case .storeUserCollectionTracks(let task): storeUserCollectionTracksHandler.handle(task)
 		case .removeItem(let task): removeItemHandler.handle(task)
 		case .removeCollection(let task): removeCollectionHandler.handle(task)
 		}

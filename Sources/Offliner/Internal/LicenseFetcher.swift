@@ -67,7 +67,7 @@ private extension LicenseFetcher {
 		let data = try await httpClient.post(
 			url: Self.licenseURL,
 			headers: [
-				"Authorization": token,
+				"Authorization": "Bearer \(token)",
 				"Content-Type": "application/octet-stream"
 			],
 			body: spc

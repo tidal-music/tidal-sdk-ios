@@ -18,7 +18,14 @@ final class PlayerLoaderMock: PlayerLoader {
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider = .mock,
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
-		mainPlayer: MainPlayerType.Type = PlayerMock.self,
+		avQueuePlayerWrapper: AVQueuePlayerWrapper = AVQueuePlayerWrapper(
+			cachePath: URL(fileURLWithPath: NSTemporaryDirectory()),
+			featureFlagProvider: .mock
+		),
+		crossfadingPlayerWrapper: CrossfadingPlayerWrapper = CrossfadingPlayerWrapper(
+			cachePath: URL(fileURLWithPath: NSTemporaryDirectory()),
+			featureFlagProvider: .mock
+		),
 		externalPlayers: [GenericMediaPlayer.Type] = []
 	) {}
 
@@ -60,6 +67,8 @@ final class PlayerLoaderMock: PlayerLoader {
 		resetCallCount += 1
 		player.reset()
 	}
+
+	func updateConfiguration(_ configuration: Configuration) {}
 
 	func renderVideo(in view: AVPlayerLayer) {}
 }

@@ -14,24 +14,24 @@ final class CollectionDurationTests: OfflinerTestCase {
 		let albumId = "album-duration"
 
 		backend.enqueueTasks([
-			.storeCollection(StoreCollectionTask(
+			.storeAlbum(StoreAlbumTask(
 				id: "task-collection",
-				metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
+				album: AlbumsResourceObject(id: albumId, type: "albums"),
 				artists: [],
 				artwork: nil
 			)),
-			.storeItem(makeTrackTask(id: "task-1", trackId: "track-1", albumId: albumId, duration: "PT3M30S", volume: 1, position: 1)),
-			.storeItem(makeTrackTask(id: "task-2", trackId: "track-2", albumId: albumId, duration: "PT4M15S", volume: 1, position: 2)),
-			.storeItem(makeTrackTask(id: "task-3", trackId: "track-3", albumId: albumId, duration: "PT2M0S", volume: 1, position: 3)),
-			.storeItem(makeTrackTask(id: "task-4", trackId: "track-4", albumId: albumId, duration: "PT99H0M0S", volume: 1, position: 4)),
+			.storeTrack(makeTrackTask(id: "task-1", trackId: "track-1", albumId: albumId, duration: "PT3M30S", volume: 1, position: 1)),
+			.storeTrack(makeTrackTask(id: "task-2", trackId: "track-2", albumId: albumId, duration: "PT4M15S", volume: 1, position: 2)),
+			.storeTrack(makeTrackTask(id: "task-3", trackId: "track-3", albumId: albumId, duration: "PT2M0S", volume: 1, position: 3)),
+			.storeTrack(makeTrackTask(id: "task-4", trackId: "track-4", albumId: albumId, duration: "PT99H0M0S", volume: 1, position: 4)),
 		])
 
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 4)
 
 		let duration = try await offliner.getCollectionDuration(collectionType: .albums, resourceId: albumId)
 
-		// 3:30 = 210s, 4:15 = 255s, 2:00 = 120s, 99:00:00 = 356400s → total = 356985s
-		XCTAssertEqual(duration, 356985)
+		// 4 tracks × 120s (from SucceedingMediaDownloader) = 480s
+		XCTAssertEqual(duration, 480)
 	}
 
 	func testCollectionDurationReturnsZeroForEmptyCollection() async throws {
@@ -45,9 +45,9 @@ final class CollectionDurationTests: OfflinerTestCase {
 		let albumId = "album-empty"
 
 		backend.enqueueTasks([
-			.storeCollection(StoreCollectionTask(
+			.storeAlbum(StoreAlbumTask(
 				id: "task-collection",
-				metadata: .album(AlbumsResourceObject(id: albumId, type: "albums")),
+				album: AlbumsResourceObject(id: albumId, type: "albums"),
 				artists: [],
 				artwork: nil
 			)),
@@ -81,7 +81,7 @@ final class CollectionDurationTests: OfflinerTestCase {
 		duration: String,
 		volume: Int,
 		position: Int
-	) -> StoreItemTask {
+	) -> StoreTrackTask {
 		let attributes = TracksAttributes(
 			duration: duration,
 			explicit: false,
@@ -93,9 +93,9 @@ final class CollectionDurationTests: OfflinerTestCase {
 			title: "Track \(trackId)"
 		)
 
-		return StoreItemTask(
+		return StoreTrackTask(
 			id: id,
-			itemMetadata: .track(TracksResourceObject(attributes: attributes, id: trackId, type: "tracks")),
+			track: TracksResourceObject(attributes: attributes, id: trackId, type: "tracks"),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",
