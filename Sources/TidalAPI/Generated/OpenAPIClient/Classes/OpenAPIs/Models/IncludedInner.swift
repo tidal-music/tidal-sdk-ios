@@ -56,6 +56,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userCollectionTracksResourceObject(UserCollectionTracksResourceObject)
     case userCollectionVideosResourceObject(UserCollectionVideosResourceObject)
     case userCollectionsResourceObject(UserCollectionsResourceObject)
+    case userDataExportRequestsResourceObject(UserDataExportRequestsResourceObject)
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
     case userReportsResourceObject(UserReportsResourceObject)
     case usersResourceObject(UsersResourceObject)
@@ -154,6 +155,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .userCollectionVideosResourceObject(let value):
             try container.encode(value)
         case .userCollectionsResourceObject(let value):
+            try container.encode(value)
+        case .userDataExportRequestsResourceObject(let value):
             try container.encode(value)
         case .userRecommendationsResourceObject(let value):
             try container.encode(value)
@@ -312,6 +315,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userCollections":
             let value = try UserCollectionsResourceObject(from: decoder)
             self = .userCollectionsResourceObject(value)
+        case "userDataExportRequests":
+            let value = try UserDataExportRequestsResourceObject(from: decoder)
+            self = .userDataExportRequestsResourceObject(value)
         case "userRecommendations":
             let value = try UserRecommendationsResourceObject(from: decoder)
             self = .userRecommendationsResourceObject(value)
@@ -382,6 +388,7 @@ extension IncludedInner: Identifiable {
         case .userCollectionTracksResourceObject(let value): return value.id
         case .userCollectionVideosResourceObject(let value): return value.id
         case .userCollectionsResourceObject(let value): return value.id
+        case .userDataExportRequestsResourceObject(let value): return value.id
         case .userRecommendationsResourceObject(let value): return value.id
         case .userReportsResourceObject(let value): return value.id
         case .usersResourceObject(let value): return value.id
