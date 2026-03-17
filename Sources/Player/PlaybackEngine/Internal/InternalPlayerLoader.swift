@@ -38,7 +38,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		self.credentialsProvider = credentialsProvider
 		self.featureFlagProvider = featureFlagProvider
 		crossfadePlayer = crossfadingPlayerWrapper
-		crossfadePlayer.crossfadeDuration = configuration.crossfadeDuration ?? 0
+		crossfadePlayer.crossfadeDuration = configuration.crossfadeDuration
 		videoPlayer = avQueuePlayerWrapper
 
 		let fileManager = PlayerWorld.fileManagerClient
@@ -59,7 +59,7 @@ final class InternalPlayerLoader: PlayerLoader {
 
 	func updateConfiguration(_ configuration: Configuration) {
 		self.configuration = configuration
-		crossfadePlayer.crossfadeDuration = configuration.crossfadeDuration ?? 0
+		crossfadePlayer.crossfadeDuration = configuration.crossfadeDuration
 	}
 
 	func load(_ offlinedProduct: PlayableOfflinedMediaProduct) async throws -> Asset {
@@ -302,7 +302,7 @@ private extension InternalPlayerLoader {
 				),
 				mediaType: mediaType,
 				isOfflined: isOfflined,
-				crossfade: configuration.crossfadeDuration != nil
+				crossfade: configuration.crossfadeDuration > 0
 			)
 		}
 

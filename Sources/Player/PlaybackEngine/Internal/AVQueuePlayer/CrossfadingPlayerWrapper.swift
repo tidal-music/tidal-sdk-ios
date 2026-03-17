@@ -10,7 +10,7 @@ private enum Constants {
 final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 	private let cachePath: URL
 	private let featureFlagProvider: FeatureFlagProvider
-	var crossfadeDuration: Double = 0
+	var crossfadeDuration: Int = 0
 	fileprivate var currentPlayer: AVQueuePlayerWrapper
 	fileprivate var nextPlayer: AVQueuePlayerWrapper
 
@@ -152,7 +152,7 @@ extension CrossfadingPlayerWrapper {
 	}
 
 	fileprivate func handlePlaybackProgress(position: Double, duration: Double) {
-		let crossfadeStart = max(0, duration - crossfadeDuration)
+		let crossfadeStart = max(0, duration - Double(crossfadeDuration))
 		guard position >= crossfadeStart,
 		      !isCrossfading,
 		      !PlayerWorld.audioInfoProvider.isAirPlayOutputRoute(),
