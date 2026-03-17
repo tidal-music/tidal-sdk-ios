@@ -1,6 +1,8 @@
 import Foundation
 import TidalAPI
 
+// MARK: - StorePlaylistHandler
+
 final class StorePlaylistHandler {
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
@@ -14,6 +16,8 @@ final class StorePlaylistHandler {
 		InternalPlaylistTask(task: task, offlineStore: offlineStore, artworkDownloader: artworkDownloader)
 	}
 }
+
+// MARK: - InternalPlaylistTask
 
 private final class InternalPlaylistTask: InternalTask {
 	let id: String
@@ -32,9 +36,12 @@ private final class InternalPlaylistTask: InternalTask {
 	func run() async throws {
 		let artworkURL = try await artworkDownloader.downloadArtwork(for: task.artwork)
 
+		let backgroundColorHex = task.artwork?.attributes?.visualMetadata?.selectedPaletteColor
+
 		let catalogMetadata = OfflineCollection.Metadata.playlist(OfflineCollection.PlaylistMetadata(
 			id: task.playlist.id,
-			title: task.playlist.attributes?.name ?? ""
+			title: task.playlist.attributes?.name ?? "",
+			backgroundColorHex: backgroundColorHex
 		))
 
 		let result = StoreCollectionTaskResult(
