@@ -18,6 +18,7 @@ Name | Type | Description | Notes
 **selectedAlbums** | **[String]** |  | [optional] 
 **selectedSingles** | **[String]** |  | [optional] 
 **socialLink** | [**LinkObject**](LinkObject.md) |  | [optional] 
+**upcs** | **[String]** |  | [optional] 
 **websiteOrSocialLink** | [**LinkObject**](LinkObject.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
