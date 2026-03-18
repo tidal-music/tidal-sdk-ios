@@ -41,8 +41,8 @@ public struct OfflineMediaItem {
 
 		public var id: String {
 			switch self {
-			case .track(let metadata): return metadata.id
-			case .video(let metadata): return metadata.id
+			case let .track(metadata): metadata.id
+			case let .video(metadata): metadata.id
 			}
 		}
 	}
@@ -67,7 +67,7 @@ public struct OfflineMediaItem {
 
 // MARK: - OfflineCollection
 
-public struct OfflineCollection {
+public struct OfflineCollection: Hashable {
 	public struct AlbumMetadata: Codable {
 		public let id: String
 		public let title: String
@@ -82,16 +82,39 @@ public struct OfflineCollection {
 		public let title: String
 	}
 
-	public enum Metadata {
+	public enum Metadata: Hashable {
 		case album(AlbumMetadata)
 		case playlist(PlaylistMetadata)
 		case userCollectionTracks(id: String)
 
 		public var id: String {
 			switch self {
-			case .album(let metadata): return metadata.id
-			case .playlist(let metadata): return metadata.id
-			case .userCollectionTracks(let id): return id
+			case let .album(metadata): metadata.id
+			case let .playlist(metadata): metadata.id
+			case let .userCollectionTracks(id): id
+			}
+		}
+
+		public static func == (lhs: Metadata, rhs: Metadata) -> Bool {
+			switch (lhs, rhs) {
+			case let (.album(l), .album(r)): l.id == r.id
+			case let (.playlist(l), .playlist(r)): l.id == r.id
+			case let (.userCollectionTracks(l), .userCollectionTracks(r)): l == r
+			default: false
+			}
+		}
+
+		public func hash(into hasher: inout Hasher) {
+			switch self {
+			case let .album(metadata):
+				hasher.combine(0)
+				hasher.combine(metadata.id)
+			case let .playlist(metadata):
+				hasher.combine(1)
+				hasher.combine(metadata.id)
+			case let .userCollectionTracks(id):
+				hasher.combine(2)
+				hasher.combine(id)
 			}
 		}
 	}
