@@ -17,7 +17,7 @@ actor TaskRunner {
 	private let network: Network
 
 	private var pendingTasks: [InternalTask] = []
-	private var inProgressTasks: [InternalTask] = []
+	private var runningTasks: [InternalTask] = []
 	private var taskIds: Set<String> = []
 
 	private var isRunning = false
@@ -49,39 +49,32 @@ actor TaskRunner {
 		self.downloadsContinuation = continuation
 
 		self.storeTrackHandler = StoreTrackHandler(
-			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			manifestFetcher: trackManifestFetcher
 		)
 		self.storeVideoHandler = StoreVideoHandler(
-			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			manifestFetcher: videoManifestFetcher
 		)
 		self.storeAlbumHandler = StoreAlbumHandler(
-			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
 		)
 		self.storePlaylistHandler = StorePlaylistHandler(
-			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
 		)
 		self.storeUserCollectionTracksHandler = StoreUserCollectionTracksHandler(
-			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore
 		)
 		self.removeItemHandler = RemoveItemHandler(
-			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore
 		)
 		self.removeCollectionHandler = RemoveCollectionHandler(
-			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore
 		)
 	}
@@ -102,9 +95,8 @@ actor TaskRunner {
 				try await refresh()
 			}
 
-			while inProgressTasks.count < Self.maxConcurrentTasks, !pendingTasks.isEmpty {
+			while runningTasks.count < Self.maxConcurrentTasks, !pendingTasks.isEmpty {
 				let task = pendingTasks.removeFirst()
-				inProgressTasks.append(task)
 				start(task)
 			}
 		} while needsRun
@@ -121,9 +113,9 @@ actor TaskRunner {
 		let (tasks, cursor) = try await offlineApiClient.getTasks(cursor: self.cursor)
 
 		for task in tasks where taskIds.insert(task.id).inserted {
-			let internalTask = handle(task)
-			pendingTasks.append(internalTask)
-			if let download = internalTask.download {
+			let pendingTask = handle(task)
+			pendingTasks.append(pendingTask)
+			if let download = pendingTask.download {
 				currentDownloads.append(download)
 				downloadsContinuation?.yield(download)
 			}
@@ -147,23 +139,37 @@ actor TaskRunner {
 	}
 
 	private func start(_ task: InternalTask) {
-		let allowDownloadsOnExpensiveNetworks = allowDownloadsOnExpensiveNetworks
-		let network = network
+		let canUseExpensiveNetworks = allowDownloadsOnExpensiveNetworks
+		let currentNetwork = network
+
+		runningTasks.append(task)
+
 		Task { [weak self] in
-			if network.isInexpensive || allowDownloadsOnExpensiveNetworks {
-				await task.run()
-				await self?.finalize(task)
+			guard currentNetwork.isInexpensive || canUseExpensiveNetworks else { return }
+
+			await task.download?.updateState(.inProgress)
+			try? await self?.offlineApiClient.updateTask(taskId: task.id, state: .inProgress)
+
+			do {
+				try await task.run()
+				await task.download?.updateState(.completed)
+				try? await self?.offlineApiClient.updateTask(taskId: task.id, state: .completed)
+			} catch {
+				print("Task \(task.id) failed: \(error)")
+				await task.download?.updateState(.failed)
+				try? await self?.offlineApiClient.updateTask(taskId: task.id, state: .failed)
 			}
+
+			await self?.finalize(task)
 		}
 	}
 
 	private func finalize(_ task: InternalTask) async {
-		inProgressTasks.removeAll { $0 === task }
+		runningTasks.removeAll { $0.id == task.id }
 		taskIds.remove(task.id)
 		if let download = task.download {
 			currentDownloads.removeAll { $0 === download }
 		}
-
 		try? await run()
 	}
 }
@@ -188,7 +194,7 @@ private final class Network {
 protocol InternalTask: AnyObject {
 	var id: String { get }
 	var download: Download? { get }
-	func run() async
+	func run() async throws
 }
 
 extension InternalTask {

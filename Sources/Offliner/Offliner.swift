@@ -8,6 +8,7 @@ public final class Offliner {
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
+	private let mediaDownloader: MediaDownloaderProtocol
 	private var trackManifestFetcher: TrackManifestFetcherProtocol
 
 	public var audioFormats: [AudioFormat] {
@@ -30,6 +31,10 @@ public final class Offliner {
 		}
 	}
 
+	public func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {
+		mediaDownloader.handleBackgroundURLSessionEvents(identifier: identifier, completionHandler: completionHandler)
+	}
+
 	public init(installationId: String, configuration: Configuration) throws {
 		let databaseQueue = try DatabaseQueue(path: OfflineStore.url().path)
 		try Migrations.run(databaseQueue)
@@ -43,6 +48,7 @@ public final class Offliner {
 
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
+		self.mediaDownloader = mediaDownloader
 		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
@@ -67,6 +73,7 @@ public final class Offliner {
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
+		self.mediaDownloader = mediaDownloader
 		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
