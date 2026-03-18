@@ -19,21 +19,25 @@ public struct DrmData: Codable, Hashable {
     }
     public var certificateUrl: String?
     public var drmSystem: DrmSystem?
+    public var initData: [String]?
     public var licenseUrl: String?
 
     public init(
         certificateUrl: String? = nil,
         drmSystem: DrmSystem? = nil,
+        initData: [String]? = nil,
         licenseUrl: String? = nil
     ) {
         self.certificateUrl = certificateUrl
         self.drmSystem = drmSystem
+        self.initData = initData
         self.licenseUrl = licenseUrl
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case certificateUrl
         case drmSystem
+        case initData
         case licenseUrl
     }
 
@@ -43,6 +47,7 @@ public struct DrmData: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(certificateUrl, forKey: .certificateUrl)
         try container.encodeIfPresent(drmSystem, forKey: .drmSystem)
+        try container.encodeIfPresent(initData, forKey: .initData)
         try container.encodeIfPresent(licenseUrl, forKey: .licenseUrl)
     }
 }

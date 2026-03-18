@@ -20,6 +20,7 @@ public struct AlbumsRelationships: Codable, Hashable {
     public var owners: MultiRelationshipDataDocument?
     public var priceConfig: SingleRelationshipDataDocument?
     public var providers: MultiRelationshipDataDocument?
+    public var replacement: SingleRelationshipDataDocument?
     public var similarAlbums: MultiRelationshipDataDocument?
     public var suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument?
     public var usageRules: SingleRelationshipDataDocument?
@@ -33,6 +34,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         owners: MultiRelationshipDataDocument? = nil,
         priceConfig: SingleRelationshipDataDocument? = nil,
         providers: MultiRelationshipDataDocument? = nil,
+        replacement: SingleRelationshipDataDocument? = nil,
         similarAlbums: MultiRelationshipDataDocument? = nil,
         suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = nil,
         usageRules: SingleRelationshipDataDocument? = nil
@@ -45,6 +47,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         self.owners = owners
         self.priceConfig = priceConfig
         self.providers = providers
+        self.replacement = replacement
         self.similarAlbums = similarAlbums
         self.suggestedCoverArts = suggestedCoverArts
         self.usageRules = usageRules
@@ -59,6 +62,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         case owners
         case priceConfig
         case providers
+        case replacement
         case similarAlbums
         case suggestedCoverArts
         case usageRules
@@ -76,6 +80,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         try container.encodeIfPresent(owners, forKey: .owners)
         try container.encodeIfPresent(priceConfig, forKey: .priceConfig)
         try container.encodeIfPresent(providers, forKey: .providers)
+        try container.encodeIfPresent(replacement, forKey: .replacement)
         try container.encodeIfPresent(similarAlbums, forKey: .similarAlbums)
         try container.encodeIfPresent(suggestedCoverArts, forKey: .suggestedCoverArts)
         try container.encodeIfPresent(usageRules, forKey: .usageRules)

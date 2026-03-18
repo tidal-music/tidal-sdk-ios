@@ -22,6 +22,7 @@ Name | Type | Description | Notes
 **selectedSingles** | **[String]** | Single IDs selected by user | [optional] 
 **socialLink** | [**LinkObject**](LinkObject.md) |  | [optional] 
 **status** | **String** | Claim status | [optional] 
+**upcs** | **[String]** | UPCs associated with the claim | [optional] 
 **websiteOrSocialLink** | [**LinkObject**](LinkObject.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
