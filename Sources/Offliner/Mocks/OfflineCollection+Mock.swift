@@ -23,7 +23,8 @@ public extension OfflineCollection.AlbumMetadata {
 		artists: [String] = ["Mock Artist"],
 		copyright: String? = "2025 Mock Records",
 		releaseDate: Date? = Date(timeIntervalSince1970: 1_704_067_200),
-		explicit: Bool = false
+		explicit: Bool = false,
+		backgroundColorHex: String? = nil
 	) -> Self {
 		.init(
 			id: id,
@@ -31,7 +32,8 @@ public extension OfflineCollection.AlbumMetadata {
 			artists: artists,
 			copyright: copyright,
 			releaseDate: releaseDate,
-			explicit: explicit
+			explicit: explicit,
+			backgroundColorHex: backgroundColorHex
 		)
 	}
 }
@@ -41,11 +43,13 @@ public extension OfflineCollection.AlbumMetadata {
 public extension OfflineCollection.PlaylistMetadata {
 	static func mock(
 		id: String = "playlist-456",
-		title: String = "Mock Playlist"
+		title: String = "Mock Playlist",
+		backgroundColorHex: String? = nil
 	) -> Self {
 		.init(
 			id: id,
-			title: title
+			title: title,
+			backgroundColorHex: backgroundColorHex
 		)
 	}
 }

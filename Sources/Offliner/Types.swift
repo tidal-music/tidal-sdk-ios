@@ -75,11 +75,15 @@ public struct OfflineCollection: Hashable {
 		public let copyright: String?
 		public let releaseDate: Date?
 		public let explicit: Bool
+		/// Hex color string (e.g. "#A34F2B") extracted from artwork visual metadata at download time.
+		public let backgroundColorHex: String?
 	}
 
 	public struct PlaylistMetadata: Codable {
 		public let id: String
 		public let title: String
+		/// Hex color string (e.g. "#A34F2B") extracted from artwork visual metadata at download time.
+		public let backgroundColorHex: String?
 	}
 
 	public enum Metadata: Hashable {
