@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **priceConfig** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
 **providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**replacement** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
 **similarAlbums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **suggestedCoverArts** | [**AlbumsSuggestedCoverArtsMultiRelationshipDataDocument**](AlbumsSuggestedCoverArtsMultiRelationshipDataDocument.md) |  | [optional] 
 **usageRules** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
