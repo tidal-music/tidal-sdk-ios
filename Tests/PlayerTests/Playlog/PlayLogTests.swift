@@ -1492,12 +1492,14 @@ extension PlayLogTests {
 
 private extension PlayLogTests {
 	func setUpPlayerEngine() {
+		let cachePath = URL(fileURLWithPath: NSTemporaryDirectory())
 		playerLoader = InternalPlayerLoader(
 			with: configuration,
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
 			credentialsProvider: credentialsProvider,
-			mainPlayer: Player.mainPlayerType(featureFlagProvider),
+			avQueuePlayerWrapper: AVQueuePlayerWrapper(cachePath: cachePath, featureFlagProvider: featureFlagProvider),
+			crossfadingPlayerWrapper: CrossfadingPlayerWrapper(cachePath: cachePath, featureFlagProvider: featureFlagProvider),
 			externalPlayers: []
 		)
 

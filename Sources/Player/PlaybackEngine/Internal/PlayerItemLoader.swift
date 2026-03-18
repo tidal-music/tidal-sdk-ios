@@ -48,6 +48,7 @@ final class PlayerItemLoader {
 
 	func updateConfiguration(_ configuration: Configuration) {
 		self.configuration = configuration
+		playerLoader.updateConfiguration(configuration)
 	}
 
 	func setOfflineItemProvider(_ provider: OfflineItemProvider?) {
