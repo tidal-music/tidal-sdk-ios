@@ -7,7 +7,6 @@ import Foundation
 struct MediaDownloadResult {
 	let duration: Int
 	let mediaLocation: URL
-	let licenseLocation: URL?
 }
 
 // MARK: - MediaDownloaderProtocol
@@ -15,7 +14,7 @@ struct MediaDownloadResult {
 protocol MediaDownloaderProtocol {
 	func download(
 		manifestURL: URL,
-		contentKeySession: AVContentKeySession?,
+		licenseDownloadResult: LicenseDownloadResult?,
 		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult
@@ -28,14 +27,12 @@ protocol MediaDownloaderProtocol {
 final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	static let backgroundSessionIdentifier = "com.tidal.offliner.download.session"
 
-	private let licenseFetcher: LicenseFetcher
 	private let queue: DispatchQueue
 	private var session: AVAssetDownloadURLSession!
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 	private var backgroundCompletionHandler: (() -> Void)?
 
 	init(configuration: Configuration) {
-		self.licenseFetcher = LicenseFetcher()
 		self.queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
 
 		super.init()
@@ -60,12 +57,12 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 
 	func download(
 		manifestURL: URL,
-		contentKeySession: AVContentKeySession?,
+		licenseDownloadResult: LicenseDownloadResult?,
 		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
 		let asset = AVURLAsset(url: manifestURL)
-		contentKeySession?.addContentKeyRecipient(asset)
+		licenseDownloadResult?.contentKeySession.addContentKeyRecipient(asset)
 
 		let duration = Int(CMTimeGetSeconds(try await asset.load(.duration)))
 
@@ -84,13 +81,8 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 				let activeDownload = ActiveDownload(
 					duration: duration,
 					continuation: continuation,
-					onProgress: onProgress,
-					contentKeySession: contentKeySession,
-					licenseFetcher: self.licenseFetcher,
-					queue: self.queue
+					onProgress: onProgress
 				)
-
-				contentKeySession?.setDelegate(activeDownload, queue: self.queue)
 
 				self.activeDownloads[task.taskIdentifier] = activeDownload
 				task.resume()
@@ -119,36 +111,21 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 			return
 		}
 
-		Task { [weak self] in
-			// Wait for license fetch to complete if needed
-			let licenseLocation = await activeDownload.licenseTask?.value
-
-			self?.queue.async {
-				activeDownload.contentKeySession?.setDelegate(nil, queue: nil)
-
-				if let error {
-					activeDownload.continuation.resume(throwing: error)
-					return
-				}
-
-				guard let mediaLocation = activeDownload.downloadedLocation else {
-					activeDownload.continuation.resume(throwing: MediaDownloaderError.noDownloadedFile)
-					return
-				}
-
-				if activeDownload.licenseTask != nil && licenseLocation == nil {
-					activeDownload.continuation.resume(throwing: MediaDownloaderError.licenseFailed)
-					return
-				}
-
-				let result = MediaDownloadResult(
-					duration: activeDownload.duration,
-					mediaLocation: mediaLocation,
-					licenseLocation: licenseLocation
-				)
-				activeDownload.continuation.resume(returning: result)
-			}
+		if let error {
+			activeDownload.continuation.resume(throwing: error)
+			return
 		}
+
+		guard let mediaLocation = activeDownload.downloadedLocation else {
+			activeDownload.continuation.resume(throwing: MediaDownloaderError.noDownloadedFile)
+			return
+		}
+
+		let result = MediaDownloadResult(
+			duration: activeDownload.duration,
+			mediaLocation: mediaLocation
+		)
+		activeDownload.continuation.resume(returning: result)
 	}
 
 	func urlSession(
@@ -177,84 +154,21 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 
 // MARK: - ActiveDownload
 
-private final class ActiveDownload: NSObject {
+private final class ActiveDownload {
 	let duration: Int
 	let continuation: CheckedContinuation<MediaDownloadResult, Error>
 	let onProgress: @Sendable (Double) async -> Void
-	let contentKeySession: AVContentKeySession?
-	let licenseFetcher: LicenseFetcher
-	let queue: DispatchQueue
 
 	var downloadedLocation: URL?
-	var licenseTask: Task<URL?, Never>?
 
 	init(
 		duration: Int,
 		continuation: CheckedContinuation<MediaDownloadResult, Error>,
-		onProgress: @escaping @Sendable (Double) async -> Void,
-		contentKeySession: AVContentKeySession?,
-		licenseFetcher: LicenseFetcher,
-		queue: DispatchQueue
+		onProgress: @escaping @Sendable (Double) async -> Void
 	) {
 		self.duration = duration
 		self.continuation = continuation
 		self.onProgress = onProgress
-		self.contentKeySession = contentKeySession
-		self.licenseFetcher = licenseFetcher
-		self.queue = queue
-	}
-}
-
-// MARK: - AVContentKeySessionDelegate
-
-extension ActiveDownload: AVContentKeySessionDelegate {
-	func contentKeySession(
-		_ session: AVContentKeySession,
-		didProvide keyRequest: AVContentKeyRequest
-	) {
-		do {
-			try keyRequest.respondByRequestingPersistableContentKeyRequest()
-		} catch {
-			keyRequest.processContentKeyResponseError(error)
-		}
-	}
-
-	func contentKeySession(
-		_ session: AVContentKeySession,
-		didProvide keyRequest: AVPersistableContentKeyRequest
-	) {
-		licenseTask = Task { [weak self] in
-			guard let self else { return nil }
-
-			do {
-				let license = try await licenseFetcher.getLicense(for: keyRequest)
-				let url = try FileStorage.store(
-					license,
-					subdirectory: "Licenses",
-					filename: "\(UUID().uuidString).key"
-				)
-
-				queue.async {
-					let keyResponse = AVContentKeyResponse(fairPlayStreamingKeyResponseData: license)
-					keyRequest.processContentKeyResponse(keyResponse)
-				}
-
-				return url
-			} catch {
-				queue.async {
-					keyRequest.processContentKeyResponseError(error)
-				}
-				return nil
-			}
-		}
-	}
-
-	func contentKeySession(
-		_ session: AVContentKeySession,
-		contentKeyRequest keyRequest: AVContentKeyRequest,
-		didFailWithError error: Error
-	) {
-		keyRequest.processContentKeyResponseError(error)
 	}
 }
 
@@ -263,6 +177,5 @@ extension ActiveDownload: AVContentKeySessionDelegate {
 enum MediaDownloaderError: Error {
 	case failedToCreateTask
 	case noDownloadedFile
-	case licenseFailed
 	case manifestNotFound
 }

@@ -232,7 +232,7 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 
 	func download(
 		manifestURL: URL,
-		contentKeySession: AVContentKeySession?,
+		licenseDownloadResult: LicenseDownloadResult?,
 		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
@@ -246,8 +246,7 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 
 		return MediaDownloadResult(
 			duration: 120,
-			mediaLocation: url,
-			licenseLocation: nil
+			mediaLocation: url
 		)
 	}
 }
@@ -257,7 +256,7 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 
 	func download(
 		manifestURL: URL,
-		contentKeySession: AVContentKeySession?,
+		licenseDownloadResult: LicenseDownloadResult?,
 		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
@@ -273,7 +272,7 @@ final class SucceedingTrackManifestFetcher: TrackManifestFetcherProtocol {
 	func fetchTrackManifest(trackId: String) async throws -> ManifestFetchResult {
 		ManifestFetchResult(
 			manifestURL: URL(string: "data:application/vnd.apple.mpegurl;base64,fake")!,
-			contentKeySession: nil,
+			drmData: nil,
 			playbackMetadata: nil
 		)
 	}
@@ -283,7 +282,7 @@ final class SucceedingVideoManifestFetcher: VideoManifestFetcherProtocol {
 	func fetchVideoManifest(videoId: String) async throws -> ManifestFetchResult {
 		ManifestFetchResult(
 			manifestURL: URL(string: "data:application/vnd.apple.mpegurl;base64,fake")!,
-			contentKeySession: nil,
+			drmData: nil,
 			playbackMetadata: nil
 		)
 	}

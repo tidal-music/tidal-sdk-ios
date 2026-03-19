@@ -7,17 +7,20 @@ final class StoreTrackHandler {
 	private let artworkDownloader: ArtworkDownloaderProtocol
 	private let mediaDownloader: MediaDownloaderProtocol
 	private let manifestFetcher: TrackManifestFetcherProtocol
+	private let licenseDownloader: LicenseDownloader
 
 	init(
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
-		manifestFetcher: TrackManifestFetcherProtocol
+		manifestFetcher: TrackManifestFetcherProtocol,
+		licenseDownloader: LicenseDownloader
 	) {
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
 		self.manifestFetcher = manifestFetcher
+		self.licenseDownloader = licenseDownloader
 	}
 
 	func handle(_ task: StoreTrackTask) -> InternalTask {
@@ -30,7 +33,8 @@ final class StoreTrackHandler {
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
-			manifestFetcher: manifestFetcher
+			manifestFetcher: manifestFetcher,
+			licenseDownloader: licenseDownloader
 		)
 	}
 }
@@ -44,6 +48,7 @@ private final class InternalTrackTask: InternalTask {
 	private let artworkDownloader: ArtworkDownloaderProtocol
 	private let mediaDownloader: MediaDownloaderProtocol
 	private let manifestFetcher: TrackManifestFetcherProtocol
+	private let licenseDownloader: LicenseDownloader
 
 	init(
 		task: StoreTrackTask,
@@ -51,7 +56,8 @@ private final class InternalTrackTask: InternalTask {
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
-		manifestFetcher: TrackManifestFetcherProtocol
+		manifestFetcher: TrackManifestFetcherProtocol,
+		licenseDownloader: LicenseDownloader
 	) {
 		self.id = task.id
 		self.task = task
@@ -60,6 +66,7 @@ private final class InternalTrackTask: InternalTask {
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
 		self.manifestFetcher = manifestFetcher
+		self.licenseDownloader = licenseDownloader
 	}
 
 	func run() async throws {
@@ -68,10 +75,12 @@ private final class InternalTrackTask: InternalTask {
 
 		let (artworkURL, manifest) = try await (artworkTask, manifestTask)
 
+		let licenseResult = try await licenseDownloader.downloadLicense(drmData: manifest.drmData)
+
 		let mediaResult = try await mediaDownloader.download(
 			manifestURL: manifest.manifestURL,
-			contentKeySession: manifest.contentKeySession,
-			title: "\(task.artists.compactMap {$0.attributes?.name}.joined(separator: ",")) - \(task.track.attributes?.title ?? "")",
+			licenseDownloadResult: licenseResult,
+			title: "\(task.artists.compactMap { $0.attributes?.name }.joined(separator: ",")) - \(task.track.attributes?.title ?? "")",
 			onProgress: { [weak self] progress in
 				guard let download = self?.download else { return }
 				await download.updateProgress(progress)
@@ -96,7 +105,7 @@ private final class InternalTrackTask: InternalTask {
 			volume: task.volume,
 			position: task.position,
 			mediaURL: mediaResult.mediaLocation,
-			licenseURL: mediaResult.licenseLocation,
+			licenseURL: licenseResult?.licenseURL,
 			artworkURL: artworkURL
 		)
 

@@ -37,6 +37,7 @@ actor TaskRunner {
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
+		licenseDownloader: LicenseDownloader,
 		trackManifestFetcher: TrackManifestFetcherProtocol,
 		videoManifestFetcher: VideoManifestFetcherProtocol
 	) {
@@ -52,13 +53,15 @@ actor TaskRunner {
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
-			manifestFetcher: trackManifestFetcher
+			manifestFetcher: trackManifestFetcher,
+			licenseDownloader: licenseDownloader
 		)
 		self.storeVideoHandler = StoreVideoHandler(
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
-			manifestFetcher: videoManifestFetcher
+			manifestFetcher: videoManifestFetcher,
+			licenseDownloader: licenseDownloader
 		)
 		self.storeAlbumHandler = StoreAlbumHandler(
 			offlineStore: offlineStore,
