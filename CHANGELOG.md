@@ -7,15 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.11.9] - 2026-03-07
+## [0.11.8] - 2026-03-19
+
+### Added
+- Add crossfade support (Player)
+- Add video download support and dedicated task handlers (Offliner)
+- Add USER_COLLECTION_TRACKS support (Offliner)
+- Add background URL session event handling & restructure task state management (Offliner)
+- Add Hashable conformance to OfflineCollection (Offliner)
+- Cache artwork background color from visual metadata (Offliner)
+- Use cursor for incremental task fetching (Offliner)
+- Add stage base path for OpenAPI endpoint (TidalAPI)
 
 ### Changed
-- Generated API code using spec version 1.4.2 (TidalAPI)
+- Generated API code using spec version 1.4.4 (TidalAPI)
 
-## [0.11.8] - 2026-03-06
+### Fixed
+- Fix offline video playback failing with error 15:1 (Player)
+- Send correct Authorization header
 
-### Changed
-- Generated API code using spec version 1.2.2 (TidalAPI)
+### Removed
+- Remove content caching mechanism (Player)
+- Remove unused feature flags from AVQueuePlayerWrapper (Player)
 
 ## [0.11.7] - 2026-03-03
 
