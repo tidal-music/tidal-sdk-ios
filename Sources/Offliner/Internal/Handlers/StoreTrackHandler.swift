@@ -70,45 +70,50 @@ private final class InternalTrackTask: InternalTask {
 	}
 
 	func run() async throws {
-		async let artworkTask = artworkDownloader.downloadArtwork(for: task.artwork)
-		async let manifestTask = manifestFetcher.fetchTrackManifest(trackId: task.track.id)
+		try await withFileCleanup { cleanup in
+			async let artworkTask = artworkDownloader.downloadArtwork(for: task.artwork)
+			async let manifestTask = manifestFetcher.fetchTrackManifest(trackId: task.track.id)
 
-		let (artworkURL, manifest) = try await (artworkTask, manifestTask)
+			let (artworkURL, manifest) = try await (artworkTask, manifestTask)
+			cleanup.artworkLocation = artworkURL
 
-		let licenseResult = try await licenseDownloader.downloadLicense(drmData: manifest.drmData)
+			let licenseResult = try await licenseDownloader.downloadLicense(drmData: manifest.drmData)
+			cleanup.licenseLocation = licenseResult?.licenseURL
 
-		let mediaResult = try await mediaDownloader.download(
-			manifestURL: manifest.manifestURL,
-			licenseDownloadResult: licenseResult,
-			title: "\(task.artists.compactMap { $0.attributes?.name }.joined(separator: ",")) - \(task.track.attributes?.title ?? "")",
-			onProgress: { [weak self] progress in
-				guard let download = self?.download else { return }
-				await download.updateProgress(progress)
-			}
-		)
+			let mediaResult = try await mediaDownloader.download(
+				manifestURL: manifest.manifestURL,
+				licenseDownloadResult: licenseResult,
+				title: "\(task.artists.compactMap { $0.attributes?.name }.joined(separator: ",")) - \(task.track.attributes?.title ?? "")",
+				onProgress: { [weak self] progress in
+					guard let download = self?.download else { return }
+					await download.updateProgress(progress)
+				}
+			)
+			cleanup.mediaLocation = mediaResult.mediaLocation
 
-		let catalogMetadata = OfflineMediaItem.Metadata.track(OfflineMediaItem.TrackMetadata(
-			id: task.track.id,
-			title: task.track.attributes?.title ?? "",
-			artists: task.artists.compactMap(\.attributes?.name),
-			duration: mediaResult.duration,
-			explicit: task.track.attributes?.explicit ?? false
-		))
+			let catalogMetadata = OfflineMediaItem.Metadata.track(OfflineMediaItem.TrackMetadata(
+				id: task.track.id,
+				title: task.track.attributes?.title ?? "",
+				artists: task.artists.compactMap(\.attributes?.name),
+				duration: mediaResult.duration,
+				explicit: task.track.attributes?.explicit ?? false
+			))
 
-		let storeResult = StoreItemTaskResult(
-			resourceType: OfflineMediaItemType.tracks.rawValue,
-			resourceId: task.track.id,
-			catalogMetadata: catalogMetadata,
-			playbackMetadata: manifest.playbackMetadata,
-			collectionResourceType: task.collectionResourceType,
-			collectionResourceId: task.collectionResourceId,
-			volume: task.volume,
-			position: task.position,
-			mediaURL: mediaResult.mediaLocation,
-			licenseURL: licenseResult?.licenseURL,
-			artworkURL: artworkURL
-		)
+			let storeResult = StoreItemTaskResult(
+				resourceType: OfflineMediaItemType.tracks.rawValue,
+				resourceId: task.track.id,
+				catalogMetadata: catalogMetadata,
+				playbackMetadata: manifest.playbackMetadata,
+				collectionResourceType: task.collectionResourceType,
+				collectionResourceId: task.collectionResourceId,
+				volume: task.volume,
+				position: task.position,
+				mediaURL: mediaResult.mediaLocation,
+				licenseURL: licenseResult?.licenseURL,
+				artworkURL: artworkURL
+			)
 
-		try offlineStore.storeMediaItem(storeResult)
+			try offlineStore.storeMediaItem(storeResult)
+		}
 	}
 }
