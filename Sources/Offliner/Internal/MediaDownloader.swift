@@ -103,7 +103,6 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 			try? FileStorage.delete(url: location)
 			return
 		}
-		
 		activeDownload.downloadedLocation = location
 	}
 
@@ -131,7 +130,6 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 			duration: activeDownload.duration,
 			mediaLocation: mediaLocation
 		)
-		
 		activeDownload.continuation.resume(returning: result)
 	}
 
