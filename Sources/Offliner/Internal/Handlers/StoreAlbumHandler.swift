@@ -34,27 +34,30 @@ private final class InternalAlbumTask: InternalTask {
 	}
 
 	func run() async throws {
-		let artworkURL = try await artworkDownloader.downloadArtwork(for: task.artwork)
+		try await withFileCleanup { cleanup in
+			let artworkURL = try await artworkDownloader.downloadArtwork(for: task.artwork)
+			cleanup.artworkLocation = artworkURL
 
-		let backgroundColorHex = task.artwork?.attributes?.visualMetadata?.selectedPaletteColor
+			let backgroundColorHex = task.artwork?.attributes?.visualMetadata?.selectedPaletteColor
 
-		let catalogMetadata = OfflineCollection.Metadata.album(OfflineCollection.AlbumMetadata(
-			id: task.album.id,
-			title: task.album.attributes?.title ?? "",
-			artists: task.artists.compactMap(\.attributes?.name),
-			copyright: task.album.attributes?.copyright?.text,
-			releaseDate: task.album.attributes?.releaseDate,
-			explicit: task.album.attributes?.explicit ?? false,
-			backgroundColorHex: backgroundColorHex
-		))
+			let catalogMetadata = OfflineCollection.Metadata.album(OfflineCollection.AlbumMetadata(
+				id: task.album.id,
+				title: task.album.attributes?.title ?? "",
+				artists: task.artists.compactMap(\.attributes?.name),
+				copyright: task.album.attributes?.copyright?.text,
+				releaseDate: task.album.attributes?.releaseDate,
+				explicit: task.album.attributes?.explicit ?? false,
+				backgroundColorHex: backgroundColorHex
+			))
 
-		let result = StoreCollectionTaskResult(
-			resourceType: .albums,
-			resourceId: task.album.id,
-			catalogMetadata: catalogMetadata,
-			artworkURL: artworkURL
-		)
+			let result = StoreCollectionTaskResult(
+				resourceType: .albums,
+				resourceId: task.album.id,
+				catalogMetadata: catalogMetadata,
+				artworkURL: artworkURL
+			)
 
-		try offlineStore.storeCollection(result)
+			try offlineStore.storeCollection(result)
+		}
 	}
 }

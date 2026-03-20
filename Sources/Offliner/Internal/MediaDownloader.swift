@@ -99,7 +99,11 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		assetDownloadTask: AVAssetDownloadTask,
 		didFinishDownloadingTo location: URL
 	) {
-		activeDownloads[assetDownloadTask.taskIdentifier]?.downloadedLocation = location
+		guard let activeDownload = activeDownloads[assetDownloadTask.taskIdentifier] else {
+			try? FileStorage.delete(url: location)
+			return
+		}
+		activeDownload.downloadedLocation = location
 	}
 
 	func urlSession(
@@ -112,6 +116,7 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		}
 
 		if let error {
+			try? activeDownload.downloadedLocation.map(FileStorage.delete)
 			activeDownload.continuation.resume(throwing: error)
 			return
 		}

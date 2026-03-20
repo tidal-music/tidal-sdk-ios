@@ -34,23 +34,26 @@ private final class InternalPlaylistTask: InternalTask {
 	}
 
 	func run() async throws {
-		let artworkURL = try await artworkDownloader.downloadArtwork(for: task.artwork)
+		try await withFileCleanup { cleanup in
+			let artworkURL = try await artworkDownloader.downloadArtwork(for: task.artwork)
+			cleanup.artworkLocation = artworkURL
 
-		let backgroundColorHex = task.artwork?.attributes?.visualMetadata?.selectedPaletteColor
+			let backgroundColorHex = task.artwork?.attributes?.visualMetadata?.selectedPaletteColor
 
-		let catalogMetadata = OfflineCollection.Metadata.playlist(OfflineCollection.PlaylistMetadata(
-			id: task.playlist.id,
-			title: task.playlist.attributes?.name ?? "",
-			backgroundColorHex: backgroundColorHex
-		))
+			let catalogMetadata = OfflineCollection.Metadata.playlist(OfflineCollection.PlaylistMetadata(
+				id: task.playlist.id,
+				title: task.playlist.attributes?.name ?? "",
+				backgroundColorHex: backgroundColorHex
+			))
 
-		let result = StoreCollectionTaskResult(
-			resourceType: .playlists,
-			resourceId: task.playlist.id,
-			catalogMetadata: catalogMetadata,
-			artworkURL: artworkURL
-		)
+			let result = StoreCollectionTaskResult(
+				resourceType: .playlists,
+				resourceId: task.playlist.id,
+				catalogMetadata: catalogMetadata,
+				artworkURL: artworkURL
+			)
 
-		try offlineStore.storeCollection(result)
+			try offlineStore.storeCollection(result)
+		}
 	}
 }

@@ -44,3 +44,23 @@ enum FileStorage {
 enum FileStorageError: Error {
 	case noApplicationSupportDirectory
 }
+
+// MARK: - FileCleanup
+
+final class FileCleanup {
+	var artworkLocation: URL?
+	var licenseLocation: URL?
+	var mediaLocation: URL?
+}
+
+func withFileCleanup(_ body: (FileCleanup) async throws -> Void) async throws {
+	let cleanup = FileCleanup()
+	do {
+		try await body(cleanup)
+	} catch {
+		try? cleanup.artworkLocation.map(FileStorage.delete)
+		try? cleanup.licenseLocation.map(FileStorage.delete)
+		try? cleanup.mediaLocation.map(FileStorage.delete)
+		throw error
+	}
+}
