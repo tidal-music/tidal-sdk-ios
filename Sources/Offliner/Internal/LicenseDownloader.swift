@@ -15,8 +15,6 @@ struct LicenseDownloadResult {
 actor LicenseDownloader {
 	private let httpClient: HttpClient
 	private let queue = DispatchQueue(label: "com.tidal.offliner.license-downloader")
-	private var certificate: Data?
-	private var certificateTask: Task<Data, Error>?
 
 	init() {
 		self.httpClient = HttpClient()
@@ -33,8 +31,8 @@ actor LicenseDownloader {
 		}
 
 		let contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
-		let delegate = LicenseSessionDelegate(
-			licenseDownloader: self,
+		let delegate = ActiveLicenseDownload(
+			httpClient: httpClient,
 			certificateURL: certificateURL,
 			licenseURL: licenseURL
 		)
@@ -53,68 +51,26 @@ actor LicenseDownloader {
 
 		return LicenseDownloadResult(contentKeySession: contentKeySession, licenseURL: storedLicenseURL)
 	}
-
-	func getCertificate(url: URL) async throws -> Data {
-		if let certificate {
-			return certificate
-		}
-
-		if let existingTask = certificateTask {
-			return try await existingTask.value
-		}
-
-		let task = Task {
-			try await httpClient.get(url: url, headers: [:])
-		}
-		certificateTask = task
-
-		do {
-			let data = try await task.value
-			certificate = data
-			certificateTask = nil
-			return data
-		} catch {
-			certificateTask = nil
-			throw error
-		}
-	}
-
-	func fetchLicense(url: URL, spc: Data) async throws -> Data {
-		guard let credentialsProvider = OpenAPIClientAPI.credentialsProvider else {
-			throw LicenseDownloaderError.missingCredentialsProvider
-		}
-
-		guard let token = try await credentialsProvider.getCredentials().token else {
-			throw LicenseDownloaderError.missingAccessToken
-		}
-
-		let data = try await httpClient.post(
-			url: url,
-			headers: [
-				"Authorization": "Bearer \(token)",
-				"Content-Type": "application/octet-stream"
-			],
-			body: spc
-		)
-
-		return data
-	}
 }
 
-// MARK: - LicenseSessionDelegate
+// MARK: - ActiveLicenseDownload
 
-private final class LicenseSessionDelegate: NSObject, AVContentKeySessionDelegate {
-	let licenseDownloader: LicenseDownloader
+private final class ActiveLicenseDownload: NSObject {
+	let httpClient: HttpClient
 	let certificateURL: URL
 	let licenseURL: URL
 	var continuation: CheckedContinuation<URL, Error>?
 
-	init(licenseDownloader: LicenseDownloader, certificateURL: URL, licenseURL: URL) {
-		self.licenseDownloader = licenseDownloader
+	init(httpClient: HttpClient, certificateURL: URL, licenseURL: URL) {
+		self.httpClient = httpClient
 		self.certificateURL = certificateURL
 		self.licenseURL = licenseURL
 	}
+}
 
+// MARK: - AVContentKeySessionDelegate
+
+extension ActiveLicenseDownload: AVContentKeySessionDelegate {
 	func contentKeySession(
 		_ session: AVContentKeySession,
 		didProvide keyRequest: AVContentKeyRequest
@@ -133,7 +89,7 @@ private final class LicenseSessionDelegate: NSObject, AVContentKeySessionDelegat
 		Task {
 			do {
 				let spc = try await createSpc(keyRequest: keyRequest)
-				let license = try await licenseDownloader.fetchLicense(url: licenseURL, spc: spc)
+				let license = try await fetchLicense(spc: spc)
 				let persistableKey = try keyRequest.persistableContentKey(fromKeyVendorResponse: license)
 
 				let url = try FileStorage.store(
@@ -163,17 +119,42 @@ private final class LicenseSessionDelegate: NSObject, AVContentKeySessionDelegat
 		continuation?.resume(throwing: error)
 		continuation = nil
 	}
+}
 
-	private func createSpc(keyRequest: AVContentKeyRequest) async throws -> Data {
+private extension ActiveLicenseDownload {
+	func createSpc(keyRequest: AVContentKeyRequest) async throws -> Data {
 		let keyId = try keyRequest.getKeyId()
-		let certificate = try await licenseDownloader.getCertificate(url: certificateURL)
+		let certificate = try await getCertificate()
 		return try await keyRequest.makeStreamingContentKeyRequestData(forApp: certificate, contentIdentifier: keyId)
+	}
+
+	func getCertificate() async throws -> Data {
+		try await httpClient.get(url: certificateURL, headers: [:])
+	}
+
+	func fetchLicense(spc: Data) async throws -> Data {
+		guard let credentialsProvider = OpenAPIClientAPI.credentialsProvider else {
+			throw LicenseDownloaderError.missingCredentialsProvider
+		}
+
+		guard let token = try await credentialsProvider.getCredentials().token else {
+			throw LicenseDownloaderError.missingAccessToken
+		}
+
+		return try await httpClient.post(
+			url: licenseURL,
+			headers: [
+				"Authorization": "Bearer \(token)",
+				"Content-Type": "application/octet-stream"
+			],
+			body: spc
+		)
 	}
 }
 
 // MARK: - HttpClient
 
-private final class HttpClient {
+final class HttpClient {
 	private let urlSession: URLSession
 
 	init(urlSession: URLSession = .shared) {
