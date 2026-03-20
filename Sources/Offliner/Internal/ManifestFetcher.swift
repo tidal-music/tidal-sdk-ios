@@ -1,4 +1,3 @@
-import AVFoundation
 import Foundation
 import TidalAPI
 
@@ -6,7 +5,7 @@ import TidalAPI
 
 struct ManifestFetchResult {
 	let manifestURL: URL
-	let contentKeySession: AVContentKeySession?
+	let drmData: DrmData?
 	let playbackMetadata: OfflineMediaItem.PlaybackMetadata?
 }
 
@@ -49,9 +48,6 @@ final class TrackManifestFetcher: TrackManifestFetcherProtocol {
 			throw MediaDownloaderError.manifestNotFound
 		}
 
-		let contentKeySession = attributes?.drmData
-			.map { _ in AVContentKeySession(keySystem: .fairPlayStreaming) }
-
 		let format = attributes?.formats?.first.flatMap { AudioFormat(rawValue: $0.rawValue) }
 
 		let playbackMetadata = format.map { format in
@@ -62,7 +58,7 @@ final class TrackManifestFetcher: TrackManifestFetcherProtocol {
 			)
 		}
 
-		return ManifestFetchResult(manifestURL: url, contentKeySession: contentKeySession, playbackMetadata: playbackMetadata)
+		return ManifestFetchResult(manifestURL: url, drmData: attributes?.drmData, playbackMetadata: playbackMetadata)
 	}
 }
 
@@ -83,10 +79,7 @@ final class VideoManifestFetcher: VideoManifestFetcherProtocol {
 			throw MediaDownloaderError.manifestNotFound
 		}
 
-		let contentKeySession = attributes?.drmData
-			.map { _ in AVContentKeySession(keySystem: .fairPlayStreaming) }
-
-		return ManifestFetchResult(manifestURL: url, contentKeySession: contentKeySession, playbackMetadata: nil)
+		return ManifestFetchResult(manifestURL: url, drmData: attributes?.drmData, playbackMetadata: nil)
 	}
 }
 

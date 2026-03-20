@@ -43,6 +43,7 @@ public final class Offliner {
 		let offlineApiClient = OfflineApiClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
 		let mediaDownloader = MediaDownloader(configuration: configuration)
+		let licenseDownloader = LicenseDownloader()
 		let trackManifestFetcher = TrackManifestFetcher(audioFormats: configuration.audioFormats)
 		let videoManifestFetcher = VideoManifestFetcher()
 
@@ -57,6 +58,7 @@ public final class Offliner {
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
+			licenseDownloader: licenseDownloader,
 			trackManifestFetcher: trackManifestFetcher,
 			videoManifestFetcher: videoManifestFetcher
 		)
@@ -68,6 +70,7 @@ public final class Offliner {
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
+		licenseDownloader: LicenseDownloader = LicenseDownloader(),
 		trackManifestFetcher: TrackManifestFetcherProtocol,
 		videoManifestFetcher: VideoManifestFetcherProtocol
 	) {
@@ -82,6 +85,7 @@ public final class Offliner {
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
+			licenseDownloader: licenseDownloader,
 			trackManifestFetcher: trackManifestFetcher,
 			videoManifestFetcher: videoManifestFetcher
 		)
