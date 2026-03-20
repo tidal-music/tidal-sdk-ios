@@ -15,32 +15,32 @@ public struct TermsAttributes: Codable, Hashable {
     public enum TermsType: String, Codable, CaseIterable {
         case developer = "DEVELOPER"
     }
-    public var contentMarkdown: String
+    public var contentLink: LinkObject
+    public var effectiveAt: Date
     public var termsType: TermsType
-    public var termsVersion: String
 
     public init(
-        contentMarkdown: String,
-        termsType: TermsType,
-        termsVersion: String
+        contentLink: LinkObject,
+        effectiveAt: Date,
+        termsType: TermsType
     ) {
-        self.contentMarkdown = contentMarkdown
+        self.contentLink = contentLink
+        self.effectiveAt = effectiveAt
         self.termsType = termsType
-        self.termsVersion = termsVersion
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case contentMarkdown
+        case contentLink
+        case effectiveAt
         case termsType
-        case termsVersion
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(contentMarkdown, forKey: .contentMarkdown)
+        try container.encode(contentLink, forKey: .contentLink)
+        try container.encode(effectiveAt, forKey: .effectiveAt)
         try container.encode(termsType, forKey: .termsType)
-        try container.encode(termsVersion, forKey: .termsVersion)
     }
 }
