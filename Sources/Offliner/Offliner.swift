@@ -35,14 +35,14 @@ public final class Offliner {
 		mediaDownloader.handleBackgroundURLSessionEvents(identifier: identifier, completionHandler: completionHandler)
 	}
 
-	public init(installationId: String, configuration: Configuration) async throws {
+	public init(installationId: String, configuration: Configuration) throws {
 		let databaseQueue = try DatabaseQueue(path: OfflineStore.url().path)
 		try Migrations.run(databaseQueue)
 
 		let offlineStore = OfflineStore(databaseQueue)
 		let offlineApiClient = OfflineApiClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
-		let mediaDownloader = await MediaDownloader(configuration: configuration)
+		let mediaDownloader = MediaDownloader(configuration: configuration)
 		let licenseDownloader = LicenseDownloader()
 		let trackManifestFetcher = TrackManifestFetcher(audioFormats: configuration.audioFormats)
 		let videoManifestFetcher = VideoManifestFetcher()
