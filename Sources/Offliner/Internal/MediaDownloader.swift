@@ -1,6 +1,7 @@
 import AVFoundation
 import CoreMedia
 import Foundation
+import OSLog
 
 // MARK: - MediaDownloadResult
 
@@ -13,6 +14,7 @@ struct MediaDownloadResult {
 
 protocol MediaDownloaderProtocol {
 	func download(
+		taskId: String,
 		manifestURL: URL,
 		licenseDownloadResult: LicenseDownloadResult?,
 		title: String,
@@ -25,6 +27,7 @@ protocol MediaDownloaderProtocol {
 // MARK: - MediaDownloader
 
 final class MediaDownloader: NSObject, MediaDownloaderProtocol {
+	private static let logger = Logger(subsystem: "com.tidal.sdk.offliner", category: "MediaDownloader")
 	static let backgroundSessionIdentifier = "com.tidal.offliner.download.session"
 
 	private let queue: DispatchQueue
@@ -56,11 +59,14 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	}
 
 	func download(
+		taskId: String,
 		manifestURL: URL,
 		licenseDownloadResult: LicenseDownloadResult?,
 		title: String,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
+		Self.logger.debug("initiate download: \(title, privacy: .public) [task: \(taskId, privacy: .public)]")
+
 		let asset = AVURLAsset(url: manifestURL)
 		licenseDownloadResult?.contentKeySession.addContentKeyRecipient(asset)
 
@@ -84,8 +90,11 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 					onProgress: onProgress
 				)
 
+				task.taskDescription = taskId
 				self.activeDownloads[task.taskIdentifier] = activeDownload
 				task.resume()
+
+				Self.logger.debug("started download [task: \(taskId, privacy: .public)]")
 			}
 		}
 	}
@@ -99,10 +108,15 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		assetDownloadTask: AVAssetDownloadTask,
 		didFinishDownloadingTo location: URL
 	) {
+		Self.logger.debug("didFinishDownloadingTo called [task: \(assetDownloadTask.taskDescription ?? "?", privacy: .public)]")
+
 		guard let activeDownload = activeDownloads[assetDownloadTask.taskIdentifier] else {
+			Self.logger.debug("orphaned didFinishDownloadingTo called [task: \(assetDownloadTask.taskDescription ?? "?", privacy: .public)]")
+
 			try? FileStorage.delete(url: location)
 			return
 		}
+
 		activeDownload.downloadedLocation = location
 	}
 
@@ -111,7 +125,10 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		task: URLSessionTask,
 		didCompleteWithError error: Error?
 	) {
+		Self.logger.debug("didCompleteWithError called: \(error.map { "\($0)" } ?? "success", privacy: .public) [task: \(task.taskDescription ?? "?", privacy: .public)]")
+
 		guard let activeDownload = activeDownloads.removeValue(forKey: task.taskIdentifier) else {
+			Self.logger.debug("orphaned didCompleteWithError called [task: \(task.taskDescription ?? "?", privacy: .public)]")
 			return
 		}
 
@@ -130,6 +147,7 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 			duration: activeDownload.duration,
 			mediaLocation: mediaLocation
 		)
+
 		activeDownload.continuation.resume(returning: result)
 	}
 
@@ -150,6 +168,7 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 	}
 
 	func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+		Self.logger.debug("urlSessionDidFinishEvents forBackgroundURLSession")
 		DispatchQueue.main.async { [weak self] in
 			self?.backgroundCompletionHandler?()
 			self?.backgroundCompletionHandler = nil
