@@ -32,7 +32,7 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 	private var backgroundCompletionHandler: (() -> Void)?
 
-	init(configuration: Configuration) async {
+	init(configuration: Configuration) {
 		self.queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
 
 		super.init()
@@ -46,10 +46,6 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 			assetDownloadDelegate: self,
 			delegateQueue: delegateQueue
 		)
-
-		for task in await session.allTasks {
-			task.cancel()
-		}
 	}
 
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {
