@@ -56,6 +56,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userCollectionArtistsResourceObject(UserCollectionArtistsResourceObject)
     case userCollectionFoldersResourceObject(UserCollectionFoldersResourceObject)
     case userCollectionPlaylistsResourceObject(UserCollectionPlaylistsResourceObject)
+    case userCollectionSaveForLatersResourceObject(UserCollectionSaveForLatersResourceObject)
     case userCollectionTracksResourceObject(UserCollectionTracksResourceObject)
     case userCollectionVideosResourceObject(UserCollectionVideosResourceObject)
     case userCollectionsResourceObject(UserCollectionsResourceObject)
@@ -158,6 +159,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .userCollectionFoldersResourceObject(let value):
             try container.encode(value)
         case .userCollectionPlaylistsResourceObject(let value):
+            try container.encode(value)
+        case .userCollectionSaveForLatersResourceObject(let value):
             try container.encode(value)
         case .userCollectionTracksResourceObject(let value):
             try container.encode(value)
@@ -324,6 +327,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userCollectionPlaylists":
             let value = try UserCollectionPlaylistsResourceObject(from: decoder)
             self = .userCollectionPlaylistsResourceObject(value)
+        case "userCollectionSaveForLaters":
+            let value = try UserCollectionSaveForLatersResourceObject(from: decoder)
+            self = .userCollectionSaveForLatersResourceObject(value)
         case "userCollectionTracks":
             let value = try UserCollectionTracksResourceObject(from: decoder)
             self = .userCollectionTracksResourceObject(value)
@@ -406,6 +412,7 @@ extension IncludedInner: Identifiable {
         case .userCollectionArtistsResourceObject(let value): return value.id
         case .userCollectionFoldersResourceObject(let value): return value.id
         case .userCollectionPlaylistsResourceObject(let value): return value.id
+        case .userCollectionSaveForLatersResourceObject(let value): return value.id
         case .userCollectionTracksResourceObject(let value): return value.id
         case .userCollectionVideosResourceObject(let value): return value.id
         case .userCollectionsResourceObject(let value): return value.id

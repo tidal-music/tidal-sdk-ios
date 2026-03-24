@@ -85,9 +85,9 @@ public enum TrackManifestsAPITidal {
      
      - returns: TrackManifestsSingleResourceDataDocument
      */
-	public static func trackManifestsIdGet(id: String, manifestType: TrackManifestsAPITidal.ManifestType_trackManifestsIdGet, formats: [TrackManifestsAPITidal.Formats_trackManifestsIdGet], uriScheme: TrackManifestsAPITidal.UriScheme_trackManifestsIdGet, usage: TrackManifestsAPITidal.Usage_trackManifestsIdGet, adaptive: Bool) async throws -> TrackManifestsSingleResourceDataDocument {
+	public static func trackManifestsIdGet(id: String, manifestType: TrackManifestsAPITidal.ManifestType_trackManifestsIdGet, formats: [TrackManifestsAPITidal.Formats_trackManifestsIdGet], uriScheme: TrackManifestsAPITidal.UriScheme_trackManifestsIdGet, usage: TrackManifestsAPITidal.Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil) async throws -> TrackManifestsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackManifestsAPI.trackManifestsIdGetWithRequestBuilder(id: id, manifestType: manifestType.toTrackManifestsAPIEnum(), formats: formats.compactMap { $0.toTrackManifestsAPIEnum() }, uriScheme: uriScheme.toTrackManifestsAPIEnum(), usage: usage.toTrackManifestsAPIEnum(), adaptive: adaptive)
+			TrackManifestsAPI.trackManifestsIdGetWithRequestBuilder(id: id, manifestType: manifestType.toTrackManifestsAPIEnum(), formats: formats.compactMap { $0.toTrackManifestsAPIEnum() }, uriScheme: uriScheme.toTrackManifestsAPIEnum(), usage: usage.toTrackManifestsAPIEnum(), adaptive: adaptive, shareCode: shareCode)
 		}
 	}
 }

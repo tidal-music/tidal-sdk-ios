@@ -214,6 +214,18 @@ public enum AlbumsAPITidal {
 
 
 	/**
+     Get shares relationship (\&quot;to-many\&quot;).
+     
+     - returns: AlbumsMultiRelationshipDataDocument
+     */
+	public static func albumsIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsSharesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Get similarAlbums relationship (\&quot;to-many\&quot;).
      
      - returns: AlbumsMultiRelationshipDataDocument
