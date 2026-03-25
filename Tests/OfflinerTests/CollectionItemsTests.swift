@@ -347,6 +347,6 @@ final class CollectionItemsTests: OfflinerTestCase {
 			}
 		}
 
-		try await runTask
+		await runTask
 	}
 }

@@ -55,6 +55,6 @@ class OfflinerTestCase: XCTestCase {
 			break
 		}
 
-		try await runTask
+		await runTask
 	}
 }

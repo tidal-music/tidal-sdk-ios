@@ -91,6 +91,8 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 				)
 
 				task.taskDescription = taskId
+				task.priority = 1.0
+
 				self.activeDownloads[task.taskIdentifier] = activeDownload
 				task.resume()
 

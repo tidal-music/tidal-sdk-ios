@@ -22,7 +22,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			break
 		}
 
-		_ = try await runTask
+		_ = await runTask
 		XCTAssertEqual(downloadCount, 1)
 	}
 
@@ -47,7 +47,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			break
 		}
 
-		try await runTask
+		await runTask
 	}
 
 	func testDownloadTrackStoresInLocalDatabase() async throws {
@@ -71,7 +71,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			break
 		}
 
-		try await runTask
+		await runTask
 
 		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNotNil(storedItem)
@@ -139,7 +139,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			break
 		}
 
-		try await runTask
+		await runTask
 	}
 
 	func testFailedDownloadDoesNotStoreInLocalDatabase() async throws {
@@ -163,7 +163,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			break
 		}
 
-		try await runTask
+		await runTask
 
 		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNil(storedItem)
@@ -201,7 +201,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			}
 		}
 
-		try await runTask
+		await runTask
 
 		let storedItems = try await offliner.getOfflineMediaItems(mediaType: .tracks)
 		XCTAssertEqual(storedItems.count, 3)
@@ -242,7 +242,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			break
 		}
 
-		try await runTask
+		await runTask
 	}
 
 	func testDownloadTrackFailsWhenArtworkDownloadFails() async throws {
@@ -266,7 +266,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			break
 		}
 
-		try await runTask
+		await runTask
 	}
 
 	// MARK: - Video Download Tests
@@ -292,7 +292,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			break
 		}
 
-		try await runTask
+		await runTask
 
 		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .videos, resourceId: "video-456")
 		XCTAssertNotNil(storedItem)

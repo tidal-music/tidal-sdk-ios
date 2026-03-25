@@ -39,7 +39,7 @@ final class BackendFailureTests: OfflinerTestCase {
 			break
 		}
 
-		try await runTask
+		await runTask
 
 		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
 		XCTAssertNotNil(storedItem)

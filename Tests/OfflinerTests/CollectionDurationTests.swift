@@ -127,6 +127,6 @@ final class CollectionDurationTests: OfflinerTestCase {
 			}
 		}
 
-		try await runTask
+		await runTask
 	}
 }
