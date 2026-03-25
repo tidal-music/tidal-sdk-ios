@@ -55,9 +55,6 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 		guard crossfade else {
 			return false
 		}
-		if PlayerWorld.audioInfoProvider.isAirPlayOutputRoute() || PlayerWorld.audioInfoProvider.isCarPlayOutputRoute() {
-			return false
-		}
 		if productType == .VIDEO {
 			return false
 		}
