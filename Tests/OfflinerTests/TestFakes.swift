@@ -231,6 +231,7 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
 
 	func download(
+		taskId: String,
 		manifestURL: URL,
 		licenseDownloadResult: LicenseDownloadResult?,
 		title: String,
@@ -255,6 +256,7 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
 
 	func download(
+		taskId: String,
 		manifestURL: URL,
 		licenseDownloadResult: LicenseDownloadResult?,
 		title: String,

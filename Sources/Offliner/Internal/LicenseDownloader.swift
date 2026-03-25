@@ -15,6 +15,8 @@ struct LicenseDownloadResult {
 actor LicenseDownloader {
 	private let httpClient: HttpClient
 	private let queue = DispatchQueue(label: "com.tidal.offliner.license-downloader")
+	private var certificate: Data?
+	private var certificateTask: Task<Data, Error>?
 
 	init() {
 		self.httpClient = HttpClient()
@@ -32,8 +34,8 @@ actor LicenseDownloader {
 
 		let contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
 		let delegate = ActiveLicenseDownload(
+			certificate: try await getCertificate(url: certificateURL),
 			httpClient: httpClient,
-			certificateURL: certificateURL,
 			licenseURL: licenseURL
 		)
 
@@ -51,19 +53,45 @@ actor LicenseDownloader {
 
 		return LicenseDownloadResult(contentKeySession: contentKeySession, licenseURL: storedLicenseURL)
 	}
+
+	private func getCertificate(url: URL) async throws -> Data {
+		if let certificate {
+			return certificate
+		}
+
+		if let existingTask = certificateTask {
+			return try await existingTask.value
+		}
+
+		let task = Task {
+			try await httpClient.get(url: url, headers: [:])
+		}
+
+		certificateTask = task
+
+		do {
+			let data = try await task.value
+			certificate = data
+			certificateTask = nil
+			return data
+		} catch {
+			certificateTask = nil
+			throw error
+		}
+	}
 }
 
 // MARK: - ActiveLicenseDownload
 
 private final class ActiveLicenseDownload: NSObject {
+	let certificate: Data
 	let httpClient: HttpClient
-	let certificateURL: URL
 	let licenseURL: URL
 	var continuation: CheckedContinuation<URL, Error>?
 
-	init(httpClient: HttpClient, certificateURL: URL, licenseURL: URL) {
+	init(certificate: Data, httpClient: HttpClient, licenseURL: URL) {
+		self.certificate = certificate
 		self.httpClient = httpClient
-		self.certificateURL = certificateURL
 		self.licenseURL = licenseURL
 	}
 }
@@ -124,12 +152,7 @@ extension ActiveLicenseDownload: AVContentKeySessionDelegate {
 private extension ActiveLicenseDownload {
 	func createSpc(keyRequest: AVContentKeyRequest) async throws -> Data {
 		let keyId = try keyRequest.getKeyId()
-		let certificate = try await getCertificate()
 		return try await keyRequest.makeStreamingContentKeyRequestData(forApp: certificate, contentIdentifier: keyId)
-	}
-
-	func getCertificate() async throws -> Data {
-		try await httpClient.get(url: certificateURL, headers: [:])
 	}
 
 	func fetchLicense(spc: Data) async throws -> Data {
