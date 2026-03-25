@@ -81,6 +81,7 @@ private final class InternalTrackTask: InternalTask {
 			cleanup.licenseLocation = licenseResult?.licenseURL
 
 			let mediaResult = try await mediaDownloader.download(
+				taskId: task.id,
 				manifestURL: manifest.manifestURL,
 				licenseDownloadResult: licenseResult,
 				title: "\(task.artists.compactMap { $0.attributes?.name }.joined(separator: ",")) - \(task.track.attributes?.title ?? "")",

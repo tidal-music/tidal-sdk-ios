@@ -1,7 +1,9 @@
 import Foundation
 import Network
+import OSLog
 
 actor TaskRunner {
+	private static let logger = Logger(subsystem: "com.tidal.sdk.offliner", category: "TaskRunner")
 	private static let maxConcurrentTasks = 5
 	private static let maxQueueSize = 80
 
@@ -158,7 +160,7 @@ actor TaskRunner {
 				await task.download?.updateState(.completed)
 				try? await self?.offlineApiClient.updateTask(taskId: task.id, state: .completed)
 			} catch {
-				print("Task \(task.id) failed: \(error)")
+				Self.logger.error("Task \(task.id, privacy: .public) failed: \(error, privacy: .public)")
 				await task.download?.updateState(.failed)
 				try? await self?.offlineApiClient.updateTask(taskId: task.id, state: .failed)
 			}

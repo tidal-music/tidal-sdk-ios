@@ -25,7 +25,6 @@ private final class InternalRemoveItemTask: InternalTask {
 	}
 
 	func run() async throws {
-		print("RemoveItemHandler: deleting \(task.resourceType)/\(task.resourceId) from \(task.collectionResourceType)/\(task.collectionResourceId)")
 		try offlineStore.deleteMediaItem(
 			resourceType: task.resourceType,
 			resourceId: task.resourceId,

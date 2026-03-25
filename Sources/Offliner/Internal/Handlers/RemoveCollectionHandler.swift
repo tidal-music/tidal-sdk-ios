@@ -25,7 +25,6 @@ private final class InternalRemoveCollectionTask: InternalTask {
 	}
 
 	func run() async throws {
-		print("RemoveCollectionHandler: deleting \(task.resourceType)/\(task.resourceId)")
 		try offlineStore.deleteCollection(resourceType: task.resourceType, resourceId: task.resourceId)
 	}
 }
