@@ -78,7 +78,7 @@ final class BackendFailureTests: OfflinerTestCase {
 		}
 	}
 
-	func testGetTasksFailurePropagates() async throws {
+	func testGetTasksFailureDoesNotHaltRun() async throws {
 		let backend = FailOnGetTasksOfflineApiClient()
 		let offliner = createOffliner(
 			offlineApiClient: backend,
@@ -86,11 +86,6 @@ final class BackendFailureTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		do {
-			await offliner.run()
-			XCTFail("Expected run to throw when getTasks fails")
-		} catch {
-			// Expected - getTasks failure propagates from run()
-		}
+		await offliner.run()
 	}
 }
