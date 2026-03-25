@@ -87,7 +87,7 @@ final class BackendFailureTests: OfflinerTestCase {
 		)
 
 		do {
-			try await offliner.run()
+			await offliner.run()
 			XCTFail("Expected run to throw when getTasks fails")
 		} catch {
 			// Expected - getTasks failure propagates from run()

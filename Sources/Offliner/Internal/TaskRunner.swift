@@ -82,7 +82,7 @@ actor TaskRunner {
 		)
 	}
 
-	func run() async throws {
+	func run() async {
 		if isRunning {
 			needsRun = true
 			return
@@ -93,22 +93,20 @@ actor TaskRunner {
 
 		repeat {
 			needsRun = false
+			startTasks()
 
 			if pendingTasks.count < Self.maxQueueSize {
-				try await refresh()
+				try? await refresh()
 			}
 
-			while runningTasks.count < Self.maxConcurrentTasks, !pendingTasks.isEmpty {
-				let task = pendingTasks.removeFirst()
-				start(task)
-			}
+			startTasks()
 		} while needsRun
 	}
 
 	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
 		allowDownloadsOnExpensiveNetworks = allowed
 		if allowed {
-			try? await run()
+			await run()
 		}
 	}
 
@@ -141,6 +139,13 @@ actor TaskRunner {
 		}
 	}
 
+	private func startTasks() {
+		while runningTasks.count < Self.maxConcurrentTasks, !pendingTasks.isEmpty {
+			let task = pendingTasks.removeFirst()
+			start(task)
+		}
+	}
+	
 	private func start(_ task: InternalTask) {
 		let canUseExpensiveNetworks = allowDownloadsOnExpensiveNetworks
 		let currentNetwork = network
@@ -173,7 +178,7 @@ actor TaskRunner {
 		if let download = task.download {
 			currentDownloads.removeAll { $0 === download }
 		}
-		try? await run()
+		await run()
 	}
 }
 

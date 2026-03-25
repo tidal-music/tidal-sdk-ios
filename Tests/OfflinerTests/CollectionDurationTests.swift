@@ -53,7 +53,7 @@ final class CollectionDurationTests: OfflinerTestCase {
 			)),
 		])
 
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let duration = try await offliner.getCollectionDuration(collectionType: .albums, resourceId: albumId)

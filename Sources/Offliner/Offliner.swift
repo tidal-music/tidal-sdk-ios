@@ -91,8 +91,8 @@ public final class Offliner {
 		)
 	}
 
-	public func run() async throws {
-		try await taskRunner.run()
+	public func run() async {
+		await taskRunner.run()
 	}
 
 	// MARK: - Offline Content
@@ -155,22 +155,22 @@ public final class Offliner {
 
 	public func download(mediaType: OfflineMediaItemType, resourceId: String) async throws {
 		try await offlineApiClient.addItem(type: mediaType.toResourceType, id: resourceId)
-		try await taskRunner.run()
+		await taskRunner.run()
 	}
 
 	public func download(collectionType: OfflineCollectionType, resourceId: String) async throws {
 		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId)
-		try await taskRunner.run()
+		await taskRunner.run()
 	}
 
 	public func remove(mediaType: OfflineMediaItemType, resourceId: String) async throws {
 		try await offlineApiClient.removeItem(type: mediaType.toResourceType, id: resourceId)
-		try await taskRunner.run()
+		await taskRunner.run()
 	}
 
 	public func remove(collectionType: OfflineCollectionType, resourceId: String) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId)
-		try await taskRunner.run()
+		await taskRunner.run()
 	}
 }
 

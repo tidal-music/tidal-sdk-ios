@@ -105,7 +105,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		backend.enqueueTasks([.storeAlbum(collectionTask)])
 
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let page = try await offliner.getOfflineCollectionItems(
@@ -269,7 +269,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 			)),
 		])
 
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let page = try await offliner.getOfflineCollectionItems(
