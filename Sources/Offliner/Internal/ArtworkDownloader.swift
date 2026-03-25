@@ -18,7 +18,8 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 	}
 
 	private func download(artwork: ArtworksResourceObject) async throws -> URL {
-		guard let file = artwork.attributes?.files.first,
+		let files = artwork.attributes?.files.sorted { $0.area > $1.area }
+		guard let file = files?.first,
 			  let imageURL = URL(string: file.href) else {
 			throw ArtworkDownloaderError.missingArtworkURL
 		}
@@ -40,4 +41,10 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 enum ArtworkDownloaderError: Error {
 	case missingArtworkURL
 	case downloadFailed
+}
+
+private extension ArtworkFile {
+	var area: Int {
+		(meta?.width ?? 0) * (meta?.height ?? 0)
+	}
 }
