@@ -186,7 +186,9 @@ private actor Network {
 	init() {
 		monitor.pathUpdateHandler = { [weak self] path in
 			guard path.status == .satisfied else { return }
-			Task { await self?.setInexpensive(!path.isExpensive && !path.isConstrained) }
+			guard let self else { return }
+			let inexpensive = !path.isExpensive && !path.isConstrained
+			Task { await self.setInexpensive(inexpensive) }
 		}
 		monitor.start(queue: DispatchQueue(label: "taskrunner.network.monitor"))
 	}
