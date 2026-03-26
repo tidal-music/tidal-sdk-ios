@@ -189,7 +189,7 @@ final class OfflineStore {
 
 			return OfflineCollection(
 				catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
-				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
+				artworkURL: try? resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 			)
 		}
 	}
@@ -206,22 +206,11 @@ final class OfflineStore {
 				arguments: [mediaType.rawValue, resourceId]
 			)
 
-			guard let row else { return nil }
-
-			let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
-			let playbackMetadataJson: String? = row["playback_metadata"]
-
-			return OfflineMediaItem(
-				catalogMetadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["catalog_metadata"]),
-				playbackMetadata: try playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) },
-				mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
-				licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
-				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
-			)
+			return try row.map { try OfflineMediaItem(from: $0, store: self, database: database) }
 		}
 	}
 
-	func getMediaItems(mediaType: OfflineMediaItemType) async throws -> [OfflineMediaItem] {
+	func getMediaItems(mediaType: OfflineMediaItemType) async throws -> ([OfflineMediaItem], [FailedOfflineItem]) {
 		try await databaseQueue.write { [self] database in
 			let rows = try Row.fetchAll(
 				database,
@@ -234,18 +223,18 @@ final class OfflineStore {
 				arguments: [mediaType.rawValue]
 			)
 
-			return try rows.map { row in
-				let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
-				let playbackMetadataJson: String? = row["playback_metadata"]
+			var items: [OfflineMediaItem] = []
+			var failures: [FailedOfflineItem] = []
 
-				return OfflineMediaItem(
-					catalogMetadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["catalog_metadata"]),
-					playbackMetadata: try playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) },
-					mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
-					licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
-					artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
-				)
+			for row in rows {
+				do {
+					items.append(try OfflineMediaItem(from: row, store: self, database: database))
+				} catch {
+					FailedOfflineItem(from: row).map { failures.append($0) }
+				}
 			}
+
+			return (items, failures)
 		}
 	}
 
@@ -267,7 +256,7 @@ final class OfflineStore {
 
 				return OfflineCollection(
 					catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
-					artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
+					artworkURL: try? resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
 				)
 			}
 		}
@@ -294,11 +283,11 @@ final class OfflineStore {
 		resourceId: String,
 		limit: Int,
 		after cursor: Int64? = nil
-	) async throws -> OfflineCollectionItemsPage {
+	) async throws -> (OfflineCollectionItemsPage, [FailedOfflineItem]) {
 		let cursorVolume = cursor.map { Int($0 / 1_000_000) } ?? -1
 		let cursorPosition = cursor.map { Int($0 % 1_000_000) } ?? -1
 
-		let items = try await databaseQueue.write { [self] database in
+		let (items, failures) = try await databaseQueue.write { [self] database -> ([OfflineCollectionItem], [FailedOfflineItem]) in
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
@@ -316,13 +305,22 @@ final class OfflineStore {
 				arguments: [collectionType.rawValue, resourceId, cursorVolume, cursorVolume, cursorPosition, limit]
 			)
 
-			return try rows.map { row in
-				try makeCollectionItem(from: row, database: database)
+			var items: [OfflineCollectionItem] = []
+			var failures: [FailedOfflineItem] = []
+
+			for row in rows {
+				do {
+					items.append(try makeCollectionItem(from: row, database: database))
+				} catch {
+					FailedOfflineItem(from: row).map { failures.append($0) }
+				}
 			}
+
+			return (items, failures)
 		}
 
 		let nextCursor = items.last.map { Int64($0.volume) * 1_000_000 + Int64($0.position) }
-		return OfflineCollectionItemsPage(items: items, cursor: nextCursor)
+		return (OfflineCollectionItemsPage(items: items, cursor: nextCursor), failures)
 	}
 
 	func getAudioFormatOfCollection(
@@ -388,20 +386,27 @@ final class OfflineStore {
 	}
 
 	private func makeCollectionItem(from row: Row, database: GRDB.Database) throws -> OfflineCollectionItem {
-		let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
-		let playbackMetadataJson: String? = row["playback_metadata"]
-
-		return OfflineCollectionItem(
-			item: OfflineMediaItem(
-				catalogMetadata: try OfflineMediaItem.Metadata.deserialize(mediaType: mediaType, json: row["catalog_metadata"]),
-				playbackMetadata: try playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) },
-				mediaURL: try resolveAndUpdateBookmark(row, column: "media_bookmark", database),
-				licenseURL: try resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
-				artworkURL: try resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
-			),
+		OfflineCollectionItem(
+			item: try OfflineMediaItem(from: row, store: self, database: database),
 			volume: row["volume"],
 			position: row["position"]
 		)
+	}
+}
+
+// MARK: - FailedOfflineItem
+
+struct FailedOfflineItem {
+	let mediaType: OfflineMediaItemType
+	let resourceId: String
+
+	init?(from row: Row) {
+		let resourceType: String = row["resource_type"]
+		guard let mediaType = OfflineMediaItemType(rawValue: resourceType) else {
+			return nil
+		}
+		self.mediaType = mediaType
+		self.resourceId = row["resource_id"]
 	}
 }
 
@@ -508,8 +513,8 @@ private extension OfflineMediaItem.PlaybackMetadata {
 
 // MARK: - OfflineStore Helpers
 
-private extension OfflineStore {
-	private func resolveAndUpdateBookmark(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL {
+extension OfflineStore {
+	func resolveAndUpdateBookmark(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL {
 		let bookmarkData: Data = row[column]
 		let resourceType: String = row["resource_type"]
 		let resourceId: String = row["resource_id"]
@@ -533,11 +538,28 @@ private extension OfflineStore {
 		return url
 	}
 
-	private func resolveAndUpdateBookmarkIfPresent(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL? {
+	func resolveAndUpdateBookmarkIfPresent(_ row: Row, column: String, _ database: GRDB.Database) throws -> URL? {
 		guard row[column] != nil else {
 			return nil
 		}
 
 		return try resolveAndUpdateBookmark(row, column: column, database)
+	}
+}
+
+// MARK: - OfflineMediaItem from Row
+
+private extension OfflineMediaItem {
+	init(from row: Row, store: OfflineStore, database: GRDB.Database) throws {
+		let mediaType = OfflineMediaItemType(rawValue: row["resource_type"])!
+		let playbackMetadataJson: String? = row["playback_metadata"]
+
+		self.init(
+			catalogMetadata: try Metadata.deserialize(mediaType: mediaType, json: row["catalog_metadata"]),
+			playbackMetadata: try playbackMetadataJson.map { try PlaybackMetadata.deserialize($0) },
+			mediaURL: try store.resolveAndUpdateBookmark(row, column: "media_bookmark", database),
+			licenseURL: try store.resolveAndUpdateBookmarkIfPresent(row, column: "license_bookmark", database),
+			artworkURL: try? store.resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
+		)
 	}
 }

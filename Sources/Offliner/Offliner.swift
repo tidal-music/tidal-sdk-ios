@@ -102,7 +102,17 @@ public final class Offliner {
 	}
 
 	public func getOfflineMediaItems(mediaType: OfflineMediaItemType) async throws -> [OfflineMediaItem] {
-		try await offlineStore.getMediaItems(mediaType: mediaType)
+		let (items, failures) = try await offlineStore.getMediaItems(mediaType: mediaType)
+
+		if !failures.isEmpty {
+			Task {
+				for failure in failures {
+					try? await download(mediaType: failure.mediaType, resourceId: failure.resourceId)
+				}
+			}
+		}
+
+		return items
 	}
 
 	public func getOfflineCollection(
@@ -129,12 +139,22 @@ public final class Offliner {
 		limit: Int,
 		after cursor: Int64? = nil
 	) async throws -> OfflineCollectionItemsPage {
-		try await offlineStore.getCollectionItems(
+		let (page, failures) = try await offlineStore.getCollectionItems(
 			collectionType: collectionType,
 			resourceId: resourceId,
 			limit: limit,
 			after: cursor
 		)
+
+		if !failures.isEmpty {
+			Task {
+				for failure in failures {
+					try? await download(mediaType: failure.mediaType, resourceId: failure.resourceId)
+				}
+			}
+		}
+
+		return page
 	}
 
 	public func getAudioFormatOfCollection(
@@ -172,12 +192,13 @@ public final class Offliner {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId)
 		await taskRunner.run()
 	}
+
 }
 
 // MARK: - OfflineItemProvider
 
 extension Offliner: OfflineItemProvider {
-	public func get(productType: ProductType, productId: String) async throws -> OfflinePlaybackItem? {
+	public func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem? {
 		let mediaType: OfflineMediaItemType
 		switch productType {
 		case .TRACK: mediaType = .tracks
@@ -185,18 +206,14 @@ extension Offliner: OfflineItemProvider {
 		case .UC: return nil
 		}
 
-		guard let item = try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: productId) else {
-			return nil
+		do {
+			return try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: productId)
+				.map { OfflinePlaybackItem($0, productType: productType) }
+		} catch {
+			Task { try? await download(mediaType: mediaType, resourceId: productId) }
 		}
 
-		return OfflinePlaybackItem(
-			mediaURL: item.mediaURL,
-			licenseURL: item.licenseURL,
-			format: item.playbackMetadata?.format.rawValue,
-			albumReplayGain: item.playbackMetadata?.albumNormalizationData?.replayGain,
-			albumPeakAmplitude: item.playbackMetadata?.albumNormalizationData?.peakAmplitude,
-			productType: productType
-		)
+		return nil
 	}
 }
 
@@ -218,5 +235,20 @@ extension OfflineCollectionType {
 		case .playlists: return .playlist
 		case .userCollectionTracks: return .userCollectionTracks
 		}
+	}
+}
+
+// MARK: - OfflinePlaybackItem from OfflineMediaItem
+
+private extension OfflinePlaybackItem {
+	init(_ item: OfflineMediaItem, productType: ProductType) {
+		self.init(
+			mediaURL: item.mediaURL,
+			licenseURL: item.licenseURL,
+			format: item.playbackMetadata?.format.rawValue,
+			albumReplayGain: item.playbackMetadata?.albumNormalizationData?.replayGain,
+			albumPeakAmplitude: item.playbackMetadata?.albumNormalizationData?.peakAmplitude,
+			productType: productType
+		)
 	}
 }
