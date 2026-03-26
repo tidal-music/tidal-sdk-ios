@@ -22,7 +22,7 @@ internal class TermsAPI {
     /**
      Get multiple terms.
      
-     - parameter filterId: (query) Terms id (e.g. &#x60;4gfFC5kRVs84pMJpMq3Y8K&#x60;) (optional)
+     - parameter filterId: (query) Terms id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterIsLatestVersion: (query) Filter by isLatestVersion (optional)
      - parameter filterTermsType: (query) One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) (optional)
      - returns: TermsMultiResourceDataDocument
@@ -47,7 +47,7 @@ internal class TermsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterId: (query) Terms id (e.g. &#x60;4gfFC5kRVs84pMJpMq3Y8K&#x60;) (optional)
+     - parameter filterId: (query) Terms id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterIsLatestVersion: (query) Filter by isLatestVersion (optional)
      - parameter filterTermsType: (query) One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) (optional)
      - returns: RequestBuilder<TermsMultiResourceDataDocument> 

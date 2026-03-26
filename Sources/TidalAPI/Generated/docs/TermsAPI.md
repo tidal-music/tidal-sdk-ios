@@ -22,7 +22,7 @@ Retrieves multiple terms by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | Terms id (e.g. `4gfFC5kRVs84pMJpMq3Y8K`) (optional)
+let filterId = ["inner_example"] // [String] | Terms id (e.g. `a468bee88def`) (optional)
 let filterIsLatestVersion = ["inner_example"] // [String] | Filter by isLatestVersion (optional)
 let filterTermsType = ["filterTermsType_example"] // [String] | One of: DEVELOPER (e.g. `DEVELOPER`) (optional)
 
@@ -43,7 +43,7 @@ TermsAPI.termsGet(filterId: filterId, filterIsLatestVersion: filterIsLatestVersi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | Terms id (e.g. &#x60;4gfFC5kRVs84pMJpMq3Y8K&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | Terms id (e.g. &#x60;a468bee88def&#x60;) | [optional] 
  **filterIsLatestVersion** | [**[String]**](String.md) | Filter by isLatestVersion | [optional] 
  **filterTermsType** | [**[String]**](String.md) | One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) | [optional] 
 

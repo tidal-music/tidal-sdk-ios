@@ -36,6 +36,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case playQueuesResourceObject(PlayQueuesResourceObject)
     case playlistsResourceObject(PlaylistsResourceObject)
     case priceConfigurationsResourceObject(PriceConfigurationsResourceObject)
+    case providerProductInfosResourceObject(ProviderProductInfosResourceObject)
     case providersResourceObject(ProvidersResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
@@ -56,6 +57,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userCollectionArtistsResourceObject(UserCollectionArtistsResourceObject)
     case userCollectionFoldersResourceObject(UserCollectionFoldersResourceObject)
     case userCollectionPlaylistsResourceObject(UserCollectionPlaylistsResourceObject)
+    case userCollectionSaveForLatersResourceObject(UserCollectionSaveForLatersResourceObject)
     case userCollectionTracksResourceObject(UserCollectionTracksResourceObject)
     case userCollectionVideosResourceObject(UserCollectionVideosResourceObject)
     case userCollectionsResourceObject(UserCollectionsResourceObject)
@@ -119,6 +121,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .priceConfigurationsResourceObject(let value):
             try container.encode(value)
+        case .providerProductInfosResourceObject(let value):
+            try container.encode(value)
         case .providersResourceObject(let value):
             try container.encode(value)
         case .reactionsResourceObject(let value):
@@ -158,6 +162,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .userCollectionFoldersResourceObject(let value):
             try container.encode(value)
         case .userCollectionPlaylistsResourceObject(let value):
+            try container.encode(value)
+        case .userCollectionSaveForLatersResourceObject(let value):
             try container.encode(value)
         case .userCollectionTracksResourceObject(let value):
             try container.encode(value)
@@ -264,6 +270,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "priceConfigurations":
             let value = try PriceConfigurationsResourceObject(from: decoder)
             self = .priceConfigurationsResourceObject(value)
+        case "providerProductInfos":
+            let value = try ProviderProductInfosResourceObject(from: decoder)
+            self = .providerProductInfosResourceObject(value)
         case "providers":
             let value = try ProvidersResourceObject(from: decoder)
             self = .providersResourceObject(value)
@@ -324,6 +333,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userCollectionPlaylists":
             let value = try UserCollectionPlaylistsResourceObject(from: decoder)
             self = .userCollectionPlaylistsResourceObject(value)
+        case "userCollectionSaveForLaters":
+            let value = try UserCollectionSaveForLatersResourceObject(from: decoder)
+            self = .userCollectionSaveForLatersResourceObject(value)
         case "userCollectionTracks":
             let value = try UserCollectionTracksResourceObject(from: decoder)
             self = .userCollectionTracksResourceObject(value)
@@ -386,6 +398,7 @@ extension IncludedInner: Identifiable {
         case .playQueuesResourceObject(let value): return value.id
         case .playlistsResourceObject(let value): return value.id
         case .priceConfigurationsResourceObject(let value): return value.id
+        case .providerProductInfosResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
@@ -406,6 +419,7 @@ extension IncludedInner: Identifiable {
         case .userCollectionArtistsResourceObject(let value): return value.id
         case .userCollectionFoldersResourceObject(let value): return value.id
         case .userCollectionPlaylistsResourceObject(let value): return value.id
+        case .userCollectionSaveForLatersResourceObject(let value): return value.id
         case .userCollectionTracksResourceObject(let value): return value.id
         case .userCollectionVideosResourceObject(let value): return value.id
         case .userCollectionsResourceObject(let value): return value.id

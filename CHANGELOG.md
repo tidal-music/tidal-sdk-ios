@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.9] - 2026-03-26
+
+### Changed
+- Generated API code using spec version 1.4.11 (TidalAPI)
+- Acquire DRM license before starting media download (Offliner)
+- Select largest artwork file by area (Offliner)
+- Cache certificate per app session in LicenseDownloader (Offliner)
+- Use OSLog for background download session debugging (Offliner)
+- Improve TaskRunner resilience and concurrency (Offliner)
+- Remove AirPlay/CarPlay check from CrossfadingPlayerWrapper canPlay (Player)
+
+### Fixed
+- Delete files of failed and cancelled downloads (Offliner)
+- Handle per-item deserialization failures gracefully (Offliner)
+
 ## [0.11.8] - 2026-03-19
 
 ### Added
