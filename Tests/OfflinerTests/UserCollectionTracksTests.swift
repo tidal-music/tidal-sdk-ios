@@ -13,7 +13,7 @@ final class UserCollectionTracksTests: OfflinerTestCase {
 		)
 
 		try await offliner.download(collectionType: .userCollectionTracks, resourceId: "uct-123")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let storedCollection = try await offliner.getOfflineCollection(
@@ -37,7 +37,7 @@ final class UserCollectionTracksTests: OfflinerTestCase {
 		)
 
 		try await offliner.download(collectionType: .userCollectionTracks, resourceId: "uct-123")
-		try await offliner.run()
+		await offliner.run()
 
 		let downloads = await offliner.currentDownloads
 		XCTAssertEqual(downloads.count, 0)
@@ -52,11 +52,11 @@ final class UserCollectionTracksTests: OfflinerTestCase {
 		)
 
 		try await offliner.download(collectionType: .userCollectionTracks, resourceId: "uct-1")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		try await offliner.download(collectionType: .userCollectionTracks, resourceId: "uct-2")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let collections = try await offliner.getOfflineCollections(collectionType: .userCollectionTracks)
@@ -78,7 +78,7 @@ final class UserCollectionTracksTests: OfflinerTestCase {
 		)
 
 		try await offliner.download(collectionType: .userCollectionTracks, resourceId: "uct-123")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let storedCollection = try await offliner.getOfflineCollection(
@@ -88,7 +88,7 @@ final class UserCollectionTracksTests: OfflinerTestCase {
 		XCTAssertNotNil(storedCollection)
 
 		try await offliner.remove(collectionType: .userCollectionTracks, resourceId: "uct-123")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let removedCollection = try await offliner.getOfflineCollection(

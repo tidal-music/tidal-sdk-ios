@@ -22,8 +22,7 @@ actor TaskRunner {
 	private var runningTasks: [InternalTask] = []
 	private var taskIds: Set<String> = []
 
-	private var isRunning = false
-	private var needsRun = false
+	private var processTask: Task<Void, Never>?
 	private var cursor: String?
 
 	private(set) var currentDownloads: [Download] = []
@@ -84,33 +83,19 @@ actor TaskRunner {
 		)
 	}
 
-	func run() async throws {
-		if isRunning {
-			needsRun = true
-			return
+	func run() {
+		guard processTask == nil else { return }
+
+		processTask = Task {
+			await process()
+			processTask = nil
 		}
-
-		isRunning = true
-		defer { isRunning = false }
-
-		repeat {
-			needsRun = false
-
-			if pendingTasks.count < Self.maxQueueSize {
-				try await refresh()
-			}
-
-			while runningTasks.count < Self.maxConcurrentTasks, !pendingTasks.isEmpty {
-				let task = pendingTasks.removeFirst()
-				start(task)
-			}
-		} while needsRun
 	}
 
-	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
+	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) {
 		allowDownloadsOnExpensiveNetworks = allowed
 		if allowed {
-			try? await run()
+			run()
 		}
 	}
 
@@ -143,54 +128,73 @@ actor TaskRunner {
 		}
 	}
 
-	private func start(_ task: InternalTask) {
-		let canUseExpensiveNetworks = allowDownloadsOnExpensiveNetworks
-		let currentNetwork = network
+	private func process() async {
+		if pendingTasks.count < Self.maxQueueSize {
+			try? await refresh()
+		}
 
-		runningTasks.append(task)
-
-		Task { [weak self] in
-			guard currentNetwork.isInexpensive || canUseExpensiveNetworks else { return }
-
-			await task.download?.updateState(.inProgress)
-			try? await self?.offlineApiClient.updateTask(taskId: task.id, state: .inProgress)
-
-			do {
-				try await task.run()
-				await task.download?.updateState(.completed)
-				try? await self?.offlineApiClient.updateTask(taskId: task.id, state: .completed)
-			} catch {
-				Self.logger.error("Task \(task.id, privacy: .public) failed: \(error, privacy: .public)")
-				await task.download?.updateState(.failed)
-				try? await self?.offlineApiClient.updateTask(taskId: task.id, state: .failed)
+		await withTaskGroup(of: Void.self) { group in
+			for task in pendingTasks.prefix(Self.maxConcurrentTasks) {
+				group.addTask { await self.start(task) }
 			}
 
-			await self?.finalize(task)
+			for await _ in group {
+				if let task = pendingTasks.first {
+					group.addTask { await self.start(task) }
+				}
+
+				if pendingTasks.count < Self.maxQueueSize {
+					try? await refresh()
+				}
+			}
 		}
 	}
 
-	private func finalize(_ task: InternalTask) async {
-		runningTasks.removeAll { $0.id == task.id }
+	private func start(_ task: InternalTask) async {
+		guard await network.isInexpensive || allowDownloadsOnExpensiveNetworks else { return }
+
+		pendingTasks.removeAll { $0 === task }
+		runningTasks.append(task)
+
+		await task.download?.updateState(.inProgress)
+		try? await offlineApiClient.updateTask(taskId: task.id, state: .inProgress)
+
+		do {
+			try await task.run()
+			await task.download?.updateState(.completed)
+			try? await offlineApiClient.updateTask(taskId: task.id, state: .completed)
+		} catch {
+			Self.logger.error("Task \(task.id, privacy: .public) failed: \(error, privacy: .public)")
+			await task.download?.updateState(.failed)
+			try? await offlineApiClient.updateTask(taskId: task.id, state: .failed)
+		}
+
+		runningTasks.removeAll { $0 === task }
 		taskIds.remove(task.id)
 		if let download = task.download {
 			currentDownloads.removeAll { $0 === download }
 		}
-		try? await run()
 	}
 }
 
 // MARK: - Network
 
-private final class Network {
+private actor Network {
 	private let monitor = NWPathMonitor()
 	private(set) var isInexpensive = true
 
 	init() {
 		monitor.pathUpdateHandler = { [weak self] path in
 			guard path.status == .satisfied else { return }
-			self?.isInexpensive = !path.isExpensive && !path.isConstrained
+			guard let self else { return }
+			let inexpensive = !path.isExpensive && !path.isConstrained
+			Task { await self.setInexpensive(inexpensive) }
 		}
 		monitor.start(queue: DispatchQueue(label: "taskrunner.network.monitor"))
+	}
+
+	private func setInexpensive(_ value: Bool) {
+		isInexpensive = value
 	}
 }
 

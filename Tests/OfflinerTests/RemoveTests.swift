@@ -20,7 +20,7 @@ final class RemoveTests: OfflinerTestCase {
 		XCTAssertNotNil(storedItem)
 
 		try await offliner.remove(mediaType: .tracks, resourceId: "track-123")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let removedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
@@ -46,7 +46,7 @@ final class RemoveTests: OfflinerTestCase {
 		XCTAssertTrue(FileManager.default.fileExists(atPath: artworkURL.path))
 
 		try await offliner.remove(mediaType: .tracks, resourceId: "track-123")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		XCTAssertFalse(FileManager.default.fileExists(atPath: mediaURL.path))
@@ -68,7 +68,7 @@ final class RemoveTests: OfflinerTestCase {
 		XCTAssertNotNil(storedItem)
 
 		try await offliner.remove(mediaType: .videos, resourceId: "video-456")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let removedItem = try await offliner.getOfflineMediaItem(mediaType: .videos, resourceId: "video-456")
@@ -86,7 +86,7 @@ final class RemoveTests: OfflinerTestCase {
 		)
 
 		try await offliner.download(collectionType: .albums, resourceId: "album-123")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let storedCollection = try await offliner.getOfflineCollection(
@@ -96,7 +96,7 @@ final class RemoveTests: OfflinerTestCase {
 		XCTAssertNotNil(storedCollection)
 
 		try await offliner.remove(collectionType: .albums, resourceId: "album-123")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let removedCollection = try await offliner.getOfflineCollection(
@@ -115,7 +115,7 @@ final class RemoveTests: OfflinerTestCase {
 		)
 
 		try await offliner.download(collectionType: .albums, resourceId: "album-123")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let storedCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123")
@@ -124,7 +124,7 @@ final class RemoveTests: OfflinerTestCase {
 		XCTAssertTrue(FileManager.default.fileExists(atPath: artworkURL.path))
 
 		try await offliner.remove(collectionType: .albums, resourceId: "album-123")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		XCTAssertFalse(FileManager.default.fileExists(atPath: artworkURL.path))
@@ -139,7 +139,7 @@ final class RemoveTests: OfflinerTestCase {
 		)
 
 		try await offliner.remove(mediaType: .tracks, resourceId: "nonexistent")
-		try await offliner.run()
+		await offliner.run()
 		await backend.waitForTasksToComplete()
 	}
 }
