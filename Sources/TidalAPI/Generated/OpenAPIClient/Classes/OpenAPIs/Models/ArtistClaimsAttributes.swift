@@ -43,7 +43,7 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
     /** The recommended claim resolution */
     public var recommendation: Recommendation?
     /** List of UPCs retrieved from the DSP */
-    public var retrievedUpcs: [BarcodeId]?
+    public var retrievedUpcs: [LegacyBarcodeId]?
     /** Current status of this claim */
     public var status: Status
 
@@ -52,7 +52,7 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         externalLinks: [ExternalLink]? = nil,
         provider: Provider,
         recommendation: Recommendation? = nil,
-        retrievedUpcs: [BarcodeId]? = nil,
+        retrievedUpcs: [LegacyBarcodeId]? = nil,
         status: Status
     ) {
         self.artistId = artistId
