@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **contentLink** | [**LinkObject**](LinkObject.md) |  | 
+**countryCode** | **String** |  | 
 **effectiveAt** | **Date** |  | 
 **termsType** | **String** |  | 
 

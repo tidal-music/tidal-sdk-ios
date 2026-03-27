@@ -16,21 +16,25 @@ public struct TermsAttributes: Codable, Hashable {
         case developer = "DEVELOPER"
     }
     public var contentLink: LinkObject
+    public var countryCode: String
     public var effectiveAt: Date
     public var termsType: TermsType
 
     public init(
         contentLink: LinkObject,
+        countryCode: String,
         effectiveAt: Date,
         termsType: TermsType
     ) {
         self.contentLink = contentLink
+        self.countryCode = countryCode
         self.effectiveAt = effectiveAt
         self.termsType = termsType
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case contentLink
+        case countryCode
         case effectiveAt
         case termsType
     }
@@ -40,6 +44,7 @@ public struct TermsAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(contentLink, forKey: .contentLink)
+        try container.encode(countryCode, forKey: .countryCode)
         try container.encode(effectiveAt, forKey: .effectiveAt)
         try container.encode(termsType, forKey: .termsType)
     }
