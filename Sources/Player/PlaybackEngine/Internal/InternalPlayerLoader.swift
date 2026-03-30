@@ -163,7 +163,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		var licenseLoader: StreamingLicenseLoader?
 		// Skip license loader on simulator since AVContentKeySession doesn't support FairPlay
 		if !PlayerWorld.isSimulator,
-		   playbackInfo.licenseSecurityToken != nil || (playbackInfo.productType == .TRACK && featureFlagProvider.shouldUseNewPlaybackEndpoints()) {
+		   playbackInfo.licenseSecurityToken != nil || playbackInfo.productType == .TRACK {
 			licenseLoader = StreamingLicenseLoader(
 				fairPlayLicenseFetcher: fairPlayLicenseFetcher,
 				streamingSessionId: streamingSessionId,
