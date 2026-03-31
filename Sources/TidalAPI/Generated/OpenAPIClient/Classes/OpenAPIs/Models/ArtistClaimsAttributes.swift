@@ -31,6 +31,8 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         case completed = "COMPLETED"
         case failed = "FAILED"
         case cancelled = "CANCELLED"
+        case nameMismatch = "NAME_MISMATCH"
+        case claimedArtistMismatch = "CLAIMED_ARTIST_MISMATCH"
     }
     public static let providerRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let statusRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
