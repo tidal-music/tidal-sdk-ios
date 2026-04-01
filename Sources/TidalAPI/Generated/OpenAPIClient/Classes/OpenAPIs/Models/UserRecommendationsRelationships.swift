@@ -15,21 +15,25 @@ public struct UserRecommendationsRelationships: Codable, Hashable {
     public var discoveryMixes: MultiRelationshipDataDocument?
     public var myMixes: MultiRelationshipDataDocument?
     public var newArrivalMixes: MultiRelationshipDataDocument?
+    public var offlineMixes: MultiRelationshipDataDocument?
 
     public init(
         discoveryMixes: MultiRelationshipDataDocument? = nil,
         myMixes: MultiRelationshipDataDocument? = nil,
-        newArrivalMixes: MultiRelationshipDataDocument? = nil
+        newArrivalMixes: MultiRelationshipDataDocument? = nil,
+        offlineMixes: MultiRelationshipDataDocument? = nil
     ) {
         self.discoveryMixes = discoveryMixes
         self.myMixes = myMixes
         self.newArrivalMixes = newArrivalMixes
+        self.offlineMixes = offlineMixes
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case discoveryMixes
         case myMixes
         case newArrivalMixes
+        case offlineMixes
     }
 
     // Encodable protocol methods
@@ -39,5 +43,6 @@ public struct UserRecommendationsRelationships: Codable, Hashable {
         try container.encodeIfPresent(discoveryMixes, forKey: .discoveryMixes)
         try container.encodeIfPresent(myMixes, forKey: .myMixes)
         try container.encodeIfPresent(newArrivalMixes, forKey: .newArrivalMixes)
+        try container.encodeIfPresent(offlineMixes, forKey: .offlineMixes)
     }
 }
