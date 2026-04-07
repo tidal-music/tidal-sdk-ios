@@ -438,7 +438,7 @@ private extension Player {
 			credentialsProvider: credentialsProvider,
 			avQueuePlayerWrapper: avQueuePlayerWrapper,
 			crossfadingPlayerWrapper: crossfadingPlayerWrapper,
-			externalPlayers: []
+			externalPlayers: externalPlayersSupplier?() ?? []
 		)
 
 		let playerInstance = PlayerEngine(
