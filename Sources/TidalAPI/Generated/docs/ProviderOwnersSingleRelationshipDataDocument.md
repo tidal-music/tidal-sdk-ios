@@ -1,12 +1,11 @@
-# TermsAttributes
+# ProviderOwnersSingleRelationshipDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**contentLink** | [**LinkObject**](LinkObject.md) |  | 
-**countryCode** | **String** |  | 
-**effectiveAt** | **Date** |  | 
-**termsType** | **String** |  | 
+**data** | [**ResourceIdentifier**](ResourceIdentifier.md) |  | [optional] 
+**included** | [IncludedInner] |  | [optional] 
+**links** | [**Links**](Links.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

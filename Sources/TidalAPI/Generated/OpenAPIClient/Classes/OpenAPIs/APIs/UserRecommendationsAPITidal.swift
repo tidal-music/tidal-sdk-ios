@@ -60,4 +60,16 @@ public enum UserRecommendationsAPITidal {
 			UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
+
+
+	/**
+     Get offlineMixes relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserRecommendationsMultiRelationshipDataDocument
+     */
+	public static func userRecommendationsIdRelationshipsOfflineMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserRecommendationsAPI.userRecommendationsIdRelationshipsOfflineMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include)
+		}
+	}
 }

@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.4.11"
+    "version" : "1.4.15"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -92,6 +92,9 @@
   }, {
     "description" : "Pricing configuration for purchasable content.",
     "name" : "priceConfigurations"
+  }, {
+    "description" : "An association between a content provider and an owning user.",
+    "name" : "providerOwners"
   }, {
     "description" : "Product information for a content provider's catalogue.",
     "name" : "providerProductInfos"
@@ -12471,6 +12474,230 @@
         }
       }
     },
+    "/providerOwners" : {
+      "get" : {
+        "description" : "Retrieves multiple providerOwners by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners, provider",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "User id. Use `me` for the authenticated user",
+          "in" : "query",
+          "name" : "filter[owners.id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProviderOwners_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get multiple providerOwners.",
+        "tags" : [ "providerOwners" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/providerOwners/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "description" : "Provider owner id",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProviderOwners_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "tags" : [ "providerOwners" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/providerOwners/{id}/relationships/provider" : {
+      "get" : {
+        "description" : "Retrieves provider relationship.",
+        "parameters" : [ {
+          "description" : "Provider owner id",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: provider",
+          "example" : "provider",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "provider"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProviderOwners_Single_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get provider relationship (\"to-one\").",
+        "tags" : [ "providerOwners" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
     "/providerProductInfos" : {
       "get" : {
         "description" : "Retrieves multiple providerProductInfos by available filters, or without if applicable.",
@@ -14976,6 +15203,17 @@
       "get" : {
         "description" : "Retrieves multiple terms by available filters, or without if applicable.",
         "parameters" : [ {
+          "description" : "Filter by countryCode",
+          "in" : "query",
+          "name" : "filter[countryCode]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
           "description" : "Terms id (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[id]",
@@ -22955,7 +23193,7 @@
             "default" : "en-US"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes",
           "example" : "discoveryMixes",
           "in" : "query",
           "name" : "include",
@@ -23308,6 +23546,96 @@
         "tags" : [ "userRecommendations" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/userRecommendations/{id}/relationships/offlineMixes" : {
+      "get" : {
+        "description" : "Retrieves offlineMixes relationship.",
+        "parameters" : [ {
+          "description" : "User recommendations id. Use `me` for the authenticated user's resource",
+          "example" : "me",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: offlineMixes",
+          "example" : "offlineMixes",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "offlineMixes"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserRecommendations_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr", "recommendations.read" ]
+        } ],
+        "summary" : "Get offlineMixes relationship (\"to-many\").",
+        "tags" : [ "userRecommendations" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -26096,7 +26424,7 @@
             "minLength" : 1,
             "type" : "string",
             "description" : "Current status of this claim",
-            "enum" : [ "AWAITING_OAUTH", "FETCHING_CONTENT", "VERIFIED", "NO_MATCHES", "AUTHENTICATION_FAILED", "PROCESSING", "COMPLETED", "FAILED", "CANCELLED" ]
+            "enum" : [ "AWAITING_OAUTH", "FETCHING_CONTENT", "VERIFIED", "NO_MATCHES", "AUTHENTICATION_FAILED", "PROCESSING", "COMPLETED", "FAILED", "CANCELLED", "NAME_MISMATCH", "CLAIMED_ARTIST_MISMATCH" ]
           }
         }
       },
@@ -28817,6 +29145,7 @@
               "playQueues" : "#/components/schemas/PlayQueues_Resource_Object",
               "playlists" : "#/components/schemas/Playlists_Resource_Object",
               "priceConfigurations" : "#/components/schemas/PriceConfigurations_Resource_Object",
+              "providerOwners" : "#/components/schemas/ProviderOwners_Resource_Object",
               "providerProductInfos" : "#/components/schemas/ProviderProductInfos_Resource_Object",
               "providers" : "#/components/schemas/Providers_Resource_Object",
               "reactions" : "#/components/schemas/Reactions_Resource_Object",
@@ -28901,6 +29230,8 @@
             "$ref" : "#/components/schemas/Playlists_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/PriceConfigurations_Resource_Object"
+          }, {
+            "$ref" : "#/components/schemas/ProviderOwners_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/ProviderProductInfos_Resource_Object"
           }, {
@@ -31127,6 +31458,115 @@
           }
         }
       },
+      "ProviderOwners_Attributes" : {
+        "required" : [ "createdAt" ],
+        "type" : "object",
+        "properties" : {
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "ProviderOwners_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ProviderOwners_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ProviderOwners_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ProviderOwners_Relationships" : {
+        "properties" : {
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          },
+          "provider" : {
+            "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
+          }
+        }
+      },
+      "ProviderOwners_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/ProviderOwners_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/ProviderOwners_Relationships"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "ProviderOwners_Single_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Resource_Identifier"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ProviderOwners_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ProviderOwners_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
       "ProviderProductInfos_Attributes" : {
         "required" : [ "barcodeId" ],
         "type" : "object",
@@ -32352,11 +32792,14 @@
         }
       },
       "Terms_Attributes" : {
-        "required" : [ "contentLink", "effectiveAt", "termsType" ],
+        "required" : [ "contentLink", "countryCode", "effectiveAt", "termsType" ],
         "type" : "object",
         "properties" : {
           "contentLink" : {
             "$ref" : "#/components/schemas/Link_Object"
+          },
+          "countryCode" : {
+            "type" : "string"
           },
           "effectiveAt" : {
             "type" : "string",
@@ -36217,6 +36660,9 @@
             "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
           },
           "newArrivalMixes" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          },
+          "offlineMixes" : {
             "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
           }
         }
