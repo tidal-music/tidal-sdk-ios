@@ -269,61 +269,86 @@ private extension PlaybackInfoFetcher {
 		playbackMode: PlaybackMode,
 		streamingSessionId: String
 	) async throws -> PlaybackInfo {
-		let playbackInfo: VideoPlaybackInfo = try await getPlaybackInfo(
-			url: getVideoPlaybackInfoUrl(videoId: videoId, playbackMode: playbackMode),
-			streamingSessionId: streamingSessionId,
-			playlistUUID: nil
-		)
+		let start = PlayerWorld.timeProvider.timestamp()
+		do {
+			// Ensure credentials provider is set
+			if OpenAPIClientAPI.credentialsProvider == nil {
+				OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
+			}
 
-		guard let url = PlaybackInfoFetcher.extractUrl(
-			manifestMimeType: playbackInfo.manifestMimeType,
-			manifest: playbackInfo.manifest
-		) else {
-			throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
+			let response = try await VideoManifestsAPITidal.videoManifestsIdGet(
+				id: videoId,
+				uriScheme: .data,
+				usage: playbackMode == .OFFLINE ? .download : .playback
+			)
+
+			let attributes = response.data.attributes
+
+			guard let hrefString = attributes?.link?.href,
+			      let url = URL(string: hrefString)
+			else {
+				throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
+			}
+
+			let endTimestamp = PlayerWorld.timeProvider.timestamp()
+			playerEventSender.send(
+				PlaybackInfoFetch(
+					streamingSessionId: streamingSessionId,
+					startTimestamp: start,
+					endTimestamp: endTimestamp,
+					endReason: .COMPLETE,
+					errorMessage: nil,
+					errorCode: nil
+				)
+			)
+
+			return PlaybackInfo(
+				productType: .VIDEO,
+				productId: videoId,
+				streamType: .ON_DEMAND,
+				assetPresentation: convertVideoPresentation(attributes?.videoPresentation),
+				audioMode: nil,
+				audioQuality: nil,
+				audioCodec: nil,
+				audioSampleRate: nil,
+				audioBitDepth: nil,
+				adaptiveAudioQualities: nil,
+				videoQuality: nil,
+				streamingSessionId: streamingSessionId,
+				contentHash: "NA",
+				mediaType: "application/vnd.apple.mpegurl",
+				url: url,
+				licenseSecurityToken: extractLicenseTokenFromDrmData(attributes?.drmData),
+				albumReplayGain: nil,
+				albumPeakAmplitude: nil,
+				trackReplayGain: nil,
+				trackPeakAmplitude: nil,
+				offlineRevalidateAt: nil,
+				offlineValidUntil: nil,
+				isAdaptivePlaybackEnabled: false,
+				previewReason: convertVideoPreviewReason(attributes?.previewReason)
+			)
+
+		} catch {
+			PlayerWorld.logger?.log(loggable: PlayerLoggable.getPlaybackInfoFailed(error: error))
+
+			let convertedError = PlaybackInfoErrorResponseConverter.convert(error)
+			let playerError = PlayerInternalError.from(convertedError)
+
+			let endTimestamp = PlayerWorld.timeProvider.timestamp()
+			playerEventSender.send(
+				PlaybackInfoFetch(
+					streamingSessionId: streamingSessionId,
+					startTimestamp: start,
+					endTimestamp: endTimestamp,
+					endReason: error is CancellationError ? .OTHER : .ERROR,
+					errorMessage: playerError.technicalDescription,
+					errorCode: playerError.code
+				)
+			)
+
+			throw convertedError
 		}
-
-		return PlaybackInfo(
-			productType: .VIDEO,
-			productId: String(playbackInfo.videoId),
-			streamType: playbackInfo.streamType,
-			assetPresentation: playbackInfo.assetPresentation,
-			audioMode: nil,
-			audioQuality: nil,
-			audioCodec: nil,
-			audioSampleRate: nil,
-			audioBitDepth: nil,
-			adaptiveAudioQualities: nil,
-			videoQuality: playbackInfo.videoQuality,
-			streamingSessionId: playbackInfo.streamingSessionId,
-			contentHash: playbackInfo.manifestHash ?? "NA",
-			mediaType: playbackInfo.manifestMimeType,
-			url: url,
-			licenseSecurityToken: playbackInfo.licenseSecurityToken,
-			albumReplayGain: playbackInfo.albumReplayGain,
-			albumPeakAmplitude: playbackInfo.albumPeakAmplitude,
-			trackReplayGain: playbackInfo.trackReplayGain,
-			trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
-			offlineRevalidateAt: playbackInfo.offlineRevalidateAt,
-			offlineValidUntil: playbackInfo.offlineValidUntil,
-			isAdaptivePlaybackEnabled: false,
-			previewReason: nil // Video playback doesn't use previewReason
-		)
-	}
-
-	func getVideoPlaybackInfoUrl(videoId: String, playbackMode: PlaybackMode) throws -> URL {
-		let videoQuality = getVideoQuality(given: playbackMode)
-		let path = "https://api.tidal.com/v1/videos/\(videoId)/playbackinfo"
-		let parameters = "videoquality=\(videoQuality)&assetpresentation=FULL&playbackmode=\(playbackMode)"
-
-		return try PlaybackInfoFetcher.createUrl(from: "\(path)?\(parameters)")
-	}
-
-	func getVideoQuality(given playbackMode: PlaybackMode) -> VideoQuality {
-		if playbackMode == .OFFLINE {
-			return configuration.offlineVideoQuality
-		}
-
-		return VideoQuality.HIGH
 	}
 
 	func getUCPlaybackInfo(
@@ -429,6 +454,32 @@ private extension PlaybackInfoFetcher {
 			.PREVIEW
 		case nil:
 			.FULL // Default fallback
+		}
+	}
+
+	private func convertVideoPresentation(_ presentation: VideoManifestsAttributes.VideoPresentation?) -> AssetPresentation {
+		switch presentation {
+		case .full:
+			.FULL
+		case .preview:
+			.PREVIEW
+		case nil:
+			.FULL
+		}
+	}
+
+	private func convertVideoPreviewReason(_ reason: VideoManifestsAttributes.PreviewReason?) -> PreviewReason? {
+		guard let reason else {
+			return nil
+		}
+
+		switch reason {
+		case .fullRequiresSubscription:
+			return .FULL_REQUIRES_SUBSCRIPTION
+		case .fullRequiresPurchase:
+			return .FULL_REQUIRES_PURCHASE
+		case .fullRequiresHigherAccessTier:
+			return .FULL_REQUIRES_HIGHER_ACCESS_TIER
 		}
 	}
 
