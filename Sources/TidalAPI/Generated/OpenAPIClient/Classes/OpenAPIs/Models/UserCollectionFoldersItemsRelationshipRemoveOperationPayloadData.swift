@@ -13,20 +13,19 @@ import AnyCodable
 public struct UserCollectionFoldersItemsRelationshipRemoveOperationPayloadData: Codable, Hashable {
 
     public var id: String
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var resourceType: String?
+    public var type: String
 
     public init(
         id: String,
-        resourceType: String? = nil
+        type: String
     ) {
         self.id = id
-        self.resourceType = resourceType
+        self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case resourceType
+        case type
     }
 
     // Encodable protocol methods
@@ -34,7 +33,7 @@ public struct UserCollectionFoldersItemsRelationshipRemoveOperationPayloadData: 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encodeIfPresent(resourceType, forKey: .resourceType)
+        try container.encode(type, forKey: .type)
     }
 }
 
