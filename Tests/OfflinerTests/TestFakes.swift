@@ -65,7 +65,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		case .userCollectionTracks:
 			let task = StoreUserCollectionTracksTask(
 				id: taskId,
-				userCollectionTracks: UserCollectionTracksResourceObject(id: id, type: "userCollectionTracks")
+				resourceId: id
 			)
 			tasks.append(.storeUserCollectionTracks(task))
 		}
