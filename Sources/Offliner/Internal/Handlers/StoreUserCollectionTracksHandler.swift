@@ -28,8 +28,8 @@ private final class InternalUserCollectionTracksTask: InternalTask {
 	func run() async throws {
 		let result = StoreCollectionTaskResult(
 			resourceType: .userCollectionTracks,
-			resourceId: task.userCollectionTracks.id,
-			catalogMetadata: .userCollectionTracks(id: task.userCollectionTracks.id),
+			resourceId: task.resourceId,
+			catalogMetadata: .userCollectionTracks(id: task.resourceId),
 			artworkURL: nil
 		)
 
