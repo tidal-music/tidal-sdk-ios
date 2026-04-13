@@ -13,7 +13,6 @@ public enum OfflineMediaItemType: String {
 public enum OfflineCollectionType: String {
 	case albums
 	case playlists
-	case userCollectionTracks
 }
 
 // MARK: - OfflineMediaItem

@@ -6,7 +6,14 @@ import TidalAPI
 // MARK: - Backend Client Fakes
 
 final class StubOfflineApiClient: OfflineApiClientProtocol {
+	struct RecordedItem {
+		let type: ResourceType
+		let id: String
+	}
+
 	private(set) var tasks: [OfflineTask] = []
+	private(set) var addedItems: [RecordedItem] = []
+	private(set) var removedItems: [RecordedItem] = []
 	var taskIdCounter = 0
 
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
@@ -14,6 +21,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	}
 
 	func addItem(type: ResourceType, id: String) async throws {
+		addedItems.append(RecordedItem(type: type, id: id))
 		let taskId = "task-\(taskIdCounter)"
 		let position = taskIdCounter + 1
 		taskIdCounter += 1
@@ -72,6 +80,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	}
 
 	func removeItem(type: ResourceType, id: String) async throws {
+		removedItems.append(RecordedItem(type: type, id: id))
 		let taskId = "task-\(taskIdCounter)"
 		taskIdCounter += 1
 
