@@ -119,18 +119,18 @@ public final class Offliner {
 		collectionType: OfflineCollectionType,
 		resourceId: String
 	) async throws -> OfflineCollection? {
-		try await offlineStore.getCollection(collectionType: collectionType, resourceId: resourceId)
+		try await offlineStore.getCollection(collectionType: collectionType.toInternal, resourceId: resourceId)
 	}
 
 	public func getOfflineCollections(collectionType: OfflineCollectionType) async throws -> [OfflineCollection] {
-		try await offlineStore.getCollections(collectionType: collectionType)
+		try await offlineStore.getCollections(collectionType: collectionType.toInternal)
 	}
 
 	public func countOfflineCollectionItems(
 		collectionType: OfflineCollectionType,
 		resourceId: String
 	) async throws -> Int {
-		try await offlineStore.countCollectionItems(collectionType: collectionType, resourceId: resourceId)
+		try await offlineStore.countCollectionItems(collectionType: collectionType.toInternal, resourceId: resourceId)
 	}
 
 	public func getOfflineCollectionItems(
@@ -140,7 +140,7 @@ public final class Offliner {
 		after cursor: Int64? = nil
 	) async throws -> OfflineCollectionItemsPage {
 		let (page, failures) = try await offlineStore.getCollectionItems(
-			collectionType: collectionType,
+			collectionType: collectionType.toInternal,
 			resourceId: resourceId,
 			limit: limit,
 			after: cursor
@@ -161,14 +161,14 @@ public final class Offliner {
 		collectionType: OfflineCollectionType,
 		resourceId: String
 	) async throws -> AudioFormat? {
-		try await offlineStore.getAudioFormatOfCollection(collectionType: collectionType, resourceId: resourceId)
+		try await offlineStore.getAudioFormatOfCollection(collectionType: collectionType.toInternal, resourceId: resourceId)
 	}
 
 	public func getCollectionDuration(
 		collectionType: OfflineCollectionType,
 		resourceId: String
 	) async throws -> Int {
-		try await offlineStore.getCollectionDuration(collectionType: collectionType, resourceId: resourceId)
+		try await offlineStore.getCollectionDuration(collectionType: collectionType.toInternal, resourceId: resourceId)
 	}
 
 	// MARK: - Download/Remove
@@ -190,6 +190,16 @@ public final class Offliner {
 
 	public func remove(collectionType: OfflineCollectionType, resourceId: String) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId)
+		await taskRunner.run()
+	}
+
+	public func downloadUserCollectionTracks() async throws {
+		try await offlineApiClient.addItem(type: .userCollectionTracks, id: "me")
+		await taskRunner.run()
+	}
+
+	public func removeUserCollectionTracks() async throws {
+		try await offlineApiClient.removeItem(type: .userCollectionTracks, id: "me")
 		await taskRunner.run()
 	}
 
@@ -233,9 +243,21 @@ extension OfflineCollectionType {
 		switch self {
 		case .albums: return .album
 		case .playlists: return .playlist
-		case .userCollectionTracks: return .userCollectionTracks
 		}
 	}
+
+	var toInternal: OfflineCollectionTypeInternal {
+		switch self {
+		case .albums: return .albums
+		case .playlists: return .playlists
+		}
+	}
+}
+
+enum OfflineCollectionTypeInternal: String {
+	case albums
+	case playlists
+	case userCollectionTracks
 }
 
 // MARK: - OfflinePlaybackItem from OfflineMediaItem

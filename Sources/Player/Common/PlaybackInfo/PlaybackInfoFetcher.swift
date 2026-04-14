@@ -191,21 +191,21 @@ private extension PlaybackInfoFetcher {
 	) async throws -> PlaybackInfo {
 		let start = PlayerWorld.timeProvider.timestamp()
 		do {
+			// Ensure credentials provider is set
 			if OpenAPIClientAPI.credentialsProvider == nil {
 				OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
 			}
 
-			let manifestResponse = try await VideoManifestsAPITidal.videoManifestsIdGet(
+			let response = try await VideoManifestsAPITidal.videoManifestsIdGet(
 				id: videoId,
 				uriScheme: .data,
 				usage: playbackMode == .OFFLINE ? .download : .playback
 			)
 
-			let manifestData = manifestResponse.data
-			let attributes = manifestData.attributes
+			let attributes = response.data.attributes
 
 			guard let hrefString = attributes?.link?.href,
-			      let manifestUrl = URL(string: hrefString)
+			      let url = URL(string: hrefString)
 			else {
 				throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
 			}
@@ -237,7 +237,7 @@ private extension PlaybackInfoFetcher {
 				streamingSessionId: streamingSessionId,
 				contentHash: "NA",
 				mediaType: "application/vnd.apple.mpegurl",
-				url: manifestUrl,
+				url: url,
 				licenseSecurityToken: nil,
 				albumReplayGain: nil,
 				albumPeakAmplitude: nil,

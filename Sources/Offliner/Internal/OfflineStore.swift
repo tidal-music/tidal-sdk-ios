@@ -171,7 +171,7 @@ final class OfflineStore {
 		deleteFiles(for: bookmarksToDelete)
 	}
 
-	func getCollection(collectionType: OfflineCollectionType, resourceId: String) async throws -> OfflineCollection? {
+	func getCollection(collectionType: OfflineCollectionTypeInternal, resourceId: String) async throws -> OfflineCollection? {
 		try await databaseQueue.write { [self] database in
 			let row = try Row.fetchOne(
 				database,
@@ -185,7 +185,7 @@ final class OfflineStore {
 
 			guard let row else { return nil }
 
-			let collectionType = OfflineCollectionType(rawValue: row["resource_type"])!
+			let collectionType = OfflineCollectionTypeInternal(rawValue: row["resource_type"])!
 
 			return OfflineCollection(
 				catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
@@ -238,7 +238,7 @@ final class OfflineStore {
 		}
 	}
 
-	func getCollections(collectionType: OfflineCollectionType) async throws -> [OfflineCollection] {
+	func getCollections(collectionType: OfflineCollectionTypeInternal) async throws -> [OfflineCollection] {
 		try await databaseQueue.write { [self] database in
 			let rows = try Row.fetchAll(
 				database,
@@ -252,7 +252,7 @@ final class OfflineStore {
 			)
 
 			return try rows.map { row in
-				let collectionType = OfflineCollectionType(rawValue: row["resource_type"])!
+				let collectionType = OfflineCollectionTypeInternal(rawValue: row["resource_type"])!
 
 				return OfflineCollection(
 					catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
@@ -262,7 +262,7 @@ final class OfflineStore {
 		}
 	}
 
-	func countCollectionItems(collectionType: OfflineCollectionType, resourceId: String) async throws -> Int {
+	func countCollectionItems(collectionType: OfflineCollectionTypeInternal, resourceId: String) async throws -> Int {
 		try await databaseQueue.read { database in
 			let count = try Int.fetchOne(
 				database,
@@ -279,7 +279,7 @@ final class OfflineStore {
 	}
 
 	func getCollectionItems(
-		collectionType: OfflineCollectionType,
+		collectionType: OfflineCollectionTypeInternal,
 		resourceId: String,
 		limit: Int,
 		after cursor: Int64? = nil
@@ -324,7 +324,7 @@ final class OfflineStore {
 	}
 
 	func getAudioFormatOfCollection(
-		collectionType: OfflineCollectionType,
+		collectionType: OfflineCollectionTypeInternal,
 		resourceId: String
 	) async throws -> AudioFormat? {
 		try await databaseQueue.read { database in
@@ -351,7 +351,7 @@ final class OfflineStore {
 	}
 
 	func getCollectionDuration(
-		collectionType: OfflineCollectionType,
+		collectionType: OfflineCollectionTypeInternal,
 		resourceId: String
 	) async throws -> Int {
 		try await databaseQueue.read { database in
@@ -427,7 +427,7 @@ struct StoreItemTaskResult {
 }
 
 struct StoreCollectionTaskResult {
-	let resourceType: OfflineCollectionType
+	let resourceType: OfflineCollectionTypeInternal
 	let resourceId: String
 	let catalogMetadata: OfflineCollection.Metadata
 	let artworkURL: URL?
@@ -481,7 +481,7 @@ extension OfflineCollection.Metadata {
 		}
 	}
 
-	static func deserialize(collectionType: OfflineCollectionType, json: String) throws -> OfflineCollection.Metadata {
+	static func deserialize(collectionType: OfflineCollectionTypeInternal, json: String) throws -> OfflineCollection.Metadata {
 		let decoder = JSONDecoder()
 		let data = json.data(using: .utf8)!
 

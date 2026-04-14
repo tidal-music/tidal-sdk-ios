@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.11] - 2026-04-10
+
+### Changed
+- Migrate video playback info to videoManifests endpoint (Player)
+- Simplify StoreUserCollectionTracksTask to use resourceId instead of included object (Offliner)
+- Generated API code using spec version 1.4.17 (TidalAPI)
+
+## [0.11.10] - 2026-04-07
+
+### Added
+- ProviderOwners API endpoints (TidalAPI)
+
+### Fixed
+- Offline content playback by attaching external players (Player)
+
+### Changed
+- Generated API code using spec version 1.4.15 (TidalAPI)
+- Add filter-based endpoint to UserRecommendations API (TidalAPI)
+- Extend UserRecommendations, Terms, and ArtistClaims models with new attributes and relationships (TidalAPI)
+
 ## [0.11.9] - 2026-03-26
 
 ### Changed

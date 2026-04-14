@@ -241,7 +241,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userCollectionFoldersItemsRelationshipRemoveOperationPayload = UserCollectionFoldersItemsRelationshipRemoveOperation_Payload(data: [UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", resourceType: "resourceType_example")]) // UserCollectionFoldersItemsRelationshipRemoveOperationPayload |  (optional)
+let userCollectionFoldersItemsRelationshipRemoveOperationPayload = UserCollectionFoldersItemsRelationshipRemoveOperation_Payload(data: [UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionFoldersItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
 UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload) { (response, error) in
@@ -351,7 +351,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userCollectionFoldersItemsRelationshipAddOperationPayload = UserCollectionFoldersItemsRelationshipAddOperation_Payload(data: [UserCollectionFoldersItemsRelationshipAddOperation_Payload_Data(id: "id_example", resourceType: "resourceType_example")]) // UserCollectionFoldersItemsRelationshipAddOperationPayload |  (optional)
+let userCollectionFoldersItemsRelationshipAddOperationPayload = UserCollectionFoldersItemsRelationshipAddOperation_Payload(data: [UserCollectionFoldersItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionFoldersItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
 UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload) { (response, error) in

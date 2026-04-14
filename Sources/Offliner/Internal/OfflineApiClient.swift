@@ -51,7 +51,7 @@ struct StorePlaylistTask {
 
 struct StoreUserCollectionTracksTask {
 	let id: String
-	let userCollectionTracks: UserCollectionTracksResourceObject
+	let resourceId: String
 }
 
 struct RemoveItemTask {
@@ -227,8 +227,7 @@ private extension OfflineTasksResourceObject {
 				return StorePlaylistTask(self, item: includedItem)
 					.map { .storePlaylist($0) }
 			case "userCollectionTracks":
-				return StoreUserCollectionTracksTask(self, item: includedItem)
-					.map { .storeUserCollectionTracks($0) }
+				return .storeUserCollectionTracks(StoreUserCollectionTracksTask(id: id, resourceId: itemData.id))
 			default:
 				return nil
 			}
@@ -277,8 +276,6 @@ private final class IncludedItemsMap {
 				add(IncludedItem(resource: .artwork(artwork)), type: artwork.type, id: artwork.id)
 			case .artistsResourceObject(let artist):
 				add(IncludedItem(resource: .artist(artist)), type: artist.type, id: artist.id)
-			case .userCollectionTracksResourceObject(let uct):
-				add(IncludedItem(resource: .userCollectionTracks(uct)), type: uct.type, id: uct.id)
 			default:
 				break
 			}
@@ -353,7 +350,6 @@ private enum IncludedResource {
 	case playlist(PlaylistsResourceObject)
 	case artwork(ArtworksResourceObject)
 	case artist(ArtistsResourceObject)
-	case userCollectionTracks(UserCollectionTracksResourceObject)
 }
 
 // MARK: - IncludedItem
@@ -381,7 +377,6 @@ private class IncludedItem {
 		case .video: coverArt
 		case .album: coverArt
 		case .playlist: coverArt
-		case .userCollectionTracks: nil
 		default: nil
 		}
 		guard let artworkItem, case .artwork(let artwork) = artworkItem.resource else {
@@ -436,13 +431,6 @@ private extension StorePlaylistTask {
 	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
 		guard let item, case .playlist(let playlist) = item.resource else { return nil }
 		self.init(id: resourceObject.id, playlist: playlist, artwork: item.artworkObject)
-	}
-}
-
-private extension StoreUserCollectionTracksTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
-		guard let item, case .userCollectionTracks(let uct) = item.resource else { return nil }
-		self.init(id: resourceObject.id, userCollectionTracks: uct)
 	}
 }
 
