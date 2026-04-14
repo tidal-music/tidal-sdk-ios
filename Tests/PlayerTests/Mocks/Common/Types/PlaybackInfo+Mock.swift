@@ -56,35 +56,4 @@ extension PlaybackInfo {
 		)
 	}
 
-	static func mock(
-		mediaProduct: MediaProduct,
-		trackPlaybackInfo: TrackPlaybackInfo
-	) -> Self {
-		PlaybackInfo(
-			productType: mediaProduct.productType,
-			productId: mediaProduct.productId,
-			streamType: .ON_DEMAND,
-			assetPresentation: trackPlaybackInfo.assetPresentation,
-			audioMode: trackPlaybackInfo.audioMode,
-			audioQuality: trackPlaybackInfo.audioQuality,
-			audioCodec: nil,
-			audioSampleRate: trackPlaybackInfo.sampleRate,
-			audioBitDepth: trackPlaybackInfo.bitDepth,
-			adaptiveAudioQualities: nil,
-			videoQuality: nil,
-			streamingSessionId: trackPlaybackInfo.streamingSessionId,
-			contentHash: trackPlaybackInfo.manifestHash,
-			mediaType: trackPlaybackInfo.manifestMimeType,
-			url: URL(string: "https://www.tidal.com")!, // from the manifest
-			licenseSecurityToken: trackPlaybackInfo.licenseSecurityToken,
-			albumReplayGain: trackPlaybackInfo.albumReplayGain,
-			albumPeakAmplitude: trackPlaybackInfo.albumPeakAmplitude,
-			trackReplayGain: trackPlaybackInfo.trackReplayGain,
-			trackPeakAmplitude: trackPlaybackInfo.trackPeakAmplitude,
-			offlineRevalidateAt: trackPlaybackInfo.offlineRevalidateAt,
-			offlineValidUntil: trackPlaybackInfo.offlineValidUntil,
-			isAdaptivePlaybackEnabled: false,
-			previewReason: nil
-		)
-	}
 }

@@ -360,9 +360,7 @@ private extension PlayerItem {
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
 			tags.append(PlaybackStatistics.EventTag.IMPROVED_DRM)
 		}
-		if featureFlagProvider.shouldUseNewPlaybackEndpoints() {
-			tags.append(PlaybackStatistics.EventTag.NEW_PLAYBACK_ENDPOINTS)
-		}
+		tags.append(PlaybackStatistics.EventTag.NEW_PLAYBACK_ENDPOINTS)
 		if metadata.isAdaptivePlaybackEnabled {
 			tags.append(PlaybackStatistics.EventTag.ADAPTIVE_PLAYBACK)
 		}

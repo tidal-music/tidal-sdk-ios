@@ -18,12 +18,11 @@ final class OfflineEntryTests: XCTestCase {
 
 	func test_stateIsOfflinedButNotValid_whenNoPlayableAVPlayer() async throws {
 		// GIVEN
-		let trackPlaybackInfo = TrackPlaybackInfo.mock(
+		let playbackInfo = PlaybackInfo.mock(
 			licenseSecurityToken: "sdfasdfasdf",
 			albumReplayGain: 4,
 			albumPeakAmplitude: 1
 		)
-		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(), trackPlaybackInfo: trackPlaybackInfo)
 		let offlineEntry = OfflineEntry.mock(
 			from: playbackInfo,
 			assetURL: URL(string: "www.tidal.com")!,
@@ -36,12 +35,11 @@ final class OfflineEntryTests: XCTestCase {
 
 	func test_stateIsOfflinedButNotLicense_whenNoLicenseURL() async throws {
 		// GIVEN
-		let trackPlaybackInfo = TrackPlaybackInfo.mock(
+		let playbackInfo = PlaybackInfo.mock(
 			licenseSecurityToken: "sdfasdfasdf",
 			albumReplayGain: 4,
 			albumPeakAmplitude: 1
 		)
-		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(), trackPlaybackInfo: trackPlaybackInfo)
 		let offlineEntry = OfflineEntry.mock(
 			from: playbackInfo,
 			assetURL: URL(string: "www.tidal.com")!,
@@ -57,15 +55,11 @@ final class OfflineEntryTests: XCTestCase {
 		currentTimestamp = 2 * 1000
 		PlayerWorld.developmentFeatureFlagProvider.shouldCheckAndRevalidateOfflineItems = true
 
-		let trackPlaybackInfo = TrackPlaybackInfo.mock(
+		let playbackInfo = PlaybackInfo.mock(
 			licenseSecurityToken: "sdfasdfasdf",
 			albumReplayGain: 4,
 			albumPeakAmplitude: 1,
 			offlineValidUntil: 1
-		)
-		let playbackInfo = PlaybackInfo.mock(
-			mediaProduct: .mock(),
-			trackPlaybackInfo: trackPlaybackInfo
 		)
 		let offlineEntry = OfflineEntry.mock(
 			from: playbackInfo,
@@ -81,11 +75,10 @@ final class OfflineEntryTests: XCTestCase {
 
 	func test_needsLicense_returnsTrue_whenLicenseSecurityTokenIsSet() {
 		// GIVEN
-		let trackPlaybackInfo = TrackPlaybackInfo.mock(
-			licenseSecurityToken: "some-token",
-			manifestMimeType: MediaTypes.EMU
+		let playbackInfo = PlaybackInfo.mock(
+			mediaType: MediaTypes.EMU,
+			licenseSecurityToken: "some-token"
 		)
-		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(), trackPlaybackInfo: trackPlaybackInfo)
 		let offlineEntry = OfflineEntry.mock(from: playbackInfo)
 
 		// THEN
@@ -94,11 +87,11 @@ final class OfflineEntryTests: XCTestCase {
 
 	func test_needsLicense_returnsTrue_whenTrackWithHLSMediaType() {
 		// GIVEN - HLS track without licenseSecurityToken (new playback endpoints scenario)
-		let trackPlaybackInfo = TrackPlaybackInfo.mock(
-			licenseSecurityToken: nil,
-			manifestMimeType: MediaTypes.HLS
+		let playbackInfo = PlaybackInfo.mock(
+			productType: .TRACK,
+			mediaType: MediaTypes.HLS,
+			licenseSecurityToken: nil
 		)
-		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(productType: .TRACK), trackPlaybackInfo: trackPlaybackInfo)
 		let offlineEntry = OfflineEntry.mock(from: playbackInfo)
 
 		// THEN
@@ -107,11 +100,11 @@ final class OfflineEntryTests: XCTestCase {
 
 	func test_needsLicense_returnsFalse_whenNoTokenAndNotHLSTrack() {
 		// GIVEN - EMU track without licenseSecurityToken
-		let trackPlaybackInfo = TrackPlaybackInfo.mock(
-			licenseSecurityToken: nil,
-			manifestMimeType: MediaTypes.EMU
+		let playbackInfo = PlaybackInfo.mock(
+			productType: .TRACK,
+			mediaType: MediaTypes.EMU,
+			licenseSecurityToken: nil
 		)
-		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(productType: .TRACK), trackPlaybackInfo: trackPlaybackInfo)
 		let offlineEntry = OfflineEntry.mock(from: playbackInfo)
 
 		// THEN
@@ -133,11 +126,11 @@ final class OfflineEntryTests: XCTestCase {
 
 	func test_stateIsOfflinedButNoLicense_whenHLSTrackWithoutLicenseURL() {
 		// GIVEN - HLS track without licenseSecurityToken and no license URL (the bug scenario)
-		let trackPlaybackInfo = TrackPlaybackInfo.mock(
-			licenseSecurityToken: nil,
-			manifestMimeType: MediaTypes.HLS
+		let playbackInfo = PlaybackInfo.mock(
+			productType: .TRACK,
+			mediaType: MediaTypes.HLS,
+			licenseSecurityToken: nil
 		)
-		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(productType: .TRACK), trackPlaybackInfo: trackPlaybackInfo)
 		let offlineEntry = OfflineEntry.mock(
 			from: playbackInfo,
 			assetURL: URL(string: "www.tidal.com")!,

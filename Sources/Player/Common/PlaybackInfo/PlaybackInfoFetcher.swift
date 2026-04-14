@@ -71,79 +71,10 @@ private extension PlaybackInfoFetcher {
 		playbackMode: PlaybackMode,
 		streamingSessionId: String
 	) async throws -> PlaybackInfo {
-		if featureFlagProvider.shouldUseNewPlaybackEndpoints() {
-			try await getTrackPlaybackInfoFromManifestEndpoint(
-				trackId: trackId,
-				playbackMode: playbackMode,
-				streamingSessionId: streamingSessionId
-			)
-		} else {
-			try await getTrackPlaybackInfoFromLegacyEndpoint(
-				trackId: trackId,
-				playbackMode: playbackMode,
-				streamingSessionId: streamingSessionId
-			)
-		}
-	}
-
-	private func getTrackPlaybackInfoFromLegacyEndpoint(
-		trackId: String,
-		playbackMode: PlaybackMode,
-		streamingSessionId: String
-	) async throws -> PlaybackInfo {
-		let playbackInfo: TrackPlaybackInfo = try await getPlaybackInfo(
-			url: getTrackPlaybackInfoUrl(trackId: trackId, playbackMode: playbackMode),
-			streamingSessionId: streamingSessionId,
-			playlistUUID: nil
-		)
-
-		guard let url = PlaybackInfoFetcher.extractUrl(
-			manifestMimeType: playbackInfo.manifestMimeType,
-			manifest: playbackInfo.manifest
-		) else {
-			throw PlaybackInfoFetcherError.unableToExtractManifestUrl.error(.EUnexpected)
-		}
-
-		return PlaybackInfo(
-			productType: .TRACK,
-			productId: String(playbackInfo.trackId),
-			streamType: .ON_DEMAND,
-			assetPresentation: playbackInfo.assetPresentation,
-			audioMode: playbackInfo.audioMode,
-			audioQuality: playbackInfo.audioQuality,
-			audioCodec: PlaybackInfoFetcher.extractCodec(
-				manifestMimeType: playbackInfo.manifestMimeType,
-				manifest: playbackInfo.manifest
-			),
-			audioSampleRate: playbackInfo.sampleRate,
-			audioBitDepth: playbackInfo.bitDepth,
-			adaptiveAudioQualities: nil,
-			videoQuality: nil,
-			streamingSessionId: playbackInfo.streamingSessionId,
-			contentHash: playbackInfo.manifestHash,
-			mediaType: playbackInfo.manifestMimeType,
-			url: url,
-			licenseSecurityToken: playbackInfo.licenseSecurityToken,
-			albumReplayGain: playbackInfo.albumReplayGain,
-			albumPeakAmplitude: playbackInfo.albumPeakAmplitude,
-			trackReplayGain: playbackInfo.trackReplayGain,
-			trackPeakAmplitude: playbackInfo.trackPeakAmplitude,
-			offlineRevalidateAt: playbackInfo.offlineRevalidateAt,
-			offlineValidUntil: playbackInfo.offlineValidUntil,
-			isAdaptivePlaybackEnabled: false,
-			previewReason: nil // Legacy endpoint doesn't provide previewReason
-		)
-	}
-
-	private func getTrackPlaybackInfoFromManifestEndpoint(
-		trackId: String,
-		playbackMode: PlaybackMode,
-		streamingSessionId: String
-	) async throws -> PlaybackInfo {
 		let start = PlayerWorld.timeProvider.timestamp()
 		do {
 			let requestedAudioQuality = getAudioQuality(given: playbackMode)
-			let adaptivePlaybackEnabled = shouldRequestAdaptivePlayback(for: playbackMode)
+			let adaptivePlaybackEnabled = playbackMode == .STREAM && configuration.allowVariablePlayback
 			let formats = formats(for: requestedAudioQuality)
 
 			// Ensure credentials provider is set
@@ -190,7 +121,7 @@ private extension PlaybackInfoFetcher {
 				: nil
 
 			// Check if adaptive playback is enabled
-			let isAdaptivePlaybackEnabled = configuration.allowVariablePlayback && featureFlagProvider.shouldSupportABRPlayback()
+			let isAdaptivePlaybackEnabled = configuration.allowVariablePlayback
 
 			return PlaybackInfo(
 				productType: .TRACK,
@@ -208,7 +139,7 @@ private extension PlaybackInfoFetcher {
 				contentHash: attributes?.hash ?? "NA",
 				mediaType: "application/vnd.apple.mpegurl", // HLS MIME type
 				url: manifestUrl,
-				licenseSecurityToken: extractLicenseTokenFromDrmData(attributes?.drmData),
+				licenseSecurityToken: nil,
 				albumReplayGain: attributes?.albumAudioNormalizationData?.replayGain,
 				albumPeakAmplitude: attributes?.albumAudioNormalizationData?.peakAmplitude,
 				trackReplayGain: attributes?.trackAudioNormalizationData?.replayGain,
@@ -239,17 +170,6 @@ private extension PlaybackInfoFetcher {
 
 			throw convertedError
 		}
-	}
-
-	func getTrackPlaybackInfoUrl(trackId: String, playbackMode: PlaybackMode) throws -> URL {
-		let audioQuality = getAudioQuality(given: playbackMode)
-		let immersiveAudio = configuration.isImmersiveAudio
-
-		let path = "https://api.tidal.com/v1/tracks/\(trackId)/playbackinfo"
-		let parameters =
-			"audioquality=\(audioQuality)&assetpresentation=FULL&playbackmode=\(playbackMode)&immersiveaudio=\(immersiveAudio)"
-
-		return try PlaybackInfoFetcher.createUrl(from: "\(path)?\(parameters)")
 	}
 
 	func getAudioQuality(given playbackMode: PlaybackMode) -> AudioQuality {
@@ -318,7 +238,7 @@ private extension PlaybackInfoFetcher {
 				contentHash: "NA",
 				mediaType: "application/vnd.apple.mpegurl",
 				url: url,
-				licenseSecurityToken: extractLicenseTokenFromDrmData(attributes?.drmData),
+				licenseSecurityToken: nil,
 				albumReplayGain: nil,
 				albumPeakAmplitude: nil,
 				trackReplayGain: nil,
@@ -385,66 +305,7 @@ private extension PlaybackInfoFetcher {
 		)
 	}
 
-	func getPlaybackInfo<T: Decodable>(url: URL, streamingSessionId: String, playlistUUID: String?) async throws -> T {
-		let start = PlayerWorld.timeProvider.timestamp()
-		do {
-			let playbackInfo: T
-			let token = try await credentialsProvider.getAuthBearerToken()
-			playbackInfo = try await httpClient.getJson(
-				url: url,
-				headers: [
-					"Authorization": token,
-					"x-tidal-streamingsessionid": streamingSessionId,
-					"x-tidal-playlistuuid": playlistUUID,
-				].compactMapValues { $0 }
-			)
-
-			let endTimestamp = PlayerWorld.timeProvider.timestamp()
-			playerEventSender.send(
-				PlaybackInfoFetch(
-					streamingSessionId: streamingSessionId,
-					startTimestamp: start,
-					endTimestamp: endTimestamp,
-					endReason: .COMPLETE,
-					errorMessage: nil,
-					errorCode: nil
-				)
-			)
-
-			return playbackInfo
-
-		} catch {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.getPlaybackInfoFailed(error: error))
-
-			// TODO: Should we update this to handle proper conversion from TidalError, otherwise they will always be EUnexpected
-			let error = PlaybackInfoErrorResponseConverter.convert(error)
-			let playerError = PlayerInternalError.from(error)
-
-			let endTimestamp = PlayerWorld.timeProvider.timestamp()
-			playerEventSender.send(
-				PlaybackInfoFetch(
-					streamingSessionId: streamingSessionId,
-					startTimestamp: start,
-					endTimestamp: endTimestamp,
-					endReason: error is CancellationError ? .OTHER : .ERROR,
-					errorMessage: playerError.technicalDescription,
-					errorCode: playerError.code
-				)
-			)
-
-			throw error
-		}
-	}
-
 	// MARK: - New API Helper Methods
-
-	private func shouldRequestAdaptivePlayback(for playbackMode: PlaybackMode) -> Bool {
-		PlaybackInfoFetcher.shouldRequestAdaptivePlayback(
-			configuration: configuration,
-			featureFlagProvider: featureFlagProvider,
-			playbackMode: playbackMode
-		)
-	}
 
 	private func convertTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) -> AssetPresentation {
 		switch presentation {
@@ -453,7 +314,7 @@ private extension PlaybackInfoFetcher {
 		case .preview:
 			.PREVIEW
 		case nil:
-			.FULL // Default fallback
+			.FULL
 		}
 	}
 
@@ -528,74 +389,6 @@ private extension PlaybackInfoFetcher {
 		return .STEREO
 	}
 
-	/// Extracts license security token from new DRM data format
-	/// Note: Current DRM system doesn't actually use licenseSecurityToken - it uses dynamic URLs
-	private func extractLicenseTokenFromDrmData(_ drmData: DrmData?) -> String? {
-		// The current FairPlayLicenseFetcher doesn't use licenseSecurityToken at all
-		// It makes direct requests to licenseUrl with Authorization header
-		// For compatibility, we could return the licenseUrl itself or extract token from it
-		guard let drmData,
-		      drmData.licenseUrl != nil
-		else {
-			return nil
-		}
-
-		// For now, return nil since licenseSecurityToken is not used in current DRM implementation
-		// Future enhancement: Parse token from licenseUrl or use licenseUrl as token
-		// TODO: Verify with backend team if token extraction is needed from licenseUrl
-		return nil
-	}
-
-	static func extractUrl(manifestMimeType: String, manifest: String) -> URL? {
-		switch manifestMimeType {
-		case MediaTypes.HLS:
-			return URL(string: "data:\(MediaTypes.HLS);base64,\(manifest)")
-		case MediaTypes.BTS:
-			guard let data = Data(base64Encoded: manifest) else {
-				return nil
-			}
-			guard let btsManifest = try? JSONDecoder().decode(BtsManifest.self, from: data) else {
-				return nil
-			}
-			return URL(string: btsManifest.urls[0])
-		case MediaTypes.EMU:
-			guard let data = Data(base64Encoded: manifest) else {
-				return nil
-			}
-			guard let emuManifest = try? JSONDecoder().decode(EmuManifest.self, from: data) else {
-				return nil
-			}
-			return URL(string: emuManifest.urls[0])
-		default:
-			return nil
-		}
-	}
-
-	static func extractCodec(manifestMimeType: String, manifest: String) -> AudioCodec? {
-		switch manifestMimeType {
-		case MediaTypes.HLS, MediaTypes.EMU: // No codec data in the manifest?
-			return nil
-		case MediaTypes.BTS:
-			guard let data = Data(base64Encoded: manifest) else {
-				return nil
-			}
-			guard let btsManifest = try? JSONDecoder().decode(BtsManifest.self, from: data) else {
-				return nil
-			}
-			let codecs = btsManifest.codecs.components(separatedBy: ",")
-			return AudioCodec(rawValue: codecs.first)
-		default:
-			return nil
-		}
-	}
-
-	static func createUrl(from urlString: String) throws -> URL {
-		guard let url = URL(string: urlString) else {
-			throw PlaybackInfoFetcherError.unableToCreateUrl.error(.EUnexpected)
-		}
-
-		return url
-	}
 }
 
 extension PlaybackInfoFetcher {
@@ -633,19 +426,6 @@ extension PlaybackInfoFetcher {
 		}
 	}
 
-	private static func uniqueOrderedFormats(
-		_ formats: [TrackManifestsAttributes.Formats]
-	) -> [TrackManifestsAttributes.Formats] {
-		var seen = Set<TrackManifestsAttributes.Formats>()
-		var ordered = [TrackManifestsAttributes.Formats]()
-
-		for format in formats where seen.insert(format).inserted {
-			ordered.append(format)
-		}
-
-		return ordered
-	}
-
 	static func buildQualityLadder(
 		from formats: [TrackManifestsAttributes.Formats]?
 	) -> [AudioQuality]? {
@@ -669,22 +449,6 @@ extension PlaybackInfoFetcher {
 
 	static func buildQualityLadder(upTo maxQuality: AudioQuality) -> [AudioQuality] {
 		audioQualities(upTo: maxQuality)
-	}
-
-	static func shouldRequestAdaptivePlayback(
-		configuration: Configuration,
-		featureFlagProvider: FeatureFlagProvider,
-		playbackMode: PlaybackMode
-	) -> Bool {
-		guard playbackMode == .STREAM else {
-			return false
-		}
-
-		guard configuration.allowVariablePlayback else {
-			return false
-		}
-
-		return featureFlagProvider.shouldSupportABRPlayback()
 	}
 
 	/// Inverse mapping: derive AudioQuality from returned manifest formats
