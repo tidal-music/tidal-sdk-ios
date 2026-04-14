@@ -11,7 +11,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.download(collectionType: .albums, resourceId: "album-123")
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
 		await offliner.run()
 
 		let downloads = await offliner.currentDownloads
@@ -26,13 +26,13 @@ final class CollectionDownloadTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.download(collectionType: .albums, resourceId: "album-123")
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let storedCollection = try await offliner.getOfflineCollection(
 			collectionType: .albums,
-			resourceId: "album-123"
+			resourceId: .identifier("album-123")
 		)
 		XCTAssertNotNil(storedCollection)
 
@@ -51,20 +51,20 @@ final class CollectionDownloadTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.download(collectionType: .albums, resourceId: "album-123")
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let firstCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123")
+		let firstCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123"))
 		let firstCollection = try XCTUnwrap(firstCollectionOptional)
 		let firstArtworkURL = try XCTUnwrap(firstCollection.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
 
-		try await offliner.download(collectionType: .albums, resourceId: "album-123")
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let secondCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: "album-123")
+		let secondCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123"))
 		let secondCollection = try XCTUnwrap(secondCollectionOptional)
 		let secondArtworkURL = try XCTUnwrap(secondCollection.artworkURL)
 
@@ -81,13 +81,13 @@ final class CollectionDownloadTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.download(collectionType: .albums, resourceId: "album-123")
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let storedCollection = try await offliner.getOfflineCollection(
 			collectionType: .albums,
-			resourceId: "album-123"
+			resourceId: .identifier("album-123")
 		)
 		XCTAssertNil(storedCollection)
 	}
@@ -102,13 +102,13 @@ final class CollectionDownloadTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.download(collectionType: .playlists, resourceId: "playlist-456")
+		try await offliner.download(collectionType: .playlists, resourceId: .identifier("playlist-456"))
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let storedCollection = try await offliner.getOfflineCollection(
 			collectionType: .playlists,
-			resourceId: "playlist-456"
+			resourceId: .identifier("playlist-456")
 		)
 		XCTAssertNotNil(storedCollection)
 
@@ -127,13 +127,13 @@ final class CollectionDownloadTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.download(collectionType: .playlists, resourceId: "playlist-456")
+		try await offliner.download(collectionType: .playlists, resourceId: .identifier("playlist-456"))
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
 		let storedCollection = try await offliner.getOfflineCollection(
 			collectionType: .playlists,
-			resourceId: "playlist-456"
+			resourceId: .identifier("playlist-456")
 		)
 		XCTAssertNil(storedCollection)
 	}

@@ -71,13 +71,13 @@ try await offliner.download(mediaType: .tracks, resourceId: "track-id")
 try await offliner.download(mediaType: .videos, resourceId: "video-id")
 
 // Download an album (includes all tracks)
-try await offliner.download(collectionType: .albums, resourceId: "album-id")
+try await offliner.download(collectionType: .albums, resourceId: .identifier("album-id"))
 
 // Download a playlist
-try await offliner.download(collectionType: .playlists, resourceId: "playlist-id")
+try await offliner.download(collectionType: .playlists, resourceId: .identifier("playlist-id"))
 
 // Download user collection tracks
-try await offliner.download(collectionType: .userCollectionTracks, resourceId: "collection-id")
+try await offliner.download(collectionType: .userCollectionTracks, resourceId: .me)
 ```
 
 These methods register the download request with the backend and automatically trigger task processing.
@@ -210,7 +210,7 @@ Remove content using the same pattern as downloading:
 
 ```swift
 try await offliner.remove(mediaType: .tracks, resourceId: "track-id")
-try await offliner.remove(collectionType: .albums, resourceId: "album-id")
+try await offliner.remove(collectionType: .albums, resourceId: .identifier("album-id"))
 ```
 
 Removal requests are registered with the backend and task processing is triggered automatically.

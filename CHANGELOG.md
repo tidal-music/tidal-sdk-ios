@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.13] - 2026-04-14
+
+### Changed
+- Unify userCollectionTracks into OfflineCollectionType and introduce ResourceId enum for all Offliner public API resourceId parameters (Offliner)
+
 ## [0.11.12] - 2026-04-14
 
 ### Changed

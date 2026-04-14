@@ -13,6 +13,19 @@ public enum OfflineMediaItemType: String {
 public enum OfflineCollectionType: String {
 	case albums
 	case playlists
+	case userCollectionTracks
+}
+
+public enum ResourceId {
+	case identifier(String)
+	case me
+
+	var stringValue: String {
+		switch self {
+		case let .identifier(value): value
+		case .me: "me"
+		}
+	}
 }
 
 // MARK: - OfflineMediaItem

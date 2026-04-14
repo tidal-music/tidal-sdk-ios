@@ -97,8 +97,8 @@ public final class Offliner {
 
 	// MARK: - Offline Content
 
-	public func getOfflineMediaItem(mediaType: OfflineMediaItemType, resourceId: String) async throws -> OfflineMediaItem? {
-		try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId)
+	public func getOfflineMediaItem(mediaType: OfflineMediaItemType, resourceId: ResourceId) async throws -> OfflineMediaItem? {
+		try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId.stringValue)
 	}
 
 	public func getOfflineMediaItems(mediaType: OfflineMediaItemType) async throws -> [OfflineMediaItem] {
@@ -107,7 +107,7 @@ public final class Offliner {
 		if !failures.isEmpty {
 			Task {
 				for failure in failures {
-					try? await download(mediaType: failure.mediaType, resourceId: failure.resourceId)
+					try? await download(mediaType: failure.mediaType, resourceId: .identifier(failure.resourceId))
 				}
 			}
 		}
@@ -117,31 +117,31 @@ public final class Offliner {
 
 	public func getOfflineCollection(
 		collectionType: OfflineCollectionType,
-		resourceId: String
+		resourceId: ResourceId
 	) async throws -> OfflineCollection? {
-		try await offlineStore.getCollection(collectionType: collectionType.toInternal, resourceId: resourceId)
+		try await offlineStore.getCollection(collectionType: collectionType, resourceId: resourceId.stringValue)
 	}
 
 	public func getOfflineCollections(collectionType: OfflineCollectionType) async throws -> [OfflineCollection] {
-		try await offlineStore.getCollections(collectionType: collectionType.toInternal)
+		try await offlineStore.getCollections(collectionType: collectionType)
 	}
 
 	public func countOfflineCollectionItems(
 		collectionType: OfflineCollectionType,
-		resourceId: String
+		resourceId: ResourceId
 	) async throws -> Int {
-		try await offlineStore.countCollectionItems(collectionType: collectionType.toInternal, resourceId: resourceId)
+		try await offlineStore.countCollectionItems(collectionType: collectionType, resourceId: resourceId.stringValue)
 	}
 
 	public func getOfflineCollectionItems(
 		collectionType: OfflineCollectionType,
-		resourceId: String,
+		resourceId: ResourceId,
 		limit: Int,
 		after cursor: Int64? = nil
 	) async throws -> OfflineCollectionItemsPage {
 		let (page, failures) = try await offlineStore.getCollectionItems(
-			collectionType: collectionType.toInternal,
-			resourceId: resourceId,
+			collectionType: collectionType,
+			resourceId: resourceId.stringValue,
 			limit: limit,
 			after: cursor
 		)
@@ -149,7 +149,7 @@ public final class Offliner {
 		if !failures.isEmpty {
 			Task {
 				for failure in failures {
-					try? await download(mediaType: failure.mediaType, resourceId: failure.resourceId)
+					try? await download(mediaType: failure.mediaType, resourceId: .identifier(failure.resourceId))
 				}
 			}
 		}
@@ -159,47 +159,37 @@ public final class Offliner {
 
 	public func getAudioFormatOfCollection(
 		collectionType: OfflineCollectionType,
-		resourceId: String
+		resourceId: ResourceId
 	) async throws -> AudioFormat? {
-		try await offlineStore.getAudioFormatOfCollection(collectionType: collectionType.toInternal, resourceId: resourceId)
+		try await offlineStore.getAudioFormatOfCollection(collectionType: collectionType, resourceId: resourceId.stringValue)
 	}
 
 	public func getCollectionDuration(
 		collectionType: OfflineCollectionType,
-		resourceId: String
+		resourceId: ResourceId
 	) async throws -> Int {
-		try await offlineStore.getCollectionDuration(collectionType: collectionType.toInternal, resourceId: resourceId)
+		try await offlineStore.getCollectionDuration(collectionType: collectionType, resourceId: resourceId.stringValue)
 	}
 
 	// MARK: - Download/Remove
 
-	public func download(mediaType: OfflineMediaItemType, resourceId: String) async throws {
-		try await offlineApiClient.addItem(type: mediaType.toResourceType, id: resourceId)
+	public func download(mediaType: OfflineMediaItemType, resourceId: ResourceId) async throws {
+		try await offlineApiClient.addItem(type: mediaType.toResourceType, id: resourceId.stringValue)
 		await taskRunner.run()
 	}
 
-	public func download(collectionType: OfflineCollectionType, resourceId: String) async throws {
-		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId)
+	public func download(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
+		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId.stringValue)
 		await taskRunner.run()
 	}
 
-	public func remove(mediaType: OfflineMediaItemType, resourceId: String) async throws {
-		try await offlineApiClient.removeItem(type: mediaType.toResourceType, id: resourceId)
+	public func remove(mediaType: OfflineMediaItemType, resourceId: ResourceId) async throws {
+		try await offlineApiClient.removeItem(type: mediaType.toResourceType, id: resourceId.stringValue)
 		await taskRunner.run()
 	}
 
-	public func remove(collectionType: OfflineCollectionType, resourceId: String) async throws {
-		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId)
-		await taskRunner.run()
-	}
-
-	public func downloadUserCollectionTracks() async throws {
-		try await offlineApiClient.addItem(type: .userCollectionTracks, id: "me")
-		await taskRunner.run()
-	}
-
-	public func removeUserCollectionTracks() async throws {
-		try await offlineApiClient.removeItem(type: .userCollectionTracks, id: "me")
+	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
+		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
 		await taskRunner.run()
 	}
 
@@ -220,7 +210,7 @@ extension Offliner: OfflineItemProvider {
 			return try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: productId)
 				.map { OfflinePlaybackItem($0, productType: productType) }
 		} catch {
-			Task { try? await download(mediaType: mediaType, resourceId: productId) }
+			Task { try? await download(mediaType: mediaType, resourceId: .identifier(productId)) }
 		}
 
 		return nil
@@ -243,21 +233,9 @@ extension OfflineCollectionType {
 		switch self {
 		case .albums: return .album
 		case .playlists: return .playlist
+		case .userCollectionTracks: return .userCollectionTracks
 		}
 	}
-
-	var toInternal: OfflineCollectionTypeInternal {
-		switch self {
-		case .albums: return .albums
-		case .playlists: return .playlists
-		}
-	}
-}
-
-enum OfflineCollectionTypeInternal: String {
-	case albums
-	case playlists
-	case userCollectionTracks
 }
 
 // MARK: - OfflinePlaybackItem from OfflineMediaItem
