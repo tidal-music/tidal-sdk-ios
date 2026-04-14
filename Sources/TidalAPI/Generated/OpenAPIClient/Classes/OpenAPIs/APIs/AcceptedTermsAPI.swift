@@ -17,6 +17,7 @@ internal class AcceptedTermsAPI {
      */
     public enum FilterTermsTermsType_acceptedTermsGet: String, CaseIterable {
         case developer = "DEVELOPER"
+        case uploadMarketplace = "UPLOAD_MARKETPLACE"
     }
 
     /**
@@ -25,7 +26,7 @@ internal class AcceptedTermsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
-     - parameter filterTermsTermsType: (query) One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) (optional)
+     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) (optional)
      - returns: AcceptedTermsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -48,7 +49,7 @@ internal class AcceptedTermsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
-     - parameter filterTermsTermsType: (query) One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) (optional)
+     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) (optional)
      - returns: RequestBuilder<AcceptedTermsMultiResourceDataDocument> 
      */
     internal class func acceptedTermsGetWithRequestBuilder(include: [String]? = nil, filterOwnersId: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet]? = nil) -> RequestBuilder<AcceptedTermsMultiResourceDataDocument> {

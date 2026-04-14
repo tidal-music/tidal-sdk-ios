@@ -27,7 +27,7 @@ import OpenAPIClient
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 let filterTermsIsLatestVersion = ["inner_example"] // [String] | Filter by terms.isLatestVersion (optional)
-let filterTermsTermsType = ["filterTermsTermsType_example"] // [String] | One of: DEVELOPER (e.g. `DEVELOPER`) (optional)
+let filterTermsTermsType = ["filterTermsTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. `DEVELOPER`) (optional)
 
 // Get multiple acceptedTerms.
 AcceptedTermsAPI.acceptedTermsGet(include: include, filterOwnersId: filterOwnersId, filterTermsIsLatestVersion: filterTermsIsLatestVersion, filterTermsTermsType: filterTermsTermsType) { (response, error) in
@@ -49,7 +49,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, terms | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
  **filterTermsIsLatestVersion** | [**[String]**](String.md) | Filter by terms.isLatestVersion | [optional] 
- **filterTermsTermsType** | [**[String]**](String.md) | One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) | [optional] 
+ **filterTermsTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) | [optional] 
 
 ### Return type
 
