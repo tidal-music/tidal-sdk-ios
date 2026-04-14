@@ -17,6 +17,7 @@ internal class TermsAPI {
      */
     public enum FilterTermsType_termsGet: String, CaseIterable {
         case developer = "DEVELOPER"
+        case uploadMarketplace = "UPLOAD_MARKETPLACE"
     }
 
     /**
@@ -25,7 +26,7 @@ internal class TermsAPI {
      - parameter filterCountryCode: (query) Filter by countryCode (optional)
      - parameter filterId: (query) Terms id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterIsLatestVersion: (query) Filter by isLatestVersion (optional)
-     - parameter filterTermsType: (query) One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) (optional)
+     - parameter filterTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) (optional)
      - returns: TermsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -51,7 +52,7 @@ internal class TermsAPI {
      - parameter filterCountryCode: (query) Filter by countryCode (optional)
      - parameter filterId: (query) Terms id (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterIsLatestVersion: (query) Filter by isLatestVersion (optional)
-     - parameter filterTermsType: (query) One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) (optional)
+     - parameter filterTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) (optional)
      - returns: RequestBuilder<TermsMultiResourceDataDocument> 
      */
     internal class func termsGetWithRequestBuilder(filterCountryCode: [String]? = nil, filterId: [String]? = nil, filterIsLatestVersion: [String]? = nil, filterTermsType: [FilterTermsType_termsGet]? = nil) -> RequestBuilder<TermsMultiResourceDataDocument> {

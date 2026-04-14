@@ -19,10 +19,12 @@ public enum TermsAPITidal {
 	 */
 	public enum FilterTermsType_termsGet: String, CaseIterable {
 		case developer = "DEVELOPER"
+		case uploadMarketplace = "UPLOAD_MARKETPLACE"
 
 		func toTermsAPIEnum() -> TermsAPI.FilterTermsType_termsGet {
 			switch self {
 			case .developer: return .developer
+			case .uploadMarketplace: return .uploadMarketplace
 			}
 		}
 	}
