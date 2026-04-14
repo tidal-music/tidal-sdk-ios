@@ -63,12 +63,12 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
 
-		let collection = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: albumId)
+		let collection = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier(albumId))
 		XCTAssertNotNil(collection, "Album collection should be stored")
 
 		let page = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: albumId,
+			resourceId: .identifier(albumId),
 			limit: 100
 		)
 
@@ -110,7 +110,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let page = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: "album-empty",
+			resourceId: .identifier("album-empty"),
 			limit: 100
 		)
 		XCTAssertEqual(page.items.count, 0)
@@ -155,7 +155,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let page1 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: albumId,
+			resourceId: .identifier(albumId),
 			limit: 2
 		)
 		XCTAssertEqual(page1.items.count, 2)
@@ -164,7 +164,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let page2 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: albumId,
+			resourceId: .identifier(albumId),
 			limit: 2,
 			after: page1.cursor
 		)
@@ -174,7 +174,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let page3 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: albumId,
+			resourceId: .identifier(albumId),
 			limit: 2,
 			after: page2.cursor
 		)
@@ -235,14 +235,14 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let page1 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: albumId,
+			resourceId: .identifier(albumId),
 			limit: 2
 		)
 		XCTAssertEqual(page1.items.map(\.item.catalogMetadata.id), ["v1-track-1", "v1-track-2"])
 
 		let page2 = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: albumId,
+			resourceId: .identifier(albumId),
 			limit: 2,
 			after: page1.cursor
 		)
@@ -274,7 +274,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let page = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: albumId,
+			resourceId: .identifier(albumId),
 			limit: 10
 		)
 
@@ -315,7 +315,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let page = try await offliner.getOfflineCollectionItems(
 			collectionType: .albums,
-			resourceId: albumId,
+			resourceId: .identifier(albumId),
 			limit: 10
 		)
 

@@ -12,7 +12,7 @@ final class UserCollectionTracksTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.downloadUserCollectionTracks()
+		try await offliner.download(collectionType: .userCollectionTracks, resourceId: .me)
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
@@ -28,7 +28,7 @@ final class UserCollectionTracksTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.downloadUserCollectionTracks()
+		try await offliner.download(collectionType: .userCollectionTracks, resourceId: .me)
 		await offliner.run()
 
 		let downloads = await offliner.currentDownloads
@@ -45,7 +45,7 @@ final class UserCollectionTracksTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.removeUserCollectionTracks()
+		try await offliner.remove(collectionType: .userCollectionTracks, resourceId: .me)
 
 		XCTAssertEqual(backend.removedItems.count, 1)
 		XCTAssertEqual(backend.removedItems.first?.type, .userCollectionTracks)

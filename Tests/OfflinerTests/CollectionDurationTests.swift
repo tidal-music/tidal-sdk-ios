@@ -28,7 +28,7 @@ final class CollectionDurationTests: OfflinerTestCase {
 
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 4)
 
-		let duration = try await offliner.getCollectionDuration(collectionType: .albums, resourceId: albumId)
+		let duration = try await offliner.getCollectionDuration(collectionType: .albums, resourceId: .identifier(albumId))
 
 		// 4 tracks × 120s (from SucceedingMediaDownloader) = 480s
 		XCTAssertEqual(duration, 480)
@@ -56,7 +56,7 @@ final class CollectionDurationTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let duration = try await offliner.getCollectionDuration(collectionType: .albums, resourceId: albumId)
+		let duration = try await offliner.getCollectionDuration(collectionType: .albums, resourceId: .identifier(albumId))
 		XCTAssertEqual(duration, 0)
 	}
 
@@ -68,7 +68,7 @@ final class CollectionDurationTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		let duration = try await offliner.getCollectionDuration(collectionType: .albums, resourceId: "nonexistent")
+		let duration = try await offliner.getCollectionDuration(collectionType: .albums, resourceId: .identifier("nonexistent"))
 		XCTAssertEqual(duration, 0)
 	}
 
