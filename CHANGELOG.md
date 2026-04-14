@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.12] - 2026-04-14
+
+### Added
+- TemporaryUserTokens API endpoints (TidalAPI)
+- Dedicated `downloadUserCollectionTracks()`/`removeUserCollectionTracks()` methods (Offliner)
+
+### Changed
+- Use TidalAPI manifest endpoints for all playback info, removing legacy endpoints and feature flags (Player)
+- Generated API code using spec version 1.5.0 (TidalAPI)
+- Update Offliner README to reflect current API (Offliner)
+- Make `userCollectionTracks` internal, replaced by dedicated public methods (Offliner)
+
+### Removed
+- Legacy playback info endpoints and response types (`TrackPlaybackInfo`, `VideoPlaybackInfo`, `BtsManifest`, `EmuManifest`) (Player)
+- `shouldUseNewPlaybackEndpoints` and `shouldSupportABRPlayback` feature flags (Player)
+
 ## [0.11.11] - 2026-04-10
 
 ### Changed
