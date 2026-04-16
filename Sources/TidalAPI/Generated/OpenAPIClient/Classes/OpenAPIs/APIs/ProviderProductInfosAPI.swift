@@ -15,15 +15,16 @@ internal class ProviderProductInfosAPI {
     /**
      Get multiple providerProductInfos.
      
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider, subject (optional)
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) (optional)
      - parameter filterProviderId: (query) Content provider ID (e.g. &#x60;50&#x60;) (optional)
      - returns: ProviderProductInfosMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerProductInfosGet(include: [String]? = nil, filterBarcodeId: [String]? = nil, filterProviderId: [String]? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
+    internal class func providerProductInfosGet(countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterProviderId: [String]? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
         do {
-            return try await providerProductInfosGetWithRequestBuilder(include: include, filterBarcodeId: filterBarcodeId, filterProviderId: filterProviderId).execute().body
+            return try await providerProductInfosGetWithRequestBuilder(countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterProviderId: filterProviderId).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -37,18 +38,20 @@ internal class ProviderProductInfosAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider, subject (optional)
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) (optional)
      - parameter filterProviderId: (query) Content provider ID (e.g. &#x60;50&#x60;) (optional)
      - returns: RequestBuilder<ProviderProductInfosMultiResourceDataDocument> 
      */
-    internal class func providerProductInfosGetWithRequestBuilder(include: [String]? = nil, filterBarcodeId: [String]? = nil, filterProviderId: [String]? = nil) -> RequestBuilder<ProviderProductInfosMultiResourceDataDocument> {
+    internal class func providerProductInfosGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterProviderId: [String]? = nil) -> RequestBuilder<ProviderProductInfosMultiResourceDataDocument> {
         let localVariablePath = "/providerProductInfos"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[barcodeId]": (wrappedValue: filterBarcodeId?.encodeToJSON(), isExplode: true),
             "filter[provider.id]": (wrappedValue: filterProviderId?.encodeToJSON(), isExplode: true),
@@ -121,13 +124,14 @@ internal class ProviderProductInfosAPI {
      Get subject relationship (\"to-one\").
      
      - parameter id: (path) Provider product info id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - returns: ProviderProductInfosSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerProductInfosIdRelationshipsSubjectGet(id: String, include: [String]? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
+    internal class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
         do {
-            return try await providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -142,10 +146,11 @@ internal class ProviderProductInfosAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Provider product info id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - returns: RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> 
      */
-    internal class func providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> {
+    internal class func providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> {
         var localVariablePath = "/providerProductInfos/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -155,6 +160,7 @@ internal class ProviderProductInfosAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 

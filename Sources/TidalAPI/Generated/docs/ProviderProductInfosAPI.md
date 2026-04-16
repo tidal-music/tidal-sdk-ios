@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **providerProductInfosGet**
 ```swift
-    open class func providerProductInfosGet(include: [String]? = nil, filterBarcodeId: [String]? = nil, filterProviderId: [String]? = nil, completion: @escaping (_ data: ProviderProductInfosMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func providerProductInfosGet(countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterProviderId: [String]? = nil, completion: @escaping (_ data: ProviderProductInfosMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple providerProductInfos.
@@ -23,12 +23,13 @@ Retrieves multiple providerProductInfos by available filters, or without if appl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: provider, subject (optional)
 let filterBarcodeId = ["inner_example"] // [String] | List of barcode IDs (EAN-13 or UPC-A) (e.g. `00602527336510`) (optional)
 let filterProviderId = ["inner_example"] // [String] | Content provider ID (e.g. `50`) (optional)
 
 // Get multiple providerProductInfos.
-ProviderProductInfosAPI.providerProductInfosGet(include: include, filterBarcodeId: filterBarcodeId, filterProviderId: filterProviderId) { (response, error) in
+ProviderProductInfosAPI.providerProductInfosGet(countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterProviderId: filterProviderId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -44,6 +45,7 @@ ProviderProductInfosAPI.providerProductInfosGet(include: include, filterBarcodeI
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: provider, subject | [optional] 
  **filterBarcodeId** | [**[String]**](String.md) | List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) | [optional] 
  **filterProviderId** | [**[String]**](String.md) | Content provider ID (e.g. &#x60;50&#x60;) | [optional] 
@@ -117,7 +119,7 @@ Name | Type | Description  | Notes
 
 # **providerProductInfosIdRelationshipsSubjectGet**
 ```swift
-    open class func providerProductInfosIdRelationshipsSubjectGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ProviderProductInfosSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ProviderProductInfosSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -130,10 +132,11 @@ Retrieves subject relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Provider product info id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
 
 // Get subject relationship (\"to-one\").
-ProviderProductInfosAPI.providerProductInfosIdRelationshipsSubjectGet(id: id, include: include) { (response, error) in
+ProviderProductInfosAPI.providerProductInfosIdRelationshipsSubjectGet(id: id, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -150,6 +153,7 @@ ProviderProductInfosAPI.providerProductInfosIdRelationshipsSubjectGet(id: id, in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Provider product info id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
 
 ### Return type
