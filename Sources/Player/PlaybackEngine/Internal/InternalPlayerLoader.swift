@@ -72,25 +72,39 @@ final class InternalPlayerLoader: PlayerLoader {
 			loudnessNormalizer: loudnessNormalizer
 		)
 
-		let player = try getPlayer(
-			for: offlinedProduct.audioMode,
-			and: offlinedProduct.audioQuality,
-			with: offlinedProduct.mediaType,
-			audioCodec: offlinedProduct.audioCodec,
-			isOfflined: true,
-			type: offlinedProduct.productType
-		)
-
 		let licenseLoader = offlinedProduct.licenseURL.flatMap {
 			StoredLicenseLoader(localLicenseUrl: $0)
 		}
 
-		return await player.load(
-			offlinedProduct.mediaURL,
-			cacheKey: nil,
-			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-			and: licenseLoader
-		)
+		switch offlinedProduct.productType {
+		case .TRACK:
+			let player = try getPlayer(
+				for: offlinedProduct.audioMode,
+				and: offlinedProduct.audioQuality,
+				with: offlinedProduct.mediaType,
+				audioCodec: offlinedProduct.audioCodec,
+				isOfflined: true,
+				type: offlinedProduct.productType
+			)
+			return await loadTrack(
+				url: offlinedProduct.mediaURL,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: licenseLoader,
+				player: player
+			)
+		case .VIDEO:
+			return await loadVideo(
+				url: offlinedProduct.mediaURL,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: licenseLoader
+			)
+		case .UC:
+			return await loadUC(
+				url: offlinedProduct.mediaURL,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: licenseLoader
+			)
+		}
 	}
 
 	func load(_ storedMediaProduct: StoredMediaProduct) async throws -> Asset {
@@ -103,21 +117,35 @@ final class InternalPlayerLoader: PlayerLoader {
 			loudnessNormalizer: loudnessNormalizer
 		)
 
-		let player = try getPlayer(
-			for: storedMediaProduct.audioMode,
-			and: storedMediaProduct.audioQuality,
-			with: MediaTypes.BTS,
-			audioCodec: storedMediaProduct.audioCodec,
-			isOfflined: true,
-			type: storedMediaProduct.productType
-		)
-
-		return await player.load(
-			storedMediaProduct.url,
-			cacheKey: nil,
-			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-			and: nil
-		)
+		switch storedMediaProduct.productType {
+		case .TRACK:
+			let player = try getPlayer(
+				for: storedMediaProduct.audioMode,
+				and: storedMediaProduct.audioQuality,
+				with: MediaTypes.BTS,
+				audioCodec: storedMediaProduct.audioCodec,
+				isOfflined: true,
+				type: storedMediaProduct.productType
+			)
+			return await loadTrack(
+				url: storedMediaProduct.url,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: nil,
+				player: player
+			)
+		case .VIDEO:
+			return await loadVideo(
+				url: storedMediaProduct.url,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: nil
+			)
+		case .UC:
+			return await loadUC(
+				url: storedMediaProduct.url,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: nil
+			)
+		}
 	}
 
 	func load(_ item: OfflinePlaybackItem) async throws -> Asset {
@@ -133,25 +161,39 @@ final class InternalPlayerLoader: PlayerLoader {
 
 		let playbackMetadata = item.format.flatMap { AssetPlaybackMetadata(formatString: $0) }
 
-		let player = try getPlayer(
-			for: playbackMetadata?.audioMode,
-			and: playbackMetadata?.audioQuality,
-			with: nil,
-			audioCodec: AudioCodec(from: playbackMetadata?.audioQuality, mode: playbackMetadata?.audioMode),
-			isOfflined: true,
-			type: item.productType
-		)
-
 		let licenseLoader = item.licenseURL.flatMap {
 			StoredLicenseLoader(localLicenseUrl: $0)
 		}
 
-		return await player.load(
-			item.mediaURL,
-			cacheKey: nil,
-			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-			and: licenseLoader
-		)
+		switch item.productType {
+		case .TRACK:
+			let player = try getPlayer(
+				for: playbackMetadata?.audioMode,
+				and: playbackMetadata?.audioQuality,
+				with: nil,
+				audioCodec: AudioCodec(from: playbackMetadata?.audioQuality, mode: playbackMetadata?.audioMode),
+				isOfflined: true,
+				type: item.productType
+			)
+			return await loadTrack(
+				url: item.mediaURL,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: licenseLoader,
+				player: player
+			)
+		case .VIDEO:
+			return await loadVideo(
+				url: item.mediaURL,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: licenseLoader
+			)
+		case .UC:
+			return await loadUC(
+				url: item.mediaURL,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: licenseLoader
+			)
+		}
 	}
 
 	func load(_ playbackInfo: PlaybackInfo, streamingSessionId: String) async throws -> Asset {
@@ -171,6 +213,11 @@ final class InternalPlayerLoader: PlayerLoader {
 			)
 		}
 
+		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
+			loudnessNormalizationMode: loudnessNormalizationMode,
+			loudnessNormalizer: loudnessNormalizer
+		)
+
 		switch playbackInfo.productType {
 		case .TRACK:
 			let player = try getPlayer(
@@ -181,9 +228,20 @@ final class InternalPlayerLoader: PlayerLoader {
 				isOfflined: false,
 				type: playbackInfo.productType
 			)
-			return await loadTrack(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: player)
+			let asset = await loadTrack(
+				url: playbackInfo.url,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: licenseLoader,
+				player: player
+			)
+			asset.setAdaptiveAudioQualities(playbackInfo.adaptiveAudioQualities)
+			return asset
 		case .VIDEO:
-			return await loadVideo(using: playbackInfo, with: loudnessNormalizer, and: licenseLoader, player: videoPlayer)
+			return await loadVideo(
+				url: playbackInfo.url,
+				loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+				licenseLoader: licenseLoader
+			)
 		case .UC:
 			return try await loadUC(
 				using: playbackInfo,
@@ -213,41 +271,39 @@ private extension InternalPlayerLoader {
 	}
 
 	func loadTrack(
-		using playbackInfo: PlaybackInfo,
-		with loudnessNormalizer: LoudnessNormalizer?,
-		and licenseLoader: LicenseLoader?,
+		url: URL,
+		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
+		licenseLoader: LicenseLoader?,
 		player: GenericMediaPlayer
 	) async -> Asset {
-		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-			loudnessNormalizationMode: loudnessNormalizationMode,
-			loudnessNormalizer: loudnessNormalizer
-		)
-
-		let asset = await player.load(
-			playbackInfo.url,
+		await player.load(
+			url,
 			cacheKey: nil,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			and: licenseLoader
 		)
-
-		asset.setAdaptiveAudioQualities(playbackInfo.adaptiveAudioQualities)
-
-		return asset
 	}
 
-
 	func loadVideo(
-		using playbackInfo: PlaybackInfo,
-		with loudnessNormalizer: LoudnessNormalizer?,
-		and licenseLoader: LicenseLoader?,
-		player: GenericMediaPlayer
+		url: URL,
+		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
+		licenseLoader: LicenseLoader?
 	) async -> Asset {
-		let loudnessNormalizationConfiguration = LoudnessNormalizationConfiguration(
-			loudnessNormalizationMode: loudnessNormalizationMode,
-			loudnessNormalizer: loudnessNormalizer
+		await videoPlayer.load(
+			url,
+			cacheKey: nil,
+			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+			and: licenseLoader
 		)
-		return await player.load(
-			playbackInfo.url,
+	}
+
+	func loadUC(
+		url: URL,
+		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
+		licenseLoader: LicenseLoader?
+	) async -> Asset {
+		await videoPlayer.load(
+			url,
 			cacheKey: nil,
 			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
 			and: licenseLoader
