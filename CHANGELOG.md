@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix downloaded videos not playing when crossfade was enabled (Player)
 
+### Changed
+- Generated API code using spec version 1.5.2 (TidalAPI)
+
 ## [0.11.13] - 2026-04-14
 
 ### Changed
