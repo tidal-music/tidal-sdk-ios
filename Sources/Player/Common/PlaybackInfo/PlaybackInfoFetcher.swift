@@ -79,7 +79,7 @@ private extension PlaybackInfoFetcher {
 
 			// Ensure credentials provider is set
 			if OpenAPIClientAPI.credentialsProvider == nil {
-				OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
+				OpenAPIClientAPI.credentialsProvider = credentialsProvider
 			}
 
 			let manifestResponse = try await TrackManifestsAPITidal.trackManifestsIdGet(
@@ -193,7 +193,7 @@ private extension PlaybackInfoFetcher {
 		do {
 			// Ensure credentials provider is set
 			if OpenAPIClientAPI.credentialsProvider == nil {
-				OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
+				OpenAPIClientAPI.credentialsProvider = credentialsProvider
 			}
 
 			let response = try await VideoManifestsAPITidal.videoManifestsIdGet(
@@ -388,7 +388,6 @@ private extension PlaybackInfoFetcher {
 
 		return .STEREO
 	}
-
 }
 
 extension PlaybackInfoFetcher {
