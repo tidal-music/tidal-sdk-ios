@@ -167,18 +167,8 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 				return
 			}
 
-			let currentTime = self.player.currentTime()
-			let timeRange = CMTimeRange(
-				start: currentTime,
-				duration: CMTime(seconds: fadeDuration, preferredTimescale: 600)
-			)
-
-			let inputParameters = AVMutableAudioMixInputParameters()
-			inputParameters.setVolumeRamp(
-				fromStartVolume: 1.0,
-				toEndVolume: 0,
-				timeRange: timeRange
-			)
+			let timeRange = self.getFadeTimeRange(fadeDuration: fadeDuration)
+			let inputParameters = self.getVolumeRampInputParameters(timeRange: timeRange)
 
 			let audioMix = AVMutableAudioMix()
 			audioMix.inputParameters = [inputParameters]
@@ -296,6 +286,27 @@ extension AVQueuePlayerWrapper: VideoPlayer {
 				view.player = self.player
 			}
 		}
+	}
+}
+
+// MARK: - Fade Helpers
+
+private extension AVQueuePlayerWrapper {
+	func getFadeTimeRange(fadeDuration: TimeInterval) -> CMTimeRange {
+		CMTimeRange(
+			start: player.currentTime(),
+			duration: CMTime(seconds: fadeDuration, preferredTimescale: 600)
+		)
+	}
+
+	func getVolumeRampInputParameters(timeRange: CMTimeRange) -> AVMutableAudioMixInputParameters {
+		let inputParameters = AVMutableAudioMixInputParameters()
+		inputParameters.setVolumeRamp(
+			fromStartVolume: 1.0,
+			toEndVolume: 0,
+			timeRange: timeRange
+		)
+		return inputParameters
 	}
 }
 
