@@ -21,6 +21,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes (optional)
      - returns: UserRecommendationsSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userRecommendationsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
         do {
@@ -34,7 +35,7 @@ internal class UserRecommendationsAPI {
     /**
      Get single userRecommendation.
      - GET /userRecommendations/{id}
-     - Retrieves single userRecommendation by id.
+     - Deprecated. Use the dedicated mix resources instead: userDiscoveryMixes, userDailyMixes, userNewReleaseMixes, or userOfflineMixes.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -44,6 +45,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes (optional)
      - returns: RequestBuilder<UserRecommendationsSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userRecommendationsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsSingleResourceDataDocument> {
         var localVariablePath = "/userRecommendations/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -80,6 +82,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
@@ -93,7 +96,7 @@ internal class UserRecommendationsAPI {
     /**
      Get discoveryMixes relationship (\"to-many\").
      - GET /userRecommendations/{id}/relationships/discoveryMixes
-     - Retrieves discoveryMixes relationship.
+     - Deprecated. Use the userDiscoveryMixes resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -104,6 +107,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/discoveryMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -141,6 +145,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userRecommendationsIdRelationshipsMyMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
@@ -154,7 +159,7 @@ internal class UserRecommendationsAPI {
     /**
      Get myMixes relationship (\"to-many\").
      - GET /userRecommendations/{id}/relationships/myMixes
-     - Retrieves myMixes relationship.
+     - Deprecated. Use the userDailyMixes resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -165,6 +170,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/myMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -202,6 +208,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
@@ -215,7 +222,7 @@ internal class UserRecommendationsAPI {
     /**
      Get newArrivalMixes relationship (\"to-many\").
      - GET /userRecommendations/{id}/relationships/newArrivalMixes
-     - Retrieves newArrivalMixes relationship.
+     - Deprecated. Use the userNewReleaseMixes resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -226,6 +233,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/newArrivalMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -262,6 +270,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineMixes (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userRecommendationsIdRelationshipsOfflineMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
@@ -275,7 +284,7 @@ internal class UserRecommendationsAPI {
     /**
      Get offlineMixes relationship (\"to-many\").
      - GET /userRecommendations/{id}/relationships/offlineMixes
-     - Retrieves offlineMixes relationship.
+     - Deprecated. Use the userOfflineMixes resource and its items relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -285,6 +294,7 @@ internal class UserRecommendationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineMixes (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userRecommendationsIdRelationshipsOfflineMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/offlineMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
