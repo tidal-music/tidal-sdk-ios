@@ -160,9 +160,38 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		}
 	}
 
-	func pause() {
+	func pause(fadeDuration: TimeInterval? = nil) {
 		queue.dispatch {
-			self.player.pause()
+			guard let fadeDuration, fadeDuration > 0, let playerItem = self.player.currentItem else {
+				self.player.pause()
+				return
+			}
+
+			let currentTime = self.player.currentTime()
+			let timeRange = CMTimeRange(
+				start: currentTime,
+				duration: CMTime(seconds: fadeDuration, preferredTimescale: 600)
+			)
+
+			let inputParameters = AVMutableAudioMixInputParameters()
+			inputParameters.setVolumeRamp(
+				fromStartVolume: 1.0,
+				toEndVolume: 0,
+				timeRange: timeRange
+			)
+
+			let audioMix = AVMutableAudioMix()
+			audioMix.inputParameters = [inputParameters]
+			playerItem.audioMix = audioMix
+
+			let currentVolume = self.player.volume
+			DispatchQueue.global().asyncAfter(deadline: .now() + fadeDuration) { [weak self] in
+				self?.queue.dispatch {
+					self?.player.pause()
+					self?.player.volume = currentVolume
+					playerItem.audioMix = nil
+				}
+			}
 		}
 	}
 

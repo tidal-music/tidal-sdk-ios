@@ -281,8 +281,8 @@ final class PlayerEngine {
 		}
 	}
 
-	func pause() {
-		currentItem?.pause()
+	func pause(fadeDuration: TimeInterval? = nil) {
+		currentItem?.pause(fadeDuration: fadeDuration)
 	}
 
 	func seek(_ time: Double) {

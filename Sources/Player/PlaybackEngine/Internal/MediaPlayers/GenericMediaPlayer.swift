@@ -24,7 +24,7 @@ public protocol GenericMediaPlayer: AnyObject {
 	) async -> Asset
 
 	func play()
-	func pause()
+	func pause(fadeDuration: TimeInterval?)
 	func seek(to time: Double)
 
 	func updateVolume(loudnessNormalizer: LoudnessNormalizer?)
@@ -35,4 +35,8 @@ public protocol GenericMediaPlayer: AnyObject {
 	func unload()
 
 	func reset()
+}
+
+extension GenericMediaPlayer {
+	func pause() { pause(fadeDuration: nil) }
 }
