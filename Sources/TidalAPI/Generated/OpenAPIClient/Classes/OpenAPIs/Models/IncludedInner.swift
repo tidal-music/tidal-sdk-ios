@@ -39,6 +39,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case providerOwnersResourceObject(ProviderOwnersResourceObject)
     case providerProductInfosResourceObject(ProviderProductInfosResourceObject)
     case providersResourceObject(ProvidersResourceObject)
+    case purchasesResourceObject(PurchasesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
@@ -132,6 +133,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .providerProductInfosResourceObject(let value):
             try container.encode(value)
         case .providersResourceObject(let value):
+            try container.encode(value)
+        case .purchasesResourceObject(let value):
             try container.encode(value)
         case .reactionsResourceObject(let value):
             try container.encode(value)
@@ -297,6 +300,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "providers":
             let value = try ProvidersResourceObject(from: decoder)
             self = .providersResourceObject(value)
+        case "purchases":
+            let value = try PurchasesResourceObject(from: decoder)
+            self = .purchasesResourceObject(value)
         case "reactions":
             let value = try ReactionsResourceObject(from: decoder)
             self = .reactionsResourceObject(value)
@@ -437,6 +443,7 @@ extension IncludedInner: Identifiable {
         case .providerOwnersResourceObject(let value): return value.id
         case .providerProductInfosResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id
+        case .purchasesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
