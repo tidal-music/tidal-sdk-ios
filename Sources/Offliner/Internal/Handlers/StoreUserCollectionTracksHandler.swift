@@ -28,11 +28,17 @@ private final class InternalUserCollectionTracksTask: InternalTask {
 	func run() async throws {
 		let result = StoreCollectionTaskResult(
 			resourceType: .userCollectionTracks,
-			resourceId: "me",
-			catalogMetadata: .userCollectionTracks(id: "me"),
+			resourceId: task.resolvedResourceId,
+			catalogMetadata: .userCollectionTracks(id: task.resolvedResourceId),
 			artworkURL: nil
 		)
 
 		try offlineStore.storeCollection(result)
+	}
+}
+
+private extension StoreUserCollectionTracksTask {
+	var resolvedResourceId: String {
+		ResourceId.me.stringValue
 	}
 }

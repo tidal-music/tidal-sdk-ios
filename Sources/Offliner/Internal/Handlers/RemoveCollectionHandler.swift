@@ -25,6 +25,12 @@ private final class InternalRemoveCollectionTask: InternalTask {
 	}
 
 	func run() async throws {
-		try offlineStore.deleteCollection(resourceType: task.resourceType, resourceId: task.resourceId)
+		try offlineStore.deleteCollection(resourceType: task.resourceType, resourceId: task.resolvedResourceId)
+	}
+}
+
+private extension RemoveCollectionTask {
+	var resolvedResourceId: String {
+		resourceType == OfflineCollectionType.userCollectionTracks.rawValue ? ResourceId.me.stringValue : resourceId
 	}
 }
