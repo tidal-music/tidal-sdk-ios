@@ -106,7 +106,7 @@ private final class InternalVideoTask: InternalTask {
 				catalogMetadata: catalogMetadata,
 				playbackMetadata: nil,
 				collectionResourceType: task.collectionResourceType,
-				collectionResourceId: task.collectionResourceId,
+				collectionResourceId: task.resolvedCollectionResourceId,
 				volume: task.volume,
 				position: task.position,
 				mediaURL: mediaResult.mediaLocation,
@@ -116,5 +116,11 @@ private final class InternalVideoTask: InternalTask {
 
 			try offlineStore.storeMediaItem(storeResult)
 		}
+	}
+}
+
+private extension StoreVideoTask {
+	var resolvedCollectionResourceId: String {
+		collectionResourceType == OfflineCollectionType.userCollectionTracks.rawValue ? ResourceId.me.stringValue : collectionResourceId
 	}
 }

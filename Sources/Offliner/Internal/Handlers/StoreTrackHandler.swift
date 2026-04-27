@@ -106,7 +106,7 @@ private final class InternalTrackTask: InternalTask {
 				catalogMetadata: catalogMetadata,
 				playbackMetadata: manifest.playbackMetadata,
 				collectionResourceType: task.collectionResourceType,
-				collectionResourceId: task.collectionResourceId,
+				collectionResourceId: task.resolvedCollectionResourceId,
 				volume: task.volume,
 				position: task.position,
 				mediaURL: mediaResult.mediaLocation,
@@ -116,5 +116,11 @@ private final class InternalTrackTask: InternalTask {
 
 			try offlineStore.storeMediaItem(storeResult)
 		}
+	}
+}
+
+private extension StoreTrackTask {
+	var resolvedCollectionResourceId: String {
+		collectionResourceType == OfflineCollectionType.userCollectionTracks.rawValue ? ResourceId.me.stringValue : collectionResourceId
 	}
 }
