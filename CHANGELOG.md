@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.15] - 2026-04-23
+
+### Fixed
+- Replace collectionResourceId with "me" when storing or removing userCollectionTracks items (Offliner)
+
 ## [0.11.14] - 2026-04-16
 
 ### Fixed
