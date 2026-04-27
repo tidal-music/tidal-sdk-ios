@@ -1,12 +1,11 @@
-# ProviderProductInfosAttributes
+# UserDailyMixesSingleResourceDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**barcodeId** | **String** |  | 
-**broken** | **Bool** |  | [optional] 
-**brokenCode** | **Int** |  | [optional] 
-**tracks** | [TrackInfo] |  | [optional] 
+**data** | [**UserDailyMixesResourceObject**](UserDailyMixesResourceObject.md) |  | 
+**included** | [IncludedInner] |  | [optional] 
+**links** | [**Links**](Links.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

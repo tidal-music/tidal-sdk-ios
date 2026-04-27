@@ -1,12 +1,10 @@
-# ProviderProductInfosAttributes
+# PurchasesRelationships
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**barcodeId** | **String** |  | 
-**broken** | **Bool** |  | [optional] 
-**brokenCode** | **Int** |  | [optional] 
-**tracks** | [TrackInfo] |  | [optional] 
+**owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**subject** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

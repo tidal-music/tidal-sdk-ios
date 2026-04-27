@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 Get single userRecommendation.
 
-Retrieves single userRecommendation by id.
+Deprecated. Use the dedicated mix resources instead: userDiscoveryMixes, userDailyMixes, userNewReleaseMixes, or userOfflineMixes.
 
 ### Example
 ```swift
@@ -74,7 +74,7 @@ Name | Type | Description  | Notes
 
 Get discoveryMixes relationship (\"to-many\").
 
-Retrieves discoveryMixes relationship.
+Deprecated. Use the userDiscoveryMixes resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -132,7 +132,7 @@ Name | Type | Description  | Notes
 
 Get myMixes relationship (\"to-many\").
 
-Retrieves myMixes relationship.
+Deprecated. Use the userDailyMixes resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -190,7 +190,7 @@ Name | Type | Description  | Notes
 
 Get newArrivalMixes relationship (\"to-many\").
 
-Retrieves newArrivalMixes relationship.
+Deprecated. Use the userNewReleaseMixes resource and its items relationship instead.
 
 ### Example
 ```swift
@@ -248,7 +248,7 @@ Name | Type | Description  | Notes
 
 Get offlineMixes relationship (\"to-many\").
 
-Retrieves offlineMixes relationship.
+Deprecated. Use the userOfflineMixes resource and its items relationship instead.
 
 ### Example
 ```swift

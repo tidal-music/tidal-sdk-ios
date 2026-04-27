@@ -39,6 +39,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case providerOwnersResourceObject(ProviderOwnersResourceObject)
     case providerProductInfosResourceObject(ProviderProductInfosResourceObject)
     case providersResourceObject(ProvidersResourceObject)
+    case purchasesResourceObject(PurchasesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
@@ -63,7 +64,11 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userCollectionTracksResourceObject(UserCollectionTracksResourceObject)
     case userCollectionVideosResourceObject(UserCollectionVideosResourceObject)
     case userCollectionsResourceObject(UserCollectionsResourceObject)
+    case userDailyMixesResourceObject(UserDailyMixesResourceObject)
     case userDataExportRequestsResourceObject(UserDataExportRequestsResourceObject)
+    case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
+    case userNewReleaseMixesResourceObject(UserNewReleaseMixesResourceObject)
+    case userOfflineMixesResourceObject(UserOfflineMixesResourceObject)
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
     case userReportsResourceObject(UserReportsResourceObject)
     case usersResourceObject(UsersResourceObject)
@@ -129,6 +134,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .providersResourceObject(let value):
             try container.encode(value)
+        case .purchasesResourceObject(let value):
+            try container.encode(value)
         case .reactionsResourceObject(let value):
             try container.encode(value)
         case .savedSharesResourceObject(let value):
@@ -177,7 +184,15 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .userCollectionsResourceObject(let value):
             try container.encode(value)
+        case .userDailyMixesResourceObject(let value):
+            try container.encode(value)
         case .userDataExportRequestsResourceObject(let value):
+            try container.encode(value)
+        case .userDiscoveryMixesResourceObject(let value):
+            try container.encode(value)
+        case .userNewReleaseMixesResourceObject(let value):
+            try container.encode(value)
+        case .userOfflineMixesResourceObject(let value):
             try container.encode(value)
         case .userRecommendationsResourceObject(let value):
             try container.encode(value)
@@ -285,6 +300,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "providers":
             let value = try ProvidersResourceObject(from: decoder)
             self = .providersResourceObject(value)
+        case "purchases":
+            let value = try PurchasesResourceObject(from: decoder)
+            self = .purchasesResourceObject(value)
         case "reactions":
             let value = try ReactionsResourceObject(from: decoder)
             self = .reactionsResourceObject(value)
@@ -357,9 +375,21 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userCollections":
             let value = try UserCollectionsResourceObject(from: decoder)
             self = .userCollectionsResourceObject(value)
+        case "userDailyMixes":
+            let value = try UserDailyMixesResourceObject(from: decoder)
+            self = .userDailyMixesResourceObject(value)
         case "userDataExportRequests":
             let value = try UserDataExportRequestsResourceObject(from: decoder)
             self = .userDataExportRequestsResourceObject(value)
+        case "userDiscoveryMixes":
+            let value = try UserDiscoveryMixesResourceObject(from: decoder)
+            self = .userDiscoveryMixesResourceObject(value)
+        case "userNewReleaseMixes":
+            let value = try UserNewReleaseMixesResourceObject(from: decoder)
+            self = .userNewReleaseMixesResourceObject(value)
+        case "userOfflineMixes":
+            let value = try UserOfflineMixesResourceObject(from: decoder)
+            self = .userOfflineMixesResourceObject(value)
         case "userRecommendations":
             let value = try UserRecommendationsResourceObject(from: decoder)
             self = .userRecommendationsResourceObject(value)
@@ -413,6 +443,7 @@ extension IncludedInner: Identifiable {
         case .providerOwnersResourceObject(let value): return value.id
         case .providerProductInfosResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id
+        case .purchasesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
@@ -437,7 +468,11 @@ extension IncludedInner: Identifiable {
         case .userCollectionTracksResourceObject(let value): return value.id
         case .userCollectionVideosResourceObject(let value): return value.id
         case .userCollectionsResourceObject(let value): return value.id
+        case .userDailyMixesResourceObject(let value): return value.id
         case .userDataExportRequestsResourceObject(let value): return value.id
+        case .userDiscoveryMixesResourceObject(let value): return value.id
+        case .userNewReleaseMixesResourceObject(let value): return value.id
+        case .userOfflineMixesResourceObject(let value): return value.id
         case .userRecommendationsResourceObject(let value): return value.id
         case .userReportsResourceObject(let value): return value.id
         case .usersResourceObject(let value): return value.id

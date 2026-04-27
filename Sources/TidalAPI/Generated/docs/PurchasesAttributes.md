@@ -1,12 +1,10 @@
-# ProviderProductInfosAttributes
+# PurchasesAttributes
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**barcodeId** | **String** |  | 
-**broken** | **Bool** |  | [optional] 
-**brokenCode** | **Int** |  | [optional] 
-**tracks** | [TrackInfo] |  | [optional] 
+**createdAt** | **Date** | Datetime of purchase (ISO 8601) | 
+**status** | **String** | Current status of the purchase | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
