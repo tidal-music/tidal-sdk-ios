@@ -7,10 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.11.15] - 2026-04-23
+## [0.11.16] - 2026-04-27
 
 ### Changed
 - Generated API code using spec version 1.6.2 (TidalAPI)
+
+## [0.11.15] - 2026-04-24
 
 ### Fixed
 - Replace collectionResourceId with "me" when storing or removing userCollectionTracks items (Offliner)
