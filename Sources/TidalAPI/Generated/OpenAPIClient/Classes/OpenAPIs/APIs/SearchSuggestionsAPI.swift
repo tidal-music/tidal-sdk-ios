@@ -26,7 +26,7 @@ internal class SearchSuggestionsAPI {
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
      - returns: SearchSuggestionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -52,7 +52,7 @@ internal class SearchSuggestionsAPI {
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
      - returns: RequestBuilder<SearchSuggestionsSingleResourceDataDocument> 
      */
     internal class func searchSuggestionsIdGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchSuggestionsSingleResourceDataDocument> {
@@ -128,6 +128,75 @@ internal class SearchSuggestionsAPI {
      */
     internal class func searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchSuggestions/{id}/relationships/directHits"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     * enum for parameter explicitFilter
+     */
+    public enum ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
+     Get history relationship (\"to-many\").
+     
+     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: history (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: SearchSuggestionsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
+        do {
+            return try await searchSuggestionsIdRelationshipsHistoryGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get history relationship (\"to-many\").
+     - GET /searchSuggestions/{id}/relationships/history
+     - Retrieves history relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: history (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument> 
+     */
+    internal class func searchSuggestionsIdRelationshipsHistoryGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SearchSuggestionsMultiRelationshipDataDocument> {
+        var localVariablePath = "/searchSuggestions/{id}/relationships/history"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
