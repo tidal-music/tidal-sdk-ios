@@ -102,10 +102,10 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 		}
 	}
 
-	func pause() {
-		currentPlayer.pause()
+	func pause(fadeDuration: TimeInterval? = nil) {
+		currentPlayer.pause(fadeDuration: fadeDuration)
 		if isCrossfading {
-			nextPlayer.pause()
+			nextPlayer.pause(fadeDuration: fadeDuration)
 		}
 	}
 

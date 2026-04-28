@@ -93,7 +93,7 @@ public final class PlayerMock: GenericMediaPlayer {
 		playCallCount += 1
 	}
 
-	public func pause() {
+	public func pause(fadeDuration: TimeInterval? = nil) {
 		pauseCallCount += 1
 	}
 
