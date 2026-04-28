@@ -66,4 +66,31 @@ public enum SearchSuggestionsAPITidal {
 			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
+
+
+	/**
+	 * enum for parameter explicitFilter
+	 */
+	public enum ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
+
+		func toSearchSuggestionsAPIEnum() -> SearchSuggestionsAPI.ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet {
+			switch self {
+			case .include: return .include
+			case .exclude: return .exclude
+			}
+		}
+	}
+
+	/**
+     Get history relationship (\&quot;to-many\&quot;).
+     
+     - returns: SearchSuggestionsMultiRelationshipDataDocument
+     */
+	public static func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
 }
