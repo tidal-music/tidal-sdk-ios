@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.17] - 2026-04-28
+
+### Added
+- Add fade-out support to pause for sleep timer (Player)
+
 ## [0.11.15] - 2026-04-27
 
 ### Changed
