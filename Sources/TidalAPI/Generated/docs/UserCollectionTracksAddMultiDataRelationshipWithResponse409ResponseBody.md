@@ -1,4 +1,4 @@
-# UserCollectionTracksAddMultiDataRelationship409ResponseBody
+# UserCollectionTracksAddMultiDataRelationshipWithResponse409ResponseBody
 
 ## Properties
 Name | Type | Description | Notes
