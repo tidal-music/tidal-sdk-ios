@@ -28,8 +28,15 @@ extension StoredLicenseLoader: AVContentKeySessionDelegate {
 		do {
 			#if os(iOS)
 				try keyRequest.respondByRequestingPersistableContentKeyRequestAndReturnError()
-			#else
+			#elseif os(macOS)
 				try keyRequest.respondByRequestingPersistableContentKeyRequest()
+			#else
+				keyRequest.processContentKeyResponseError(NSError(
+					domain: "com.tidal.player",
+					code: -1,
+					userInfo: [NSLocalizedDescriptionKey: "Persistable content keys are not supported on this platform."]
+				))
+				return
 			#endif
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseLoaderContentKeyRequestFailed(error: error))

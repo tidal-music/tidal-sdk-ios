@@ -115,6 +115,21 @@ extension GRDBOfflineStorage: OfflineStorage {
 
 private extension GRDBOfflineStorage {
 	static func databaseURL() throws -> URL {
+		// tvOS: Application Support is restricted; only Caches is reliably writable.
+		// tvOS also doesn't honor `URLFileProtection` (Data Protection is iOS-only),
+		// so we skip the protectionKey attribute.
+		#if os(tvOS)
+		let baseURL = PlayerWorld.fileManagerClient.cachesDirectory()
+		let directoryURL = baseURL.appendingPathComponent("PlayerOfflineDatabase", isDirectory: true)
+		if !PlayerWorld.fileManagerClient.fileExists(atPath: directoryURL.path, isDirectory: nil) {
+			try PlayerWorld.fileManagerClient.createDirectory(
+				at: directoryURL,
+				withIntermediateDirectories: true,
+				attributes: nil
+			)
+		}
+		return directoryURL.appendingPathComponent("db.sqlite")
+		#else
 		let appSupportURL = PlayerWorld.fileManagerClient.applicationSupportDirectory()
 		let directoryURL = appSupportURL.appendingPathComponent("PlayerOfflineDatabase", isDirectory: true)
 		if PlayerWorld.fileManagerClient.fileExists(atPath: directoryURL.path, isDirectory: nil) {
@@ -137,6 +152,7 @@ private extension GRDBOfflineStorage {
 			)
 		}
 		return directoryURL.appendingPathComponent("db.sqlite")
+		#endif
 	}
 
 	func calculateTotalSize(_ db: Database) throws -> Int {

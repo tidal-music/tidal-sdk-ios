@@ -70,8 +70,15 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 		do {
 			#if os(iOS)
 				try keyRequest.respondByRequestingPersistableContentKeyRequestAndReturnError()
-			#else
+			#elseif os(macOS)
 				try keyRequest.respondByRequestingPersistableContentKeyRequest()
+			#else
+				downloadTask.failed(with: NSError(
+					domain: "com.tidal.player",
+					code: -1,
+					userInfo: [NSLocalizedDescriptionKey: "Offline DRM is not supported on this platform."]
+				))
+				return
 			#endif
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderContentKeyRequestFailed(error: error))
@@ -86,8 +93,15 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 		do {
 			#if os(iOS)
 				try keyRequest.respondByRequestingPersistableContentKeyRequestAndReturnError()
-			#else
+			#elseif os(macOS)
 				try keyRequest.respondByRequestingPersistableContentKeyRequest()
+			#else
+				downloadTask.failed(with: NSError(
+					domain: "com.tidal.player",
+					code: -1,
+					userInfo: [NSLocalizedDescriptionKey: "Offline DRM is not supported on this platform."]
+				))
+				return
 			#endif
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderContentKeyRequestFailed(error: error))

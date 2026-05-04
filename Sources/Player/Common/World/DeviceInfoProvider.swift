@@ -2,7 +2,9 @@ import Foundation
 #if canImport(UIKit)
 	import UIKit
 #endif
-import CoreTelephony
+#if canImport(CoreTelephony)
+	import CoreTelephony
+#endif
 
 // MARK: - DeviceInfoProvider
 
@@ -44,8 +46,12 @@ extension DeviceInfoProvider {
 				guard networkType == .MOBILE else {
 					return Constants.NA
 				}
-				let networkInfo = CTTelephonyNetworkInfo()
-				return networkInfo.serviceCurrentRadioAccessTechnology?.first?.value ?? Constants.NA
+				#if canImport(CoreTelephony)
+					let networkInfo = CTTelephonyNetworkInfo()
+					return networkInfo.serviceCurrentRadioAccessTechnology?.first?.value ?? Constants.NA
+				#else
+					return Constants.NA
+				#endif
 			},
 			deviceType: { audioInfoProvider in
 				#if os(iOS)
