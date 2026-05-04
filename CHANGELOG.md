@@ -12,9 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add per-track backgroundColorHex to OfflineMediaItem.TrackMetadata (Offliner)
 
-### Changed
-- Remove version bump from API auto-update workflow (CI)
-
 ## [0.11.16] - 2026-04-28
 
 ### Added
