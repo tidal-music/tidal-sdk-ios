@@ -99,8 +99,16 @@ actor TaskRunner {
 		}
 	}
 
+	func cancelDownloads(collectionType: OfflineCollectionType, resourceId: ResourceId) async {
+		await cancelDownloads(matching: CollectionTaskScope(
+			resourceType: collectionType.rawValue,
+			resourceId: resourceId.stringValue
+		))
+	}
+
 	private func refresh() async throws {
 		let (tasks, cursor) = try await offlineApiClient.getTasks(cursor: self.cursor)
+		var collectionsToCancel: [CollectionTaskScope] = []
 
 		for task in tasks where taskIds.insert(task.id).inserted {
 			let pendingTask = handle(task)
@@ -109,10 +117,17 @@ actor TaskRunner {
 				currentDownloads.append(download)
 				downloadsContinuation?.yield(download)
 			}
+			if let collectionScope = pendingTask.removedCollectionScope {
+				collectionsToCancel.append(collectionScope)
+			}
 		}
 
 		if let cursor {
 			self.cursor = cursor
+		}
+
+		for collectionScope in collectionsToCancel {
+			await cancelDownloads(matching: collectionScope)
 		}
 	}
 
@@ -139,12 +154,12 @@ actor TaskRunner {
 			}
 
 			for await _ in group {
-				if let task = pendingTasks.first {
-					group.addTask { await self.start(task) }
-				}
-
 				if pendingTasks.count < Self.maxQueueSize {
 					try? await refresh()
+				}
+
+				if let task = pendingTasks.first {
+					group.addTask { await self.start(task) }
 				}
 			}
 		}
@@ -170,6 +185,27 @@ actor TaskRunner {
 		}
 
 		runningTasks.removeAll { $0 === task }
+		taskIds.remove(task.id)
+		if let download = task.download {
+			currentDownloads.removeAll { $0 === download }
+		}
+	}
+
+	private func cancelDownloads(matching collectionScope: CollectionTaskScope) async {
+		let pendingTasksToCancel = pendingTasks.filter { $0.collectionScope == collectionScope }
+		pendingTasks.removeAll { $0.collectionScope == collectionScope }
+
+		let runningTasksToCancel = runningTasks.filter { $0.collectionScope == collectionScope }
+
+		for task in pendingTasksToCancel + runningTasksToCancel {
+			await cancel(task)
+		}
+	}
+
+	private func cancel(_ task: InternalTask) async {
+		await task.cancel()
+		await task.download?.updateState(.failed)
+		try? await offlineApiClient.updateTask(taskId: task.id, state: .failed)
 		taskIds.remove(task.id)
 		if let download = task.download {
 			currentDownloads.removeAll { $0 === download }
@@ -203,9 +239,20 @@ private actor Network {
 protocol InternalTask: AnyObject {
 	var id: String { get }
 	var download: Download? { get }
+	var collectionScope: CollectionTaskScope? { get }
+	var removedCollectionScope: CollectionTaskScope? { get }
 	func run() async throws
+	func cancel() async
 }
 
 extension InternalTask {
 	var download: Download? { nil }
+	var collectionScope: CollectionTaskScope? { nil }
+	var removedCollectionScope: CollectionTaskScope? { nil }
+	func cancel() async {}
+}
+
+struct CollectionTaskScope: Equatable {
+	let resourceType: String
+	let resourceId: String
 }

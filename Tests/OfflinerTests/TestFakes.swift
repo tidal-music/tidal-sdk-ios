@@ -239,6 +239,8 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
 
+	func cancel(taskId: String) async {}
+
 	func download(
 		taskId: String,
 		manifestURL: URL,
@@ -264,6 +266,8 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 final class FailingMediaDownloader: MediaDownloaderProtocol {
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
 
+	func cancel(taskId: String) async {}
+
 	func download(
 		taskId: String,
 		manifestURL: URL,
@@ -272,6 +276,68 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
 		throw FakeError.downloadFailed
+	}
+}
+
+final class CancellableMediaDownloader: MediaDownloaderProtocol {
+	private let state = CancellableMediaDownloaderState()
+
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+
+	func cancel(taskId: String) async {
+		await state.cancel(taskId: taskId)
+	}
+
+	func waitUntilDownloadStarts() async {
+		await state.waitUntilDownloadStarts()
+	}
+
+	func cancelledTaskIds() async -> [String] {
+		await state.cancelledTaskIds
+	}
+
+	func download(
+		taskId: String,
+		manifestURL: URL,
+		licenseDownloadResult: LicenseDownloadResult?,
+		title: String,
+		onProgress: @escaping @Sendable (Double) async -> Void
+	) async throws -> MediaDownloadResult {
+		await onProgress(0.1)
+		return try await state.download(taskId: taskId)
+	}
+}
+
+private actor CancellableMediaDownloaderState {
+	private(set) var cancelledTaskIds: [String] = []
+	private var downloadContinuation: CheckedContinuation<MediaDownloadResult, Error>?
+	private var startedContinuation: CheckedContinuation<Void, Never>?
+	private var hasStarted = false
+
+	func waitUntilDownloadStarts() async {
+		if hasStarted {
+			return
+		}
+
+		await withCheckedContinuation { continuation in
+			startedContinuation = continuation
+		}
+	}
+
+	func download(taskId: String) async throws -> MediaDownloadResult {
+		hasStarted = true
+		startedContinuation?.resume()
+		startedContinuation = nil
+
+		return try await withCheckedThrowingContinuation { continuation in
+			downloadContinuation = continuation
+		}
+	}
+
+	func cancel(taskId: String) {
+		cancelledTaskIds.append(taskId)
+		downloadContinuation?.resume(throwing: CancellationError())
+		downloadContinuation = nil
 	}
 }
 

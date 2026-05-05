@@ -130,6 +130,70 @@ final class RemoveTests: OfflinerTestCase {
 		XCTAssertFalse(FileManager.default.fileExists(atPath: artworkURL.path))
 	}
 
+	func testRemovePlaylistCancelsPendingChildDownloads() async throws {
+		let backend = StubOfflineApiClient()
+		backend.enqueueTasks([
+			.storeTrack(StoreTrackTask(
+				id: "track-task",
+				track: TracksResourceObject(id: "track-123", type: "tracks"),
+				artists: [],
+				artwork: nil,
+				collectionResourceType: "playlists",
+				collectionResourceId: "playlist-123",
+				volume: 1,
+				position: 1
+			)),
+		])
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		try await offliner.remove(collectionType: .playlists, resourceId: .identifier("playlist-123"))
+		await backend.waitForTasksToComplete()
+
+		let downloads = await offliner.currentDownloads
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
+		XCTAssertEqual(downloads.count, 0)
+		XCTAssertNil(storedItem)
+	}
+
+	func testRemovePlaylistCancelsRunningChildDownloads() async throws {
+		let backend = StubOfflineApiClient()
+		backend.enqueueTasks([
+			.storeTrack(StoreTrackTask(
+				id: "track-task",
+				track: TracksResourceObject(id: "track-123", type: "tracks"),
+				artists: [],
+				artwork: nil,
+				collectionResourceType: "playlists",
+				collectionResourceId: "playlist-123",
+				volume: 1,
+				position: 1
+			)),
+		])
+		let mediaDownloader = CancellableMediaDownloader()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: mediaDownloader
+		)
+
+		await offliner.run()
+		await mediaDownloader.waitUntilDownloadStarts()
+
+		try await offliner.remove(collectionType: .playlists, resourceId: .identifier("playlist-123"))
+		await backend.waitForTasksToComplete()
+
+		let downloads = await offliner.currentDownloads
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
+		let cancelledTaskIds = await mediaDownloader.cancelledTaskIds()
+		XCTAssertEqual(downloads.count, 0)
+		XCTAssertNil(storedItem)
+		XCTAssertEqual(cancelledTaskIds, ["track-task"])
+	}
+
 	func testRemoveNonExistentItemDoesNotThrow() async throws {
 		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(

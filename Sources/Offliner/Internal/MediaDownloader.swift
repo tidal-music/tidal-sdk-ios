@@ -21,6 +21,8 @@ protocol MediaDownloaderProtocol {
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult
 
+	func cancel(taskId: String) async
+
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void)
 }
 
@@ -58,6 +60,16 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		}
 	}
 
+	func cancel(taskId: String) async {
+		await withCheckedContinuation { continuation in
+			queue.async {
+				let task = self.activeDownloads.values.first { $0.task.taskDescription == taskId }?.task
+				task?.cancel()
+				continuation.resume()
+			}
+		}
+	}
+
 	func download(
 		taskId: String,
 		manifestURL: URL,
@@ -85,6 +97,7 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 				}
 
 				let activeDownload = ActiveDownload(
+					task: task,
 					duration: duration,
 					continuation: continuation,
 					onProgress: onProgress
@@ -181,6 +194,7 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 // MARK: - ActiveDownload
 
 private final class ActiveDownload {
+	let task: AVAssetDownloadTask
 	let duration: Int
 	let continuation: CheckedContinuation<MediaDownloadResult, Error>
 	let onProgress: @Sendable (Double) async -> Void
@@ -188,10 +202,12 @@ private final class ActiveDownload {
 	var downloadedLocation: URL?
 
 	init(
+		task: AVAssetDownloadTask,
 		duration: Int,
 		continuation: CheckedContinuation<MediaDownloadResult, Error>,
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) {
+		self.task = task
 		self.duration = duration
 		self.continuation = continuation
 		self.onProgress = onProgress

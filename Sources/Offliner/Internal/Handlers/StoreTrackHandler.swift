@@ -42,6 +42,7 @@ final class StoreTrackHandler {
 private final class InternalTrackTask: InternalTask {
 	let id: String
 	let download: Download?
+	let collectionScope: CollectionTaskScope?
 
 	private let task: StoreTrackTask
 	private let offlineStore: OfflineStore
@@ -62,6 +63,10 @@ private final class InternalTrackTask: InternalTask {
 		self.id = task.id
 		self.task = task
 		self.download = download
+		collectionScope = CollectionTaskScope(
+			resourceType: task.collectionResourceType,
+			resourceId: task.resolvedCollectionResourceId
+		)
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
@@ -119,6 +124,10 @@ private final class InternalTrackTask: InternalTask {
 
 			try offlineStore.storeMediaItem(storeResult)
 		}
+	}
+
+	func cancel() async {
+		await mediaDownloader.cancel(taskId: task.id)
 	}
 }
 

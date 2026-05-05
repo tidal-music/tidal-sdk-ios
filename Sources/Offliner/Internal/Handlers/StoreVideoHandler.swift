@@ -42,6 +42,7 @@ final class StoreVideoHandler {
 private final class InternalVideoTask: InternalTask {
 	let id: String
 	let download: Download?
+	let collectionScope: CollectionTaskScope?
 
 	private let task: StoreVideoTask
 	private let offlineStore: OfflineStore
@@ -62,6 +63,10 @@ private final class InternalVideoTask: InternalTask {
 		self.id = task.id
 		self.task = task
 		self.download = download
+		collectionScope = CollectionTaskScope(
+			resourceType: task.collectionResourceType,
+			resourceId: task.resolvedCollectionResourceId
+		)
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
@@ -116,6 +121,10 @@ private final class InternalVideoTask: InternalTask {
 
 			try offlineStore.storeMediaItem(storeResult)
 		}
+	}
+
+	func cancel() async {
+		await mediaDownloader.cancel(taskId: task.id)
 	}
 }
 

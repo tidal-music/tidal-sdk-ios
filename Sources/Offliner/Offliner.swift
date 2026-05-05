@@ -190,6 +190,7 @@ public final class Offliner {
 
 	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
+		await taskRunner.cancelDownloads(collectionType: collectionType, resourceId: resourceId)
 		await taskRunner.run()
 	}
 

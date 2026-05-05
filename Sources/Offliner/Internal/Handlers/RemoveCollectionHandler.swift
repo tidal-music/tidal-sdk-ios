@@ -14,6 +14,7 @@ final class RemoveCollectionHandler {
 
 private final class InternalRemoveCollectionTask: InternalTask {
 	let id: String
+	let removedCollectionScope: CollectionTaskScope?
 
 	private let task: RemoveCollectionTask
 	private let offlineStore: OfflineStore
@@ -21,6 +22,10 @@ private final class InternalRemoveCollectionTask: InternalTask {
 	init(task: RemoveCollectionTask, offlineStore: OfflineStore) {
 		self.id = task.id
 		self.task = task
+		removedCollectionScope = CollectionTaskScope(
+			resourceType: task.resourceType,
+			resourceId: task.resolvedResourceId
+		)
 		self.offlineStore = offlineStore
 	}
 
