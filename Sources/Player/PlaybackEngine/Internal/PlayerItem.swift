@@ -133,8 +133,8 @@ final class PlayerItem {
 		asset?.player.play()
 	}
 
-	func pause() {
-		asset?.player.pause()
+	func pause(fadeDuration: TimeInterval? = nil) {
+		asset?.player.pause(fadeDuration: fadeDuration)
 	}
 
 	func seek(to time: Double) {

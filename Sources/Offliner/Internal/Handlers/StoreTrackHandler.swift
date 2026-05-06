@@ -92,12 +92,15 @@ private final class InternalTrackTask: InternalTask {
 			)
 			cleanup.mediaLocation = mediaResult.mediaLocation
 
+			let backgroundColorHex = task.artwork?.attributes?.visualMetadata?.selectedPaletteColor
+
 			let catalogMetadata = OfflineMediaItem.Metadata.track(OfflineMediaItem.TrackMetadata(
 				id: task.track.id,
 				title: task.track.attributes?.title ?? "",
 				artists: task.artists.compactMap(\.attributes?.name),
 				duration: mediaResult.duration,
-				explicit: task.track.attributes?.explicit ?? false
+				explicit: task.track.attributes?.explicit ?? false,
+				backgroundColorHex: backgroundColorHex
 			))
 
 			let storeResult = StoreItemTaskResult(

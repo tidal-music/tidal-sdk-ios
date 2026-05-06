@@ -28,14 +28,16 @@ public extension OfflineMediaItem.TrackMetadata {
 		title: String = "Mock Track",
 		artists: [String] = ["Mock Artist"],
 		duration: Int = 210,
-		explicit: Bool = false
+		explicit: Bool = false,
+		backgroundColorHex: String? = nil
 	) -> Self {
 		.init(
 			id: id,
 			title: title,
 			artists: artists,
 			duration: duration,
-			explicit: explicit
+			explicit: explicit,
+			backgroundColorHex: backgroundColorHex
 		)
 	}
 }

@@ -16,6 +16,8 @@ public enum OfflineCollectionType: String {
 	case userCollectionTracks
 }
 
+// MARK: - ResourceId
+
 public enum ResourceId {
 	case identifier(String)
 	case me
@@ -37,6 +39,7 @@ public struct OfflineMediaItem {
 		public let artists: [String]
 		public let duration: Int
 		public let explicit: Bool
+		public let backgroundColorHex: String?
 	}
 
 	public struct VideoMetadata: Codable {
