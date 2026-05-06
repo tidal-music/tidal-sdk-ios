@@ -1,11 +1,9 @@
-# UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner
+# UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBody
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**code** | **String** |  | 
-**detail** | **String** |  | [optional] 
-**status** | **String** |  | 
+**errors** | [UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner] |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

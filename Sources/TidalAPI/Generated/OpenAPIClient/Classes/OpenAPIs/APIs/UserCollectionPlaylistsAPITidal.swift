@@ -89,9 +89,9 @@ public enum UserCollectionPlaylistsAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: UserCollectionPlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload)
 		}

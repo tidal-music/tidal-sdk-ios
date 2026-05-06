@@ -53,9 +53,9 @@ public enum UserCollectionSaveForLatersAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: userCollectionSaveForLatersItemsRelationshipAddOperationPayload)
 		}
