@@ -72,9 +72,9 @@ public enum UserCollectionArtistsAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: UserCollectionArtistsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionArtistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionArtistsItemsRelationshipAddOperationPayload: UserCollectionArtistsItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionArtistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionArtistsItemsRelationshipAddOperationPayload: UserCollectionArtistsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionArtistsItemsRelationshipAddOperationPayload: userCollectionArtistsItemsRelationshipAddOperationPayload)
 		}

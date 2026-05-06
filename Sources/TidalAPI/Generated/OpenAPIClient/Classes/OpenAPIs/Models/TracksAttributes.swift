@@ -55,6 +55,8 @@ public struct TracksAttributes: Codable, Hashable {
     }
     /** Access type */
     public var accessType: AccessType?
+    /** Whether the track is AI-generated */
+    public var ai: Bool?
     /** Available usage for this track. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
     @available(*, deprecated, message: "This property is deprecated.")
     public var availability: [Availability]?
@@ -88,6 +90,7 @@ public struct TracksAttributes: Codable, Hashable {
 
     public init(
         accessType: AccessType? = nil,
+        ai: Bool? = nil,
         availability: [Availability]? = nil,
         bpm: Float? = nil,
         copyright: Copyright? = nil,
@@ -106,6 +109,7 @@ public struct TracksAttributes: Codable, Hashable {
         version: String? = nil
     ) {
         self.accessType = accessType
+        self.ai = ai
         self.availability = availability
         self.bpm = bpm
         self.copyright = copyright
@@ -126,6 +130,7 @@ public struct TracksAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case accessType
+        case ai
         case availability
         case bpm
         case copyright
@@ -149,6 +154,7 @@ public struct TracksAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(accessType, forKey: .accessType)
+        try container.encodeIfPresent(ai, forKey: .ai)
         try container.encodeIfPresent(availability, forKey: .availability)
         try container.encodeIfPresent(bpm, forKey: .bpm)
         try container.encodeIfPresent(copyright, forKey: .copyright)

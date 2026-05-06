@@ -124,7 +124,7 @@ Creates a new usageRule.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let usageRulesCreateOperationPayload = UsageRulesCreateOperation_Payload(data: UsageRulesCreateOperation_Payload_Data(attributes: UsageRulesCreateOperation_Payload_Data_Attributes(countryCode: "countryCode_example", free: ["free_example"], paid: ["paid_example"], subscription: ["subscription_example"]), relationships: UsageRulesCreateOperation_Payload_Data_Relationships(subject: UsageRulesCreateOperation_Payload_Data_Relationships_Subject(data: UsageRulesCreateOperation_Payload_Subject(id: "id_example", type: "type_example"))), type: "type_example")) // UsageRulesCreateOperationPayload |  (optional)
+let usageRulesCreateOperationPayload = UsageRulesCreateOperation_Payload(data: UsageRulesCreateOperation_Payload_Data(attributes: UsageRulesCreateOperation_Payload_Data_Attributes(countryCode: "countryCode_example", free: ["free_example"], inherited: false, paid: ["paid_example"], subscription: ["subscription_example"]), relationships: UsageRulesCreateOperation_Payload_Data_Relationships(subject: UsageRulesCreateOperation_Payload_Data_Relationships_Subject(data: UsageRulesCreateOperation_Payload_Subject(id: "id_example", type: "type_example"))), type: "type_example")) // UsageRulesCreateOperationPayload |  (optional)
 
 // Create single usageRule.
 UsageRulesAPI.usageRulesPost(idempotencyKey: idempotencyKey, usageRulesCreateOperationPayload: usageRulesCreateOperationPayload) { (response, error) in

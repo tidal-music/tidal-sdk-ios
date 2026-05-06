@@ -13,15 +13,19 @@ import AnyCodable
 public struct SearchSuggestionsRelationships: Codable, Hashable {
 
     public var directHits: MultiRelationshipDataDocument?
+    public var history: MultiRelationshipDataDocument?
 
     public init(
-        directHits: MultiRelationshipDataDocument? = nil
+        directHits: MultiRelationshipDataDocument? = nil,
+        history: MultiRelationshipDataDocument? = nil
     ) {
         self.directHits = directHits
+        self.history = history
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case directHits
+        case history
     }
 
     // Encodable protocol methods
@@ -29,5 +33,6 @@ public struct SearchSuggestionsRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(directHits, forKey: .directHits)
+        try container.encodeIfPresent(history, forKey: .history)
     }
 }

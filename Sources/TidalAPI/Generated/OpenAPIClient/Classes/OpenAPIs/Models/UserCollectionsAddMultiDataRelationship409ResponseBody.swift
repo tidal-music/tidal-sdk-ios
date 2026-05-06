@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct UserCollectionsAddMultiDataRelationship409ResponseBody: Codable, Hashable {
 
-    public var errors: [UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner]
+    public var errors: [UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner]
 
     public init(
-        errors: [UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner]
+        errors: [UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner]
     ) {
         self.errors = errors
     }

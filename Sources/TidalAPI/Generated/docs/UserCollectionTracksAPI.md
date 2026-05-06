@@ -236,7 +236,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionTracksItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -277,7 +277,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**UserCollectionTracksItemsMultiRelationshipDataDocument**](UserCollectionTracksItemsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
