@@ -91,9 +91,9 @@ public enum InstallationsAPITidal {
      
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
-	public static func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterState: [InstallationsAPITidal.FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterType: [InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
+	public static func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [InstallationsAPITidal.FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterType: [InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, filterState: filterState?.compactMap { $0.toInstallationsAPIEnum() }, filterType: filterType?.compactMap { $0.toInstallationsAPIEnum() })
+			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState?.compactMap { $0.toInstallationsAPIEnum() }, filterType: filterType?.compactMap { $0.toInstallationsAPIEnum() })
 		}
 	}
 
