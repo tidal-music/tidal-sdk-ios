@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**searchSuggestionsIdGet**](SearchSuggestionsAPI.md#searchsuggestionsidget) | **GET** /searchSuggestions/{id} | Get single searchSuggestion.
 [**searchSuggestionsIdRelationshipsDirectHitsGet**](SearchSuggestionsAPI.md#searchsuggestionsidrelationshipsdirecthitsget) | **GET** /searchSuggestions/{id}/relationships/directHits | Get directHits relationship (\&quot;to-many\&quot;).
+[**searchSuggestionsIdRelationshipsHistoryGet**](SearchSuggestionsAPI.md#searchsuggestionsidrelationshipshistoryget) | **GET** /searchSuggestions/{id}/relationships/history | Get history relationship (\&quot;to-many\&quot;).
 
 
 # **searchSuggestionsIdGet**
@@ -25,7 +26,7 @@ import OpenAPIClient
 let id = "id_example" // String | Search query string used as the resource identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
 
 // Get single searchSuggestion.
 SearchSuggestionsAPI.searchSuggestionsIdGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include) { (response, error) in
@@ -47,7 +48,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Search query string used as the resource identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits, history | [optional] 
 
 ### Return type
 
@@ -114,6 +115,64 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **searchSuggestionsIdRelationshipsHistoryGet**
+```swift
+    open class func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get history relationship (\"to-many\").
+
+Retrieves history relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Search query string used as the resource identifier
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: history (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get history relationship (\"to-many\").
+SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Search query string used as the resource identifier | 
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: history | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**SearchSuggestionsMultiRelationshipDataDocument**](SearchSuggestionsMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
 
 ### HTTP request headers
 

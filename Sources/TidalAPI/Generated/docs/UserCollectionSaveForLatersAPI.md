@@ -173,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionSaveForLatersIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -212,7 +212,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**UserCollectionSaveForLatersItemsMultiRelationshipDataDocument**](UserCollectionSaveForLatersItemsMultiRelationshipDataDocument.md)
 
 ### Authorization
 

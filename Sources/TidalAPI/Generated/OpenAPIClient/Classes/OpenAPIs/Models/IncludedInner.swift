@@ -42,6 +42,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case purchasesResourceObject(PurchasesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
+    case searchHistoryEntriesResourceObject(SearchHistoryEntriesResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
@@ -139,6 +140,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .reactionsResourceObject(let value):
             try container.encode(value)
         case .savedSharesResourceObject(let value):
+            try container.encode(value)
+        case .searchHistoryEntriesResourceObject(let value):
             try container.encode(value)
         case .searchResultsResourceObject(let value):
             try container.encode(value)
@@ -309,6 +312,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "savedShares":
             let value = try SavedSharesResourceObject(from: decoder)
             self = .savedSharesResourceObject(value)
+        case "searchHistoryEntries":
+            let value = try SearchHistoryEntriesResourceObject(from: decoder)
+            self = .searchHistoryEntriesResourceObject(value)
         case "searchResults":
             let value = try SearchResultsResourceObject(from: decoder)
             self = .searchResultsResourceObject(value)
@@ -446,6 +452,7 @@ extension IncludedInner: Identifiable {
         case .purchasesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
+        case .searchHistoryEntriesResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id

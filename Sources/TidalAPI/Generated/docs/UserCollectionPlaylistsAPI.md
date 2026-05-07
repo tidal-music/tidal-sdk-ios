@@ -181,7 +181,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionPlaylistsIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionPlaylistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -220,7 +220,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**UserCollectionPlaylistsItemsMultiRelationshipDataDocument**](UserCollectionPlaylistsItemsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
