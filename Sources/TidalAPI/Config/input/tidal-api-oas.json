@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.8.2"
+    "version" : "1.9.0"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -31072,12 +31072,12 @@
         }
       },
       "Installations_OfflineInventory_Resource_Identifier_Meta" : {
-        "required" : [ "clientStorageState" ],
+        "required" : [ "addedAt" ],
         "type" : "object",
         "properties" : {
-          "clientStorageState" : {
+          "addedAt" : {
             "type" : "string",
-            "enum" : [ "PENDING", "STORED" ]
+            "format" : "date-time"
           }
         }
       },
