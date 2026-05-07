@@ -63,7 +63,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
 
-		let collection = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier(albumId))
+		let collection = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier(albumId)).latest()
 		XCTAssertNotNil(collection, "Album collection should be stored")
 
 		let page = try await offliner.getOfflineCollectionItems(

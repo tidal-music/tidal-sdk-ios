@@ -99,6 +99,24 @@ protocol OfflineApiClientProtocol {
 	func removeItem(type: ResourceType, id: String) async throws
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?)
 	func updateTask(taskId: String, state: Download.State) async throws
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?)
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection?
+}
+
+extension OfflineApiClientProtocol {
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		([], nil)
+	}
+
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+		nil
+	}
 }
 
 // MARK: - OfflineApiClient
@@ -160,6 +178,17 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 			offlineTasksUpdateOperationPayload: payload
 		)
 	}
+
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		try await fetchOfflineInventory(type: type, id: nil, cursor: cursor)
+	}
+
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+		try await fetchOfflineInventory(type: type, id: id, cursor: nil).collections.first
+	}
 }
 
 // MARK: - Private Helpers
@@ -188,6 +217,54 @@ private extension OfflineApiClient {
 			return .failed
 		case .completed:
 			return .completed
+		}
+	}
+
+	func fetchOfflineInventory(
+		type: OfflineCollectionType,
+		id: String?,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		let response = try await InstallationsAPITidal.installationsIdRelationshipsOfflineInventoryGet(
+			id: installationId,
+			pageCursor: cursor,
+			include: ["offlineInventory", "offlineInventory.coverArt"],
+			filterId: id.map { [$0] },
+			filterState: [.pending],
+			filterType: [type.toFilterType]
+		)
+
+		let includedItems = IncludedItemsMap(from: response.included)
+		let collections = (response.data ?? []).compactMap { identifier in
+			offlineCollection(from: identifier, includedItems: includedItems)
+		}
+
+		return (collections, response.links.meta?.nextCursor)
+	}
+
+	func offlineCollection(
+		from identifier: InstallationsOfflineInventoryResourceIdentifier,
+		includedItems: IncludedItemsMap
+	) -> OfflineCollection? {
+		let addedAt = identifier.meta?.addedAt ?? Date()
+		if identifier.type == "userCollectionTracks" {
+			return OfflineCollection(
+				catalogMetadata: .userCollectionTracks(id: identifier.id),
+				artworkURL: nil,
+				state: .pending,
+				addedAt: addedAt
+			)
+		}
+		return includedItems.get(type: identifier.type, id: identifier.id)?.toOfflineCollection(state: .pending, addedAt: addedAt)
+	}
+}
+
+private extension OfflineCollectionType {
+	var toFilterType: InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet {
+		switch self {
+		case .albums: return .albums
+		case .playlists: return .playlists
+		case .userCollectionTracks: return .usercollectiontracks
 		}
 	}
 }
@@ -383,6 +460,41 @@ private class IncludedItem {
 			return nil
 		}
 		return artwork
+	}
+
+	func toOfflineCollection(state: OfflineCollectionState, addedAt: Date) -> OfflineCollection? {
+		let artwork = artworkObject
+		let artworkURL = artwork?.largestFileURL
+		switch resource {
+		case .album(let album):
+			let metadata = OfflineCollection.Metadata.album(OfflineCollection.AlbumMetadata(
+				id: album.id,
+				title: album.attributes?.title ?? "",
+				artists: artistObjects.compactMap(\.attributes?.name),
+				copyright: album.attributes?.copyright?.text,
+				releaseDate: album.attributes?.releaseDate,
+				explicit: album.attributes?.explicit ?? false,
+				backgroundColorHex: artwork?.attributes?.visualMetadata?.selectedPaletteColor
+			))
+			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state, addedAt: addedAt)
+		case .playlist(let playlist):
+			let metadata = OfflineCollection.Metadata.playlist(OfflineCollection.PlaylistMetadata(
+				id: playlist.id,
+				title: playlist.attributes?.name ?? "",
+				backgroundColorHex: artwork?.attributes?.visualMetadata?.selectedPaletteColor
+			))
+			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state, addedAt: addedAt)
+		default:
+			return nil
+		}
+	}
+}
+
+private extension ArtworksResourceObject {
+	var largestFileURL: URL? {
+		attributes?.files
+			.max { ($0.meta?.width ?? 0) * ($0.meta?.height ?? 0) < ($1.meta?.width ?? 0) * ($1.meta?.height ?? 0) }
+			.flatMap { URL(string: $0.href) }
 	}
 }
 

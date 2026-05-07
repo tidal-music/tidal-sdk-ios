@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.19] - 2026-05-07
+
+### Added
+- Stream-based `getOfflineCollection(collectionType:resourceId:)` and `getOfflineCollections(collectionType:cursor:)` that emit local data first, then merge in pending collections fetched from the backend offline inventory (Offliner)
+- `OfflineCollectionState` (`.pending`, `.stored`) and `addedAt: Date` field on `OfflineCollection` (Offliner)
+
 ## [0.11.18] - 2026-05-06
 
 ### Changed

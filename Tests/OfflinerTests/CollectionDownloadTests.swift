@@ -30,10 +30,10 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try await offliner.getOfflineCollection(
+		let storedCollection = await offliner.getOfflineCollection(
 			collectionType: .albums,
 			resourceId: .identifier("album-123")
-		)
+		).latest()
 		XCTAssertNotNil(storedCollection)
 
 		XCTAssertEqual(storedCollection?.catalogMetadata.id, "album-123")
@@ -55,7 +55,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let firstCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123"))
+		let firstCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
 		let firstCollection = try XCTUnwrap(firstCollectionOptional)
 		let firstArtworkURL = try XCTUnwrap(firstCollection.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
@@ -64,7 +64,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let secondCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123"))
+		let secondCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
 		let secondCollection = try XCTUnwrap(secondCollectionOptional)
 		let secondArtworkURL = try XCTUnwrap(secondCollection.artworkURL)
 
@@ -85,10 +85,10 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try await offliner.getOfflineCollection(
+		let storedCollection = await offliner.getOfflineCollection(
 			collectionType: .albums,
 			resourceId: .identifier("album-123")
-		)
+		).latest()
 		XCTAssertNil(storedCollection)
 	}
 
@@ -106,10 +106,10 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try await offliner.getOfflineCollection(
+		let storedCollection = await offliner.getOfflineCollection(
 			collectionType: .playlists,
 			resourceId: .identifier("playlist-456")
-		)
+		).latest()
 		XCTAssertNotNil(storedCollection)
 
 		XCTAssertEqual(storedCollection?.catalogMetadata.id, "playlist-456")
@@ -131,10 +131,10 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try await offliner.getOfflineCollection(
+		let storedCollection = await offliner.getOfflineCollection(
 			collectionType: .playlists,
 			resourceId: .identifier("playlist-456")
-		)
+		).latest()
 		XCTAssertNil(storedCollection)
 	}
 }

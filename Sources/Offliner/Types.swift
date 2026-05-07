@@ -80,6 +80,13 @@ public struct OfflineMediaItem {
 	public let artworkURL: URL?
 }
 
+// MARK: - OfflineCollectionState
+
+public enum OfflineCollectionState: Hashable {
+	case pending
+	case stored
+}
+
 // MARK: - OfflineCollection
 
 public struct OfflineCollection: Hashable {
@@ -140,6 +147,28 @@ public struct OfflineCollection: Hashable {
 
 	public let catalogMetadata: Metadata
 	public let artworkURL: URL?
+	public let state: OfflineCollectionState
+	public let addedAt: Date
+
+	public init(
+		catalogMetadata: Metadata,
+		artworkURL: URL?,
+		state: OfflineCollectionState = .stored,
+		addedAt: Date
+	) {
+		self.catalogMetadata = catalogMetadata
+		self.artworkURL = artworkURL
+		self.state = state
+		self.addedAt = addedAt
+	}
+
+	public static func == (lhs: OfflineCollection, rhs: OfflineCollection) -> Bool {
+		lhs.catalogMetadata == rhs.catalogMetadata
+	}
+
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(catalogMetadata)
+	}
 }
 
 // MARK: - OfflineCollectionItem
