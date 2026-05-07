@@ -89,20 +89,20 @@ final class RemoveTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollection = try await offliner.getOfflineCollection(
+		let storedCollection = await offliner.getOfflineCollection(
 			collectionType: .albums,
 			resourceId: .identifier("album-123")
-		)
+		).latest()
 		XCTAssertNotNil(storedCollection)
 
 		try await offliner.remove(collectionType: .albums, resourceId: .identifier("album-123"))
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let removedCollection = try await offliner.getOfflineCollection(
+		let removedCollection = await offliner.getOfflineCollection(
 			collectionType: .albums,
 			resourceId: .identifier("album-123")
-		)
+		).latest()
 		XCTAssertNil(removedCollection)
 	}
 
@@ -118,7 +118,7 @@ final class RemoveTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollectionOptional = try await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123"))
+		let storedCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
 		let storedCollection = try XCTUnwrap(storedCollectionOptional)
 		let artworkURL = try XCTUnwrap(storedCollection.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: artworkURL.path))

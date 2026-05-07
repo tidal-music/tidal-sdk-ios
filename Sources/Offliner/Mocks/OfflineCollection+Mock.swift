@@ -5,11 +5,13 @@ import Foundation
 public extension OfflineCollection {
 	static func mock(
 		catalogMetadata: Metadata = .album(.mock()),
-		artworkURL: URL? = URL(string: "https://example.com/artwork.jpg")
+		artworkURL: URL? = URL(string: "https://example.com/artwork.jpg"),
+		state: OfflineCollectionState = .stored
 	) -> Self {
 		.init(
 			catalogMetadata: catalogMetadata,
-			artworkURL: artworkURL
+			artworkURL: artworkURL,
+			state: state
 		)
 	}
 }

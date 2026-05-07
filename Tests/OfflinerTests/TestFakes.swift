@@ -16,6 +16,9 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	private(set) var removedItems: [RecordedItem] = []
 	var taskIdCounter = 0
 
+	var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] = []
+	var pendingCollection: OfflineCollection?
+
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
 		tasks.append(contentsOf: newTasks)
 	}
@@ -136,6 +139,18 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		while !tasks.isEmpty {
 			try? await Task.sleep(nanoseconds: 10_000_000)
 		}
+	}
+
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		guard !pendingCollectionsPages.isEmpty else { return ([], nil) }
+		return pendingCollectionsPages.removeFirst()
+	}
+
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+		pendingCollection
 	}
 }
 
@@ -305,4 +320,22 @@ enum FakeError: Error {
 	case backendFailed
 	case artworkDownloadFailed
 	case downloadFailed
+}
+
+// MARK: - AsyncStream Test Helpers
+
+extension AsyncStream where Element == OfflineCollection? {
+	func latest() async -> OfflineCollection? {
+		var result: OfflineCollection?
+		for await value in self { result = value }
+		return result
+	}
+}
+
+extension AsyncStream where Element == Set<OfflineCollection> {
+	func latest() async -> Set<OfflineCollection> {
+		var result: Set<OfflineCollection> = []
+		for await value in self { result = value }
+		return result
+	}
 }

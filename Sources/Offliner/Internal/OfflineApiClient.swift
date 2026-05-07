@@ -99,6 +99,24 @@ protocol OfflineApiClientProtocol {
 	func removeItem(type: ResourceType, id: String) async throws
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?)
 	func updateTask(taskId: String, state: Download.State) async throws
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?)
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection?
+}
+
+extension OfflineApiClientProtocol {
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		([], nil)
+	}
+
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+		nil
+	}
 }
 
 // MARK: - OfflineApiClient
@@ -159,6 +177,17 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 			id: taskId,
 			offlineTasksUpdateOperationPayload: payload
 		)
+	}
+
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		([], nil)
+	}
+
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+		nil
 	}
 }
 

@@ -118,12 +118,59 @@ public final class Offliner {
 	public func getOfflineCollection(
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId
-	) async throws -> OfflineCollection? {
-		try await offlineStore.getCollection(collectionType: collectionType, resourceId: resourceId.stringValue)
+	) -> AsyncStream<OfflineCollection?> {
+		AsyncStream { continuation in
+			let task = Task {
+				let local = try? await offlineStore.getCollection(
+					collectionType: collectionType,
+					resourceId: resourceId.stringValue
+				)
+				continuation.yield(local)
+
+				if let remote = try? await offlineApiClient.getOfflineCollection(
+					type: collectionType,
+					id: resourceId.stringValue
+				) {
+					continuation.yield(remote)
+				}
+
+				continuation.finish()
+			}
+			continuation.onTermination = { _ in task.cancel() }
+		}
 	}
 
-	public func getOfflineCollections(collectionType: OfflineCollectionType) async throws -> [OfflineCollection] {
-		try await offlineStore.getCollections(collectionType: collectionType)
+	public func getOfflineCollections(
+		collectionType: OfflineCollectionType,
+		cursor: String? = nil
+	) -> AsyncStream<Set<OfflineCollection>> {
+		AsyncStream { continuation in
+			let task = Task {
+				let local = (try? await offlineStore.getCollections(collectionType: collectionType)) ?? []
+				var collections = Set(local)
+				continuation.yield(collections)
+
+				var nextCursor: String? = cursor
+				repeat {
+					let page = try? await offlineApiClient.getPendingCollections(
+						type: collectionType,
+						cursor: nextCursor
+					)
+
+					if let page, !page.collections.isEmpty {
+						for item in page.collections {
+							collections.update(with: item)
+						}
+						continuation.yield(collections)
+					}
+
+					nextCursor = page?.cursor
+				} while nextCursor != nil
+
+				continuation.finish()
+			}
+			continuation.onTermination = { _ in task.cancel() }
+		}
 	}
 
 	public func countOfflineCollectionItems(
