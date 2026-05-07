@@ -16,7 +16,7 @@ internal class ContentClaimsAPI {
      Get multiple contentClaims.
      
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
-     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: ContentClaimsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -37,7 +37,7 @@ internal class ContentClaimsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
-     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<ContentClaimsMultiResourceDataDocument> 
      */
     internal class func contentClaimsGetWithRequestBuilder(include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<ContentClaimsMultiResourceDataDocument> {
@@ -276,13 +276,14 @@ internal class ContentClaimsAPI {
     /**
      Create single contentClaim.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter contentClaimsCreateOperationPayload: (body)  (optional)
      - returns: ContentClaimsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func contentClaimsPost(contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
+    internal class func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
         do {
-            return try await contentClaimsPostWithRequestBuilder(contentClaimsCreateOperationPayload: contentClaimsCreateOperationPayload).execute().body
+            return try await contentClaimsPostWithRequestBuilder(idempotencyKey: idempotencyKey, contentClaimsCreateOperationPayload: contentClaimsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -296,10 +297,11 @@ internal class ContentClaimsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter contentClaimsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ContentClaimsSingleResourceDataDocument> 
      */
-    internal class func contentClaimsPostWithRequestBuilder(contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) -> RequestBuilder<ContentClaimsSingleResourceDataDocument> {
+    internal class func contentClaimsPostWithRequestBuilder(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) -> RequestBuilder<ContentClaimsSingleResourceDataDocument> {
         let localVariablePath = "/contentClaims"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: contentClaimsCreateOperationPayload)
@@ -308,6 +310,7 @@ internal class ContentClaimsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

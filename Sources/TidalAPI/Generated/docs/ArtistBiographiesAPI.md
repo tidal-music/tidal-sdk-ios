@@ -120,7 +120,7 @@ Name | Type | Description  | Notes
 
 # **artistBiographiesIdPatch**
 ```swift
-    open class func artistBiographiesIdPatch(id: String, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistBiographiesIdPatch(id: String, idempotencyKey: String? = nil, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single artistBiographie.
@@ -133,10 +133,11 @@ Updates existing artistBiographie.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist biography id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistBiographiesUpdateOperationPayload = ArtistBiographiesUpdateOperation_Payload(data: ArtistBiographiesUpdateOperation_Payload_Data(attributes: ArtistBiographiesUpdateOperation_Payload_Data_Attributes(text: "text_example"), id: "id_example", type: "type_example")) // ArtistBiographiesUpdateOperationPayload |  (optional)
 
 // Update single artistBiographie.
-ArtistBiographiesAPI.artistBiographiesIdPatch(id: id, artistBiographiesUpdateOperationPayload: artistBiographiesUpdateOperationPayload) { (response, error) in
+ArtistBiographiesAPI.artistBiographiesIdPatch(id: id, idempotencyKey: idempotencyKey, artistBiographiesUpdateOperationPayload: artistBiographiesUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -153,6 +154,7 @@ ArtistBiographiesAPI.artistBiographiesIdPatch(id: id, artistBiographiesUpdateOpe
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist biography id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistBiographiesUpdateOperationPayload** | [**ArtistBiographiesUpdateOperationPayload**](ArtistBiographiesUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type

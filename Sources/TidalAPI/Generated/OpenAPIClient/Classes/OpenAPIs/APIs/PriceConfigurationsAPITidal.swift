@@ -43,9 +43,9 @@ public enum PriceConfigurationsAPITidal {
      
      - returns: PriceConfigurationsSingleResourceDataDocument
      */
-	public static func priceConfigurationsPost(priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil) async throws -> PriceConfigurationsSingleResourceDataDocument {
+	public static func priceConfigurationsPost(idempotencyKey: String? = nil, priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil) async throws -> PriceConfigurationsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PriceConfigurationsAPI.priceConfigurationsPostWithRequestBuilder(priceConfigurationsCreateOperationPayload: priceConfigurationsCreateOperationPayload)
+			PriceConfigurationsAPI.priceConfigurationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, priceConfigurationsCreateOperationPayload: priceConfigurationsCreateOperationPayload)
 		}
 	}
 }

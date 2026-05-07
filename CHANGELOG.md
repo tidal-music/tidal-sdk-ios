@@ -7,6 +7,124 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.19] - 2026-05-07
+
+### Added
+- Stream-based `getOfflineCollection(collectionType:resourceId:)` and `getOfflineCollections(collectionType:cursor:)` that emit local data first, then merge in pending collections fetched from the backend offline inventory (Offliner)
+- `OfflineCollectionState` (`.pending`, `.stored`) and `addedAt: Date` field on `OfflineCollection` (Offliner)
+
+## [0.11.18] - 2026-05-06
+
+### Changed
+- Generated API code using spec version 1.8.0 (TidalAPI)
+
+## [0.11.17] - 2026-05-04
+
+### Added
+- Add per-track backgroundColorHex to OfflineMediaItem.TrackMetadata (Offliner)
+
+### Changed
+- Generated API code using spec version 1.7.0 (TidalAPI)
+
+## [0.11.16] - 2026-04-28
+
+### Added
+- Add fade-out support to pause for sleep timer (Player)
+
+## [0.11.15] - 2026-04-27
+
+### Changed
+- Generated API code using spec version 1.6.2 (TidalAPI)
+
+### Fixed
+- Replace collectionResourceId with "me" when storing or removing userCollectionTracks items (Offliner)
+
+## [0.11.14] - 2026-04-16
+
+### Fixed
+- Fix downloaded videos not playing when crossfade was enabled (Player)
+
+### Changed
+- Generated API code using spec version 1.5.2 (TidalAPI)
+
+## [0.11.13] - 2026-04-14
+
+### Changed
+- Unify userCollectionTracks into OfflineCollectionType and introduce ResourceId enum for all Offliner public API resourceId parameters (Offliner)
+
+## [0.11.12] - 2026-04-14
+
+### Changed
+- Generated API code using spec version 1.5.0 (TidalAPI)
+
+## [0.11.11] - 2026-04-10
+
+### Changed
+- Migrate video playback info to videoManifests endpoint (Player)
+- Simplify StoreUserCollectionTracksTask to use resourceId instead of included object (Offliner)
+- Generated API code using spec version 1.4.17 (TidalAPI)
+
+## [0.11.10] - 2026-04-07
+
+### Added
+- ProviderOwners API endpoints (TidalAPI)
+
+### Fixed
+- Offline content playback by attaching external players (Player)
+
+### Changed
+- Generated API code using spec version 1.4.15 (TidalAPI)
+- Add filter-based endpoint to UserRecommendations API (TidalAPI)
+- Extend UserRecommendations, Terms, and ArtistClaims models with new attributes and relationships (TidalAPI)
+
+## [0.11.9] - 2026-03-26
+
+### Changed
+- Generated API code using spec version 1.4.11 (TidalAPI)
+- Acquire DRM license before starting media download (Offliner)
+- Select largest artwork file by area (Offliner)
+- Cache certificate per app session in LicenseDownloader (Offliner)
+- Use OSLog for background download session debugging (Offliner)
+- Improve TaskRunner resilience and concurrency (Offliner)
+- Remove AirPlay/CarPlay check from CrossfadingPlayerWrapper canPlay (Player)
+
+### Fixed
+- Delete files of failed and cancelled downloads (Offliner)
+- Handle per-item deserialization failures gracefully (Offliner)
+
+## [0.11.8] - 2026-03-19
+
+### Added
+- Add crossfade support (Player)
+- Add video download support and dedicated task handlers (Offliner)
+- Add USER_COLLECTION_TRACKS support (Offliner)
+- Add background URL session event handling & restructure task state management (Offliner)
+- Add Hashable conformance to OfflineCollection (Offliner)
+- Cache artwork background color from visual metadata (Offliner)
+- Use cursor for incremental task fetching (Offliner)
+- Add stage base path for OpenAPI endpoint (TidalAPI)
+
+### Changed
+- Generated API code using spec version 1.4.4 (TidalAPI)
+
+### Fixed
+- Fix offline video playback failing with error 15:1 (Player)
+- Send correct Authorization header
+
+### Removed
+- Remove content caching mechanism (Player)
+- Remove unused feature flags from AVQueuePlayerWrapper (Player)
+
+## [0.11.7] - 2026-03-03
+
+### Changed
+- Generated API code using spec version 1.2.1 (TidalAPI)
+
+## [0.11.6] - 2026-02-21
+
+### Changed
+- Generated API code using spec version 1.1.51 (TidalAPI)
+
 ## [0.11.5] - 2026-02-19
 
 ### Changed

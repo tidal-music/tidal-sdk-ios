@@ -12,26 +12,22 @@ import AnyCodable
 
 public struct InstallationsOfflineInventoryResourceIdentifierMeta: Codable, Hashable {
 
-    public enum ClientStorageState: String, Codable, CaseIterable {
-        case pending = "PENDING"
-        case stored = "STORED"
-    }
-    public var clientStorageState: ClientStorageState
+    public var addedAt: Date
 
     public init(
-        clientStorageState: ClientStorageState
+        addedAt: Date
     ) {
-        self.clientStorageState = clientStorageState
+        self.addedAt = addedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case clientStorageState
+        case addedAt
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(clientStorageState, forKey: .clientStorageState)
+        try container.encode(addedAt, forKey: .addedAt)
     }
 }

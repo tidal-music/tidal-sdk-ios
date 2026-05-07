@@ -31,7 +31,7 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
 let filterClientProvidedInstallationId = ["inner_example"] // [String] | Client-provided installation identifier to filter by (e.g. `a468bee88def`) (optional)
 let filterId = ["inner_example"] // [String] | List of installation IDs (e.g. `a468bee88def`) (optional)
-let filterOwnersId = ["inner_example"] // [String] | User ID to filter by (e.g. `123456`) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User ID to filter by. Use `me` for the authenticated user (optional)
 
 // Get multiple installations.
 InstallationsAPI.installationsGet(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
@@ -54,7 +54,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners | [optional] 
  **filterClientProvidedInstallationId** | [**[String]**](String.md) | Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) | [optional] 
  **filterId** | [**[String]**](String.md) | List of installation IDs (e.g. &#x60;a468bee88def&#x60;) | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User ID to filter by (e.g. &#x60;123456&#x60;) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User ID to filter by. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 
@@ -125,7 +125,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryDelete**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryDelete(id: String, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from offlineInventory relationship (\"to-many\").
@@ -138,10 +138,11 @@ Deletes item(s) from offlineInventory relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Installation id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let installationsOfflineInventoryRelationshipRemoveOperationPayload = InstallationsOfflineInventoryRelationshipRemoveOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload) { (response, error) in
+InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -158,6 +159,7 @@ InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, inst
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Installation id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **installationsOfflineInventoryRelationshipRemoveOperationPayload** | [**InstallationsOfflineInventoryRelationshipRemoveOperationPayload**](InstallationsOfflineInventoryRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -177,7 +179,7 @@ Void (empty response body)
 
 # **installationsIdRelationshipsOfflineInventoryGet**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil, completion: @escaping (_ data: InstallationsOfflineInventoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil, completion: @escaping (_ data: InstallationsOfflineInventoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get offlineInventory relationship (\"to-many\").
@@ -192,10 +194,12 @@ import OpenAPIClient
 let id = "id_example" // String | Installation id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists (e.g. `tracks`) (optional)
+let filterId = ["inner_example"] // [String] | Offline item id (e.g. `1234`) (optional)
+let filterState = ["filterState_example"] // [String] | One of: PENDING, STORED (e.g. `PENDING`) (optional)
+let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`) (optional)
 
 // Get offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, pageCursor: pageCursor, include: include, filterType: filterType) { (response, error) in
+InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState, filterType: filterType) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -214,7 +218,9 @@ Name | Type | Description  | Notes
  **id** | **String** | Installation id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineInventory | [optional] 
- **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | Offline item id (e.g. &#x60;1234&#x60;) | [optional] 
+ **filterState** | [**[String]**](String.md) | One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) | [optional] 
+ **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) | [optional] 
 
 ### Return type
 
@@ -233,7 +239,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryPost**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryPost(id: String, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to offlineInventory relationship (\"to-many\").
@@ -246,10 +252,11 @@ Adds item(s) to offlineInventory relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Installation id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let installationsOfflineInventoryRelationshipAddOperationPayload = InstallationsOfflineInventoryRelationshipAddOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipAddOperationPayload |  (optional)
 
 // Add to offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload) { (response, error) in
+InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -266,6 +273,7 @@ InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, instal
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Installation id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **installationsOfflineInventoryRelationshipAddOperationPayload** | [**InstallationsOfflineInventoryRelationshipAddOperationPayload**](InstallationsOfflineInventoryRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -339,7 +347,7 @@ Name | Type | Description  | Notes
 
 # **installationsPost**
 ```swift
-    open class func installationsPost(installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil, completion: @escaping (_ data: InstallationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil, completion: @escaping (_ data: InstallationsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single installation.
@@ -351,10 +359,11 @@ Creates a new installation.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let installationsCreateOperationPayload = InstallationsCreateOperation_Payload(data: InstallationsCreateOperation_Payload_Data(attributes: InstallationsCreateOperation_Payload_Data_Attributes(clientProvidedInstallationId: "clientProvidedInstallationId_example", name: "name_example"), type: "type_example")) // InstallationsCreateOperationPayload |  (optional)
 
 // Create single installation.
-InstallationsAPI.installationsPost(installationsCreateOperationPayload: installationsCreateOperationPayload) { (response, error) in
+InstallationsAPI.installationsPost(idempotencyKey: idempotencyKey, installationsCreateOperationPayload: installationsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -370,6 +379,7 @@ InstallationsAPI.installationsPost(installationsCreateOperationPayload: installa
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **installationsCreateOperationPayload** | [**InstallationsCreateOperationPayload**](InstallationsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

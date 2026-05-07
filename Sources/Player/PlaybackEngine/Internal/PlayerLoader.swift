@@ -24,7 +24,8 @@ protocol PlayerLoader: AnyObject {
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
 		credentialsProvider: CredentialsProvider,
-		mainPlayer: MainPlayerType.Type,
+		avQueuePlayerWrapper: AVQueuePlayerWrapper,
+		crossfadingPlayerWrapper: CrossfadingPlayerWrapper,
 		externalPlayers: [GenericMediaPlayer.Type]
 	)
 
@@ -32,7 +33,11 @@ protocol PlayerLoader: AnyObject {
 
 	func load(_ storedMediaProduct: StoredMediaProduct) async throws -> Asset
 
+	func load(_ offlinePlaybackItem: OfflinePlaybackItem) async throws -> Asset
+
 	func load(_ playbackInfo: PlaybackInfo, streamingSessionId: String) async throws -> Asset
+
+	func updateConfiguration(_ configuration: Configuration)
 
 	func unload()
 

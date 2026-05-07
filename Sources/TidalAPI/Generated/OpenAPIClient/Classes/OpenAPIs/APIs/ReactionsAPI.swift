@@ -30,6 +30,7 @@ internal class ReactionsAPI {
         case artists = "artists"
         case videos = "videos"
         case playlists = "playlists"
+        case comments = "comments"
     }
 
     /**
@@ -104,12 +105,13 @@ internal class ReactionsAPI {
      Delete single reaction.
      
      - parameter id: (path) Reaction Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsIdDelete(id: String) async throws {
+    internal class func reactionsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
         do {
-            return try await reactionsIdDeleteWithRequestBuilder(id: id).execute().body
+            return try await reactionsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -124,9 +126,10 @@ internal class ReactionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Reaction Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func reactionsIdDeleteWithRequestBuilder(id: String) -> RequestBuilder<Void> {
+    internal class func reactionsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/reactions/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -137,7 +140,7 @@ internal class ReactionsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -260,13 +263,14 @@ internal class ReactionsAPI {
     /**
      Create single reaction.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter reactionsCreateOperationPayload: (body)  (optional)
      - returns: ReactionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsPost(reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
+    internal class func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
         do {
-            return try await reactionsPostWithRequestBuilder(reactionsCreateOperationPayload: reactionsCreateOperationPayload).execute().body
+            return try await reactionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, reactionsCreateOperationPayload: reactionsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -280,10 +284,11 @@ internal class ReactionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter reactionsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ReactionsSingleResourceDataDocument> 
      */
-    internal class func reactionsPostWithRequestBuilder(reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) -> RequestBuilder<ReactionsSingleResourceDataDocument> {
+    internal class func reactionsPostWithRequestBuilder(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) -> RequestBuilder<ReactionsSingleResourceDataDocument> {
         let localVariablePath = "/reactions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: reactionsCreateOperationPayload)
@@ -292,6 +297,7 @@ internal class ReactionsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

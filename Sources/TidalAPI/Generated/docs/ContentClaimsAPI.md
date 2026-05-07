@@ -27,7 +27,7 @@ Retrieves multiple contentClaims by available filters, or without if applicable.
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple contentClaims.
 ContentClaimsAPI.contentClaimsGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
@@ -47,7 +47,7 @@ ContentClaimsAPI.contentClaimsGet(include: include, filterOwnersId: filterOwners
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 
@@ -276,7 +276,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsPost**
 ```swift
-    open class func contentClaimsPost(contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ContentClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ContentClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single contentClaim.
@@ -288,10 +288,11 @@ Creates a new contentClaim.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let contentClaimsCreateOperationPayload = ContentClaimsCreateOperation_Payload(data: ContentClaimsCreateOperation_Payload_Data(attributes: ContentClaimsCreateOperation_Payload_Data_Attributes(assertion: "assertion_example"), relationships: ContentClaimsCreateOperation_Payload_Data_Relationships(claimedResource: ContentClaimsCreateOperation_Payload_Data_Relationships_ClaimedResource(data: ContentClaimsCreateOperation_Payload_Data_Relationships_ClaimedResource_Data(id: "id_example", type: "type_example")), claimingArtist: ContentClaimsCreateOperation_Payload_Data_Relationships_ClaimingArtist(data: ContentClaimsCreateOperation_Payload_Data_Relationships_ClaimingArtist_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ContentClaimsCreateOperationPayload |  (optional)
 
 // Create single contentClaim.
-ContentClaimsAPI.contentClaimsPost(contentClaimsCreateOperationPayload: contentClaimsCreateOperationPayload) { (response, error) in
+ContentClaimsAPI.contentClaimsPost(idempotencyKey: idempotencyKey, contentClaimsCreateOperationPayload: contentClaimsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -307,6 +308,7 @@ ContentClaimsAPI.contentClaimsPost(contentClaimsCreateOperationPayload: contentC
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **contentClaimsCreateOperationPayload** | [**ContentClaimsCreateOperationPayload**](ContentClaimsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

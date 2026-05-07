@@ -77,7 +77,7 @@ Name | Type | Description  | Notes
 
 # **reactionsIdDelete**
 ```swift
-    open class func reactionsIdDelete(id: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func reactionsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete single reaction.
@@ -90,9 +90,10 @@ Deletes existing reaction.
 import OpenAPIClient
 
 let id = "id_example" // String | Reaction Id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 
 // Delete single reaction.
-ReactionsAPI.reactionsIdDelete(id: id) { (response, error) in
+ReactionsAPI.reactionsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -109,6 +110,7 @@ ReactionsAPI.reactionsIdDelete(id: id) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Reaction Id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -235,7 +237,7 @@ Name | Type | Description  | Notes
 
 # **reactionsPost**
 ```swift
-    open class func reactionsPost(reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil, completion: @escaping (_ data: ReactionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil, completion: @escaping (_ data: ReactionsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single reaction.
@@ -247,10 +249,11 @@ Creates a new reaction.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let reactionsCreateOperationPayload = ReactionsCreateOperation_Payload(data: ReactionsCreateOperation_Payload_Data(attributes: ReactionsCreateOperation_Payload_Data_Attributes(emoji: "emoji_example"), relationships: ReactionsCreateOperation_Payload_Data_Relationships(subject: ReactionsCreateOperation_Payload_Data_Relationships_Subject(data: ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ReactionsCreateOperationPayload |  (optional)
 
 // Create single reaction.
-ReactionsAPI.reactionsPost(reactionsCreateOperationPayload: reactionsCreateOperationPayload) { (response, error) in
+ReactionsAPI.reactionsPost(idempotencyKey: idempotencyKey, reactionsCreateOperationPayload: reactionsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -266,6 +269,7 @@ ReactionsAPI.reactionsPost(reactionsCreateOperationPayload: reactionsCreateOpera
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **reactionsCreateOperationPayload** | [**ReactionsCreateOperationPayload**](ReactionsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

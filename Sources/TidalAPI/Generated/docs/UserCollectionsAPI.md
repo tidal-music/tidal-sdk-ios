@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsAlbumsDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsAlbumsDelete(id: String, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsAlbumsDelete(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from albums relationship (\"to-many\").
@@ -94,10 +94,11 @@ Deprecated. Use the userCollectionAlbums resource and its items relationship ins
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsAlbumsRelationshipRemoveOperationPayload = UserCollectionsAlbumsRelationshipRemoveOperation_Payload(data: [UserCollectionsAlbumsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsAlbumsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from albums relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDelete(id: id, userCollectionsAlbumsRelationshipRemoveOperationPayload: userCollectionsAlbumsRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipRemoveOperationPayload: userCollectionsAlbumsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -114,6 +115,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDelete(id: id, userCollec
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsAlbumsRelationshipRemoveOperationPayload** | [**UserCollectionsAlbumsRelationshipRemoveOperationPayload**](UserCollectionsAlbumsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -193,7 +195,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsAlbumsPost**
 ```swift
-    open class func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to albums relationship (\"to-many\").
@@ -207,10 +209,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsAlbumsRelationshipAddOperationPayload = UserCollectionsAlbumsRelationshipAddOperation_Payload(data: [UserCollectionsAlbumsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionsAlbumsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionsAlbumsRelationshipAddOperationPayload |  (optional)
 
 // Add to albums relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPost(id: id, countryCode: countryCode, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -228,6 +231,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsAlbumsRelationshipAddOperationPayload** | [**UserCollectionsAlbumsRelationshipAddOperationPayload**](UserCollectionsAlbumsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -247,7 +251,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsArtistsDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsArtistsDelete(id: String, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from artists relationship (\"to-many\").
@@ -260,10 +264,11 @@ Deprecated. Use the userCollectionArtists resource and its items relationship in
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsArtistsRelationshipRemoveOperationPayload = UserCollectionsArtistsRelationshipRemoveOperation_Payload(data: [UserCollectionsArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsArtistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from artists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDelete(id: id, userCollectionsArtistsRelationshipRemoveOperationPayload: userCollectionsArtistsRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipRemoveOperationPayload: userCollectionsArtistsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -280,6 +285,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDelete(id: id, userColle
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsArtistsRelationshipRemoveOperationPayload** | [**UserCollectionsArtistsRelationshipRemoveOperationPayload**](UserCollectionsArtistsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -359,7 +365,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsArtistsPost**
 ```swift
-    open class func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to artists relationship (\"to-many\").
@@ -373,10 +379,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsArtistsRelationshipAddOperationPayload = UserCollectionsArtistsRelationshipAddOperation_Payload(data: [UserCollectionsArtistsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionsArtistsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionsArtistsRelationshipAddOperationPayload |  (optional)
 
 // Add to artists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPost(id: id, countryCode: countryCode, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -394,6 +401,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsArtistsRelationshipAddOperationPayload** | [**UserCollectionsArtistsRelationshipAddOperationPayload**](UserCollectionsArtistsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -467,7 +475,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsPlaylistsDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsPlaylistsDelete(id: String, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsPlaylistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from playlists relationship (\"to-many\").
@@ -480,10 +488,11 @@ Deprecated. Use the userCollectionPlaylists resource and its items relationship 
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsPlaylistsRelationshipRemoveOperationPayload = UserCollectionsPlaylistsRelationshipRemoveOperation_Payload(data: [UserCollectionsPlaylistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsPlaylistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from playlists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDelete(id: id, userCollectionsPlaylistsRelationshipRemoveOperationPayload: userCollectionsPlaylistsRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionsPlaylistsRelationshipRemoveOperationPayload: userCollectionsPlaylistsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -500,6 +509,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDelete(id: id, userCol
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsPlaylistsRelationshipRemoveOperationPayload** | [**UserCollectionsPlaylistsRelationshipRemoveOperationPayload**](UserCollectionsPlaylistsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -577,7 +587,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsPlaylistsPost**
 ```swift
-    open class func userCollectionsIdRelationshipsPlaylistsPost(id: String, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsPlaylistsPost(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to playlists relationship (\"to-many\").
@@ -590,10 +600,11 @@ Deprecated. Use the userCollectionPlaylists resource and its items relationship 
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsPlaylistsRelationshipAddOperationPayload = UserCollectionsPlaylistsRelationshipAddOperation_Payload(data: [UserCollectionsPlaylistsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsPlaylistsRelationshipAddOperationPayload |  (optional)
 
 // Add to playlists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPost(id: id, userCollectionsPlaylistsRelationshipAddOperationPayload: userCollectionsPlaylistsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPost(id: id, idempotencyKey: idempotencyKey, userCollectionsPlaylistsRelationshipAddOperationPayload: userCollectionsPlaylistsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -610,6 +621,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPost(id: id, userColle
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsPlaylistsRelationshipAddOperationPayload** | [**UserCollectionsPlaylistsRelationshipAddOperationPayload**](UserCollectionsPlaylistsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -629,7 +641,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsTracksDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsTracksDelete(id: String, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from tracks relationship (\"to-many\").
@@ -642,10 +654,11 @@ Deprecated. Use the userCollectionTracks resource and its items relationship ins
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsTracksRelationshipRemoveOperationPayload = UserCollectionsTracksRelationshipRemoveOperation_Payload(data: [UserCollectionsTracksRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsTracksRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from tracks relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsTracksDelete(id: id, userCollectionsTracksRelationshipRemoveOperationPayload: userCollectionsTracksRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsTracksDelete(id: id, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipRemoveOperationPayload: userCollectionsTracksRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -662,6 +675,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsTracksDelete(id: id, userCollec
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsTracksRelationshipRemoveOperationPayload** | [**UserCollectionsTracksRelationshipRemoveOperationPayload**](UserCollectionsTracksRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -741,7 +755,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsTracksPost**
 ```swift
-    open class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to tracks relationship (\"to-many\").
@@ -755,10 +769,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsTracksRelationshipAddOperationPayload = UserCollectionsTracksRelationshipAddOperation_Payload(data: [UserCollectionsTracksRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionsTracksRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionsTracksRelationshipAddOperationPayload |  (optional)
 
 // Add to tracks relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, countryCode: countryCode, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -776,6 +791,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsTracksRelationshipAddOperationPayload** | [**UserCollectionsTracksRelationshipAddOperationPayload**](UserCollectionsTracksRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -795,7 +811,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsVideosDelete**
 ```swift
-    open class func userCollectionsIdRelationshipsVideosDelete(id: String, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from videos relationship (\"to-many\").
@@ -808,10 +824,11 @@ Deprecated. Use the userCollectionVideos resource and its items relationship ins
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsVideosRelationshipRemoveOperationPayload = UserCollectionsVideosRelationshipRemoveOperation_Payload(data: [UserCollectionsVideosRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsVideosRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from videos relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsVideosDelete(id: id, userCollectionsVideosRelationshipRemoveOperationPayload: userCollectionsVideosRelationshipRemoveOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsVideosDelete(id: id, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipRemoveOperationPayload: userCollectionsVideosRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -828,6 +845,7 @@ UserCollectionsAPI.userCollectionsIdRelationshipsVideosDelete(id: id, userCollec
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsVideosRelationshipRemoveOperationPayload** | [**UserCollectionsVideosRelationshipRemoveOperationPayload**](UserCollectionsVideosRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -907,7 +925,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsVideosPost**
 ```swift
-    open class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to videos relationship (\"to-many\").
@@ -921,10 +939,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsVideosRelationshipAddOperationPayload = UserCollectionsVideosRelationshipAddOperation_Payload(data: [UserCollectionsVideosRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsVideosRelationshipAddOperationPayload |  (optional)
 
 // Add to videos relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsVideosPost(id: id, countryCode: countryCode, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsVideosPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -942,6 +961,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsVideosRelationshipAddOperationPayload** | [**UserCollectionsVideosRelationshipAddOperationPayload**](UserCollectionsVideosRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type

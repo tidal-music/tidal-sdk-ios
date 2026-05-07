@@ -115,13 +115,14 @@ internal class UsageRulesAPI {
     /**
      Create single usageRule.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter usageRulesCreateOperationPayload: (body)  (optional)
      - returns: UsageRulesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func usageRulesPost(usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil) async throws -> UsageRulesSingleResourceDataDocument {
+    internal class func usageRulesPost(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil) async throws -> UsageRulesSingleResourceDataDocument {
         do {
-            return try await usageRulesPostWithRequestBuilder(usageRulesCreateOperationPayload: usageRulesCreateOperationPayload).execute().body
+            return try await usageRulesPostWithRequestBuilder(idempotencyKey: idempotencyKey, usageRulesCreateOperationPayload: usageRulesCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -135,10 +136,11 @@ internal class UsageRulesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter usageRulesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UsageRulesSingleResourceDataDocument> 
      */
-    internal class func usageRulesPostWithRequestBuilder(usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil) -> RequestBuilder<UsageRulesSingleResourceDataDocument> {
+    internal class func usageRulesPostWithRequestBuilder(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil) -> RequestBuilder<UsageRulesSingleResourceDataDocument> {
         let localVariablePath = "/usageRules"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: usageRulesCreateOperationPayload)
@@ -147,6 +149,7 @@ internal class UsageRulesAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

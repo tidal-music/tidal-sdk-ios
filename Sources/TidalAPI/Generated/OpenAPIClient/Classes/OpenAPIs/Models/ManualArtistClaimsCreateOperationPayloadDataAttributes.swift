@@ -29,6 +29,7 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
     public var selectedAlbums: [String]?
     public var selectedSingles: [String]?
     public var socialLink: LinkObject?
+    public var upcs: [String]?
     public var websiteOrSocialLink: LinkObject
 
     public init(
@@ -47,6 +48,7 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
         selectedAlbums: [String]? = nil,
         selectedSingles: [String]? = nil,
         socialLink: LinkObject? = nil,
+        upcs: [String]? = nil,
         websiteOrSocialLink: LinkObject
     ) {
         self.acceptedTerms = acceptedTerms
@@ -64,6 +66,7 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
         self.selectedAlbums = selectedAlbums
         self.selectedSingles = selectedSingles
         self.socialLink = socialLink
+        self.upcs = upcs
         self.websiteOrSocialLink = websiteOrSocialLink
     }
 
@@ -83,6 +86,7 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
         case selectedAlbums
         case selectedSingles
         case socialLink
+        case upcs
         case websiteOrSocialLink
     }
 
@@ -105,6 +109,7 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
         try container.encodeIfPresent(selectedAlbums, forKey: .selectedAlbums)
         try container.encodeIfPresent(selectedSingles, forKey: .selectedSingles)
         try container.encodeIfPresent(socialLink, forKey: .socialLink)
+        try container.encodeIfPresent(upcs, forKey: .upcs)
         try container.encode(websiteOrSocialLink, forKey: .websiteOrSocialLink)
     }
 }

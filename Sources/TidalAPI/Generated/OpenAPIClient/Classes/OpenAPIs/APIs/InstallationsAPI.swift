@@ -19,7 +19,7 @@ internal class InstallationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
      - parameter filterClientProvidedInstallationId: (query) Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterId: (query) List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
-     - parameter filterOwnersId: (query) User ID to filter by (e.g. &#x60;123456&#x60;) (optional)
+     - parameter filterOwnersId: (query) User ID to filter by. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: InstallationsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -43,7 +43,7 @@ internal class InstallationsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
      - parameter filterClientProvidedInstallationId: (query) Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterId: (query) List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
-     - parameter filterOwnersId: (query) User ID to filter by (e.g. &#x60;123456&#x60;) (optional)
+     - parameter filterOwnersId: (query) User ID to filter by. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<InstallationsMultiResourceDataDocument> 
      */
     internal class func installationsGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<InstallationsMultiResourceDataDocument> {
@@ -127,13 +127,14 @@ internal class InstallationsAPI {
      Delete from offlineInventory relationship (\"to-many\").
      
      - parameter id: (path) Installation id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsOfflineInventoryRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryDelete(id: String, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload).execute().body
+            return try await installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -148,10 +149,11 @@ internal class InstallationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Installation id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsOfflineInventoryRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: String, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -163,6 +165,7 @@ internal class InstallationsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -173,6 +176,14 @@ internal class InstallationsAPI {
     }
 
     /**
+     * enum for parameter filterState
+     */
+    public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
+        case pending = "PENDING"
+        case stored = "STORED"
+    }
+
+    /**
      * enum for parameter filterType
      */
     public enum FilterType_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
@@ -180,6 +191,7 @@ internal class InstallationsAPI {
         case videos = "videos"
         case albums = "albums"
         case playlists = "playlists"
+        case usercollectiontracks = "userCollectionTracks"
     }
 
     /**
@@ -188,13 +200,15 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-     - parameter filterType: (query) One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;) (optional)
+     - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
+     - parameter filterState: (query) One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) (optional)
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
+    internal class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
         do {
-            return try await installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, filterType: filterType).execute().body
+            return try await installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState, filterType: filterType).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -211,10 +225,12 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-     - parameter filterType: (query) One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;) (optional)
+     - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
+     - parameter filterState: (query) One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) (optional)
      - returns: RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {
+    internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -226,6 +242,8 @@ internal class InstallationsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[state]": (wrappedValue: filterState?.encodeToJSON(), isExplode: true),
             "filter[type]": (wrappedValue: filterType?.encodeToJSON(), isExplode: true),
         ])
 
@@ -244,13 +262,14 @@ internal class InstallationsAPI {
      Add to offlineInventory relationship (\"to-many\").
      
      - parameter id: (path) Installation id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsOfflineInventoryRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryPost(id: String, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws {
+    internal class func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload).execute().body
+            return try await installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -265,10 +284,11 @@ internal class InstallationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Installation id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsOfflineInventoryRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: String, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -280,6 +300,7 @@ internal class InstallationsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -347,13 +368,14 @@ internal class InstallationsAPI {
     /**
      Create single installation.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsCreateOperationPayload: (body)  (optional)
      - returns: InstallationsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsPost(installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsSingleResourceDataDocument {
+    internal class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsSingleResourceDataDocument {
         do {
-            return try await installationsPostWithRequestBuilder(installationsCreateOperationPayload: installationsCreateOperationPayload).execute().body
+            return try await installationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, installationsCreateOperationPayload: installationsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -367,10 +389,11 @@ internal class InstallationsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<InstallationsSingleResourceDataDocument> 
      */
-    internal class func installationsPostWithRequestBuilder(installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) -> RequestBuilder<InstallationsSingleResourceDataDocument> {
+    internal class func installationsPostWithRequestBuilder(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) -> RequestBuilder<InstallationsSingleResourceDataDocument> {
         let localVariablePath = "/installations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: installationsCreateOperationPayload)
@@ -379,6 +402,7 @@ internal class InstallationsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

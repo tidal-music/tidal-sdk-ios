@@ -40,6 +40,7 @@ public enum ReactionsAPITidal {
 		case artists = "artists"
 		case videos = "videos"
 		case playlists = "playlists"
+		case comments = "comments"
 
 		func toReactionsAPIEnum() -> ReactionsAPI.FilterSubjectType_reactionsGet {
 			switch self {
@@ -48,6 +49,7 @@ public enum ReactionsAPITidal {
 			case .artists: return .artists
 			case .videos: return .videos
 			case .playlists: return .playlists
+			case .comments: return .comments
 			}
 		}
 	}
@@ -69,9 +71,9 @@ public enum ReactionsAPITidal {
      
      - returns: 
      */
-	public static func reactionsIdDelete(id: String) async throws {
+	public static func reactionsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsIdDeleteWithRequestBuilder(id: id)
+			ReactionsAPI.reactionsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
 	}
 
@@ -105,9 +107,9 @@ public enum ReactionsAPITidal {
      
      - returns: ReactionsSingleResourceDataDocument
      */
-	public static func reactionsPost(reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
+	public static func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsPostWithRequestBuilder(reactionsCreateOperationPayload: reactionsCreateOperationPayload)
+			ReactionsAPI.reactionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, reactionsCreateOperationPayload: reactionsCreateOperationPayload)
 		}
 	}
 }

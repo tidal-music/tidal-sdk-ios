@@ -15,13 +15,14 @@ internal class UserReportsAPI {
     /**
      Create single userReport.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userReportsCreateOperationPayload: (body)  (optional)
      - returns: UserReportsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userReportsPost(userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil) async throws -> UserReportsSingleResourceDataDocument {
+    internal class func userReportsPost(idempotencyKey: String? = nil, userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil) async throws -> UserReportsSingleResourceDataDocument {
         do {
-            return try await userReportsPostWithRequestBuilder(userReportsCreateOperationPayload: userReportsCreateOperationPayload).execute().body
+            return try await userReportsPostWithRequestBuilder(idempotencyKey: idempotencyKey, userReportsCreateOperationPayload: userReportsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -35,10 +36,11 @@ internal class UserReportsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userReportsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserReportsSingleResourceDataDocument> 
      */
-    internal class func userReportsPostWithRequestBuilder(userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil) -> RequestBuilder<UserReportsSingleResourceDataDocument> {
+    internal class func userReportsPostWithRequestBuilder(idempotencyKey: String? = nil, userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil) -> RequestBuilder<UserReportsSingleResourceDataDocument> {
         let localVariablePath = "/userReports"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userReportsCreateOperationPayload)
@@ -47,6 +49,7 @@ internal class UserReportsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

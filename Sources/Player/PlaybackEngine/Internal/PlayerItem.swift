@@ -62,9 +62,6 @@ final class PlayerItem {
 		if isPreload {
 			sessionTags.append(StreamingSessionStart.SessionTag.PRELOADED)
 		}
-		if !featureFlagProvider.isContentCachingEnabled() {
-			sessionTags.append(StreamingSessionStart.SessionTag.CACHING_DISABLED)
-		}
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
 			sessionTags.append(StreamingSessionStart.SessionTag.IMPROVED_DRM)
 		}
@@ -136,8 +133,8 @@ final class PlayerItem {
 		asset?.player.play()
 	}
 
-	func pause() {
-		asset?.player.pause()
+	func pause(fadeDuration: TimeInterval? = nil) {
+		asset?.player.pause(fadeDuration: fadeDuration)
 	}
 
 	func seek(to time: Double) {
@@ -357,20 +354,23 @@ private extension PlayerItem {
 		let endTimestamp = metrics.endTime ?? now
 
 		var tags = [PlaybackStatistics.EventTag]()
-		if case .cached = asset?.getCacheState()?.status {
-			tags.append(PlaybackStatistics.EventTag.CACHED)
-		}
 		if metadata.playbackSource == .LOCAL_STORAGE {
 			tags.append(PlaybackStatistics.EventTag.OFFLINER_V2)
 		}
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
 			tags.append(PlaybackStatistics.EventTag.IMPROVED_DRM)
 		}
-		if featureFlagProvider.shouldUseNewPlaybackEndpoints() {
-			tags.append(PlaybackStatistics.EventTag.NEW_PLAYBACK_ENDPOINTS)
-		}
+		tags.append(PlaybackStatistics.EventTag.NEW_PLAYBACK_ENDPOINTS)
 		if metadata.isAdaptivePlaybackEnabled {
 			tags.append(PlaybackStatistics.EventTag.ADAPTIVE_PLAYBACK)
+		}
+		switch asset?.player {
+		case is CrossfadingPlayerWrapper:
+			tags.append(.CROSSFADE_PLAYER)
+		case is AVQueuePlayerWrapper:
+			tags.append(.DEFAULT_PLAYER)
+		default:
+			break
 		}
 
 		let endInfo = metrics.endInfo

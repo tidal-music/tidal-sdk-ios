@@ -11,6 +11,8 @@ import AnyCodable
 #endif
 
 public enum IncludedInner: Codable, JSONEncodable, Hashable {
+    case acceptedTermsResourceObject(AcceptedTermsResourceObject)
+    case albumStatisticsResourceObject(AlbumStatisticsResourceObject)
     case albumsResourceObject(AlbumsResourceObject)
     case appreciationsResourceObject(AppreciationsResourceObject)
     case artistBiographiesResourceObject(ArtistBiographiesResourceObject)
@@ -18,6 +20,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistRolesResourceObject(ArtistRolesResourceObject)
     case artistsResourceObject(ArtistsResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
+    case clientsResourceObject(ClientsResourceObject)
+    case commentsResourceObject(CommentsResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
     case downloadsResourceObject(DownloadsResourceObject)
@@ -32,14 +36,20 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case playQueuesResourceObject(PlayQueuesResourceObject)
     case playlistsResourceObject(PlaylistsResourceObject)
     case priceConfigurationsResourceObject(PriceConfigurationsResourceObject)
+    case providerOwnersResourceObject(ProviderOwnersResourceObject)
+    case providerProductInfosResourceObject(ProviderProductInfosResourceObject)
     case providersResourceObject(ProvidersResourceObject)
+    case purchasesResourceObject(PurchasesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
+    case searchHistoryEntriesResourceObject(SearchHistoryEntriesResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
     case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
     case stripeDashboardLinksResourceObject(StripeDashboardLinksResourceObject)
+    case temporaryUserTokensResourceObject(TemporaryUserTokensResourceObject)
+    case termsResourceObject(TermsResourceObject)
     case trackFilesResourceObject(TrackFilesResourceObject)
     case trackManifestsResourceObject(TrackManifestsResourceObject)
     case trackSourceFilesResourceObject(TrackSourceFilesResourceObject)
@@ -51,18 +61,28 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userCollectionArtistsResourceObject(UserCollectionArtistsResourceObject)
     case userCollectionFoldersResourceObject(UserCollectionFoldersResourceObject)
     case userCollectionPlaylistsResourceObject(UserCollectionPlaylistsResourceObject)
+    case userCollectionSaveForLatersResourceObject(UserCollectionSaveForLatersResourceObject)
     case userCollectionTracksResourceObject(UserCollectionTracksResourceObject)
     case userCollectionVideosResourceObject(UserCollectionVideosResourceObject)
     case userCollectionsResourceObject(UserCollectionsResourceObject)
-    case userEntitlementsResourceObject(UserEntitlementsResourceObject)
+    case userDailyMixesResourceObject(UserDailyMixesResourceObject)
+    case userDataExportRequestsResourceObject(UserDataExportRequestsResourceObject)
+    case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
+    case userNewReleaseMixesResourceObject(UserNewReleaseMixesResourceObject)
+    case userOfflineMixesResourceObject(UserOfflineMixesResourceObject)
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
     case userReportsResourceObject(UserReportsResourceObject)
     case usersResourceObject(UsersResourceObject)
+    case videoManifestsResourceObject(VideoManifestsResourceObject)
     case videosResourceObject(VideosResourceObject)
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
+        case .acceptedTermsResourceObject(let value):
+            try container.encode(value)
+        case .albumStatisticsResourceObject(let value):
+            try container.encode(value)
         case .albumsResourceObject(let value):
             try container.encode(value)
         case .appreciationsResourceObject(let value):
@@ -76,6 +96,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .artistsResourceObject(let value):
             try container.encode(value)
         case .artworksResourceObject(let value):
+            try container.encode(value)
+        case .clientsResourceObject(let value):
+            try container.encode(value)
+        case .commentsResourceObject(let value):
             try container.encode(value)
         case .contentClaimsResourceObject(let value):
             try container.encode(value)
@@ -105,11 +129,19 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .priceConfigurationsResourceObject(let value):
             try container.encode(value)
+        case .providerOwnersResourceObject(let value):
+            try container.encode(value)
+        case .providerProductInfosResourceObject(let value):
+            try container.encode(value)
         case .providersResourceObject(let value):
+            try container.encode(value)
+        case .purchasesResourceObject(let value):
             try container.encode(value)
         case .reactionsResourceObject(let value):
             try container.encode(value)
         case .savedSharesResourceObject(let value):
+            try container.encode(value)
+        case .searchHistoryEntriesResourceObject(let value):
             try container.encode(value)
         case .searchResultsResourceObject(let value):
             try container.encode(value)
@@ -120,6 +152,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .stripeConnectionsResourceObject(let value):
             try container.encode(value)
         case .stripeDashboardLinksResourceObject(let value):
+            try container.encode(value)
+        case .temporaryUserTokensResourceObject(let value):
+            try container.encode(value)
+        case .termsResourceObject(let value):
             try container.encode(value)
         case .trackFilesResourceObject(let value):
             try container.encode(value)
@@ -143,19 +179,31 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .userCollectionPlaylistsResourceObject(let value):
             try container.encode(value)
+        case .userCollectionSaveForLatersResourceObject(let value):
+            try container.encode(value)
         case .userCollectionTracksResourceObject(let value):
             try container.encode(value)
         case .userCollectionVideosResourceObject(let value):
             try container.encode(value)
         case .userCollectionsResourceObject(let value):
             try container.encode(value)
-        case .userEntitlementsResourceObject(let value):
+        case .userDailyMixesResourceObject(let value):
+            try container.encode(value)
+        case .userDataExportRequestsResourceObject(let value):
+            try container.encode(value)
+        case .userDiscoveryMixesResourceObject(let value):
+            try container.encode(value)
+        case .userNewReleaseMixesResourceObject(let value):
+            try container.encode(value)
+        case .userOfflineMixesResourceObject(let value):
             try container.encode(value)
         case .userRecommendationsResourceObject(let value):
             try container.encode(value)
         case .userReportsResourceObject(let value):
             try container.encode(value)
         case .usersResourceObject(let value):
+            try container.encode(value)
+        case .videoManifestsResourceObject(let value):
             try container.encode(value)
         case .videosResourceObject(let value):
             try container.encode(value)
@@ -171,6 +219,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         let type = try container.decode(String.self, forKey: .type)
 
         switch type {
+        case "acceptedTerms":
+            let value = try AcceptedTermsResourceObject(from: decoder)
+            self = .acceptedTermsResourceObject(value)
+        case "albumStatistics":
+            let value = try AlbumStatisticsResourceObject(from: decoder)
+            self = .albumStatisticsResourceObject(value)
         case "albums":
             let value = try AlbumsResourceObject(from: decoder)
             self = .albumsResourceObject(value)
@@ -192,6 +246,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "artworks":
             let value = try ArtworksResourceObject(from: decoder)
             self = .artworksResourceObject(value)
+        case "clients":
+            let value = try ClientsResourceObject(from: decoder)
+            self = .clientsResourceObject(value)
+        case "comments":
+            let value = try CommentsResourceObject(from: decoder)
+            self = .commentsResourceObject(value)
         case "contentClaims":
             let value = try ContentClaimsResourceObject(from: decoder)
             self = .contentClaimsResourceObject(value)
@@ -234,15 +294,27 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "priceConfigurations":
             let value = try PriceConfigurationsResourceObject(from: decoder)
             self = .priceConfigurationsResourceObject(value)
+        case "providerOwners":
+            let value = try ProviderOwnersResourceObject(from: decoder)
+            self = .providerOwnersResourceObject(value)
+        case "providerProductInfos":
+            let value = try ProviderProductInfosResourceObject(from: decoder)
+            self = .providerProductInfosResourceObject(value)
         case "providers":
             let value = try ProvidersResourceObject(from: decoder)
             self = .providersResourceObject(value)
+        case "purchases":
+            let value = try PurchasesResourceObject(from: decoder)
+            self = .purchasesResourceObject(value)
         case "reactions":
             let value = try ReactionsResourceObject(from: decoder)
             self = .reactionsResourceObject(value)
         case "savedShares":
             let value = try SavedSharesResourceObject(from: decoder)
             self = .savedSharesResourceObject(value)
+        case "searchHistoryEntries":
+            let value = try SearchHistoryEntriesResourceObject(from: decoder)
+            self = .searchHistoryEntriesResourceObject(value)
         case "searchResults":
             let value = try SearchResultsResourceObject(from: decoder)
             self = .searchResultsResourceObject(value)
@@ -258,6 +330,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "stripeDashboardLinks":
             let value = try StripeDashboardLinksResourceObject(from: decoder)
             self = .stripeDashboardLinksResourceObject(value)
+        case "temporaryUserTokens":
+            let value = try TemporaryUserTokensResourceObject(from: decoder)
+            self = .temporaryUserTokensResourceObject(value)
+        case "terms":
+            let value = try TermsResourceObject(from: decoder)
+            self = .termsResourceObject(value)
         case "trackFiles":
             let value = try TrackFilesResourceObject(from: decoder)
             self = .trackFilesResourceObject(value)
@@ -291,6 +369,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userCollectionPlaylists":
             let value = try UserCollectionPlaylistsResourceObject(from: decoder)
             self = .userCollectionPlaylistsResourceObject(value)
+        case "userCollectionSaveForLaters":
+            let value = try UserCollectionSaveForLatersResourceObject(from: decoder)
+            self = .userCollectionSaveForLatersResourceObject(value)
         case "userCollectionTracks":
             let value = try UserCollectionTracksResourceObject(from: decoder)
             self = .userCollectionTracksResourceObject(value)
@@ -300,9 +381,21 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userCollections":
             let value = try UserCollectionsResourceObject(from: decoder)
             self = .userCollectionsResourceObject(value)
-        case "userEntitlements":
-            let value = try UserEntitlementsResourceObject(from: decoder)
-            self = .userEntitlementsResourceObject(value)
+        case "userDailyMixes":
+            let value = try UserDailyMixesResourceObject(from: decoder)
+            self = .userDailyMixesResourceObject(value)
+        case "userDataExportRequests":
+            let value = try UserDataExportRequestsResourceObject(from: decoder)
+            self = .userDataExportRequestsResourceObject(value)
+        case "userDiscoveryMixes":
+            let value = try UserDiscoveryMixesResourceObject(from: decoder)
+            self = .userDiscoveryMixesResourceObject(value)
+        case "userNewReleaseMixes":
+            let value = try UserNewReleaseMixesResourceObject(from: decoder)
+            self = .userNewReleaseMixesResourceObject(value)
+        case "userOfflineMixes":
+            let value = try UserOfflineMixesResourceObject(from: decoder)
+            self = .userOfflineMixesResourceObject(value)
         case "userRecommendations":
             let value = try UserRecommendationsResourceObject(from: decoder)
             self = .userRecommendationsResourceObject(value)
@@ -312,6 +405,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "users":
             let value = try UsersResourceObject(from: decoder)
             self = .usersResourceObject(value)
+        case "videoManifests":
+            let value = try VideoManifestsResourceObject(from: decoder)
+            self = .videoManifestsResourceObject(value)
         case "videos":
             let value = try VideosResourceObject(from: decoder)
             self = .videosResourceObject(value)
@@ -325,6 +421,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
 extension IncludedInner: Identifiable {
     public var id: String {
         switch self {
+        case .acceptedTermsResourceObject(let value): return value.id
+        case .albumStatisticsResourceObject(let value): return value.id
         case .albumsResourceObject(let value): return value.id
         case .appreciationsResourceObject(let value): return value.id
         case .artistBiographiesResourceObject(let value): return value.id
@@ -332,6 +430,8 @@ extension IncludedInner: Identifiable {
         case .artistRolesResourceObject(let value): return value.id
         case .artistsResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
+        case .clientsResourceObject(let value): return value.id
+        case .commentsResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
         case .downloadsResourceObject(let value): return value.id
@@ -346,14 +446,20 @@ extension IncludedInner: Identifiable {
         case .playQueuesResourceObject(let value): return value.id
         case .playlistsResourceObject(let value): return value.id
         case .priceConfigurationsResourceObject(let value): return value.id
+        case .providerOwnersResourceObject(let value): return value.id
+        case .providerProductInfosResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id
+        case .purchasesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
+        case .searchHistoryEntriesResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id
         case .stripeConnectionsResourceObject(let value): return value.id
         case .stripeDashboardLinksResourceObject(let value): return value.id
+        case .temporaryUserTokensResourceObject(let value): return value.id
+        case .termsResourceObject(let value): return value.id
         case .trackFilesResourceObject(let value): return value.id
         case .trackManifestsResourceObject(let value): return value.id
         case .trackSourceFilesResourceObject(let value): return value.id
@@ -365,13 +471,19 @@ extension IncludedInner: Identifiable {
         case .userCollectionArtistsResourceObject(let value): return value.id
         case .userCollectionFoldersResourceObject(let value): return value.id
         case .userCollectionPlaylistsResourceObject(let value): return value.id
+        case .userCollectionSaveForLatersResourceObject(let value): return value.id
         case .userCollectionTracksResourceObject(let value): return value.id
         case .userCollectionVideosResourceObject(let value): return value.id
         case .userCollectionsResourceObject(let value): return value.id
-        case .userEntitlementsResourceObject(let value): return value.id
+        case .userDailyMixesResourceObject(let value): return value.id
+        case .userDataExportRequestsResourceObject(let value): return value.id
+        case .userDiscoveryMixesResourceObject(let value): return value.id
+        case .userNewReleaseMixesResourceObject(let value): return value.id
+        case .userOfflineMixesResourceObject(let value): return value.id
         case .userRecommendationsResourceObject(let value): return value.id
         case .userReportsResourceObject(let value): return value.id
         case .usersResourceObject(let value): return value.id
+        case .videoManifestsResourceObject(let value): return value.id
         case .videosResourceObject(let value): return value.id
         }
     }

@@ -122,7 +122,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdPatch**
 ```swift
-    open class func offlineTasksIdPatch(id: String, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func offlineTasksIdPatch(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single offlineTask.
@@ -135,10 +135,11 @@ Updates existing offlineTask.
 import OpenAPIClient
 
 let id = "id_example" // String | Offline task id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let offlineTasksUpdateOperationPayload = OfflineTasksUpdateOperation_Payload(data: OfflineTasksUpdateOperation_Payload_Data(attributes: OfflineTasksUpdateOperation_Payload_Data_Attributes(state: "state_example"), id: "id_example", type: "type_example")) // OfflineTasksUpdateOperationPayload |  (optional)
 
 // Update single offlineTask.
-OfflineTasksAPI.offlineTasksIdPatch(id: id, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload) { (response, error) in
+OfflineTasksAPI.offlineTasksIdPatch(id: id, idempotencyKey: idempotencyKey, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -155,6 +156,7 @@ OfflineTasksAPI.offlineTasksIdPatch(id: id, offlineTasksUpdateOperationPayload: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Offline task id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **offlineTasksUpdateOperationPayload** | [**OfflineTasksUpdateOperationPayload**](OfflineTasksUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type

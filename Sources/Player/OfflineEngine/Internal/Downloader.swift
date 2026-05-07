@@ -113,9 +113,7 @@ private extension Downloader {
 	func downloadHls(for downloadTask: DownloadTask, using playbackInfo: PlaybackInfo) {
 		let asset = AVURLAsset(url: playbackInfo.url)
 
-		if playbackInfo
-			.licenseSecurityToken != nil || (playbackInfo.productType == .TRACK && featureFlagProvider.shouldUseNewPlaybackEndpoints())
-		{
+		if playbackInfo.licenseSecurityToken != nil || playbackInfo.productType == .TRACK {
 			// Create license downloader first
 			let licenseDownloader = LicenseDownloader(
 				fairPlayLicenseFetcher: fairPlayLicenseFetcher,

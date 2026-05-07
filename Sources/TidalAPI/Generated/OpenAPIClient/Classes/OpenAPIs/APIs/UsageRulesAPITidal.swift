@@ -43,9 +43,9 @@ public enum UsageRulesAPITidal {
      
      - returns: UsageRulesSingleResourceDataDocument
      */
-	public static func usageRulesPost(usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil) async throws -> UsageRulesSingleResourceDataDocument {
+	public static func usageRulesPost(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil) async throws -> UsageRulesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UsageRulesAPI.usageRulesPostWithRequestBuilder(usageRulesCreateOperationPayload: usageRulesCreateOperationPayload)
+			UsageRulesAPI.usageRulesPostWithRequestBuilder(idempotencyKey: idempotencyKey, usageRulesCreateOperationPayload: usageRulesCreateOperationPayload)
 		}
 	}
 }

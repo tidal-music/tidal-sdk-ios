@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct AlbumsRelationships: Codable, Hashable {
 
+    public var albumStatistics: SingleRelationshipDataDocument?
     public var artists: MultiRelationshipDataDocument?
     public var coverArt: MultiRelationshipDataDocument?
     public var genres: MultiRelationshipDataDocument?
@@ -20,11 +21,13 @@ public struct AlbumsRelationships: Codable, Hashable {
     public var priceConfig: SingleRelationshipDataDocument?
     public var providers: MultiRelationshipDataDocument?
     public var replacement: SingleRelationshipDataDocument?
+    public var shares: MultiRelationshipDataDocument?
     public var similarAlbums: MultiRelationshipDataDocument?
     public var suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument?
     public var usageRules: SingleRelationshipDataDocument?
 
     public init(
+        albumStatistics: SingleRelationshipDataDocument? = nil,
         artists: MultiRelationshipDataDocument? = nil,
         coverArt: MultiRelationshipDataDocument? = nil,
         genres: MultiRelationshipDataDocument? = nil,
@@ -33,10 +36,12 @@ public struct AlbumsRelationships: Codable, Hashable {
         priceConfig: SingleRelationshipDataDocument? = nil,
         providers: MultiRelationshipDataDocument? = nil,
         replacement: SingleRelationshipDataDocument? = nil,
+        shares: MultiRelationshipDataDocument? = nil,
         similarAlbums: MultiRelationshipDataDocument? = nil,
         suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = nil,
         usageRules: SingleRelationshipDataDocument? = nil
     ) {
+        self.albumStatistics = albumStatistics
         self.artists = artists
         self.coverArt = coverArt
         self.genres = genres
@@ -45,12 +50,14 @@ public struct AlbumsRelationships: Codable, Hashable {
         self.priceConfig = priceConfig
         self.providers = providers
         self.replacement = replacement
+        self.shares = shares
         self.similarAlbums = similarAlbums
         self.suggestedCoverArts = suggestedCoverArts
         self.usageRules = usageRules
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case albumStatistics
         case artists
         case coverArt
         case genres
@@ -59,6 +66,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         case priceConfig
         case providers
         case replacement
+        case shares
         case similarAlbums
         case suggestedCoverArts
         case usageRules
@@ -68,6 +76,7 @@ public struct AlbumsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(albumStatistics, forKey: .albumStatistics)
         try container.encodeIfPresent(artists, forKey: .artists)
         try container.encodeIfPresent(coverArt, forKey: .coverArt)
         try container.encodeIfPresent(genres, forKey: .genres)
@@ -76,6 +85,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         try container.encodeIfPresent(priceConfig, forKey: .priceConfig)
         try container.encodeIfPresent(providers, forKey: .providers)
         try container.encodeIfPresent(replacement, forKey: .replacement)
+        try container.encodeIfPresent(shares, forKey: .shares)
         try container.encodeIfPresent(similarAlbums, forKey: .similarAlbums)
         try container.encodeIfPresent(suggestedCoverArts, forKey: .suggestedCoverArts)
         try container.encodeIfPresent(usageRules, forKey: .usageRules)

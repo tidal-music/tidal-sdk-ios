@@ -66,12 +66,13 @@ internal class UserCollectionFoldersAPI {
      Delete single userCollectionFolder.
      
      - parameter id: (path) Folder Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdDelete(id: String) async throws {
+    internal class func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil) async throws {
         do {
-            return try await userCollectionFoldersIdDeleteWithRequestBuilder(id: id).execute().body
+            return try await userCollectionFoldersIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -86,9 +87,10 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionFoldersIdDeleteWithRequestBuilder(id: String) -> RequestBuilder<Void> {
+    internal class func userCollectionFoldersIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollectionFolders/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -99,7 +101,7 @@ internal class UserCollectionFoldersAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -165,13 +167,14 @@ internal class UserCollectionFoldersAPI {
      Update single userCollectionFolder.
      
      - parameter id: (path) Folder Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdPatch(id: String, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws {
+    internal class func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionFoldersIdPatchWithRequestBuilder(id: id, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload).execute().body
+            return try await userCollectionFoldersIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -186,10 +189,11 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionFoldersIdPatchWithRequestBuilder(id: String, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionFoldersIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollectionFolders/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -201,6 +205,7 @@ internal class UserCollectionFoldersAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -214,13 +219,14 @@ internal class UserCollectionFoldersAPI {
      Delete from items relationship (\"to-many\").
      
      - parameter id: (path) Folder Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersItemsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload).execute().body
+            return try await userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -235,10 +241,11 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersItemsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: String, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollectionFolders/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -250,6 +257,7 @@ internal class UserCollectionFoldersAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -333,13 +341,14 @@ internal class UserCollectionFoldersAPI {
      Add to items relationship (\"to-many\").
      
      - parameter id: (path) Folder Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersItemsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdRelationshipsItemsPost(id: String, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload).execute().body
+            return try await userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -354,10 +363,11 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersItemsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: String, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollectionFolders/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -369,6 +379,7 @@ internal class UserCollectionFoldersAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -436,13 +447,14 @@ internal class UserCollectionFoldersAPI {
     /**
      Create single userCollectionFolder.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersCreateOperationPayload: (body)  (optional)
      - returns: UserCollectionFoldersSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersPost(userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+    internal class func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
         do {
-            return try await userCollectionFoldersPostWithRequestBuilder(userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload).execute().body
+            return try await userCollectionFoldersPostWithRequestBuilder(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -456,10 +468,11 @@ internal class UserCollectionFoldersAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> 
      */
-    internal class func userCollectionFoldersPostWithRequestBuilder(userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) -> RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> {
+    internal class func userCollectionFoldersPostWithRequestBuilder(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) -> RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> {
         let localVariablePath = "/userCollectionFolders"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionFoldersCreateOperationPayload)
@@ -468,6 +481,7 @@ internal class UserCollectionFoldersAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

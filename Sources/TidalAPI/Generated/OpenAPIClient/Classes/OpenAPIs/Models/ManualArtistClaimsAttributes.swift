@@ -13,6 +13,7 @@ import AnyCodable
 public struct ManualArtistClaimsAttributes: Codable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
+        case submitted = "SUBMITTED"
         case pending = "PENDING"
         case approved = "APPROVED"
         case rejected = "REJECTED"
@@ -56,6 +57,8 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
     public var socialLink: LinkObject?
     /** Claim status */
     public var status: Status?
+    /** UPCs associated with the claim */
+    public var upcs: [String]?
     public var websiteOrSocialLink: LinkObject
 
     public init(
@@ -78,6 +81,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         selectedSingles: [String]? = nil,
         socialLink: LinkObject? = nil,
         status: Status? = nil,
+        upcs: [String]? = nil,
         websiteOrSocialLink: LinkObject
     ) {
         self.acceptedTerms = acceptedTerms
@@ -99,6 +103,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         self.selectedSingles = selectedSingles
         self.socialLink = socialLink
         self.status = status
+        self.upcs = upcs
         self.websiteOrSocialLink = websiteOrSocialLink
     }
 
@@ -122,6 +127,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         case selectedSingles
         case socialLink
         case status
+        case upcs
         case websiteOrSocialLink
     }
 
@@ -148,6 +154,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         try container.encodeIfPresent(selectedSingles, forKey: .selectedSingles)
         try container.encodeIfPresent(socialLink, forKey: .socialLink)
         try container.encodeIfPresent(status, forKey: .status)
+        try container.encodeIfPresent(upcs, forKey: .upcs)
         try container.encode(websiteOrSocialLink, forKey: .websiteOrSocialLink)
     }
 }

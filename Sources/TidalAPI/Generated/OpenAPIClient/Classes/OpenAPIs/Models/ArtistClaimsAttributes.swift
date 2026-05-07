@@ -31,6 +31,8 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         case completed = "COMPLETED"
         case failed = "FAILED"
         case cancelled = "CANCELLED"
+        case nameMismatch = "NAME_MISMATCH"
+        case claimedArtistMismatch = "CLAIMED_ARTIST_MISMATCH"
     }
     public static let providerRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let statusRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
@@ -43,7 +45,7 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
     /** The recommended claim resolution */
     public var recommendation: Recommendation?
     /** List of UPCs retrieved from the DSP */
-    public var retrievedUpcs: [BarcodeId]?
+    public var retrievedUpcs: [LegacyBarcodeId]?
     /** Current status of this claim */
     public var status: Status
 
@@ -52,7 +54,7 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         externalLinks: [ExternalLink]? = nil,
         provider: Provider,
         recommendation: Recommendation? = nil,
-        retrievedUpcs: [BarcodeId]? = nil,
+        retrievedUpcs: [LegacyBarcodeId]? = nil,
         status: Status
     ) {
         self.artistId = artistId

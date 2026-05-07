@@ -8,6 +8,7 @@ final class PlayerLoaderMock: PlayerLoader {
 
 	private(set) var loadPlayableStorageItems = [PlayableOfflinedMediaProduct]()
 	private(set) var loadStoredMediaProducts = [StoredMediaProduct]()
+	private(set) var loadOfflinePlaybackItems = [OfflinePlaybackItem]()
 	private(set) var loadPlaybackInfos = [PlaybackInfo]()
 	private(set) var unloadCallCount = 0
 	private(set) var resetCallCount = 0
@@ -17,7 +18,14 @@ final class PlayerLoaderMock: PlayerLoader {
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider = .mock,
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
-		mainPlayer: MainPlayerType.Type = PlayerMock.self,
+		avQueuePlayerWrapper: AVQueuePlayerWrapper = AVQueuePlayerWrapper(
+			cachePath: URL(fileURLWithPath: NSTemporaryDirectory()),
+			featureFlagProvider: .mock
+		),
+		crossfadingPlayerWrapper: CrossfadingPlayerWrapper = CrossfadingPlayerWrapper(
+			cachePath: URL(fileURLWithPath: NSTemporaryDirectory()),
+			featureFlagProvider: .mock
+		),
 		externalPlayers: [GenericMediaPlayer.Type] = []
 	) {}
 
@@ -40,6 +48,11 @@ final class PlayerLoaderMock: PlayerLoader {
 		return player.load()
 	}
 
+	func load(_ offlinePlaybackItem: OfflinePlaybackItem) async -> Asset {
+		loadOfflinePlaybackItems.append(offlinePlaybackItem)
+		return player.load()
+	}
+
 	func load(_ playbackInfo: PlaybackInfo, streamingSessionId: String) async -> Asset {
 		loadPlaybackInfos.append(playbackInfo)
 		return player.load()
@@ -54,6 +67,8 @@ final class PlayerLoaderMock: PlayerLoader {
 		resetCallCount += 1
 		player.reset()
 	}
+
+	func updateConfiguration(_ configuration: Configuration) {}
 
 	func renderVideo(in view: AVPlayerLayer) {}
 }

@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **trackManifestsIdGet**
 ```swift
-    open class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, completion: @escaping (_ data: TrackManifestsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil, completion: @escaping (_ data: TrackManifestsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single trackManifest.
@@ -27,9 +27,10 @@ let formats = ["formats_example"] // [String] |
 let uriScheme = "uriScheme_example" // String | 
 let usage = "usage_example" // String | 
 let adaptive = true // Bool | 
+let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get single trackManifest.
-TrackManifestsAPI.trackManifestsIdGet(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive) { (response, error) in
+TrackManifestsAPI.trackManifestsIdGet(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -51,6 +52,7 @@ Name | Type | Description  | Notes
  **uriScheme** | **String** |  | 
  **usage** | **String** |  | 
  **adaptive** | **Bool** |  | 
+ **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 

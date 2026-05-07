@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdDelete**
 ```swift
-    open class func lyricsIdDelete(id: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func lyricsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete single lyric.
@@ -80,9 +80,10 @@ Deletes existing lyric.
 import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 
 // Delete single lyric.
-LyricsAPI.lyricsIdDelete(id: id) { (response, error) in
+LyricsAPI.lyricsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -99,6 +100,7 @@ LyricsAPI.lyricsIdDelete(id: id) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -169,7 +171,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdPatch**
 ```swift
-    open class func lyricsIdPatch(id: String, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single lyric.
@@ -182,10 +184,11 @@ Updates existing lyric.
 import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let lyricsUpdateOperationPayload = LyricsUpdateOperation_Payload(data: LyricsUpdateOperation_Payload_Data(attributes: LyricsUpdateOperation_Payload_Data_Attributes(lrcText: "lrcText_example", text: "text_example"), id: "id_example", type: "type_example")) // LyricsUpdateOperationPayload |  (optional)
 
 // Update single lyric.
-LyricsAPI.lyricsIdPatch(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload) { (response, error) in
+LyricsAPI.lyricsIdPatch(id: id, idempotencyKey: idempotencyKey, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -202,6 +205,7 @@ LyricsAPI.lyricsIdPatch(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperat
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **lyricsUpdateOperationPayload** | [**LyricsUpdateOperationPayload**](LyricsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -331,7 +335,7 @@ Name | Type | Description  | Notes
 
 # **lyricsPost**
 ```swift
-    open class func lyricsPost(lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single lyric.
@@ -343,10 +347,11 @@ Creates a new lyric.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let lyricsCreateOperationPayload = LyricsCreateOperation_Payload(data: LyricsCreateOperation_Payload_Data(attributes: LyricsCreateOperation_Payload_Data_Attributes(text: "text_example"), relationships: LyricsCreateOperation_Payload_Data_Relationships(track: LyricsCreateOperation_Payload_Data_Relationships_Track(data: LyricsCreateOperation_Payload_Data_Relationships_Track_Data(id: "id_example", type: "type_example"), id: "id_example", type: "type_example")), type: "type_example"), meta: LyricsCreateOperation_Payload_Meta(generate: false)) // LyricsCreateOperationPayload |  (optional)
 
 // Create single lyric.
-LyricsAPI.lyricsPost(lyricsCreateOperationPayload: lyricsCreateOperationPayload) { (response, error) in
+LyricsAPI.lyricsPost(idempotencyKey: idempotencyKey, lyricsCreateOperationPayload: lyricsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -362,6 +367,7 @@ LyricsAPI.lyricsPost(lyricsCreateOperationPayload: lyricsCreateOperationPayload)
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **lyricsCreateOperationPayload** | [**LyricsCreateOperationPayload**](LyricsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

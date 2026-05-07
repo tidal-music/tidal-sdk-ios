@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 **accessType** | **String** | Access type | [optional] 
 **albumType** | **String** | Album type | 
 **availability** | **[String]** | Available usage for this album. Deprecated: use &#39;usageRules&#39; instead. This field will be removed in a future version. | [optional] 
-**barcodeId** | **String** | Barcode id (EAN-13 or UPC-A) | 
+**barcodeId** | **String** |  | 
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **createdAt** | **Date** | Datetime of album creation (ISO 8601) | [optional] 
 **duration** | **String** | Duration (ISO 8601) | 

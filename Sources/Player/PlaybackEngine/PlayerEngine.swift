@@ -89,6 +89,7 @@ final class PlayerEngine {
 		_ networkMonitor: NetworkMonitor,
 		_ offlineStorage: OfflineStorage?,
 		_ offlinePlaybackPrivilegeCheck: (() -> Bool)?,
+		_ offlineItemProvider: OfflineItemProvider?,
 		_ playerLoader: PlayerLoader,
 		_ featureFlagProvider: FeatureFlagProvider,
 		_ notificationsHandler: NotificationsHandler?
@@ -112,6 +113,7 @@ final class PlayerEngine {
 		playerItemLoader = PlayerItemLoader(
 			with: offlineStorage,
 			offlinePlaybackPrivilegeCheck,
+			offlineItemProvider,
 			playbackInfoFetcher,
 			configuration,
 			and: playerLoader
@@ -127,6 +129,10 @@ final class PlayerEngine {
 			audioSessionRouteChangeMonitor = AudioSessionRouteChangeMonitor(self, configuration: configuration)
 			audioSessionMediaServicesWereResetMonitor = AudioSessionMediaServicesWereResetMonitor(playerEngine: self)
 		#endif
+	}
+
+	func setOfflineItemProvider(_ provider: OfflineItemProvider?) {
+		playerItemLoader.setOfflineItemProvider(provider)
 	}
 
 	func load(_ mediaProduct: MediaProduct, timestamp: UInt64, isPreload: Bool = false) {
@@ -275,8 +281,8 @@ final class PlayerEngine {
 		}
 	}
 
-	func pause() {
-		currentItem?.pause()
+	func pause(fadeDuration: TimeInterval? = nil) {
+		currentItem?.pause(fadeDuration: fadeDuration)
 	}
 
 	func seek(_ time: Double) {

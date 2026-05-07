@@ -34,6 +34,8 @@ public struct UsageRulesAttributes: Codable, Hashable {
     public var countryCode: String
     /** Usage types allowed for free/ad-supported model */
     public var free: [Free]?
+    /** Whether these usage rules are inherited from a parent (e.g. a track inheriting from its album). Tri-state: true means the rules are inherited, false means an explicit per-track override, null means the value is unknown or not applicable (albums, videos, and legacy data). */
+    public var inherited: Bool?
     /** Usage types allowed for paid/purchase model */
     public var paid: [Paid]?
     /** Usage types allowed for subscription model */
@@ -42,11 +44,13 @@ public struct UsageRulesAttributes: Codable, Hashable {
     public init(
         countryCode: String,
         free: [Free]? = nil,
+        inherited: Bool? = nil,
         paid: [Paid]? = nil,
         subscription: [Subscription]? = nil
     ) {
         self.countryCode = countryCode
         self.free = free
+        self.inherited = inherited
         self.paid = paid
         self.subscription = subscription
     }
@@ -54,6 +58,7 @@ public struct UsageRulesAttributes: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case countryCode
         case free
+        case inherited
         case paid
         case subscription
     }
@@ -64,6 +69,7 @@ public struct UsageRulesAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(countryCode, forKey: .countryCode)
         try container.encodeIfPresent(free, forKey: .free)
+        try container.encodeIfPresent(inherited, forKey: .inherited)
         try container.encodeIfPresent(paid, forKey: .paid)
         try container.encodeIfPresent(subscription, forKey: .subscription)
     }

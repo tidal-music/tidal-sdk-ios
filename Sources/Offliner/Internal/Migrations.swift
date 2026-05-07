@@ -1,0 +1,80 @@
+import Foundation
+import GRDB
+
+enum Migrations {
+	static func run(_ dbQueue: DatabaseQueue) throws {
+		var migrator = DatabaseMigrator()
+		for migration in try loadMigrations() {
+			migrator.registerMigration(migration.identifier) { database in
+				try database.execute(sql: migration.sql)
+			}
+		}
+		try migrator.migrate(dbQueue)
+	}
+
+	private static func loadMigrations() throws -> [Migration] {
+		let bundle = Bundle.module
+		let fileManager = FileManager.default
+
+		var searchPaths: [String] = []
+		if let resourcePath = bundle.resourcePath {
+			searchPaths.append(resourcePath)
+		}
+		let bundleRoot = bundle.bundlePath
+		if !searchPaths.contains(bundleRoot) {
+			searchPaths.append(bundleRoot)
+		}
+
+		for path in searchPaths {
+			guard let contents = try? fileManager.contentsOfDirectory(atPath: path) else { continue }
+
+			let migrations = try contents
+				.filter { $0.hasSuffix(".sql") && $0.hasPrefix("V") }
+				.compactMap { filename -> Migration? in
+					guard let url = bundle.url(forResource: filename.replacingOccurrences(of: ".sql", with: ""), withExtension: "sql") else {
+						return nil
+					}
+					return try Migration(url: url)
+				}
+				.sorted { $0.version < $1.version }
+
+			if !migrations.isEmpty {
+				return migrations
+			}
+		}
+
+		throw MigrationError.migrationsDirectoryNotFound
+	}
+}
+
+private struct Migration {
+	let version: Int
+	let identifier: String
+	let sql: String
+
+	init(url: URL) throws {
+		let filename = url.deletingPathExtension().lastPathComponent
+
+		guard let version = Self.parseVersion(from: filename) else {
+			throw MigrationError.invalidMigrationFilename(filename)
+		}
+
+		self.version = version
+		self.identifier = filename
+		self.sql = try String(contentsOf: url, encoding: .utf8)
+	}
+
+	private static func parseVersion(from filename: String) -> Int? {
+		guard filename.hasPrefix("V") else {
+			return nil
+		}
+
+		let versionString = filename.dropFirst().prefix(while: { $0.isNumber })
+		return Int(versionString)
+	}
+}
+
+enum MigrationError: Error {
+	case migrationsDirectoryNotFound
+	case invalidMigrationFilename(String)
+}

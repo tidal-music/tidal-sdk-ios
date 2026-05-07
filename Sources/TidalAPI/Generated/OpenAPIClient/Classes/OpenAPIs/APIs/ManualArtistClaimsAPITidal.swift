@@ -19,9 +19,9 @@ public enum ManualArtistClaimsAPITidal {
      
      - returns: ManualArtistClaimsSingleResourceDataDocument
      */
-	public static func manualArtistClaimsPost(manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) async throws -> ManualArtistClaimsSingleResourceDataDocument {
+	public static func manualArtistClaimsPost(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) async throws -> ManualArtistClaimsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ManualArtistClaimsAPI.manualArtistClaimsPostWithRequestBuilder(manualArtistClaimsCreateOperationPayload: manualArtistClaimsCreateOperationPayload)
+			ManualArtistClaimsAPI.manualArtistClaimsPostWithRequestBuilder(idempotencyKey: idempotencyKey, manualArtistClaimsCreateOperationPayload: manualArtistClaimsCreateOperationPayload)
 		}
 	}
 }

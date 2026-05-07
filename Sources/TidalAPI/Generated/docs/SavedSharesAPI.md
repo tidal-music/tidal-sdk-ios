@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **savedSharesPost**
 ```swift
-    open class func savedSharesPost(savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil, completion: @escaping (_ data: SavedSharesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func savedSharesPost(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil, completion: @escaping (_ data: SavedSharesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single savedShare.
@@ -21,10 +21,11 @@ Creates a new savedShare.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let savedSharesCreateOperationPayload = SavedSharesCreateOperation_Payload(data: SavedSharesCreateOperation_Payload_Data(relationships: SavedSharesCreateOperation_Payload_Data_Relationships(share: SavedSharesCreateOperation_Payload_Data_Relationships_Share(data: SavedSharesCreateOperation_Payload_Data_Relationships_Share_Data(id: "id_example", type: "type_example"))), type: "type_example")) // SavedSharesCreateOperationPayload |  (optional)
 
 // Create single savedShare.
-SavedSharesAPI.savedSharesPost(savedSharesCreateOperationPayload: savedSharesCreateOperationPayload) { (response, error) in
+SavedSharesAPI.savedSharesPost(idempotencyKey: idempotencyKey, savedSharesCreateOperationPayload: savedSharesCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -40,6 +41,7 @@ SavedSharesAPI.savedSharesPost(savedSharesCreateOperationPayload: savedSharesCre
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **savedSharesCreateOperationPayload** | [**SavedSharesCreateOperationPayload**](SavedSharesCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

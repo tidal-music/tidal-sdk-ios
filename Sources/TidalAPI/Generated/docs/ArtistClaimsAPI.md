@@ -30,7 +30,7 @@ Retrieves multiple artistClaims by available filters, or without if applicable.
 import OpenAPIClient
 
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id (e.g. `123456`) (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple artistClaims.
 ArtistClaimsAPI.artistClaimsGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
@@ -50,7 +50,7 @@ ArtistClaimsAPI.artistClaimsGet(include: include, filterOwnersId: filterOwnersId
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id (e.g. &#x60;123456&#x60;) | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 
@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdDelete**
 ```swift
-    open class func artistClaimsIdDelete(id: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete single artistClaim.
@@ -82,9 +82,10 @@ Deletes existing artistClaim.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 
 // Delete single artistClaim.
-ArtistClaimsAPI.artistClaimsIdDelete(id: id) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -101,6 +102,7 @@ ArtistClaimsAPI.artistClaimsIdDelete(id: id) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -171,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdPatch**
 ```swift
-    open class func artistClaimsIdPatch(id: String, countryCode: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update single artistClaim.
@@ -185,10 +187,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example", redirectUri: "redirectUri_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
 
 // Update single artistClaim.
-ArtistClaimsAPI.artistClaimsIdPatch(id: id, countryCode: countryCode, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdPatch(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -206,6 +209,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistClaimsUpdateOperationPayload** | [**ArtistClaimsUpdateOperationPayload**](ArtistClaimsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -279,7 +283,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsPatch**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Update acceptedArtists relationship (\"to-many\").
@@ -293,10 +297,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
 
 // Update acceptedArtists relationship (\"to-many\").
-ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, countryCode: countryCode, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -314,6 +319,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload** | [**ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload**](ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -441,7 +447,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsPost**
 ```swift
-    open class func artistClaimsPost(countryCode: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artistClaim.
@@ -454,10 +460,11 @@ Creates a new artistClaim.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistClaimsCreateOperationPayload = ArtistClaimsCreateOperation_Payload(data: ArtistClaimsCreateOperation_Payload_Data(attributes: ArtistClaimsCreateOperation_Payload_Data_Attributes(artistId: "artistId_example", provider: "provider_example"), type: "type_example"), meta: ArtistClaimsCreateOperation_Payload_Meta(nonce: "nonce_example", redirectUrl: "redirectUrl_example")) // ArtistClaimsCreateOperationPayload |  (optional)
 
 // Create single artistClaim.
-ArtistClaimsAPI.artistClaimsPost(countryCode: countryCode, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsPost(countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -474,6 +481,7 @@ ArtistClaimsAPI.artistClaimsPost(countryCode: countryCode, artistClaimsCreateOpe
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistClaimsCreateOperationPayload** | [**ArtistClaimsCreateOperationPayload**](ArtistClaimsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

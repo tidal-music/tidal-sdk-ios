@@ -172,13 +172,14 @@ internal class TrackSourceFilesAPI {
     /**
      Create single trackSourceFile.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter trackSourceFilesCreateOperationPayload: (body)  (optional)
      - returns: TrackSourceFilesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackSourceFilesPost(trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
+    internal class func trackSourceFilesPost(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
         do {
-            return try await trackSourceFilesPostWithRequestBuilder(trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload).execute().body
+            return try await trackSourceFilesPostWithRequestBuilder(idempotencyKey: idempotencyKey, trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -192,10 +193,11 @@ internal class TrackSourceFilesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter trackSourceFilesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<TrackSourceFilesSingleResourceDataDocument> 
      */
-    internal class func trackSourceFilesPostWithRequestBuilder(trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
+    internal class func trackSourceFilesPostWithRequestBuilder(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
         let localVariablePath = "/trackSourceFiles"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: trackSourceFilesCreateOperationPayload)
@@ -204,6 +206,7 @@ internal class TrackSourceFilesAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

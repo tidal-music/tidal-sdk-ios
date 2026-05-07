@@ -3,6 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**collaboratorProfiles** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**collaborators** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **coverArt** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **items** | [**PlaylistsItemsMultiRelationshipDataDocument**](PlaylistsItemsMultiRelationshipDataDocument.md) |  | [optional] 
 **ownerProfiles** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 

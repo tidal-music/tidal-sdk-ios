@@ -43,9 +43,9 @@ public enum StripeConnectionsAPITidal {
      
      - returns: StripeConnectionsSingleResourceDataDocument
      */
-	public static func stripeConnectionsPost(countryCode: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) async throws -> StripeConnectionsSingleResourceDataDocument {
+	public static func stripeConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) async throws -> StripeConnectionsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			StripeConnectionsAPI.stripeConnectionsPostWithRequestBuilder(countryCode: countryCode, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload)
+			StripeConnectionsAPI.stripeConnectionsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload)
 		}
 	}
 }

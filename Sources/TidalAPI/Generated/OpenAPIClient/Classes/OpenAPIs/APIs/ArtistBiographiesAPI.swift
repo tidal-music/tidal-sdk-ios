@@ -130,13 +130,14 @@ internal class ArtistBiographiesAPI {
      Update single artistBiographie.
      
      - parameter id: (path) Artist biography id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistBiographiesUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistBiographiesIdPatch(id: String, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) async throws {
+    internal class func artistBiographiesIdPatch(id: String, idempotencyKey: String? = nil, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) async throws {
         do {
-            return try await artistBiographiesIdPatchWithRequestBuilder(id: id, artistBiographiesUpdateOperationPayload: artistBiographiesUpdateOperationPayload).execute().body
+            return try await artistBiographiesIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistBiographiesUpdateOperationPayload: artistBiographiesUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -151,10 +152,11 @@ internal class ArtistBiographiesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist biography id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistBiographiesUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func artistBiographiesIdPatchWithRequestBuilder(id: String, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistBiographiesIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/artistBiographies/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -166,6 +168,7 @@ internal class ArtistBiographiesAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

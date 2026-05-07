@@ -9,6 +9,8 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		case IMPROVED_DRM
 		case NEW_PLAYBACK_ENDPOINTS
 		case ADAPTIVE_PLAYBACK
+		case CROSSFADE_PLAYER
+		case DEFAULT_PLAYER
 	}
 
 	// MARK: - StreamingMetricsEvent

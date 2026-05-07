@@ -74,7 +74,7 @@ Name | Type | Description  | Notes
 
 # **dynamicModulesIdRelationshipsItemsGet**
 ```swift
-    open class func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshId: Int64? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: DynamicModulesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshId: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: DynamicModulesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -90,7 +90,7 @@ let id = "id_example" // String | DynamicModules Id
 let deviceType = "deviceType_example" // String | The type of device making the request
 let systemType = "systemType_example" // String | The system type of the device making the request
 let clientVersion = "clientVersion_example" // String | Client version number
-let refreshId = 987 // Int64 |  (optional)
+let refreshId = "refreshId_example" // String |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | 
  **systemType** | **String** | The system type of the device making the request | 
  **clientVersion** | **String** | Client version number | 
- **refreshId** | **Int64** |  | [optional] 
+ **refreshId** | **String** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]

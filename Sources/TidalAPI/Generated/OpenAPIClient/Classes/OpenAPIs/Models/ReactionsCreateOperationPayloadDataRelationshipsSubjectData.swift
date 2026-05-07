@@ -18,6 +18,7 @@ public struct ReactionsCreateOperationPayloadDataRelationshipsSubjectData: Codab
         case artists = "artists"
         case videos = "videos"
         case playlists = "playlists"
+        case comments = "comments"
     }
     public var id: String
     public var type: ModelType

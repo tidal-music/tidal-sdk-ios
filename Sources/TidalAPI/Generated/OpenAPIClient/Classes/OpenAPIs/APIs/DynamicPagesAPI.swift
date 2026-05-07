@@ -50,7 +50,7 @@ internal class DynamicPagesAPI {
      - returns: DynamicPagesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, refreshId: Int64? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterPageType: [String]? = nil, filterSubjectId: [String]? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+    internal class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, refreshId: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterPageType: [String]? = nil, filterSubjectId: [String]? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
         do {
             return try await dynamicPagesGetWithRequestBuilder(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshId: refreshId, countryCode: countryCode, locale: locale, include: include, filterPageType: filterPageType, filterSubjectId: filterSubjectId).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -80,7 +80,7 @@ internal class DynamicPagesAPI {
      - parameter filterSubjectId: (query) the subject id, eg. artistId (e.g. &#x60;67890&#x60;) (optional)
      - returns: RequestBuilder<DynamicPagesMultiResourceDataDocument> 
      */
-    internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, refreshId: Int64? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterPageType: [String]? = nil, filterSubjectId: [String]? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
+    internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, refreshId: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterPageType: [String]? = nil, filterSubjectId: [String]? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
         let localVariablePath = "/dynamicPages"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -147,7 +147,7 @@ internal class DynamicPagesAPI {
      - returns: DynamicPagesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesIdRelationshipsDynamicModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsDynamicModulesGet, clientVersion: String, refreshId: Int64? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicPagesMultiRelationshipDataDocument {
+    internal class func dynamicPagesIdRelationshipsDynamicModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsDynamicModulesGet, clientVersion: String, refreshId: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicPagesMultiRelationshipDataDocument {
         do {
             return try await dynamicPagesIdRelationshipsDynamicModulesGetWithRequestBuilder(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshId: refreshId, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -177,7 +177,7 @@ internal class DynamicPagesAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: dynamicModules (optional)
      - returns: RequestBuilder<DynamicPagesMultiRelationshipDataDocument> 
      */
-    internal class func dynamicPagesIdRelationshipsDynamicModulesGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsDynamicModulesGet, clientVersion: String, refreshId: Int64? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicPagesMultiRelationshipDataDocument> {
+    internal class func dynamicPagesIdRelationshipsDynamicModulesGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsDynamicModulesGet, clientVersion: String, refreshId: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicPagesMultiRelationshipDataDocument> {
         var localVariablePath = "/dynamicPages/{id}/relationships/dynamicModules"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""

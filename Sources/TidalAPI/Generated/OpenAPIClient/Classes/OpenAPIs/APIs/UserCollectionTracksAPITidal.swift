@@ -15,6 +15,18 @@ public enum UserCollectionTracksAPITidal {
 
 
 	/**
+     Get multiple userCollectionTracks.
+     
+     - returns: UserCollectionTracksMultiResourceDataDocument
+     */
+	public static func userCollectionTracksGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> UserCollectionTracksMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionTracksAPI.userCollectionTracksGetWithRequestBuilder(include: include, filterId: filterId)
+		}
+	}
+
+
+	/**
      Get single userCollectionTrack.
      
      - returns: UserCollectionTracksSingleResourceDataDocument
@@ -31,9 +43,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: 
      */
-	public static func userCollectionTracksIdRelationshipsItemsDelete(id: String, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsDeleteWithRequestBuilder(id: id, userCollectionTracksItemsRelationshipRemoveOperationPayload: userCollectionTracksItemsRelationshipRemoveOperationPayload)
+			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipRemoveOperationPayload: userCollectionTracksItemsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -84,11 +96,11 @@ public enum UserCollectionTracksAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: UserCollectionTracksItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
+			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
 		}
 	}
 

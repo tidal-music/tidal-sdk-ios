@@ -15,13 +15,14 @@ internal class AppreciationsAPI {
     /**
      Create single appreciation.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter appreciationsCreateOperationPayload: (body)  (optional)
      - returns: AppreciationsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func appreciationsPost(appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil) async throws -> AppreciationsSingleResourceDataDocument {
+    internal class func appreciationsPost(idempotencyKey: String? = nil, appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil) async throws -> AppreciationsSingleResourceDataDocument {
         do {
-            return try await appreciationsPostWithRequestBuilder(appreciationsCreateOperationPayload: appreciationsCreateOperationPayload).execute().body
+            return try await appreciationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, appreciationsCreateOperationPayload: appreciationsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -35,10 +36,11 @@ internal class AppreciationsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter appreciationsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<AppreciationsSingleResourceDataDocument> 
      */
-    internal class func appreciationsPostWithRequestBuilder(appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil) -> RequestBuilder<AppreciationsSingleResourceDataDocument> {
+    internal class func appreciationsPostWithRequestBuilder(idempotencyKey: String? = nil, appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil) -> RequestBuilder<AppreciationsSingleResourceDataDocument> {
         let localVariablePath = "/appreciations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: appreciationsCreateOperationPayload)
@@ -47,6 +49,7 @@ internal class AppreciationsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

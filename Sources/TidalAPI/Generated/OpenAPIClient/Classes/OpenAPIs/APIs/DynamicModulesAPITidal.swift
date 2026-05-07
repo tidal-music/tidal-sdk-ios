@@ -119,7 +119,7 @@ public enum DynamicModulesAPITidal {
      
      - returns: DynamicModulesMultiRelationshipDataDocument
      */
-	public static func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshId: Int64? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicModulesMultiRelationshipDataDocument {
+	public static func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshId: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicModulesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			DynamicModulesAPI.dynamicModulesIdRelationshipsItemsGetWithRequestBuilder(id: id, deviceType: deviceType.toDynamicModulesAPIEnum(), systemType: systemType.toDynamicModulesAPIEnum(), clientVersion: clientVersion, refreshId: refreshId, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include)
 		}

@@ -30,9 +30,9 @@ internal class PlaylistsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners (optional)
      - parameter filterId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: PlaylistsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -58,9 +58,9 @@ internal class PlaylistsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners (optional)
      - parameter filterId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     - parameter filterOwnersId: (query) User id (e.g. &#x60;123456&#x60;) (optional)
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<PlaylistsMultiResourceDataDocument> 
      */
     internal class func playlistsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<PlaylistsMultiResourceDataDocument> {
@@ -93,12 +93,13 @@ internal class PlaylistsAPI {
      Delete single playlist.
      
      - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdDelete(id: String) async throws {
+    internal class func playlistsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
         do {
-            return try await playlistsIdDeleteWithRequestBuilder(id: id).execute().body
+            return try await playlistsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -113,9 +114,10 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playlistsIdDeleteWithRequestBuilder(id: String) -> RequestBuilder<Void> {
+    internal class func playlistsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playlists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -126,7 +128,7 @@ internal class PlaylistsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -141,7 +143,7 @@ internal class PlaylistsAPI {
      
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners (optional)
      - returns: PlaylistsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -166,7 +168,7 @@ internal class PlaylistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners (optional)
      - returns: RequestBuilder<PlaylistsSingleResourceDataDocument> 
      */
     internal class func playlistsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<PlaylistsSingleResourceDataDocument> {
@@ -199,13 +201,14 @@ internal class PlaylistsAPI {
      
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdPatch(id: String, countryCode: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil) async throws {
+    internal class func playlistsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil) async throws {
         do {
-            return try await playlistsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, playlistsUpdateOperationPayload: playlistsUpdateOperationPayload).execute().body
+            return try await playlistsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, playlistsUpdateOperationPayload: playlistsUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -221,10 +224,11 @@ internal class PlaylistsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playlistsIdPatchWithRequestBuilder(id: String, countryCode: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playlistsIdPatchWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playlists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -239,6 +243,7 @@ internal class PlaylistsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -246,6 +251,226 @@ internal class PlaylistsAPI {
         let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Delete from collaboratorProfiles relationship (\"to-many\").
+     
+     - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: (body)  (optional)
+     - returns: Void
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func playlistsIdRelationshipsCollaboratorProfilesDelete(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil) async throws {
+        do {
+            return try await playlistsIdRelationshipsCollaboratorProfilesDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: playlistsCollaboratorProfilesRelationshipRemoveOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Delete from collaboratorProfiles relationship (\"to-many\").
+     - DELETE /playlists/{id}/relationships/collaboratorProfiles
+     - Deletes item(s) from collaboratorProfiles relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<Void> 
+     */
+    internal class func playlistsIdRelationshipsCollaboratorProfilesDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+        var localVariablePath = "/playlists/{id}/relationships/collaboratorProfiles"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playlistsCollaboratorProfilesRelationshipRemoveOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get collaboratorProfiles relationship (\"to-many\").
+     
+     - parameter id: (path) Playlist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+        do {
+            return try await playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get collaboratorProfiles relationship (\"to-many\").
+     - GET /playlists/{id}/relationships/collaboratorProfiles
+     - Retrieves collaboratorProfiles relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Playlist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<PlaylistsMultiRelationshipDataDocument> 
+     */
+    internal class func playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsMultiRelationshipDataDocument> {
+        var localVariablePath = "/playlists/{id}/relationships/collaboratorProfiles"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<PlaylistsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Add to collaboratorProfiles relationship (\"to-many\").
+     
+     - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter playlistsCollaboratorProfilesRelationshipAddOperationPayload: (body)  (optional)
+     - returns: Void
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) async throws {
+        do {
+            return try await playlistsIdRelationshipsCollaboratorProfilesPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipAddOperationPayload: playlistsCollaboratorProfilesRelationshipAddOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Add to collaboratorProfiles relationship (\"to-many\").
+     - POST /playlists/{id}/relationships/collaboratorProfiles
+     - Adds item(s) to collaboratorProfiles relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter playlistsCollaboratorProfilesRelationshipAddOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<Void> 
+     */
+    internal class func playlistsIdRelationshipsCollaboratorProfilesPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+        var localVariablePath = "/playlists/{id}/relationships/collaboratorProfiles"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playlistsCollaboratorProfilesRelationshipAddOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get collaborators relationship (\"to-many\").
+     
+     - parameter id: (path) Playlist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaborators (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func playlistsIdRelationshipsCollaboratorsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+        do {
+            return try await playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get collaborators relationship (\"to-many\").
+     - GET /playlists/{id}/relationships/collaborators
+     - Retrieves collaborators relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Playlist id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaborators (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<PlaylistsMultiRelationshipDataDocument> 
+     */
+    internal class func playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsMultiRelationshipDataDocument> {
+        var localVariablePath = "/playlists/{id}/relationships/collaborators"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<PlaylistsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**
@@ -313,13 +538,14 @@ internal class PlaylistsAPI {
      Update coverArt relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsCoverArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsCoverArtPatch(id: String, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func playlistsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
         do {
-            return try await playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, playlistsCoverArtRelationshipUpdateOperationPayload: playlistsCoverArtRelationshipUpdateOperationPayload).execute().body
+            return try await playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCoverArtRelationshipUpdateOperationPayload: playlistsCoverArtRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -334,10 +560,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsCoverArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: String, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playlists/{id}/relationships/coverArt"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -349,6 +576,7 @@ internal class PlaylistsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -362,13 +590,14 @@ internal class PlaylistsAPI {
      Delete from items relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsItemsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsItemsDelete(id: String, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func playlistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await playlistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, playlistsItemsRelationshipRemoveOperationPayload: playlistsItemsRelationshipRemoveOperationPayload).execute().body
+            return try await playlistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipRemoveOperationPayload: playlistsItemsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -383,10 +612,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsItemsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playlistsIdRelationshipsItemsDeleteWithRequestBuilder(id: String, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playlistsIdRelationshipsItemsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playlists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -398,6 +628,7 @@ internal class PlaylistsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -472,13 +703,14 @@ internal class PlaylistsAPI {
      Update items relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsItemsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsItemsPatch(id: String, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func playlistsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil) async throws {
         do {
-            return try await playlistsIdRelationshipsItemsPatchWithRequestBuilder(id: id, playlistsItemsRelationshipUpdateOperationPayload: playlistsItemsRelationshipUpdateOperationPayload).execute().body
+            return try await playlistsIdRelationshipsItemsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipUpdateOperationPayload: playlistsItemsRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -493,10 +725,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsItemsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func playlistsIdRelationshipsItemsPatchWithRequestBuilder(id: String, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playlistsIdRelationshipsItemsPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/playlists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -508,6 +741,7 @@ internal class PlaylistsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -522,13 +756,14 @@ internal class PlaylistsAPI {
      
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsItemsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) async throws {
+    internal class func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
         do {
-            return try await playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload).execute().body
+            return try await playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -544,10 +779,11 @@ internal class PlaylistsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsItemsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> 
      */
-    internal class func playlistsIdRelationshipsItemsPostWithRequestBuilder(id: String, countryCode: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func playlistsIdRelationshipsItemsPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> {
         var localVariablePath = "/playlists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -562,11 +798,12 @@ internal class PlaylistsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -697,13 +934,14 @@ internal class PlaylistsAPI {
      Create single playlist.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsCreateOperationPayload: (body)  (optional)
      - returns: PlaylistsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsPost(countryCode: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil) async throws -> PlaylistsSingleResourceDataDocument {
+    internal class func playlistsPost(countryCode: String? = nil, idempotencyKey: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil) async throws -> PlaylistsSingleResourceDataDocument {
         do {
-            return try await playlistsPostWithRequestBuilder(countryCode: countryCode, playlistsCreateOperationPayload: playlistsCreateOperationPayload).execute().body
+            return try await playlistsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, playlistsCreateOperationPayload: playlistsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -718,10 +956,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playlistsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlaylistsSingleResourceDataDocument> 
      */
-    internal class func playlistsPostWithRequestBuilder(countryCode: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil) -> RequestBuilder<PlaylistsSingleResourceDataDocument> {
+    internal class func playlistsPostWithRequestBuilder(countryCode: String? = nil, idempotencyKey: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil) -> RequestBuilder<PlaylistsSingleResourceDataDocument> {
         let localVariablePath = "/playlists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playlistsCreateOperationPayload)
@@ -733,6 +972,7 @@ internal class PlaylistsAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

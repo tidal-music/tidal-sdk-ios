@@ -31,9 +31,9 @@ public enum LyricsAPITidal {
      
      - returns: 
      */
-	public static func lyricsIdDelete(id: String) async throws {
+	public static func lyricsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			LyricsAPI.lyricsIdDeleteWithRequestBuilder(id: id)
+			LyricsAPI.lyricsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum LyricsAPITidal {
      
      - returns: 
      */
-	public static func lyricsIdPatch(id: String, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws {
+	public static func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			LyricsAPI.lyricsIdPatchWithRequestBuilder(id: id, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload)
+			LyricsAPI.lyricsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload)
 		}
 	}
 
@@ -91,9 +91,9 @@ public enum LyricsAPITidal {
      
      - returns: LyricsSingleResourceDataDocument
      */
-	public static func lyricsPost(lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsSingleResourceDataDocument {
+	public static func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			LyricsAPI.lyricsPostWithRequestBuilder(lyricsCreateOperationPayload: lyricsCreateOperationPayload)
+			LyricsAPI.lyricsPostWithRequestBuilder(idempotencyKey: idempotencyKey, lyricsCreateOperationPayload: lyricsCreateOperationPayload)
 		}
 	}
 }

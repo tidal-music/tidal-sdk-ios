@@ -50,9 +50,9 @@ public enum TracksAPITidal {
      
      - returns: 
      */
-	public static func tracksIdDelete(id: String) async throws {
+	public static func tracksIdDelete(id: String, idempotencyKey: String? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdDeleteWithRequestBuilder(id: id)
+			TracksAPI.tracksIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
 	}
 
@@ -74,9 +74,9 @@ public enum TracksAPITidal {
      
      - returns: 
      */
-	public static func tracksIdPatch(id: String, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws {
+	public static func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdPatchWithRequestBuilder(id: id, tracksUpdateOperationPayload: tracksUpdateOperationPayload)
+			TracksAPI.tracksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksUpdateOperationPayload: tracksUpdateOperationPayload)
 		}
 	}
 
@@ -98,9 +98,9 @@ public enum TracksAPITidal {
      
      - returns: 
      */
-	public static func tracksIdRelationshipsAlbumsPatch(id: String, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload)
+			TracksAPI.tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -314,9 +314,9 @@ public enum TracksAPITidal {
      
      - returns: TracksSingleResourceDataDocument
      */
-	public static func tracksPost(tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) async throws -> TracksSingleResourceDataDocument {
+	public static func tracksPost(idempotencyKey: String? = nil, tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) async throws -> TracksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksPostWithRequestBuilder(tracksCreateOperationPayload: tracksCreateOperationPayload)
+			TracksAPI.tracksPostWithRequestBuilder(idempotencyKey: idempotencyKey, tracksCreateOperationPayload: tracksCreateOperationPayload)
 		}
 	}
 }

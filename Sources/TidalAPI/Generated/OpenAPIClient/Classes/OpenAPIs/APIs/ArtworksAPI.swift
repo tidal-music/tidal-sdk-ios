@@ -187,13 +187,14 @@ internal class ArtworksAPI {
     /**
      Create single artwork.
      
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artworksCreateOperationPayload: (body)  (optional)
      - returns: ArtworksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artworksPost(artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) async throws -> ArtworksSingleResourceDataDocument {
+    internal class func artworksPost(idempotencyKey: String? = nil, artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) async throws -> ArtworksSingleResourceDataDocument {
         do {
-            return try await artworksPostWithRequestBuilder(artworksCreateOperationPayload: artworksCreateOperationPayload).execute().body
+            return try await artworksPostWithRequestBuilder(idempotencyKey: idempotencyKey, artworksCreateOperationPayload: artworksCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -207,10 +208,11 @@ internal class ArtworksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artworksCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ArtworksSingleResourceDataDocument> 
      */
-    internal class func artworksPostWithRequestBuilder(artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) -> RequestBuilder<ArtworksSingleResourceDataDocument> {
+    internal class func artworksPostWithRequestBuilder(idempotencyKey: String? = nil, artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) -> RequestBuilder<ArtworksSingleResourceDataDocument> {
         let localVariablePath = "/artworks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artworksCreateOperationPayload)
@@ -219,6 +221,7 @@ internal class ArtworksAPI {
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

@@ -45,7 +45,8 @@ public final class PlayerMock: GenericMediaPlayer {
 		productType: PlayerProductType,
 		codec: PlayerAudioCodec?,
 		mediaType: String?,
-		isOfflined: Bool
+		isOfflined: Bool,
+		crossfade: Bool
 	) -> Bool {
 		true
 	}
@@ -92,7 +93,7 @@ public final class PlayerMock: GenericMediaPlayer {
 		playCallCount += 1
 	}
 
-	public func pause() {
+	public func pause(fadeDuration: TimeInterval? = nil) {
 		pauseCallCount += 1
 	}
 

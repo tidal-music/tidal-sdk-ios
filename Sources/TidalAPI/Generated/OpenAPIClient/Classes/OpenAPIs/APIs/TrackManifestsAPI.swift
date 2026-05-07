@@ -56,12 +56,13 @@ internal class TrackManifestsAPI {
      - parameter uriScheme: (query)  
      - parameter usage: (query)  
      - parameter adaptive: (query)  
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TrackManifestsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool) async throws -> TrackManifestsSingleResourceDataDocument {
+    internal class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil) async throws -> TrackManifestsSingleResourceDataDocument {
         do {
-            return try await trackManifestsIdGetWithRequestBuilder(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive).execute().body
+            return try await trackManifestsIdGetWithRequestBuilder(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -84,9 +85,10 @@ internal class TrackManifestsAPI {
      - parameter uriScheme: (query)  
      - parameter usage: (query)  
      - parameter adaptive: (query)  
+     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TrackManifestsSingleResourceDataDocument> 
      */
-    internal class func trackManifestsIdGetWithRequestBuilder(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool) -> RequestBuilder<TrackManifestsSingleResourceDataDocument> {
+    internal class func trackManifestsIdGetWithRequestBuilder(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil) -> RequestBuilder<TrackManifestsSingleResourceDataDocument> {
         var localVariablePath = "/trackManifests/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -101,6 +103,7 @@ internal class TrackManifestsAPI {
             "uriScheme": (wrappedValue: uriScheme.encodeToJSON(), isExplode: true),
             "usage": (wrappedValue: usage.encodeToJSON(), isExplode: true),
             "adaptive": (wrappedValue: adaptive.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

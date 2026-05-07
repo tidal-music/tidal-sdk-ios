@@ -15,13 +15,13 @@ public enum UsersAPITidal {
 
 
 	/**
-     Get current user&#39;s user.
+     Get single user.
      
      - returns: UsersSingleResourceDataDocument
      */
-	public static func usersMeGet() async throws -> UsersSingleResourceDataDocument {
+	public static func usersIdGet(id: String) async throws -> UsersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UsersAPI.usersMeGetWithRequestBuilder()
+			UsersAPI.usersIdGetWithRequestBuilder(id: id)
 		}
 	}
 }

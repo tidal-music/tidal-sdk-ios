@@ -19,9 +19,9 @@ public enum SavedSharesAPITidal {
      
      - returns: SavedSharesSingleResourceDataDocument
      */
-	public static func savedSharesPost(savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil) async throws -> SavedSharesSingleResourceDataDocument {
+	public static func savedSharesPost(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil) async throws -> SavedSharesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SavedSharesAPI.savedSharesPostWithRequestBuilder(savedSharesCreateOperationPayload: savedSharesCreateOperationPayload)
+			SavedSharesAPI.savedSharesPostWithRequestBuilder(idempotencyKey: idempotencyKey, savedSharesCreateOperationPayload: savedSharesCreateOperationPayload)
 		}
 	}
 }

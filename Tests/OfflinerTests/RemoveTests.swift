@@ -1,0 +1,145 @@
+@testable import Offliner
+import TidalAPI
+import XCTest
+
+final class RemoveTests: OfflinerTestCase {
+	// MARK: - Remove Media Item
+
+	func testRemoveTrackDeletesFromLocalDatabase() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-123"))
+		try await downloadAndWaitForCompletion(offliner)
+
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
+		XCTAssertNotNil(storedItem)
+
+		try await offliner.remove(mediaType: .tracks, resourceId: .identifier("track-123"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let removedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
+		XCTAssertNil(removedItem)
+	}
+
+	func testRemoveTrackDeletesFiles() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-123"))
+		try await downloadAndWaitForCompletion(offliner)
+
+		let storedItemOptional = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
+		let storedItem = try XCTUnwrap(storedItemOptional)
+		let mediaURL = storedItem.mediaURL
+		let artworkURL = try XCTUnwrap(storedItem.artworkURL)
+		XCTAssertTrue(FileManager.default.fileExists(atPath: mediaURL.path))
+		XCTAssertTrue(FileManager.default.fileExists(atPath: artworkURL.path))
+
+		try await offliner.remove(mediaType: .tracks, resourceId: .identifier("track-123"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		XCTAssertFalse(FileManager.default.fileExists(atPath: mediaURL.path))
+		XCTAssertFalse(FileManager.default.fileExists(atPath: artworkURL.path))
+	}
+
+	func testRemoveVideoDeletesFromLocalDatabase() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		try await offliner.download(mediaType: .videos, resourceId: .identifier("video-456"))
+		try await downloadAndWaitForCompletion(offliner)
+
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .videos, resourceId: .identifier("video-456"))
+		XCTAssertNotNil(storedItem)
+
+		try await offliner.remove(mediaType: .videos, resourceId: .identifier("video-456"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let removedItem = try await offliner.getOfflineMediaItem(mediaType: .videos, resourceId: .identifier("video-456"))
+		XCTAssertNil(removedItem)
+	}
+
+	// MARK: - Remove Collection
+
+	func testRemoveAlbumDeletesFromLocalDatabase() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let storedCollection = await offliner.getOfflineCollection(
+			collectionType: .albums,
+			resourceId: .identifier("album-123")
+		).latest()
+		XCTAssertNotNil(storedCollection)
+
+		try await offliner.remove(collectionType: .albums, resourceId: .identifier("album-123"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let removedCollection = await offliner.getOfflineCollection(
+			collectionType: .albums,
+			resourceId: .identifier("album-123")
+		).latest()
+		XCTAssertNil(removedCollection)
+	}
+
+	func testRemoveAlbumDeletesArtworkFile() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let storedCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
+		let storedCollection = try XCTUnwrap(storedCollectionOptional)
+		let artworkURL = try XCTUnwrap(storedCollection.artworkURL)
+		XCTAssertTrue(FileManager.default.fileExists(atPath: artworkURL.path))
+
+		try await offliner.remove(collectionType: .albums, resourceId: .identifier("album-123"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		XCTAssertFalse(FileManager.default.fileExists(atPath: artworkURL.path))
+	}
+
+	func testRemoveNonExistentItemDoesNotThrow() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		try await offliner.remove(mediaType: .tracks, resourceId: .identifier("nonexistent"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+	}
+}
