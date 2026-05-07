@@ -176,7 +176,7 @@ final class OfflineStore {
 			let row = try Row.fetchOne(
 				database,
 				sql: """
-					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark
+					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark, created_at
 					FROM offline_item
 					WHERE resource_type = ? AND resource_id = ?
 					""",
@@ -189,7 +189,8 @@ final class OfflineStore {
 
 			return OfflineCollection(
 				catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
-				artworkURL: try? resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
+				artworkURL: try? resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database),
+				addedAt: row["created_at"]
 			)
 		}
 	}
@@ -243,7 +244,7 @@ final class OfflineStore {
 			let rows = try Row.fetchAll(
 				database,
 				sql: """
-					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark
+					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark, created_at
 					FROM offline_item
 					WHERE resource_type = ?
 					ORDER BY created_at DESC
@@ -256,7 +257,8 @@ final class OfflineStore {
 
 				return OfflineCollection(
 					catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
-					artworkURL: try? resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database)
+					artworkURL: try? resolveAndUpdateBookmarkIfPresent(row, column: "artwork_bookmark", database),
+					addedAt: row["created_at"]
 				)
 			}
 		}

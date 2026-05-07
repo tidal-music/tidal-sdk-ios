@@ -246,14 +246,16 @@ private extension OfflineApiClient {
 		from identifier: InstallationsOfflineInventoryResourceIdentifier,
 		includedItems: IncludedItemsMap
 	) -> OfflineCollection? {
+		let addedAt = identifier.meta?.addedAt ?? Date()
 		if identifier.type == "userCollectionTracks" {
 			return OfflineCollection(
 				catalogMetadata: .userCollectionTracks(id: identifier.id),
 				artworkURL: nil,
-				state: .pending
+				state: .pending,
+				addedAt: addedAt
 			)
 		}
-		return includedItems.get(type: identifier.type, id: identifier.id)?.toOfflineCollection(state: .pending)
+		return includedItems.get(type: identifier.type, id: identifier.id)?.toOfflineCollection(state: .pending, addedAt: addedAt)
 	}
 }
 
@@ -460,7 +462,7 @@ private class IncludedItem {
 		return artwork
 	}
 
-	func toOfflineCollection(state: OfflineCollectionState) -> OfflineCollection? {
+	func toOfflineCollection(state: OfflineCollectionState, addedAt: Date) -> OfflineCollection? {
 		let artwork = artworkObject
 		let artworkURL = artwork?.largestFileURL
 		switch resource {
@@ -474,14 +476,14 @@ private class IncludedItem {
 				explicit: album.attributes?.explicit ?? false,
 				backgroundColorHex: artwork?.attributes?.visualMetadata?.selectedPaletteColor
 			))
-			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state)
+			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state, addedAt: addedAt)
 		case .playlist(let playlist):
 			let metadata = OfflineCollection.Metadata.playlist(OfflineCollection.PlaylistMetadata(
 				id: playlist.id,
 				title: playlist.attributes?.name ?? "",
 				backgroundColorHex: artwork?.attributes?.visualMetadata?.selectedPaletteColor
 			))
-			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state)
+			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state, addedAt: addedAt)
 		default:
 			return nil
 		}
