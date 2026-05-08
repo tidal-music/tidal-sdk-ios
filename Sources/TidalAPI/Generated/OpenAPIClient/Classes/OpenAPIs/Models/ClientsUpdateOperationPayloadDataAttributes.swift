@@ -20,7 +20,6 @@ public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     }
     public static let scopesRule = ArrayRule(minItems: nil, maxItems: nil, uniqueItems: true)
     public var description: String?
-    public var enabled: Bool?
     public var name: String?
     public var platformPreset: PlatformPreset?
     public var redirectUris: [String]?
@@ -28,14 +27,12 @@ public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public init(
         description: String? = nil,
-        enabled: Bool? = nil,
         name: String? = nil,
         platformPreset: PlatformPreset? = nil,
         redirectUris: [String]? = nil,
         scopes: Set<String>? = nil
     ) {
         self.description = description
-        self.enabled = enabled
         self.name = name
         self.platformPreset = platformPreset
         self.redirectUris = redirectUris
@@ -44,7 +41,6 @@ public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case description
-        case enabled
         case name
         case platformPreset
         case redirectUris
@@ -56,7 +52,6 @@ public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(description, forKey: .description)
-        try container.encodeIfPresent(enabled, forKey: .enabled)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(platformPreset, forKey: .platformPreset)
         try container.encodeIfPresent(redirectUris, forKey: .redirectUris)

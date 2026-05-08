@@ -1,13 +1,10 @@
-# ClientsUpdateOperationPayloadDataAttributes
+# SquareConnectionsCreateOperationPayload
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**description** | **String** |  | [optional] 
-**name** | **String** |  | [optional] 
-**platformPreset** | **String** |  | [optional] 
-**redirectUris** | **[String]** |  | [optional] 
-**scopes** | **Set<String>** |  | [optional] 
+**data** | [**SquareConnectionsCreateOperationPayloadData**](SquareConnectionsCreateOperationPayloadData.md) |  | 
+**meta** | [**SquareConnectionsCreateOperationPayloadMeta**](SquareConnectionsCreateOperationPayloadMeta.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -7,7 +7,6 @@ Name | Type | Description | Notes
 **clientSecret** | **String** |  | [optional] 
 **createdAt** | **Date** |  | [optional] 
 **description** | **String** |  | [optional] 
-**enabled** | **Bool** |  | [optional] 
 **name** | **String** |  | 
 **platformPreset** | **String** |  | [optional] 
 **redirectUris** | **[String]** |  | [optional] 
