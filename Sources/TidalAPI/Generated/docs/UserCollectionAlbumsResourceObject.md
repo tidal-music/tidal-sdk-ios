@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **AnyCodable** |  | [optional] 
+**attributes** | [**UserCollectionAlbumsAttributes**](UserCollectionAlbumsAttributes.md) |  | [optional] 
 **id** | **String** | Resource id | 
 **relationships** | [**UserCollectionAlbumsRelationships**](UserCollectionAlbumsRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 

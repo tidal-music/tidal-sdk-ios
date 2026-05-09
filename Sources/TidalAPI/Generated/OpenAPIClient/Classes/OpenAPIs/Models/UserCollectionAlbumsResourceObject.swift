@@ -13,7 +13,7 @@ import AnyCodable
 public struct UserCollectionAlbumsResourceObject: Codable, Hashable {
 
     public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
-    public var attributes: AnyCodable?
+    public var attributes: UserCollectionAlbumsAttributes?
     /** Resource id */
     public var id: String
     public var relationships: UserCollectionAlbumsRelationships?
@@ -21,7 +21,7 @@ public struct UserCollectionAlbumsResourceObject: Codable, Hashable {
     public var type: String
 
     public init(
-        attributes: AnyCodable? = nil,
+        attributes: UserCollectionAlbumsAttributes? = nil,
         id: String,
         relationships: UserCollectionAlbumsRelationships? = nil,
         type: String
