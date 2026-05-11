@@ -16,6 +16,18 @@ The scripts that drive this live alongside the skill in [`scripts/`](scripts/) a
 
 ## Workflow
 
+0. **Check whether a release is even needed.** Run [`scripts/check-release-needed.sh`](scripts/check-release-needed.sh) on a fresh checkout of `origin/main`:
+   ```bash
+   git fetch origin main && git checkout origin/main --
+   ./.agents/skills/prepare-release/scripts/check-release-needed.sh
+   ```
+   It uses the commit that last touched `version.txt` as the "last released" baseline (more reliable than `git tag`, since GitHub releases here are drafted manually and tags lag behind), then reports:
+   - non-merge commits landed since the last bump
+   - whether the TidalAPI OpenAPI spec version (`Sources/TidalAPI/Config/input/tidal-api-oas.json`) is newer than the most recent `(TidalAPI)` line in `CHANGELOG.md`
+   - whether `## [Unreleased]` is empty despite work having landed (this happens because the auto-update workflow no longer writes there)
+
+   Exit codes: `0` = release recommended, `1` = nothing new, `2` = error. If `1`, stop here.
+
 1. **Make sure `main` is clean** and you're on a fresh branch from the latest `main`:
    ```bash
    git checkout main && git pull
