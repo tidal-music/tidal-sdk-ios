@@ -29,7 +29,6 @@ public struct ClientsAttributes: Codable, Hashable {
     public var clientSecret: String?
     public var createdAt: Date?
     public var description: String?
-    public var enabled: Bool?
     public var name: String
     public var platformPreset: PlatformPreset?
     public var redirectUris: [String]?
@@ -40,7 +39,6 @@ public struct ClientsAttributes: Codable, Hashable {
         clientSecret: String? = nil,
         createdAt: Date? = nil,
         description: String? = nil,
-        enabled: Bool? = nil,
         name: String,
         platformPreset: PlatformPreset? = nil,
         redirectUris: [String]? = nil,
@@ -50,7 +48,6 @@ public struct ClientsAttributes: Codable, Hashable {
         self.clientSecret = clientSecret
         self.createdAt = createdAt
         self.description = description
-        self.enabled = enabled
         self.name = name
         self.platformPreset = platformPreset
         self.redirectUris = redirectUris
@@ -62,7 +59,6 @@ public struct ClientsAttributes: Codable, Hashable {
         case clientSecret
         case createdAt
         case description
-        case enabled
         case name
         case platformPreset
         case redirectUris
@@ -77,7 +73,6 @@ public struct ClientsAttributes: Codable, Hashable {
         try container.encodeIfPresent(clientSecret, forKey: .clientSecret)
         try container.encodeIfPresent(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(description, forKey: .description)
-        try container.encodeIfPresent(enabled, forKey: .enabled)
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(platformPreset, forKey: .platformPreset)
         try container.encodeIfPresent(redirectUris, forKey: .redirectUris)
