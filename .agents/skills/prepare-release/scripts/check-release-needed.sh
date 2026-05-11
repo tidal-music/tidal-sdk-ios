@@ -61,6 +61,23 @@ git log --no-merges --pretty='format:   %h %s' "$last_bump_commit"..HEAD
 echo ""
 echo ""
 
+# ---- Bump-type heuristic ----
+#
+# major  : any commit subject contains "BREAKING" or a conventional-commit "!:"
+# minor  : any commit looks additive (Add/Added, feat:)
+# patch  : everything else (fixes, regens, chores)
+suggested_bump="patch"
+subjects=$(git log --no-merges --pretty='format:%s' "$last_bump_commit"..HEAD)
+
+if echo "$subjects" | grep -Eq 'BREAKING|^[A-Za-z]+(\([^)]+\))?!:'; then
+  suggested_bump="major"
+elif echo "$subjects" | grep -Eq '^(Add |Added |add |feat:|feat\(|.*: Add )'; then
+  suggested_bump="minor"
+fi
+
+echo "🎯 Suggested bump type: $suggested_bump"
+echo ""
+
 # ---- TidalAPI spec drift ----
 spec_drift=false
 suggested_entry=""
@@ -88,10 +105,13 @@ unreleased_content=$(awk '/^## \[Unreleased\]/{flag=1; next} /^## \[/{flag=0} fl
 if [ -z "$unreleased_content" ]; then
   echo "⚠️  ## [Unreleased] section is empty."
   echo "    Commits have landed but the changelog has not been updated."
+  echo ""
+  echo "    Suggested next steps:"
+  echo "      ./.agents/skills/prepare-release/scripts/suggest-changelog.sh   # draft entries"
   if [ "$spec_drift" = true ]; then
-    echo ""
-    echo "    Suggested next step:"
-    echo "      ./.agents/skills/prepare-release/scripts/bump-version.sh patch \"$suggested_entry\""
+    echo "      ./.agents/skills/prepare-release/scripts/bump-version.sh $suggested_bump \"$suggested_entry\""
+  else
+    echo "      ./.agents/skills/prepare-release/scripts/bump-version.sh $suggested_bump"
   fi
 else
   echo "ℹ️  ## [Unreleased] currently contains:"

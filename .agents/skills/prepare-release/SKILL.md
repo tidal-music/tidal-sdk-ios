@@ -23,6 +23,7 @@ The scripts that drive this live alongside the skill in [`scripts/`](scripts/) a
    ```
    It uses the commit that last touched `version.txt` as the "last released" baseline (more reliable than `git tag`, since GitHub releases here are drafted manually and tags lag behind), then reports:
    - non-merge commits landed since the last bump
+   - **suggested bump type** (`major` / `minor` / `patch`) heuristically derived from those commit subjects
    - whether the TidalAPI OpenAPI spec version (`Sources/TidalAPI/Config/input/tidal-api-oas.json`) is newer than the most recent `(TidalAPI)` line in `CHANGELOG.md`
    - whether `## [Unreleased]` is empty despite work having landed (this happens because the auto-update workflow no longer writes there)
 
@@ -52,11 +53,11 @@ The scripts that drive this live alongside the skill in [`scripts/`](scripts/) a
 
 4. **Polish `CHANGELOG.md` by hand**. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Group entries under `### Added`, `### Changed`, `### Fixed`, `### Removed`, `### Deprecated`, `### Security` as applicable. Suffix each bullet with the module scope used in the repo, e.g. `(Player)`, `(TidalAPI)`, `(Auth)`, `(EventProducer)`, `(Offliner)`. Match the style of recent entries at the top of [`CHANGELOG.md`](../../../CHANGELOG.md).
 
-   Helpful for collecting commit subjects since the last release:
+   For a starting draft, run [`scripts/suggest-changelog.sh`](scripts/suggest-changelog.sh) — it parses the unreleased commits, infers `Module` scopes from `Module: subject` prefixes, categorizes by leading verb (`Add`/`feat:` → Added, `Fix` → Fixed, etc.), and folds repeated `Update Tidal API` commits into a single `Generated API code using spec version <X.Y.Z> (TidalAPI)` line:
    ```bash
-   PREV=$(git describe --tags --abbrev=0)
-   git log --no-merges --pretty='format:- %s' "$PREV"..HEAD
+   ./.agents/skills/prepare-release/scripts/suggest-changelog.sh
    ```
+   Treat the output as a draft — review wording and merge similar bullets before pasting into `CHANGELOG.md`.
 
 5. **Verify locally** before pushing:
    ```bash
@@ -69,7 +70,13 @@ The scripts that drive this live alongside the skill in [`scripts/`](scripts/) a
    git add version.txt CHANGELOG.md
    git commit -m "Release vX.Y.Z"
    git push -u origin HEAD
+
+   # Use the changelog section as the PR body so reviewers see exactly what ships:
+   gh pr create --title "Release vX.Y.Z" \
+     --body "$(./.agents/skills/prepare-release/scripts/extract-release-notes.sh)"
    ```
+   [`scripts/extract-release-notes.sh`](scripts/extract-release-notes.sh) prints the most recent `## [X.Y.Z]` section of `CHANGELOG.md` (or pass an explicit version: `extract-release-notes.sh 0.11.18`). It's also useful for the body of the GitHub Release draft.
+
    Once the PR is merged into `main`, `trigger-releases.yml` detects the bump, runs lint + unit tests, and `create-release.yml` opens a **draft** GitHub Release tagged `X.Y.Z`. Edit the draft on GitHub and publish when ready.
 
 ## Common pitfalls
