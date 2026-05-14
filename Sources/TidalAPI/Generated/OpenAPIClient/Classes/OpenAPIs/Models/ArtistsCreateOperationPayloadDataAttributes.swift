@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct ArtistsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var handle: String?
     public var name: String
 
