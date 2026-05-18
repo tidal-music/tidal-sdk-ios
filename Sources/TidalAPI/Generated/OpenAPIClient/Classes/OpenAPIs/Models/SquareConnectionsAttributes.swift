@@ -13,9 +13,12 @@ import AnyCodable
 public struct SquareConnectionsAttributes: Codable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
+        case draft = "DRAFT"
         case pendingRequirements = "PENDING_REQUIREMENTS"
+        case kycPending = "KYC_PENDING"
         case accepted = "ACCEPTED"
         case rejected = "REJECTED"
+        case suspended = "SUSPENDED"
     }
     public static let statusRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Timestamp when the connection was created */
