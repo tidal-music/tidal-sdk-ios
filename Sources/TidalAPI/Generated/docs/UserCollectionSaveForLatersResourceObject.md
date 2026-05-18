@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **AnyCodable** |  | [optional] 
+**attributes** | [**UserCollectionSaveForLatersAttributes**](UserCollectionSaveForLatersAttributes.md) |  | [optional] 
 **id** | **String** | Resource id | 
 **relationships** | [**UserCollectionSaveForLatersRelationships**](UserCollectionSaveForLatersRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 

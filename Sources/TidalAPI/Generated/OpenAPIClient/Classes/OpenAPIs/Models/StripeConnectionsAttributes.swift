@@ -17,6 +17,7 @@ public struct StripeConnectionsAttributes: Codable, Hashable {
         case underReview = "UNDER_REVIEW"
         case accepted = "ACCEPTED"
         case rejected = "REJECTED"
+        case suspended = "SUSPENDED"
     }
     public static let statusRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Timestamp when the connection was created */

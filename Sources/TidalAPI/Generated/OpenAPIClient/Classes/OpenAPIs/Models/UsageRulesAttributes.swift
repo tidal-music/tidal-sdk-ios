@@ -40,19 +40,23 @@ public struct UsageRulesAttributes: Codable, Hashable {
     public var paid: [Paid]?
     /** Usage types allowed for subscription model */
     public var subscription: [Subscription]?
+    /** Datetime from which these usage rules are valid (ISO 8601) */
+    public var validFrom: Date?
 
     public init(
         countryCode: String,
         free: [Free]? = nil,
         inherited: Bool? = nil,
         paid: [Paid]? = nil,
-        subscription: [Subscription]? = nil
+        subscription: [Subscription]? = nil,
+        validFrom: Date? = nil
     ) {
         self.countryCode = countryCode
         self.free = free
         self.inherited = inherited
         self.paid = paid
         self.subscription = subscription
+        self.validFrom = validFrom
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -61,6 +65,7 @@ public struct UsageRulesAttributes: Codable, Hashable {
         case inherited
         case paid
         case subscription
+        case validFrom
     }
 
     // Encodable protocol methods
@@ -72,5 +77,6 @@ public struct UsageRulesAttributes: Codable, Hashable {
         try container.encodeIfPresent(inherited, forKey: .inherited)
         try container.encodeIfPresent(paid, forKey: .paid)
         try container.encodeIfPresent(subscription, forKey: .subscription)
+        try container.encodeIfPresent(validFrom, forKey: .validFrom)
     }
 }
