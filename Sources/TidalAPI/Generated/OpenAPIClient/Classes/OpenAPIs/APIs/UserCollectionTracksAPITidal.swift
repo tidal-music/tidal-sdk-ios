@@ -19,9 +19,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: UserCollectionTracksMultiResourceDataDocument
      */
-	public static func userCollectionTracksGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> UserCollectionTracksMultiResourceDataDocument {
+	public static func userCollectionTracksGet(countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterId: [String]? = nil) async throws -> UserCollectionTracksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksGetWithRequestBuilder(include: include, filterId: filterId)
+			UserCollectionTracksAPI.userCollectionTracksGetWithRequestBuilder(countryCode: countryCode, locale: locale, include: include, filterId: filterId)
 		}
 	}
 

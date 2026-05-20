@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **userCollectionTracksGet**
 ```swift
-    open class func userCollectionTracksGet(include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: UserCollectionTracksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionTracksGet(countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: UserCollectionTracksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple userCollectionTracks.
@@ -26,11 +26,13 @@ Retrieves multiple userCollectionTracks by available filters, or without if appl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
 let filterId = ["inner_example"] // [String] | User collection tracks id (e.g. `FMJUCzH4`) (optional)
 
 // Get multiple userCollectionTracks.
-UserCollectionTracksAPI.userCollectionTracksGet(include: include, filterId: filterId) { (response, error) in
+UserCollectionTracksAPI.userCollectionTracksGet(countryCode: countryCode, locale: locale, include: include, filterId: filterId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -46,6 +48,8 @@ UserCollectionTracksAPI.userCollectionTracksGet(include: include, filterId: filt
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
  **filterId** | [**[String]**](String.md) | User collection tracks id (e.g. &#x60;FMJUCzH4&#x60;) | [optional] 
 
