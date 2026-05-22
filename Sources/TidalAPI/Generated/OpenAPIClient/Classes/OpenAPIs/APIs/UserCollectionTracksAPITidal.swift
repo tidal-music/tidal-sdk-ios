@@ -96,9 +96,9 @@ public enum UserCollectionTracksAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionTracksItemsMultiRelationshipDataDocument
+     - returns: UserCollectionTracksItemsAddMultiRelationshipDataDocument
      */
-	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
+	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
 		}

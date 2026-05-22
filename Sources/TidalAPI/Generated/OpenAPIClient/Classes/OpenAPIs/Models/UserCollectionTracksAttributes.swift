@@ -12,16 +12,21 @@ import AnyCodable
 
 public struct UserCollectionTracksAttributes: Codable, Hashable {
 
+    /** When the collection was last modified */
+    public var lastModifiedAt: Date?
     /** Number of items in the collection */
     public var numberOfItems: Int
 
     public init(
+        lastModifiedAt: Date? = nil,
         numberOfItems: Int
     ) {
+        self.lastModifiedAt = lastModifiedAt
         self.numberOfItems = numberOfItems
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case lastModifiedAt
         case numberOfItems
     }
 
@@ -29,6 +34,7 @@ public struct UserCollectionTracksAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(numberOfItems, forKey: .numberOfItems)
     }
 }
