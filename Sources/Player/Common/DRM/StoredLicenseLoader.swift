@@ -41,8 +41,13 @@ extension StoredLicenseLoader: AVContentKeySessionDelegate {
 		_ session: AVContentKeySession,
 		didProvide keyRequest: AVPersistableContentKeyRequest
 	) {
-		// Never block this method - it's called on AVFoundation's internal queue
-		Task {
+		// Never block this method - it's called on AVFoundation's internal queue.
+		// Capture `session` strongly so it stays alive while the async response
+		// runs. Without this, the session can be released between the delegate
+		// callback and the Task body resuming, leaving `keyRequest` orphaned —
+		// `processContentKeyResponse(_:)` then raises NSInvalidArgumentException.
+		SafeTask { [session] in
+			_ = session
 			await handlePersistableKeyRequest(keyRequest)
 		}
 	}
