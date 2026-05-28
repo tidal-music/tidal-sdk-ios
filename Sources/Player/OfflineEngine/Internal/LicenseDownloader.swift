@@ -97,8 +97,13 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 
 	func contentKeySession(_ session: AVContentKeySession, didProvide keyRequest: AVPersistableContentKeyRequest) {
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
-			// Never block this method - it's called on AVFoundation's internal queue
-			let task = Task {
+			// Never block this method - it's called on AVFoundation's internal queue.
+			// Capture `session` strongly so it stays alive while the async response
+			// runs. Without this, the session can be released between the delegate
+			// callback and the Task body resuming, leaving `keyRequest` orphaned —
+			// `processContentKeyResponse(_:)` then raises NSInvalidArgumentException.
+			let task = SafeTask { [session] in
+				_ = session
 				await handlePersistableKeyRequest(keyRequest)
 			}
 			
