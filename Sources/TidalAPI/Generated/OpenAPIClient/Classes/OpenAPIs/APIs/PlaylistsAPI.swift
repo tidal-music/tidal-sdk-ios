@@ -31,7 +31,7 @@ internal class PlaylistsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners (optional)
-     - parameter filterId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
+     - parameter filterId: (query) List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: PlaylistsMultiResourceDataDocument
      */
@@ -59,7 +59,7 @@ internal class PlaylistsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners (optional)
-     - parameter filterId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
+     - parameter filterId: (query) List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<PlaylistsMultiResourceDataDocument> 
      */

@@ -30,7 +30,7 @@ internal class AlbumsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. &#x60;196589525444&#x60;) (optional)
-     - parameter filterId: (query) Album id (e.g. &#x60;251380836&#x60;) (optional)
+     - parameter filterId: (query) List of album IDs (e.g. &#x60;251380836&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: AlbumsMultiResourceDataDocument
@@ -60,7 +60,7 @@ internal class AlbumsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. &#x60;196589525444&#x60;) (optional)
-     - parameter filterId: (query) Album id (e.g. &#x60;251380836&#x60;) (optional)
+     - parameter filterId: (query) List of album IDs (e.g. &#x60;251380836&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<AlbumsMultiResourceDataDocument> 
