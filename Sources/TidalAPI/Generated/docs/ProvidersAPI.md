@@ -4,59 +4,8 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**providersGet**](ProvidersAPI.md#providersget) | **GET** /providers | Get multiple providers.
 [**providersIdGet**](ProvidersAPI.md#providersidget) | **GET** /providers/{id} | Get single provider.
 
-
-# **providersGet**
-```swift
-    open class func providersGet(filterId: [String]? = nil, completion: @escaping (_ data: ProvidersMultiResourceDataDocument?, _ error: Error?) -> Void)
-```
-
-Get multiple providers.
-
-Retrieves multiple providers by available filters, or without if applicable.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let filterId = ["inner_example"] // [String] | List of provider IDs (e.g. `12345`) (optional)
-
-// Get multiple providers.
-ProvidersAPI.providersGet(filterId: filterId) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | List of provider IDs (e.g. &#x60;12345&#x60;) | [optional] 
-
-### Return type
-
-[**ProvidersMultiResourceDataDocument**](ProvidersMultiResourceDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **providersIdGet**
 ```swift

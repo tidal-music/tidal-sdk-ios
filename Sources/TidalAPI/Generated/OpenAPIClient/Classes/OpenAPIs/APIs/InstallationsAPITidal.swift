@@ -19,9 +19,9 @@ public enum InstallationsAPITidal {
      
      - returns: InstallationsMultiResourceDataDocument
      */
-	public static func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> InstallationsMultiResourceDataDocument {
+	public static func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> InstallationsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterId: filterId, filterOwnersId: filterOwnersId)
+			InstallationsAPI.installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId)
 		}
 	}
 

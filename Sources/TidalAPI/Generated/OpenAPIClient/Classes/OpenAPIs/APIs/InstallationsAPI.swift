@@ -18,14 +18,13 @@ internal class InstallationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
      - parameter filterClientProvidedInstallationId: (query) Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) (optional)
-     - parameter filterId: (query) List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterOwnersId: (query) User ID to filter by. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: InstallationsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> InstallationsMultiResourceDataDocument {
+    internal class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> InstallationsMultiResourceDataDocument {
         do {
-            return try await installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterId: filterId, filterOwnersId: filterOwnersId).execute().body
+            return try await installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -42,11 +41,10 @@ internal class InstallationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
      - parameter filterClientProvidedInstallationId: (query) Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) (optional)
-     - parameter filterId: (query) List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterOwnersId: (query) User ID to filter by. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<InstallationsMultiResourceDataDocument> 
      */
-    internal class func installationsGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<InstallationsMultiResourceDataDocument> {
+    internal class func installationsGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<InstallationsMultiResourceDataDocument> {
         let localVariablePath = "/installations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -56,7 +54,6 @@ internal class InstallationsAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[clientProvidedInstallationId]": (wrappedValue: filterClientProvidedInstallationId?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
         ])
 

@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **offlineTasksGet**
 ```swift
-    open class func offlineTasksGet(pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterInstallationId: [String]? = nil, completion: @escaping (_ data: OfflineTasksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksGet(pageCursor: String? = nil, include: [String]? = nil, filterInstallationId: [String]? = nil, completion: @escaping (_ data: OfflineTasksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple offlineTasks.
@@ -28,11 +28,10 @@ import OpenAPIClient
 
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
-let filterId = ["inner_example"] // [String] | List of offline task IDs (e.g. `a468bee8-8def-4a1b-8c1e-123456789abc`) (optional)
 let filterInstallationId = ["inner_example"] // [String] | List of offline task IDs (e.g. `a468bee88def`) (optional)
 
 // Get multiple offlineTasks.
-OfflineTasksAPI.offlineTasksGet(pageCursor: pageCursor, include: include, filterId: filterId, filterInstallationId: filterInstallationId) { (response, error) in
+OfflineTasksAPI.offlineTasksGet(pageCursor: pageCursor, include: include, filterInstallationId: filterInstallationId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -50,7 +49,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collection, item, owners | [optional] 
- **filterId** | [**[String]**](String.md) | List of offline task IDs (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) | [optional] 
  **filterInstallationId** | [**[String]**](String.md) | List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) | [optional] 
 
 ### Return type

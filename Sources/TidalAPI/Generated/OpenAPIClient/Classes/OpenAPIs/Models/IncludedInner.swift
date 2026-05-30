@@ -21,6 +21,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistsResourceObject(ArtistsResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
     case clientsResourceObject(ClientsResourceObject)
+    case collaborationInviteRedemptionsResourceObject(CollaborationInviteRedemptionsResourceObject)
+    case collaborationInvitesResourceObject(CollaborationInvitesResourceObject)
     case commentsResourceObject(CommentsResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
@@ -99,6 +101,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .artworksResourceObject(let value):
             try container.encode(value)
         case .clientsResourceObject(let value):
+            try container.encode(value)
+        case .collaborationInviteRedemptionsResourceObject(let value):
+            try container.encode(value)
+        case .collaborationInvitesResourceObject(let value):
             try container.encode(value)
         case .commentsResourceObject(let value):
             try container.encode(value)
@@ -252,6 +258,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "clients":
             let value = try ClientsResourceObject(from: decoder)
             self = .clientsResourceObject(value)
+        case "collaborationInviteRedemptions":
+            let value = try CollaborationInviteRedemptionsResourceObject(from: decoder)
+            self = .collaborationInviteRedemptionsResourceObject(value)
+        case "collaborationInvites":
+            let value = try CollaborationInvitesResourceObject(from: decoder)
+            self = .collaborationInvitesResourceObject(value)
         case "comments":
             let value = try CommentsResourceObject(from: decoder)
             self = .commentsResourceObject(value)
@@ -437,6 +449,8 @@ extension IncludedInner: Identifiable {
         case .artistsResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
         case .clientsResourceObject(let value): return value.id
+        case .collaborationInviteRedemptionsResourceObject(let value): return value.id
+        case .collaborationInvitesResourceObject(let value): return value.id
         case .commentsResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id

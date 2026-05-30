@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **installationsGet**
 ```swift
-    open class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: InstallationsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: InstallationsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple installations.
@@ -30,11 +30,10 @@ import OpenAPIClient
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
 let filterClientProvidedInstallationId = ["inner_example"] // [String] | Client-provided installation identifier to filter by (e.g. `a468bee88def`) (optional)
-let filterId = ["inner_example"] // [String] | List of installation IDs (e.g. `a468bee88def`) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User ID to filter by. Use `me` for the authenticated user (optional)
 
 // Get multiple installations.
-InstallationsAPI.installationsGet(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
+InstallationsAPI.installationsGet(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -53,7 +52,6 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners | [optional] 
  **filterClientProvidedInstallationId** | [**[String]**](String.md) | Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) | [optional] 
- **filterId** | [**[String]**](String.md) | List of installation IDs (e.g. &#x60;a468bee88def&#x60;) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User ID to filter by. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type

@@ -34,9 +34,9 @@ public enum TermsAPITidal {
      
      - returns: TermsMultiResourceDataDocument
      */
-	public static func termsGet(filterCountryCode: [String]? = nil, filterId: [String]? = nil, filterIsLatestVersion: [String]? = nil, filterTermsType: [TermsAPITidal.FilterTermsType_termsGet]? = nil) async throws -> TermsMultiResourceDataDocument {
+	public static func termsGet(filterCountryCode: [String]? = nil, filterIsLatestVersion: [String]? = nil, filterTermsType: [TermsAPITidal.FilterTermsType_termsGet]? = nil) async throws -> TermsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TermsAPI.termsGetWithRequestBuilder(filterCountryCode: filterCountryCode, filterId: filterId, filterIsLatestVersion: filterIsLatestVersion, filterTermsType: filterTermsType?.compactMap { $0.toTermsAPIEnum() })
+			TermsAPI.termsGetWithRequestBuilder(filterCountryCode: filterCountryCode, filterIsLatestVersion: filterIsLatestVersion, filterTermsType: filterTermsType?.compactMap { $0.toTermsAPIEnum() })
 		}
 	}
 

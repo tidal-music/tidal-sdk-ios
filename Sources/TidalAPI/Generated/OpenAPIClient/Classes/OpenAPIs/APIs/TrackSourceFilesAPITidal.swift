@@ -15,18 +15,6 @@ public enum TrackSourceFilesAPITidal {
 
 
 	/**
-     Get multiple trackSourceFiles.
-     
-     - returns: TrackSourceFilesMultiResourceDataDocument
-     */
-	public static func trackSourceFilesGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> TrackSourceFilesMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			TrackSourceFilesAPI.trackSourceFilesGetWithRequestBuilder(include: include, filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single trackSourceFile.
      
      - returns: TrackSourceFilesSingleResourceDataDocument

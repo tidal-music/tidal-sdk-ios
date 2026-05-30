@@ -13,56 +13,6 @@ import AnyCodable
 internal class SearchHistoryEntriesAPI {
 
     /**
-     Get multiple searchHistoryEntries.
-     
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter filterId: (query) Opaque identifier for a search history entry (e.g. &#x60;MjcyNjg5OTAjamF5&#x60;) (optional)
-     - returns: SearchHistoryEntriesMultiResourceDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchHistoryEntriesGet(countryCode: String? = nil, filterId: [String]? = nil) async throws -> SearchHistoryEntriesMultiResourceDataDocument {
-        do {
-            return try await searchHistoryEntriesGetWithRequestBuilder(countryCode: countryCode, filterId: filterId).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Get multiple searchHistoryEntries.
-     - GET /searchHistoryEntries
-     - Retrieves multiple searchHistoryEntries by available filters, or without if applicable.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter filterId: (query) Opaque identifier for a search history entry (e.g. &#x60;MjcyNjg5OTAjamF5&#x60;) (optional)
-     - returns: RequestBuilder<SearchHistoryEntriesMultiResourceDataDocument> 
-     */
-    internal class func searchHistoryEntriesGetWithRequestBuilder(countryCode: String? = nil, filterId: [String]? = nil) -> RequestBuilder<SearchHistoryEntriesMultiResourceDataDocument> {
-        let localVariablePath = "/searchHistoryEntries"
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<SearchHistoryEntriesMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Delete single searchHistoryEntrie.
      
      - parameter id: (path) Opaque identifier for a search history entry 

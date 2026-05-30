@@ -15,18 +15,6 @@ public enum UsageRulesAPITidal {
 
 
 	/**
-     Get multiple usageRules.
-     
-     - returns: UsageRulesMultiResourceDataDocument
-     */
-	public static func usageRulesGet(filterId: [String]? = nil) async throws -> UsageRulesMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			UsageRulesAPI.usageRulesGetWithRequestBuilder(filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single usageRule.
      
      - returns: UsageRulesSingleResourceDataDocument

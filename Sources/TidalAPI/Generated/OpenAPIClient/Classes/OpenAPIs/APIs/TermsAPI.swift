@@ -24,15 +24,14 @@ internal class TermsAPI {
      Get multiple terms.
      
      - parameter filterCountryCode: (query) Filter by countryCode (optional)
-     - parameter filterId: (query) List of terms IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterIsLatestVersion: (query) Filter by isLatestVersion (optional)
      - parameter filterTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) (optional)
      - returns: TermsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func termsGet(filterCountryCode: [String]? = nil, filterId: [String]? = nil, filterIsLatestVersion: [String]? = nil, filterTermsType: [FilterTermsType_termsGet]? = nil) async throws -> TermsMultiResourceDataDocument {
+    internal class func termsGet(filterCountryCode: [String]? = nil, filterIsLatestVersion: [String]? = nil, filterTermsType: [FilterTermsType_termsGet]? = nil) async throws -> TermsMultiResourceDataDocument {
         do {
-            return try await termsGetWithRequestBuilder(filterCountryCode: filterCountryCode, filterId: filterId, filterIsLatestVersion: filterIsLatestVersion, filterTermsType: filterTermsType).execute().body
+            return try await termsGetWithRequestBuilder(filterCountryCode: filterCountryCode, filterIsLatestVersion: filterIsLatestVersion, filterTermsType: filterTermsType).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -50,12 +49,11 @@ internal class TermsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter filterCountryCode: (query) Filter by countryCode (optional)
-     - parameter filterId: (query) List of terms IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterIsLatestVersion: (query) Filter by isLatestVersion (optional)
      - parameter filterTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) (optional)
      - returns: RequestBuilder<TermsMultiResourceDataDocument> 
      */
-    internal class func termsGetWithRequestBuilder(filterCountryCode: [String]? = nil, filterId: [String]? = nil, filterIsLatestVersion: [String]? = nil, filterTermsType: [FilterTermsType_termsGet]? = nil) -> RequestBuilder<TermsMultiResourceDataDocument> {
+    internal class func termsGetWithRequestBuilder(filterCountryCode: [String]? = nil, filterIsLatestVersion: [String]? = nil, filterTermsType: [FilterTermsType_termsGet]? = nil) -> RequestBuilder<TermsMultiResourceDataDocument> {
         let localVariablePath = "/terms"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -63,7 +61,6 @@ internal class TermsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[countryCode]": (wrappedValue: filterCountryCode?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
             "filter[isLatestVersion]": (wrappedValue: filterIsLatestVersion?.encodeToJSON(), isExplode: true),
             "filter[termsType]": (wrappedValue: filterTermsType?.encodeToJSON(), isExplode: true),
         ])
