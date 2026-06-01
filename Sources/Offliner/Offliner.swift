@@ -184,12 +184,14 @@ public final class Offliner {
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId,
 		limit: Int,
+		sort: OfflineCollectionItemSort? = nil,
 		after cursor: Int64? = nil
 	) async throws -> OfflineCollectionItemsPage {
 		let (page, failures) = try await offlineStore.getCollectionItems(
 			collectionType: collectionType,
 			resourceId: resourceId.stringValue,
 			limit: limit,
+			sort: sort,
 			after: cursor
 		)
 

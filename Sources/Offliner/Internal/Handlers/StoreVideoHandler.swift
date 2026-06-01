@@ -109,6 +109,7 @@ private final class InternalVideoTask: InternalTask {
 				collectionResourceId: task.resolvedCollectionResourceId,
 				volume: task.volume,
 				position: task.position,
+				addedAt: task.addedAt,
 				mediaURL: mediaResult.mediaLocation,
 				licenseURL: licenseResult?.licenseURL,
 				artworkURL: artworkURL

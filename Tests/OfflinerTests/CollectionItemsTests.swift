@@ -1,4 +1,6 @@
 @testable import Offliner
+import Foundation
+import GRDB
 import TidalAPI
 import XCTest
 
@@ -323,6 +325,165 @@ final class CollectionItemsTests: OfflinerTestCase {
 		XCTAssertNotNil(page.cursor)
 	}
 
+	// MARK: - Sorting
+
+	func testStoreTrackPersistsAlbumTitleForSorting() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let playlistId = "playlist-album-title"
+		let addedAt = Date(timeIntervalSince1970: 1_767_225_600)
+		backend.enqueueTasks([
+			.storeTrack(StoreTrackTask(
+				id: "offline-task-album-title",
+				track: makeTrack(id: "track-album-title", title: "Track"),
+				album: makeAlbum(id: "album-album-title", title: "Album Title"),
+				artists: [],
+				artwork: nil,
+				collectionResourceType: "playlists",
+				collectionResourceId: playlistId,
+				volume: 1,
+				position: 1,
+				addedAt: addedAt
+			)),
+		])
+
+		try await runAllTasks(offliner, backend: backend, expectedDownloads: 1)
+
+		let page = try await offliner.getOfflineCollectionItems(
+			collectionType: .playlists,
+			resourceId: .identifier(playlistId),
+			limit: 10
+		)
+
+		guard case .track(let metadata) = page.items.first?.item.catalogMetadata else {
+			XCTFail("Expected track metadata")
+			return
+		}
+		XCTAssertEqual(metadata.albumTitle, "Album Title")
+		let storedAddedAt = try XCTUnwrap(page.items.first?.addedAt)
+		XCTAssertEqual(storedAddedAt.timeIntervalSince1970, addedAt.timeIntervalSince1970, accuracy: 0.001)
+	}
+
+	func testSortByTitleAppliesBeforePagination() async throws {
+		let (store, _) = try createStore()
+		let playlistId = "playlist-title-sort"
+
+		try storeTrack(store, id: "track-zulu", title: "Zulu", collectionId: playlistId, position: 1)
+		try storeTrack(store, id: "track-alpha", title: "Alpha", collectionId: playlistId, position: 2)
+		try storeTrack(store, id: "track-echo", title: "Echo", collectionId: playlistId, position: 3)
+		try storeTrack(store, id: "track-bravo", title: "Bravo", collectionId: playlistId, position: 4)
+
+		let (page1, failures1) = try await store.getCollectionItems(
+			collectionType: .playlists,
+			resourceId: playlistId,
+			limit: 2,
+			sort: .title(direction: .ascending)
+		)
+		XCTAssertTrue(failures1.isEmpty)
+		XCTAssertEqual(itemIds(in: page1), ["track-alpha", "track-bravo"])
+		XCTAssertNotNil(page1.cursor)
+
+		let (page2, failures2) = try await store.getCollectionItems(
+			collectionType: .playlists,
+			resourceId: playlistId,
+			limit: 2,
+			sort: .title(direction: .ascending),
+			after: page1.cursor
+		)
+		XCTAssertTrue(failures2.isEmpty)
+		XCTAssertEqual(itemIds(in: page2), ["track-echo", "track-zulu"])
+	}
+
+	func testSortByAlbumPlacesItemsWithoutAlbumLast() async throws {
+		let (store, _) = try createStore()
+		let playlistId = "playlist-album-sort"
+
+		try storeTrack(store, id: "track-beta", title: "Beta Track", albumTitle: "Beta Album", collectionId: playlistId, position: 1)
+		try storeVideo(store, id: "video-no-album", title: "Video", collectionId: playlistId, position: 2)
+		try storeTrack(store, id: "track-alpha", title: "Alpha Track", albumTitle: "Alpha Album", collectionId: playlistId, position: 3)
+
+		let (page, failures) = try await store.getCollectionItems(
+			collectionType: .playlists,
+			resourceId: playlistId,
+			limit: 10,
+			sort: .album(direction: .ascending)
+		)
+
+		XCTAssertTrue(failures.isEmpty)
+		XCTAssertEqual(itemIds(in: page), ["track-alpha", "track-beta", "video-no-album"])
+	}
+
+	func testSortByArtistDescending() async throws {
+		let (store, _) = try createStore()
+		let playlistId = "playlist-artist-sort"
+
+		try storeTrack(store, id: "track-alpha", title: "First", artists: ["Alpha Artist"], collectionId: playlistId, position: 1)
+		try storeTrack(store, id: "track-zed", title: "Second", artists: ["Zed Artist"], collectionId: playlistId, position: 2)
+		try storeTrack(store, id: "track-beta", title: "Third", artists: ["Beta Artist"], collectionId: playlistId, position: 3)
+
+		let (page, failures) = try await store.getCollectionItems(
+			collectionType: .playlists,
+			resourceId: playlistId,
+			limit: 10,
+			sort: .artist(direction: .descending)
+		)
+
+		XCTAssertTrue(failures.isEmpty)
+		XCTAssertEqual(itemIds(in: page), ["track-zed", "track-beta", "track-alpha"])
+	}
+
+	func testSortByDateAddedDescendingUsesRelationshipAddedAt() async throws {
+		let (store, _) = try createStore()
+		let playlistId = "playlist-date-sort"
+		let oldest = Date(timeIntervalSince1970: 1_767_225_600)
+		let middle = Date(timeIntervalSince1970: 1_767_312_000)
+		let newest = Date(timeIntervalSince1970: 1_767_398_400)
+
+		try storeTrack(store, id: "track-oldest", title: "Oldest", collectionId: playlistId, position: 1, addedAt: oldest)
+		try storeTrack(store, id: "track-newest", title: "Newest", collectionId: playlistId, position: 2, addedAt: newest)
+		try storeTrack(store, id: "track-middle", title: "Middle", collectionId: playlistId, position: 3, addedAt: middle)
+
+		let (page, failures) = try await store.getCollectionItems(
+			collectionType: .playlists,
+			resourceId: playlistId,
+			limit: 10,
+			sort: .dateAdded(direction: .descending)
+		)
+
+		XCTAssertTrue(failures.isEmpty)
+		XCTAssertEqual(itemIds(in: page), ["track-newest", "track-middle", "track-oldest"])
+	}
+
+	func testSortByDateAddedPlacesMissingDatesLast() async throws {
+		let (store, _) = try createStore()
+		let playlistId = "playlist-date-sort-missing"
+
+		try storeTrack(
+			store,
+			id: "track-with-date",
+			title: "With Date",
+			collectionId: playlistId,
+			position: 1,
+			addedAt: Date(timeIntervalSince1970: 1_767_225_600)
+		)
+		try storeTrack(store, id: "track-missing-date", title: "Missing Date", collectionId: playlistId, position: 2)
+
+		let (page, failures) = try await store.getCollectionItems(
+			collectionType: .playlists,
+			resourceId: playlistId,
+			limit: 10,
+			sort: .dateAdded(direction: .descending)
+		)
+
+		XCTAssertTrue(failures.isEmpty)
+		XCTAssertEqual(itemIds(in: page), ["track-with-date", "track-missing-date"])
+	}
+
 	// MARK: - Helpers
 
 	private func runAllTasks(_ offliner: Offliner, backend: StubOfflineApiClient, expectedDownloads: Int) async throws {
@@ -348,5 +509,122 @@ final class CollectionItemsTests: OfflinerTestCase {
 		}
 
 		await runTask
+	}
+
+	private func createStore() throws -> (OfflineStore, DatabaseQueue) {
+		let dbPath = tempDir.appendingPathComponent("test-\(UUID().uuidString).sqlite").path
+		let databaseQueue = try DatabaseQueue(path: dbPath)
+		try Migrations.run(databaseQueue)
+		return (OfflineStore(databaseQueue), databaseQueue)
+	}
+
+	private func storeTrack(
+		_ store: OfflineStore,
+		id: String,
+		title: String,
+		artists: [String] = [],
+		albumTitle: String? = nil,
+		collectionId: String,
+		position: Int,
+		addedAt: Date? = nil
+	) throws {
+		try store.storeMediaItem(StoreItemTaskResult(
+			resourceType: OfflineMediaItemType.tracks.rawValue,
+			resourceId: id,
+			catalogMetadata: .track(.init(
+				id: id,
+				title: title,
+				artists: artists,
+				albumTitle: albumTitle,
+				duration: 120,
+				explicit: false,
+				backgroundColorHex: nil
+			)),
+			playbackMetadata: nil,
+			collectionResourceType: OfflineCollectionType.playlists.rawValue,
+			collectionResourceId: collectionId,
+			volume: 1,
+			position: position,
+			addedAt: addedAt,
+			mediaURL: mediaFileURL(for: id),
+			licenseURL: nil,
+			artworkURL: nil
+		))
+	}
+
+	private func storeVideo(
+		_ store: OfflineStore,
+		id: String,
+		title: String,
+		artists: [String] = [],
+		collectionId: String,
+		position: Int,
+		addedAt: Date? = nil
+	) throws {
+		try store.storeMediaItem(StoreItemTaskResult(
+			resourceType: OfflineMediaItemType.videos.rawValue,
+			resourceId: id,
+			catalogMetadata: .video(.init(
+				id: id,
+				title: title,
+				artists: artists,
+				duration: 120,
+				explicit: false
+			)),
+			playbackMetadata: nil,
+			collectionResourceType: OfflineCollectionType.playlists.rawValue,
+			collectionResourceId: collectionId,
+			volume: 1,
+			position: position,
+			addedAt: addedAt,
+			mediaURL: mediaFileURL(for: id),
+			licenseURL: nil,
+			artworkURL: nil
+		))
+	}
+
+	private func mediaFileURL(for id: String) throws -> URL {
+		let url = tempDir.appendingPathComponent("\(id).m4a")
+		try Data(id.utf8).write(to: url)
+		return url
+	}
+
+	private func itemIds(in page: OfflineCollectionItemsPage) -> [String] {
+		page.items.map(\.item.catalogMetadata.id)
+	}
+
+	private func makeTrack(id: String, title: String) -> TracksResourceObject {
+		TracksResourceObject(
+			attributes: TracksAttributes(
+				duration: "PT2M",
+				explicit: false,
+				isrc: "ISRC-\(id)",
+				key: .c,
+				keyScale: .major,
+				mediaTags: [],
+				popularity: 0,
+				title: title
+			),
+			id: id,
+			type: "tracks"
+		)
+	}
+
+	private func makeAlbum(id: String, title: String) -> AlbumsResourceObject {
+		AlbumsResourceObject(
+			attributes: AlbumsAttributes(
+				albumType: .album,
+				barcodeId: "barcode-\(id)",
+				duration: "PT2M",
+				explicit: false,
+				mediaTags: [],
+				numberOfItems: 1,
+				numberOfVolumes: 1,
+				popularity: 0,
+				title: title
+			),
+			id: id,
+			type: "albums"
+		)
 	}
 }

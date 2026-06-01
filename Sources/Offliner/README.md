@@ -178,7 +178,15 @@ for item in page.items {
     // item.item - the OfflineMediaItem
     // item.volume - disc number
     // item.position - track number within the volume
+    // item.addedAt - optional playlist relationship date used for date-added sorting
 }
+
+let sortedPage = try await offliner.getOfflineCollectionItems(
+    collectionType: .playlists,
+    resourceId: "playlist-id",
+    limit: 20,
+    sort: .title(direction: .ascending)
+)
 
 // Fetch next page using the cursor
 if let cursor = page.cursor {
@@ -190,6 +198,10 @@ if let cursor = page.cursor {
     )
 }
 ```
+
+Omitting `sort` returns stored collection order. Supported selectable collection item sorts are date added, title, album,
+and artist. Album sorting uses stored track album metadata when available; items without album metadata sort after
+album-backed items.
 
 ### Collection Utilities
 

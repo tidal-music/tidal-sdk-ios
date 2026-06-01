@@ -62,11 +62,13 @@ final class OfflineStore {
 						member_resource_type,
 						member_resource_id,
 						volume,
-						position)
-					VALUES (?, ?, ?, ?, ?, ?)
+						position,
+						added_at)
+					VALUES (?, ?, ?, ?, ?, ?, ?)
 					ON CONFLICT (collection_resource_type, collection_resource_id, volume, position) DO UPDATE SET
 						member_resource_type = excluded.member_resource_type,
-						member_resource_id = excluded.member_resource_id
+						member_resource_id = excluded.member_resource_id,
+						added_at = COALESCE(excluded.added_at, offline_item_relationship.added_at)
 					""",
 				arguments: [
 					result.collectionResourceType,
@@ -74,7 +76,8 @@ final class OfflineStore {
 					result.resourceType,
 					result.resourceId,
 					result.volume,
-					result.position]
+					result.position,
+					encodeRelationshipAddedAt(result.addedAt)]
 			)
 
 			return .commit
@@ -284,27 +287,16 @@ final class OfflineStore {
 		collectionType: OfflineCollectionType,
 		resourceId: String,
 		limit: Int,
+		sort: OfflineCollectionItemSort? = nil,
 		after cursor: Int64? = nil
 	) async throws -> (OfflineCollectionItemsPage, [FailedOfflineItem]) {
-		let cursorVolume = cursor.map { Int($0 / 1_000_000) } ?? -1
-		let cursorPosition = cursor.map { Int($0 % 1_000_000) } ?? -1
+		let query = CollectionItemsQuery(sort: sort)
 
 		let (items, failures) = try await databaseQueue.write { [self] database -> ([OfflineCollectionItem], [FailedOfflineItem]) in
 			let rows = try Row.fetchAll(
 				database,
-				sql: """
-					SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
-					       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
-					       r.volume, r.position
-					FROM offline_item_relationship r
-					JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
-					WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
-					  AND (r.volume > ? OR (r.volume = ? AND r.position > ?))
-					  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
-					ORDER BY r.volume, r.position
-					LIMIT ?
-					""",
-				arguments: [collectionType.rawValue, resourceId, cursorVolume, cursorVolume, cursorPosition, limit]
+				sql: query.sql,
+				arguments: [collectionType.rawValue, resourceId, cursor, cursor, limit]
 			)
 
 			var items: [OfflineCollectionItem] = []
@@ -321,7 +313,7 @@ final class OfflineStore {
 			return (items, failures)
 		}
 
-		let nextCursor = items.last.map { Int64($0.volume) * 1_000_000 + Int64($0.position) }
+		let nextCursor = items.last?.cursor
 		return (OfflineCollectionItemsPage(items: items, cursor: nextCursor), failures)
 	}
 
@@ -391,8 +383,187 @@ final class OfflineStore {
 		OfflineCollectionItem(
 			item: try OfflineMediaItem(from: row, store: self, database: database),
 			volume: row["volume"],
-			position: row["position"]
+			position: row["position"],
+			addedAt: decodeRelationshipAddedAt(row["relationship_added_at"]),
+			cursor: row["relationship_id"]
 		)
+	}
+}
+
+private func encodeRelationshipAddedAt(_ date: Date?) -> String? {
+	guard let date else { return nil }
+	let formatter = ISO8601DateFormatter()
+	formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+	return formatter.string(from: date)
+}
+
+private func decodeRelationshipAddedAt(_ string: String?) -> Date? {
+	guard let string else { return nil }
+
+	let formatter = ISO8601DateFormatter()
+	formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+	if let date = formatter.date(from: string) {
+		return date
+	}
+
+	formatter.formatOptions = [.withInternetDateTime]
+	return formatter.date(from: string)
+}
+
+// MARK: - Collection Items Query
+
+private struct CollectionItemsQuery {
+	let sql: String
+
+	init(sort: OfflineCollectionItemSort?) {
+		let sortKeys = Self.sortKeys(for: sort)
+		let orderBy = sortKeys
+			.map { "collection_items.\($0.column) \($0.direction.sql)" }
+			.joined(separator: ", ")
+		let cursorPredicate = Self.cursorPredicate(for: sortKeys)
+
+		sql = """
+		WITH collection_items AS (
+			SELECT r.id AS relationship_id,
+			       i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
+			       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
+			       r.volume, r.position, r.added_at AS relationship_added_at,
+			       CASE
+			         WHEN r.added_at IS NULL THEN 1
+			         ELSE 0
+			       END AS date_added_missing_sort_value,
+			       r.added_at AS date_added_sort_value,
+			       LOWER(COALESCE(json_extract(i.catalog_metadata, '$.title'), '')) AS title_sort_value,
+			       CASE
+			         WHEN COALESCE(json_extract(i.catalog_metadata, '$.albumTitle'), '') = '' THEN 1
+			         ELSE 0
+			       END AS album_missing_sort_value,
+			       LOWER(COALESCE(json_extract(i.catalog_metadata, '$.albumTitle'), '')) AS album_sort_value,
+			       CASE
+			         WHEN COALESCE(json_extract(i.catalog_metadata, '$.artists[0]'), '') = '' THEN 1
+			         ELSE 0
+			       END AS artist_missing_sort_value,
+			       LOWER(COALESCE(json_extract(i.catalog_metadata, '$.artists[0]'), '')) AS artist_sort_value
+			FROM offline_item_relationship r
+			JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
+			WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+			  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
+		),
+		cursor_item AS (
+			SELECT *
+			FROM collection_items
+			WHERE relationship_id = ?
+		)
+		SELECT resource_type, resource_id, catalog_metadata, playback_metadata,
+		       media_bookmark, license_bookmark, artwork_bookmark,
+		       volume, position, relationship_added_at, relationship_id
+		FROM collection_items
+		WHERE ? IS NULL
+		   OR (
+			EXISTS (SELECT 1 FROM cursor_item)
+			AND (\(cursorPredicate))
+		   )
+		ORDER BY \(orderBy)
+		LIMIT ?
+		"""
+	}
+
+	private static func sortKeys(for sort: OfflineCollectionItemSort?) -> [CollectionItemSortKey] {
+		guard let sort else {
+			return [
+				CollectionItemSortKey(column: "volume", direction: .ascending),
+				CollectionItemSortKey(column: "position", direction: .ascending),
+				CollectionItemSortKey(column: "relationship_id", direction: .ascending),
+			]
+		}
+
+		switch sort {
+		case .dateAdded(let direction):
+			return [
+				CollectionItemSortKey(column: "date_added_missing_sort_value", direction: .ascending),
+				CollectionItemSortKey(column: "date_added_sort_value", direction: direction, nullable: true),
+				CollectionItemSortKey(column: "volume", direction: .ascending),
+				CollectionItemSortKey(column: "position", direction: .ascending),
+				CollectionItemSortKey(column: "relationship_id", direction: .ascending),
+			]
+
+		case .title(let direction):
+			return [
+				CollectionItemSortKey(column: "title_sort_value", direction: direction),
+				CollectionItemSortKey(column: "volume", direction: .ascending),
+				CollectionItemSortKey(column: "position", direction: .ascending),
+				CollectionItemSortKey(column: "relationship_id", direction: .ascending),
+			]
+
+		case .album(let direction):
+			return [
+				CollectionItemSortKey(column: "album_missing_sort_value", direction: .ascending),
+				CollectionItemSortKey(column: "album_sort_value", direction: direction),
+				CollectionItemSortKey(column: "volume", direction: .ascending),
+				CollectionItemSortKey(column: "position", direction: .ascending),
+				CollectionItemSortKey(column: "relationship_id", direction: .ascending),
+			]
+
+		case .artist(let direction):
+			return [
+				CollectionItemSortKey(column: "artist_missing_sort_value", direction: .ascending),
+				CollectionItemSortKey(column: "artist_sort_value", direction: direction),
+				CollectionItemSortKey(column: "volume", direction: .ascending),
+				CollectionItemSortKey(column: "position", direction: .ascending),
+				CollectionItemSortKey(column: "relationship_id", direction: .ascending),
+			]
+		}
+	}
+
+	private static func cursorPredicate(for sortKeys: [CollectionItemSortKey]) -> String {
+		sortKeys.indices
+			.map { index in
+				let previousKeys = sortKeys.prefix(index)
+				let equalities = previousKeys.map { key in
+					key.equalityExpression
+				}
+				let key = sortKeys[index]
+				let comparison = "collection_items.\(key.column) \(key.direction.cursorComparator) (SELECT \(key.column) FROM cursor_item)"
+				return "(\((equalities + [comparison]).joined(separator: " AND ")))"
+			}
+			.joined(separator: " OR ")
+	}
+}
+
+private struct CollectionItemSortKey {
+	let column: String
+	let direction: OfflineCollectionItemSortDirection
+	let nullable: Bool
+
+	init(column: String, direction: OfflineCollectionItemSortDirection, nullable: Bool = false) {
+		self.column = column
+		self.direction = direction
+		self.nullable = nullable
+	}
+
+	var equalityExpression: String {
+		let lhs = "collection_items.\(column)"
+		let rhs = "(SELECT \(column) FROM cursor_item)"
+		if nullable {
+			return "(\(lhs) = \(rhs) OR (\(lhs) IS NULL AND \(rhs) IS NULL))"
+		}
+		return "\(lhs) = \(rhs)"
+	}
+}
+
+private extension OfflineCollectionItemSortDirection {
+	var sql: String {
+		switch self {
+		case .ascending: "ASC"
+		case .descending: "DESC"
+		}
+	}
+
+	var cursorComparator: String {
+		switch self {
+		case .ascending: ">"
+		case .descending: "<"
+		}
 	}
 }
 
@@ -423,6 +594,7 @@ struct StoreItemTaskResult {
 	let collectionResourceId: String
 	let volume: Int
 	let position: Int
+	let addedAt: Date?
 	let mediaURL: URL
 	let licenseURL: URL?
 	let artworkURL: URL?

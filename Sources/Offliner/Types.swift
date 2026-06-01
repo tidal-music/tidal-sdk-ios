@@ -37,6 +37,7 @@ public struct OfflineMediaItem {
 		public let id: String
 		public let title: String
 		public let artists: [String]
+		public let albumTitle: String?
 		public let duration: Int
 		public let explicit: Bool
 		public let backgroundColorHex: String?
@@ -171,12 +172,55 @@ public struct OfflineCollection: Hashable {
 	}
 }
 
+public enum OfflineCollectionItemSortDirection: Hashable {
+	case ascending
+	case descending
+}
+
+public enum OfflineCollectionItemSort: Hashable {
+	case dateAdded(direction: OfflineCollectionItemSortDirection)
+	case title(direction: OfflineCollectionItemSortDirection)
+	case album(direction: OfflineCollectionItemSortDirection)
+	case artist(direction: OfflineCollectionItemSortDirection)
+}
+
 // MARK: - OfflineCollectionItem
 
 public struct OfflineCollectionItem {
 	public let item: OfflineMediaItem
 	public let volume: Int
 	public let position: Int
+	public let addedAt: Date?
+	let cursor: Int64
+
+	public init(
+		item: OfflineMediaItem,
+		volume: Int,
+		position: Int,
+		addedAt: Date?
+	) {
+		self.init(
+			item: item,
+			volume: volume,
+			position: position,
+			addedAt: addedAt,
+			cursor: Int64(volume) * 1_000_000 + Int64(position)
+		)
+	}
+
+	init(
+		item: OfflineMediaItem,
+		volume: Int,
+		position: Int,
+		addedAt: Date?,
+		cursor: Int64
+	) {
+		self.item = item
+		self.volume = volume
+		self.position = position
+		self.addedAt = addedAt
+		self.cursor = cursor
+	}
 }
 
 // MARK: - OfflineCollectionItemsPage
