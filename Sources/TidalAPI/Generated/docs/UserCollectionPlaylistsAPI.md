@@ -181,7 +181,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionPlaylistsIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionPlaylistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -195,7 +195,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection playlists id. Use `me` for the authenticated user's resource
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userCollectionPlaylistsItemsRelationshipAddOperationPayload = UserCollectionPlaylistsItemsRelationshipAddOperation_Payload(data: [UserCollectionPlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionPlaylistsItemsRelationshipAddOperationPayload |  (optional)
+let userCollectionPlaylistsItemsRelationshipAddOperationPayload = UserCollectionPlaylistsItemsRelationshipAddOperation_Payload(data: [UserCollectionPlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionPlaylistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionPlaylistsItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
 UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload) { (response, error) in
@@ -220,7 +220,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionPlaylistsItemsMultiRelationshipDataDocument**](UserCollectionPlaylistsItemsMultiRelationshipDataDocument.md)
+[**UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument**](UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 

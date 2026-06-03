@@ -42,10 +42,12 @@ public enum UserCollectionPlaylistsAPITidal {
 	 * enum for parameter collectionView
 	 */
 	public enum CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet: String, CaseIterable {
+		case flat = "FLAT"
 		case folders = "FOLDERS"
 
 		func toUserCollectionPlaylistsAPIEnum() -> UserCollectionPlaylistsAPI.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet {
 			switch self {
+			case .flat: return .flat
 			case .folders: return .folders
 			}
 		}
@@ -89,9 +91,9 @@ public enum UserCollectionPlaylistsAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionPlaylistsItemsMultiRelationshipDataDocument
+     - returns: UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument
      */
-	public static func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
+	public static func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload)
 		}

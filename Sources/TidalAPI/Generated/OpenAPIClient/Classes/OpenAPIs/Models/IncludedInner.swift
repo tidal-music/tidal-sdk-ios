@@ -44,6 +44,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case purchasesResourceObject(PurchasesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
+    case scopesResourceObject(ScopesResourceObject)
     case searchHistoryEntriesResourceObject(SearchHistoryEntriesResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
@@ -147,6 +148,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .reactionsResourceObject(let value):
             try container.encode(value)
         case .savedSharesResourceObject(let value):
+            try container.encode(value)
+        case .scopesResourceObject(let value):
             try container.encode(value)
         case .searchHistoryEntriesResourceObject(let value):
             try container.encode(value)
@@ -327,6 +330,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "savedShares":
             let value = try SavedSharesResourceObject(from: decoder)
             self = .savedSharesResourceObject(value)
+        case "scopes":
+            let value = try ScopesResourceObject(from: decoder)
+            self = .scopesResourceObject(value)
         case "searchHistoryEntries":
             let value = try SearchHistoryEntriesResourceObject(from: decoder)
             self = .searchHistoryEntriesResourceObject(value)
@@ -472,6 +478,7 @@ extension IncludedInner: Identifiable {
         case .purchasesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
+        case .scopesResourceObject(let value): return value.id
         case .searchHistoryEntriesResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
         case .searchSuggestionsResourceObject(let value): return value.id
