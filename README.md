@@ -37,7 +37,7 @@ After confirming the name, a new directory will be created with the basic module
 4. Inside the search, paste the following link: https://github.com/tidal-open-source/tidal-sdk-ios
 5. Select the packages you wish to import
 
-note: make sure to select the latest version or a desired branch when importing the SPM
+Note: make sure to select the latest version or a desired branch when importing the SPM
 
 ## How to preview documentation locally
 
