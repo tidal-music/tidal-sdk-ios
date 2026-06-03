@@ -11,6 +11,7 @@ final class LoginRepository {
 	private let tokensStore: TokensStore
 	private let exponentialBackoffPolicy: RetryPolicy
 	private let logger: TidalLogger?
+	private let deviceLoginPollHelper: DeviceLoginPollHelper
 
 	private var codeVerifier: String?
 
@@ -30,9 +31,8 @@ final class LoginRepository {
 		self.loginService = loginService
 		self.exponentialBackoffPolicy = exponentialBackoffPolicy
 		self.logger = logger
+		deviceLoginPollHelper = DeviceLoginPollHelper(loginService: loginService)
 	}
-
-	private lazy var deviceLoginPollHelper: DeviceLoginPollHelper = DeviceLoginPollHelper(loginService: loginService)
 
 	var isLoggedIn: Bool {
 		let tokens = try? tokensStore.getLatestTokens()
