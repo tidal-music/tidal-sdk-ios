@@ -1,7 +1,7 @@
 import Auth
 import AVFoundation
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -14,7 +14,8 @@ private enum Constants {
 
 // MARK: - StreamingPrivilegesHandlerTests
 
-final class StreamingPrivilegesHandlerTests: XCTestCase {
+@Suite(.serialized)
+final class StreamingPrivilegesHandlerTests {
 	private let date = Date(timeIntervalSince1970: 1)
 	private var httpClient: HttpClient!
 	private var credentialsProvider: CredentialsProviderMock!
@@ -26,9 +27,7 @@ final class StreamingPrivilegesHandlerTests: XCTestCase {
 	private let decoder = JSONDecoder()
 	private var configuration: Configuration!
 
-	override func setUp() {
-		super.setUp()
-
+	init() {
 		let timeProvider = TimeProvider.mock(
 			date: {
 				self.date
@@ -72,6 +71,7 @@ final class StreamingPrivilegesHandlerTests: XCTestCase {
 extension StreamingPrivilegesHandlerTests {
 	// MARK: - notify
 
+	@Test
 	func test_notify_whenAuthorized_and_webSocketReturns_PRIVILEGED_SESSION_NOTIFICATION_should_sendUserActionAsMessage_and_call_streamingPrivilegesLost_fromDelegate(
 	) async throws {
 		// GIVEN
@@ -120,25 +120,26 @@ extension StreamingPrivilegesHandlerTests {
 		// THEN
 
 		// The web socket is opened (one message is sent)
-		XCTAssertEqual(task.sendMessages.count, 1)
+		#expect(task.sendMessages.count == 1)
 
 		// The message sent should be a string and properly decoded to `UserAction`.
 		assertUserActionMessage(of: task)
 
 		// Opens the web socket with given connect response.
-		XCTAssertEqual(webSocket.responses, [Constants.webSocketConnectResponse])
+		#expect(webSocket.responses == [Constants.webSocketConnectResponse])
 
 		// Cancel is not called
-		XCTAssertEqual(task.isCancelled, false)
-		XCTAssertEqual(task.cancelCallCount, 0)
+		#expect(task.isCancelled == false)
+		#expect(task.cancelCallCount == 0)
 
 		// PRIVILEGED_SESSION_NOTIFICATION is received from the web socket and the func ``streamingPrivilegesLost(to:)`` of delegate is
 		// called.
-		XCTAssertEqual(streamingPrivilegesHandlerDelegate.streamingPrivilegesLostClientNames, ["web"])
+		#expect(streamingPrivilegesHandlerDelegate.streamingPrivilegesLostClientNames == ["web"])
 
 		notifyTask.cancel()
 	}
 
+	@Test
 	func test_when_offlineMode_isChanged_it_disconnects_from_webSocket() async throws {
 		// GIVEN
 
@@ -181,19 +182,20 @@ extension StreamingPrivilegesHandlerTests {
 		// THEN
 
 		// The web socket is opened (one message is sent)
-		XCTAssertEqual(task.sendMessages.count, 1)
+		#expect(task.sendMessages.count == 1)
 
 		// Opens the web socket with given connect response.
-		XCTAssertEqual(webSocket.responses, [Constants.webSocketConnectResponse])
+		#expect(webSocket.responses == [Constants.webSocketConnectResponse])
 
 		// Cancel is called with proper cancel code.
-		XCTAssertEqual(task.isCancelled, true)
-		XCTAssertEqual(task.cancelCallCount, 1)
-		XCTAssertEqual(task.cancelCloseCodes, [.normalClosure])
+		#expect(task.isCancelled == true)
+		#expect(task.cancelCallCount == 1)
+		#expect(task.cancelCloseCodes == [.normalClosure])
 
 		notifyTask.cancel()
 	}
 
+	@Test
 	func test_notify_whenAuthorized_and_webSocketReturns_RECONNECT_should_reconnect() async throws {
 		// GIVEN
 
@@ -239,21 +241,22 @@ extension StreamingPrivilegesHandlerTests {
 		// THEN
 
 		// The web socket is opened (one message is sent)
-		XCTAssertEqual(task.sendMessages.count, 1)
+		#expect(task.sendMessages.count == 1)
 
 		// The message sent should be a string and properly decoded to `UserAction`.
 		assertUserActionMessage(of: task)
 
 		// Opens the web socket with given connect response twice: first from the notify flow, and then from the reconnecting attempts.
-		XCTAssertEqual(webSocket.responses, [Constants.webSocketConnectResponse, Constants.webSocketConnectResponse])
+		#expect(webSocket.responses == [Constants.webSocketConnectResponse, Constants.webSocketConnectResponse])
 
 		// Cancel is not called
-		XCTAssertEqual(task.isCancelled, false)
-		XCTAssertEqual(task.cancelCallCount, 0)
+		#expect(task.isCancelled == false)
+		#expect(task.cancelCallCount == 0)
 
 		notifyTask.cancel()
 	}
 
+	@Test
 	func test_notify_whenNotAuthorized_should_notConnect() async throws {
 		// GIVEN
 
@@ -269,13 +272,14 @@ extension StreamingPrivilegesHandlerTests {
 
 		// THEN
 		// The web socket is not opened and cancel is not called
-		XCTAssertEqual(task.isCancelled, false)
-		XCTAssertEqual(task.cancelCallCount, 0)
+		#expect(task.isCancelled == false)
+		#expect(task.cancelCallCount == 0)
 
 		// It doesn't open the web socket.
-		XCTAssertEqual(webSocket.responses, [])
+		#expect(webSocket.responses == [])
 	}
 
+	@Test
 	func test_notify_whenAuthorized_and_throwsErrors_shouldConsiderBackoffPolicy() async {
 		// GIVEN
 
@@ -321,35 +325,36 @@ extension StreamingPrivilegesHandlerTests {
 		// THEN
 
 		// The web socket is opened (one message is sent)
-		XCTAssertEqual(task.sendMessages.count, 1)
+		#expect(task.sendMessages.count == 1)
 
 		// The message sent should be a string and properly decoded to `UserAction`.
 		assertUserActionMessage(of: task)
 
 		// Opens the web socket with given connect response: 1 from the notify and then 6 from the max number of attempts.
-		XCTAssertEqual(
-			webSocket.responses,
-			[
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-			]
+		#expect(
+			webSocket.responses ==
+				[
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+				]
 		)
 
 		// Cancel is not called
-		XCTAssertEqual(task.isCancelled, false)
-		XCTAssertEqual(task.cancelCallCount, 0)
+		#expect(task.isCancelled == false)
+		#expect(task.cancelCallCount == 0)
 
 		// Make sure it called `onFailedAttempt` the max number of attempts.
-		XCTAssertEqual(backoffPolicy.counter, maxErrorReconnectAttempts)
+		#expect(backoffPolicy.counter == maxErrorReconnectAttempts)
 
 		notifyTask.cancel()
 	}
 
+	@Test
 	func test_notify_whenAuthorized_and_throwsErrors_shouldConsiderBackoffPolicy_andAfterwards_webSocketReturns_PRIVILEGED_SESSION_NOTIFICATION_should_call_streamingPrivilegesLost_fromDelegate(
 	) async {
 		// GIVEN
@@ -405,39 +410,40 @@ extension StreamingPrivilegesHandlerTests {
 		// THEN
 
 		// The web socket is opened (one message is sent)
-		XCTAssertEqual(task.sendMessages.count, 1)
+		#expect(task.sendMessages.count == 1)
 
 		// The message sent should be a string and properly decoded to `UserAction`.
 		assertUserActionMessage(of: task)
 
 		// Opens the web socket with given connect response: 1 from the notify and then 6 from the max number of attempts.
-		XCTAssertEqual(
-			webSocket.responses,
-			[
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-			]
+		#expect(
+			webSocket.responses ==
+				[
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+				]
 		)
 
 		// Cancel is not called
-		XCTAssertEqual(task.isCancelled, false)
-		XCTAssertEqual(task.cancelCallCount, 0)
+		#expect(task.isCancelled == false)
+		#expect(task.cancelCallCount == 0)
 
 		// Make sure it called `onFailedAttempt` the max number of attempts.
-		XCTAssertEqual(backoffPolicy.counter, maxErrorReconnectAttempts)
+		#expect(backoffPolicy.counter == maxErrorReconnectAttempts)
 
 		// PRIVILEGED_SESSION_NOTIFICATION is received from the web socket and the func ``streamingPrivilegesLost(to:)`` of delegate is
 		// called.
-		XCTAssertEqual(streamingPrivilegesHandlerDelegate.streamingPrivilegesLostClientNames, ["web"])
+		#expect(streamingPrivilegesHandlerDelegate.streamingPrivilegesLostClientNames == ["web"])
 
 		notifyTask.cancel()
 	}
 
+	@Test
 	func test_notify_whenAuthorized_and_throwsErrors_shouldConsiderBackoffPolicy_andAfterwards_webSocketReturns_RECONNECT_should_reconnect(
 	) async {
 		// GIVEN
@@ -493,33 +499,33 @@ extension StreamingPrivilegesHandlerTests {
 		// THEN
 
 		// The web socket is opened (one message is sent)
-		XCTAssertEqual(task.sendMessages.count, 1)
+		#expect(task.sendMessages.count == 1)
 
 		// The message sent should be a string and properly decoded to `UserAction`.
 		assertUserActionMessage(of: task)
 
 		// Opens the web socket with given connect response: 1 from the notify, 6 from the max number of attempts, and one more from the
 		// reconnect.
-		XCTAssertEqual(
-			webSocket.responses,
-			[
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-				Constants.webSocketConnectResponse,
-			]
+		#expect(
+			webSocket.responses ==
+				[
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+					Constants.webSocketConnectResponse,
+				]
 		)
 
 		// Cancel is not called
-		XCTAssertEqual(task.isCancelled, false)
-		XCTAssertEqual(task.cancelCallCount, 0)
+		#expect(task.isCancelled == false)
+		#expect(task.cancelCallCount == 0)
 
 		// Make sure it called `onFailedAttempt` the max number of attempts.
-		XCTAssertEqual(backoffPolicy.counter, maxErrorReconnectAttempts)
+		#expect(backoffPolicy.counter == maxErrorReconnectAttempts)
 
 		notifyTask.cancel()
 	}
@@ -532,10 +538,10 @@ extension StreamingPrivilegesHandlerTests {
 			let userAction = try? decoder.decode(UserAction.self, from: data)
 
 			// An UserAction is sent
-			XCTAssertEqual(userAction, UserAction())
+			#expect(userAction == UserAction())
 
 		default:
-			XCTFail("Expected task to have received a message.string")
+			Issue.record("Expected task to have received a message.string")
 		}
 	}
 }

@@ -1,5 +1,5 @@
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -10,11 +10,12 @@ private enum Constants {
 
 // MARK: - MetricsTests
 
-final class MetricsTests: XCTestCase {
+@Suite(.serialized)
+final class MetricsTests {
 	private var timestamp: UInt64 = Constants.initialTime
 	private var metrics: Metrics!
 
-	override func setUp() {
+	init() {
 		let timeProvider = TimeProvider.mock(
 			timestamp: {
 				self.timestamp
@@ -29,22 +30,24 @@ final class MetricsTests: XCTestCase {
 extension MetricsTests {
 	// MARK: - recordProgress
 
+	@Test
 	func test_playbackFailedWithin5seconds() {
 		// Test arithmetic overflow crash when now > idealStartTime
 		timestamp = 0
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .OTHER))
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .OTHER))
 
 		timestamp = 5005
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(
-			metrics.endInfo,
-			Metrics.EndInfo.mock(reason: .ERROR, message: Metrics.EndInfo.Constants.failed_within_5seconds)
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(
+			metrics.endInfo ==
+				Metrics.EndInfo.mock(reason: .ERROR, message: Metrics.EndInfo.Constants.failed_within_5seconds)
 		)
 	}
 
+	@Test
 	func test_recordProgress() {
 		assertRecordProgress()
 	}
@@ -55,80 +58,84 @@ extension MetricsTests {
 		let assetPosition = Constants.assetPosition
 		metrics.recordProgress(at: assetPosition)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, timestamp)
-		XCTAssertEqual(metrics.startAssetPosition, assetPosition)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == timestamp)
+		#expect(metrics.startAssetPosition == assetPosition)
 
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .OTHER))
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .OTHER))
 
-		XCTAssertEqual(metrics.actions, [])
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == [])
+		#expect(metrics.stalls == [])
 	}
 
 	// MARK: - recordPause
 
+	@Test
 	func test_recordPause() {
 		timestamp = Constants.initialTime
 
 		let assetPosition = Constants.assetPosition
 		metrics.recordPause(at: assetPosition)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, nil)
-		XCTAssertEqual(metrics.startAssetPosition, nil)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == nil)
+		#expect(metrics.startAssetPosition == nil)
 
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .OTHER))
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .OTHER))
 
 		let actions = [Action.mock(actionType: .PLAYBACK_STOP, assetPosition: assetPosition, timestamp: timestamp)]
-		XCTAssertEqual(metrics.actions, actions)
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == actions)
+		#expect(metrics.stalls == [])
 	}
 
 	// MARK: - recordSeek
 
+	@Test
 	func test_recordSeek() {
 		timestamp = Constants.initialTime
 
 		let assetPosition = Constants.assetPosition
 		metrics.recordSeek(at: assetPosition)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, nil)
-		XCTAssertEqual(metrics.startAssetPosition, nil)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == nil)
+		#expect(metrics.startAssetPosition == nil)
 
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .OTHER))
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .OTHER))
 
 		let actions = [Action.mock(actionType: .PLAYBACK_STOP, assetPosition: assetPosition, timestamp: timestamp)]
-		XCTAssertEqual(metrics.actions, actions)
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == actions)
+		#expect(metrics.stalls == [])
 	}
 
 	// MARK: - recordStall
 
+	@Test
 	func test_recordStall() {
 		timestamp = Constants.initialTime
 
 		let assetPosition = Constants.assetPosition
 		metrics.recordStall(at: assetPosition)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, nil)
-		XCTAssertEqual(metrics.startAssetPosition, nil)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == nil)
+		#expect(metrics.startAssetPosition == nil)
 
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .OTHER))
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .OTHER))
 
-		XCTAssertEqual(metrics.actions, [])
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == [])
+		#expect(metrics.stalls == [])
 	}
 
+	@Test
 	func test_recordStall_after_recordProgress() {
 		assertRecordProgress()
 
@@ -137,16 +144,16 @@ extension MetricsTests {
 		let assetPosition2: Double = 3
 		metrics.recordStall(at: assetPosition2)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.startAssetPosition, Constants.assetPosition)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == Constants.initialTime)
+		#expect(metrics.startAssetPosition == Constants.assetPosition)
 
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .ERROR, message: "Ended while stalled (counts as error)"))
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .ERROR, message: "Ended while stalled (counts as error)"))
 
 		let actions = [Action.mock(actionType: .PLAYBACK_STOP, assetPosition: assetPosition2, timestamp: timestamp)]
-		XCTAssertEqual(metrics.actions, actions)
+		#expect(metrics.actions == actions)
 
 		let stalls = [Stall.mock(
 			reason: .UNEXPECTED,
@@ -154,9 +161,10 @@ extension MetricsTests {
 			startTimestamp: timestamp,
 			endTimestamp: timestamp
 		)]
-		XCTAssertEqual(metrics.stalls, stalls)
+		#expect(metrics.stalls == stalls)
 	}
 
+	@Test
 	func test_recordStall_after_recordProgress_and_recordSeek() {
 		assertRecordProgress()
 
@@ -166,17 +174,17 @@ extension MetricsTests {
 		let assetPosition: Double = 3
 		metrics.recordSeek(at: assetPosition)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.startAssetPosition, Constants.assetPosition)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == Constants.initialTime)
+		#expect(metrics.startAssetPosition == Constants.assetPosition)
 
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .OTHER))
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .OTHER))
 
 		let actions = [Action.mock(actionType: .PLAYBACK_STOP, assetPosition: assetPosition, timestamp: timestamp)]
-		XCTAssertEqual(metrics.actions, actions)
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == actions)
+		#expect(metrics.stalls == [])
 
 		// record stall
 		timestamp = 3
@@ -184,16 +192,16 @@ extension MetricsTests {
 		let assetPosition2: Double = 4
 		metrics.recordStall(at: assetPosition2)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.startAssetPosition, Constants.assetPosition)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == Constants.initialTime)
+		#expect(metrics.startAssetPosition == Constants.assetPosition)
 
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .ERROR, message: "Ended while stalled (counts as error)"))
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .ERROR, message: "Ended while stalled (counts as error)"))
 
 		// no changes to actions, same as aftre progress
-		XCTAssertEqual(metrics.actions, actions)
+		#expect(metrics.actions == actions)
 
 		let stalls = [Stall.mock(
 			reason: .SEEK,
@@ -201,29 +209,31 @@ extension MetricsTests {
 			startTimestamp: timestamp,
 			endTimestamp: timestamp
 		)]
-		XCTAssertEqual(metrics.stalls, stalls)
+		#expect(metrics.stalls == stalls)
 	}
 
 	// MARK: - recordEnd
 
+	@Test
 	func test_recordEnd_whenReasonIsComplete() {
 		timestamp = Constants.initialTime
 
 		let assetPosition = Constants.assetPosition
 		metrics.recordEnd(endReason: .COMPLETE, assetPosition: assetPosition, error: nil)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, nil)
-		XCTAssertEqual(metrics.startAssetPosition, nil)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == nil)
+		#expect(metrics.startAssetPosition == nil)
 
-		XCTAssertEqual(metrics.endTime, timestamp)
-		XCTAssertEqual(metrics.endAssetPosition, assetPosition)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .COMPLETE))
+		#expect(metrics.endTime == timestamp)
+		#expect(metrics.endAssetPosition == assetPosition)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .COMPLETE))
 
-		XCTAssertEqual(metrics.actions, [])
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == [])
+		#expect(metrics.stalls == [])
 	}
 
+	@Test
 	func test_recordEnd_whenReasonIsError() {
 		timestamp = Constants.initialTime
 
@@ -231,43 +241,45 @@ extension MetricsTests {
 		let error = PlayerError(errorId: ErrorId.EUnexpected, errorCode: "")
 		metrics.recordEnd(endReason: .ERROR, assetPosition: assetPosition, error: error)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, nil)
-		XCTAssertEqual(metrics.startAssetPosition, nil)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == nil)
+		#expect(metrics.startAssetPosition == nil)
 
-		XCTAssertEqual(metrics.endTime, timestamp)
-		XCTAssertEqual(metrics.endAssetPosition, assetPosition)
-		XCTAssertEqual(
-			metrics.endInfo,
-			Metrics.EndInfo.mock(
-				reason: .ERROR,
-				message: "PlayerError(errorId: Player.ErrorId.EUnexpected, errorCode: \"\")",
-				code: "14:1"
-			)
+		#expect(metrics.endTime == timestamp)
+		#expect(metrics.endAssetPosition == assetPosition)
+		#expect(
+			metrics.endInfo ==
+				Metrics.EndInfo.mock(
+					reason: .ERROR,
+					message: "PlayerError(errorId: Player.ErrorId.EUnexpected, errorCode: \"\")",
+					code: "14:1"
+				)
 		)
 
-		XCTAssertEqual(metrics.actions, [])
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == [])
+		#expect(metrics.stalls == [])
 	}
 
+	@Test
 	func test_recordEnd_whenReasonIsError_withoutError() {
 		timestamp = Constants.initialTime
 
 		let assetPosition = Constants.assetPosition
 		metrics.recordEnd(endReason: .ERROR, assetPosition: assetPosition)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, nil)
-		XCTAssertEqual(metrics.startAssetPosition, nil)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == nil)
+		#expect(metrics.startAssetPosition == nil)
 
-		XCTAssertEqual(metrics.endTime, timestamp)
-		XCTAssertEqual(metrics.endAssetPosition, assetPosition)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .ERROR))
+		#expect(metrics.endTime == timestamp)
+		#expect(metrics.endAssetPosition == assetPosition)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .ERROR))
 
-		XCTAssertEqual(metrics.actions, [])
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == [])
+		#expect(metrics.stalls == [])
 	}
 
+	@Test
 	func test_recordEnd_afterRecordProgress() {
 		assertRecordProgress()
 
@@ -276,20 +288,21 @@ extension MetricsTests {
 		let assetPosition = Constants.assetPosition
 		metrics.recordEnd(endReason: .COMPLETE, assetPosition: assetPosition, error: nil)
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.startAssetPosition, assetPosition)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == Constants.initialTime)
+		#expect(metrics.startAssetPosition == assetPosition)
 
-		XCTAssertEqual(metrics.endTime, timestamp)
-		XCTAssertEqual(metrics.endAssetPosition, assetPosition)
-		XCTAssertEqual(metrics.endInfo, Metrics.EndInfo.mock(reason: .COMPLETE))
+		#expect(metrics.endTime == timestamp)
+		#expect(metrics.endAssetPosition == assetPosition)
+		#expect(metrics.endInfo == Metrics.EndInfo.mock(reason: .COMPLETE))
 
-		XCTAssertEqual(metrics.actions, [])
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == [])
+		#expect(metrics.stalls == [])
 	}
 
 	// MARK: - Playback fail
 
+	@Test
 	func test_playbackFailedToStartWithin5Seconds() {
 		let initialTimestamp = Constants.initialTime
 		timestamp = initialTimestamp
@@ -301,19 +314,19 @@ extension MetricsTests {
 		// pass more than 5 seconds
 		timestamp = 5100
 
-		XCTAssertEqual(metrics.idealStartTime, Constants.initialTime)
-		XCTAssertEqual(metrics.actualStartTime, nil)
-		XCTAssertEqual(metrics.startAssetPosition, nil)
+		#expect(metrics.idealStartTime == Constants.initialTime)
+		#expect(metrics.actualStartTime == nil)
+		#expect(metrics.startAssetPosition == nil)
 
-		XCTAssertEqual(metrics.endTime, nil)
-		XCTAssertEqual(metrics.endAssetPosition, nil)
-		XCTAssertEqual(
-			metrics.endInfo,
-			Metrics.EndInfo.mock(reason: .ERROR, message: "Ended and playback failed to start within 5 seconds (counts as error)")
+		#expect(metrics.endTime == nil)
+		#expect(metrics.endAssetPosition == nil)
+		#expect(
+			metrics.endInfo ==
+				Metrics.EndInfo.mock(reason: .ERROR, message: "Ended and playback failed to start within 5 seconds (counts as error)")
 		)
 
 		let actions = [Action.mock(actionType: .PLAYBACK_STOP, assetPosition: assetPosition, timestamp: initialTimestamp)]
-		XCTAssertEqual(metrics.actions, actions)
-		XCTAssertEqual(metrics.stalls, [])
+		#expect(metrics.actions == actions)
+		#expect(metrics.stalls == [])
 	}
 }

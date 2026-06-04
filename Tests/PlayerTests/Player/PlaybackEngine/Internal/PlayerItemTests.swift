@@ -1,5 +1,6 @@
+import Foundation
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -16,7 +17,8 @@ private enum Constants {
 
 // swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
-final class PlayerItemTests: XCTestCase {
+@Suite(.serialized)
+final class PlayerItemTests {
 	private var monitor: PlayerItemMonitorMock!
 	private var dataWriter: DataWriterMock!
 	private var playerEventSender: PlayerEventSenderMock!
@@ -36,7 +38,7 @@ final class PlayerItemTests: XCTestCase {
 	private var timestamp: UInt64 = 1
 	private var shouldUseImprovedDRMHandling: Bool = false
 
-	override func setUp() {
+	init() {
 		// Set up time and uuid provider
 		let timeProvider = TimeProvider.mock(
 			timestamp: {
@@ -68,6 +70,7 @@ final class PlayerItemTests: XCTestCase {
 
 	// MARK: - init
 
+	@Test
 	func test_init_sendsOnlyStreamingSessionStart() {
 		// GIVEN
 		let mediaProduct = MediaProduct.mock()
@@ -97,10 +100,11 @@ final class PlayerItemTests: XCTestCase {
 		)
 
 		// When the item has not been played, in deinit, we only send StreamingSessionStart.
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+		#expect(playerEventSender.streamingMetricsEvents.count == 1)
+		#expect(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart == streamingSessionStart)
 	}
 
+	@Test
 	func test_init_preload() {
 		// GIVEN
 		let mediaProduct = MediaProduct.mock()
@@ -129,10 +133,11 @@ final class PlayerItemTests: XCTestCase {
 			sessionTags: [StreamingSessionStart.SessionTag.PRELOADED]
 		)
 
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+		#expect(playerEventSender.streamingMetricsEvents.count == 1)
+		#expect(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart == streamingSessionStart)
 	}
 
+	@Test
 	func test_init_cachingDisabled() {
 		// GIVEN
 		let mediaProduct = MediaProduct.mock()
@@ -161,10 +166,11 @@ final class PlayerItemTests: XCTestCase {
 			sessionTags: nil
 		)
 
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+		#expect(playerEventSender.streamingMetricsEvents.count == 1)
+		#expect(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart == streamingSessionStart)
 	}
 
+	@Test
 	func test_init_cachingV2() {
 		// GIVEN
 		let mediaProduct = MediaProduct.mock()
@@ -193,10 +199,11 @@ final class PlayerItemTests: XCTestCase {
 			sessionTags: nil
 		)
 
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+		#expect(playerEventSender.streamingMetricsEvents.count == 1)
+		#expect(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart == streamingSessionStart)
 	}
 
+	@Test
 	func test_init_improvedDRMHandling_enabled() {
 		// GIVEN
 		shouldUseImprovedDRMHandling = true
@@ -227,10 +234,11 @@ final class PlayerItemTests: XCTestCase {
 			sessionTags: [StreamingSessionStart.SessionTag.IMPROVED_DRM]
 		)
 
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+		#expect(playerEventSender.streamingMetricsEvents.count == 1)
+		#expect(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart == streamingSessionStart)
 	}
 
+	@Test
 	func test_init_improvedDRMHandling_disabled() {
 		// GIVEN
 		shouldUseImprovedDRMHandling = false
@@ -261,10 +269,11 @@ final class PlayerItemTests: XCTestCase {
 			sessionTags: nil // No IMPROVED_DRM tag when disabled
 		)
 
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 1)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+		#expect(playerEventSender.streamingMetricsEvents.count == 1)
+		#expect(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart == streamingSessionStart)
 	}
 
+	@Test
 	func test_init_and_deinit_withoutMetrics_sendsOnlyStreamingSessionStart_and_StreamingSessionEnd() {
 		// GIVEN
 		let mediaProduct = MediaProduct.mock()
@@ -302,11 +311,12 @@ final class PlayerItemTests: XCTestCase {
 		playerItem = nil
 
 		// When the item has not been played, in deinit, we only send StreamingSessionStart and StreamingSessionEnd.
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 2)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.last as? StreamingSessionEnd, streamingSessionEnd)
+		#expect(playerEventSender.streamingMetricsEvents.count == 2)
+		#expect(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart == streamingSessionStart)
+		#expect(playerEventSender.streamingMetricsEvents.last as? StreamingSessionEnd == streamingSessionEnd)
 	}
 
+	@Test
 	func test_usualStreamingPlayFlow() {
 		// GIVEN
 		let initialTimestamp = timestamp
@@ -359,11 +369,10 @@ final class PlayerItemTests: XCTestCase {
 		playerItem?.emitEvents()
 
 		// THEN
-		let expectation = expectation(description: "Expect to receive events after PlayerItem deinit")
-		_ = XCTWaiter.wait(for: [expectation], timeout: 0.1)
+		RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
 
 		// Sent from the init: StreamingSessionStart, PlaybackStatistics, StreamingSessionEnd
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
+		#expect(playerEventSender.streamingMetricsEvents.count == 3)
 
 		// StreamingSessionStart sent from init
 		let streamingSessionStart = StreamingSessionStart.mock(
@@ -374,7 +383,7 @@ final class PlayerItemTests: XCTestCase {
 			outputDevice: nil,
 			sessionProductId: mediaProduct.productId
 		)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart, streamingSessionStart)
+		#expect(playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart == streamingSessionStart)
 
 		// Sent in the deinit
 		let playbackStatistics = PlaybackStatistics.mock(
@@ -391,10 +400,10 @@ final class PlayerItemTests: XCTestCase {
 			endTimestamp: endTimestamp,
 			tags: [.NEW_PLAYBACK_ENDPOINTS]
 		)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents[1] as? PlaybackStatistics, playbackStatistics)
+		#expect(playerEventSender.streamingMetricsEvents[1] as? PlaybackStatistics == playbackStatistics)
 
 		let streamingSessionEnd = StreamingSessionEnd.mock(streamingSessionId: Constants.uuid, timestamp: endTimestamp)
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents[2] as? StreamingSessionEnd, streamingSessionEnd)
+		#expect(playerEventSender.streamingMetricsEvents[2] as? StreamingSessionEnd == streamingSessionEnd)
 
 		let playLogEvent = PlayLogEvent.mock(
 			playbackSessionId: Constants.uuid,
@@ -405,11 +414,12 @@ final class PlayerItemTests: XCTestCase {
 			endTimestamp: endTimestamp,
 			endAssetPosition: endAssetPosition
 		)
-		XCTAssertEqual(playerEventSender.playLogEvents, [playLogEvent])
+		#expect(playerEventSender.playLogEvents == [playLogEvent])
 	}
 
 	// MARK: - unload
 
+	@Test
 	func test_unload() async throws {
 		// GIVEN
 		let playerItem = PlayerItem.mock(
@@ -437,13 +447,14 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.unload()
 
 		// THEN
-		XCTAssertEqual(player.unloadedAssets as? [AssetMock], [asset])
-		XCTAssertEqual(playerItem.metadata, nil)
-		XCTAssertEqual(playerItem.asset, nil)
+		#expect(player.unloadedAssets as? [AssetMock] == [asset])
+		#expect(playerItem.metadata == nil)
+		#expect(playerItem.asset == nil)
 	}
 
 	// MARK: - unloadFromPlayer
 
+	@Test
 	func test_unloadFromPlayer() async throws {
 		// GIVEN
 		let playerItem = PlayerItem.mock(
@@ -471,15 +482,16 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.unloadFromPlayer()
 
 		// THEN
-		XCTAssertEqual(player.unloadedAssets as? [AssetMock], [asset])
+		#expect(player.unloadedAssets as? [AssetMock] == [asset])
 
 		// As opposed to unload(), we don't nullify metadata not asset
-		XCTAssertEqual(playerItem.metadata, metadata)
-		XCTAssertEqual(playerItem.asset, asset)
+		#expect(playerItem.metadata == metadata)
+		#expect(playerItem.asset == asset)
 	}
 
 	// MARK: - play
 
+	@Test
 	func test_play() {
 		// GIVEN
 		let playerItem = PlayerItem.mock(
@@ -507,11 +519,12 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.play(timestamp: 2)
 
 		// THEN
-		XCTAssertEqual(player.playCallCount, 1)
+		#expect(player.playCallCount == 1)
 	}
 
 	// MARK: - pause
 
+	@Test
 	func test_pause() {
 		// GIVEN
 		let playerItem = PlayerItem.mock(
@@ -539,11 +552,12 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.pause()
 
 		// THEN
-		XCTAssertEqual(player.pauseCallCount, 1)
+		#expect(player.pauseCallCount == 1)
 	}
 
 	// MARK: - seek
 
+	@Test
 	func test_seek() {
 		// GIVEN
 		let playerItem = PlayerItem.mock(
@@ -571,11 +585,12 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.seek(to: 2)
 
 		// THEN
-		XCTAssertEqual(player.seekCallCount, 1)
+		#expect(player.seekCallCount == 1)
 	}
 
 	// MARK: - DRM Feature Flag Tests
 
+	@Test
 	func test_playbackStatistics_improvedDRMHandling_enabled() {
 		// GIVEN
 		shouldUseImprovedDRMHandling = true
@@ -621,14 +636,15 @@ final class PlayerItemTests: XCTestCase {
 		playerItem?.emitEvents()
 
 		// THEN
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
+		#expect(playerEventSender.streamingMetricsEvents.count == 3)
 
 		// Check PlaybackStatistics has IMPROVED_DRM tag
 		let playbackStatistics = playerEventSender.streamingMetricsEvents[1] as? PlaybackStatistics
-		XCTAssertNotNil(playbackStatistics)
-		XCTAssertTrue(playbackStatistics?.tags?.contains(.IMPROVED_DRM) == true)
+		#expect(playbackStatistics != nil)
+		#expect(playbackStatistics?.tags?.contains(.IMPROVED_DRM) == true)
 	}
 
+	@Test
 	func test_playbackStatistics_improvedDRMHandling_disabled() {
 		// GIVEN
 		shouldUseImprovedDRMHandling = false
@@ -674,14 +690,15 @@ final class PlayerItemTests: XCTestCase {
 		playerItem?.emitEvents()
 
 		// THEN
-		XCTAssertEqual(playerEventSender.streamingMetricsEvents.count, 3)
+		#expect(playerEventSender.streamingMetricsEvents.count == 3)
 
 		// Check PlaybackStatistics does NOT have IMPROVED_DRM tag
 		let playbackStatistics = playerEventSender.streamingMetricsEvents[1] as? PlaybackStatistics
-		XCTAssertNotNil(playbackStatistics)
-		XCTAssertFalse(playbackStatistics?.tags?.contains(.IMPROVED_DRM) == true)
+		#expect(playbackStatistics != nil)
+		#expect(!(playbackStatistics?.tags?.contains(.IMPROVED_DRM) == true))
 	}
 
+	@Test
 	func test_audioQualityChanged_updatesMetadataAndNotifiesMonitor() {
 		let playerItem = PlayerItem.mock(
 			playerItemMonitor: monitor,
@@ -700,13 +717,14 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.set(asset)
 
 		let pbMeta = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 44100, bitDepth: 16)
-	playerItem.playbackMetadataChanged(asset: asset, to: pbMeta)
+		playerItem.playbackMetadataChanged(asset: asset, to: pbMeta)
 
-		XCTAssertEqual(monitor.playbackMetadataChanges.count, 1)
-		XCTAssertEqual(monitor.playbackMetadataChanges.first?.playerItemId, playerItem.id)
-		XCTAssertEqual(monitor.playbackMetadataChanges.first?.metadata, pbMeta)
+		#expect(monitor.playbackMetadataChanges.count == 1)
+		#expect(monitor.playbackMetadataChanges.first?.playerItemId == playerItem.id)
+		#expect(monitor.playbackMetadataChanges.first?.metadata == pbMeta)
 	}
 
+	@Test
 	func test_playbackStatistics_reflectsLatestAudioQualityAfterAdaptiveSwitch() {
 		let mediaProduct = MediaProduct.mock()
 
@@ -737,7 +755,7 @@ final class PlayerItemTests: XCTestCase {
 		playerItem.playing(asset: asset)
 
 		let playbackMeta = AssetPlaybackMetadata(formatString: "FLAC", sampleRate: 44100, bitDepth: 16)
-	playerItem.playbackMetadataChanged(asset: asset, to: playbackMeta)
+		playerItem.playbackMetadataChanged(asset: asset, to: playbackMeta)
 
 		let endTimestamp: UInt64 = 20
 		timestamp = endTimestamp
@@ -749,9 +767,10 @@ final class PlayerItemTests: XCTestCase {
 			.compactMap { $0 as? PlaybackStatistics }
 			.first
 
-		XCTAssertEqual(playbackStatistics?.actualQuality, AudioQuality.LOSSLESS.rawValue)
+		#expect(playbackStatistics?.actualQuality == AudioQuality.LOSSLESS.rawValue)
 	}
 
+	@Test
 	func test_playbackStatistics_reflectsHiResLosslessQualityForHighBitDepthFLAC() {
 		let mediaProduct = MediaProduct.mock()
 
@@ -795,9 +814,10 @@ final class PlayerItemTests: XCTestCase {
 			.compactMap { $0 as? PlaybackStatistics }
 			.first
 
-		XCTAssertEqual(playbackStatistics?.actualQuality, AudioQuality.HI_RES_LOSSLESS.rawValue)
+		#expect(playbackStatistics?.actualQuality == AudioQuality.HI_RES_LOSSLESS.rawValue)
 	}
 
+	@Test
 	func test_playbackStatistics_reflectsHiResLosslessQualityForHighSampleRateFLAC() {
 		let mediaProduct = MediaProduct.mock()
 
@@ -841,6 +861,6 @@ final class PlayerItemTests: XCTestCase {
 			.compactMap { $0 as? PlaybackStatistics }
 			.first
 
-		XCTAssertEqual(playbackStatistics?.actualQuality, AudioQuality.HI_RES_LOSSLESS.rawValue)
+		#expect(playbackStatistics?.actualQuality == AudioQuality.HI_RES_LOSSLESS.rawValue)
 	}
 }

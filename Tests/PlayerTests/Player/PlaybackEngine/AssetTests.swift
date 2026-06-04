@@ -1,12 +1,12 @@
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - AssetTests
 
-final class AssetTests: XCTestCase {
+final class AssetTests {
 	private var player: PlayerMock!
 
-	override func setUp() {
+	init() {
 		player = PlayerMock()
 	}
 }
@@ -16,6 +16,7 @@ final class AssetTests: XCTestCase {
 extension AssetTests {
 	// MARK: - unload()
 
+	@Test
 	func test_unload() {
 		// GIVEN
 		let asset = player.load()
@@ -24,11 +25,12 @@ extension AssetTests {
 		asset.unload()
 
 		// THEN
-		XCTAssertEqual(player.unloadCallCount, 1)
+		#expect(player.unloadCallCount == 1)
 	}
 
 	// MARK: - setLoudnessNormalizationMode()
 
+	@Test
 	func test_setLoudnessNormalizationMode() {
 		// GIVEN
 		let loudnessNormalizer: LoudnessNormalizer? = nil
@@ -43,11 +45,12 @@ extension AssetTests {
 		asset.setLoudnessNormalizationMode(newMode)
 
 		// THEN
-		XCTAssertEqual(loudnessNormalizationConfiguration.getLoudnessNormalizationMode(), newMode)
+		#expect(loudnessNormalizationConfiguration.getLoudnessNormalizationMode() == newMode)
 	}
 
 	// MARK: - updatePreAmp()
 
+	@Test
 	func test_updatePreAmp_when_loudnessNormalizationModeIsNONE() {
 		// GIVEN
 		let loudnessNormalizer: LoudnessNormalizer? = nil
@@ -62,9 +65,10 @@ extension AssetTests {
 		asset.updatePreAmp(newPreAmp)
 
 		// THEN
-		XCTAssertEqual(loudnessNormalizationConfiguration.getLoudnessNormalizer()?.preAmp, nil)
+		#expect(loudnessNormalizationConfiguration.getLoudnessNormalizer()?.preAmp == nil)
 	}
 
+	@Test
 	func test_updatePreAmp_when_loudnessNormalizationModeIsALBUM() {
 		// GIVEN
 		let loudnessNormalizer = LoudnessNormalizer.mock()
@@ -79,11 +83,12 @@ extension AssetTests {
 		asset.updatePreAmp(newPreAmp)
 
 		// THEN
-		XCTAssertEqual(loudnessNormalizationConfiguration.getLoudnessNormalizer()?.preAmp, newPreAmp)
+		#expect(loudnessNormalizationConfiguration.getLoudnessNormalizer()?.preAmp == newPreAmp)
 	}
 
 	// MARK: - updateVolume()
 
+	@Test
 	func test_updateVolume_when_loudnessNormalizerIsNotNil_and_loudnessNormalizationModeIsALBUM() {
 		let loudnessNormalizer = LoudnessNormalizer.mock()
 		testUpdateVolume(
@@ -93,6 +98,7 @@ extension AssetTests {
 		)
 	}
 
+	@Test
 	func test_updateVolume_when_loudnessNormalizerIsNotNil_and_loudnessNormalizationModeIsNONE() {
 		let loudnessNormalizer = LoudnessNormalizer.mock()
 		testUpdateVolume(
@@ -102,6 +108,7 @@ extension AssetTests {
 		)
 	}
 
+	@Test
 	func test_updateVolume_when_loudnessNormalizerIsNil_and_loudnessNormalizationModeIsALBUM() {
 		let loudnessNormalizer: LoudnessNormalizer? = nil
 		testUpdateVolume(
@@ -111,6 +118,7 @@ extension AssetTests {
 		)
 	}
 
+	@Test
 	func test_updateVolume_when_loudnessNormalizerIsNil_and_loudnessNormalizationModeIsNONE() {
 		let loudnessNormalizer: LoudnessNormalizer? = nil
 		testUpdateVolume(
@@ -140,7 +148,7 @@ private extension AssetTests {
 		asset.updateVolume()
 
 		// THEN
-		XCTAssertEqual(player.updateVolumeCallCount, 1)
-		XCTAssertEqual(player.loudnessNormalizers, [expectedLoudnessNormalizer])
+		#expect(player.updateVolumeCallCount == 1)
+		#expect(player.loudnessNormalizers == [expectedLoudnessNormalizer])
 	}
 }
