@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**userCollectionFoldersIdRelationshipsItemsGet**](UserCollectionFoldersAPI.md#usercollectionfoldersidrelationshipsitemsget) | **GET** /userCollectionFolders/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
 [**userCollectionFoldersIdRelationshipsItemsPost**](UserCollectionFoldersAPI.md#usercollectionfoldersidrelationshipsitemspost) | **POST** /userCollectionFolders/{id}/relationships/items | Add to items relationship (\&quot;to-many\&quot;).
 [**userCollectionFoldersIdRelationshipsOwnersGet**](UserCollectionFoldersAPI.md#usercollectionfoldersidrelationshipsownersget) | **GET** /userCollectionFolders/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+[**userCollectionFoldersIdRelationshipsUserCollectionGet**](UserCollectionFoldersAPI.md#usercollectionfoldersidrelationshipsusercollectionget) | **GET** /userCollectionFolders/{id}/relationships/userCollection | Get userCollection relationship (\&quot;to-one\&quot;).
 [**userCollectionFoldersPost**](UserCollectionFoldersAPI.md#usercollectionfolderspost) | **POST** /userCollectionFolders | Create single userCollectionFolder.
 
 
@@ -29,7 +30,7 @@ Retrieves multiple userCollectionFolders by available filters, or without if app
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
 let filterId = ["inner_example"] // [String] | Folder Id (e.g. `CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX`) (optional)
 
 // Get multiple userCollectionFolders.
@@ -49,7 +50,7 @@ UserCollectionFoldersAPI.userCollectionFoldersGet(include: include, filterId: fi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection | [optional] 
  **filterId** | [**[String]**](String.md) | Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) | [optional] 
 
 ### Return type
@@ -134,7 +135,7 @@ Retrieves single userCollectionFolder by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
 
 // Get single userCollectionFolder.
 UserCollectionFoldersAPI.userCollectionFoldersIdGet(id: id, include: include) { (response, error) in
@@ -154,7 +155,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdGet(id: id, include: include) { 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection | [optional] 
 
 ### Return type
 
@@ -443,6 +444,58 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **userCollectionFoldersIdRelationshipsUserCollectionGet**
+```swift
+    open class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get userCollection relationship (\"to-one\").
+
+Retrieves userCollection relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Folder Id
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: userCollection (optional)
+
+// Get userCollection relationship (\"to-one\").
+UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGet(id: id, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Folder Id | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: userCollection | [optional] 
+
+### Return type
+
+[**UserCollectionFoldersSingleRelationshipDataDocument**](UserCollectionFoldersSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **userCollectionFoldersPost**
 ```swift
     open class func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
@@ -458,7 +511,7 @@ Creates a new userCollectionFolder.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(collectionType: "collectionType_example", name: "name_example"), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
+let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(collectionType: "collectionType_example", name: "name_example"), relationships: UserCollectionFoldersCreateOperation_Payload_Data_Relationships(userCollection: UserCollectionFoldersCreateOperation_Payload_Data_Relationships_UserCollection(data: UserCollection(id: "id_example", type: "type_example"))), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
 
 // Create single userCollectionFolder.
 UserCollectionFoldersAPI.userCollectionFoldersPost(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload) { (response, error) in

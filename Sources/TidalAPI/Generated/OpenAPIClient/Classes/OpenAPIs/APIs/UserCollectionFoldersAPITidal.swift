@@ -134,6 +134,18 @@ public enum UserCollectionFoldersAPITidal {
 
 
 	/**
+     Get userCollection relationship (\&quot;to-one\&quot;).
+     
+     - returns: UserCollectionFoldersSingleRelationshipDataDocument
+     */
+	public static func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil) async throws -> UserCollectionFoldersSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: id, include: include)
+		}
+	}
+
+
+	/**
      Create single userCollectionFolder.
      
      - returns: UserCollectionFoldersSingleResourceDataDocument

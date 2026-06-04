@@ -15,14 +15,16 @@ public struct UserCollectionFoldersAttributes: Codable, Hashable {
     public enum CollectionType: String, Codable, CaseIterable {
         case playlists = "PLAYLISTS"
     }
-    public var collectionType: CollectionType
+    /** The type of user collection this folder belongs to. Deprecated: use the 'userCollection' relationship instead. This field will be removed in a future version, so clients should not depend on its presence. */
+    @available(*, deprecated, message: "This property is deprecated.")
+    public var collectionType: CollectionType?
     public var createdAt: Date
     public var lastModifiedAt: Date
     public var name: String
     public var numberOfItems: Int?
 
     public init(
-        collectionType: CollectionType,
+        collectionType: CollectionType? = nil,
         createdAt: Date,
         lastModifiedAt: Date,
         name: String,
@@ -47,7 +49,7 @@ public struct UserCollectionFoldersAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(collectionType, forKey: .collectionType)
+        try container.encodeIfPresent(collectionType, forKey: .collectionType)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(name, forKey: .name)
