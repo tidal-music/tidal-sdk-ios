@@ -19,9 +19,9 @@ public enum CollaborationInvitesAPITidal {
      
      - returns: CollaborationInvitesMultiResourceDataDocument
      */
-	public static func collaborationInvitesGet(include: [String]? = nil, filterCode: [String]? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
+	public static func collaborationInvitesGet(filterCode: [String], include: [String]? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CollaborationInvitesAPI.collaborationInvitesGetWithRequestBuilder(include: include, filterCode: filterCode)
+			CollaborationInvitesAPI.collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include)
 		}
 	}
 

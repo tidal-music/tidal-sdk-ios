@@ -21,7 +21,7 @@ Method | HTTP request | Description
 
 # **playQueuesGet**
 ```swift
-    open class func playQueuesGet(pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: PlayQueuesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: PlayQueuesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple playQueues.
@@ -33,12 +33,12 @@ Retrieves multiple playQueues by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple playQueues.
-PlayQueuesAPI.playQueuesGet(pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId) { (response, error) in
+PlayQueuesAPI.playQueuesGet(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -54,9 +54,9 @@ PlayQueuesAPI.playQueuesGet(pageCursor: pageCursor, include: include, filterOwne
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 

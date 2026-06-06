@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **collaborationInvitesGet**
 ```swift
-    open class func collaborationInvitesGet(include: [String]? = nil, filterCode: [String]? = nil, completion: @escaping (_ data: CollaborationInvitesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, completion: @escaping (_ data: CollaborationInvitesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple collaborationInvites.
@@ -26,11 +26,11 @@ Retrieves multiple collaborationInvites by available filters, or without if appl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterCode = ["inner_example"] // [String] | Invite code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
-let filterCode = ["inner_example"] // [String] | Invite code (optional)
 
 // Get multiple collaborationInvites.
-CollaborationInvitesAPI.collaborationInvitesGet(include: include, filterCode: filterCode) { (response, error) in
+CollaborationInvitesAPI.collaborationInvitesGet(filterCode: filterCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -46,8 +46,8 @@ CollaborationInvitesAPI.collaborationInvitesGet(include: include, filterCode: fi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterCode** | [**[String]**](String.md) | Invite code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, subject | [optional] 
- **filterCode** | [**[String]**](String.md) | Invite code | [optional] 
 
 ### Return type
 

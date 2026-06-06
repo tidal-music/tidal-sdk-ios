@@ -51,21 +51,6 @@ public enum InstallationsAPITidal {
 
 
 	/**
-	 * enum for parameter filterState
-	 */
-	public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
-		case pending = "PENDING"
-		case stored = "STORED"
-
-		func toInstallationsAPIEnum() -> InstallationsAPI.FilterState_installationsIdRelationshipsOfflineInventoryGet {
-			switch self {
-			case .pending: return .pending
-			case .stored: return .stored
-			}
-		}
-	}
-
-	/**
 	 * enum for parameter filterType
 	 */
 	public enum FilterType_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
@@ -87,13 +72,28 @@ public enum InstallationsAPITidal {
 	}
 
 	/**
+	 * enum for parameter filterState
+	 */
+	public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
+		case pending = "PENDING"
+		case stored = "STORED"
+
+		func toInstallationsAPIEnum() -> InstallationsAPI.FilterState_installationsIdRelationshipsOfflineInventoryGet {
+			switch self {
+			case .pending: return .pending
+			case .stored: return .stored
+			}
+		}
+	}
+
+	/**
      Get offlineInventory relationship (\&quot;to-many\&quot;).
      
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
-	public static func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [InstallationsAPITidal.FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterType: [InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
+	public static func installationsIdRelationshipsOfflineInventoryGet(id: String, filterType: [InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet], pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [InstallationsAPITidal.FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState?.compactMap { $0.toInstallationsAPIEnum() }, filterType: filterType?.compactMap { $0.toInstallationsAPIEnum() })
+			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, filterType: filterType.compactMap { $0.toInstallationsAPIEnum() }, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState?.compactMap { $0.toInstallationsAPIEnum() })
 		}
 	}
 

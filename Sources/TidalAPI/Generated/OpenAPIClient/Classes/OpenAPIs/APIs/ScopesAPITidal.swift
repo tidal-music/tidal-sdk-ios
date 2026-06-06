@@ -38,9 +38,9 @@ public enum ScopesAPITidal {
      
      - returns: ScopesMultiResourceDataDocument
      */
-	public static func scopesGet(filterRequiredAccessTier: [ScopesAPITidal.FilterRequiredAccessTier_scopesGet]? = nil) async throws -> ScopesMultiResourceDataDocument {
+	public static func scopesGet(filterRequiredAccessTier: [ScopesAPITidal.FilterRequiredAccessTier_scopesGet]) async throws -> ScopesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ScopesAPI.scopesGetWithRequestBuilder(filterRequiredAccessTier: filterRequiredAccessTier?.compactMap { $0.toScopesAPIEnum() })
+			ScopesAPI.scopesGetWithRequestBuilder(filterRequiredAccessTier: filterRequiredAccessTier.compactMap { $0.toScopesAPIEnum() })
 		}
 	}
 }

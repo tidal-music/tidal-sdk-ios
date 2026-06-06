@@ -19,7 +19,7 @@ public enum PriceConfigurationsAPITidal {
      
      - returns: PriceConfigurationsMultiResourceDataDocument
      */
-	public static func priceConfigurationsGet(filterId: [String]? = nil) async throws -> PriceConfigurationsMultiResourceDataDocument {
+	public static func priceConfigurationsGet(filterId: [String]) async throws -> PriceConfigurationsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			PriceConfigurationsAPI.priceConfigurationsGetWithRequestBuilder(filterId: filterId)
 		}

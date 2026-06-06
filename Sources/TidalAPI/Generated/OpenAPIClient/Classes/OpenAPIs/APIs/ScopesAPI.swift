@@ -25,11 +25,11 @@ internal class ScopesAPI {
     /**
      Get multiple scopes.
      
-     - parameter filterRequiredAccessTier: (query) Filters scopes by their &#x60;requiredAccessTier&#x60;. (e.g. &#x60;THIRD_PARTY&#x60;) (optional)
+     - parameter filterRequiredAccessTier: (query) Filters scopes by their &#x60;requiredAccessTier&#x60;. (e.g. &#x60;THIRD_PARTY&#x60;) 
      - returns: ScopesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func scopesGet(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]? = nil) async throws -> ScopesMultiResourceDataDocument {
+    internal class func scopesGet(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]) async throws -> ScopesMultiResourceDataDocument {
         do {
             return try await scopesGetWithRequestBuilder(filterRequiredAccessTier: filterRequiredAccessTier).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -45,17 +45,17 @@ internal class ScopesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterRequiredAccessTier: (query) Filters scopes by their &#x60;requiredAccessTier&#x60;. (e.g. &#x60;THIRD_PARTY&#x60;) (optional)
+     - parameter filterRequiredAccessTier: (query) Filters scopes by their &#x60;requiredAccessTier&#x60;. (e.g. &#x60;THIRD_PARTY&#x60;) 
      - returns: RequestBuilder<ScopesMultiResourceDataDocument> 
      */
-    internal class func scopesGetWithRequestBuilder(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]? = nil) -> RequestBuilder<ScopesMultiResourceDataDocument> {
+    internal class func scopesGetWithRequestBuilder(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]) -> RequestBuilder<ScopesMultiResourceDataDocument> {
         let localVariablePath = "/scopes"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[requiredAccessTier]": (wrappedValue: filterRequiredAccessTier?.encodeToJSON(), isExplode: true),
+            "filter[requiredAccessTier]": (wrappedValue: filterRequiredAccessTier.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

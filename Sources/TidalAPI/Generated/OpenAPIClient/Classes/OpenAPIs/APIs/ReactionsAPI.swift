@@ -13,15 +13,6 @@ import AnyCodable
 internal class ReactionsAPI {
 
     /**
-     * enum for parameter stats
-     */
-    public enum Stats_reactionsGet: String, CaseIterable {
-        case all = "ALL"
-        case countsByType = "COUNTS_BY_TYPE"
-        case totalCount = "TOTAL_COUNT"
-    }
-
-    /**
      * enum for parameter filterSubjectType
      */
     public enum FilterSubjectType_reactionsGet: String, CaseIterable {
@@ -34,22 +25,31 @@ internal class ReactionsAPI {
     }
 
     /**
+     * enum for parameter stats
+     */
+    public enum Stats_reactionsGet: String, CaseIterable {
+        case all = "ALL"
+        case countsByType = "COUNTS_BY_TYPE"
+        case totalCount = "TOTAL_COUNT"
+    }
+
+    /**
      Get multiple reactions.
      
+     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) 
+     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) 
      - parameter stats: (query)  (optional)
      - parameter statsOnly: (query)  (optional)
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners (optional)
      - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
-     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      - returns: ReactionsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil) async throws -> ReactionsMultiResourceDataDocument {
+    internal class func reactionsGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_reactionsGet], stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil) async throws -> ReactionsMultiResourceDataDocument {
         do {
-            return try await reactionsGetWithRequestBuilder(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType).execute().body
+            return try await reactionsGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -63,17 +63,17 @@ internal class ReactionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) 
+     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) 
      - parameter stats: (query)  (optional)
      - parameter statsOnly: (query)  (optional)
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners (optional)
      - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
-     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      - returns: RequestBuilder<ReactionsMultiResourceDataDocument> 
      */
-    internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
+    internal class func reactionsGetWithRequestBuilder(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_reactionsGet], stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
         let localVariablePath = "/reactions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -86,8 +86,8 @@ internal class ReactionsAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[emoji]": (wrappedValue: filterEmoji?.encodeToJSON(), isExplode: true),
-            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
+            "filter[subject.id]": (wrappedValue: filterSubjectId.encodeToJSON(), isExplode: true),
+            "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

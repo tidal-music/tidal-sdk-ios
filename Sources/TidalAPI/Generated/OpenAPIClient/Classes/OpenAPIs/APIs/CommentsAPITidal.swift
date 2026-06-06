@@ -15,6 +15,21 @@ public enum CommentsAPITidal {
 
 
 	/**
+	 * enum for parameter filterSubjectType
+	 */
+	public enum FilterSubjectType_commentsGet: String, CaseIterable {
+		case albums = "albums"
+		case tracks = "tracks"
+
+		func toCommentsAPIEnum() -> CommentsAPI.FilterSubjectType_commentsGet {
+			switch self {
+			case .albums: return .albums
+			case .tracks: return .tracks
+			}
+		}
+	}
+
+	/**
 	 * enum for parameter sort
 	 */
 	public enum Sort_commentsGet: String, CaseIterable {
@@ -42,28 +57,13 @@ public enum CommentsAPITidal {
 	}
 
 	/**
-	 * enum for parameter filterSubjectType
-	 */
-	public enum FilterSubjectType_commentsGet: String, CaseIterable {
-		case albums = "albums"
-		case tracks = "tracks"
-
-		func toCommentsAPIEnum() -> CommentsAPI.FilterSubjectType_commentsGet {
-			switch self {
-			case .albums: return .albums
-			case .tracks: return .tracks
-			}
-		}
-	}
-
-	/**
      Get multiple comments.
      
      - returns: CommentsMultiResourceDataDocument
      */
-	public static func commentsGet(pageCursor: String? = nil, sort: [CommentsAPITidal.Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [CommentsAPITidal.FilterSubjectType_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument {
+	public static func commentsGet(filterSubjectId: [String], filterSubjectType: [CommentsAPITidal.FilterSubjectType_commentsGet], pageCursor: String? = nil, sort: [CommentsAPITidal.Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil) async throws -> CommentsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CommentsAPI.commentsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toCommentsAPIEnum() }, include: include, filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toCommentsAPIEnum() })
+			CommentsAPI.commentsGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType.compactMap { $0.toCommentsAPIEnum() }, pageCursor: pageCursor, sort: sort?.compactMap { $0.toCommentsAPIEnum() }, include: include, filterParentCommentId: filterParentCommentId)
 		}
 	}
 

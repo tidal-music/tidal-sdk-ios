@@ -15,11 +15,11 @@ internal class PriceConfigurationsAPI {
     /**
      Get multiple priceConfigurations.
      
-     - parameter filterId: (query) List of price configurations IDs (e.g. &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) (optional)
+     - parameter filterId: (query) List of price configurations IDs (e.g. &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) 
      - returns: PriceConfigurationsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func priceConfigurationsGet(filterId: [String]? = nil) async throws -> PriceConfigurationsMultiResourceDataDocument {
+    internal class func priceConfigurationsGet(filterId: [String]) async throws -> PriceConfigurationsMultiResourceDataDocument {
         do {
             return try await priceConfigurationsGetWithRequestBuilder(filterId: filterId).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -38,17 +38,17 @@ internal class PriceConfigurationsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterId: (query) List of price configurations IDs (e.g. &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) (optional)
+     - parameter filterId: (query) List of price configurations IDs (e.g. &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) 
      - returns: RequestBuilder<PriceConfigurationsMultiResourceDataDocument> 
      */
-    internal class func priceConfigurationsGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<PriceConfigurationsMultiResourceDataDocument> {
+    internal class func priceConfigurationsGetWithRequestBuilder(filterId: [String]) -> RequestBuilder<PriceConfigurationsMultiResourceDataDocument> {
         let localVariablePath = "/priceConfigurations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

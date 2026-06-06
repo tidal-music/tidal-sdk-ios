@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 # **userCollectionFoldersGet**
 ```swift
-    open class func userCollectionFoldersGet(include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: UserCollectionFoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, completion: @escaping (_ data: UserCollectionFoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple userCollectionFolders.
@@ -30,11 +30,11 @@ Retrieves multiple userCollectionFolders by available filters, or without if app
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterId = ["inner_example"] // [String] | Folder Id (e.g. `CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX`)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
-let filterId = ["inner_example"] // [String] | Folder Id (e.g. `CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX`) (optional)
 
 // Get multiple userCollectionFolders.
-UserCollectionFoldersAPI.userCollectionFoldersGet(include: include, filterId: filterId) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersGet(filterId: filterId, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -50,8 +50,8 @@ UserCollectionFoldersAPI.userCollectionFoldersGet(include: include, filterId: fi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterId** | [**[String]**](String.md) | Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection | [optional] 
- **filterId** | [**[String]**](String.md) | Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) | [optional] 
 
 ### Return type
 

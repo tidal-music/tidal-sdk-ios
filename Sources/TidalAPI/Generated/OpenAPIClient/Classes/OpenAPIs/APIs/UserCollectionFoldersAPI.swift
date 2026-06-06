@@ -15,14 +15,14 @@ internal class UserCollectionFoldersAPI {
     /**
      Get multiple userCollectionFolders.
      
+     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
-     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
      - returns: UserCollectionFoldersMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
+    internal class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
         do {
-            return try await userCollectionFoldersGetWithRequestBuilder(include: include, filterId: filterId).execute().body
+            return try await userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -36,11 +36,11 @@ internal class UserCollectionFoldersAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
-     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
      - returns: RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> 
      */
-    internal class func userCollectionFoldersGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> {
+    internal class func userCollectionFoldersGetWithRequestBuilder(filterId: [String], include: [String]? = nil) -> RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> {
         let localVariablePath = "/userCollectionFolders"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -48,7 +48,7 @@ internal class UserCollectionFoldersAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

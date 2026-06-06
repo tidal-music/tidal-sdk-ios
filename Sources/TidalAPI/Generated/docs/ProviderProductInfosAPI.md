@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **providerProductInfosGet**
 ```swift
-    open class func providerProductInfosGet(countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterProviderId: [String]? = nil, completion: @escaping (_ data: ProviderProductInfosMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func providerProductInfosGet(filterBarcodeId: [String], filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ProviderProductInfosMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple providerProductInfos.
@@ -23,13 +23,13 @@ Retrieves multiple providerProductInfos by available filters, or without if appl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterBarcodeId = ["inner_example"] // [String] | List of barcode IDs (EAN-13 or UPC-A) (e.g. `00602527336510`)
+let filterProviderId = ["inner_example"] // [String] | Content provider ID (e.g. `50`)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: provider, subject (optional)
-let filterBarcodeId = ["inner_example"] // [String] | List of barcode IDs (EAN-13 or UPC-A) (e.g. `00602527336510`) (optional)
-let filterProviderId = ["inner_example"] // [String] | Content provider ID (e.g. `50`) (optional)
 
 // Get multiple providerProductInfos.
-ProviderProductInfosAPI.providerProductInfosGet(countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterProviderId: filterProviderId) { (response, error) in
+ProviderProductInfosAPI.providerProductInfosGet(filterBarcodeId: filterBarcodeId, filterProviderId: filterProviderId, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,10 +45,10 @@ ProviderProductInfosAPI.providerProductInfosGet(countryCode: countryCode, includ
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterBarcodeId** | [**[String]**](String.md) | List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) | 
+ **filterProviderId** | [**[String]**](String.md) | Content provider ID (e.g. &#x60;50&#x60;) | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: provider, subject | [optional] 
- **filterBarcodeId** | [**[String]**](String.md) | List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) | [optional] 
- **filterProviderId** | [**[String]**](String.md) | Content provider ID (e.g. &#x60;50&#x60;) | [optional] 
 
 ### Return type
 

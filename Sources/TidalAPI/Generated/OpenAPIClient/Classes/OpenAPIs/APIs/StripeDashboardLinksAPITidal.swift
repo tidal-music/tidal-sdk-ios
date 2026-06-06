@@ -19,9 +19,9 @@ public enum StripeDashboardLinksAPITidal {
      
      - returns: StripeDashboardLinksMultiResourceDataDocument
      */
-	public static func stripeDashboardLinksGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> StripeDashboardLinksMultiResourceDataDocument {
+	public static func stripeDashboardLinksGet(filterOwnersId: [String], include: [String]? = nil) async throws -> StripeDashboardLinksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			StripeDashboardLinksAPI.stripeDashboardLinksGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId)
+			StripeDashboardLinksAPI.stripeDashboardLinksGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
 		}
 	}
 

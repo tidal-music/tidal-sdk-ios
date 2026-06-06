@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **offlineTasksGet**
 ```swift
-    open class func offlineTasksGet(pageCursor: String? = nil, include: [String]? = nil, filterInstallationId: [String]? = nil, completion: @escaping (_ data: OfflineTasksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: OfflineTasksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple offlineTasks.
@@ -26,12 +26,12 @@ Retrieves multiple offlineTasks by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterInstallationId = ["inner_example"] // [String] | List of offline task IDs (e.g. `a468bee88def`)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
-let filterInstallationId = ["inner_example"] // [String] | List of offline task IDs (e.g. `a468bee88def`) (optional)
 
 // Get multiple offlineTasks.
-OfflineTasksAPI.offlineTasksGet(pageCursor: pageCursor, include: include, filterInstallationId: filterInstallationId) { (response, error) in
+OfflineTasksAPI.offlineTasksGet(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -47,9 +47,9 @@ OfflineTasksAPI.offlineTasksGet(pageCursor: pageCursor, include: include, filter
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterInstallationId** | [**[String]**](String.md) | List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collection, item, owners | [optional] 
- **filterInstallationId** | [**[String]**](String.md) | List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) | [optional] 
 
 ### Return type
 

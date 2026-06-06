@@ -15,14 +15,14 @@ internal class CollaborationInvitesAPI {
     /**
      Get multiple collaborationInvites.
      
+     - parameter filterCode: (query) Invite code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
-     - parameter filterCode: (query) Invite code (optional)
      - returns: CollaborationInvitesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func collaborationInvitesGet(include: [String]? = nil, filterCode: [String]? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
+    internal class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
         do {
-            return try await collaborationInvitesGetWithRequestBuilder(include: include, filterCode: filterCode).execute().body
+            return try await collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -36,11 +36,11 @@ internal class CollaborationInvitesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterCode: (query) Invite code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
-     - parameter filterCode: (query) Invite code (optional)
      - returns: RequestBuilder<CollaborationInvitesMultiResourceDataDocument> 
      */
-    internal class func collaborationInvitesGetWithRequestBuilder(include: [String]? = nil, filterCode: [String]? = nil) -> RequestBuilder<CollaborationInvitesMultiResourceDataDocument> {
+    internal class func collaborationInvitesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil) -> RequestBuilder<CollaborationInvitesMultiResourceDataDocument> {
         let localVariablePath = "/collaborationInvites"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -48,7 +48,7 @@ internal class CollaborationInvitesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[code]": (wrappedValue: filterCode?.encodeToJSON(), isExplode: true),
+            "filter[code]": (wrappedValue: filterCode.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

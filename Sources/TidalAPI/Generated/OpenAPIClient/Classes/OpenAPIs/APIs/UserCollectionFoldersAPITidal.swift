@@ -19,9 +19,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: UserCollectionFoldersMultiResourceDataDocument
      */
-	public static func userCollectionFoldersGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
+	public static func userCollectionFoldersGet(filterId: [String], include: [String]? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersGetWithRequestBuilder(include: include, filterId: filterId)
+			UserCollectionFoldersAPI.userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include)
 		}
 	}
 

@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **termsGet**
 ```swift
-    open class func termsGet(filterCountryCode: [String]? = nil, filterIsLatestVersion: [String]? = nil, filterTermsType: [FilterTermsType_termsGet]? = nil, completion: @escaping (_ data: TermsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func termsGet(filterTermsType: [FilterTermsType_termsGet], filterCountryCode: [String]? = nil, filterIsLatestVersion: [String]? = nil, completion: @escaping (_ data: TermsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple terms.
@@ -22,12 +22,12 @@ Retrieves multiple terms by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterTermsType = ["filterTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. `DEVELOPER`)
 let filterCountryCode = ["inner_example"] // [String] | Filter by countryCode (optional)
 let filterIsLatestVersion = ["inner_example"] // [String] | Filter by isLatestVersion (optional)
-let filterTermsType = ["filterTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. `DEVELOPER`) (optional)
 
 // Get multiple terms.
-TermsAPI.termsGet(filterCountryCode: filterCountryCode, filterIsLatestVersion: filterIsLatestVersion, filterTermsType: filterTermsType) { (response, error) in
+TermsAPI.termsGet(filterTermsType: filterTermsType, filterCountryCode: filterCountryCode, filterIsLatestVersion: filterIsLatestVersion) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -43,9 +43,9 @@ TermsAPI.termsGet(filterCountryCode: filterCountryCode, filterIsLatestVersion: f
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) | 
  **filterCountryCode** | [**[String]**](String.md) | Filter by countryCode | [optional] 
  **filterIsLatestVersion** | [**[String]**](String.md) | Filter by isLatestVersion | [optional] 
- **filterTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) | [optional] 
 
 ### Return type
 
