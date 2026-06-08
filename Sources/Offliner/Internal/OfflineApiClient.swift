@@ -150,9 +150,9 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
 		let response = try await OfflineTasksAPITidal.offlineTasksGet(
+			filterInstallationId: [installationId],
 			pageCursor: cursor,
-			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists", "collection"],
-			filterInstallationId: [installationId]
+			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists", "collection"]
 		)
 
 		let tasks = response.createOfflineTaskMap()
@@ -227,11 +227,11 @@ private extension OfflineApiClient {
 	) async throws -> (collections: [OfflineCollection], cursor: String?) {
 		let response = try await InstallationsAPITidal.installationsIdRelationshipsOfflineInventoryGet(
 			id: installationId,
+			filterType: [type.toFilterType],
 			pageCursor: cursor,
 			include: ["offlineInventory", "offlineInventory.coverArt"],
 			filterId: id.map { [$0] },
-			filterState: [.pending],
-			filterType: [type.toFilterType]
+			filterState: [.pending]
 		)
 
 		let includedItems = IncludedItemsMap(from: response.included)
