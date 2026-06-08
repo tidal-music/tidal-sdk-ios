@@ -15,14 +15,14 @@ internal class UserCollectionFoldersAPI {
     /**
      Get multiple userCollectionFolders.
      
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
+     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
      - returns: UserCollectionFoldersMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
+    internal class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
         do {
-            return try await userCollectionFoldersGetWithRequestBuilder(include: include, filterId: filterId).execute().body
+            return try await userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -36,11 +36,11 @@ internal class UserCollectionFoldersAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
+     - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
      - returns: RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> 
      */
-    internal class func userCollectionFoldersGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> {
+    internal class func userCollectionFoldersGetWithRequestBuilder(filterId: [String], include: [String]? = nil) -> RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> {
         let localVariablePath = "/userCollectionFolders"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -48,7 +48,7 @@ internal class UserCollectionFoldersAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -115,7 +115,7 @@ internal class UserCollectionFoldersAPI {
      Get single userCollectionFolder.
      
      - parameter id: (path) Folder Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
      - returns: UserCollectionFoldersSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -136,7 +136,7 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
      - returns: RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> 
      */
     internal class func userCollectionFoldersIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> {
@@ -440,6 +440,58 @@ internal class UserCollectionFoldersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<UserCollectionFoldersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get userCollection relationship (\"to-one\").
+     
+     - parameter id: (path) Folder Id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: userCollection (optional)
+     - returns: UserCollectionFoldersSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil) async throws -> UserCollectionFoldersSingleRelationshipDataDocument {
+        do {
+            return try await userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get userCollection relationship (\"to-one\").
+     - GET /userCollectionFolders/{id}/relationships/userCollection
+     - Retrieves userCollection relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Folder Id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: userCollection (optional)
+     - returns: RequestBuilder<UserCollectionFoldersSingleRelationshipDataDocument> 
+     */
+    internal class func userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UserCollectionFoldersSingleRelationshipDataDocument> {
+        var localVariablePath = "/userCollectionFolders/{id}/relationships/userCollection"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionFoldersSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

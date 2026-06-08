@@ -15,14 +15,14 @@ internal class DownloadsAPI {
     /**
      Get multiple downloads.
      
+     - parameter filterId: (query) Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) (optional)
      - returns: DownloadsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func downloadsGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> DownloadsMultiResourceDataDocument {
+    internal class func downloadsGet(filterId: [String], include: [String]? = nil) async throws -> DownloadsMultiResourceDataDocument {
         do {
-            return try await downloadsGetWithRequestBuilder(include: include, filterId: filterId).execute().body
+            return try await downloadsGetWithRequestBuilder(filterId: filterId, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -36,11 +36,11 @@ internal class DownloadsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterId: (query) Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) (optional)
      - returns: RequestBuilder<DownloadsMultiResourceDataDocument> 
      */
-    internal class func downloadsGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<DownloadsMultiResourceDataDocument> {
+    internal class func downloadsGetWithRequestBuilder(filterId: [String], include: [String]? = nil) -> RequestBuilder<DownloadsMultiResourceDataDocument> {
         let localVariablePath = "/downloads"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -48,7 +48,7 @@ internal class DownloadsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

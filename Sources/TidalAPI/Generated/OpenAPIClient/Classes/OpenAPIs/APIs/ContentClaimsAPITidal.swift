@@ -19,9 +19,9 @@ public enum ContentClaimsAPITidal {
      
      - returns: ContentClaimsMultiResourceDataDocument
      */
-	public static func contentClaimsGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ContentClaimsMultiResourceDataDocument {
+	public static func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ContentClaimsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ContentClaimsAPI.contentClaimsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId)
+			ContentClaimsAPI.contentClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
 		}
 	}
 

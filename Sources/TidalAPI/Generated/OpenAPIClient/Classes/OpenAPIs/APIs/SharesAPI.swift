@@ -15,15 +15,14 @@ internal class SharesAPI {
     /**
      Get multiple shares.
      
+     - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
-     - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) (optional)
-     - parameter filterId: (query) List of shares IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: SharesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesGet(include: [String]? = nil, filterCode: [String]? = nil, filterId: [String]? = nil) async throws -> SharesMultiResourceDataDocument {
+    internal class func sharesGet(filterCode: [String], include: [String]? = nil) async throws -> SharesMultiResourceDataDocument {
         do {
-            return try await sharesGetWithRequestBuilder(include: include, filterCode: filterCode, filterId: filterId).execute().body
+            return try await sharesGetWithRequestBuilder(filterCode: filterCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,12 +39,11 @@ internal class SharesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
+     - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
-     - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) (optional)
-     - parameter filterId: (query) List of shares IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: RequestBuilder<SharesMultiResourceDataDocument> 
      */
-    internal class func sharesGetWithRequestBuilder(include: [String]? = nil, filterCode: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
+    internal class func sharesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
         let localVariablePath = "/shares"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -53,8 +51,7 @@ internal class SharesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[code]": (wrappedValue: filterCode?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[code]": (wrappedValue: filterCode.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

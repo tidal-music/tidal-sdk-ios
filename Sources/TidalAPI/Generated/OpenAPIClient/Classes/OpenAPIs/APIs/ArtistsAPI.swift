@@ -18,7 +18,7 @@ internal class ArtistsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Artist handle (e.g. &#x60;jayz&#x60;) (optional)
-     - parameter filterId: (query) Artist id (e.g. &#x60;1566&#x60;) (optional)
+     - parameter filterId: (query) List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: ArtistsMultiResourceDataDocument
      */
@@ -45,7 +45,7 @@ internal class ArtistsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Artist handle (e.g. &#x60;jayz&#x60;) (optional)
-     - parameter filterId: (query) Artist id (e.g. &#x60;1566&#x60;) (optional)
+     - parameter filterId: (query) List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<ArtistsMultiResourceDataDocument> 
      */

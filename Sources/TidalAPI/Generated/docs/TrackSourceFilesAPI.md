@@ -4,63 +4,10 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**trackSourceFilesGet**](TrackSourceFilesAPI.md#tracksourcefilesget) | **GET** /trackSourceFiles | Get multiple trackSourceFiles.
 [**trackSourceFilesIdGet**](TrackSourceFilesAPI.md#tracksourcefilesidget) | **GET** /trackSourceFiles/{id} | Get single trackSourceFile.
 [**trackSourceFilesIdRelationshipsOwnersGet**](TrackSourceFilesAPI.md#tracksourcefilesidrelationshipsownersget) | **GET** /trackSourceFiles/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**trackSourceFilesPost**](TrackSourceFilesAPI.md#tracksourcefilespost) | **POST** /trackSourceFiles | Create single trackSourceFile.
 
-
-# **trackSourceFilesGet**
-```swift
-    open class func trackSourceFilesGet(include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: TrackSourceFilesMultiResourceDataDocument?, _ error: Error?) -> Void)
-```
-
-Get multiple trackSourceFiles.
-
-Retrieves multiple trackSourceFiles by available filters, or without if applicable.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterId = ["inner_example"] // [String] | Track source file id (e.g. `a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11`) (optional)
-
-// Get multiple trackSourceFiles.
-TrackSourceFilesAPI.trackSourceFilesGet(include: include, filterId: filterId) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterId** | [**[String]**](String.md) | Track source file id (e.g. &#x60;a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11&#x60;) | [optional] 
-
-### Return type
-
-[**TrackSourceFilesMultiResourceDataDocument**](TrackSourceFilesMultiResourceDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **trackSourceFilesIdGet**
 ```swift

@@ -183,7 +183,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionArtistsIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionArtistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionArtistsItemsRelationshipAddOperationPayload: UserCollectionArtistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionArtistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionArtistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionArtistsItemsRelationshipAddOperationPayload: UserCollectionArtistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionArtistsItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -224,7 +224,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionArtistsItemsMultiRelationshipDataDocument**](UserCollectionArtistsItemsMultiRelationshipDataDocument.md)
+[**UserCollectionArtistsItemsAddMultiRelationshipDataDocument**](UserCollectionArtistsItemsAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 

@@ -13,6 +13,14 @@ import AnyCodable
 internal class CommentsAPI {
 
     /**
+     * enum for parameter filterSubjectType
+     */
+    public enum FilterSubjectType_commentsGet: String, CaseIterable {
+        case albums = "albums"
+        case tracks = "tracks"
+    }
+
+    /**
      * enum for parameter sort
      */
     public enum Sort_commentsGet: String, CaseIterable {
@@ -27,28 +35,20 @@ internal class CommentsAPI {
     }
 
     /**
-     * enum for parameter filterSubjectType
-     */
-    public enum FilterSubjectType_commentsGet: String, CaseIterable {
-        case albums = "albums"
-        case tracks = "tracks"
-    }
-
-    /**
      Get multiple comments.
      
+     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) 
+     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment (optional)
      - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      - returns: CommentsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsGet(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument {
+    internal class func commentsGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_commentsGet], pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil) async throws -> CommentsMultiResourceDataDocument {
         do {
-            return try await commentsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType).execute().body
+            return try await commentsGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -62,15 +62,15 @@ internal class CommentsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) 
+     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment (optional)
      - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      - returns: RequestBuilder<CommentsMultiResourceDataDocument> 
      */
-    internal class func commentsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
+    internal class func commentsGetWithRequestBuilder(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_commentsGet], pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
         let localVariablePath = "/comments"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -81,8 +81,8 @@ internal class CommentsAPI {
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[parentComment.id]": (wrappedValue: filterParentCommentId?.encodeToJSON(), isExplode: true),
-            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
+            "filter[subject.id]": (wrappedValue: filterSubjectId.encodeToJSON(), isExplode: true),
+            "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

@@ -15,18 +15,6 @@ public enum SearchHistoryEntriesAPITidal {
 
 
 	/**
-     Get multiple searchHistoryEntries.
-     
-     - returns: SearchHistoryEntriesMultiResourceDataDocument
-     */
-	public static func searchHistoryEntriesGet(countryCode: String? = nil, filterId: [String]? = nil) async throws -> SearchHistoryEntriesMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			SearchHistoryEntriesAPI.searchHistoryEntriesGetWithRequestBuilder(countryCode: countryCode, filterId: filterId)
-		}
-	}
-
-
-	/**
      Delete single searchHistoryEntrie.
      
      - returns: 

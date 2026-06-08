@@ -80,9 +80,9 @@ public enum UserCollectionVideosAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionVideosItemsMultiRelationshipDataDocument
+     - returns: UserCollectionVideosItemsAddMultiRelationshipDataDocument
      */
-	public static func userCollectionVideosIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionVideosItemsMultiRelationshipDataDocument {
+	public static func userCollectionVideosIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionVideosItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionVideosItemsRelationshipAddOperationPayload: userCollectionVideosItemsRelationshipAddOperationPayload)
 		}

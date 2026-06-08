@@ -207,10 +207,10 @@ internal class UserCollectionVideosAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionVideosItemsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: UserCollectionVideosItemsMultiRelationshipDataDocument
+     - returns: UserCollectionVideosItemsAddMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionVideosIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionVideosItemsMultiRelationshipDataDocument {
+    internal class func userCollectionVideosIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionVideosItemsAddMultiRelationshipDataDocument {
         do {
             return try await userCollectionVideosIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionVideosItemsRelationshipAddOperationPayload: userCollectionVideosItemsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -230,9 +230,9 @@ internal class UserCollectionVideosAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionVideosItemsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserCollectionVideosItemsMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<UserCollectionVideosItemsAddMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionVideosIdRelationshipsItemsPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserCollectionVideosItemsMultiRelationshipDataDocument> {
+    internal class func userCollectionVideosIdRelationshipsItemsPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserCollectionVideosItemsAddMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollectionVideos/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -252,7 +252,7 @@ internal class UserCollectionVideosAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionVideosItemsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionVideosItemsAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

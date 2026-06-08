@@ -15,18 +15,6 @@ public enum UserCollectionTracksAPITidal {
 
 
 	/**
-     Get multiple userCollectionTracks.
-     
-     - returns: UserCollectionTracksMultiResourceDataDocument
-     */
-	public static func userCollectionTracksGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> UserCollectionTracksMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksGetWithRequestBuilder(include: include, filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single userCollectionTrack.
      
      - returns: UserCollectionTracksSingleResourceDataDocument
@@ -96,9 +84,9 @@ public enum UserCollectionTracksAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionTracksItemsMultiRelationshipDataDocument
+     - returns: UserCollectionTracksItemsAddMultiRelationshipDataDocument
      */
-	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
+	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
 		}

@@ -43,9 +43,9 @@ public enum UserCollectionSaveForLatersAPITidal {
      
      - returns: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument {
+	public static func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
 		}
 	}
 
@@ -53,11 +53,11 @@ public enum UserCollectionSaveForLatersAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
+     - returns: UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument
      */
-	public static func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument {
+	public static func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: userCollectionSaveForLatersItemsRelationshipAddOperationPayload)
+			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: userCollectionSaveForLatersItemsRelationshipAddOperationPayload)
 		}
 	}
 
