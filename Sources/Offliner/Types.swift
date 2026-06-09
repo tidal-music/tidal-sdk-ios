@@ -87,6 +87,14 @@ public enum OfflineCollectionState: Hashable {
 	case stored
 }
 
+// MARK: - OfflineCollectionDownloadState
+
+public enum OfflineCollectionDownloadState: Sendable, Hashable {
+	case notDownloaded
+	case downloading
+	case downloaded
+}
+
 // MARK: - OfflineCollection
 
 public struct OfflineCollection: Hashable {

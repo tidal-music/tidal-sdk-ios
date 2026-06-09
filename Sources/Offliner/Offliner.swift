@@ -5,6 +5,8 @@ import Player
 // MARK: - Offliner
 
 public final class Offliner {
+	private static let collectionDownloadStatePollInterval: UInt64 = 1_000_000_000
+
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
@@ -173,6 +175,51 @@ public final class Offliner {
 		}
 	}
 
+	public func getOfflineCollectionDownloadState(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) -> AsyncStream<OfflineCollectionDownloadState> {
+		AsyncStream { continuation in
+			let task = Task {
+				var lastState: OfflineCollectionDownloadState?
+				var consecutiveDownloadedObservations = 0
+
+				while !Task.isCancelled {
+					guard let state = await offlineCollectionDownloadState(
+						collectionType: collectionType,
+						resourceId: resourceId
+					) else {
+						consecutiveDownloadedObservations = 0
+						try? await Task.sleep(nanoseconds: Self.collectionDownloadStatePollInterval)
+						continue
+					}
+					let shouldYield: Bool
+
+					// Backend pending inventory is computed from active tasks for the collection and its members.
+					// A second non-pending observation avoids a transient downloaded state if paginated
+					// collection item task creation briefly has no active tasks.
+					if state == .downloaded {
+						consecutiveDownloadedObservations += 1
+						shouldYield = consecutiveDownloadedObservations >= 2
+					} else {
+						consecutiveDownloadedObservations = 0
+						shouldYield = true
+					}
+
+					if shouldYield, state != lastState {
+						continuation.yield(state)
+						lastState = state
+					}
+
+					try? await Task.sleep(nanoseconds: Self.collectionDownloadStatePollInterval)
+				}
+
+				continuation.finish()
+			}
+			continuation.onTermination = { _ in task.cancel() }
+		}
+	}
+
 	public func countOfflineCollectionItems(
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId
@@ -240,6 +287,35 @@ public final class Offliner {
 		await taskRunner.run()
 	}
 
+	private func offlineCollectionDownloadState(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) async -> OfflineCollectionDownloadState? {
+		let resourceIdValue = resourceId.stringValue
+		let localCollection = try? await offlineStore.getCollection(
+			collectionType: collectionType,
+			resourceId: resourceIdValue
+		)
+		let pendingCollection: OfflineCollection?
+		do {
+			pendingCollection = try await offlineApiClient.getOfflineCollection(
+				type: collectionType,
+				id: resourceIdValue
+			)
+		} catch {
+			return nil
+		}
+
+		if pendingCollection != nil {
+			return .downloading
+		}
+
+		if localCollection != nil {
+			return .downloaded
+		}
+
+		return .notDownloaded
+	}
 }
 
 // MARK: - OfflineItemProvider

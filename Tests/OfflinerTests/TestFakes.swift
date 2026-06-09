@@ -339,3 +339,10 @@ extension AsyncStream where Element == Set<OfflineCollection> {
 		return result
 	}
 }
+
+extension AsyncStream where Element == OfflineCollectionDownloadState {
+	func first() async -> OfflineCollectionDownloadState? {
+		var iterator = makeAsyncIterator()
+		return await iterator.next()
+	}
+}
