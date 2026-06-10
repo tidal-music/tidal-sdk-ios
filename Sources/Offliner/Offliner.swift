@@ -310,7 +310,6 @@ public final class Offliner {
 
 	public func download(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId.stringValue)
-		collectionDownloadStateCache.setState(.downloading, collectionType: collectionType, resourceId: resourceId)
 		await taskRunner.run()
 	}
 
@@ -321,6 +320,7 @@ public final class Offliner {
 
 	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
+		collectionDownloadStateCache.setState(.notDownloaded, collectionType: collectionType, resourceId: resourceId)
 		await taskRunner.run()
 	}
 
@@ -343,18 +343,26 @@ public final class Offliner {
 			collectionType: collectionType,
 			resourceId: resourceIdValue
 		)
-		let pendingCollection: OfflineCollection?
+		let taskActivity: OfflineCollectionTaskActivity
 		do {
-			pendingCollection = try await offlineApiClient.getOfflineCollection(
-				type: collectionType,
-				id: resourceIdValue
+			taskActivity = try await offlineApiClient.getCollectionTaskActivity(
+				collectionType: collectionType,
+				resourceId: resourceId
 			)
 		} catch {
 			return nil
 		}
 
-		if pendingCollection != nil {
+		if taskActivity == .removing {
+			return .notDownloaded
+		}
+
+		if taskActivity == .storing {
 			return .downloading
+		}
+
+		if getCachedOfflineCollectionDownloadState(collectionType: collectionType, resourceId: resourceId) == .notDownloaded {
+			return .notDownloaded
 		}
 
 		if localCollection != nil {

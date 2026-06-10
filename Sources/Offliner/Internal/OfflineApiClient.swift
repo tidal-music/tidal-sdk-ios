@@ -92,6 +92,14 @@ enum OfflineTask {
 	}
 }
 
+// MARK: - OfflineCollectionTaskActivity
+
+enum OfflineCollectionTaskActivity: Equatable {
+	case none
+	case storing
+	case removing
+}
+
 // MARK: - OfflineApiClientProtocol
 
 protocol OfflineApiClientProtocol {
@@ -99,6 +107,10 @@ protocol OfflineApiClientProtocol {
 	func removeItem(type: ResourceType, id: String) async throws
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?)
 	func updateTask(taskId: String, state: Download.State) async throws
+	func getCollectionTaskActivity(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) async throws -> OfflineCollectionTaskActivity
 	func getPendingCollections(
 		type: OfflineCollectionType,
 		cursor: String?
@@ -107,6 +119,30 @@ protocol OfflineApiClientProtocol {
 }
 
 extension OfflineApiClientProtocol {
+	func getCollectionTaskActivity(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) async throws -> OfflineCollectionTaskActivity {
+		var hasStoreTask = false
+		var cursor: String?
+
+		repeat {
+			let page = try await getTasks(cursor: cursor)
+
+			if page.tasks.contains(where: { $0.isRemoveTask(collectionType: collectionType, resourceId: resourceId) }) {
+				return .removing
+			}
+
+			if page.tasks.contains(where: { $0.isStoreTask(collectionType: collectionType, resourceId: resourceId) }) {
+				hasStoreTask = true
+			}
+
+			cursor = page.cursor
+		} while cursor != nil
+
+		return hasStoreTask ? .storing : .none
+	}
+
 	func getPendingCollections(
 		type: OfflineCollectionType,
 		cursor: String?
@@ -116,6 +152,79 @@ extension OfflineApiClientProtocol {
 
 	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
 		nil
+	}
+}
+
+extension OfflineTask {
+	func isStoreTask(collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
+		switch self {
+		case .storeAlbum(let task):
+			collectionType == .albums && task.album.id == resourceId.stringValue
+		case .storePlaylist(let task):
+			collectionType == .playlists && task.playlist.id == resourceId.stringValue
+		case .storeUserCollectionTracks(let task):
+			collectionType == .userCollectionTracks && task.resolvedResourceId == resourceId.stringValue
+		case .storeTrack(let task):
+			matchesCollection(
+				collectionResourceType: task.collectionResourceType,
+				collectionResourceId: task.collectionResourceId,
+				collectionType: collectionType,
+				resourceId: resourceId
+			)
+		case .storeVideo(let task):
+			matchesCollection(
+				collectionResourceType: task.collectionResourceType,
+				collectionResourceId: task.collectionResourceId,
+				collectionType: collectionType,
+				resourceId: resourceId
+			)
+		case .removeItem, .removeCollection:
+			false
+		}
+	}
+
+	func isRemoveTask(collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
+		switch self {
+		case .removeCollection(let task):
+			task.resourceType == collectionType.rawValue && task.resolvedResourceId == resourceId.stringValue
+		case .removeItem(let task):
+			matchesCollection(
+				collectionResourceType: task.collectionResourceType,
+				collectionResourceId: task.collectionResourceId,
+				collectionType: collectionType,
+				resourceId: resourceId
+			)
+		case .storeTrack, .storeVideo, .storeAlbum, .storePlaylist, .storeUserCollectionTracks:
+			false
+		}
+	}
+
+	private func matchesCollection(
+		collectionResourceType: String,
+		collectionResourceId: String,
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) -> Bool {
+		collectionResourceType == collectionType.rawValue && resolvedCollectionResourceId(
+			collectionResourceType: collectionResourceType,
+			collectionResourceId: collectionResourceId
+		) == resourceId.stringValue
+	}
+
+	private func resolvedCollectionResourceId(collectionResourceType: String, collectionResourceId: String) -> String {
+		collectionResourceType == OfflineCollectionType.userCollectionTracks.rawValue ? ResourceId.me.stringValue : collectionResourceId
+	}
+}
+
+private extension StoreUserCollectionTracksTask {
+	var resolvedResourceId: String {
+		resourceId == ResourceId.me.stringValue ? ResourceId.me.stringValue : resourceId
+	}
+}
+
+private extension RemoveCollectionTask {
+	var resolvedResourceId: String {
+		resourceType == OfflineCollectionType.userCollectionTracks.rawValue ? ResourceId.me.stringValue : resourceId
 	}
 }
 

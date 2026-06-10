@@ -20,6 +20,8 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	var pendingCollection: OfflineCollection?
 	var pendingCollectionResponses: [OfflineCollection?]?
 	private(set) var getOfflineCollectionCallCount = 0
+	var collectionTaskActivityResponses: [OfflineCollectionTaskActivity]?
+	private(set) var getCollectionTaskActivityCallCount = 0
 
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
 		tasks.append(contentsOf: newTasks)
@@ -135,6 +137,28 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		if state == .completed || state == .failed {
 			tasks.removeAll { $0.id == taskId }
 		}
+	}
+
+	func getCollectionTaskActivity(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) async throws -> OfflineCollectionTaskActivity {
+		getCollectionTaskActivityCallCount += 1
+		if var responses = collectionTaskActivityResponses, !responses.isEmpty {
+			let response = responses.removeFirst()
+			collectionTaskActivityResponses = responses
+			return response
+		}
+
+		if tasks.contains(where: { $0.isRemoveTask(collectionType: collectionType, resourceId: resourceId) }) {
+			return .removing
+		}
+
+		if tasks.contains(where: { $0.isStoreTask(collectionType: collectionType, resourceId: resourceId) }) {
+			return .storing
+		}
+
+		return .none
 	}
 
 	func waitForTasksToComplete() async {
