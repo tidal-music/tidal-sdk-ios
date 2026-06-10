@@ -43,7 +43,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		}
 	}
 
-	func testOfflineCollectionDownloadStateReportsDownloadedWhenStoredAndNotPending() async throws {
+	func testOfflineCollectionDownloadStateEmitsDownloadedImmediatelyWhenStoredAndNotPending() async throws {
 		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
 			offlineApiClient: backend,
@@ -61,9 +61,10 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		).first()
 
 		XCTAssertEqual(state, .downloaded)
+		XCTAssertEqual(backend.getOfflineCollectionCallCount, 1)
 	}
 
-	func testOfflineCollectionDownloadStateReportsDownloadingWhenStoredButPending() async throws {
+	func testOfflineCollectionDownloadStateEmitsDownloadingImmediatelyWhenStoredButPending() async throws {
 		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
 			offlineApiClient: backend,
@@ -85,6 +86,57 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		).first()
 
 		XCTAssertEqual(state, .downloading)
+		XCTAssertEqual(backend.getOfflineCollectionCallCount, 1)
+	}
+
+	func testOfflineCollectionDownloadStateEmitsNotDownloadedImmediatelyWhenNotStoredAndNotPending() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let state = await offliner.getOfflineCollectionDownloadState(
+			collectionType: .albums,
+			resourceId: .identifier("album-123")
+		).first()
+
+		XCTAssertEqual(state, .notDownloaded)
+		XCTAssertEqual(backend.getOfflineCollectionCallCount, 1)
+	}
+
+	func testOfflineCollectionDownloadStateRequiresStableDownloadedObservationAfterInitialEmission() async throws {
+		let pendingCollection = OfflineCollection.mock(
+			catalogMetadata: .album(.mock(id: "album-123")),
+			state: .pending
+		)
+		let backend = StubOfflineApiClient()
+		backend.pendingCollectionResponses = [
+			pendingCollection,
+			nil,
+			pendingCollection,
+			nil,
+			nil,
+		]
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader(),
+			collectionDownloadStatePollInterval: 1_000_000
+		)
+
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let states = await offliner.getOfflineCollectionDownloadState(
+			collectionType: .albums,
+			resourceId: .identifier("album-123")
+		).first(2)
+
+		XCTAssertEqual(states, [.downloading, .downloaded])
+		XCTAssertGreaterThanOrEqual(backend.getOfflineCollectionCallCount, 5)
 	}
 
 	func testRedownloadAlbumDeletesOldArtworkAndStoresNewOne() async throws {

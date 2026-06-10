@@ -5,12 +5,13 @@ import Player
 // MARK: - Offliner
 
 public final class Offliner {
-	private static let collectionDownloadStatePollInterval: UInt64 = 1_000_000_000
+	private static let defaultCollectionDownloadStatePollInterval: UInt64 = 1_000_000_000
 
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
 	private let mediaDownloader: MediaDownloaderProtocol
+	private let collectionDownloadStatePollInterval: UInt64
 	private var trackManifestFetcher: TrackManifestFetcherProtocol
 
 	public var audioFormats: [AudioFormat] {
@@ -52,6 +53,7 @@ public final class Offliner {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
+		self.collectionDownloadStatePollInterval = Self.defaultCollectionDownloadStatePollInterval
 		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
@@ -74,11 +76,13 @@ public final class Offliner {
 		mediaDownloader: MediaDownloaderProtocol,
 		licenseDownloader: LicenseDownloader = LicenseDownloader(),
 		trackManifestFetcher: TrackManifestFetcherProtocol,
-		videoManifestFetcher: VideoManifestFetcherProtocol
+		videoManifestFetcher: VideoManifestFetcherProtocol,
+		collectionDownloadStatePollInterval: UInt64 = Offliner.defaultCollectionDownloadStatePollInterval
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
+		self.collectionDownloadStatePollInterval = collectionDownloadStatePollInterval
 		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
@@ -184,13 +188,23 @@ public final class Offliner {
 				var lastState: OfflineCollectionDownloadState?
 				var consecutiveDownloadedObservations = 0
 
+				if let state = await offlineCollectionDownloadState(
+					collectionType: collectionType,
+					resourceId: resourceId
+				) {
+					continuation.yield(state)
+					lastState = state
+				}
+
 				while !Task.isCancelled {
+					try? await Task.sleep(nanoseconds: collectionDownloadStatePollInterval)
+					guard !Task.isCancelled else { break }
+
 					guard let state = await offlineCollectionDownloadState(
 						collectionType: collectionType,
 						resourceId: resourceId
 					) else {
 						consecutiveDownloadedObservations = 0
-						try? await Task.sleep(nanoseconds: Self.collectionDownloadStatePollInterval)
 						continue
 					}
 					let shouldYield: Bool
@@ -210,8 +224,6 @@ public final class Offliner {
 						continuation.yield(state)
 						lastState = state
 					}
-
-					try? await Task.sleep(nanoseconds: Self.collectionDownloadStatePollInterval)
 				}
 
 				continuation.finish()

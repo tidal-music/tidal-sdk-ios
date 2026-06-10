@@ -18,6 +18,8 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 
 	var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] = []
 	var pendingCollection: OfflineCollection?
+	var pendingCollectionResponses: [OfflineCollection?]?
+	private(set) var getOfflineCollectionCallCount = 0
 
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
 		tasks.append(contentsOf: newTasks)
@@ -150,6 +152,12 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	}
 
 	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+		getOfflineCollectionCallCount += 1
+		if var responses = pendingCollectionResponses, !responses.isEmpty {
+			let response = responses.removeFirst()
+			pendingCollectionResponses = responses
+			return response
+		}
 		pendingCollection
 	}
 }
@@ -344,5 +352,16 @@ extension AsyncStream where Element == OfflineCollectionDownloadState {
 	func first() async -> OfflineCollectionDownloadState? {
 		var iterator = makeAsyncIterator()
 		return await iterator.next()
+	}
+
+	func first(_ count: Int) async -> [OfflineCollectionDownloadState] {
+		var result: [OfflineCollectionDownloadState] = []
+		for await value in self {
+			result.append(value)
+			if result.count == count {
+				break
+			}
+		}
+		return result
 	}
 }
