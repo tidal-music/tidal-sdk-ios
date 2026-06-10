@@ -5,13 +5,14 @@ import Player
 // MARK: - Offliner
 
 public final class Offliner {
-	private static let defaultCollectionDownloadStatePollInterval: UInt64 = 1_000_000_000
+	static let defaultCollectionDownloadStatePollInterval: UInt64 = 1_000_000_000
 
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
 	private let mediaDownloader: MediaDownloaderProtocol
 	private let collectionDownloadStatePollInterval: UInt64
+	private let collectionDownloadStateCache: OfflineCollectionDownloadStateCache
 	private var trackManifestFetcher: TrackManifestFetcherProtocol
 
 	public var audioFormats: [AudioFormat] {
@@ -54,6 +55,7 @@ public final class Offliner {
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
 		self.collectionDownloadStatePollInterval = Self.defaultCollectionDownloadStatePollInterval
+		self.collectionDownloadStateCache = OfflineCollectionDownloadStateCache()
 		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
@@ -77,12 +79,14 @@ public final class Offliner {
 		licenseDownloader: LicenseDownloader = LicenseDownloader(),
 		trackManifestFetcher: TrackManifestFetcherProtocol,
 		videoManifestFetcher: VideoManifestFetcherProtocol,
-		collectionDownloadStatePollInterval: UInt64 = Offliner.defaultCollectionDownloadStatePollInterval
+		collectionDownloadStatePollInterval: UInt64 = Offliner.defaultCollectionDownloadStatePollInterval,
+		collectionDownloadStateCache: OfflineCollectionDownloadStateCache = OfflineCollectionDownloadStateCache()
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
 		self.collectionDownloadStatePollInterval = collectionDownloadStatePollInterval
+		self.collectionDownloadStateCache = collectionDownloadStateCache
 		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
@@ -179,6 +183,13 @@ public final class Offliner {
 		}
 	}
 
+	public func getCachedOfflineCollectionDownloadState(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) -> OfflineCollectionDownloadState? {
+		collectionDownloadStateCache.state(collectionType: collectionType, resourceId: resourceId)
+	}
+
 	public func getOfflineCollectionDownloadState(
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId
@@ -188,11 +199,19 @@ public final class Offliner {
 				var lastState: OfflineCollectionDownloadState?
 				var consecutiveDownloadedObservations = 0
 
-				if let state = await offlineCollectionDownloadState(
+				if let state = getCachedOfflineCollectionDownloadState(collectionType: collectionType, resourceId: resourceId) {
+					continuation.yield(state)
+					lastState = state
+				} else if let state = await offlineCollectionDownloadState(
 					collectionType: collectionType,
 					resourceId: resourceId
 				) {
-					continuation.yield(state)
+					yieldCollectionDownloadState(
+						state,
+						collectionType: collectionType,
+						resourceId: resourceId,
+						continuation: continuation
+					)
 					lastState = state
 				}
 
@@ -221,7 +240,12 @@ public final class Offliner {
 					}
 
 					if shouldYield, state != lastState {
-						continuation.yield(state)
+						yieldCollectionDownloadState(
+							state,
+							collectionType: collectionType,
+							resourceId: resourceId,
+							continuation: continuation
+						)
 						lastState = state
 					}
 				}
@@ -286,6 +310,7 @@ public final class Offliner {
 
 	public func download(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId.stringValue)
+		collectionDownloadStateCache.setState(.downloading, collectionType: collectionType, resourceId: resourceId)
 		await taskRunner.run()
 	}
 
@@ -297,6 +322,16 @@ public final class Offliner {
 	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
 		await taskRunner.run()
+	}
+
+	private func yieldCollectionDownloadState(
+		_ state: OfflineCollectionDownloadState,
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId,
+		continuation: AsyncStream<OfflineCollectionDownloadState>.Continuation
+	) {
+		collectionDownloadStateCache.setState(state, collectionType: collectionType, resourceId: resourceId)
+		continuation.yield(state)
 	}
 
 	private func offlineCollectionDownloadState(
