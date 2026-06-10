@@ -100,6 +100,27 @@ enum OfflineCollectionTaskActivity: Equatable {
 	case removing
 }
 
+// MARK: - OfflineCollectionReference
+
+struct OfflineCollectionReference: Hashable {
+	let collectionType: OfflineCollectionType
+	let resourceId: String
+
+	init(collectionType: OfflineCollectionType, resourceId: String) {
+		self.collectionType = collectionType
+		self.resourceId = collectionType == .userCollectionTracks ? ResourceId.me.stringValue : resourceId
+	}
+
+	init(collectionType: OfflineCollectionType, resourceId: ResourceId) {
+		self.init(collectionType: collectionType, resourceId: resourceId.stringValue)
+	}
+
+	init?(collectionResourceType: String, collectionResourceId: String) {
+		guard let collectionType = OfflineCollectionType(rawValue: collectionResourceType) else { return nil }
+		self.init(collectionType: collectionType, resourceId: collectionResourceId)
+	}
+}
+
 // MARK: - OfflineApiClientProtocol
 
 protocol OfflineApiClientProtocol {
@@ -119,28 +140,33 @@ protocol OfflineApiClientProtocol {
 }
 
 extension OfflineApiClientProtocol {
-	func getCollectionTaskActivity(
-		collectionType: OfflineCollectionType,
-		resourceId: ResourceId
-	) async throws -> OfflineCollectionTaskActivity {
-		var hasStoreTask = false
+	func getCollectionTaskActivities() async throws -> [OfflineCollectionReference: OfflineCollectionTaskActivity] {
+		var activities: [OfflineCollectionReference: OfflineCollectionTaskActivity] = [:]
 		var cursor: String?
 
 		repeat {
 			let page = try await getTasks(cursor: cursor)
 
-			if page.tasks.contains(where: { $0.isRemoveTask(collectionType: collectionType, resourceId: resourceId) }) {
-				return .removing
-			}
-
-			if page.tasks.contains(where: { $0.isStoreTask(collectionType: collectionType, resourceId: resourceId) }) {
-				hasStoreTask = true
+			for task in page.tasks {
+				if let collection = task.removeCollectionReference {
+					activities[collection] = .removing
+				} else if let collection = task.storeCollectionReference, activities[collection] != .removing {
+					activities[collection] = .storing
+				}
 			}
 
 			cursor = page.cursor
 		} while cursor != nil
 
-		return hasStoreTask ? .storing : .none
+		return activities
+	}
+
+	func getCollectionTaskActivity(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) async throws -> OfflineCollectionTaskActivity {
+		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
+		return try await getCollectionTaskActivities()[collection] ?? .none
 	}
 
 	func getPendingCollections(
@@ -156,75 +182,41 @@ extension OfflineApiClientProtocol {
 }
 
 extension OfflineTask {
-	func isStoreTask(collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
+	var storeCollectionReference: OfflineCollectionReference? {
 		switch self {
 		case .storeAlbum(let task):
-			collectionType == .albums && task.album.id == resourceId.stringValue
+			OfflineCollectionReference(collectionType: .albums, resourceId: task.album.id)
 		case .storePlaylist(let task):
-			collectionType == .playlists && task.playlist.id == resourceId.stringValue
+			OfflineCollectionReference(collectionType: .playlists, resourceId: task.playlist.id)
 		case .storeUserCollectionTracks(let task):
-			collectionType == .userCollectionTracks && task.resolvedResourceId == resourceId.stringValue
+			OfflineCollectionReference(collectionType: .userCollectionTracks, resourceId: task.resourceId)
 		case .storeTrack(let task):
-			matchesCollection(
+			OfflineCollectionReference(
 				collectionResourceType: task.collectionResourceType,
-				collectionResourceId: task.collectionResourceId,
-				collectionType: collectionType,
-				resourceId: resourceId
+				collectionResourceId: task.collectionResourceId
 			)
 		case .storeVideo(let task):
-			matchesCollection(
+			OfflineCollectionReference(
 				collectionResourceType: task.collectionResourceType,
-				collectionResourceId: task.collectionResourceId,
-				collectionType: collectionType,
-				resourceId: resourceId
+				collectionResourceId: task.collectionResourceId
 			)
 		case .removeItem, .removeCollection:
-			false
+			nil
 		}
 	}
 
-	func isRemoveTask(collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
+	var removeCollectionReference: OfflineCollectionReference? {
 		switch self {
 		case .removeCollection(let task):
-			task.resourceType == collectionType.rawValue && task.resolvedResourceId == resourceId.stringValue
+			OfflineCollectionReference(collectionResourceType: task.resourceType, collectionResourceId: task.resourceId)
 		case .removeItem(let task):
-			matchesCollection(
+			OfflineCollectionReference(
 				collectionResourceType: task.collectionResourceType,
-				collectionResourceId: task.collectionResourceId,
-				collectionType: collectionType,
-				resourceId: resourceId
+				collectionResourceId: task.collectionResourceId
 			)
 		case .storeTrack, .storeVideo, .storeAlbum, .storePlaylist, .storeUserCollectionTracks:
-			false
+			nil
 		}
-	}
-
-	private func matchesCollection(
-		collectionResourceType: String,
-		collectionResourceId: String,
-		collectionType: OfflineCollectionType,
-		resourceId: ResourceId
-	) -> Bool {
-		collectionResourceType == collectionType.rawValue && resolvedCollectionResourceId(
-			collectionResourceType: collectionResourceType,
-			collectionResourceId: collectionResourceId
-		) == resourceId.stringValue
-	}
-
-	private func resolvedCollectionResourceId(collectionResourceType: String, collectionResourceId: String) -> String {
-		collectionResourceType == OfflineCollectionType.userCollectionTracks.rawValue ? ResourceId.me.stringValue : collectionResourceId
-	}
-}
-
-private extension StoreUserCollectionTracksTask {
-	var resolvedResourceId: String {
-		resourceId == ResourceId.me.stringValue ? ResourceId.me.stringValue : resourceId
-	}
-}
-
-private extension RemoveCollectionTask {
-	var resolvedResourceId: String {
-		resourceType == OfflineCollectionType.userCollectionTracks.rawValue ? ResourceId.me.stringValue : resourceId
 	}
 }
 

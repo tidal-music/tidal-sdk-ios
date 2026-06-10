@@ -102,6 +102,30 @@ Get a snapshot of all active downloads:
 let downloads = await offliner.currentDownloads
 ```
 
+#### Collection Download State
+
+Hydrate the collection download-state cache before rendering surfaces that need synchronous button state:
+
+```swift
+try await offliner.hydrateOfflineCollectionDownloadStateCache()
+
+let state = offliner.getCachedOfflineCollectionDownloadState(
+    collectionType: .albums,
+    resourceId: .identifier("album-id")
+)
+```
+
+Subscribe to collection download-state changes:
+
+```swift
+for await state in offliner.getOfflineCollectionDownloadState(
+    collectionType: .albums,
+    resourceId: .identifier("album-id")
+) {
+    // Handle state: .notDownloaded, .downloading, .downloaded
+}
+```
+
 #### Tracking Individual Download Progress
 
 Each `Download` is an actor that exposes an event stream for state changes and progress updates:

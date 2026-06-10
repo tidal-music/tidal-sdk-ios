@@ -22,6 +22,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	private(set) var getOfflineCollectionCallCount = 0
 	var collectionTaskActivityResponses: [OfflineCollectionTaskActivity]?
 	private(set) var getCollectionTaskActivityCallCount = 0
+	var enqueueRemoveTasks = true
 
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
 		tasks.append(contentsOf: newTasks)
@@ -88,6 +89,8 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 
 	func removeItem(type: ResourceType, id: String) async throws {
 		removedItems.append(RecordedItem(type: type, id: id))
+		guard enqueueRemoveTasks else { return }
+
 		let taskId = "task-\(taskIdCounter)"
 		taskIdCounter += 1
 
@@ -144,17 +147,18 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		resourceId: ResourceId
 	) async throws -> OfflineCollectionTaskActivity {
 		getCollectionTaskActivityCallCount += 1
+		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
 		if var responses = collectionTaskActivityResponses, !responses.isEmpty {
 			let response = responses.removeFirst()
 			collectionTaskActivityResponses = responses
 			return response
 		}
 
-		if tasks.contains(where: { $0.isRemoveTask(collectionType: collectionType, resourceId: resourceId) }) {
+		if tasks.contains(where: { $0.removeCollectionReference == collection }) {
 			return .removing
 		}
 
-		if tasks.contains(where: { $0.isStoreTask(collectionType: collectionType, resourceId: resourceId) }) {
+		if tasks.contains(where: { $0.storeCollectionReference == collection }) {
 			return .storing
 		}
 
