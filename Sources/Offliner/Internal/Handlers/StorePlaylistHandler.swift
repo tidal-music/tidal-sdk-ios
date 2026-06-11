@@ -33,7 +33,7 @@ private final class InternalPlaylistTask: InternalTask {
 		self.artworkDownloader = artworkDownloader
 	}
 
-	func isDownloadActivity(relatedTo collection: OfflineCollectionReference) -> Bool {
+	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
 		collection.collectionType == .playlists && collection.resourceId == task.playlist.id
 	}
 

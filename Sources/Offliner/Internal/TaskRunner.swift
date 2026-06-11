@@ -101,8 +101,8 @@ actor TaskRunner {
 
 	func hasCurrentDownload(relatedTo collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
 		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
-		return pendingTasks.contains { $0.isDownloadActivity(relatedTo: collection) } ||
-			runningTasks.contains { $0.isDownloadActivity(relatedTo: collection) }
+		return pendingTasks.contains { $0.isDownloadTask(for: collection) } ||
+			runningTasks.contains { $0.isDownloadTask(for: collection) }
 	}
 
 	private func refresh() async throws {
@@ -209,14 +209,14 @@ private actor Network {
 protocol InternalTask: AnyObject {
 	var id: String { get }
 	var download: Download? { get }
-	func isDownloadActivity(relatedTo collection: OfflineCollectionReference) -> Bool
+	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool
 	func run() async throws
 }
 
 extension InternalTask {
 	var download: Download? { nil }
 
-	func isDownloadActivity(relatedTo collection: OfflineCollectionReference) -> Bool {
+	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
 		download?.relatedCollection == collection
 	}
 }
