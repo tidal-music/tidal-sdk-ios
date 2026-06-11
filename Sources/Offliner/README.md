@@ -104,8 +104,8 @@ let downloads = await offliner.currentDownloads
 
 #### Collection Download State
 
-Subscribe to collection download-state changes. The stream emits an initial state from local storage, active downloads,
-and active offliner tasks, then continues polling for changes:
+Subscribe to collection download-state changes. The stream emits an initial local state from local storage and active
+downloads, then reconciles with backend offliner tasks and continues polling for changes:
 
 ```swift
 for await state in offliner.getOfflineCollectionDownloadState(

@@ -188,12 +188,44 @@ public final class Offliner {
 				var lastState: OfflineCollectionDownloadState?
 				var consecutiveDownloadedObservations = 0
 
-				if let state = await offlineCollectionDownloadState(
+				func yieldState(_ state: OfflineCollectionDownloadState) {
+					let shouldYield: Bool
+
+					// Backend pending inventory is computed from active tasks for the collection and its members.
+					// A second non-pending observation avoids a transient downloaded state if paginated
+					// collection item task creation briefly has no active tasks.
+					if state == .downloaded {
+						consecutiveDownloadedObservations += 1
+						shouldYield = lastState == .downloaded || consecutiveDownloadedObservations >= 2
+					} else {
+						consecutiveDownloadedObservations = 0
+						shouldYield = true
+					}
+
+					if shouldYield, state != lastState {
+						continuation.yield(state)
+						lastState = state
+					}
+				}
+
+				if let state = await localOfflineCollectionDownloadState(
 					collectionType: collectionType,
 					resourceId: resourceId
 				) {
 					continuation.yield(state)
 					lastState = state
+				}
+
+				// Let first-value consumers terminate before starting backend reconciliation.
+				await Task.yield()
+
+				if !Task.isCancelled {
+					if let state = await offlineCollectionDownloadState(
+						collectionType: collectionType,
+						resourceId: resourceId
+					) {
+						yieldState(state)
+					}
 				}
 
 				while !Task.isCancelled {
@@ -207,23 +239,8 @@ public final class Offliner {
 						consecutiveDownloadedObservations = 0
 						continue
 					}
-					let shouldYield: Bool
 
-					// Backend pending inventory is computed from active tasks for the collection and its members.
-					// A second non-pending observation avoids a transient downloaded state if paginated
-					// collection item task creation briefly has no active tasks.
-					if state == .downloaded {
-						consecutiveDownloadedObservations += 1
-						shouldYield = consecutiveDownloadedObservations >= 2
-					} else {
-						consecutiveDownloadedObservations = 0
-						shouldYield = true
-					}
-
-					if shouldYield, state != lastState {
-						continuation.yield(state)
-						lastState = state
-					}
+					yieldState(state)
 				}
 
 				continuation.finish()
@@ -337,6 +354,22 @@ public final class Offliner {
 		}
 
 		return taskActivity == nil ? nil : .notDownloaded
+	}
+
+	private func localOfflineCollectionDownloadState(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) async -> OfflineCollectionDownloadState? {
+		if await taskRunner.hasCurrentDownload(relatedTo: collectionType, resourceId: resourceId) {
+			return .downloading
+		}
+
+		let localCollection = try? await offlineStore.getCollection(
+			collectionType: collectionType,
+			resourceId: resourceId.stringValue
+		)
+
+		return localCollection == nil ? .notDownloaded : .downloaded
 	}
 }
 
