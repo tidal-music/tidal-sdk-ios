@@ -179,6 +179,13 @@ public final class Offliner {
 		}
 	}
 
+	/// Streams collection-level offline availability.
+	///
+	/// The stream emits a fast initial value from local storage and active in-memory downloads before making a backend
+	/// request. It then reconciles with backend offliner tasks and continues polling for later changes.
+	///
+	/// A first emission can therefore be corrected by a later emission if backend task state disagrees with local state.
+	/// Removal is represented as `.notDownloaded`; `.downloading` is reserved for active download/acquisition work.
 	public func getOfflineCollectionDownloadState(
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId
