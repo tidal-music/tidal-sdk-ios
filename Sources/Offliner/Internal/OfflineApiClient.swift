@@ -102,7 +102,7 @@ enum OfflineCollectionTaskActivity: Equatable {
 
 // MARK: - OfflineCollectionReference
 
-struct OfflineCollectionReference: Hashable {
+struct OfflineCollectionReference: Hashable, Sendable {
 	let collectionType: OfflineCollectionType
 	let resourceId: String
 
@@ -140,33 +140,29 @@ protocol OfflineApiClientProtocol {
 }
 
 extension OfflineApiClientProtocol {
-	func getCollectionTaskActivities() async throws -> [OfflineCollectionReference: OfflineCollectionTaskActivity] {
-		var activities: [OfflineCollectionReference: OfflineCollectionTaskActivity] = [:]
+	func getCollectionTaskActivity(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) async throws -> OfflineCollectionTaskActivity {
+		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
+		var activity = OfflineCollectionTaskActivity.none
 		var cursor: String?
 
 		repeat {
 			let page = try await getTasks(cursor: cursor)
 
 			for task in page.tasks {
-				if let collection = task.removeCollectionReference {
-					activities[collection] = .removing
-				} else if let collection = task.storeCollectionReference, activities[collection] != .removing {
-					activities[collection] = .storing
+				if task.removeCollectionReference == collection {
+					return .removing
+				} else if task.storeCollectionReference == collection {
+					activity = .storing
 				}
 			}
 
 			cursor = page.cursor
 		} while cursor != nil
 
-		return activities
-	}
-
-	func getCollectionTaskActivity(
-		collectionType: OfflineCollectionType,
-		resourceId: ResourceId
-	) async throws -> OfflineCollectionTaskActivity {
-		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
-		return try await getCollectionTaskActivities()[collection] ?? .none
+		return activity
 	}
 
 	func getPendingCollections(

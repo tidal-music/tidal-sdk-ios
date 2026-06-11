@@ -3,14 +3,14 @@ import Player
 
 // MARK: - OfflineMediaItemType
 
-public enum OfflineMediaItemType: String {
+public enum OfflineMediaItemType: String, Sendable {
 	case tracks
 	case videos
 }
 
 // MARK: - OfflineCollectionType
 
-public enum OfflineCollectionType: String {
+public enum OfflineCollectionType: String, Sendable {
 	case albums
 	case playlists
 	case userCollectionTracks
@@ -18,7 +18,7 @@ public enum OfflineCollectionType: String {
 
 // MARK: - ResourceId
 
-public enum ResourceId {
+public enum ResourceId: Sendable {
 	case identifier(String)
 	case me
 

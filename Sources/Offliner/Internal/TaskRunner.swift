@@ -99,6 +99,11 @@ actor TaskRunner {
 		}
 	}
 
+	func hasCurrentDownload(relatedTo collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
+		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
+		return currentDownloads.contains { $0.relatedCollection == collection }
+	}
+
 	private func refresh() async throws {
 		let (tasks, cursor) = try await offlineApiClient.getTasks(cursor: self.cursor)
 

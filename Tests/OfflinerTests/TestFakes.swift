@@ -22,7 +22,6 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	private(set) var getOfflineCollectionCallCount = 0
 	var collectionTaskActivityResponses: [OfflineCollectionTaskActivity]?
 	private(set) var getCollectionTaskActivityCallCount = 0
-	var enqueueRemoveTasks = true
 
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
 		tasks.append(contentsOf: newTasks)
@@ -89,7 +88,6 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 
 	func removeItem(type: ResourceType, id: String) async throws {
 		removedItems.append(RecordedItem(type: type, id: id))
-		guard enqueueRemoveTasks else { return }
 
 		let taskId = "task-\(taskIdCounter)"
 		taskIdCounter += 1
@@ -323,6 +321,52 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult {
 		throw FakeError.downloadFailed
+	}
+}
+
+actor SuspendingMediaDownloader: MediaDownloaderProtocol {
+	private var startedContinuation: CheckedContinuation<Void, Never>?
+	private var resultContinuation: CheckedContinuation<MediaDownloadResult, Error>?
+	private var started = false
+
+	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+
+	func waitUntilStarted() async {
+		if started {
+			return
+		}
+
+		await withCheckedContinuation { continuation in
+			startedContinuation = continuation
+		}
+	}
+
+	func complete() {
+		let tempDir = FileManager.default.temporaryDirectory
+		let url = tempDir.appendingPathComponent("media-\(UUID().uuidString).m4a")
+		try? Data("media".utf8).write(to: url)
+		let result = MediaDownloadResult(duration: 120, mediaLocation: url)
+		let continuation = resultContinuation
+		resultContinuation = nil
+
+		continuation?.resume(returning: result)
+	}
+
+	func download(
+		taskId: String,
+		manifestURL: URL,
+		licenseDownloadResult: LicenseDownloadResult?,
+		title: String,
+		onProgress: @escaping @Sendable (Double) async -> Void
+	) async throws -> MediaDownloadResult {
+		try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<MediaDownloadResult, Error>) in
+			resultContinuation = continuation
+			started = true
+			let startedContinuation = startedContinuation
+			self.startedContinuation = nil
+
+			startedContinuation?.resume()
+		}
 	}
 }
 

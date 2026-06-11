@@ -104,18 +104,8 @@ let downloads = await offliner.currentDownloads
 
 #### Collection Download State
 
-Hydrate the collection download-state cache before rendering surfaces that need synchronous button state:
-
-```swift
-try await offliner.hydrateOfflineCollectionDownloadStateCache()
-
-let state = offliner.getCachedOfflineCollectionDownloadState(
-    collectionType: .albums,
-    resourceId: .identifier("album-id")
-)
-```
-
-Subscribe to collection download-state changes:
+Subscribe to collection download-state changes. The stream emits an initial state from local storage, active downloads,
+and active offliner tasks, then continues polling for changes:
 
 ```swift
 for await state in offliner.getOfflineCollectionDownloadState(
