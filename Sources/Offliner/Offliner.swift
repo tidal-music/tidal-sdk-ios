@@ -313,6 +313,11 @@ public final class Offliner {
 
 	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
+		// Optimistically update local availability; the remove task performs the same idempotent cleanup.
+		try? offlineStore.deleteCollection(
+			resourceType: collectionType.rawValue,
+			resourceId: collectionLocalResourceId(collectionType: collectionType, resourceId: resourceId)
+		)
 		await taskRunner.run()
 	}
 
@@ -320,10 +325,9 @@ public final class Offliner {
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId
 	) async -> OfflineCollectionDownloadState? {
-		let resourceIdValue = resourceId.stringValue
 		let localCollection = try? await offlineStore.getCollection(
 			collectionType: collectionType,
-			resourceId: resourceIdValue
+			resourceId: collectionLocalResourceId(collectionType: collectionType, resourceId: resourceId)
 		)
 
 		let taskActivity: OfflineCollectionTaskActivity?
@@ -366,10 +370,17 @@ public final class Offliner {
 
 		let localCollection = try? await offlineStore.getCollection(
 			collectionType: collectionType,
-			resourceId: resourceId.stringValue
+			resourceId: collectionLocalResourceId(collectionType: collectionType, resourceId: resourceId)
 		)
 
 		return localCollection == nil ? .notDownloaded : .downloaded
+	}
+
+	private func collectionLocalResourceId(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) -> String {
+		collectionType == .userCollectionTracks ? ResourceId.me.stringValue : resourceId.stringValue
 	}
 }
 

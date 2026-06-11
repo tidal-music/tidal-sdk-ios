@@ -155,6 +155,29 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		XCTAssertEqual(states, [.downloaded, .notDownloaded])
 	}
 
+	func testOfflineCollectionDownloadStateTreatsSdkRemovalAsNotDownloadedImmediately() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		try await offliner.remove(collectionType: .albums, resourceId: .identifier("album-123"))
+
+		let state = await offliner.getOfflineCollectionDownloadState(
+			collectionType: .albums,
+			resourceId: .identifier("album-123")
+		).first()
+
+		XCTAssertEqual(state, .notDownloaded)
+		await backend.waitForTasksToComplete()
+	}
+
 	func testOfflineCollectionDownloadStateEmitsNotDownloadedImmediatelyWhenNotStoredAndNotPending() async throws {
 		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
