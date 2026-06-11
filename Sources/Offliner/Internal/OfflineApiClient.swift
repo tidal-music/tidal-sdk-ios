@@ -92,14 +92,6 @@ enum OfflineTask {
 	}
 }
 
-// MARK: - OfflineCollectionTaskActivity
-
-enum OfflineCollectionTaskActivity: Equatable {
-	case none
-	case storing
-	case removing
-}
-
 // MARK: - OfflineCollectionReference
 
 struct OfflineCollectionReference: Hashable, Sendable {
@@ -128,10 +120,6 @@ protocol OfflineApiClientProtocol {
 	func removeItem(type: ResourceType, id: String) async throws
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?)
 	func updateTask(taskId: String, state: Download.State) async throws
-	func getCollectionTaskActivity(
-		collectionType: OfflineCollectionType,
-		resourceId: ResourceId
-	) async throws -> OfflineCollectionTaskActivity
 	func getPendingCollections(
 		type: OfflineCollectionType,
 		cursor: String?
@@ -140,31 +128,6 @@ protocol OfflineApiClientProtocol {
 }
 
 extension OfflineApiClientProtocol {
-	func getCollectionTaskActivity(
-		collectionType: OfflineCollectionType,
-		resourceId: ResourceId
-	) async throws -> OfflineCollectionTaskActivity {
-		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
-		var activity = OfflineCollectionTaskActivity.none
-		var cursor: String?
-
-		repeat {
-			let page = try await getTasks(cursor: cursor)
-
-			for task in page.tasks {
-				if task.removeCollectionReference == collection {
-					return .removing
-				} else if task.storeCollectionReference == collection {
-					activity = .storing
-				}
-			}
-
-			cursor = page.cursor
-		} while cursor != nil
-
-		return activity
-	}
-
 	func getPendingCollections(
 		type: OfflineCollectionType,
 		cursor: String?
@@ -174,45 +137,6 @@ extension OfflineApiClientProtocol {
 
 	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
 		nil
-	}
-}
-
-extension OfflineTask {
-	var storeCollectionReference: OfflineCollectionReference? {
-		switch self {
-		case .storeAlbum(let task):
-			OfflineCollectionReference(collectionType: .albums, resourceId: task.album.id)
-		case .storePlaylist(let task):
-			OfflineCollectionReference(collectionType: .playlists, resourceId: task.playlist.id)
-		case .storeUserCollectionTracks(let task):
-			OfflineCollectionReference(collectionType: .userCollectionTracks, resourceId: task.resourceId)
-		case .storeTrack(let task):
-			OfflineCollectionReference(
-				collectionResourceType: task.collectionResourceType,
-				collectionResourceId: task.collectionResourceId
-			)
-		case .storeVideo(let task):
-			OfflineCollectionReference(
-				collectionResourceType: task.collectionResourceType,
-				collectionResourceId: task.collectionResourceId
-			)
-		case .removeItem, .removeCollection:
-			nil
-		}
-	}
-
-	var removeCollectionReference: OfflineCollectionReference? {
-		switch self {
-		case .removeCollection(let task):
-			OfflineCollectionReference(collectionResourceType: task.resourceType, collectionResourceId: task.resourceId)
-		case .removeItem(let task):
-			OfflineCollectionReference(
-				collectionResourceType: task.collectionResourceType,
-				collectionResourceId: task.collectionResourceId
-			)
-		case .storeTrack, .storeVideo, .storeAlbum, .storePlaylist, .storeUserCollectionTracks:
-			nil
-		}
 	}
 }
 

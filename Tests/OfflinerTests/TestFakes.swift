@@ -20,8 +20,6 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	var pendingCollection: OfflineCollection?
 	var pendingCollectionResponses: [OfflineCollection?]?
 	private(set) var getOfflineCollectionCallCount = 0
-	var collectionTaskActivityResponses: [OfflineCollectionTaskActivity]?
-	private(set) var getCollectionTaskActivityCallCount = 0
 
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
 		tasks.append(contentsOf: newTasks)
@@ -140,29 +138,6 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		}
 	}
 
-	func getCollectionTaskActivity(
-		collectionType: OfflineCollectionType,
-		resourceId: ResourceId
-	) async throws -> OfflineCollectionTaskActivity {
-		getCollectionTaskActivityCallCount += 1
-		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
-		if var responses = collectionTaskActivityResponses, !responses.isEmpty {
-			let response = responses.removeFirst()
-			collectionTaskActivityResponses = responses
-			return response
-		}
-
-		if tasks.contains(where: { $0.removeCollectionReference == collection }) {
-			return .removing
-		}
-
-		if tasks.contains(where: { $0.storeCollectionReference == collection }) {
-			return .storing
-		}
-
-		return .none
-	}
-
 	func waitForTasksToComplete() async {
 		while !tasks.isEmpty {
 			try? await Task.sleep(nanoseconds: 10_000_000)
@@ -278,6 +253,43 @@ final class SucceedingArtworkDownloader: ArtworkDownloaderProtocol {
 final class FailingArtworkDownloader: ArtworkDownloaderProtocol {
 	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL? {
 		throw FakeError.artworkDownloadFailed
+	}
+}
+
+actor SuspendingArtworkDownloader: ArtworkDownloaderProtocol {
+	private var startedContinuation: CheckedContinuation<Void, Never>?
+	private var resultContinuation: CheckedContinuation<URL?, Error>?
+	private var started = false
+
+	func waitUntilStarted() async {
+		if started {
+			return
+		}
+
+		await withCheckedContinuation { continuation in
+			startedContinuation = continuation
+		}
+	}
+
+	func complete() {
+		let tempDir = FileManager.default.temporaryDirectory
+		let url = tempDir.appendingPathComponent("artwork-\(UUID().uuidString).jpg")
+		try? Data("artwork".utf8).write(to: url)
+		let continuation = resultContinuation
+		resultContinuation = nil
+
+		continuation?.resume(returning: url)
+	}
+
+	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL? {
+		try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<URL?, Error>) in
+			resultContinuation = continuation
+			started = true
+			let startedContinuation = startedContinuation
+			self.startedContinuation = nil
+
+			startedContinuation?.resume()
+		}
 	}
 }
 

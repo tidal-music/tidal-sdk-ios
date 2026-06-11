@@ -91,16 +91,17 @@ public enum OfflineCollectionState: Hashable {
 
 /// Collection-level offline availability for albums, playlists, and user collection tracks.
 ///
-/// This state describes whether collection media is available offline or being acquired. It does not model generic
-/// offliner task activity: collection removal is represented as `notDownloaded`, not `downloading`.
+/// This state describes whether collection media is available offline or known by this SDK instance to be acquired. It
+/// does not model generic offliner task activity: collection removal is represented as `notDownloaded`, not
+/// `downloading`.
 public enum OfflineCollectionDownloadState: Sendable, Hashable {
 	/// The collection is not locally downloaded, or it is being removed.
 	case notDownloaded
 
-	/// The collection or one of its members has active download/acquisition work.
+	/// The collection or one of its members has active download/acquisition work known by this SDK instance.
 	case downloading
 
-	/// The collection is locally stored and there is no known pending download/acquisition work.
+	/// The collection is locally stored and there is no locally known pending download/acquisition work.
 	case downloaded
 }
 

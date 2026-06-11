@@ -181,11 +181,11 @@ public final class Offliner {
 
 	/// Streams collection-level offline availability.
 	///
-	/// The stream emits a fast initial value from local storage and active in-memory downloads before making a backend
-	/// request. It then reconciles with backend offliner tasks and continues polling for later changes.
+	/// The stream emits a fast initial value from local storage and active in-memory downloads, then continues polling for
+	/// later local changes.
 	///
-	/// A first emission can therefore be corrected by a later emission if backend task state disagrees with local state.
-	/// Removal is represented as `.notDownloaded`; `.downloading` is reserved for active download/acquisition work.
+	/// The stream does not poll backend task inventory. Removal is represented as `.notDownloaded`; `.downloading` is
+	/// reserved for active download/acquisition work already known by this SDK instance.
 	public func getOfflineCollectionDownloadState(
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId
@@ -198,9 +198,8 @@ public final class Offliner {
 				func yieldState(_ state: OfflineCollectionDownloadState) {
 					let shouldYield: Bool
 
-					// Backend pending inventory is computed from active tasks for the collection and its members.
-					// A second non-pending observation avoids a transient downloaded state if paginated
-					// collection item task creation briefly has no active tasks.
+					// A second downloaded observation avoids transient completion between collection metadata and
+					// collection item tasks.
 					if state == .downloaded {
 						consecutiveDownloadedObservations += 1
 						shouldYield = lastState == .downloaded || consecutiveDownloadedObservations >= 2
@@ -215,37 +214,21 @@ public final class Offliner {
 					}
 				}
 
-				if let state = await localOfflineCollectionDownloadState(
+				let initialState = await offlineCollectionDownloadState(
 					collectionType: collectionType,
 					resourceId: resourceId
-				) {
-					continuation.yield(state)
-					lastState = state
-				}
-
-				// Let first-value consumers terminate before starting backend reconciliation.
-				await Task.yield()
-
-				if !Task.isCancelled {
-					if let state = await offlineCollectionDownloadState(
-						collectionType: collectionType,
-						resourceId: resourceId
-					) {
-						yieldState(state)
-					}
-				}
+				)
+				continuation.yield(initialState)
+				lastState = initialState
 
 				while !Task.isCancelled {
 					try? await Task.sleep(nanoseconds: collectionDownloadStatePollInterval)
 					guard !Task.isCancelled else { break }
 
-					guard let state = await offlineCollectionDownloadState(
+					let state = await offlineCollectionDownloadState(
 						collectionType: collectionType,
 						resourceId: resourceId
-					) else {
-						consecutiveDownloadedObservations = 0
-						continue
-					}
+					)
 
 					yieldState(state)
 				}
@@ -331,46 +314,7 @@ public final class Offliner {
 	private func offlineCollectionDownloadState(
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId
-	) async -> OfflineCollectionDownloadState? {
-		let localCollection = try? await offlineStore.getCollection(
-			collectionType: collectionType,
-			resourceId: collectionLocalResourceId(collectionType: collectionType, resourceId: resourceId)
-		)
-
-		let taskActivity: OfflineCollectionTaskActivity?
-		do {
-			taskActivity = try await offlineApiClient.getCollectionTaskActivity(
-				collectionType: collectionType,
-				resourceId: resourceId
-			)
-		} catch {
-			taskActivity = nil
-		}
-
-		switch taskActivity {
-		case .some(.removing):
-			return .notDownloaded
-		case .some(.storing):
-			return .downloading
-		case .some(.none), nil:
-			break
-		}
-
-		if await taskRunner.hasCurrentDownload(relatedTo: collectionType, resourceId: resourceId) {
-			return .downloading
-		}
-
-		if localCollection != nil, taskActivity != nil {
-			return .downloaded
-		}
-
-		return taskActivity == nil ? nil : .notDownloaded
-	}
-
-	private func localOfflineCollectionDownloadState(
-		collectionType: OfflineCollectionType,
-		resourceId: ResourceId
-	) async -> OfflineCollectionDownloadState? {
+	) async -> OfflineCollectionDownloadState {
 		if await taskRunner.hasCurrentDownload(relatedTo: collectionType, resourceId: resourceId) {
 			return .downloading
 		}
