@@ -19,9 +19,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: UserCollectionsSingleResourceDataDocument
      */
-	public static func userCollectionsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
+	public static func userCollectionsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionsAPI.userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 
@@ -70,9 +70,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: UserCollectionsAlbumsMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
+	public static func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, locale: locale, include: include)
 		}
 	}
 
@@ -82,9 +82,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsAlbumsPost(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload)
 		}
 	}
 
@@ -125,9 +125,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: UserCollectionsArtistsMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
+	public static func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, locale: locale, include: include)
 		}
 	}
 
@@ -137,9 +137,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload)
 		}
 	}
 
@@ -276,9 +276,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: UserCollectionsTracksMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
+	public static func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsTracksGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionsAPI.userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, locale: locale, include: include)
 		}
 	}
 
@@ -288,9 +288,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload)
 		}
 	}
 
@@ -339,9 +339,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: UserCollectionsVideosMultiRelationshipDataDocument
      */
-	public static func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
+	public static func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [UserCollectionsAPITidal.Sort_userCollectionsIdRelationshipsVideosGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionsAPI.userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionsAPIEnum() }, locale: locale, include: include)
 		}
 	}
 
@@ -351,9 +351,9 @@ public enum UserCollectionsAPITidal {
      
      - returns: 
      */
-	public static func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserCollectionsAPI.userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload)
+			UserCollectionsAPI.userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload)
 		}
 	}
 }

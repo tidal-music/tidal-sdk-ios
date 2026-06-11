@@ -16,15 +16,14 @@ internal class UserRecommendationBlocksAPI {
      Get single userRecommendationBlock.
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, owners, tracks, videos (optional)
      - returns: UserRecommendationBlocksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
+    internal class func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
         do {
-            return try await userRecommendationBlocksIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await userRecommendationBlocksIdGetWithRequestBuilder(id: id, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -39,12 +38,11 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, owners, tracks, videos (optional)
      - returns: RequestBuilder<UserRecommendationBlocksSingleResourceDataDocument> 
      */
-    internal class func userRecommendationBlocksIdGetWithRequestBuilder(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksSingleResourceDataDocument> {
+    internal class func userRecommendationBlocksIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksSingleResourceDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -54,7 +52,6 @@ internal class UserRecommendationBlocksAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -74,15 +71,14 @@ internal class UserRecommendationBlocksAPI {
      Delete from artists relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload).execute().body
+            return try await userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -97,12 +93,11 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -110,10 +105,7 @@ internal class UserRecommendationBlocksAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -132,14 +124,13 @@ internal class UserRecommendationBlocksAPI {
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: UserRecommendationBlocksArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+            return try await userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -155,11 +146,10 @@ internal class UserRecommendationBlocksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -170,7 +160,6 @@ internal class UserRecommendationBlocksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -189,15 +178,14 @@ internal class UserRecommendationBlocksAPI {
      Add to artists relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: UserRecommendationBlocksArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload).execute().body
+            return try await userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -212,12 +200,11 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -225,10 +212,7 @@ internal class UserRecommendationBlocksAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userRecommendationBlocksArtistsRelationshipAddOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -301,15 +285,14 @@ internal class UserRecommendationBlocksAPI {
      Delete from tracks relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload).execute().body
+            return try await userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -324,12 +307,11 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -337,10 +319,7 @@ internal class UserRecommendationBlocksAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userRecommendationBlocksTracksRelationshipRemoveOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -359,14 +338,13 @@ internal class UserRecommendationBlocksAPI {
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: UserRecommendationBlocksTracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+            return try await userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -382,11 +360,10 @@ internal class UserRecommendationBlocksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -397,7 +374,6 @@ internal class UserRecommendationBlocksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -416,15 +392,14 @@ internal class UserRecommendationBlocksAPI {
      Add to tracks relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: UserRecommendationBlocksTracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload).execute().body
+            return try await userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -439,12 +414,11 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -452,10 +426,7 @@ internal class UserRecommendationBlocksAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userRecommendationBlocksTracksRelationshipAddOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -473,15 +444,14 @@ internal class UserRecommendationBlocksAPI {
      Delete from videos relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) async throws {
         do {
-            return try await userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload).execute().body
+            return try await userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -496,12 +466,11 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -509,10 +478,7 @@ internal class UserRecommendationBlocksAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userRecommendationBlocksVideosRelationshipRemoveOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -531,14 +497,13 @@ internal class UserRecommendationBlocksAPI {
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: UserRecommendationBlocksVideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+            return try await userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -554,11 +519,10 @@ internal class UserRecommendationBlocksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -569,7 +533,6 @@ internal class UserRecommendationBlocksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
@@ -588,15 +551,14 @@ internal class UserRecommendationBlocksAPI {
      Add to videos relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: UserRecommendationBlocksVideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload).execute().body
+            return try await userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -611,12 +573,11 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -624,10 +585,7 @@ internal class UserRecommendationBlocksAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userRecommendationBlocksVideosRelationshipAddOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",

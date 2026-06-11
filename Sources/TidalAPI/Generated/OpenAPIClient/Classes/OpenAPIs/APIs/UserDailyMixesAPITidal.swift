@@ -19,9 +19,9 @@ public enum UserDailyMixesAPITidal {
      
      - returns: UserDailyMixesSingleResourceDataDocument
      */
-	public static func userDailyMixesIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserDailyMixesSingleResourceDataDocument {
+	public static func userDailyMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserDailyMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDailyMixesAPI.userDailyMixesIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserDailyMixesAPI.userDailyMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 

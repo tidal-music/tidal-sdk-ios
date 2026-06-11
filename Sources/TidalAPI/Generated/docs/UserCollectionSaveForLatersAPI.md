@@ -119,7 +119,7 @@ Void (empty response body)
 
 # **userCollectionSaveForLatersIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -133,11 +133,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection save for later id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
 
 // Get items relationship (\"to-many\").
-UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -155,7 +154,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
 
 ### Return type
@@ -175,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionSaveForLatersIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -188,12 +186,11 @@ Adds item(s) to items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection save for later id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionSaveForLatersItemsRelationshipAddOperationPayload = UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload(data: [UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionSaveForLatersItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: userCollectionSaveForLatersItemsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: userCollectionSaveForLatersItemsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -210,7 +207,6 @@ UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsPo
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionSaveForLatersItemsRelationshipAddOperationPayload** | [**UserCollectionSaveForLatersItemsRelationshipAddOperationPayload**](UserCollectionSaveForLatersItemsRelationshipAddOperationPayload.md) |  | [optional] 
 

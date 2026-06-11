@@ -19,9 +19,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksSingleResourceDataDocument
      */
-	public static func userRecommendationBlocksIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
+	public static func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: 
      */
-	public static func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksArtistsMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksArtistsMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload)
 		}
 	}
 
@@ -79,9 +79,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: 
      */
-	public static func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -91,9 +91,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksTracksMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -103,9 +103,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksTracksMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsTracksPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload)
 		}
 	}
 
@@ -115,9 +115,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: 
      */
-	public static func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) async throws {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload)
 		}
 	}
 
@@ -127,9 +127,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksVideosMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
 		}
 	}
 
@@ -139,9 +139,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksVideosMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsVideosPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload)
 		}
 	}
 }

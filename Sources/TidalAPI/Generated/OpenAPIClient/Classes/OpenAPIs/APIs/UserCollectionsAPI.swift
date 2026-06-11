@@ -16,16 +16,15 @@ internal class UserCollectionsAPI {
      Get single userCollection.
      
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
      - returns: UserCollectionsSingleResourceDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
+    internal class func userCollectionsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
         do {
-            return try await userCollectionsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,13 +39,12 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
      - returns: RequestBuilder<UserCollectionsSingleResourceDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
+    internal class func userCollectionsIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
         var localVariablePath = "/userCollections/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -56,7 +54,6 @@ internal class UserCollectionsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -146,16 +143,15 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: UserCollectionsAlbumsMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -172,13 +168,12 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - returns: RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -190,7 +185,6 @@ internal class UserCollectionsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -210,16 +204,15 @@ internal class UserCollectionsAPI {
      Add to albums relationship (\"to-many\").
      
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsAlbumsPost(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload).execute().body
+            return try await userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -234,13 +227,12 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsAlbumsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -248,10 +240,7 @@ internal class UserCollectionsAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionsAlbumsRelationshipAddOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -335,16 +324,15 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: UserCollectionsArtistsMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -361,13 +349,12 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
      - returns: RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -379,7 +366,6 @@ internal class UserCollectionsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -399,16 +385,15 @@ internal class UserCollectionsAPI {
      Add to artists relationship (\"to-many\").
      
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload).execute().body
+            return try await userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -423,13 +408,12 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -437,10 +421,7 @@ internal class UserCollectionsAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionsArtistsRelationshipAddOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -775,16 +756,15 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: UserCollectionsTracksMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -801,13 +781,12 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      - returns: RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -819,7 +798,6 @@ internal class UserCollectionsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -839,16 +817,15 @@ internal class UserCollectionsAPI {
      Add to tracks relationship (\"to-many\").
      
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload).execute().body
+            return try await userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -863,13 +840,12 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -877,10 +853,7 @@ internal class UserCollectionsAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionsTracksRelationshipAddOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -968,16 +941,15 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: UserCollectionsVideosMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -994,13 +966,12 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
      - returns: RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1012,7 +983,6 @@ internal class UserCollectionsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -1032,16 +1002,15 @@ internal class UserCollectionsAPI {
      Add to videos relationship (\"to-many\").
      
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: Void
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws {
         do {
-            return try await userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload).execute().body
+            return try await userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -1056,13 +1025,12 @@ internal class UserCollectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<Void> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1070,10 +1038,7 @@ internal class UserCollectionsAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionsVideosRelationshipAddOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",

@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 # **userRecommendationBlocksIdGet**
 ```swift
-    open class func userRecommendationBlocksIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationBlocksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationBlocksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userRecommendationBlock.
@@ -32,12 +32,11 @@ Retrieves single userRecommendationBlock by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists, owners, tracks, videos (optional)
 
 // Get single userRecommendationBlock.
-UserRecommendationBlocksAPI.userRecommendationBlocksIdGet(id: id, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdGet(id: id, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -54,7 +53,6 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdGet(id: id, countryCode: c
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists, owners, tracks, videos | [optional] 
 
@@ -75,7 +73,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsArtistsDelete**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from artists relationship (\"to-many\").
@@ -88,12 +86,11 @@ Deletes item(s) from artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userRecommendationBlocksArtistsRelationshipRemoveOperationPayload = UserRecommendationBlocksArtistsRelationshipRemoveOperation_Payload(data: [UserRecommendationBlocksArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from artists relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsDelete(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsDelete(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -110,7 +107,6 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsDelete
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksArtistsRelationshipRemoveOperationPayload** | [**UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload**](UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
@@ -131,7 +127,7 @@ Void (empty response body)
 
 # **userRecommendationBlocksIdRelationshipsArtistsGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationBlocksArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationBlocksArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -145,11 +141,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
 
 // Get artists relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -167,7 +162,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
 
 ### Return type
@@ -187,7 +181,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsArtistsPost**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to artists relationship (\"to-many\").
@@ -200,12 +194,11 @@ Adds item(s) to artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userRecommendationBlocksArtistsRelationshipAddOperationPayload = UserRecommendationBlocksArtistsRelationshipAddOperation_Payload(data: [UserRecommendationBlocksArtistsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksArtistsRelationshipAddOperationPayload |  (optional)
 
 // Add to artists relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsPost(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -222,7 +215,6 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsPost(i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksArtistsRelationshipAddOperationPayload** | [**UserRecommendationBlocksArtistsRelationshipAddOperationPayload**](UserRecommendationBlocksArtistsRelationshipAddOperationPayload.md) |  | [optional] 
 
@@ -297,7 +289,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsTracksDelete**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from tracks relationship (\"to-many\").
@@ -310,12 +302,11 @@ Deletes item(s) from tracks relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userRecommendationBlocksTracksRelationshipRemoveOperationPayload = UserRecommendationBlocksTracksRelationshipRemoveOperation_Payload(data: [UserRecommendationBlocksTracksRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksTracksRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from tracks relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksDelete(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksDelete(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -332,7 +323,6 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksDelete(
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksTracksRelationshipRemoveOperationPayload** | [**UserRecommendationBlocksTracksRelationshipRemoveOperationPayload**](UserRecommendationBlocksTracksRelationshipRemoveOperationPayload.md) |  | [optional] 
 
@@ -353,7 +343,7 @@ Void (empty response body)
 
 # **userRecommendationBlocksIdRelationshipsTracksGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationBlocksTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationBlocksTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get tracks relationship (\"to-many\").
@@ -367,11 +357,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
 
 // Get tracks relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGet(id: id, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -389,7 +378,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
 
 ### Return type
@@ -409,7 +397,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsTracksPost**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to tracks relationship (\"to-many\").
@@ -422,12 +410,11 @@ Adds item(s) to tracks relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userRecommendationBlocksTracksRelationshipAddOperationPayload = UserRecommendationBlocksTracksRelationshipAddOperation_Payload(data: [UserRecommendationBlocksTracksRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksTracksRelationshipAddOperationPayload |  (optional)
 
 // Add to tracks relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksPost(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -444,7 +431,6 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksPost(id
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksTracksRelationshipAddOperationPayload** | [**UserRecommendationBlocksTracksRelationshipAddOperationPayload**](UserRecommendationBlocksTracksRelationshipAddOperationPayload.md) |  | [optional] 
 
@@ -465,7 +451,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsVideosDelete**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete from videos relationship (\"to-many\").
@@ -478,12 +464,11 @@ Deletes item(s) from videos relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userRecommendationBlocksVideosRelationshipRemoveOperationPayload = UserRecommendationBlocksVideosRelationshipRemoveOperation_Payload(data: [UserRecommendationBlocksVideosRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksVideosRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from videos relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosDelete(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosDelete(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -500,7 +485,6 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosDelete(
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksVideosRelationshipRemoveOperationPayload** | [**UserRecommendationBlocksVideosRelationshipRemoveOperationPayload**](UserRecommendationBlocksVideosRelationshipRemoveOperationPayload.md) |  | [optional] 
 
@@ -521,7 +505,7 @@ Void (empty response body)
 
 # **userRecommendationBlocksIdRelationshipsVideosGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationBlocksVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationBlocksVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get videos relationship (\"to-many\").
@@ -535,11 +519,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
 
 // Get videos relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGet(id: id, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -557,7 +540,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
 
 ### Return type
@@ -577,7 +559,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsVideosPost**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to videos relationship (\"to-many\").
@@ -590,12 +572,11 @@ Adds item(s) to videos relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userRecommendationBlocksVideosRelationshipAddOperationPayload = UserRecommendationBlocksVideosRelationshipAddOperation_Payload(data: [UserRecommendationBlocksVideosRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksVideosRelationshipAddOperationPayload |  (optional)
 
 // Add to videos relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload) { (response, error) in
+UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosPost(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -612,7 +593,6 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosPost(id
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksVideosRelationshipAddOperationPayload** | [**UserRecommendationBlocksVideosRelationshipAddOperationPayload**](UserRecommendationBlocksVideosRelationshipAddOperationPayload.md) |  | [optional] 
 
