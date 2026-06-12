@@ -90,6 +90,7 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case albumOtherVersions = "ALBUM_OTHER_VERSIONS"
         case albumRelatedAlbums = "ALBUM_RELATED_ALBUMS"
         case albumRelatedArtists = "ALBUM_RELATED_ARTISTS"
+        case collectionItems = "COLLECTION_ITEMS"
         case albumAnniversary = "ALBUM_ANNIVERSARY"
         case artistBirthday = "ARTIST_BIRTHDAY"
         case artistMemoriam = "ARTIST_MEMORIAM"

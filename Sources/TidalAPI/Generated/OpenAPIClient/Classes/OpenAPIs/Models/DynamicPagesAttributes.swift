@@ -19,6 +19,7 @@ public struct DynamicPagesAttributes: Codable, Hashable {
         case homeFree = "HOME_FREE"
         case artist = "ARTIST"
         case album = "ALBUM"
+        case playlist = "PLAYLIST"
     }
     /** Type of the page eg. home, artist */
     public var pageType: PageType
