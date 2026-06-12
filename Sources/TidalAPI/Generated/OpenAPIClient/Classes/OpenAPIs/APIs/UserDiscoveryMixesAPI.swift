@@ -16,15 +16,14 @@ internal class UserDiscoveryMixesAPI {
      Get single userDiscoveryMixe.
      
      - parameter id: (path) User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
      - returns: UserDiscoveryMixesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userDiscoveryMixesIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument {
+    internal class func userDiscoveryMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument {
         do {
-            return try await userDiscoveryMixesIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await userDiscoveryMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -39,12 +38,11 @@ internal class UserDiscoveryMixesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
      - returns: RequestBuilder<UserDiscoveryMixesSingleResourceDataDocument> 
      */
-    internal class func userDiscoveryMixesIdGetWithRequestBuilder(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserDiscoveryMixesSingleResourceDataDocument> {
+    internal class func userDiscoveryMixesIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserDiscoveryMixesSingleResourceDataDocument> {
         var localVariablePath = "/userDiscoveryMixes/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -54,7 +52,6 @@ internal class UserDiscoveryMixesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
@@ -75,15 +72,14 @@ internal class UserDiscoveryMixesAPI {
      
      - parameter id: (path) User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
      - returns: UserDiscoveryMixesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userDiscoveryMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserDiscoveryMixesMultiRelationshipDataDocument {
+    internal class func userDiscoveryMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserDiscoveryMixesMultiRelationshipDataDocument {
         do {
-            return try await userDiscoveryMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await userDiscoveryMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -99,12 +95,11 @@ internal class UserDiscoveryMixesAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
      - returns: RequestBuilder<UserDiscoveryMixesMultiRelationshipDataDocument> 
      */
-    internal class func userDiscoveryMixesIdRelationshipsItemsGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserDiscoveryMixesMultiRelationshipDataDocument> {
+    internal class func userDiscoveryMixesIdRelationshipsItemsGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserDiscoveryMixesMultiRelationshipDataDocument> {
         var localVariablePath = "/userDiscoveryMixes/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -115,7 +110,6 @@ internal class UserDiscoveryMixesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])

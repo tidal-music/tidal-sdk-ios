@@ -15,18 +15,6 @@ public enum CreditsAPITidal {
 
 
 	/**
-     Get multiple credits.
-     
-     - returns: CreditsMultiResourceDataDocument
-     */
-	public static func creditsGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> CreditsMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			CreditsAPI.creditsGetWithRequestBuilder(include: include, filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single credit.
      
      - returns: CreditsSingleResourceDataDocument

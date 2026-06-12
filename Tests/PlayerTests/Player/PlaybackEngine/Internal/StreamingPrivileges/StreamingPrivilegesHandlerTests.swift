@@ -244,6 +244,11 @@ extension StreamingPrivilegesHandlerTests {
 		// The message sent should be a string and properly decoded to `UserAction`.
 		assertUserActionMessage(of: task)
 
+		// Wait until the reconnect has re-opened the web socket before asserting the full sequence.
+		await asyncOptimizedWait {
+			self.webSocket.responses.count == 2
+		}
+
 		// Opens the web socket with given connect response twice: first from the notify flow, and then from the reconnecting attempts.
 		XCTAssertEqual(webSocket.responses, [Constants.webSocketConnectResponse, Constants.webSocketConnectResponse])
 
@@ -325,6 +330,11 @@ extension StreamingPrivilegesHandlerTests {
 
 		// The message sent should be a string and properly decoded to `UserAction`.
 		assertUserActionMessage(of: task)
+
+		// Wait until all reconnect attempts have completed before asserting the full sequence.
+		await asyncOptimizedWait {
+			self.webSocket.responses.count == 7 && self.backoffPolicy.counter == maxErrorReconnectAttempts
+		}
 
 		// Opens the web socket with given connect response: 1 from the notify and then 6 from the max number of attempts.
 		XCTAssertEqual(
@@ -409,6 +419,11 @@ extension StreamingPrivilegesHandlerTests {
 
 		// The message sent should be a string and properly decoded to `UserAction`.
 		assertUserActionMessage(of: task)
+
+		// Wait until the privileged-session notification has been processed (after all reconnect attempts).
+		await asyncOptimizedWait {
+			self.streamingPrivilegesHandlerDelegate.streamingPrivilegesLostClientNames == ["web"]
+		}
 
 		// Opens the web socket with given connect response: 1 from the notify and then 6 from the max number of attempts.
 		XCTAssertEqual(
@@ -497,6 +512,11 @@ extension StreamingPrivilegesHandlerTests {
 
 		// The message sent should be a string and properly decoded to `UserAction`.
 		assertUserActionMessage(of: task)
+
+		// Wait until all reconnect attempts and the final RECONNECT-triggered reconnect have completed.
+		await asyncOptimizedWait {
+			self.webSocket.responses.count == 8
+		}
 
 		// Opens the web socket with given connect response: 1 from the notify, 6 from the max number of attempts, and one more from the
 		// reconnect.

@@ -74,7 +74,7 @@ import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let squareConnectionsCreateOperationPayload = SquareConnectionsCreateOperation_Payload(data: SquareConnectionsCreateOperation_Payload_Data(type: "type_example"), meta: SquareConnectionsCreateOperation_Payload_Meta(platform: "platform_example")) // SquareConnectionsCreateOperationPayload |  (optional)
+let squareConnectionsCreateOperationPayload = SquareConnectionsCreateOperation_Payload(data: SquareConnectionsCreateOperation_Payload_Data(type: "type_example"), meta: SquareConnectionsCreateOperation_Payload_Meta(platform: "platform_example", redirectUrl: "redirectUrl_example")) // SquareConnectionsCreateOperationPayload |  (optional)
 
 // Create single squareConnection.
 SquareConnectionsAPI.squareConnectionsPost(countryCode: countryCode, idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload) { (response, error) in

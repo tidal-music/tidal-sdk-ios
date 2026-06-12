@@ -102,6 +102,32 @@ Get a snapshot of all active downloads:
 let downloads = await offliner.currentDownloads
 ```
 
+#### Collection Download State
+
+Subscribe to collection download-state changes for albums, playlists, and user collection tracks. The stream emits an
+initial local state from local storage and active in-memory SDK work, then continues polling for local changes:
+
+```swift
+for await state in offliner.getOfflineCollectionDownloadState(
+    collectionType: .albums,
+    resourceId: .identifier("album-id")
+) {
+    // Handle state: .notDownloaded, .downloading, .downloaded
+}
+```
+
+The stream is optimized for view entry and does not poll backend task inventory. Backend-provided per-collection
+activity metadata would be required for authoritative task state after a cold start.
+
+| State | Meaning |
+| --- | --- |
+| `.notDownloaded` | The collection is not locally available, or it is being removed. |
+| `.downloading` | The collection or one of its members has active download/acquisition work known by this SDK instance. |
+| `.downloaded` | The collection is locally stored and no pending download/acquisition work is known. |
+
+Removal tasks are not surfaced as `.downloading`; callers can map this state directly to a download button label:
+`Download`, `Downloading...`, and `Downloaded`.
+
 #### Tracking Individual Download Progress
 
 Each `Download` is an actor that exposes an event stream for state changes and progress updates:

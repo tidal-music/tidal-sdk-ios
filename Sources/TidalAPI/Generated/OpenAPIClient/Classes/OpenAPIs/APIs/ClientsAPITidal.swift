@@ -19,9 +19,9 @@ public enum ClientsAPITidal {
      
      - returns: ClientsMultiResourceDataDocument
      */
-	public static func clientsGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ClientsMultiResourceDataDocument {
+	public static func clientsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ClientsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ClientsAPI.clientsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId)
+			ClientsAPI.clientsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
 		}
 	}
 

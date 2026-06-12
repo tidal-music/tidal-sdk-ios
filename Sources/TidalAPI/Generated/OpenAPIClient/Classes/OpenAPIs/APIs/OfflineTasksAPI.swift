@@ -15,16 +15,15 @@ internal class OfflineTasksAPI {
     /**
      Get multiple offlineTasks.
      
+     - parameter filterInstallationId: (query) List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
-     - parameter filterId: (query) List of offline task IDs (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) (optional)
-     - parameter filterInstallationId: (query) List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: OfflineTasksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksGet(pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterInstallationId: [String]? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
+    internal class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
         do {
-            return try await offlineTasksGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterId: filterId, filterInstallationId: filterInstallationId).execute().body
+            return try await offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,13 +37,12 @@ internal class OfflineTasksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterInstallationId: (query) List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
-     - parameter filterId: (query) List of offline task IDs (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) (optional)
-     - parameter filterInstallationId: (query) List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - returns: RequestBuilder<OfflineTasksMultiResourceDataDocument> 
      */
-    internal class func offlineTasksGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterInstallationId: [String]? = nil) -> RequestBuilder<OfflineTasksMultiResourceDataDocument> {
+    internal class func offlineTasksGetWithRequestBuilder(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<OfflineTasksMultiResourceDataDocument> {
         let localVariablePath = "/offlineTasks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -53,8 +51,7 @@ internal class OfflineTasksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
-            "filter[installation.id]": (wrappedValue: filterInstallationId?.encodeToJSON(), isExplode: true),
+            "filter[installation.id]": (wrappedValue: filterInstallationId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

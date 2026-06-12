@@ -141,6 +141,27 @@ enum OfflineTask {
 	}
 }
 
+// MARK: - OfflineCollectionReference
+
+struct OfflineCollectionReference: Hashable, Sendable {
+	let collectionType: OfflineCollectionType
+	let resourceId: String
+
+	init(collectionType: OfflineCollectionType, resourceId: String) {
+		self.collectionType = collectionType
+		self.resourceId = collectionType == .userCollectionTracks ? ResourceId.me.stringValue : resourceId
+	}
+
+	init(collectionType: OfflineCollectionType, resourceId: ResourceId) {
+		self.init(collectionType: collectionType, resourceId: resourceId.stringValue)
+	}
+
+	init?(collectionResourceType: String, collectionResourceId: String) {
+		guard let collectionType = OfflineCollectionType(rawValue: collectionResourceType) else { return nil }
+		self.init(collectionType: collectionType, resourceId: collectionResourceId)
+	}
+}
+
 // MARK: - OfflineApiClientProtocol
 
 protocol OfflineApiClientProtocol {
@@ -199,9 +220,9 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
 		let response = try await OfflineTasksAPITidal.offlineTasksGet(
+			filterInstallationId: [installationId],
 			pageCursor: cursor,
-			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists", "collection"],
-			filterInstallationId: [installationId]
+			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists", "collection"]
 		)
 
 		let tasks = response.createOfflineTaskMap()
@@ -210,7 +231,7 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 			try? await updateTask(taskId: taskId, state: .failed)
 		}
 
-		return (tasks.compactMap(\.1), response.links.meta?.nextCursor)
+		return (tasks.compactMap { $0.1 }, response.links.meta?.nextCursor)
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {
@@ -276,11 +297,11 @@ private extension OfflineApiClient {
 	) async throws -> (collections: [OfflineCollection], cursor: String?) {
 		let response = try await InstallationsAPITidal.installationsIdRelationshipsOfflineInventoryGet(
 			id: installationId,
+			filterType: [type.toFilterType],
 			pageCursor: cursor,
 			include: ["offlineInventory", "offlineInventory.coverArt"],
 			filterId: id.map { [$0] },
-			filterState: [.pending],
-			filterType: [type.toFilterType]
+			filterState: [.pending]
 		)
 
 		let includedItems = IncludedItemsMap(from: response.included)

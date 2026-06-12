@@ -27,9 +27,18 @@ final class StoreTrackHandler {
 		let title = task.track.attributes?.title ?? ""
 		let artists = task.artists.compactMap(\.attributes?.name)
 		let imageURL = task.artwork?.attributes?.files.first.flatMap { URL(string: $0.href) }
+		let relatedCollection = OfflineCollectionReference(
+			collectionResourceType: task.collectionResourceType,
+			collectionResourceId: task.collectionResourceId
+		)
 		return InternalTrackTask(
 			task: task,
-			download: Download(title: title, artists: artists, imageURL: imageURL),
+			download: Download(
+				title: title,
+				artists: artists,
+				imageURL: imageURL,
+				relatedCollection: relatedCollection
+			),
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,

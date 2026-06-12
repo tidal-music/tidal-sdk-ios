@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **purchasesGet**
 ```swift
-    open class func purchasesGet(pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterSubjectType: [FilterSubjectType_purchasesGet]? = nil, completion: @escaping (_ data: PurchasesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: PurchasesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple purchases.
@@ -23,13 +23,13 @@ Retrieves multiple purchases by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
+let filterSubjectType = ["filterSubjectType_example"] // [String] | The type of purchased content (e.g. `albums`)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
-let filterSubjectType = ["filterSubjectType_example"] // [String] | The type of purchased content (e.g. `albums`) (optional)
 
 // Get multiple purchases.
-PurchasesAPI.purchasesGet(pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType) { (response, error) in
+PurchasesAPI.purchasesGet(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,10 +45,10 @@ PurchasesAPI.purchasesGet(pageCursor: pageCursor, include: include, filterOwners
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
+ **filterSubjectType** | [**[String]**](String.md) | The type of purchased content (e.g. &#x60;albums&#x60;) | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, subject | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
- **filterSubjectType** | [**[String]**](String.md) | The type of purchased content (e.g. &#x60;albums&#x60;) | [optional] 
 
 ### Return type
 

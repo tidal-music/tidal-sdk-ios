@@ -24,15 +24,15 @@ internal class DspSharingLinksAPI {
     /**
      Get multiple dspSharingLinks.
      
+     - parameter filterSubjectId: (query) The id of the subject resource 
+     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
-     - parameter filterSubjectId: (query) The id of the subject resource (optional)
-     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) (optional)
      - returns: DspSharingLinksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dspSharingLinksGet(include: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
+    internal class func dspSharingLinksGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_dspSharingLinksGet], include: [String]? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
         do {
-            return try await dspSharingLinksGetWithRequestBuilder(include: include, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType).execute().body
+            return try await dspSharingLinksGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -49,12 +49,12 @@ internal class DspSharingLinksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
+     - parameter filterSubjectId: (query) The id of the subject resource 
+     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
-     - parameter filterSubjectId: (query) The id of the subject resource (optional)
-     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) (optional)
      - returns: RequestBuilder<DspSharingLinksMultiResourceDataDocument> 
      */
-    internal class func dspSharingLinksGetWithRequestBuilder(include: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil) -> RequestBuilder<DspSharingLinksMultiResourceDataDocument> {
+    internal class func dspSharingLinksGetWithRequestBuilder(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_dspSharingLinksGet], include: [String]? = nil) -> RequestBuilder<DspSharingLinksMultiResourceDataDocument> {
         let localVariablePath = "/dspSharingLinks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -62,8 +62,8 @@ internal class DspSharingLinksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
+            "filter[subject.id]": (wrappedValue: filterSubjectId.encodeToJSON(), isExplode: true),
+            "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
