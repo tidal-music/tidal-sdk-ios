@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **clientsGet**
 ```swift
-    open class func clientsGet(include: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: ClientsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: ClientsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple clients.
@@ -26,11 +26,11 @@ Retrieves multiple clients by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple clients.
-ClientsAPI.clientsGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
+ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -46,8 +46,8 @@ ClientsAPI.clientsGet(include: include, filterOwnersId: filterOwnersId) { (respo
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 

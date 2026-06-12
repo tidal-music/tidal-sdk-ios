@@ -13,56 +13,6 @@ import AnyCodable
 internal class UserCollectionTracksAPI {
 
     /**
-     Get multiple userCollectionTracks.
-     
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-     - parameter filterId: (query) User collection tracks id (e.g. &#x60;FMJUCzH4&#x60;) (optional)
-     - returns: UserCollectionTracksMultiResourceDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionTracksGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> UserCollectionTracksMultiResourceDataDocument {
-        do {
-            return try await userCollectionTracksGetWithRequestBuilder(include: include, filterId: filterId).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Get multiple userCollectionTracks.
-     - GET /userCollectionTracks
-     - Retrieves multiple userCollectionTracks by available filters, or without if applicable.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-     - parameter filterId: (query) User collection tracks id (e.g. &#x60;FMJUCzH4&#x60;) (optional)
-     - returns: RequestBuilder<UserCollectionTracksMultiResourceDataDocument> 
-     */
-    internal class func userCollectionTracksGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<UserCollectionTracksMultiResourceDataDocument> {
-        let localVariablePath = "/userCollectionTracks"
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionTracksMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Get single userCollectionTrack.
      
      - parameter id: (path) User collection tracks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
@@ -259,10 +209,10 @@ internal class UserCollectionTracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionTracksItemsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: UserCollectionTracksItemsMultiRelationshipDataDocument
+     - returns: UserCollectionTracksItemsAddMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
+    internal class func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsAddMultiRelationshipDataDocument {
         do {
             return try await userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -282,9 +232,9 @@ internal class UserCollectionTracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionTracksItemsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserCollectionTracksItemsMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<UserCollectionTracksItemsAddMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserCollectionTracksItemsMultiRelationshipDataDocument> {
+    internal class func userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserCollectionTracksItemsAddMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollectionTracks/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -304,7 +254,7 @@ internal class UserCollectionTracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionTracksItemsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionTracksItemsAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

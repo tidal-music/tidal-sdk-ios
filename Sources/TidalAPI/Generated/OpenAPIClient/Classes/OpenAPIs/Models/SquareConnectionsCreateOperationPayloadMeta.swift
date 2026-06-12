@@ -19,15 +19,20 @@ public struct SquareConnectionsCreateOperationPayloadMeta: Codable, Hashable {
     }
     /** Client platform initiating Square onboarding. */
     public var platform: Platform
+    /** Optional post-finalize redirect URL. Otherwise uses platform default. */
+    public var redirectUrl: String?
 
     public init(
-        platform: Platform
+        platform: Platform,
+        redirectUrl: String? = nil
     ) {
         self.platform = platform
+        self.redirectUrl = redirectUrl
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case platform
+        case redirectUrl
     }
 
     // Encodable protocol methods
@@ -35,5 +40,6 @@ public struct SquareConnectionsCreateOperationPayloadMeta: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(platform, forKey: .platform)
+        try container.encodeIfPresent(redirectUrl, forKey: .redirectUrl)
     }
 }

@@ -15,18 +15,6 @@ public enum ArtistRolesAPITidal {
 
 
 	/**
-     Get multiple artistRoles.
-     
-     - returns: ArtistRolesMultiResourceDataDocument
-     */
-	public static func artistRolesGet(filterId: [String]? = nil) async throws -> ArtistRolesMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			ArtistRolesAPI.artistRolesGetWithRequestBuilder(filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single artistRole.
      
      - returns: ArtistRolesSingleResourceDataDocument

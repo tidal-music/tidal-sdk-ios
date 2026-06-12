@@ -14,18 +14,22 @@ public struct UserCollectionFoldersRelationships: Codable, Hashable {
 
     public var items: UserCollectionFoldersItemsMultiRelationshipDataDocument?
     public var owners: MultiRelationshipDataDocument?
+    public var userCollection: SingleRelationshipDataDocument?
 
     public init(
         items: UserCollectionFoldersItemsMultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil
+        owners: MultiRelationshipDataDocument? = nil,
+        userCollection: SingleRelationshipDataDocument? = nil
     ) {
         self.items = items
         self.owners = owners
+        self.userCollection = userCollection
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case items
         case owners
+        case userCollection
     }
 
     // Encodable protocol methods
@@ -34,5 +38,6 @@ public struct UserCollectionFoldersRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(items, forKey: .items)
         try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(userCollection, forKey: .userCollection)
     }
 }

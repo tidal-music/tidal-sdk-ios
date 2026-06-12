@@ -183,7 +183,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionVideosIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionVideosIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionVideosItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionVideosIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionVideosItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -198,7 +198,7 @@ import OpenAPIClient
 let id = "id_example" // String | User collection videos id. Use `me` for the authenticated user's resource
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userCollectionVideosItemsRelationshipAddOperationPayload = UserCollectionVideosItemsRelationshipAddOperation_Payload(data: [UserCollectionVideosItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionVideosItemsRelationshipAddOperationPayload |  (optional)
+let userCollectionVideosItemsRelationshipAddOperationPayload = UserCollectionVideosItemsRelationshipAddOperation_Payload(data: [UserCollectionVideosItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionVideosItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionVideosItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
 UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionVideosItemsRelationshipAddOperationPayload: userCollectionVideosItemsRelationshipAddOperationPayload) { (response, error) in
@@ -224,7 +224,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionVideosItemsMultiRelationshipDataDocument**](UserCollectionVideosItemsMultiRelationshipDataDocument.md)
+[**UserCollectionVideosItemsAddMultiRelationshipDataDocument**](UserCollectionVideosItemsAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 

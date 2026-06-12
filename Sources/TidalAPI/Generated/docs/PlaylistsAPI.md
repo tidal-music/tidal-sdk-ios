@@ -41,7 +41,7 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners (optional)
-let filterId = ["inner_example"] // [String] | Playlist id (e.g. `550e8400-e29b-41d4-a716-446655440000`) (optional)
+let filterId = ["inner_example"] // [String] | List of playlist IDs (e.g. `550e8400-e29b-41d4-a716-446655440000`) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple playlists.
@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners | [optional] 
- **filterId** | [**[String]**](String.md) | Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type

@@ -15,18 +15,6 @@ public enum TracksMetadataStatusAPITidal {
 
 
 	/**
-     Get multiple tracksMetadataStatus.
-     
-     - returns: TracksMetadataStatusMultiResourceDataDocument
-     */
-	public static func tracksMetadataStatusGet(filterId: [String]? = nil) async throws -> TracksMetadataStatusMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			TracksMetadataStatusAPI.tracksMetadataStatusGetWithRequestBuilder(filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single tracksMetadataStatu.
      
      - returns: TracksMetadataStatusSingleResourceDataDocument

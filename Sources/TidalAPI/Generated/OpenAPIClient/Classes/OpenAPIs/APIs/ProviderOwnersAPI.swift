@@ -15,14 +15,14 @@ internal class ProviderOwnersAPI {
     /**
      Get multiple providerOwners.
      
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, provider (optional)
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: ProviderOwnersMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerOwnersGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ProviderOwnersMultiResourceDataDocument {
+    internal class func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ProviderOwnersMultiResourceDataDocument {
         do {
-            return try await providerOwnersGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId).execute().body
+            return try await providerOwnersGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -36,11 +36,11 @@ internal class ProviderOwnersAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, provider (optional)
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<ProviderOwnersMultiResourceDataDocument> 
      */
-    internal class func providerOwnersGetWithRequestBuilder(include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<ProviderOwnersMultiResourceDataDocument> {
+    internal class func providerOwnersGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil) -> RequestBuilder<ProviderOwnersMultiResourceDataDocument> {
         let localVariablePath = "/providerOwners"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -48,7 +48,7 @@ internal class ProviderOwnersAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

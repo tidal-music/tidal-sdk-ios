@@ -1,7 +1,7 @@
 import Common
 import Foundation
 
-struct DeviceLoginPollHelper {
+final class DeviceLoginPollHelper {
 	let loginService: LoginService
 	private var pollRetryPolicy: RetryPolicy?
 
@@ -9,7 +9,7 @@ struct DeviceLoginPollHelper {
 		self.loginService = loginService
 	}
 
-	mutating func prepareForPoll(interval: Int, maxDuration: Int) {
+	func prepareForPoll(interval: Int, maxDuration: Int) {
 		pollRetryPolicy = DeviceLoginRetryPolicy(maxDuration: maxDuration, interval: interval)
 	}
 

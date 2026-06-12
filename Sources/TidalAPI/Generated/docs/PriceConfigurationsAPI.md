@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **priceConfigurationsGet**
 ```swift
-    open class func priceConfigurationsGet(filterId: [String]? = nil, completion: @escaping (_ data: PriceConfigurationsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func priceConfigurationsGet(filterId: [String], completion: @escaping (_ data: PriceConfigurationsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple priceConfigurations.
@@ -23,7 +23,7 @@ Retrieves multiple priceConfigurations by available filters, or without if appli
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | List of price configurations IDs (e.g. `cHJpY2UtY29uZmlnLTEyMzpVUw`) (optional)
+let filterId = ["inner_example"] // [String] | List of price configurations IDs (e.g. `cHJpY2UtY29uZmlnLTEyMzpVUw`)
 
 // Get multiple priceConfigurations.
 PriceConfigurationsAPI.priceConfigurationsGet(filterId: filterId) { (response, error) in
@@ -42,7 +42,7 @@ PriceConfigurationsAPI.priceConfigurationsGet(filterId: filterId) { (response, e
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | List of price configurations IDs (e.g. &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | List of price configurations IDs (e.g. &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) | 
 
 ### Return type
 

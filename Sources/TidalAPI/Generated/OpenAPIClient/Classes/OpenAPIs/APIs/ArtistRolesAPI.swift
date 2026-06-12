@@ -13,56 +13,6 @@ import AnyCodable
 internal class ArtistRolesAPI {
 
     /**
-     Get multiple artistRoles.
-     
-     - parameter filterId: (query) List of artist role IDs (e.g. &#x60;1&#x60;) (optional)
-     - returns: ArtistRolesMultiResourceDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistRolesGet(filterId: [String]? = nil) async throws -> ArtistRolesMultiResourceDataDocument {
-        do {
-            return try await artistRolesGetWithRequestBuilder(filterId: filterId).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Get multiple artistRoles.
-     - GET /artistRoles
-     - Retrieves multiple artistRoles by available filters, or without if applicable.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - OAuth:
-       - type: oauth2
-       - name: Client_Credentials
-     - parameter filterId: (query) List of artist role IDs (e.g. &#x60;1&#x60;) (optional)
-     - returns: RequestBuilder<ArtistRolesMultiResourceDataDocument> 
-     */
-    internal class func artistRolesGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<ArtistRolesMultiResourceDataDocument> {
-        let localVariablePath = "/artistRoles"
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<ArtistRolesMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Get single artistRole.
      
      - parameter id: (path) Artist role id 

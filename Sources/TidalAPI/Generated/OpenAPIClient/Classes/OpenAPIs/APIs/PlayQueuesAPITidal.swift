@@ -19,9 +19,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: PlayQueuesMultiResourceDataDocument
      */
-	public static func playQueuesGet(pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
+	public static func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId)
+			PlayQueuesAPI.playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include)
 		}
 	}
 

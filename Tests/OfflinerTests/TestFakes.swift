@@ -159,7 +159,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 			pendingCollectionResponses = responses
 			return response
 		}
-		pendingCollection
+		return pendingCollection
 	}
 }
 

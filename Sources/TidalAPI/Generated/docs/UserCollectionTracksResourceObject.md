@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **AnyCodable** |  | [optional] 
+**attributes** | [**UserCollectionTracksAttributes**](UserCollectionTracksAttributes.md) |  | [optional] 
 **id** | **String** | Resource id | 
 **relationships** | [**UserCollectionTracksRelationships**](UserCollectionTracksRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 

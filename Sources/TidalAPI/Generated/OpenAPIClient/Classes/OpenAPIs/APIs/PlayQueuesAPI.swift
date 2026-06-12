@@ -15,15 +15,15 @@ internal class PlayQueuesAPI {
     /**
      Get multiple playQueues.
      
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: PlayQueuesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesGet(pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
+    internal class func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
         do {
-            return try await playQueuesGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId).execute().body
+            return try await playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -37,12 +37,12 @@ internal class PlayQueuesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<PlayQueuesMultiResourceDataDocument> 
      */
-    internal class func playQueuesGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<PlayQueuesMultiResourceDataDocument> {
+    internal class func playQueuesGetWithRequestBuilder(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<PlayQueuesMultiResourceDataDocument> {
         let localVariablePath = "/playQueues"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -51,7 +51,7 @@ internal class PlayQueuesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

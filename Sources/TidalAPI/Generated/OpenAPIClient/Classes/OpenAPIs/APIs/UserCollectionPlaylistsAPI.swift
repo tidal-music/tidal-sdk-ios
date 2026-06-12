@@ -126,6 +126,7 @@ internal class UserCollectionPlaylistsAPI {
      * enum for parameter collectionView
      */
     public enum CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet: String, CaseIterable {
+        case flat = "FLAT"
         case folders = "FOLDERS"
     }
 
@@ -208,10 +209,10 @@ internal class UserCollectionPlaylistsAPI {
      - parameter id: (path) User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionPlaylistsItemsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: UserCollectionPlaylistsItemsMultiRelationshipDataDocument
+     - returns: UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
+    internal class func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument {
         do {
             return try await userCollectionPlaylistsIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -230,9 +231,9 @@ internal class UserCollectionPlaylistsAPI {
      - parameter id: (path) User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionPlaylistsItemsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserCollectionPlaylistsItemsMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionPlaylistsIdRelationshipsItemsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserCollectionPlaylistsItemsMultiRelationshipDataDocument> {
+    internal class func userCollectionPlaylistsIdRelationshipsItemsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollectionPlaylists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -249,7 +250,7 @@ internal class UserCollectionPlaylistsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionPlaylistsItemsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
