@@ -190,16 +190,16 @@ public struct OfflineCollection: Hashable {
 	}
 }
 
-public enum OfflineCollectionItemSortDirection: Hashable {
+public enum SortDirection: Hashable {
 	case ascending
 	case descending
 }
 
 public enum OfflineCollectionItemSort: Hashable {
-	case title(direction: OfflineCollectionItemSortDirection)
-	case album(direction: OfflineCollectionItemSortDirection)
-	case artist(direction: OfflineCollectionItemSortDirection)
-	case dateAdded(direction: OfflineCollectionItemSortDirection)
+	case title(direction: SortDirection)
+	case album(direction: SortDirection)
+	case artist(direction: SortDirection)
+	case dateAdded(direction: SortDirection)
 }
 
 // MARK: - OfflineCollectionItem
