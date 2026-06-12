@@ -12,6 +12,10 @@ final class FeatureFlagProviderTests {
 		featureFlagProvider = FeatureFlagProvider.mock
 	}
 
+	deinit {
+		Player.shared = nil
+	}
+
 	@Test
 	func testOffliningIsInitialized() throws {
 		let playerInstance = Player.bootstrap(
