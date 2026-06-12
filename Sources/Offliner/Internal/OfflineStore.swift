@@ -62,11 +62,22 @@ final class OfflineStore {
 						member_resource_type,
 						member_resource_id,
 						volume,
-						position)
-					VALUES (?, ?, ?, ?, ?, ?)
+						position,
+						added_at,
+						title_sort,
+						album_sort,
+						artist_sort)
+					VALUES (?, ?, ?, ?, ?, ?, ?,
+						LOWER(COALESCE(json_extract(?, '$.title'), '')),
+						LOWER(COALESCE(json_extract(?, '$.albumTitle'), '')),
+						LOWER(COALESCE(json_extract(?, '$.artists[0]'), '')))
 					ON CONFLICT (collection_resource_type, collection_resource_id, volume, position) DO UPDATE SET
 						member_resource_type = excluded.member_resource_type,
-						member_resource_id = excluded.member_resource_id
+						member_resource_id = excluded.member_resource_id,
+						added_at = COALESCE(excluded.added_at, offline_item_relationship.added_at),
+						title_sort = excluded.title_sort,
+						album_sort = excluded.album_sort,
+						artist_sort = excluded.artist_sort
 					""",
 				arguments: [
 					result.collectionResourceType,
@@ -74,7 +85,11 @@ final class OfflineStore {
 					result.resourceType,
 					result.resourceId,
 					result.volume,
-					result.position]
+					result.position,
+					encodeRelationshipAddedAt(result.addedAt),
+					catalogMetadataJson,
+					catalogMetadataJson,
+					catalogMetadataJson]
 			)
 
 			return .commit
@@ -284,10 +299,11 @@ final class OfflineStore {
 		collectionType: OfflineCollectionType,
 		resourceId: String,
 		limit: Int,
-		after cursor: Int64? = nil
+		after cursor: String? = nil
 	) async throws -> (OfflineCollectionItemsPage, [FailedOfflineItem]) {
-		let cursorVolume = cursor.map { Int($0 / 1_000_000) } ?? -1
-		let cursorPosition = cursor.map { Int($0 % 1_000_000) } ?? -1
+		let parsedCursor = cursor.flatMap { Int64($0) }
+		let cursorVolume = parsedCursor.map { Int($0 / 1_000_000) } ?? -1
+		let cursorPosition = parsedCursor.map { Int($0 % 1_000_000) } ?? -1
 
 		let (items, failures) = try await databaseQueue.write { [self] database -> ([OfflineCollectionItem], [FailedOfflineItem]) in
 			let rows = try Row.fetchAll(
@@ -295,7 +311,7 @@ final class OfflineStore {
 				sql: """
 					SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
 					       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
-					       r.volume, r.position
+					       r.volume, r.position, r.added_at AS relationship_added_at
 					FROM offline_item_relationship r
 					JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
 					WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
@@ -307,22 +323,235 @@ final class OfflineStore {
 				arguments: [collectionType.rawValue, resourceId, cursorVolume, cursorVolume, cursorPosition, limit]
 			)
 
-			var items: [OfflineCollectionItem] = []
-			var failures: [FailedOfflineItem] = []
-
-			for row in rows {
-				do {
-					items.append(try makeCollectionItem(from: row, database: database))
-				} catch {
-					FailedOfflineItem(from: row).map { failures.append($0) }
-				}
-			}
-
-			return (items, failures)
+			return try collectItems(from: rows, database: database)
 		}
 
-		let nextCursor = items.last.map { Int64($0.volume) * 1_000_000 + Int64($0.position) }
+		let nextCursor = items.last.map { String(Int64($0.volume) * 1_000_000 + Int64($0.position)) }
 		return (OfflineCollectionItemsPage(items: items, cursor: nextCursor), failures)
+	}
+
+	func getCollectionItemsOrderByTitle(
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		direction: SortDirection,
+		limit: Int,
+		after cursor: String? = nil
+	) async throws -> (OfflineCollectionItemsPage, [FailedOfflineItem]) {
+		let comparator = direction.comparator
+		let order = direction.order
+		let parsedCursor = decodeSortCursor(cursor)
+		let cursorPredicate = parsedCursor == nil ? "" : "AND (r.title_sort, r.id) \(comparator) (?, ?)"
+
+		let (items, lastCursor, failures) = try await databaseQueue
+			.write { [self] database -> ([OfflineCollectionItem], String?, [FailedOfflineItem]) in
+				let rows = try Row.fetchAll(
+					database,
+					sql: """
+						SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
+						       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
+						       r.volume, r.position, r.id AS relationship_id, r.added_at AS relationship_added_at,
+						       r.title_sort AS sort_value
+						FROM offline_item_relationship r
+						JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
+						WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+						  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
+						  \(cursorPredicate)
+						ORDER BY r.title_sort \(order), r.id \(order)
+						LIMIT ?
+						""",
+					arguments: sortQueryArguments(
+						collectionType: collectionType,
+						resourceId: resourceId,
+						cursor: parsedCursor,
+						limit: limit
+					)
+				)
+
+				let (items, failures) = try collectItems(from: rows, database: database)
+				return (items, makeSortCursor(from: rows.last), failures)
+			}
+
+		return (OfflineCollectionItemsPage(items: items, cursor: lastCursor), failures)
+	}
+
+	func getCollectionItemsOrderByAlbum(
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		direction: SortDirection,
+		limit: Int,
+		after cursor: String? = nil
+	) async throws -> (OfflineCollectionItemsPage, [FailedOfflineItem]) {
+		let comparator = direction.comparator
+		let order = direction.order
+		let parsedCursor = decodeSortCursor(cursor)
+		let cursorPredicate = parsedCursor == nil ? "" : "AND (r.album_sort, r.id) \(comparator) (?, ?)"
+
+		let (items, lastCursor, failures) = try await databaseQueue
+			.write { [self] database -> ([OfflineCollectionItem], String?, [FailedOfflineItem]) in
+				let rows = try Row.fetchAll(
+					database,
+					sql: """
+						SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
+						       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
+						       r.volume, r.position, r.id AS relationship_id, r.added_at AS relationship_added_at,
+						       r.album_sort AS sort_value
+						FROM offline_item_relationship r
+						JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
+						WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+						  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
+						  \(cursorPredicate)
+						ORDER BY r.album_sort \(order), r.id \(order)
+						LIMIT ?
+						""",
+					arguments: sortQueryArguments(
+						collectionType: collectionType,
+						resourceId: resourceId,
+						cursor: parsedCursor,
+						limit: limit
+					)
+				)
+
+				let (items, failures) = try collectItems(from: rows, database: database)
+				return (items, makeSortCursor(from: rows.last), failures)
+			}
+
+		return (OfflineCollectionItemsPage(items: items, cursor: lastCursor), failures)
+	}
+
+	func getCollectionItemsOrderByArtist(
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		direction: SortDirection,
+		limit: Int,
+		after cursor: String? = nil
+	) async throws -> (OfflineCollectionItemsPage, [FailedOfflineItem]) {
+		let comparator = direction.comparator
+		let order = direction.order
+		let parsedCursor = decodeSortCursor(cursor)
+		let cursorPredicate = parsedCursor == nil ? "" : "AND (r.artist_sort, r.id) \(comparator) (?, ?)"
+
+		let (items, lastCursor, failures) = try await databaseQueue
+			.write { [self] database -> ([OfflineCollectionItem], String?, [FailedOfflineItem]) in
+				let rows = try Row.fetchAll(
+					database,
+					sql: """
+						SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
+						       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
+						       r.volume, r.position, r.id AS relationship_id, r.added_at AS relationship_added_at,
+						       r.artist_sort AS sort_value
+						FROM offline_item_relationship r
+						JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
+						WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+						  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
+						  \(cursorPredicate)
+						ORDER BY r.artist_sort \(order), r.id \(order)
+						LIMIT ?
+						""",
+					arguments: sortQueryArguments(
+						collectionType: collectionType,
+						resourceId: resourceId,
+						cursor: parsedCursor,
+						limit: limit
+					)
+				)
+
+				let (items, failures) = try collectItems(from: rows, database: database)
+				return (items, makeSortCursor(from: rows.last), failures)
+			}
+
+		return (OfflineCollectionItemsPage(items: items, cursor: lastCursor), failures)
+	}
+
+	func getCollectionItemsOrderByDateAdded(
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		direction: SortDirection,
+		limit: Int,
+		after cursor: String? = nil
+	) async throws -> (OfflineCollectionItemsPage, [FailedOfflineItem]) {
+		let comparator = direction.comparator
+		let order = direction.order
+		let parsedCursor = decodeSortCursor(cursor)
+		let cursorPredicate = parsedCursor == nil ? "" : "AND (r.added_at_sort, r.id) \(comparator) (?, ?)"
+
+		let (items, lastCursor, failures) = try await databaseQueue
+			.write { [self] database -> ([OfflineCollectionItem], String?, [FailedOfflineItem]) in
+				let rows = try Row.fetchAll(
+					database,
+					sql: """
+						SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
+						       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
+						       r.volume, r.position, r.id AS relationship_id, r.added_at AS relationship_added_at,
+						       r.added_at_sort AS sort_value
+						FROM offline_item_relationship r
+						JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
+						WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+						  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
+						  \(cursorPredicate)
+						ORDER BY r.added_at_sort \(order), r.id \(order)
+						LIMIT ?
+						""",
+					arguments: sortQueryArguments(
+						collectionType: collectionType,
+						resourceId: resourceId,
+						cursor: parsedCursor,
+						limit: limit
+					)
+				)
+
+				let (items, failures) = try collectItems(from: rows, database: database)
+				return (items, makeSortCursor(from: rows.last), failures)
+			}
+
+		return (OfflineCollectionItemsPage(items: items, cursor: lastCursor), failures)
+	}
+
+	private func makeSortCursor(from row: Row?) -> String? {
+		row.map { row -> String in
+			let relationshipId: Int64 = row["relationship_id"]
+			let sortValue: String = row["sort_value"] ?? ""
+			return "\(relationshipId):\(sortValue)"
+		}
+	}
+
+	private func decodeSortCursor(_ cursor: String?) -> (sortValue: String, relationshipId: Int64)? {
+		guard let cursor, let separator = cursor.firstIndex(of: ":"), let relationshipId = Int64(cursor[..<separator]) else {
+			return nil
+		}
+		return (String(cursor[cursor.index(after: separator)...]), relationshipId)
+	}
+
+	private func sortQueryArguments(
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		cursor: (sortValue: String, relationshipId: Int64)?,
+		limit: Int
+	) -> StatementArguments {
+		var values: [DatabaseValueConvertible?] = [collectionType.rawValue, resourceId]
+		if let cursor {
+			values.append(cursor.sortValue)
+			values.append(cursor.relationshipId)
+		}
+		values.append(limit)
+		return StatementArguments(values)
+	}
+
+	private func collectItems(
+		from rows: [Row],
+		database: GRDB.Database
+	) throws -> ([OfflineCollectionItem], [FailedOfflineItem]) {
+		var items: [OfflineCollectionItem] = []
+		var failures: [FailedOfflineItem] = []
+
+		for row in rows {
+			do {
+				items.append(try makeCollectionItem(from: row, database: database))
+			} catch {
+				FailedOfflineItem(from: row).map { failures.append($0) }
+			}
+		}
+
+		return (items, failures)
 	}
 
 	func getAudioFormatOfCollection(
@@ -391,9 +620,40 @@ final class OfflineStore {
 		OfflineCollectionItem(
 			item: try OfflineMediaItem(from: row, store: self, database: database),
 			volume: row["volume"],
-			position: row["position"]
+			position: row["position"],
+			addedAt: decodeRelationshipAddedAt(row["relationship_added_at"])
 		)
 	}
+}
+
+private extension SortDirection {
+	var comparator: String {
+		self == .ascending ? ">" : "<"
+	}
+
+	var order: String {
+		self == .ascending ? "ASC" : "DESC"
+	}
+}
+
+private func encodeRelationshipAddedAt(_ date: Date?) -> String? {
+	guard let date else { return nil }
+	let formatter = ISO8601DateFormatter()
+	formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+	return formatter.string(from: date)
+}
+
+private func decodeRelationshipAddedAt(_ string: String?) -> Date? {
+	guard let string else { return nil }
+
+	let formatter = ISO8601DateFormatter()
+	formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+	if let date = formatter.date(from: string) {
+		return date
+	}
+
+	formatter.formatOptions = [.withInternetDateTime]
+	return formatter.date(from: string)
 }
 
 // MARK: - FailedOfflineItem
@@ -423,6 +683,7 @@ struct StoreItemTaskResult {
 	let collectionResourceId: String
 	let volume: Int
 	let position: Int
+	let addedAt: Date?
 	let mediaURL: URL
 	let licenseURL: URL?
 	let artworkURL: URL?
