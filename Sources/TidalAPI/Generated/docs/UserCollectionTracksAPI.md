@@ -4,7 +4,6 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**userCollectionTracksGet**](UserCollectionTracksAPI.md#usercollectiontracksget) | **GET** /userCollectionTracks | Get multiple userCollectionTracks.
 [**userCollectionTracksIdGet**](UserCollectionTracksAPI.md#usercollectiontracksidget) | **GET** /userCollectionTracks/{id} | Get single userCollectionTrack.
 [**userCollectionTracksIdRelationshipsItemsDelete**](UserCollectionTracksAPI.md#usercollectiontracksidrelationshipsitemsdelete) | **DELETE** /userCollectionTracks/{id}/relationships/items | Delete from items relationship (\&quot;to-many\&quot;).
 [**userCollectionTracksIdRelationshipsItemsGet**](UserCollectionTracksAPI.md#usercollectiontracksidrelationshipsitemsget) | **GET** /userCollectionTracks/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
@@ -12,61 +11,9 @@ Method | HTTP request | Description
 [**userCollectionTracksIdRelationshipsOwnersGet**](UserCollectionTracksAPI.md#usercollectiontracksidrelationshipsownersget) | **GET** /userCollectionTracks/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 
 
-# **userCollectionTracksGet**
-```swift
-    open class func userCollectionTracksGet(include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: UserCollectionTracksMultiResourceDataDocument?, _ error: Error?) -> Void)
-```
-
-Get multiple userCollectionTracks.
-
-Retrieves multiple userCollectionTracks by available filters, or without if applicable.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
-let filterId = ["inner_example"] // [String] | User collection tracks id (e.g. `FMJUCzH4`) (optional)
-
-// Get multiple userCollectionTracks.
-UserCollectionTracksAPI.userCollectionTracksGet(include: include, filterId: filterId) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
- **filterId** | [**[String]**](String.md) | User collection tracks id (e.g. &#x60;FMJUCzH4&#x60;) | [optional] 
-
-### Return type
-
-[**UserCollectionTracksMultiResourceDataDocument**](UserCollectionTracksMultiResourceDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **userCollectionTracksIdGet**
 ```swift
-    open class func userCollectionTracksIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionTracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdGet(id: String, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionTracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollectionTrack.
@@ -79,12 +26,11 @@ Retrieves single userCollectionTrack by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection tracks id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
 
 // Get single userCollectionTrack.
-UserCollectionTracksAPI.userCollectionTracksIdGet(id: id, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionTracksAPI.userCollectionTracksIdGet(id: id, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -101,7 +47,6 @@ UserCollectionTracksAPI.userCollectionTracksIdGet(id: id, countryCode: countryCo
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection tracks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
 
@@ -176,7 +121,7 @@ Void (empty response body)
 
 # **userCollectionTracksIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionTracksItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionTracksItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -191,12 +136,11 @@ import OpenAPIClient
 let id = "id_example" // String | User collection tracks id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
 
 // Get items relationship (\"to-many\").
-UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -215,7 +159,6 @@ Name | Type | Description  | Notes
  **id** | **String** | User collection tracks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
 
@@ -236,7 +179,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionTracksItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionTracksItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -249,12 +192,11 @@ Adds item(s) to items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection tracks id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionTracksItemsRelationshipAddOperationPayload = UserCollectionTracksItemsRelationshipAddOperation_Payload(data: [UserCollectionTracksItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionTracksItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionTracksItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -271,13 +213,12 @@ UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPost(id: id, cou
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection tracks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionTracksItemsRelationshipAddOperationPayload** | [**UserCollectionTracksItemsRelationshipAddOperationPayload**](UserCollectionTracksItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
-[**UserCollectionTracksItemsMultiRelationshipDataDocument**](UserCollectionTracksItemsMultiRelationshipDataDocument.md)
+[**UserCollectionTracksItemsAddMultiRelationshipDataDocument**](UserCollectionTracksItemsAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 

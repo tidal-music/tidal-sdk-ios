@@ -15,18 +15,6 @@ public enum ProvidersAPITidal {
 
 
 	/**
-     Get multiple providers.
-     
-     - returns: ProvidersMultiResourceDataDocument
-     */
-	public static func providersGet(filterId: [String]? = nil) async throws -> ProvidersMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			ProvidersAPI.providersGetWithRequestBuilder(filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single provider.
      
      - returns: ProvidersSingleResourceDataDocument

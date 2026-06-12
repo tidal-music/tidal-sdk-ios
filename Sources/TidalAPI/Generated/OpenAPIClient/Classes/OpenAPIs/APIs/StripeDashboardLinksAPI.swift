@@ -15,14 +15,14 @@ internal class StripeDashboardLinksAPI {
     /**
      Get multiple stripeDashboardLinks.
      
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: StripeDashboardLinksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func stripeDashboardLinksGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> StripeDashboardLinksMultiResourceDataDocument {
+    internal class func stripeDashboardLinksGet(filterOwnersId: [String], include: [String]? = nil) async throws -> StripeDashboardLinksMultiResourceDataDocument {
         do {
-            return try await stripeDashboardLinksGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId).execute().body
+            return try await stripeDashboardLinksGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -36,11 +36,11 @@ internal class StripeDashboardLinksAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<StripeDashboardLinksMultiResourceDataDocument> 
      */
-    internal class func stripeDashboardLinksGetWithRequestBuilder(include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<StripeDashboardLinksMultiResourceDataDocument> {
+    internal class func stripeDashboardLinksGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil) -> RequestBuilder<StripeDashboardLinksMultiResourceDataDocument> {
         let localVariablePath = "/stripeDashboardLinks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -48,7 +48,7 @@ internal class StripeDashboardLinksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

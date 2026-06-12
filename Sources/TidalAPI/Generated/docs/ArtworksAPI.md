@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **artworksGet**
 ```swift
-    open class func artworksGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: ArtworksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksGet(filterId: [String], countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtworksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artworks.
@@ -24,12 +24,12 @@ Retrieves multiple artworks by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterId = ["inner_example"] // [String] | Artwork id (e.g. `a468bee88def`)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterId = ["inner_example"] // [String] | Artwork id (e.g. `a468bee88def`) (optional)
 
 // Get multiple artworks.
-ArtworksAPI.artworksGet(countryCode: countryCode, include: include, filterId: filterId) { (response, error) in
+ArtworksAPI.artworksGet(filterId: filterId, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,9 +45,9 @@ ArtworksAPI.artworksGet(countryCode: countryCode, include: include, filterId: fi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterId** | [**[String]**](String.md) | Artwork id (e.g. &#x60;a468bee88def&#x60;) | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterId** | [**[String]**](String.md) | Artwork id (e.g. &#x60;a468bee88def&#x60;) | [optional] 
 
 ### Return type
 

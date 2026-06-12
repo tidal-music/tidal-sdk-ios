@@ -13,53 +13,6 @@ import AnyCodable
 internal class TracksMetadataStatusAPI {
 
     /**
-     Get multiple tracksMetadataStatus.
-     
-     - parameter filterId: (query) List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
-     - returns: TracksMetadataStatusMultiResourceDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksMetadataStatusGet(filterId: [String]? = nil) async throws -> TracksMetadataStatusMultiResourceDataDocument {
-        do {
-            return try await tracksMetadataStatusGetWithRequestBuilder(filterId: filterId).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Get multiple tracksMetadataStatus.
-     - GET /tracksMetadataStatus
-     - Retrieves multiple tracksMetadataStatus by available filters, or without if applicable.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter filterId: (query) List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
-     - returns: RequestBuilder<TracksMetadataStatusMultiResourceDataDocument> 
-     */
-    internal class func tracksMetadataStatusGetWithRequestBuilder(filterId: [String]? = nil) -> RequestBuilder<TracksMetadataStatusMultiResourceDataDocument> {
-        let localVariablePath = "/tracksMetadataStatus"
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<TracksMetadataStatusMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Get single tracksMetadataStatu.
      
      - parameter id: (path) Tracks metadata status id 

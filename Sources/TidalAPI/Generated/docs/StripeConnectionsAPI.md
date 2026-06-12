@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **stripeConnectionsGet**
 ```swift
-    open class func stripeConnectionsGet(include: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: StripeConnectionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: StripeConnectionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple stripeConnections.
@@ -23,11 +23,11 @@ Retrieves multiple stripeConnections by available filters, or without if applica
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple stripeConnections.
-StripeConnectionsAPI.stripeConnectionsGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
+StripeConnectionsAPI.stripeConnectionsGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -43,8 +43,8 @@ StripeConnectionsAPI.stripeConnectionsGet(include: include, filterOwnersId: filt
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 

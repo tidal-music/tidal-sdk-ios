@@ -19,9 +19,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: ArtistClaimsMultiResourceDataDocument
      */
-	public static func artistClaimsGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
+	public static func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId)
+			ArtistClaimsAPI.artistClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
 		}
 	}
 

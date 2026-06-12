@@ -42,7 +42,7 @@ import OpenAPIClient
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 let filterHandle = ["inner_example"] // [String] | Artist handle (e.g. `jayz`) (optional)
-let filterId = ["inner_example"] // [String] | Artist id (e.g. `1566`) (optional)
+let filterId = ["inner_example"] // [String] | List of artist IDs (e.g. `1566`) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple artists.
@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
  **filterHandle** | [**[String]**](String.md) | Artist handle (e.g. &#x60;jayz&#x60;) | [optional] 
- **filterId** | [**[String]**](String.md) | Artist id (e.g. &#x60;1566&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | List of artist IDs (e.g. &#x60;1566&#x60;) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type

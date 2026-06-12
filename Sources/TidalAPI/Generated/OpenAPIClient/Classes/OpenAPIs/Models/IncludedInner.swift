@@ -21,6 +21,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistsResourceObject(ArtistsResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
     case clientsResourceObject(ClientsResourceObject)
+    case collaborationInviteRedemptionsResourceObject(CollaborationInviteRedemptionsResourceObject)
+    case collaborationInvitesResourceObject(CollaborationInvitesResourceObject)
     case commentsResourceObject(CommentsResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
@@ -42,6 +44,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case purchasesResourceObject(PurchasesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
+    case scopesResourceObject(ScopesResourceObject)
     case searchHistoryEntriesResourceObject(SearchHistoryEntriesResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
@@ -71,6 +74,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
     case userNewReleaseMixesResourceObject(UserNewReleaseMixesResourceObject)
     case userOfflineMixesResourceObject(UserOfflineMixesResourceObject)
+    case userRecommendationBlocksResourceObject(UserRecommendationBlocksResourceObject)
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
     case userReportsResourceObject(UserReportsResourceObject)
     case usersResourceObject(UsersResourceObject)
@@ -99,6 +103,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .artworksResourceObject(let value):
             try container.encode(value)
         case .clientsResourceObject(let value):
+            try container.encode(value)
+        case .collaborationInviteRedemptionsResourceObject(let value):
+            try container.encode(value)
+        case .collaborationInvitesResourceObject(let value):
             try container.encode(value)
         case .commentsResourceObject(let value):
             try container.encode(value)
@@ -141,6 +149,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .reactionsResourceObject(let value):
             try container.encode(value)
         case .savedSharesResourceObject(let value):
+            try container.encode(value)
+        case .scopesResourceObject(let value):
             try container.encode(value)
         case .searchHistoryEntriesResourceObject(let value):
             try container.encode(value)
@@ -200,6 +210,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .userOfflineMixesResourceObject(let value):
             try container.encode(value)
+        case .userRecommendationBlocksResourceObject(let value):
+            try container.encode(value)
         case .userRecommendationsResourceObject(let value):
             try container.encode(value)
         case .userReportsResourceObject(let value):
@@ -252,6 +264,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "clients":
             let value = try ClientsResourceObject(from: decoder)
             self = .clientsResourceObject(value)
+        case "collaborationInviteRedemptions":
+            let value = try CollaborationInviteRedemptionsResourceObject(from: decoder)
+            self = .collaborationInviteRedemptionsResourceObject(value)
+        case "collaborationInvites":
+            let value = try CollaborationInvitesResourceObject(from: decoder)
+            self = .collaborationInvitesResourceObject(value)
         case "comments":
             let value = try CommentsResourceObject(from: decoder)
             self = .commentsResourceObject(value)
@@ -315,6 +333,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "savedShares":
             let value = try SavedSharesResourceObject(from: decoder)
             self = .savedSharesResourceObject(value)
+        case "scopes":
+            let value = try ScopesResourceObject(from: decoder)
+            self = .scopesResourceObject(value)
         case "searchHistoryEntries":
             let value = try SearchHistoryEntriesResourceObject(from: decoder)
             self = .searchHistoryEntriesResourceObject(value)
@@ -402,6 +423,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userOfflineMixes":
             let value = try UserOfflineMixesResourceObject(from: decoder)
             self = .userOfflineMixesResourceObject(value)
+        case "userRecommendationBlocks":
+            let value = try UserRecommendationBlocksResourceObject(from: decoder)
+            self = .userRecommendationBlocksResourceObject(value)
         case "userRecommendations":
             let value = try UserRecommendationsResourceObject(from: decoder)
             self = .userRecommendationsResourceObject(value)
@@ -437,6 +461,8 @@ extension IncludedInner: Identifiable {
         case .artistsResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
         case .clientsResourceObject(let value): return value.id
+        case .collaborationInviteRedemptionsResourceObject(let value): return value.id
+        case .collaborationInvitesResourceObject(let value): return value.id
         case .commentsResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
@@ -458,6 +484,7 @@ extension IncludedInner: Identifiable {
         case .purchasesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
+        case .scopesResourceObject(let value): return value.id
         case .searchHistoryEntriesResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
         case .searchSuggestionsResourceObject(let value): return value.id
@@ -487,6 +514,7 @@ extension IncludedInner: Identifiable {
         case .userDiscoveryMixesResourceObject(let value): return value.id
         case .userNewReleaseMixesResourceObject(let value): return value.id
         case .userOfflineMixesResourceObject(let value): return value.id
+        case .userRecommendationBlocksResourceObject(let value): return value.id
         case .userRecommendationsResourceObject(let value): return value.id
         case .userReportsResourceObject(let value): return value.id
         case .usersResourceObject(let value): return value.id

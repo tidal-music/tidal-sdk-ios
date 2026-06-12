@@ -19,9 +19,9 @@ public enum UserCollectionAlbumsAPITidal {
      
      - returns: UserCollectionAlbumsSingleResourceDataDocument
      */
-	public static func userCollectionAlbumsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionAlbumsSingleResourceDataDocument {
+	public static func userCollectionAlbumsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionAlbumsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionAlbumsAPI.userCollectionAlbumsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionAlbumsAPI.userCollectionAlbumsIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 
@@ -70,9 +70,9 @@ public enum UserCollectionAlbumsAPITidal {
      
      - returns: UserCollectionAlbumsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionAlbumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionAlbumsAPITidal.Sort_userCollectionAlbumsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionAlbumsItemsMultiRelationshipDataDocument {
+	public static func userCollectionAlbumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionAlbumsAPITidal.Sort_userCollectionAlbumsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionAlbumsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionAlbumsAPIEnum() }, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionAlbumsAPIEnum() }, locale: locale, include: include)
 		}
 	}
 
@@ -80,11 +80,11 @@ public enum UserCollectionAlbumsAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionAlbumsItemsMultiRelationshipDataDocument
+     - returns: UserCollectionAlbumsItemsAddMultiRelationshipDataDocument
      */
-	public static func userCollectionAlbumsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionAlbumsItemsRelationshipAddOperationPayload: UserCollectionAlbumsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionAlbumsItemsMultiRelationshipDataDocument {
+	public static func userCollectionAlbumsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionAlbumsItemsRelationshipAddOperationPayload: UserCollectionAlbumsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionAlbumsItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionAlbumsItemsRelationshipAddOperationPayload: userCollectionAlbumsItemsRelationshipAddOperationPayload)
+			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionAlbumsItemsRelationshipAddOperationPayload: userCollectionAlbumsItemsRelationshipAddOperationPayload)
 		}
 	}
 

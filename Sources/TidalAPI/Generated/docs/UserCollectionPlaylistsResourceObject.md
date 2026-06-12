@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **AnyCodable** |  | [optional] 
+**attributes** | [**UserCollectionPlaylistsAttributes**](UserCollectionPlaylistsAttributes.md) |  | [optional] 
 **id** | **String** | Resource id | 
 **relationships** | [**UserCollectionPlaylistsRelationships**](UserCollectionPlaylistsRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 

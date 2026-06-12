@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **dynamicPagesGet**
 ```swift
-    open class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, refreshId: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterPageType: [String]? = nil, filterSubjectId: [String]? = nil, completion: @escaping (_ data: DynamicPagesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], filterSubjectId: [String], refreshId: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: DynamicPagesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple dynamicPages.
@@ -26,15 +26,15 @@ import OpenAPIClient
 let deviceType = "deviceType_example" // String | The type of device making the request
 let systemType = "systemType_example" // String | The system type of the device making the request
 let clientVersion = "clientVersion_example" // String | Client version number
+let filterPageType = ["inner_example"] // [String] | type of the page (e.g. `ARTIST`)
+let filterSubjectId = ["inner_example"] // [String] | the subject id, eg. artistId (e.g. `67890`)
 let refreshId = "refreshId_example" // String |  (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject (optional)
-let filterPageType = ["inner_example"] // [String] | type of the page (e.g. `ARTIST`) (optional)
-let filterSubjectId = ["inner_example"] // [String] | the subject id, eg. artistId (e.g. `67890`) (optional)
 
 // Get multiple dynamicPages.
-DynamicPagesAPI.dynamicPagesGet(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshId: refreshId, countryCode: countryCode, locale: locale, include: include, filterPageType: filterPageType, filterSubjectId: filterSubjectId) { (response, error) in
+DynamicPagesAPI.dynamicPagesGet(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, filterSubjectId: filterSubjectId, refreshId: refreshId, countryCode: countryCode, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -53,12 +53,12 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | 
  **systemType** | **String** | The system type of the device making the request | 
  **clientVersion** | **String** | Client version number | 
+ **filterPageType** | [**[String]**](String.md) | type of the page (e.g. &#x60;ARTIST&#x60;) | 
+ **filterSubjectId** | [**[String]**](String.md) | the subject id, eg. artistId (e.g. &#x60;67890&#x60;) | 
  **refreshId** | **String** |  | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject | [optional] 
- **filterPageType** | [**[String]**](String.md) | type of the page (e.g. &#x60;ARTIST&#x60;) | [optional] 
- **filterSubjectId** | [**[String]**](String.md) | the subject id, eg. artistId (e.g. &#x60;67890&#x60;) | [optional] 
 
 ### Return type
 
