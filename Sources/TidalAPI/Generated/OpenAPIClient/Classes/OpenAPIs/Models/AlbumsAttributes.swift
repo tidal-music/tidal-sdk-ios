@@ -34,6 +34,8 @@ public struct AlbumsAttributes: Codable, Hashable {
     }
     /** Access type */
     public var accessType: AccessType?
+    /** Whether the album is AI-generated */
+    public var ai: Bool?
     /** Album type */
     public var albumType: AlbumType
     /** Available usage for this album. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
@@ -68,6 +70,7 @@ public struct AlbumsAttributes: Codable, Hashable {
 
     public init(
         accessType: AccessType? = nil,
+        ai: Bool? = nil,
         albumType: AlbumType,
         availability: [Availability]? = nil,
         barcodeId: String,
@@ -86,6 +89,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         version: String? = nil
     ) {
         self.accessType = accessType
+        self.ai = ai
         self.albumType = albumType
         self.availability = availability
         self.barcodeId = barcodeId
@@ -106,6 +110,7 @@ public struct AlbumsAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case accessType
+        case ai
         case albumType
         case availability
         case barcodeId
@@ -129,6 +134,7 @@ public struct AlbumsAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(accessType, forKey: .accessType)
+        try container.encodeIfPresent(ai, forKey: .ai)
         try container.encode(albumType, forKey: .albumType)
         try container.encodeIfPresent(availability, forKey: .availability)
         try container.encode(barcodeId, forKey: .barcodeId)

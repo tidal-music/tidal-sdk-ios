@@ -25,7 +25,7 @@ Method | HTTP request | Description
 
 # **userCollectionsIdGet**
 ```swift
-    open class func userCollectionsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdGet(id: String, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollection.
@@ -38,12 +38,11 @@ Deprecated. Use the dedicated collection resources instead: userCollectionAlbums
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
 
 // Get single userCollection.
-UserCollectionsAPI.userCollectionsIdGet(id: id, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionsAPI.userCollectionsIdGet(id: id, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -60,7 +59,6 @@ UserCollectionsAPI.userCollectionsIdGet(id: id, countryCode: countryCode, locale
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos | [optional] 
 
@@ -135,7 +133,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsAlbumsGet**
 ```swift
-    open class func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -150,12 +148,11 @@ import OpenAPIClient
 let id = "id_example" // String | User collection id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
 
 // Get albums relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsGet(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -174,7 +171,6 @@ Name | Type | Description  | Notes
  **id** | **String** | User collection id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
 
@@ -195,7 +191,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsAlbumsPost**
 ```swift
-    open class func userCollectionsIdRelationshipsAlbumsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsAlbumsPost(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to albums relationship (\"to-many\").
@@ -208,12 +204,11 @@ Deprecated. Use the userCollectionAlbums resource and its items relationship ins
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsAlbumsRelationshipAddOperationPayload = UserCollectionsAlbumsRelationshipAddOperation_Payload(data: [UserCollectionsAlbumsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionsAlbumsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionsAlbumsRelationshipAddOperationPayload |  (optional)
 
 // Add to albums relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPost(id: id, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -230,7 +225,6 @@ UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPost(id: id, countryCode:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsAlbumsRelationshipAddOperationPayload** | [**UserCollectionsAlbumsRelationshipAddOperationPayload**](UserCollectionsAlbumsRelationshipAddOperationPayload.md) |  | [optional] 
 
@@ -305,7 +299,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsArtistsGet**
 ```swift
-    open class func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -320,12 +314,11 @@ import OpenAPIClient
 let id = "id_example" // String | User collection id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
 
 // Get artists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -344,7 +337,6 @@ Name | Type | Description  | Notes
  **id** | **String** | User collection id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
 
@@ -365,7 +357,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsArtistsPost**
 ```swift
-    open class func userCollectionsIdRelationshipsArtistsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to artists relationship (\"to-many\").
@@ -378,12 +370,11 @@ Deprecated. Use the userCollectionArtists resource and its items relationship in
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsArtistsRelationshipAddOperationPayload = UserCollectionsArtistsRelationshipAddOperation_Payload(data: [UserCollectionsArtistsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionsArtistsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionsArtistsRelationshipAddOperationPayload |  (optional)
 
 // Add to artists relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPost(id: id, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -400,7 +391,6 @@ UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPost(id: id, countryCode
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsArtistsRelationshipAddOperationPayload** | [**UserCollectionsArtistsRelationshipAddOperationPayload**](UserCollectionsArtistsRelationshipAddOperationPayload.md) |  | [optional] 
 
@@ -695,7 +685,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsTracksGet**
 ```swift
-    open class func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get tracks relationship (\"to-many\").
@@ -710,12 +700,11 @@ import OpenAPIClient
 let id = "id_example" // String | User collection id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
 
 // Get tracks relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsTracksGet(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsTracksGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -734,7 +723,6 @@ Name | Type | Description  | Notes
  **id** | **String** | User collection id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
 
@@ -755,7 +743,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsTracksPost**
 ```swift
-    open class func userCollectionsIdRelationshipsTracksPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to tracks relationship (\"to-many\").
@@ -768,12 +756,11 @@ Deprecated. Use the userCollectionTracks resource and its items relationship ins
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsTracksRelationshipAddOperationPayload = UserCollectionsTracksRelationshipAddOperation_Payload(data: [UserCollectionsTracksRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionsTracksRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionsTracksRelationshipAddOperationPayload |  (optional)
 
 // Add to tracks relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -790,7 +777,6 @@ UserCollectionsAPI.userCollectionsIdRelationshipsTracksPost(id: id, countryCode:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsTracksRelationshipAddOperationPayload** | [**UserCollectionsTracksRelationshipAddOperationPayload**](UserCollectionsTracksRelationshipAddOperationPayload.md) |  | [optional] 
 
@@ -865,7 +851,7 @@ Void (empty response body)
 
 # **userCollectionsIdRelationshipsVideosGet**
 ```swift
-    open class func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionsVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get videos relationship (\"to-many\").
@@ -880,12 +866,11 @@ import OpenAPIClient
 let id = "id_example" // String | User collection id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
 
 // Get videos relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsVideosGet(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsVideosGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -904,7 +889,6 @@ Name | Type | Description  | Notes
  **id** | **String** | User collection id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
 
@@ -925,7 +909,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsVideosPost**
 ```swift
-    open class func userCollectionsIdRelationshipsVideosPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Add to videos relationship (\"to-many\").
@@ -938,12 +922,11 @@ Deprecated. Use the userCollectionVideos resource and its items relationship ins
 import OpenAPIClient
 
 let id = "id_example" // String | User collection id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionsVideosRelationshipAddOperationPayload = UserCollectionsVideosRelationshipAddOperation_Payload(data: [UserCollectionsVideosRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionsVideosRelationshipAddOperationPayload |  (optional)
 
 // Add to videos relationship (\"to-many\").
-UserCollectionsAPI.userCollectionsIdRelationshipsVideosPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload) { (response, error) in
+UserCollectionsAPI.userCollectionsIdRelationshipsVideosPost(id: id, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -960,7 +943,6 @@ UserCollectionsAPI.userCollectionsIdRelationshipsVideosPost(id: id, countryCode:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionsVideosRelationshipAddOperationPayload** | [**UserCollectionsVideosRelationshipAddOperationPayload**](UserCollectionsVideosRelationshipAddOperationPayload.md) |  | [optional] 
 

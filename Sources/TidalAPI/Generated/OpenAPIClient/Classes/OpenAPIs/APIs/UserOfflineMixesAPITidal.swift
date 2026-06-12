@@ -19,9 +19,9 @@ public enum UserOfflineMixesAPITidal {
      
      - returns: UserOfflineMixesSingleResourceDataDocument
      */
-	public static func userOfflineMixesIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserOfflineMixesSingleResourceDataDocument {
+	public static func userOfflineMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserOfflineMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserOfflineMixesAPI.userOfflineMixesIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserOfflineMixesAPI.userOfflineMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 

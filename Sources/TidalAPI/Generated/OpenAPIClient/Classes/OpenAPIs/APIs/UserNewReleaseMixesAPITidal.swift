@@ -19,9 +19,9 @@ public enum UserNewReleaseMixesAPITidal {
      
      - returns: UserNewReleaseMixesSingleResourceDataDocument
      */
-	public static func userNewReleaseMixesIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserNewReleaseMixesSingleResourceDataDocument {
+	public static func userNewReleaseMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserNewReleaseMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserNewReleaseMixesAPI.userNewReleaseMixesIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserNewReleaseMixesAPI.userNewReleaseMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum UserNewReleaseMixesAPITidal {
      
      - returns: UserNewReleaseMixesMultiRelationshipDataDocument
      */
-	public static func userNewReleaseMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserNewReleaseMixesMultiRelationshipDataDocument {
+	public static func userNewReleaseMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserNewReleaseMixesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserNewReleaseMixesAPI.userNewReleaseMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include)
+			UserNewReleaseMixesAPI.userNewReleaseMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include)
 		}
 	}
 }

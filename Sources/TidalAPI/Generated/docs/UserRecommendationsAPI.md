@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userRecommendationsIdGet**
 ```swift
-    open class func userRecommendationsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdGet(id: String, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userRecommendation.
@@ -26,12 +26,11 @@ Deprecated. Use the dedicated mix resources instead: userDiscoveryMixes, userDai
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendations id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes (optional)
 
 // Get single userRecommendation.
-UserRecommendationsAPI.userRecommendationsIdGet(id: id, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserRecommendationsAPI.userRecommendationsIdGet(id: id, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -48,7 +47,6 @@ UserRecommendationsAPI.userRecommendationsIdGet(id: id, countryCode: countryCode
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes | [optional] 
 
@@ -69,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsDiscoveryMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get discoveryMixes relationship (\"to-many\").
@@ -83,12 +81,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | User recommendations id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
 
 // Get discoveryMixes relationship (\"to-many\").
-UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGet(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -106,7 +103,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: discoveryMixes | [optional] 
 
@@ -127,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsMyMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsMyMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsMyMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get myMixes relationship (\"to-many\").
@@ -141,12 +137,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | User recommendations id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
 
 // Get myMixes relationship (\"to-many\").
-UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGet(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -164,7 +159,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: myMixes | [optional] 
 
@@ -185,7 +179,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsNewArrivalMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get newArrivalMixes relationship (\"to-many\").
@@ -199,12 +193,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | User recommendations id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
 
 // Get newArrivalMixes relationship (\"to-many\").
-UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGet(id: id, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -222,7 +215,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: newArrivalMixes | [optional] 
 
