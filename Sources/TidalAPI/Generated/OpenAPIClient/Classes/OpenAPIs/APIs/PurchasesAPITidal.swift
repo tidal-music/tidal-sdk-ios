@@ -34,9 +34,9 @@ public enum PurchasesAPITidal {
      
      - returns: PurchasesMultiResourceDataDocument
      */
-	public static func purchasesGet(pageCursor: String? = nil, include: [String]? = nil, filterOwnersId: [String]? = nil, filterSubjectType: [PurchasesAPITidal.FilterSubjectType_purchasesGet]? = nil) async throws -> PurchasesMultiResourceDataDocument {
+	public static func purchasesGet(filterOwnersId: [String], filterSubjectType: [PurchasesAPITidal.FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil) async throws -> PurchasesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PurchasesAPI.purchasesGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType?.compactMap { $0.toPurchasesAPIEnum() })
+			PurchasesAPI.purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType.compactMap { $0.toPurchasesAPIEnum() }, pageCursor: pageCursor, include: include)
 		}
 	}
 

@@ -13,59 +13,6 @@ import AnyCodable
 internal class CreditsAPI {
 
     /**
-     Get multiple credits.
-     
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist, category (optional)
-     - parameter filterId: (query) List of credit IDs (e.g. &#x60;3fG7kLmN2pQrStUv&#x60;) (optional)
-     - returns: CreditsMultiResourceDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func creditsGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> CreditsMultiResourceDataDocument {
-        do {
-            return try await creditsGetWithRequestBuilder(include: include, filterId: filterId).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Get multiple credits.
-     - GET /credits
-     - Retrieves multiple credits by available filters, or without if applicable.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - OAuth:
-       - type: oauth2
-       - name: Client_Credentials
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist, category (optional)
-     - parameter filterId: (query) List of credit IDs (e.g. &#x60;3fG7kLmN2pQrStUv&#x60;) (optional)
-     - returns: RequestBuilder<CreditsMultiResourceDataDocument> 
-     */
-    internal class func creditsGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<CreditsMultiResourceDataDocument> {
-        let localVariablePath = "/credits"
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<CreditsMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Get single credit.
      
      - parameter id: (path) Credit id 

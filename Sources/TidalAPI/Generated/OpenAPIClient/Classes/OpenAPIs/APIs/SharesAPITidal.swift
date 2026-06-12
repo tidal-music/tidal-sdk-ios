@@ -19,9 +19,9 @@ public enum SharesAPITidal {
      
      - returns: SharesMultiResourceDataDocument
      */
-	public static func sharesGet(include: [String]? = nil, filterCode: [String]? = nil, filterId: [String]? = nil) async throws -> SharesMultiResourceDataDocument {
+	public static func sharesGet(filterCode: [String], include: [String]? = nil) async throws -> SharesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesGetWithRequestBuilder(include: include, filterCode: filterCode, filterId: filterId)
+			SharesAPI.sharesGetWithRequestBuilder(filterCode: filterCode, include: include)
 		}
 	}
 

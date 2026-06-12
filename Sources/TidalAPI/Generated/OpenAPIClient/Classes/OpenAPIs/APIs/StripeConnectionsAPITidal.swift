@@ -19,9 +19,9 @@ public enum StripeConnectionsAPITidal {
      
      - returns: StripeConnectionsMultiResourceDataDocument
      */
-	public static func stripeConnectionsGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> StripeConnectionsMultiResourceDataDocument {
+	public static func stripeConnectionsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> StripeConnectionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			StripeConnectionsAPI.stripeConnectionsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId)
+			StripeConnectionsAPI.stripeConnectionsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
 		}
 	}
 

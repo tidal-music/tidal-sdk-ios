@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **downloadsGet**
 ```swift
-    open class func downloadsGet(include: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: DownloadsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func downloadsGet(filterId: [String], include: [String]? = nil, completion: @escaping (_ data: DownloadsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple downloads.
@@ -23,11 +23,11 @@ Retrieves multiple downloads by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterId = ["inner_example"] // [String] | Download id (e.g. `VFJBQ0tTOjEyMzQ1`)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterId = ["inner_example"] // [String] | Download id (e.g. `VFJBQ0tTOjEyMzQ1`) (optional)
 
 // Get multiple downloads.
-DownloadsAPI.downloadsGet(include: include, filterId: filterId) { (response, error) in
+DownloadsAPI.downloadsGet(filterId: filterId, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -43,8 +43,8 @@ DownloadsAPI.downloadsGet(include: include, filterId: filterId) { (response, err
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterId** | [**[String]**](String.md) | Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterId** | [**[String]**](String.md) | Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) | [optional] 
 
 ### Return type
 

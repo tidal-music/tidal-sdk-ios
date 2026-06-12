@@ -15,18 +15,6 @@ public enum TrackStatisticsAPITidal {
 
 
 	/**
-     Get multiple trackStatistics.
-     
-     - returns: TrackStatisticsMultiResourceDataDocument
-     */
-	public static func trackStatisticsGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> TrackStatisticsMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			TrackStatisticsAPI.trackStatisticsGetWithRequestBuilder(include: include, filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single trackStatistic.
      
      - returns: TrackStatisticsSingleResourceDataDocument

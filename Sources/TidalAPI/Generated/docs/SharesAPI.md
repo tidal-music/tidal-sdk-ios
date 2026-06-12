@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **sharesGet**
 ```swift
-    open class func sharesGet(include: [String]? = nil, filterCode: [String]? = nil, filterId: [String]? = nil, completion: @escaping (_ data: SharesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func sharesGet(filterCode: [String], include: [String]? = nil, completion: @escaping (_ data: SharesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple shares.
@@ -25,12 +25,11 @@ Retrieves multiple shares by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterCode = ["inner_example"] // [String] | A share code (e.g. `xyz`)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
-let filterCode = ["inner_example"] // [String] | A share code (e.g. `xyz`) (optional)
-let filterId = ["inner_example"] // [String] | List of shares IDs (e.g. `a468bee88def`) (optional)
 
 // Get multiple shares.
-SharesAPI.sharesGet(include: include, filterCode: filterCode, filterId: filterId) { (response, error) in
+SharesAPI.sharesGet(filterCode: filterCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -46,9 +45,8 @@ SharesAPI.sharesGet(include: include, filterCode: filterCode, filterId: filterId
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterCode** | [**[String]**](String.md) | A share code (e.g. &#x60;xyz&#x60;) | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, sharedResources | [optional] 
- **filterCode** | [**[String]**](String.md) | A share code (e.g. &#x60;xyz&#x60;) | [optional] 
- **filterId** | [**[String]**](String.md) | List of shares IDs (e.g. &#x60;a468bee88def&#x60;) | [optional] 
 
 ### Return type
 

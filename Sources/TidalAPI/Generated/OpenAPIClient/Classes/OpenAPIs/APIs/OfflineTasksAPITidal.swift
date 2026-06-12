@@ -19,9 +19,9 @@ public enum OfflineTasksAPITidal {
      
      - returns: OfflineTasksMultiResourceDataDocument
      */
-	public static func offlineTasksGet(pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterInstallationId: [String]? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
+	public static func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			OfflineTasksAPI.offlineTasksGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterId: filterId, filterInstallationId: filterInstallationId)
+			OfflineTasksAPI.offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include)
 		}
 	}
 

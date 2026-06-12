@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **AnyCodable** |  | [optional] 
+**attributes** | [**UserCollectionVideosAttributes**](UserCollectionVideosAttributes.md) |  | [optional] 
 **id** | **String** | Resource id | 
 **relationships** | [**UserCollectionVideosRelationships**](UserCollectionVideosRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 

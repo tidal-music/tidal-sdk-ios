@@ -15,18 +15,6 @@ public enum AlbumStatisticsAPITidal {
 
 
 	/**
-     Get multiple albumStatistics.
-     
-     - returns: AlbumStatisticsMultiResourceDataDocument
-     */
-	public static func albumStatisticsGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> AlbumStatisticsMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			AlbumStatisticsAPI.albumStatisticsGetWithRequestBuilder(include: include, filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single albumStatistic.
      
      - returns: AlbumStatisticsSingleResourceDataDocument

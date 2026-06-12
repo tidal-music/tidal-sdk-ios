@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.22] - 2026-06-03
+
+### Fixed
+- Fix race in `LoginRepository.deviceLoginPollHelper` (Auth)
+- Fix AVContentKeySession DRM crash by retaining session in async response (Player)
+
+## [0.11.21] - 2026-05-18
+
+### Changed
+- Generated API code using spec version 1.10.3 (TidalAPI)
+
+## [0.11.20] - 2026-05-11
+
+### Changed
+- Generated API code using spec version 1.9.3 (TidalAPI)
+
 ## [0.11.19] - 2026-05-07
 
 ### Added

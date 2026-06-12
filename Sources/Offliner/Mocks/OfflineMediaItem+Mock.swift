@@ -27,6 +27,7 @@ public extension OfflineMediaItem.TrackMetadata {
 		id: String = "track-789",
 		title: String = "Mock Track",
 		artists: [String] = ["Mock Artist"],
+		albumTitle: String? = "Mock Album",
 		duration: Int = 210,
 		explicit: Bool = false,
 		backgroundColorHex: String? = nil
@@ -35,6 +36,7 @@ public extension OfflineMediaItem.TrackMetadata {
 			id: id,
 			title: title,
 			artists: artists,
+			albumTitle: albumTitle,
 			duration: duration,
 			explicit: explicit,
 			backgroundColorHex: backgroundColorHex

@@ -27,9 +27,18 @@ final class StoreTrackHandler {
 		let title = task.track.attributes?.title ?? ""
 		let artists = task.artists.compactMap(\.attributes?.name)
 		let imageURL = task.artwork?.attributes?.files.first.flatMap { URL(string: $0.href) }
+		let relatedCollection = OfflineCollectionReference(
+			collectionResourceType: task.collectionResourceType,
+			collectionResourceId: task.collectionResourceId
+		)
 		return InternalTrackTask(
 			task: task,
-			download: Download(title: title, artists: artists, imageURL: imageURL),
+			download: Download(
+				title: title,
+				artists: artists,
+				imageURL: imageURL,
+				relatedCollection: relatedCollection
+			),
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
@@ -98,6 +107,7 @@ private final class InternalTrackTask: InternalTask {
 				id: task.track.id,
 				title: task.track.attributes?.title ?? "",
 				artists: task.artists.compactMap(\.attributes?.name),
+				albumTitle: task.album?.attributes?.title,
 				duration: mediaResult.duration,
 				explicit: task.track.attributes?.explicit ?? false,
 				backgroundColorHex: backgroundColorHex
@@ -112,6 +122,7 @@ private final class InternalTrackTask: InternalTask {
 				collectionResourceId: task.resolvedCollectionResourceId,
 				volume: task.volume,
 				position: task.position,
+				addedAt: task.addedAt,
 				mediaURL: mediaResult.mediaLocation,
 				licenseURL: licenseResult?.licenseURL,
 				artworkURL: artworkURL

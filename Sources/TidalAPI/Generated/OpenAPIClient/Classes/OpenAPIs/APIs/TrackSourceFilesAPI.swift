@@ -13,56 +13,6 @@ import AnyCodable
 internal class TrackSourceFilesAPI {
 
     /**
-     Get multiple trackSourceFiles.
-     
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Track source file id (e.g. &#x60;a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11&#x60;) (optional)
-     - returns: TrackSourceFilesMultiResourceDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackSourceFilesGet(include: [String]? = nil, filterId: [String]? = nil) async throws -> TrackSourceFilesMultiResourceDataDocument {
-        do {
-            return try await trackSourceFilesGetWithRequestBuilder(include: include, filterId: filterId).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Get multiple trackSourceFiles.
-     - GET /trackSourceFiles
-     - Retrieves multiple trackSourceFiles by available filters, or without if applicable.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
-     - parameter filterId: (query) Track source file id (e.g. &#x60;a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11&#x60;) (optional)
-     - returns: RequestBuilder<TrackSourceFilesMultiResourceDataDocument> 
-     */
-    internal class func trackSourceFilesGetWithRequestBuilder(include: [String]? = nil, filterId: [String]? = nil) -> RequestBuilder<TrackSourceFilesMultiResourceDataDocument> {
-        let localVariablePath = "/trackSourceFiles"
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<TrackSourceFilesMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Get single trackSourceFile.
      
      - parameter id: (path) Track source file id 

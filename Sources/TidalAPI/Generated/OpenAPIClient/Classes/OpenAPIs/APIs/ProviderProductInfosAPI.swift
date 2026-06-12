@@ -15,16 +15,16 @@ internal class ProviderProductInfosAPI {
     /**
      Get multiple providerProductInfos.
      
+     - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) 
+     - parameter filterProviderId: (query) Content provider ID (e.g. &#x60;50&#x60;) 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider, subject (optional)
-     - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) (optional)
-     - parameter filterProviderId: (query) Content provider ID (e.g. &#x60;50&#x60;) (optional)
      - returns: ProviderProductInfosMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerProductInfosGet(countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterProviderId: [String]? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
+    internal class func providerProductInfosGet(filterBarcodeId: [String], filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
         do {
-            return try await providerProductInfosGetWithRequestBuilder(countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterProviderId: filterProviderId).execute().body
+            return try await providerProductInfosGetWithRequestBuilder(filterBarcodeId: filterBarcodeId, filterProviderId: filterProviderId, countryCode: countryCode, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,13 +38,13 @@ internal class ProviderProductInfosAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) 
+     - parameter filterProviderId: (query) Content provider ID (e.g. &#x60;50&#x60;) 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider, subject (optional)
-     - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) (optional)
-     - parameter filterProviderId: (query) Content provider ID (e.g. &#x60;50&#x60;) (optional)
      - returns: RequestBuilder<ProviderProductInfosMultiResourceDataDocument> 
      */
-    internal class func providerProductInfosGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterProviderId: [String]? = nil) -> RequestBuilder<ProviderProductInfosMultiResourceDataDocument> {
+    internal class func providerProductInfosGetWithRequestBuilder(filterBarcodeId: [String], filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ProviderProductInfosMultiResourceDataDocument> {
         let localVariablePath = "/providerProductInfos"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -53,8 +53,8 @@ internal class ProviderProductInfosAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[barcodeId]": (wrappedValue: filterBarcodeId?.encodeToJSON(), isExplode: true),
-            "filter[provider.id]": (wrappedValue: filterProviderId?.encodeToJSON(), isExplode: true),
+            "filter[barcodeId]": (wrappedValue: filterBarcodeId.encodeToJSON(), isExplode: true),
+            "filter[provider.id]": (wrappedValue: filterProviderId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
