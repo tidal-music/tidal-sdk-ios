@@ -19,9 +19,9 @@ public enum UserCollectionVideosAPITidal {
      
      - returns: UserCollectionVideosSingleResourceDataDocument
      */
-	public static func userCollectionVideosIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionVideosSingleResourceDataDocument {
+	public static func userCollectionVideosIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionVideosSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionVideosAPI.userCollectionVideosIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionVideosAPI.userCollectionVideosIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 
@@ -70,9 +70,9 @@ public enum UserCollectionVideosAPITidal {
      
      - returns: UserCollectionVideosItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionVideosIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionVideosAPITidal.Sort_userCollectionVideosIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionVideosItemsMultiRelationshipDataDocument {
+	public static func userCollectionVideosIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionVideosAPITidal.Sort_userCollectionVideosIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionVideosItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionVideosAPIEnum() }, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionVideosAPIEnum() }, locale: locale, include: include)
 		}
 	}
 
@@ -82,9 +82,9 @@ public enum UserCollectionVideosAPITidal {
      
      - returns: UserCollectionVideosItemsAddMultiRelationshipDataDocument
      */
-	public static func userCollectionVideosIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionVideosItemsAddMultiRelationshipDataDocument {
+	public static func userCollectionVideosIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionVideosItemsRelationshipAddOperationPayload: UserCollectionVideosItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionVideosItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionVideosItemsRelationshipAddOperationPayload: userCollectionVideosItemsRelationshipAddOperationPayload)
+			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionVideosItemsRelationshipAddOperationPayload: userCollectionVideosItemsRelationshipAddOperationPayload)
 		}
 	}
 

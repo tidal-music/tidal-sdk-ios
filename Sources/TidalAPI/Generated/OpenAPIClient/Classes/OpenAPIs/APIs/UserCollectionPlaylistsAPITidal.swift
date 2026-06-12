@@ -19,9 +19,9 @@ public enum UserCollectionPlaylistsAPITidal {
      
      - returns: UserCollectionPlaylistsSingleResourceDataDocument
      */
-	public static func userCollectionPlaylistsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
+	public static func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 

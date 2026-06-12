@@ -74,6 +74,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
     case userNewReleaseMixesResourceObject(UserNewReleaseMixesResourceObject)
     case userOfflineMixesResourceObject(UserOfflineMixesResourceObject)
+    case userRecommendationBlocksResourceObject(UserRecommendationBlocksResourceObject)
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
     case userReportsResourceObject(UserReportsResourceObject)
     case usersResourceObject(UsersResourceObject)
@@ -208,6 +209,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .userNewReleaseMixesResourceObject(let value):
             try container.encode(value)
         case .userOfflineMixesResourceObject(let value):
+            try container.encode(value)
+        case .userRecommendationBlocksResourceObject(let value):
             try container.encode(value)
         case .userRecommendationsResourceObject(let value):
             try container.encode(value)
@@ -420,6 +423,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userOfflineMixes":
             let value = try UserOfflineMixesResourceObject(from: decoder)
             self = .userOfflineMixesResourceObject(value)
+        case "userRecommendationBlocks":
+            let value = try UserRecommendationBlocksResourceObject(from: decoder)
+            self = .userRecommendationBlocksResourceObject(value)
         case "userRecommendations":
             let value = try UserRecommendationsResourceObject(from: decoder)
             self = .userRecommendationsResourceObject(value)
@@ -508,6 +514,7 @@ extension IncludedInner: Identifiable {
         case .userDiscoveryMixesResourceObject(let value): return value.id
         case .userNewReleaseMixesResourceObject(let value): return value.id
         case .userOfflineMixesResourceObject(let value): return value.id
+        case .userRecommendationBlocksResourceObject(let value): return value.id
         case .userRecommendationsResourceObject(let value): return value.id
         case .userReportsResourceObject(let value): return value.id
         case .usersResourceObject(let value): return value.id
