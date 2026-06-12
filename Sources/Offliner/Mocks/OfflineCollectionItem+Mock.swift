@@ -23,7 +23,7 @@ public extension OfflineCollectionItem {
 public extension OfflineCollectionItemsPage {
 	static func mock(
 		items: [OfflineCollectionItem] = [.mock()],
-		cursor: Int64? = nil
+		cursor: String? = nil
 	) -> Self {
 		.init(
 			items: items,

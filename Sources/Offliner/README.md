@@ -181,13 +181,6 @@ for item in page.items {
     // item.addedAt - optional playlist relationship date used for date-added sorting
 }
 
-let sortedPage = try await offliner.getOfflineCollectionItems(
-    collectionType: .playlists,
-    resourceId: "playlist-id",
-    limit: 20,
-    sort: .title(direction: .ascending)
-)
-
 // Fetch next page using the cursor
 if let cursor = page.cursor {
     let nextPage = try await offliner.getOfflineCollectionItems(
@@ -199,9 +192,31 @@ if let cursor = page.cursor {
 }
 ```
 
-Omitting `sort` returns stored collection order. Supported selectable collection item sorts are date added, title, album,
-and artist. Album sorting uses stored track album metadata when available; items without album metadata sort after
-album-backed items.
+Omitting `sort` returns stored collection order. Pass a `sort` to order by another field (`.title`, `.album`,
+`.artist`, or `.dateAdded`). The `cursor` is an opaque `String` to pass back via `after`:
+
+```swift
+var sortedPage = try await offliner.getOfflineCollectionItems(
+    collectionType: .playlists,
+    resourceId: "playlist-id",
+    limit: 20,
+    sort: .title(direction: .ascending)
+)
+
+// Fetch next page using the cursor
+if let cursor = sortedPage.cursor {
+    sortedPage = try await offliner.getOfflineCollectionItems(
+        collectionType: .playlists,
+        resourceId: "playlist-id",
+        limit: 20,
+        sort: .title(direction: .ascending),
+        after: cursor
+    )
+}
+```
+
+Missing values (e.g. a track without album metadata, or an item without a relationship date) sort as an empty
+string: first in ascending order, last in descending order.
 
 ### Collection Utilities
 

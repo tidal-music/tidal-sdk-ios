@@ -185,25 +185,64 @@ public final class Offliner {
 		resourceId: ResourceId,
 		limit: Int,
 		sort: OfflineCollectionItemSort? = nil,
-		after cursor: Int64? = nil
+		after cursor: String? = nil
 	) async throws -> OfflineCollectionItemsPage {
-		let (page, failures) = try await offlineStore.getCollectionItems(
-			collectionType: collectionType,
-			resourceId: resourceId.stringValue,
-			limit: limit,
-			sort: sort,
-			after: cursor
-		)
+		let resourceId = resourceId.stringValue
 
-		if !failures.isEmpty {
-			Task {
-				for failure in failures {
-					try? await download(mediaType: failure.mediaType, resourceId: .identifier(failure.resourceId))
-				}
-			}
+		let (page, failures): (OfflineCollectionItemsPage, [FailedOfflineItem])
+		switch sort {
+		case nil:
+			(page, failures) = try await offlineStore.getCollectionItems(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				limit: limit,
+				after: cursor
+			)
+		case .title(let direction):
+			(page, failures) = try await offlineStore.getCollectionItemsOrderByTitle(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				direction: direction,
+				limit: limit,
+				after: cursor
+			)
+		case .album(let direction):
+			(page, failures) = try await offlineStore.getCollectionItemsOrderByAlbum(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				direction: direction,
+				limit: limit,
+				after: cursor
+			)
+		case .artist(let direction):
+			(page, failures) = try await offlineStore.getCollectionItemsOrderByArtist(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				direction: direction,
+				limit: limit,
+				after: cursor
+			)
+		case .dateAdded(let direction):
+			(page, failures) = try await offlineStore.getCollectionItemsOrderByDateAdded(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				direction: direction,
+				limit: limit,
+				after: cursor
+			)
 		}
 
+		scheduleRedownload(for: failures)
 		return page
+	}
+
+	private func scheduleRedownload(for failures: [FailedOfflineItem]) {
+		guard !failures.isEmpty else { return }
+		Task {
+			for failure in failures {
+				try? await download(mediaType: failure.mediaType, resourceId: .identifier(failure.resourceId))
+			}
+		}
 	}
 
 	public func getAudioFormatOfCollection(

@@ -178,10 +178,10 @@ public enum OfflineCollectionItemSortDirection: Hashable {
 }
 
 public enum OfflineCollectionItemSort: Hashable {
-	case dateAdded(direction: OfflineCollectionItemSortDirection)
 	case title(direction: OfflineCollectionItemSortDirection)
 	case album(direction: OfflineCollectionItemSortDirection)
 	case artist(direction: OfflineCollectionItemSortDirection)
+	case dateAdded(direction: OfflineCollectionItemSortDirection)
 }
 
 // MARK: - OfflineCollectionItem
@@ -191,35 +191,17 @@ public struct OfflineCollectionItem {
 	public let volume: Int
 	public let position: Int
 	public let addedAt: Date?
-	let cursor: Int64
 
 	public init(
 		item: OfflineMediaItem,
 		volume: Int,
 		position: Int,
-		addedAt: Date?
-	) {
-		self.init(
-			item: item,
-			volume: volume,
-			position: position,
-			addedAt: addedAt,
-			cursor: Int64(volume) * 1_000_000 + Int64(position)
-		)
-	}
-
-	init(
-		item: OfflineMediaItem,
-		volume: Int,
-		position: Int,
-		addedAt: Date?,
-		cursor: Int64
+		addedAt: Date? = nil
 	) {
 		self.item = item
 		self.volume = volume
 		self.position = position
 		self.addedAt = addedAt
-		self.cursor = cursor
 	}
 }
 
@@ -227,5 +209,10 @@ public struct OfflineCollectionItem {
 
 public struct OfflineCollectionItemsPage {
 	public let items: [OfflineCollectionItem]
-	public let cursor: Int64?
+	public let cursor: String?
+
+	public init(items: [OfflineCollectionItem], cursor: String?) {
+		self.items = items
+		self.cursor = cursor
+	}
 }

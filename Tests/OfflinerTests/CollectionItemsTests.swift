@@ -378,28 +378,28 @@ final class CollectionItemsTests: OfflinerTestCase {
 		try storeTrack(store, id: "track-echo", title: "Echo", collectionId: playlistId, position: 3)
 		try storeTrack(store, id: "track-bravo", title: "Bravo", collectionId: playlistId, position: 4)
 
-		let (page1, failures1) = try await store.getCollectionItems(
+		let (page1, failures1) = try await store.getCollectionItemsOrderByTitle(
 			collectionType: .playlists,
 			resourceId: playlistId,
-			limit: 2,
-			sort: .title(direction: .ascending)
+			direction: .ascending,
+			limit: 2
 		)
 		XCTAssertTrue(failures1.isEmpty)
 		XCTAssertEqual(itemIds(in: page1), ["track-alpha", "track-bravo"])
 		XCTAssertNotNil(page1.cursor)
 
-		let (page2, failures2) = try await store.getCollectionItems(
+		let (page2, failures2) = try await store.getCollectionItemsOrderByTitle(
 			collectionType: .playlists,
 			resourceId: playlistId,
+			direction: .ascending,
 			limit: 2,
-			sort: .title(direction: .ascending),
 			after: page1.cursor
 		)
 		XCTAssertTrue(failures2.isEmpty)
 		XCTAssertEqual(itemIds(in: page2), ["track-echo", "track-zulu"])
 	}
 
-	func testSortByAlbumPlacesItemsWithoutAlbumLast() async throws {
+	func testSortByAlbumAscendingPlacesEmptyAlbumsFirst() async throws {
 		let (store, _) = try createStore()
 		let playlistId = "playlist-album-sort"
 
@@ -407,15 +407,16 @@ final class CollectionItemsTests: OfflinerTestCase {
 		try storeVideo(store, id: "video-no-album", title: "Video", collectionId: playlistId, position: 2)
 		try storeTrack(store, id: "track-alpha", title: "Alpha Track", albumTitle: "Alpha Album", collectionId: playlistId, position: 3)
 
-		let (page, failures) = try await store.getCollectionItems(
+		let (page, failures) = try await store.getCollectionItemsOrderByAlbum(
 			collectionType: .playlists,
 			resourceId: playlistId,
-			limit: 10,
-			sort: .album(direction: .ascending)
+			direction: .ascending,
+			limit: 10
 		)
 
 		XCTAssertTrue(failures.isEmpty)
-		XCTAssertEqual(itemIds(in: page), ["track-alpha", "track-beta", "video-no-album"])
+		// Missing album values sort as an empty string, i.e. first in ascending order.
+		XCTAssertEqual(itemIds(in: page), ["video-no-album", "track-alpha", "track-beta"])
 	}
 
 	func testSortByArtistDescending() async throws {
@@ -426,11 +427,11 @@ final class CollectionItemsTests: OfflinerTestCase {
 		try storeTrack(store, id: "track-zed", title: "Second", artists: ["Zed Artist"], collectionId: playlistId, position: 2)
 		try storeTrack(store, id: "track-beta", title: "Third", artists: ["Beta Artist"], collectionId: playlistId, position: 3)
 
-		let (page, failures) = try await store.getCollectionItems(
+		let (page, failures) = try await store.getCollectionItemsOrderByArtist(
 			collectionType: .playlists,
 			resourceId: playlistId,
-			limit: 10,
-			sort: .artist(direction: .descending)
+			direction: .descending,
+			limit: 10
 		)
 
 		XCTAssertTrue(failures.isEmpty)
@@ -448,18 +449,18 @@ final class CollectionItemsTests: OfflinerTestCase {
 		try storeTrack(store, id: "track-newest", title: "Newest", collectionId: playlistId, position: 2, addedAt: newest)
 		try storeTrack(store, id: "track-middle", title: "Middle", collectionId: playlistId, position: 3, addedAt: middle)
 
-		let (page, failures) = try await store.getCollectionItems(
+		let (page, failures) = try await store.getCollectionItemsOrderByDateAdded(
 			collectionType: .playlists,
 			resourceId: playlistId,
-			limit: 10,
-			sort: .dateAdded(direction: .descending)
+			direction: .descending,
+			limit: 10
 		)
 
 		XCTAssertTrue(failures.isEmpty)
 		XCTAssertEqual(itemIds(in: page), ["track-newest", "track-middle", "track-oldest"])
 	}
 
-	func testSortByDateAddedPlacesMissingDatesLast() async throws {
+	func testSortByDateAddedDescendingPlacesMissingDatesLast() async throws {
 		let (store, _) = try createStore()
 		let playlistId = "playlist-date-sort-missing"
 
@@ -473,15 +474,66 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 		try storeTrack(store, id: "track-missing-date", title: "Missing Date", collectionId: playlistId, position: 2)
 
-		let (page, failures) = try await store.getCollectionItems(
+		let (page, failures) = try await store.getCollectionItemsOrderByDateAdded(
 			collectionType: .playlists,
 			resourceId: playlistId,
-			limit: 10,
-			sort: .dateAdded(direction: .descending)
+			direction: .descending,
+			limit: 10
 		)
 
 		XCTAssertTrue(failures.isEmpty)
 		XCTAssertEqual(itemIds(in: page), ["track-with-date", "track-missing-date"])
+	}
+
+	func testSortedPaginationSurvivesCursorItemDeletion() async throws {
+		let (store, databaseQueue) = try createStore()
+		let playlistId = "playlist-cursor-deletion"
+
+		try storeTrack(store, id: "track-alpha", title: "Alpha", collectionId: playlistId, position: 1)
+		try storeTrack(store, id: "track-bravo", title: "Bravo", collectionId: playlistId, position: 2)
+		try storeTrack(store, id: "track-charlie", title: "Charlie", collectionId: playlistId, position: 3)
+
+		let (page1, _) = try await store.getCollectionItemsOrderByTitle(
+			collectionType: .playlists,
+			resourceId: playlistId,
+			direction: .ascending,
+			limit: 1
+		)
+		XCTAssertEqual(itemIds(in: page1), ["track-alpha"])
+		let cursor = try XCTUnwrap(page1.cursor)
+
+		try await databaseQueue.write { db in
+			try db.execute(
+				sql: "DELETE FROM offline_item_relationship WHERE member_resource_id = ?",
+				arguments: ["track-alpha"]
+			)
+		}
+
+		let (page2, _) = try await store.getCollectionItemsOrderByTitle(
+			collectionType: .playlists,
+			resourceId: playlistId,
+			direction: .ascending,
+			limit: 10,
+			after: cursor
+		)
+		XCTAssertEqual(itemIds(in: page2), ["track-bravo", "track-charlie"])
+	}
+
+	func testSortedUnparseableCursorIsIgnored() async throws {
+		let (store, _) = try createStore()
+		let playlistId = "playlist-bad-cursor"
+
+		try storeTrack(store, id: "track-alpha", title: "Alpha", collectionId: playlistId, position: 1)
+		try storeTrack(store, id: "track-bravo", title: "Bravo", collectionId: playlistId, position: 2)
+
+		let (page, _) = try await store.getCollectionItemsOrderByTitle(
+			collectionType: .playlists,
+			resourceId: playlistId,
+			direction: .ascending,
+			limit: 10,
+			after: "not-a-valid-cursor"
+		)
+		XCTAssertEqual(itemIds(in: page), ["track-alpha", "track-bravo"])
 	}
 
 	// MARK: - Helpers
