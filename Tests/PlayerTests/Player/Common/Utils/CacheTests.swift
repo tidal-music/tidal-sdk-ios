@@ -1,5 +1,6 @@
+import Foundation
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -13,12 +14,13 @@ private enum Constants {
 
 // MARK: - CacheTests
 
-final class CacheTests: XCTestCase {
+@Suite(.serialized)
+final class CacheTests {
 	private var cache: Cache!
 
 	private var timestamp: UInt64 = 1
 
-	override func setUp() {
+	init() {
 		let timeProvider = TimeProvider.mock(
 			timestamp: {
 				self.timestamp
@@ -29,7 +31,7 @@ final class CacheTests: XCTestCase {
 		cache = Cache(memoryCapacity: 512, diskCapacity: 1024, keyPrefix: Constants.prefix)
 	}
 
-	override func tearDown() {
+	deinit {
 		cache.clear()
 	}
 }
@@ -37,6 +39,7 @@ final class CacheTests: XCTestCase {
 extension CacheTests {
 	// MARK: - set()
 
+	@Test
 	func test_set() {
 		// GIVEN
 		let key = Constants.key
@@ -49,11 +52,12 @@ extension CacheTests {
 		let request = urlRequest(of: key)
 		let response = cache.cache.cachedResponse(for: request)
 		let cachedData = response?.data
-		XCTAssertEqual(cachedData, data)
+		#expect(cachedData == data)
 	}
 
 	// MARK: - get()
 
+	@Test
 	func test_get() {
 		// GIVEN
 		let key = Constants.key
@@ -66,9 +70,10 @@ extension CacheTests {
 		// THEN
 		let request = urlRequest(of: key)
 		let cachedData = cache.cache.cachedResponse(for: request)?.data
-		XCTAssertEqual(response, cachedData)
+		#expect(response == cachedData)
 	}
 
+	@Test
 	func test_get_whenTimeToLiveExpired_returnsNil() {
 		// GIVEN
 		let key = Data("ttl".utf8)
@@ -84,9 +89,10 @@ extension CacheTests {
 		// THEN
 		_ = urlRequest(of: key)
 
-		XCTAssertEqual(response, nil)
+		#expect(response == nil)
 	}
 
+	@Test
 	func test_get_whenItWasNotSet_returnsNil() {
 		// GIVEN
 		let key = Data("get".utf8)
@@ -95,11 +101,12 @@ extension CacheTests {
 		let response = cache.get(key: key)
 
 		// THEN
-		XCTAssertEqual(response, nil)
+		#expect(response == nil)
 	}
 
 	// MARK: - delete()
 
+	@Test
 	func test_delete() {
 		// GIVEN
 		let key = Constants.key
@@ -108,7 +115,7 @@ extension CacheTests {
 
 		let request = urlRequest(of: key)
 		let cachedData = cache.cache.cachedResponse(for: request)?.data
-		XCTAssertEqual(cachedData, data)
+		#expect(cachedData == data)
 
 		// WHEN
 		cache.delete(key: key)
@@ -119,7 +126,7 @@ extension CacheTests {
 
 		// THEN
 		let responseAfterDeletion = cache.get(key: key)
-		XCTAssertEqual(responseAfterDeletion, nil)
+		#expect(responseAfterDeletion == nil)
 	}
 }
 
