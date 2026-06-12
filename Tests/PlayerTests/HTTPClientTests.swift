@@ -15,6 +15,7 @@ private struct TestResponse: Codable, Equatable {
 
 // MARK: - HTTPClientTests
 
+@Suite(.serialized)
 final class HTTPClientTests {
 	var urlSession: URLSession!
 
