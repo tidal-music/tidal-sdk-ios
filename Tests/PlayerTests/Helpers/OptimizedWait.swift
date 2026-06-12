@@ -5,7 +5,13 @@ import Testing
 func optimizedWait(timeout: Double = 10.0, step: Double = 0.1, until condition: () -> Bool) {
 	var timer: Double = 0
 	while timer < timeout {
-		Thread.sleep(forTimeInterval: step)
+		// Pump the run loop (like XCTWaiter did) so run-loop scheduled work can fire while waiting.
+		// With no attached sources, run(until:) returns immediately, so sleep out the rest of the step.
+		let deadline = Date(timeIntervalSinceNow: step)
+		RunLoop.current.run(until: deadline)
+		if deadline.timeIntervalSinceNow > 0 {
+			Thread.sleep(forTimeInterval: deadline.timeIntervalSinceNow)
+		}
 
 		if condition() {
 			return
