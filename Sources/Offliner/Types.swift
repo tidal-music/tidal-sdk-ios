@@ -3,14 +3,14 @@ import Player
 
 // MARK: - OfflineMediaItemType
 
-public enum OfflineMediaItemType: String {
+public enum OfflineMediaItemType: String, Sendable {
 	case tracks
 	case videos
 }
 
 // MARK: - OfflineCollectionType
 
-public enum OfflineCollectionType: String {
+public enum OfflineCollectionType: String, Sendable {
 	case albums
 	case playlists
 	case userCollectionTracks
@@ -18,7 +18,7 @@ public enum OfflineCollectionType: String {
 
 // MARK: - ResourceId
 
-public enum ResourceId {
+public enum ResourceId: Sendable {
 	case identifier(String)
 	case me
 
@@ -85,6 +85,24 @@ public struct OfflineMediaItem {
 public enum OfflineCollectionState: Hashable {
 	case pending
 	case stored
+}
+
+// MARK: - OfflineCollectionDownloadState
+
+/// Collection-level offline availability for albums, playlists, and user collection tracks.
+///
+/// This state describes whether collection media is available offline or known by this SDK instance to be acquired. It
+/// does not model generic offliner task activity: collection removal is represented as `notDownloaded`, not
+/// `downloading`.
+public enum OfflineCollectionDownloadState: Sendable, Hashable {
+	/// The collection is not locally downloaded, or it is being removed.
+	case notDownloaded
+
+	/// The collection or one of its members has active download/acquisition work known by this SDK instance.
+	case downloading
+
+	/// The collection is locally stored and there is no locally known pending download/acquisition work.
+	case downloaded
 }
 
 // MARK: - OfflineCollection

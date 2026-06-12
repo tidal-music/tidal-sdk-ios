@@ -33,6 +33,10 @@ private final class InternalAlbumTask: InternalTask {
 		self.artworkDownloader = artworkDownloader
 	}
 
+	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
+		collection.collectionType == .albums && collection.resourceId == task.album.id
+	}
+
 	func run() async throws {
 		try await withFileCleanup { cleanup in
 			let artworkURL = try await artworkDownloader.downloadArtwork(for: task.artwork)
