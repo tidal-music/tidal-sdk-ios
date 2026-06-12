@@ -19,9 +19,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: UserCollectionTracksSingleResourceDataDocument
      */
-	public static func userCollectionTracksIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionTracksSingleResourceDataDocument {
+	public static func userCollectionTracksIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionTracksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionTracksAPI.userCollectionTracksIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 
@@ -74,9 +74,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: UserCollectionTracksItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionTracksIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionTracksAPITidal.Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
+	public static func userCollectionTracksIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionTracksAPITidal.Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionTracksAPIEnum() }, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionTracksAPIEnum() }, locale: locale, include: include)
 		}
 	}
 
@@ -86,9 +86,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: UserCollectionTracksItemsAddMultiRelationshipDataDocument
      */
-	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsAddMultiRelationshipDataDocument {
+	public static func userCollectionTracksIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
+			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
 		}
 	}
 
