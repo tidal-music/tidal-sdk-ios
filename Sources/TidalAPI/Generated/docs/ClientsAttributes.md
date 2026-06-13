@@ -8,7 +8,6 @@ Name | Type | Description | Notes
 **createdAt** | **Date** |  | [optional] 
 **description** | **String** |  | [optional] 
 **name** | **String** |  | 
-**platformPreset** | **String** |  | [optional] 
 **redirectUris** | **[String]** |  | [optional] 
 **scopes** | **Set<String>** |  | [optional] 
 
