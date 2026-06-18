@@ -14,6 +14,7 @@ public struct ArtistsRelationships: Codable, Hashable {
 
     public var albums: MultiRelationshipDataDocument?
     public var biography: SingleRelationshipDataDocument?
+    public var claimStatus: SingleRelationshipDataDocument?
     public var followers: ArtistsFollowersMultiRelationshipDataDocument?
     public var following: ArtistsFollowingMultiRelationshipDataDocument?
     public var owners: MultiRelationshipDataDocument?
@@ -28,6 +29,7 @@ public struct ArtistsRelationships: Codable, Hashable {
     public init(
         albums: MultiRelationshipDataDocument? = nil,
         biography: SingleRelationshipDataDocument? = nil,
+        claimStatus: SingleRelationshipDataDocument? = nil,
         followers: ArtistsFollowersMultiRelationshipDataDocument? = nil,
         following: ArtistsFollowingMultiRelationshipDataDocument? = nil,
         owners: MultiRelationshipDataDocument? = nil,
@@ -41,6 +43,7 @@ public struct ArtistsRelationships: Codable, Hashable {
     ) {
         self.albums = albums
         self.biography = biography
+        self.claimStatus = claimStatus
         self.followers = followers
         self.following = following
         self.owners = owners
@@ -56,6 +59,7 @@ public struct ArtistsRelationships: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albums
         case biography
+        case claimStatus
         case followers
         case following
         case owners
@@ -74,6 +78,7 @@ public struct ArtistsRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(albums, forKey: .albums)
         try container.encodeIfPresent(biography, forKey: .biography)
+        try container.encodeIfPresent(claimStatus, forKey: .claimStatus)
         try container.encodeIfPresent(followers, forKey: .followers)
         try container.encodeIfPresent(following, forKey: .following)
         try container.encodeIfPresent(owners, forKey: .owners)

@@ -75,6 +75,18 @@ public enum ArtistsAPITidal {
 
 
 	/**
+     Get claimStatus relationship (\&quot;to-one\&quot;).
+     
+     - returns: ArtistsSingleRelationshipDataDocument
+     */
+	public static func artistsIdRelationshipsClaimStatusGet(id: String, include: [String]? = nil) async throws -> ArtistsSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsClaimStatusGetWithRequestBuilder(id: id, include: include)
+		}
+	}
+
+
+	/**
      Get followers relationship (\&quot;to-many\&quot;).
      
      - returns: ArtistsFollowersMultiRelationshipDataDocument
