@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `Offliner.findInOfflineCollection` to search a collection's offline tracks/videos by title or artist; each hit carries the pagination cursor for the next page in the supplied sort order (Offliner)
+
 ## [0.11.22] - 2026-06-03
 
 ### Fixed

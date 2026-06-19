@@ -4,6 +4,27 @@ import GRDB
 final class OfflineStore {
 	private let databaseQueue: DatabaseQueue
 
+	/// Lower-cases and removes diacritics (accents) so that the column value and the query are normalized the same
+	/// way, making substring matching both case- and accent-insensitive.
+	static func searchKey(_ value: String) -> String {
+		value.lowercased().folding(options: .diacriticInsensitive, locale: Locale(identifier: "en_US_POSIX"))
+	}
+
+	/// Exposes `searchKey` to SQL as `FOLD(x)` so diacritic-insensitive matching can run against the existing
+	/// `*_sort` columns without storing a second, pre-folded copy of each value.
+	static let foldFunction = DatabaseFunction("FOLD", argumentCount: 1, pure: true) { values in
+		guard let value = String.fromDatabaseValue(values[0]) else { return nil }
+		return searchKey(value)
+	}
+
+	static func makeDatabaseQueue(path: String) throws -> DatabaseQueue {
+		var configuration = GRDB.Configuration()
+		configuration.prepareDatabase { database in
+			database.add(function: foldFunction)
+		}
+		return try DatabaseQueue(path: path, configuration: configuration)
+	}
+
 	static func url() throws -> URL {
 		let appSupportURLs = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
 		guard let appSupportDirectory = appSupportURLs.first else {
@@ -70,7 +91,7 @@ final class OfflineStore {
 					VALUES (?, ?, ?, ?, ?, ?, ?,
 						LOWER(COALESCE(json_extract(?, '$.title'), '')),
 						LOWER(COALESCE(json_extract(?, '$.albumTitle'), '')),
-						LOWER(COALESCE(json_extract(?, '$.artists[0]'), '')))
+						LOWER(COALESCE((SELECT group_concat(value, ', ') FROM json_each(?, '$.artists')), '')))
 					ON CONFLICT (collection_resource_type, collection_resource_id, volume, position) DO UPDATE SET
 						member_resource_type = excluded.member_resource_type,
 						member_resource_id = excluded.member_resource_id,
@@ -129,6 +150,17 @@ final class OfflineStore {
 		var bookmarksToDelete: [Data] = []
 
 		try databaseQueue.inTransaction { database in
+			let members = try Row.fetchAll(
+				database,
+				sql: """
+					SELECT DISTINCT member_resource_type, member_resource_id
+					FROM offline_item_relationship
+					WHERE collection_resource_type = ? AND collection_resource_id = ?
+					  AND (member_resource_type != collection_resource_type OR member_resource_id != collection_resource_id)
+					""",
+				arguments: [resourceType, resourceId]
+			)
+
 			bookmarksToDelete = try collectBookmarks(resourceType: resourceType, resourceId: resourceId, database: database)
 
 			try database.execute(
@@ -140,6 +172,26 @@ final class OfflineStore {
 				sql: "DELETE FROM offline_item WHERE resource_type = ? AND resource_id = ?",
 				arguments: [resourceType, resourceId]
 			)
+
+			for member in members {
+				let memberType: String = member["member_resource_type"]
+				let memberId: String = member["member_resource_id"]
+
+				let hasRelationships = try Bool.fetchOne(
+					database,
+					sql: "SELECT EXISTS(SELECT 1 FROM offline_item_relationship WHERE member_resource_type = ? AND member_resource_id = ?)",
+					arguments: [memberType, memberId]
+				) ?? false
+
+				guard !hasRelationships else { continue }
+
+				bookmarksToDelete += try collectBookmarks(resourceType: memberType, resourceId: memberId, database: database)
+
+				try database.execute(
+					sql: "DELETE FROM offline_item WHERE resource_type = ? AND resource_id = ?",
+					arguments: [memberType, memberId]
+				)
+			}
 
 			return .commit
 		}
@@ -506,6 +558,75 @@ final class OfflineStore {
 		return (OfflineCollectionItemsPage(items: items, cursor: lastCursor), failures)
 	}
 
+	func searchCollectionItems(
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		query: String,
+		sort: OfflineCollectionItemSort?,
+		limit: Int,
+		after cursor: String?
+	) async throws -> (OfflineCollectionSearchPage, [FailedOfflineItem]) {
+		guard let pattern = likePattern(for: query) else {
+			return (OfflineCollectionSearchPage(hits: [], cursor: nil), [])
+		}
+
+		let searchSort = SearchSort(sort)
+		let (cursorPredicate, cursorArguments) = searchSort.cursorClause(for: cursor)
+
+		let (hits, failures) = try await databaseQueue.write { [self] database -> ([OfflineCollectionSearchHit], [FailedOfflineItem]) in
+			var arguments: [DatabaseValueConvertible?] = [collectionType.rawValue, resourceId, pattern, pattern]
+			arguments += cursorArguments
+			arguments.append(limit)
+
+			let rows = try Row.fetchAll(
+				database,
+				sql: """
+					SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
+					       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
+					       r.volume, r.position, r.id AS relationship_id, r.added_at AS relationship_added_at
+					       \(searchSort.sortColumnSelect)
+					FROM offline_item_relationship r
+					JOIN offline_item i
+					  ON i.resource_type = r.member_resource_type AND i.resource_id = r.member_resource_id
+					WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+					  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
+					  AND (FOLD(r.title_sort) LIKE ? ESCAPE '\\' OR FOLD(r.artist_sort) LIKE ? ESCAPE '\\')
+					  \(cursorPredicate)
+					ORDER BY \(searchSort.orderClause)
+					LIMIT ?
+					""",
+				arguments: StatementArguments(arguments)
+			)
+
+			var hits: [OfflineCollectionSearchHit] = []
+			var failures: [FailedOfflineItem] = []
+
+			for row in rows {
+				do {
+					let item = try makeCollectionItem(from: row, database: database)
+					hits.append(OfflineCollectionSearchHit(item: item, cursor: searchSort.rowCursor(row)))
+				} catch {
+					FailedOfflineItem(from: row).map { failures.append($0) }
+				}
+			}
+
+			return (hits, failures)
+		}
+
+		return (OfflineCollectionSearchPage(hits: hits, cursor: hits.last?.cursor), failures)
+	}
+
+	private func likePattern(for query: String) -> String? {
+		let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+		guard !trimmed.isEmpty else { return nil }
+
+		let escaped = Self.searchKey(trimmed)
+			.replacingOccurrences(of: "\\", with: "\\\\")
+			.replacingOccurrences(of: "%", with: "\\%")
+			.replacingOccurrences(of: "_", with: "\\_")
+		return "%\(escaped)%"
+	}
+
 	private func makeSortCursor(from row: Row?) -> String? {
 		row.map { row -> String in
 			let relationshipId: Int64 = row["relationship_id"]
@@ -633,6 +754,70 @@ private extension SortDirection {
 
 	var order: String {
 		self == .ascending ? "ASC" : "DESC"
+	}
+}
+
+private enum SearchSort {
+	case natural
+	case keyed(column: String, direction: SortDirection)
+
+	init(_ sort: OfflineCollectionItemSort?) {
+		switch sort {
+		case nil: self = .natural
+		case .title(let direction): self = .keyed(column: "title_sort", direction: direction)
+		case .album(let direction): self = .keyed(column: "album_sort", direction: direction)
+		case .artist(let direction): self = .keyed(column: "artist_sort", direction: direction)
+		case .dateAdded(let direction): self = .keyed(column: "added_at_sort", direction: direction)
+		}
+	}
+
+	var orderClause: String {
+		switch self {
+		case .natural:
+			return "r.volume, r.position"
+		case .keyed(let column, let direction):
+			return "r.\(column) \(direction.order), r.id \(direction.order)"
+		}
+	}
+
+	var sortColumnSelect: String {
+		switch self {
+		case .natural:
+			return ""
+		case .keyed(let column, _):
+			return ", r.\(column) AS sort_value"
+		}
+	}
+
+	func cursorClause(for cursor: String?) -> (predicate: String, arguments: [DatabaseValueConvertible?]) {
+		guard let cursor else { return ("", []) }
+
+		switch self {
+		case .natural:
+			guard let value = Int64(cursor) else { return ("", []) }
+			let volume = Int(value / 1_000_000)
+			let position = Int(value % 1_000_000)
+			return ("AND (r.volume > ? OR (r.volume = ? AND r.position > ?))", [volume, volume, position])
+		case .keyed(let column, let direction):
+			guard let separator = cursor.firstIndex(of: ":"), let relationshipId = Int64(cursor[..<separator]) else {
+				return ("", [])
+			}
+			let sortValue = String(cursor[cursor.index(after: separator)...])
+			return ("AND (r.\(column), r.id) \(direction.comparator) (?, ?)", [sortValue, relationshipId])
+		}
+	}
+
+	func rowCursor(_ row: Row) -> String {
+		switch self {
+		case .natural:
+			let volume: Int = row["volume"]
+			let position: Int = row["position"]
+			return String(Int64(volume) * 1_000_000 + Int64(position))
+		case .keyed:
+			let relationshipId: Int64 = row["relationship_id"]
+			let sortValue: String = row["sort_value"] ?? ""
+			return "\(relationshipId):\(sortValue)"
+		}
 	}
 }
 

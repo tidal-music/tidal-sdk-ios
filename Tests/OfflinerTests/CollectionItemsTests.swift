@@ -565,7 +565,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 	private func createStore() throws -> (OfflineStore, DatabaseQueue) {
 		let dbPath = tempDir.appendingPathComponent("test-\(UUID().uuidString).sqlite").path
-		let databaseQueue = try DatabaseQueue(path: dbPath)
+		let databaseQueue = try OfflineStore.makeDatabaseQueue(path: dbPath)
 		try Migrations.run(databaseQueue)
 		return (OfflineStore(databaseQueue), databaseQueue)
 	}

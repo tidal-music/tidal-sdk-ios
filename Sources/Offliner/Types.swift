@@ -223,6 +223,30 @@ public struct OfflineCollectionItem {
 	}
 }
 
+// MARK: - OfflineCollectionSearchHit
+
+public struct OfflineCollectionSearchHit {
+	public let item: OfflineCollectionItem
+	public let cursor: String
+
+	public init(item: OfflineCollectionItem, cursor: String) {
+		self.item = item
+		self.cursor = cursor
+	}
+}
+
+// MARK: - OfflineCollectionSearchPage
+
+public struct OfflineCollectionSearchPage {
+	public let hits: [OfflineCollectionSearchHit]
+	public let cursor: String?
+
+	public init(hits: [OfflineCollectionSearchHit], cursor: String?) {
+		self.hits = hits
+		self.cursor = cursor
+	}
+}
+
 // MARK: - OfflineCollectionItemsPage
 
 public struct OfflineCollectionItemsPage {

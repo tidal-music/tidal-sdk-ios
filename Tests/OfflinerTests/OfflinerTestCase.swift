@@ -28,7 +28,7 @@ class OfflinerTestCase: XCTestCase {
 	) -> Offliner {
 		let dbPath = tempDir.appendingPathComponent("test-\(UUID().uuidString).sqlite").path
 		// swiftlint:disable:next force_try
-		let databaseQueue = try! DatabaseQueue(path: dbPath)
+		let databaseQueue = try! OfflineStore.makeDatabaseQueue(path: dbPath)
 		// swiftlint:disable:next force_try
 		try! Migrations.run(databaseQueue)
 		let offlineStore = OfflineStore(databaseQueue)
