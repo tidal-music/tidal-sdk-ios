@@ -16,4 +16,4 @@ jobs:
       - name: Check version in changelog
         id: check_version
         run: |
-          Scripts/checkVersionSync.sh
+          .agents/skills/prepare-release/scripts/check-version-sync.sh
