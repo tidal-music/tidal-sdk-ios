@@ -16,7 +16,7 @@ internal class ArtistsAPI {
      Get multiple artists.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Artist handle (e.g. &#x60;jayz&#x60;) (optional)
      - parameter filterId: (query) List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
@@ -43,7 +43,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Artist handle (e.g. &#x60;jayz&#x60;) (optional)
      - parameter filterId: (query) List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
@@ -79,7 +79,7 @@ internal class ArtistsAPI {
      
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - returns: ArtistsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -104,7 +104,7 @@ internal class ArtistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - returns: RequestBuilder<ArtistsSingleResourceDataDocument> 
      */
     internal class func artistsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsSingleResourceDataDocument> {
@@ -289,6 +289,58 @@ internal class ArtistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ArtistsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get claimStatus relationship (\"to-one\").
+     
+     - parameter id: (path) Artist id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimStatus (optional)
+     - returns: ArtistsSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func artistsIdRelationshipsClaimStatusGet(id: String, include: [String]? = nil) async throws -> ArtistsSingleRelationshipDataDocument {
+        do {
+            return try await artistsIdRelationshipsClaimStatusGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get claimStatus relationship (\"to-one\").
+     - GET /artists/{id}/relationships/claimStatus
+     - Retrieves claimStatus relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Artist id 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimStatus (optional)
+     - returns: RequestBuilder<ArtistsSingleRelationshipDataDocument> 
+     */
+    internal class func artistsIdRelationshipsClaimStatusGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ArtistsSingleRelationshipDataDocument> {
+        var localVariablePath = "/artists/{id}/relationships/claimStatus"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 

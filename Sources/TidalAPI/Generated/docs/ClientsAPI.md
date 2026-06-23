@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdPatch**
 ```swift
-    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil, completion: @escaping (_ data: ClientsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single client.
@@ -184,7 +184,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let clientsUpdateOperationPayload = ClientsUpdateOperation_Payload(data: ClientsUpdateOperation_Payload_Data(attributes: ClientsUpdateOperation_Payload_Data_Attributes(description: "description_example", name: "name_example", platformPreset: "platformPreset_example", redirectUris: ["redirectUris_example"], scopes: ["scopes_example"]), id: "id_example", type: "type_example")) // ClientsUpdateOperationPayload |  (optional)
+let clientsUpdateOperationPayload = ClientsUpdateOperation_Payload(data: ClientsUpdateOperation_Payload_Data(attributes: ClientsUpdateOperation_Payload_Data_Attributes(description: "description_example", name: "name_example", redirectUris: ["redirectUris_example"], scopes: ["scopes_example"]), id: "id_example", type: "type_example")) // ClientsUpdateOperationPayload |  (optional)
 
 // Update single client.
 ClientsAPI.clientsIdPatch(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload) { (response, error) in
@@ -209,7 +209,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**ClientsSingleResourceDataDocument**](ClientsSingleResourceDataDocument.md)
 
 ### Authorization
 
