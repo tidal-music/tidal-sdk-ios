@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.24] - 2026-06-23
+
+### Changed
+- Generated API code (TidalAPI)
+- Stop printing HTTP error response bodies (TidalAPI)
+
 ## [0.11.23] - 2026-06-12
 
 ### Added
