@@ -12,29 +12,20 @@ import AnyCodable
 
 public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum PlatformPreset: String, Codable, CaseIterable {
-        case _none = "NONE"
-        case web = "WEB"
-        case android = "ANDROID"
-        case ios = "IOS"
-    }
     public static let scopesRule = ArrayRule(minItems: nil, maxItems: nil, uniqueItems: true)
     public var description: String?
     public var name: String?
-    public var platformPreset: PlatformPreset?
     public var redirectUris: [String]?
     public var scopes: Set<String>?
 
     public init(
         description: String? = nil,
         name: String? = nil,
-        platformPreset: PlatformPreset? = nil,
         redirectUris: [String]? = nil,
         scopes: Set<String>? = nil
     ) {
         self.description = description
         self.name = name
-        self.platformPreset = platformPreset
         self.redirectUris = redirectUris
         self.scopes = scopes
     }
@@ -42,7 +33,6 @@ public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case description
         case name
-        case platformPreset
         case redirectUris
         case scopes
     }
@@ -53,7 +43,6 @@ public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(description, forKey: .description)
         try container.encodeIfPresent(name, forKey: .name)
-        try container.encodeIfPresent(platformPreset, forKey: .platformPreset)
         try container.encodeIfPresent(redirectUris, forKey: .redirectUris)
         try container.encodeIfPresent(scopes, forKey: .scopes)
     }

@@ -12,8 +12,16 @@ import AnyCodable
 
 public struct UsersAttributes: Codable, Hashable {
 
+    public enum DeveloperAccessTier: String, Codable, CaseIterable {
+        case thirdParty = "THIRD_PARTY"
+        case thirdPartyProd = "THIRD_PARTY_PROD"
+        case partner = "PARTNER"
+        case _internal = "INTERNAL"
+    }
     /** ISO 3166-1 alpha-2 country code */
     public var country: String
+    /** Developer access tier for this user. */
+    public var developerAccessTier: DeveloperAccessTier
     /** email address */
     public var email: String?
     /** Is the email verified */
@@ -29,6 +37,7 @@ public struct UsersAttributes: Codable, Hashable {
 
     public init(
         country: String,
+        developerAccessTier: DeveloperAccessTier,
         email: String? = nil,
         emailVerified: Bool? = nil,
         firstName: String? = nil,
@@ -37,6 +46,7 @@ public struct UsersAttributes: Codable, Hashable {
         username: String
     ) {
         self.country = country
+        self.developerAccessTier = developerAccessTier
         self.email = email
         self.emailVerified = emailVerified
         self.firstName = firstName
@@ -47,6 +57,7 @@ public struct UsersAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case country
+        case developerAccessTier
         case email
         case emailVerified
         case firstName
@@ -60,6 +71,7 @@ public struct UsersAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(country, forKey: .country)
+        try container.encode(developerAccessTier, forKey: .developerAccessTier)
         try container.encodeIfPresent(email, forKey: .email)
         try container.encodeIfPresent(emailVerified, forKey: .emailVerified)
         try container.encodeIfPresent(firstName, forKey: .firstName)

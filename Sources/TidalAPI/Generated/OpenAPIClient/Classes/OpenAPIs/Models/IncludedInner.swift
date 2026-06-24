@@ -16,6 +16,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case albumsResourceObject(AlbumsResourceObject)
     case appreciationsResourceObject(AppreciationsResourceObject)
     case artistBiographiesResourceObject(ArtistBiographiesResourceObject)
+    case artistClaimStatusesResourceObject(ArtistClaimStatusesResourceObject)
     case artistClaimsResourceObject(ArtistClaimsResourceObject)
     case artistRolesResourceObject(ArtistRolesResourceObject)
     case artistsResourceObject(ArtistsResourceObject)
@@ -93,6 +94,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .appreciationsResourceObject(let value):
             try container.encode(value)
         case .artistBiographiesResourceObject(let value):
+            try container.encode(value)
+        case .artistClaimStatusesResourceObject(let value):
             try container.encode(value)
         case .artistClaimsResourceObject(let value):
             try container.encode(value)
@@ -249,6 +252,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "artistBiographies":
             let value = try ArtistBiographiesResourceObject(from: decoder)
             self = .artistBiographiesResourceObject(value)
+        case "artistClaimStatuses":
+            let value = try ArtistClaimStatusesResourceObject(from: decoder)
+            self = .artistClaimStatusesResourceObject(value)
         case "artistClaims":
             let value = try ArtistClaimsResourceObject(from: decoder)
             self = .artistClaimsResourceObject(value)
@@ -456,6 +462,7 @@ extension IncludedInner: Identifiable {
         case .albumsResourceObject(let value): return value.id
         case .appreciationsResourceObject(let value): return value.id
         case .artistBiographiesResourceObject(let value): return value.id
+        case .artistClaimStatusesResourceObject(let value): return value.id
         case .artistClaimsResourceObject(let value): return value.id
         case .artistRolesResourceObject(let value): return value.id
         case .artistsResourceObject(let value): return value.id

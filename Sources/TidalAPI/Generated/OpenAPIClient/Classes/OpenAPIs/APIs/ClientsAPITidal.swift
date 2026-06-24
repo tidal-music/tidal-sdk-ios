@@ -53,9 +53,9 @@ public enum ClientsAPITidal {
 	/**
      Update single client.
      
-     - returns: 
+     - returns: ClientsSingleResourceDataDocument
      */
-	public static func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws {
+	public static func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws -> ClientsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ClientsAPI.clientsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload)
 		}

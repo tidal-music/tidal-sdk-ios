@@ -18,19 +18,12 @@ public struct ClientsAttributes: Codable, Hashable {
         case partner = "PARTNER"
         case _internal = "INTERNAL"
     }
-    public enum PlatformPreset: String, Codable, CaseIterable {
-        case _none = "NONE"
-        case web = "WEB"
-        case android = "ANDROID"
-        case ios = "IOS"
-    }
     public static let scopesRule = ArrayRule(minItems: nil, maxItems: nil, uniqueItems: true)
     public var accessTier: AccessTier
     public var clientSecret: String?
     public var createdAt: Date?
     public var description: String?
     public var name: String
-    public var platformPreset: PlatformPreset?
     public var redirectUris: [String]?
     public var scopes: Set<String>?
 
@@ -40,7 +33,6 @@ public struct ClientsAttributes: Codable, Hashable {
         createdAt: Date? = nil,
         description: String? = nil,
         name: String,
-        platformPreset: PlatformPreset? = nil,
         redirectUris: [String]? = nil,
         scopes: Set<String>? = nil
     ) {
@@ -49,7 +41,6 @@ public struct ClientsAttributes: Codable, Hashable {
         self.createdAt = createdAt
         self.description = description
         self.name = name
-        self.platformPreset = platformPreset
         self.redirectUris = redirectUris
         self.scopes = scopes
     }
@@ -60,7 +51,6 @@ public struct ClientsAttributes: Codable, Hashable {
         case createdAt
         case description
         case name
-        case platformPreset
         case redirectUris
         case scopes
     }
@@ -74,7 +64,6 @@ public struct ClientsAttributes: Codable, Hashable {
         try container.encodeIfPresent(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(description, forKey: .description)
         try container.encode(name, forKey: .name)
-        try container.encodeIfPresent(platformPreset, forKey: .platformPreset)
         try container.encodeIfPresent(redirectUris, forKey: .redirectUris)
         try container.encodeIfPresent(scopes, forKey: .scopes)
     }
