@@ -19,9 +19,9 @@ public enum ProviderProductInfosAPITidal {
      
      - returns: ProviderProductInfosMultiResourceDataDocument
      */
-	public static func providerProductInfosGet(filterBarcodeId: [String], filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
+	public static func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ProviderProductInfosAPI.providerProductInfosGetWithRequestBuilder(filterBarcodeId: filterBarcodeId, filterProviderId: filterProviderId, countryCode: countryCode, include: include)
+			ProviderProductInfosAPI.providerProductInfosGetWithRequestBuilder(filterProviderId: filterProviderId, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid)
 		}
 	}
 
