@@ -36,6 +36,8 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case artistTrackCreditsCard = "ARTIST_TRACK_CREDITS_CARD"
         case pillList = "PILL_LIST"
         case verticalList = "VERTICAL_LIST"
+        case discographyTabs = "DISCOGRAPHY_TABS"
+        case magazineList = "MAGAZINE_LIST"
         case horizontalList = "HORIZONTAL_LIST"
         case horizontalListWithContext = "HORIZONTAL_LIST_WITH_CONTEXT"
         case shortcutList = "SHORTCUT_LIST"
@@ -139,6 +141,8 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case exploreDecades = "EXPLORE_DECADES"
         case exploreGenres = "EXPLORE_GENRES"
         case exploreMoods = "EXPLORE_MOODS"
+        case artistPopularReleases = "ARTIST_POPULAR_RELEASES"
+        case purchasesForYou = "PURCHASES_FOR_YOU"
         case unknown = "UNKNOWN"
     }
     /** Type of icons the module should show */
