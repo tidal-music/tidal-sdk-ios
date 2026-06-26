@@ -16,12 +16,7 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case spotlightInfo = "SPOTLIGHT_INFO"
         case unknown = "UNKNOWN"
     }
-    public enum LayoutType: String, Codable, CaseIterable {
-        case compact = "COMPACT"
-        case grid = "GRID"
-        case unknown = "UNKNOWN"
-    }
-    public enum ModuleType: String, Codable, CaseIterable {
+    public enum PreviewLayout: String, Codable, CaseIterable {
         case artistList = "ARTIST_LIST"
         case compactGridCard = "COMPACT_GRID_CARD"
         case compactHorizontalList = "COMPACT_HORIZONTAL_LIST"
@@ -47,140 +42,42 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case linksList = "LINKS_LIST"
         case publicPlaylistList = "PUBLIC_PLAYLIST_LIST"
     }
-    public enum SourceType: String, Codable, CaseIterable {
-        case albumRecommendations = "ALBUM_RECOMMENDATIONS"
-        case becauseYouListenedToAlbum = "BECAUSE_YOU_LISTENED_TO_ALBUM"
-        case becauseYouAddedAlbum = "BECAUSE_YOU_ADDED_ALBUM"
-        case becauseYouAddedArtist = "BECAUSE_YOU_ADDED_ARTIST"
-        case continueListenTo = "CONTINUE_LISTEN_TO"
-        case dailyMixes = "DAILY_MIXES"
-        case forgottenFavorites = "FORGOTTEN_FAVORITES"
-        case genreMixes = "GENRE_MIXES"
-        case historyMixes = "HISTORY_MIXES"
-        case localPlaylists = "LOCAL_PLAYLISTS"
-        case myPlaylists = "MY_PLAYLISTS"
-        case newAlbumSuggestions = "NEW_ALBUM_SUGGESTIONS"
-        case newTrackSuggestions = "NEW_TRACK_SUGGESTIONS"
-        case newAlbums = "NEW_ALBUMS"
-        case newTracks = "NEW_TRACKS"
-        case popularPlaylists = "POPULAR_PLAYLISTS"
-        case recentlyUpdatedFavoritedPlaylist = "RECENTLY_UPDATED_FAVORITED_PLAYLIST"
-        case recommendedUsersPlaylists = "RECOMMENDED_USERS_PLAYLISTS"
-        case suggestedEssentialPlaylists = "SUGGESTED_ESSENTIAL_PLAYLISTS"
-        case suggestedRadiosMixes = "SUGGESTED_RADIOS_MIXES"
-        case welcomeMix = "WELCOME_MIX"
-        case yourFavoriteArtists = "YOUR_FAVORITE_ARTISTS"
-        case uploadsForYou = "UPLOADS_FOR_YOU"
-        case latestSpotlightedTracks = "LATEST_SPOTLIGHTED_TRACKS"
-        case shortcuts = "SHORTCUTS"
-        case artistTopTracks = "ARTIST_TOP_TRACKS"
-        case artistSpotlightedTracks = "ARTIST_SPOTLIGHTED_TRACKS"
-        case artistAlbums = "ARTIST_ALBUMS"
-        case artistTopSingles = "ARTIST_TOP_SINGLES"
-        case artistCompilations = "ARTIST_COMPILATIONS"
-        case artistLiveAlbums = "ARTIST_LIVE_ALBUMS"
-        case artistAppearsOn = "ARTIST_APPEARS_ON"
-        case artistPlaylist = "ARTIST_PLAYLIST"
-        case artistPublicPlaylist = "ARTIST_PUBLIC_PLAYLIST"
-        case artistSimilarArtists = "ARTIST_SIMILAR_ARTISTS"
-        case artistTrackUploads = "ARTIST_TRACK_UPLOADS"
-        case artistLinks = "ARTIST_LINKS"
-        case artistVideos = "ARTIST_VIDEOS"
-        case artistCredits = "ARTIST_CREDITS"
-        case artistDiscography = "ARTIST_DISCOGRAPHY"
-        case albumItems = "ALBUM_ITEMS"
-        case albumMoreByArtist = "ALBUM_MORE_BY_ARTIST"
-        case albumOtherVersions = "ALBUM_OTHER_VERSIONS"
-        case albumRelatedAlbums = "ALBUM_RELATED_ALBUMS"
-        case albumRelatedArtists = "ALBUM_RELATED_ARTISTS"
-        case collectionItems = "COLLECTION_ITEMS"
-        case albumAnniversary = "ALBUM_ANNIVERSARY"
-        case artistBirthday = "ARTIST_BIRTHDAY"
-        case artistMemoriam = "ARTIST_MEMORIAM"
-        case djTools = "DJ_TOOLS"
-        case djArtistCurated = "DJ_ARTIST_CURATED"
-        case theHits = "THE_HITS"
-        case fromOurEditors = "FROM_OUR_EDITORS"
-        case topPlaylists = "TOP_PLAYLISTS"
-        case featuredTopTracks = "FEATURED_TOP_TRACKS"
-        case featuredTopAlbums = "FEATURED_TOP_ALBUMS"
-        case topArtistsEssentials = "TOP_ARTISTS_ESSENTIALS"
-        case featuredRecommendedPlaylists = "FEATURED_RECOMMENDED_PLAYLISTS"
-        case home3FeaturedPlaylists = "HOME_3_FEATURED_PLAYLISTS"
-        case home3FeaturedUploadTracks = "HOME_3_FEATURED_UPLOAD_TRACKS"
-        case home3FeaturedAlbums = "HOME_3_FEATURED_ALBUMS"
-        case popularAlbums = "POPULAR_ALBUMS"
-        case popularArtists = "POPULAR_ARTISTS"
-        case popularMixes = "POPULAR_MIXES"
-        case featuredRecommendedTracks = "FEATURED_RECOMMENDED_TRACKS"
-        case featuredRecommendedAlbums = "FEATURED_RECOMMENDED_ALBUMS"
-        case featuredRecommendedClassicAlbums = "FEATURED_RECOMMENDED_CLASSIC_ALBUMS"
-        case backToSchoolMusic101 = "BACK_TO_SCHOOL_MUSIC_101"
-        case backToSchoolGenresForBeginners = "BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS"
-        case headliners2026 = "HEADLINERS_2026"
-        case home30GenericPlaylists1 = "HOME_3_0_GENERIC_PLAYLISTS_1"
-        case home30GenericPlaylists2 = "HOME_3_0_GENERIC_PLAYLISTS_2"
-        case home30GenericAlbums1 = "HOME_3_0_GENERIC_ALBUMS_1"
-        case home30GenericTracks1 = "HOME_3_0_GENERIC_TRACKS_1"
-        case home30GenericArtists1 = "HOME_3_0_GENERIC_ARTISTS_1"
-        case home30GenericVideos1 = "HOME_3_0_GENERIC_VIDEOS_1"
-        case staffPicksPageAlbumsWeLove = "STAFF_PICKS_PAGE_ALBUMS_WE_LOVE"
-        case staffPicksPageExplore = "STAFF_PICKS_PAGE_EXPLORE"
-        case staffPicksPageFavoriteSongs = "STAFF_PICKS_PAGE_FAVORITE_SONGS"
-        case staffPicksPageRecentlyUpdatedPlaylists = "STAFF_PICKS_PAGE_RECENTLY_UPDATED_PLAYLISTS"
-        case staffPicksPageTidalNewsMagazine = "STAFF_PICKS_PAGE_TIDAL_NEWS_MAGAZINE"
-        case staffPicksPageWhatListeningTo = "STAFF_PICKS_PAGE_WHAT_LISTENING_TO"
-        case basedOnYourInterests1 = "BASED_ON_YOUR_INTERESTS_1"
-        case basedOnYourInterests2 = "BASED_ON_YOUR_INTERESTS_2"
-        case uploadPageSpotlightedPlaylists = "UPLOAD_PAGE_SPOTLIGHTED_PLAYLISTS"
-        case uploadPagePaygatedAlbums = "UPLOAD_PAGE_PAYGATED_ALBUMS"
-        case uploadPageAlbums = "UPLOAD_PAGE_ALBUMS"
-        case topUploaders = "TOP_UPLOADERS"
-        case uploadPageArtists = "UPLOAD_PAGE_ARTISTS"
-        case uploadPageFeaturedMagazine = "UPLOAD_PAGE_FEATURED_MAGAZINE"
-        case exploreDecades = "EXPLORE_DECADES"
-        case exploreGenres = "EXPLORE_GENRES"
-        case exploreMoods = "EXPLORE_MOODS"
-        case artistPopularReleases = "ARTIST_POPULAR_RELEASES"
-        case purchasesForYou = "PURCHASES_FOR_YOU"
+    public enum ViewAllLayout: String, Codable, CaseIterable {
+        case compact = "COMPACT"
+        case grid = "GRID"
         case unknown = "UNKNOWN"
     }
     /** Type of icons the module should show */
     public var icons: [Icons]
-    /** Type of representation of the items in the module view all screen */
-    public var layoutType: LayoutType
-    /** Type of representation of the module */
-    public var moduleType: ModuleType
-    /** Type of source represented by the module */
-    public var sourceType: SourceType
+    /** Layout of the module preview on the dynamic page */
+    public var previewLayout: PreviewLayout
     /** Subtitle of the module */
     public var subtitle: String?
     /** Title of the module */
     public var title: String?
+    /** Layout of the module's items in the view all screen */
+    public var viewAllLayout: ViewAllLayout
 
     public init(
         icons: [Icons],
-        layoutType: LayoutType,
-        moduleType: ModuleType,
-        sourceType: SourceType,
+        previewLayout: PreviewLayout,
         subtitle: String? = nil,
-        title: String? = nil
+        title: String? = nil,
+        viewAllLayout: ViewAllLayout
     ) {
         self.icons = icons
-        self.layoutType = layoutType
-        self.moduleType = moduleType
-        self.sourceType = sourceType
+        self.previewLayout = previewLayout
         self.subtitle = subtitle
         self.title = title
+        self.viewAllLayout = viewAllLayout
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case icons
-        case layoutType
-        case moduleType
-        case sourceType
+        case previewLayout
         case subtitle
         case title
+        case viewAllLayout
     }
 
     // Encodable protocol methods
@@ -188,10 +85,9 @@ public struct DynamicModulesAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(icons, forKey: .icons)
-        try container.encode(layoutType, forKey: .layoutType)
-        try container.encode(moduleType, forKey: .moduleType)
-        try container.encode(sourceType, forKey: .sourceType)
+        try container.encode(previewLayout, forKey: .previewLayout)
         try container.encodeIfPresent(subtitle, forKey: .subtitle)
         try container.encodeIfPresent(title, forKey: .title)
+        try container.encode(viewAllLayout, forKey: .viewAllLayout)
     }
 }

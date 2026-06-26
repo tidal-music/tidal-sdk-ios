@@ -1,10 +1,9 @@
-# DynamicPagesRelationships
+# DynamicPagesResourceObjectMeta
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**modules** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
-**subject** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+**redactionReason** | **String** | Reason why data has been redacted on this page | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

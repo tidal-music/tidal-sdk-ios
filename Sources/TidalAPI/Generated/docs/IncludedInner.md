@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **id** | **String** | Resource id | 
 **relationships** | [**VideosRelationships**](VideosRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 
+**meta** | [**TermsResourceObjectMeta**](TermsResourceObjectMeta.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

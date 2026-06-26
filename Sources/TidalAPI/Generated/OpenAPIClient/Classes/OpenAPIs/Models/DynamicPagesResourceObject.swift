@@ -16,6 +16,7 @@ public struct DynamicPagesResourceObject: Codable, Hashable {
     public var attributes: DynamicPagesAttributes?
     /** Resource id */
     public var id: String
+    public var meta: DynamicPagesResourceObjectMeta?
     public var relationships: DynamicPagesRelationships?
     /** Resource type */
     public var type: String
@@ -23,11 +24,13 @@ public struct DynamicPagesResourceObject: Codable, Hashable {
     public init(
         attributes: DynamicPagesAttributes? = nil,
         id: String,
+        meta: DynamicPagesResourceObjectMeta? = nil,
         relationships: DynamicPagesRelationships? = nil,
         type: String
     ) {
         self.attributes = attributes
         self.id = id
+        self.meta = meta
         self.relationships = relationships
         self.type = type
     }
@@ -35,6 +38,7 @@ public struct DynamicPagesResourceObject: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case attributes
         case id
+        case meta
         case relationships
         case type
     }
@@ -45,6 +49,7 @@ public struct DynamicPagesResourceObject: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(attributes, forKey: .attributes)
         try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(meta, forKey: .meta)
         try container.encodeIfPresent(relationships, forKey: .relationships)
         try container.encode(type, forKey: .type)
     }

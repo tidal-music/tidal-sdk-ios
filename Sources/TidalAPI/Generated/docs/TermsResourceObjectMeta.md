@@ -1,10 +1,9 @@
-# DynamicPagesRelationships
+# TermsResourceObjectMeta
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**modules** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
-**subject** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+**isLatestVersion** | **Bool** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
