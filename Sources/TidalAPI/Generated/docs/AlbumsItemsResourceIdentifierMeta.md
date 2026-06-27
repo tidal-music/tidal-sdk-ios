@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**itemCursor** | **String** |  | [optional] 
 **trackNumber** | **Int** | track number | 
 **volumeNumber** | **Int** | volume number | 
 
