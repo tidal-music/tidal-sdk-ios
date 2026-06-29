@@ -103,11 +103,28 @@ extension ActiveLicenseDownload: AVContentKeySessionDelegate {
 		_ session: AVContentKeySession,
 		didProvide keyRequest: AVContentKeyRequest
 	) {
-		do {
-			try keyRequest.respondByRequestingPersistableContentKeyRequest()
-		} catch {
+		#if os(iOS)
+			do {
+				try keyRequest.respondByRequestingPersistableContentKeyRequestAndReturnError()
+			} catch {
+				keyRequest.processContentKeyResponseError(error)
+			}
+		#elseif os(macOS)
+			do {
+				try keyRequest.respondByRequestingPersistableContentKeyRequest()
+			} catch {
+				keyRequest.processContentKeyResponseError(error)
+			}
+		#else
+			let error = NSError(
+				domain: "com.tidal.offliner",
+				code: -1,
+				userInfo: [NSLocalizedDescriptionKey: "Offline DRM is not supported on this platform."]
+			)
 			keyRequest.processContentKeyResponseError(error)
-		}
+			continuation?.resume(throwing: error)
+			continuation = nil
+		#endif
 	}
 
 	func contentKeySession(

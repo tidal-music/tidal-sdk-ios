@@ -24,6 +24,17 @@ protocol MediaDownloaderProtocol {
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void)
 }
 
+// MARK: - MediaDownloaderError
+
+enum MediaDownloaderError: Error {
+	case failedToCreateTask
+	case noDownloadedFile
+	case manifestNotFound
+	case unsupportedPlatform
+}
+
+#if os(iOS)
+
 // MARK: - MediaDownloader
 
 final class MediaDownloader: NSObject, MediaDownloaderProtocol {
@@ -198,10 +209,31 @@ private final class ActiveDownload {
 	}
 }
 
-// MARK: - MediaDownloaderError
+#else
 
-enum MediaDownloaderError: Error {
-	case failedToCreateTask
-	case noDownloadedFile
-	case manifestNotFound
+// tvOS / other Apple platforms: AVAssetDownloadURLSession is iOS-only.
+// This stub keeps Offliner compilable on non-iOS platforms; calls always fail
+// with .unsupportedPlatform so callers can degrade gracefully.
+final class MediaDownloader: NSObject, MediaDownloaderProtocol {
+	static let backgroundSessionIdentifier = "com.tidal.offliner.download.session"
+
+	init(configuration: Configuration) {
+		super.init()
+	}
+
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {
+		DispatchQueue.main.async { completionHandler() }
+	}
+
+	func download(
+		taskId: String,
+		manifestURL: URL,
+		licenseDownloadResult: LicenseDownloadResult?,
+		title: String,
+		onProgress: @escaping @Sendable (Double) async -> Void
+	) async throws -> MediaDownloadResult {
+		throw MediaDownloaderError.unsupportedPlatform
+	}
 }
+
+#endif

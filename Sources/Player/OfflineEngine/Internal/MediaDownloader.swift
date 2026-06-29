@@ -1,6 +1,8 @@
 import AVFoundation
 import Foundation
 
+#if os(iOS)
+
 // MARK: - MediaDownloader
 
 final class MediaDownloader: NSObject {
@@ -159,3 +161,22 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		activeTasks[assetDownloadTask]?.reportProgress(progress)
 	}
 }
+
+#else
+
+// tvOS / other Apple platforms: AVAssetDownloadURLSession is iOS-only, so offline
+// downloads are not supported. This stub keeps the surface area used by
+// Downloader.swift available so the Player target compiles. Callers should never
+// reach this path on non-iOS platforms (the host app should not initiate downloads).
+final class MediaDownloader: NSObject {
+	override init() {
+		super.init()
+	}
+
+	func download(asset: AVURLAsset, for downloadTask: DownloadTask) {}
+	func download(url: URL, for downloadTask: DownloadTask) {}
+	func cancel(for mediaProduct: MediaProduct) {}
+	func cancelAll() {}
+}
+
+#endif
