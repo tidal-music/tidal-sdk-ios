@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Declare unhandled package files (`TidalAPI` generated docs/config, module READMEs, EventProducer seed `.sqlite`) as `exclude:` so `swift build` no longer warns (Build)
+
 ## [0.11.24] - 2026-06-23
 
 ### Changed
