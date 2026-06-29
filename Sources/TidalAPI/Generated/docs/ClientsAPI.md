@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **clientsGet**
 ```swift
-    open class func clientsGet(include: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: ClientsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: ClientsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple clients.
@@ -26,11 +26,11 @@ Retrieves multiple clients by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple clients.
-ClientsAPI.clientsGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
+ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -46,8 +46,8 @@ ClientsAPI.clientsGet(include: include, filterOwnersId: filterOwnersId) { (respo
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 
@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdPatch**
 ```swift
-    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil, completion: @escaping (_ data: ClientsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single client.
@@ -184,7 +184,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let clientsUpdateOperationPayload = ClientsUpdateOperation_Payload(data: ClientsUpdateOperation_Payload_Data(attributes: ClientsUpdateOperation_Payload_Data_Attributes(description: "description_example", enabled: false, name: "name_example", platformPreset: "platformPreset_example", redirectUris: ["redirectUris_example"], scopes: ["scopes_example"]), id: "id_example", type: "type_example")) // ClientsUpdateOperationPayload |  (optional)
+let clientsUpdateOperationPayload = ClientsUpdateOperation_Payload(data: ClientsUpdateOperation_Payload_Data(attributes: ClientsUpdateOperation_Payload_Data_Attributes(description: "description_example", name: "name_example", redirectUris: ["redirectUris_example"], scopes: ["scopes_example"]), id: "id_example", type: "type_example")) // ClientsUpdateOperationPayload |  (optional)
 
 // Update single client.
 ClientsAPI.clientsIdPatch(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload) { (response, error) in
@@ -209,7 +209,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**ClientsSingleResourceDataDocument**](ClientsSingleResourceDataDocument.md)
 
 ### Authorization
 

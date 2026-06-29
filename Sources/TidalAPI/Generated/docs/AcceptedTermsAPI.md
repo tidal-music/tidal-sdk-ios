@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **acceptedTermsGet**
 ```swift
-    open class func acceptedTermsGet(include: [String]? = nil, filterOwnersId: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet]? = nil, completion: @escaping (_ data: AcceptedTermsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, completion: @escaping (_ data: AcceptedTermsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple acceptedTerms.
@@ -24,13 +24,13 @@ Retrieves multiple acceptedTerms by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
+let filterTermsTermsType = ["filterTermsTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. `DEVELOPER`)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 let filterTermsIsLatestVersion = ["inner_example"] // [String] | Filter by terms.isLatestVersion (optional)
-let filterTermsTermsType = ["filterTermsTermsType_example"] // [String] | One of: DEVELOPER (e.g. `DEVELOPER`) (optional)
 
 // Get multiple acceptedTerms.
-AcceptedTermsAPI.acceptedTermsGet(include: include, filterOwnersId: filterOwnersId, filterTermsIsLatestVersion: filterTermsIsLatestVersion, filterTermsTermsType: filterTermsTermsType) { (response, error) in
+AcceptedTermsAPI.acceptedTermsGet(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -46,10 +46,10 @@ AcceptedTermsAPI.acceptedTermsGet(include: include, filterOwnersId: filterOwners
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
+ **filterTermsTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, terms | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
  **filterTermsIsLatestVersion** | [**[String]**](String.md) | Filter by terms.isLatestVersion | [optional] 
- **filterTermsTermsType** | [**[String]**](String.md) | One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) | [optional] 
 
 ### Return type
 

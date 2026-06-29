@@ -313,9 +313,9 @@ public extension Player {
 		}
 	}
 
-	func pause() {
+	func pause(fadeDuration: TimeInterval? = nil) {
 		queue.dispatch {
-			self.playerEngine.pause()
+			self.playerEngine.pause(fadeDuration: fadeDuration)
 		}
 	}
 

@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **accessType** | **String** | Access type | [optional] 
+**ai** | **Bool** | Whether the track is AI-generated | [optional] 
 **availability** | **[String]** | Available usage for this track. Deprecated: use &#39;usageRules&#39; instead. This field will be removed in a future version. | [optional] 
 **bpm** | **Float** | Beats per minute | [optional] 
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 

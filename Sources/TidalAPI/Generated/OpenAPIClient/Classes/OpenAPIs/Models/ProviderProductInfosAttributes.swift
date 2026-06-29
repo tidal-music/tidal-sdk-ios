@@ -13,15 +13,27 @@ import AnyCodable
 public struct ProviderProductInfosAttributes: Codable, Hashable {
 
     public var barcodeId: String
+    public var broken: Bool?
+    public var brokenCode: Int?
+    public var tracks: [TrackInfo]?
 
     public init(
-        barcodeId: String
+        barcodeId: String,
+        broken: Bool? = nil,
+        brokenCode: Int? = nil,
+        tracks: [TrackInfo]? = nil
     ) {
         self.barcodeId = barcodeId
+        self.broken = broken
+        self.brokenCode = brokenCode
+        self.tracks = tracks
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case barcodeId
+        case broken
+        case brokenCode
+        case tracks
     }
 
     // Encodable protocol methods
@@ -29,5 +41,8 @@ public struct ProviderProductInfosAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(barcodeId, forKey: .barcodeId)
+        try container.encodeIfPresent(broken, forKey: .broken)
+        try container.encodeIfPresent(brokenCode, forKey: .brokenCode)
+        try container.encodeIfPresent(tracks, forKey: .tracks)
     }
 }

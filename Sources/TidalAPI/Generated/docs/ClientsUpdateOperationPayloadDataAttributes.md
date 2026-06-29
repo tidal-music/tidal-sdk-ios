@@ -4,9 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **description** | **String** |  | [optional] 
-**enabled** | **Bool** |  | [optional] 
 **name** | **String** |  | [optional] 
-**platformPreset** | **String** |  | [optional] 
 **redirectUris** | **[String]** |  | [optional] 
 **scopes** | **Set<String>** |  | [optional] 
 

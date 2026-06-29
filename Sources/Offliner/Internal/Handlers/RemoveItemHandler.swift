@@ -29,7 +29,13 @@ private final class InternalRemoveItemTask: InternalTask {
 			resourceType: task.resourceType,
 			resourceId: task.resourceId,
 			fromCollection: task.collectionResourceType,
-			collectionId: task.collectionResourceId
+			collectionId: task.resolvedCollectionResourceId
 		)
+	}
+}
+
+private extension RemoveItemTask {
+	var resolvedCollectionResourceId: String {
+		collectionResourceType == OfflineCollectionType.userCollectionTracks.rawValue ? ResourceId.me.stringValue : collectionResourceId
 	}
 }

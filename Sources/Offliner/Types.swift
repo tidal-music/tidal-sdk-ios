@@ -3,17 +3,31 @@ import Player
 
 // MARK: - OfflineMediaItemType
 
-public enum OfflineMediaItemType: String {
+public enum OfflineMediaItemType: String, Sendable {
 	case tracks
 	case videos
 }
 
 // MARK: - OfflineCollectionType
 
-public enum OfflineCollectionType: String {
+public enum OfflineCollectionType: String, Sendable {
 	case albums
 	case playlists
 	case userCollectionTracks
+}
+
+// MARK: - ResourceId
+
+public enum ResourceId: Sendable {
+	case identifier(String)
+	case me
+
+	var stringValue: String {
+		switch self {
+		case let .identifier(value): value
+		case .me: "me"
+		}
+	}
 }
 
 // MARK: - OfflineMediaItem
@@ -23,8 +37,10 @@ public struct OfflineMediaItem {
 		public let id: String
 		public let title: String
 		public let artists: [String]
+		public let albumTitle: String?
 		public let duration: Int
 		public let explicit: Bool
+		public let backgroundColorHex: String?
 	}
 
 	public struct VideoMetadata: Codable {
@@ -63,6 +79,31 @@ public struct OfflineMediaItem {
 	public let mediaURL: URL
 	public let licenseURL: URL?
 	public let artworkURL: URL?
+}
+
+// MARK: - OfflineCollectionState
+
+public enum OfflineCollectionState: Hashable {
+	case pending
+	case stored
+}
+
+// MARK: - OfflineCollectionDownloadState
+
+/// Collection-level offline availability for albums, playlists, and user collection tracks.
+///
+/// This state describes whether collection media is available offline or known by this SDK instance to be acquired. It
+/// does not model generic offliner task activity: collection removal is represented as `notDownloaded`, not
+/// `downloading`.
+public enum OfflineCollectionDownloadState: Sendable, Hashable {
+	/// The collection is not locally downloaded, or it is being removed.
+	case notDownloaded
+
+	/// The collection or one of its members has active download/acquisition work known by this SDK instance.
+	case downloading
+
+	/// The collection is locally stored and there is no locally known pending download/acquisition work.
+	case downloaded
 }
 
 // MARK: - OfflineCollection
@@ -125,6 +166,40 @@ public struct OfflineCollection: Hashable {
 
 	public let catalogMetadata: Metadata
 	public let artworkURL: URL?
+	public let state: OfflineCollectionState
+	public let addedAt: Date
+
+	public init(
+		catalogMetadata: Metadata,
+		artworkURL: URL?,
+		state: OfflineCollectionState = .stored,
+		addedAt: Date
+	) {
+		self.catalogMetadata = catalogMetadata
+		self.artworkURL = artworkURL
+		self.state = state
+		self.addedAt = addedAt
+	}
+
+	public static func == (lhs: OfflineCollection, rhs: OfflineCollection) -> Bool {
+		lhs.catalogMetadata == rhs.catalogMetadata
+	}
+
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(catalogMetadata)
+	}
+}
+
+public enum SortDirection: Hashable {
+	case ascending
+	case descending
+}
+
+public enum OfflineCollectionItemSort: Hashable {
+	case title(direction: SortDirection)
+	case album(direction: SortDirection)
+	case artist(direction: SortDirection)
+	case dateAdded(direction: SortDirection)
 }
 
 // MARK: - OfflineCollectionItem
@@ -133,11 +208,29 @@ public struct OfflineCollectionItem {
 	public let item: OfflineMediaItem
 	public let volume: Int
 	public let position: Int
+	public let addedAt: Date?
+
+	public init(
+		item: OfflineMediaItem,
+		volume: Int,
+		position: Int,
+		addedAt: Date? = nil
+	) {
+		self.item = item
+		self.volume = volume
+		self.position = position
+		self.addedAt = addedAt
+	}
 }
 
 // MARK: - OfflineCollectionItemsPage
 
 public struct OfflineCollectionItemsPage {
 	public let items: [OfflineCollectionItem]
-	public let cursor: Int64?
+	public let cursor: String?
+
+	public init(items: [OfflineCollectionItem], cursor: String?) {
+		self.items = items
+		self.cursor = cursor
+	}
 }

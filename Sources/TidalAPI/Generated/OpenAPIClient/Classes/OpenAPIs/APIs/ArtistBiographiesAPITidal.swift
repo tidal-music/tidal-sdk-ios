@@ -15,18 +15,6 @@ public enum ArtistBiographiesAPITidal {
 
 
 	/**
-     Get multiple artistBiographies.
-     
-     - returns: ArtistBiographiesMultiResourceDataDocument
-     */
-	public static func artistBiographiesGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil) async throws -> ArtistBiographiesMultiResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			ArtistBiographiesAPI.artistBiographiesGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId)
-		}
-	}
-
-
-	/**
      Get single artistBiographie.
      
      - returns: ArtistBiographiesSingleResourceDataDocument

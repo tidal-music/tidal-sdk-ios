@@ -170,13 +170,48 @@ public enum PlaylistsAPITidal {
 
 
 	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_playlistsIdRelationshipsItemsGet: String, CaseIterable {
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case AlbumsTitleAsc = "albums.title"
+		case AlbumsTitleDesc = "-albums.title"
+		case ArtistsNameAsc = "artists.name"
+		case ArtistsNameDesc = "-artists.name"
+		case DurationAsc = "duration"
+		case DurationDesc = "-duration"
+		case ItemIndexAsc = "itemIndex"
+		case ItemIndexDesc = "-itemIndex"
+		case TitleAsc = "title"
+		case TitleDesc = "-title"
+
+		func toPlaylistsAPIEnum() -> PlaylistsAPI.Sort_playlistsIdRelationshipsItemsGet {
+			switch self {
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .AlbumsTitleAsc: return .AlbumsTitleAsc
+			case .AlbumsTitleDesc: return .AlbumsTitleDesc
+			case .ArtistsNameAsc: return .ArtistsNameAsc
+			case .ArtistsNameDesc: return .ArtistsNameDesc
+			case .DurationAsc: return .DurationAsc
+			case .DurationDesc: return .DurationDesc
+			case .ItemIndexAsc: return .ItemIndexAsc
+			case .ItemIndexDesc: return .ItemIndexDesc
+			case .TitleAsc: return .TitleAsc
+			case .TitleDesc: return .TitleDesc
+			}
+		}
+	}
+
+	/**
      Get items relationship (\&quot;to-many\&quot;).
      
      - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
+			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include)
 		}
 	}
 
@@ -196,9 +231,9 @@ public enum PlaylistsAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload)
 		}

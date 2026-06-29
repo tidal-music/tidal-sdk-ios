@@ -19,9 +19,9 @@ public enum ClientsAPITidal {
      
      - returns: ClientsMultiResourceDataDocument
      */
-	public static func clientsGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ClientsMultiResourceDataDocument {
+	public static func clientsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ClientsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ClientsAPI.clientsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId)
+			ClientsAPI.clientsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
 		}
 	}
 
@@ -53,9 +53,9 @@ public enum ClientsAPITidal {
 	/**
      Update single client.
      
-     - returns: 
+     - returns: ClientsSingleResourceDataDocument
      */
-	public static func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws {
+	public static func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws -> ClientsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ClientsAPI.clientsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload)
 		}

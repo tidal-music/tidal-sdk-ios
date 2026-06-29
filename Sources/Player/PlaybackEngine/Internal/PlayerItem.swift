@@ -133,8 +133,8 @@ final class PlayerItem {
 		asset?.player.play()
 	}
 
-	func pause() {
-		asset?.player.pause()
+	func pause(fadeDuration: TimeInterval? = nil) {
+		asset?.player.pause(fadeDuration: fadeDuration)
 	}
 
 	func seek(to time: Double) {
@@ -360,9 +360,7 @@ private extension PlayerItem {
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
 			tags.append(PlaybackStatistics.EventTag.IMPROVED_DRM)
 		}
-		if featureFlagProvider.shouldUseNewPlaybackEndpoints() {
-			tags.append(PlaybackStatistics.EventTag.NEW_PLAYBACK_ENDPOINTS)
-		}
+		tags.append(PlaybackStatistics.EventTag.NEW_PLAYBACK_ENDPOINTS)
 		if metadata.isAdaptivePlaybackEnabled {
 			tags.append(PlaybackStatistics.EventTag.ADAPTIVE_PLAYBACK)
 		}

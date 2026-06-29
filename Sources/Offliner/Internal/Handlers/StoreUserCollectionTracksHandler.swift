@@ -25,14 +25,24 @@ private final class InternalUserCollectionTracksTask: InternalTask {
 		self.offlineStore = offlineStore
 	}
 
+	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
+		collection.collectionType == .userCollectionTracks && collection.resourceId == task.resolvedResourceId
+	}
+
 	func run() async throws {
 		let result = StoreCollectionTaskResult(
 			resourceType: .userCollectionTracks,
-			resourceId: task.userCollectionTracks.id,
-			catalogMetadata: .userCollectionTracks(id: task.userCollectionTracks.id),
+			resourceId: task.resolvedResourceId,
+			catalogMetadata: .userCollectionTracks(id: task.resolvedResourceId),
 			artworkURL: nil
 		)
 
 		try offlineStore.storeCollection(result)
+	}
+}
+
+private extension StoreUserCollectionTracksTask {
+	var resolvedResourceId: String {
+		ResourceId.me.stringValue
 	}
 }

@@ -6,12 +6,14 @@ public extension OfflineCollectionItem {
 	static func mock(
 		item: OfflineMediaItem = .mock(),
 		volume: Int = 1,
-		position: Int = 1
+		position: Int = 1,
+		addedAt: Date? = Date()
 	) -> Self {
 		.init(
 			item: item,
 			volume: volume,
-			position: position
+			position: position,
+			addedAt: addedAt
 		)
 	}
 }
@@ -21,7 +23,7 @@ public extension OfflineCollectionItem {
 public extension OfflineCollectionItemsPage {
 	static func mock(
 		items: [OfflineCollectionItem] = [.mock()],
-		cursor: Int64? = nil
+		cursor: String? = nil
 	) -> Self {
 		.init(
 			items: items,

@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **dspSharingLinksGet**
 ```swift
-    open class func dspSharingLinksGet(include: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, completion: @escaping (_ data: DspSharingLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func dspSharingLinksGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_dspSharingLinksGet], include: [String]? = nil, completion: @escaping (_ data: DspSharingLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple dspSharingLinks.
@@ -22,12 +22,12 @@ Retrieves multiple dspSharingLinks by available filters, or without if applicabl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterSubjectId = ["inner_example"] // [String] | The id of the subject resource
+let filterSubjectType = ["filterSubjectType_example"] // [String] | The type of the subject resource (e.g., albums, tracks, artists) (e.g. `tracks`)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
-let filterSubjectId = ["inner_example"] // [String] | The id of the subject resource (optional)
-let filterSubjectType = ["filterSubjectType_example"] // [String] | The type of the subject resource (e.g., albums, tracks, artists) (e.g. `tracks`) (optional)
 
 // Get multiple dspSharingLinks.
-DspSharingLinksAPI.dspSharingLinksGet(include: include, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType) { (response, error) in
+DspSharingLinksAPI.dspSharingLinksGet(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -43,9 +43,9 @@ DspSharingLinksAPI.dspSharingLinksGet(include: include, filterSubjectId: filterS
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterSubjectId** | [**[String]**](String.md) | The id of the subject resource | 
+ **filterSubjectType** | [**[String]**](String.md) | The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
- **filterSubjectId** | [**[String]**](String.md) | The id of the subject resource | [optional] 
- **filterSubjectType** | [**[String]**](String.md) | The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) | [optional] 
 
 ### Return type
 

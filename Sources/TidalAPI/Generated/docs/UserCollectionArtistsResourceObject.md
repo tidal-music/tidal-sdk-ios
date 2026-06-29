@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **AnyCodable** |  | [optional] 
+**attributes** | [**UserCollectionArtistsAttributes**](UserCollectionArtistsAttributes.md) |  | [optional] 
 **id** | **String** | Resource id | 
 **relationships** | [**UserCollectionArtistsRelationships**](UserCollectionArtistsRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 

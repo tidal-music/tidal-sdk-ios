@@ -66,10 +66,10 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader], [expectedLicenseLoader])
 	}
 
-	func testProduct_withoutDRM_noLicenseLoader() async throws {
+	func testProduct_track_alwaysHasLicenseLoader() async throws {
 		// GIVEN
 		let sessionId = "1"
-		let expectedLicenseLoader: StreamingLicenseLoader? = nil
+		PlayerWorld.isSimulator = false
 
 		// WHEN
 		_ = try await internalLoader.load(
@@ -78,22 +78,26 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		)
 
 		// THEN
+		let expectedLicenseLoader = StreamingLicenseLoader(
+			fairPlayLicenseFetcher: fairPlayLicenseFetcher,
+			streamingSessionId: sessionId,
+			featureFlagProvider: .mock
+		)
 		XCTAssertEqual(mockPlayer.loadCallCount, 1)
 		XCTAssertEqual(mockPlayer.licenseLoaders.count, 1)
-		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader?], [expectedLicenseLoader])
+		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader], [expectedLicenseLoader])
 	}
 
 	// MARK: - load
 
 	func test_load_PlayableStorageItem() async throws {
 		// GIVEN
-		let trackPlaybackInfo = TrackPlaybackInfo.mock(
+		let playbackInfo = PlaybackInfo.mock(
+			mediaType: MediaTypes.BTS,
 			licenseSecurityToken: "sdf2ewerqwe",
-			manifestMimeType: MediaTypes.BTS,
 			albumReplayGain: 4,
 			albumPeakAmplitude: 1
 		)
-		let playbackInfo = PlaybackInfo.mock(mediaProduct: .mock(), trackPlaybackInfo: trackPlaybackInfo)
 		let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: OfflineEntry.mock(
 			from: playbackInfo,
 			assetURL: URL(string: "www.tidal.com")!,
@@ -102,8 +106,8 @@ final class InternalPlayerLoaderTests: XCTestCase {
 
 		let loudnessNormalizer = LoudnessNormalizer.mock(
 			preAmp: Constants.defaultPreAmp,
-			replayGain: trackPlaybackInfo.albumReplayGain!,
-			peakAmplitude: trackPlaybackInfo.albumPeakAmplitude!
+			replayGain: 4,
+			peakAmplitude: 1
 		)
 		mockPlayer.loudnessNormalizer = loudnessNormalizer
 
@@ -154,6 +158,7 @@ final class InternalPlayerLoaderTests: XCTestCase {
 
 	func test_load_PlaybackInfo() async throws {
 		// GIVEN
+		PlayerWorld.isSimulator = false
 		let playbackInfo = PlaybackInfo.mock(albumReplayGain: 4, albumPeakAmplitude: 1)
 
 		let loudnessNormalizer = LoudnessNormalizer.mock(
@@ -172,11 +177,16 @@ final class InternalPlayerLoaderTests: XCTestCase {
 			loudnessNormalizer: loudnessNormalizer
 		)
 		let expectedAsset = AssetMock(with: mockPlayer, loudnessNormalizationConfiguration: expectedLoudnessConfiguration)
+		let expectedLicenseLoader = StreamingLicenseLoader(
+			fairPlayLicenseFetcher: fairPlayLicenseFetcher,
+			streamingSessionId: playbackInfo.streamingSessionId!,
+			featureFlagProvider: .mock
+		)
 
 		XCTAssertEqual(asset, expectedAsset)
 		XCTAssertEqual(mockPlayer.loadCallCount, 1)
 		XCTAssertEqual(mockPlayer.assets, [expectedAsset])
 		XCTAssertEqual(mockPlayer.licenseLoaders.count, 1)
-		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader?], [nil])
+		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader], [expectedLicenseLoader])
 	}
 }

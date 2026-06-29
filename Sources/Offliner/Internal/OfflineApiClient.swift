@@ -17,12 +17,38 @@ enum ResourceType {
 struct StoreTrackTask {
 	let id: String
 	let track: TracksResourceObject
+	let album: AlbumsResourceObject?
 	let artists: [ArtistsResourceObject]
 	let artwork: ArtworksResourceObject?
 	let collectionResourceType: String
 	let collectionResourceId: String
 	let volume: Int
 	let position: Int
+	let addedAt: Date?
+
+	init(
+		id: String,
+		track: TracksResourceObject,
+		album: AlbumsResourceObject? = nil,
+		artists: [ArtistsResourceObject],
+		artwork: ArtworksResourceObject?,
+		collectionResourceType: String,
+		collectionResourceId: String,
+		volume: Int,
+		position: Int,
+		addedAt: Date? = nil
+	) {
+		self.id = id
+		self.track = track
+		self.album = album
+		self.artists = artists
+		self.artwork = artwork
+		self.collectionResourceType = collectionResourceType
+		self.collectionResourceId = collectionResourceId
+		self.volume = volume
+		self.position = position
+		self.addedAt = addedAt
+	}
 }
 
 struct StoreVideoTask {
@@ -34,6 +60,29 @@ struct StoreVideoTask {
 	let collectionResourceId: String
 	let volume: Int
 	let position: Int
+	let addedAt: Date?
+
+	init(
+		id: String,
+		video: VideosResourceObject,
+		artists: [ArtistsResourceObject],
+		artwork: ArtworksResourceObject?,
+		collectionResourceType: String,
+		collectionResourceId: String,
+		volume: Int,
+		position: Int,
+		addedAt: Date? = nil
+	) {
+		self.id = id
+		self.video = video
+		self.artists = artists
+		self.artwork = artwork
+		self.collectionResourceType = collectionResourceType
+		self.collectionResourceId = collectionResourceId
+		self.volume = volume
+		self.position = position
+		self.addedAt = addedAt
+	}
 }
 
 struct StoreAlbumTask {
@@ -51,7 +100,7 @@ struct StorePlaylistTask {
 
 struct StoreUserCollectionTracksTask {
 	let id: String
-	let userCollectionTracks: UserCollectionTracksResourceObject
+	let resourceId: String
 }
 
 struct RemoveItemTask {
@@ -92,6 +141,27 @@ enum OfflineTask {
 	}
 }
 
+// MARK: - OfflineCollectionReference
+
+struct OfflineCollectionReference: Hashable, Sendable {
+	let collectionType: OfflineCollectionType
+	let resourceId: String
+
+	init(collectionType: OfflineCollectionType, resourceId: String) {
+		self.collectionType = collectionType
+		self.resourceId = collectionType == .userCollectionTracks ? ResourceId.me.stringValue : resourceId
+	}
+
+	init(collectionType: OfflineCollectionType, resourceId: ResourceId) {
+		self.init(collectionType: collectionType, resourceId: resourceId.stringValue)
+	}
+
+	init?(collectionResourceType: String, collectionResourceId: String) {
+		guard let collectionType = OfflineCollectionType(rawValue: collectionResourceType) else { return nil }
+		self.init(collectionType: collectionType, resourceId: collectionResourceId)
+	}
+}
+
 // MARK: - OfflineApiClientProtocol
 
 protocol OfflineApiClientProtocol {
@@ -99,6 +169,24 @@ protocol OfflineApiClientProtocol {
 	func removeItem(type: ResourceType, id: String) async throws
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?)
 	func updateTask(taskId: String, state: Download.State) async throws
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?)
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection?
+}
+
+extension OfflineApiClientProtocol {
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		([], nil)
+	}
+
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+		nil
+	}
 }
 
 // MARK: - OfflineApiClient
@@ -132,9 +220,9 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
 		let response = try await OfflineTasksAPITidal.offlineTasksGet(
+			filterInstallationId: [installationId],
 			pageCursor: cursor,
-			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists", "collection"],
-			filterInstallationId: [installationId]
+			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists", "collection"]
 		)
 
 		let tasks = response.createOfflineTaskMap()
@@ -143,7 +231,7 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 			try? await updateTask(taskId: taskId, state: .failed)
 		}
 
-		return (tasks.compactMap(\.1), response.links.meta?.nextCursor)
+		return (tasks.compactMap { $0.1 }, response.links.meta?.nextCursor)
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {
@@ -159,6 +247,17 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 			id: taskId,
 			offlineTasksUpdateOperationPayload: payload
 		)
+	}
+
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		try await fetchOfflineInventory(type: type, id: nil, cursor: cursor)
+	}
+
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+		try await fetchOfflineInventory(type: type, id: id, cursor: nil).collections.first
 	}
 }
 
@@ -190,6 +289,54 @@ private extension OfflineApiClient {
 			return .completed
 		}
 	}
+
+	func fetchOfflineInventory(
+		type: OfflineCollectionType,
+		id: String?,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		let response = try await InstallationsAPITidal.installationsIdRelationshipsOfflineInventoryGet(
+			id: installationId,
+			filterType: [type.toFilterType],
+			pageCursor: cursor,
+			include: ["offlineInventory", "offlineInventory.coverArt"],
+			filterId: id.map { [$0] },
+			filterState: [.pending]
+		)
+
+		let includedItems = IncludedItemsMap(from: response.included)
+		let collections = (response.data ?? []).compactMap { identifier in
+			offlineCollection(from: identifier, includedItems: includedItems)
+		}
+
+		return (collections, response.links.meta?.nextCursor)
+	}
+
+	func offlineCollection(
+		from identifier: InstallationsOfflineInventoryResourceIdentifier,
+		includedItems: IncludedItemsMap
+	) -> OfflineCollection? {
+		let addedAt = identifier.meta?.addedAt ?? Date()
+		if identifier.type == "userCollectionTracks" {
+			return OfflineCollection(
+				catalogMetadata: .userCollectionTracks(id: identifier.id),
+				artworkURL: nil,
+				state: .pending,
+				addedAt: addedAt
+			)
+		}
+		return includedItems.get(type: identifier.type, id: identifier.id)?.toOfflineCollection(state: .pending, addedAt: addedAt)
+	}
+}
+
+private extension OfflineCollectionType {
+	var toFilterType: InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet {
+		switch self {
+		case .albums: return .albums
+		case .playlists: return .playlists
+		case .userCollectionTracks: return .usercollectiontracks
+		}
+	}
 }
 
 // MARK: - Response Mapping
@@ -210,15 +357,17 @@ private extension OfflineTasksResourceObject {
 
 		let collectionData = relationships?.collection?.data
 		let includedItem = includedItems.get(type: itemData.type, id: itemData.id)
+		let includedCollection = collectionData.flatMap { includedItems.get(type: $0.type, id: $0.id) }
+		let addedAt = includedCollection?.playlistItemAddedAt(for: itemData)
 
 		switch attributes.action {
 		case .store:
 			switch itemData.type {
 			case "tracks":
-				return StoreTrackTask(self, attributes: attributes, item: includedItem, collectionData: collectionData)
+				return StoreTrackTask(self, attributes: attributes, item: includedItem, collectionData: collectionData, addedAt: addedAt)
 					.map { .storeTrack($0) }
 			case "videos":
-				return StoreVideoTask(self, attributes: attributes, item: includedItem, collectionData: collectionData)
+				return StoreVideoTask(self, attributes: attributes, item: includedItem, collectionData: collectionData, addedAt: addedAt)
 					.map { .storeVideo($0) }
 			case "albums":
 				return StoreAlbumTask(self, item: includedItem)
@@ -227,8 +376,7 @@ private extension OfflineTasksResourceObject {
 				return StorePlaylistTask(self, item: includedItem)
 					.map { .storePlaylist($0) }
 			case "userCollectionTracks":
-				return StoreUserCollectionTracksTask(self, item: includedItem)
-					.map { .storeUserCollectionTracks($0) }
+				return .storeUserCollectionTracks(StoreUserCollectionTracksTask(id: id, resourceId: itemData.id))
 			default:
 				return nil
 			}
@@ -277,8 +425,6 @@ private final class IncludedItemsMap {
 				add(IncludedItem(resource: .artwork(artwork)), type: artwork.type, id: artwork.id)
 			case .artistsResourceObject(let artist):
 				add(IncludedItem(resource: .artist(artist)), type: artist.type, id: artist.id)
-			case .userCollectionTracksResourceObject(let uct):
-				add(IncludedItem(resource: .userCollectionTracks(uct)), type: uct.type, id: uct.id)
 			default:
 				break
 			}
@@ -353,7 +499,6 @@ private enum IncludedResource {
 	case playlist(PlaylistsResourceObject)
 	case artwork(ArtworksResourceObject)
 	case artist(ArtistsResourceObject)
-	case userCollectionTracks(UserCollectionTracksResourceObject)
 }
 
 // MARK: - IncludedItem
@@ -381,7 +526,6 @@ private class IncludedItem {
 		case .video: coverArt
 		case .album: coverArt
 		case .playlist: coverArt
-		case .userCollectionTracks: nil
 		default: nil
 		}
 		guard let artworkItem, case .artwork(let artwork) = artworkItem.resource else {
@@ -389,28 +533,97 @@ private class IncludedItem {
 		}
 		return artwork
 	}
+
+	var albumObject: AlbumsResourceObject? {
+		guard let album, case .album(let albumObject) = album.resource else {
+			return nil
+		}
+		return albumObject
+	}
+
+	func playlistItemAddedAt(for itemData: ResourceIdentifier) -> Date? {
+		guard case .playlist(let playlist) = resource else {
+			return nil
+		}
+
+		return playlist.relationships?.items?.data?.first { playlistItem in
+			if playlistItem.meta?.itemId == itemData.id {
+				return true
+			}
+			return playlistItem.type == itemData.type && playlistItem.id == itemData.id
+		}?.meta?.addedAt
+	}
+
+	func toOfflineCollection(state: OfflineCollectionState, addedAt: Date) -> OfflineCollection? {
+		let artwork = artworkObject
+		let artworkURL = artwork?.largestFileURL
+		switch resource {
+		case .album(let album):
+			let metadata = OfflineCollection.Metadata.album(OfflineCollection.AlbumMetadata(
+				id: album.id,
+				title: album.attributes?.title ?? "",
+				artists: artistObjects.compactMap(\.attributes?.name),
+				copyright: album.attributes?.copyright?.text,
+				releaseDate: album.attributes?.releaseDate,
+				explicit: album.attributes?.explicit ?? false,
+				backgroundColorHex: artwork?.attributes?.visualMetadata?.selectedPaletteColor
+			))
+			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state, addedAt: addedAt)
+		case .playlist(let playlist):
+			let metadata = OfflineCollection.Metadata.playlist(OfflineCollection.PlaylistMetadata(
+				id: playlist.id,
+				title: playlist.attributes?.name ?? "",
+				backgroundColorHex: artwork?.attributes?.visualMetadata?.selectedPaletteColor
+			))
+			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state, addedAt: addedAt)
+		default:
+			return nil
+		}
+	}
+}
+
+private extension ArtworksResourceObject {
+	var largestFileURL: URL? {
+		attributes?.files
+			.max { ($0.meta?.width ?? 0) * ($0.meta?.height ?? 0) < ($1.meta?.width ?? 0) * ($1.meta?.height ?? 0) }
+			.flatMap { URL(string: $0.href) }
+	}
 }
 
 // MARK: - Task Mapping Extensions
 
 private extension StoreTrackTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, attributes: OfflineTasksAttributes, item: IncludedItem?, collectionData: ResourceIdentifier?) {
+	init?(
+		_ resourceObject: OfflineTasksResourceObject,
+		attributes: OfflineTasksAttributes,
+		item: IncludedItem?,
+		collectionData: ResourceIdentifier?,
+		addedAt: Date?
+	) {
 		guard let item, case .track(let track) = item.resource, let collectionData else { return nil }
 		self.init(
 			id: resourceObject.id,
 			track: track,
+			album: item.albumObject,
 			artists: item.artistObjects,
 			artwork: item.artworkObject,
 			collectionResourceType: collectionData.type,
 			collectionResourceId: collectionData.id,
 			volume: attributes.volume,
-			position: attributes.position
+			position: attributes.position,
+			addedAt: addedAt
 		)
 	}
 }
 
 private extension StoreVideoTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, attributes: OfflineTasksAttributes, item: IncludedItem?, collectionData: ResourceIdentifier?) {
+	init?(
+		_ resourceObject: OfflineTasksResourceObject,
+		attributes: OfflineTasksAttributes,
+		item: IncludedItem?,
+		collectionData: ResourceIdentifier?,
+		addedAt: Date?
+	) {
 		guard let item, case .video(let video) = item.resource, let collectionData else { return nil }
 		self.init(
 			id: resourceObject.id,
@@ -420,7 +633,8 @@ private extension StoreVideoTask {
 			collectionResourceType: collectionData.type,
 			collectionResourceId: collectionData.id,
 			volume: attributes.volume,
-			position: attributes.position
+			position: attributes.position,
+			addedAt: addedAt
 		)
 	}
 }
@@ -436,13 +650,6 @@ private extension StorePlaylistTask {
 	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
 		guard let item, case .playlist(let playlist) = item.resource else { return nil }
 		self.init(id: resourceObject.id, playlist: playlist, artwork: item.artworkObject)
-	}
-}
-
-private extension StoreUserCollectionTracksTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
-		guard let item, case .userCollectionTracks(let uct) = item.resource else { return nil }
-		self.init(id: resourceObject.id, userCollectionTracks: uct)
 	}
 }
 

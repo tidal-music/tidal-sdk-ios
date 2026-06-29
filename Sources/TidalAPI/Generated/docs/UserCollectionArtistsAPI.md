@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionArtistsIdGet**
 ```swift
-    open class func userCollectionArtistsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionArtistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollectionArtist.
@@ -26,12 +26,11 @@ Retrieves single userCollectionArtist by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection artists id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
 
 // Get single userCollectionArtist.
-UserCollectionArtistsAPI.userCollectionArtistsIdGet(id: id, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionArtistsAPI.userCollectionArtistsIdGet(id: id, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -48,7 +47,6 @@ UserCollectionArtistsAPI.userCollectionArtistsIdGet(id: id, countryCode: country
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
 
@@ -123,7 +121,7 @@ Void (empty response body)
 
 # **userCollectionArtistsIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionArtistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionArtistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionArtistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionArtistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -138,12 +136,11 @@ import OpenAPIClient
 let id = "id_example" // String | User collection artists id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
 
 // Get items relationship (\"to-many\").
-UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -162,7 +159,6 @@ Name | Type | Description  | Notes
  **id** | **String** | User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
 
@@ -183,7 +179,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionArtistsIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionArtistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, userCollectionArtistsItemsRelationshipAddOperationPayload: UserCollectionArtistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionArtistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionArtistsItemsRelationshipAddOperationPayload: UserCollectionArtistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionArtistsItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -196,12 +192,11 @@ Adds item(s) to items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection artists id. Use `me` for the authenticated user's resource
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let userCollectionArtistsItemsRelationshipAddOperationPayload = UserCollectionArtistsItemsRelationshipAddOperation_Payload(data: [UserCollectionArtistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionArtistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionArtistsItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, userCollectionArtistsItemsRelationshipAddOperationPayload: userCollectionArtistsItemsRelationshipAddOperationPayload) { (response, error) in
+UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionArtistsItemsRelationshipAddOperationPayload: userCollectionArtistsItemsRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -218,13 +213,12 @@ UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsPost(id: id, c
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **userCollectionArtistsItemsRelationshipAddOperationPayload** | [**UserCollectionArtistsItemsRelationshipAddOperationPayload**](UserCollectionArtistsItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
-Void (empty response body)
+[**UserCollectionArtistsItemsAddMultiRelationshipDataDocument**](UserCollectionArtistsItemsAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 

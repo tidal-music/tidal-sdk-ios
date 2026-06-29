@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **installationsGet**
 ```swift
-    open class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: InstallationsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: InstallationsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple installations.
@@ -30,11 +30,10 @@ import OpenAPIClient
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
 let filterClientProvidedInstallationId = ["inner_example"] // [String] | Client-provided installation identifier to filter by (e.g. `a468bee88def`) (optional)
-let filterId = ["inner_example"] // [String] | List of installation IDs (e.g. `a468bee88def`) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User ID to filter by. Use `me` for the authenticated user (optional)
 
 // Get multiple installations.
-InstallationsAPI.installationsGet(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterId: filterId, filterOwnersId: filterOwnersId) { (response, error) in
+InstallationsAPI.installationsGet(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -53,7 +52,6 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners | [optional] 
  **filterClientProvidedInstallationId** | [**[String]**](String.md) | Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) | [optional] 
- **filterId** | [**[String]**](String.md) | List of installation IDs (e.g. &#x60;a468bee88def&#x60;) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User ID to filter by. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
@@ -179,7 +177,7 @@ Void (empty response body)
 
 # **installationsIdRelationshipsOfflineInventoryGet**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil, completion: @escaping (_ data: InstallationsOfflineInventoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryGet(id: String, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, completion: @escaping (_ data: InstallationsOfflineInventoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get offlineInventory relationship (\"to-many\").
@@ -192,12 +190,14 @@ Retrieves offlineInventory relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Installation id
+let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`) (optional)
+let filterId = ["inner_example"] // [String] | Offline item id (e.g. `1234`) (optional)
+let filterState = ["filterState_example"] // [String] | One of: PENDING, STORED (e.g. `PENDING`) (optional)
 
 // Get offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, pageCursor: pageCursor, include: include, filterType: filterType) { (response, error) in
+InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, filterType: filterType, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -214,9 +214,11 @@ InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, pageCur
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Installation id | 
+ **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineInventory | [optional] 
- **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) | [optional] 
+ **filterId** | [**[String]**](String.md) | Offline item id (e.g. &#x60;1234&#x60;) | [optional] 
+ **filterState** | [**[String]**](String.md) | One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) | [optional] 
 
 ### Return type
 

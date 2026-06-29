@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **providerOwnersGet**
 ```swift
-    open class func providerOwnersGet(include: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: ProviderOwnersMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: ProviderOwnersMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple providerOwners.
@@ -23,11 +23,11 @@ Retrieves multiple providerOwners by available filters, or without if applicable
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, provider (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple providerOwners.
-ProviderOwnersAPI.providerOwnersGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
+ProviderOwnersAPI.providerOwnersGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -43,8 +43,8 @@ ProviderOwnersAPI.providerOwnersGet(include: include, filterOwnersId: filterOwne
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, provider | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 

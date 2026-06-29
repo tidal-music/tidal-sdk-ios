@@ -10,6 +10,98 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `Player.setAudioOutputDevice(uniqueID:)` to pin audio output to a specific Core Audio device for bit-perfect/exclusive playback on macOS (Player)
 
+## [0.11.24] - 2026-06-23
+
+### Changed
+- Generated API code (TidalAPI)
+- Stop printing HTTP error response bodies (TidalAPI)
+
+## [0.11.23] - 2026-06-12
+
+### Added
+- Add sorting options for offline collection items (Offliner)
+- Stream collection download state (Offliner)
+
+### Fixed
+- Fix Offliner build broken by regenerated TidalAPI argument order (Offliner)
+
+### Changed
+- Generated API code (TidalAPI)
+- Bump CI to Xcode 26.2 on macOS 15 (CI)
+
+## [0.11.22] - 2026-06-03
+
+### Fixed
+- Fix race in `LoginRepository.deviceLoginPollHelper` (Auth)
+- Fix AVContentKeySession DRM crash by retaining session in async response (Player)
+
+## [0.11.21] - 2026-05-18
+
+### Changed
+- Generated API code using spec version 1.10.3 (TidalAPI)
+
+## [0.11.20] - 2026-05-11
+
+### Changed
+- Generated API code using spec version 1.9.3 (TidalAPI)
+
+## [0.11.19] - 2026-05-07
+
+### Added
+- Stream-based `getOfflineCollection(collectionType:resourceId:)` and `getOfflineCollections(collectionType:cursor:)` that emit local data first, then merge in pending collections fetched from the backend offline inventory (Offliner)
+- `OfflineCollectionState` (`.pending`, `.stored`) and `addedAt: Date` field on `OfflineCollection` (Offliner)
+
+## [0.11.18] - 2026-05-06
+
+### Changed
+- Generated API code using spec version 1.8.0 (TidalAPI)
+
+## [0.11.17] - 2026-05-04
+
+### Added
+- Add per-track backgroundColorHex to OfflineMediaItem.TrackMetadata (Offliner)
+
+### Changed
+- Generated API code using spec version 1.7.0 (TidalAPI)
+
+## [0.11.16] - 2026-04-28
+
+### Added
+- Add fade-out support to pause for sleep timer (Player)
+
+## [0.11.15] - 2026-04-27
+
+### Changed
+- Generated API code using spec version 1.6.2 (TidalAPI)
+
+### Fixed
+- Replace collectionResourceId with "me" when storing or removing userCollectionTracks items (Offliner)
+
+## [0.11.14] - 2026-04-16
+
+### Fixed
+- Fix downloaded videos not playing when crossfade was enabled (Player)
+
+### Changed
+- Generated API code using spec version 1.5.2 (TidalAPI)
+
+## [0.11.13] - 2026-04-14
+
+### Changed
+- Unify userCollectionTracks into OfflineCollectionType and introduce ResourceId enum for all Offliner public API resourceId parameters (Offliner)
+
+## [0.11.12] - 2026-04-14
+
+### Changed
+- Generated API code using spec version 1.5.0 (TidalAPI)
+
+## [0.11.11] - 2026-04-10
+
+### Changed
+- Migrate video playback info to videoManifests endpoint (Player)
+- Simplify StoreUserCollectionTracksTask to use resourceId instead of included object (Offliner)
+- Generated API code using spec version 1.4.17 (TidalAPI)
+
 ## [0.11.10] - 2026-04-07
 
 ### Added

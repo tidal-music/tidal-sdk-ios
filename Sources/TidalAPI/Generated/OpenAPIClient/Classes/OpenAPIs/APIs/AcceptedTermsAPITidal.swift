@@ -19,10 +19,12 @@ public enum AcceptedTermsAPITidal {
 	 */
 	public enum FilterTermsTermsType_acceptedTermsGet: String, CaseIterable {
 		case developer = "DEVELOPER"
+		case uploadMarketplace = "UPLOAD_MARKETPLACE"
 
 		func toAcceptedTermsAPIEnum() -> AcceptedTermsAPI.FilterTermsTermsType_acceptedTermsGet {
 			switch self {
 			case .developer: return .developer
+			case .uploadMarketplace: return .uploadMarketplace
 			}
 		}
 	}
@@ -32,9 +34,9 @@ public enum AcceptedTermsAPITidal {
      
      - returns: AcceptedTermsMultiResourceDataDocument
      */
-	public static func acceptedTermsGet(include: [String]? = nil, filterOwnersId: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, filterTermsTermsType: [AcceptedTermsAPITidal.FilterTermsTermsType_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
+	public static func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [AcceptedTermsAPITidal.FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AcceptedTermsAPI.acceptedTermsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId, filterTermsIsLatestVersion: filterTermsIsLatestVersion, filterTermsTermsType: filterTermsTermsType?.compactMap { $0.toAcceptedTermsAPIEnum() })
+			AcceptedTermsAPI.acceptedTermsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType.compactMap { $0.toAcceptedTermsAPIEnum() }, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion)
 		}
 	}
 

@@ -18,14 +18,13 @@ internal class InstallationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
      - parameter filterClientProvidedInstallationId: (query) Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) (optional)
-     - parameter filterId: (query) List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterOwnersId: (query) User ID to filter by. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: InstallationsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> InstallationsMultiResourceDataDocument {
+    internal class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> InstallationsMultiResourceDataDocument {
         do {
-            return try await installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterId: filterId, filterOwnersId: filterOwnersId).execute().body
+            return try await installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -42,11 +41,10 @@ internal class InstallationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
      - parameter filterClientProvidedInstallationId: (query) Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) (optional)
-     - parameter filterId: (query) List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterOwnersId: (query) User ID to filter by. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<InstallationsMultiResourceDataDocument> 
      */
-    internal class func installationsGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<InstallationsMultiResourceDataDocument> {
+    internal class func installationsGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<InstallationsMultiResourceDataDocument> {
         let localVariablePath = "/installations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -56,7 +54,6 @@ internal class InstallationsAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[clientProvidedInstallationId]": (wrappedValue: filterClientProvidedInstallationId?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
         ])
 
@@ -187,18 +184,28 @@ internal class InstallationsAPI {
     }
 
     /**
+     * enum for parameter filterState
+     */
+    public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
+        case pending = "PENDING"
+        case stored = "STORED"
+    }
+
+    /**
      Get offlineInventory relationship (\"to-many\").
      
      - parameter id: (path) Installation id 
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) (optional)
+     - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
+     - parameter filterState: (query) One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryGet(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
+    internal class func installationsIdRelationshipsOfflineInventoryGet(id: String, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
         do {
-            return try await installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, filterType: filterType).execute().body
+            return try await installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, filterType: filterType, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -213,12 +220,14 @@ internal class InstallationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Installation id 
+     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
-     - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) (optional)
+     - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
+     - parameter filterState: (query) One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
      - returns: RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet]? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {
+    internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: String, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -230,7 +239,9 @@ internal class InstallationsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[type]": (wrappedValue: filterType?.encodeToJSON(), isExplode: true),
+            "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
+            "filter[state]": (wrappedValue: filterState?.encodeToJSON(), isExplode: true),
+            "filter[type]": (wrappedValue: filterType.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

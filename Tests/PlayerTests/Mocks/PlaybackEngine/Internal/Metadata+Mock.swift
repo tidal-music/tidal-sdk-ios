@@ -33,18 +33,4 @@ extension Metadata {
 		)
 	}
 
-	static func mockFromTrackPlaybackInfo(
-		productId: String = "1",
-		trackPlaybackInfo: TrackPlaybackInfo = .mock()
-	) -> Self {
-		mock(
-			productId: productId,
-			assetPresentation: trackPlaybackInfo.assetPresentation,
-			audioMode: trackPlaybackInfo.audioMode,
-			audioQuality: trackPlaybackInfo.audioQuality,
-			audioSampleRate: trackPlaybackInfo.sampleRate,
-			audioBitDepth: trackPlaybackInfo.bitDepth,
-			adaptiveAudioQualities: nil
-		)
-	}
 }

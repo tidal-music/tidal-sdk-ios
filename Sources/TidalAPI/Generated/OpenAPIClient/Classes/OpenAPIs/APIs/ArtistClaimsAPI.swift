@@ -15,14 +15,14 @@ internal class ArtistClaimsAPI {
     /**
      Get multiple artistClaims.
      
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: ArtistClaimsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistClaimsGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
+    internal class func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
         do {
-            return try await artistClaimsGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId).execute().body
+            return try await artistClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -36,11 +36,11 @@ internal class ArtistClaimsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - returns: RequestBuilder<ArtistClaimsMultiResourceDataDocument> 
      */
-    internal class func artistClaimsGetWithRequestBuilder(include: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<ArtistClaimsMultiResourceDataDocument> {
+    internal class func artistClaimsGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil) -> RequestBuilder<ArtistClaimsMultiResourceDataDocument> {
         let localVariablePath = "/artistClaims"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -48,7 +48,7 @@ internal class ArtistClaimsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

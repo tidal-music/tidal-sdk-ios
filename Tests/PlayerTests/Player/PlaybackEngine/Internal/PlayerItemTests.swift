@@ -388,7 +388,8 @@ final class PlayerItemTests: XCTestCase {
 			actualAudioMode: metadata.audioMode?.rawValue,
 			actualQuality: mediaProduct.productType.quality(given: metadata),
 			startReason: startReason,
-			endTimestamp: endTimestamp
+			endTimestamp: endTimestamp,
+			tags: [.NEW_PLAYBACK_ENDPOINTS]
 		)
 		XCTAssertEqual(playerEventSender.streamingMetricsEvents[1] as? PlaybackStatistics, playbackStatistics)
 

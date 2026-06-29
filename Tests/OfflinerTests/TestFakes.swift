@@ -6,14 +6,27 @@ import TidalAPI
 // MARK: - Backend Client Fakes
 
 final class StubOfflineApiClient: OfflineApiClientProtocol {
+	struct RecordedItem {
+		let type: ResourceType
+		let id: String
+	}
+
 	private(set) var tasks: [OfflineTask] = []
+	private(set) var addedItems: [RecordedItem] = []
+	private(set) var removedItems: [RecordedItem] = []
 	var taskIdCounter = 0
+
+	var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] = []
+	var pendingCollection: OfflineCollection?
+	var pendingCollectionResponses: [OfflineCollection?]?
+	private(set) var getOfflineCollectionCallCount = 0
 
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
 		tasks.append(contentsOf: newTasks)
 	}
 
 	func addItem(type: ResourceType, id: String) async throws {
+		addedItems.append(RecordedItem(type: type, id: id))
 		let taskId = "task-\(taskIdCounter)"
 		let position = taskIdCounter + 1
 		taskIdCounter += 1
@@ -65,13 +78,15 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		case .userCollectionTracks:
 			let task = StoreUserCollectionTracksTask(
 				id: taskId,
-				userCollectionTracks: UserCollectionTracksResourceObject(id: id, type: "userCollectionTracks")
+				resourceId: id
 			)
 			tasks.append(.storeUserCollectionTracks(task))
 		}
 	}
 
 	func removeItem(type: ResourceType, id: String) async throws {
+		removedItems.append(RecordedItem(type: type, id: id))
+
 		let taskId = "task-\(taskIdCounter)"
 		taskIdCounter += 1
 
@@ -127,6 +142,24 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		while !tasks.isEmpty {
 			try? await Task.sleep(nanoseconds: 10_000_000)
 		}
+	}
+
+	func getPendingCollections(
+		type: OfflineCollectionType,
+		cursor: String?
+	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+		guard !pendingCollectionsPages.isEmpty else { return ([], nil) }
+		return pendingCollectionsPages.removeFirst()
+	}
+
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+		getOfflineCollectionCallCount += 1
+		if var responses = pendingCollectionResponses, !responses.isEmpty {
+			let response = responses.removeFirst()
+			pendingCollectionResponses = responses
+			return response
+		}
+		return pendingCollection
 	}
 }
 
@@ -223,6 +256,43 @@ final class FailingArtworkDownloader: ArtworkDownloaderProtocol {
 	}
 }
 
+actor SuspendingArtworkDownloader: ArtworkDownloaderProtocol {
+	private var startedContinuation: CheckedContinuation<Void, Never>?
+	private var resultContinuation: CheckedContinuation<URL?, Error>?
+	private var started = false
+
+	func waitUntilStarted() async {
+		if started {
+			return
+		}
+
+		await withCheckedContinuation { continuation in
+			startedContinuation = continuation
+		}
+	}
+
+	func complete() {
+		let tempDir = FileManager.default.temporaryDirectory
+		let url = tempDir.appendingPathComponent("artwork-\(UUID().uuidString).jpg")
+		try? Data("artwork".utf8).write(to: url)
+		let continuation = resultContinuation
+		resultContinuation = nil
+
+		continuation?.resume(returning: url)
+	}
+
+	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL? {
+		try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<URL?, Error>) in
+			resultContinuation = continuation
+			started = true
+			let startedContinuation = startedContinuation
+			self.startedContinuation = nil
+
+			startedContinuation?.resume()
+		}
+	}
+}
+
 // MARK: - Media Downloader Fakes
 
 final class SucceedingMediaDownloader: MediaDownloaderProtocol {
@@ -266,6 +336,52 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 	}
 }
 
+actor SuspendingMediaDownloader: MediaDownloaderProtocol {
+	private var startedContinuation: CheckedContinuation<Void, Never>?
+	private var resultContinuation: CheckedContinuation<MediaDownloadResult, Error>?
+	private var started = false
+
+	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+
+	func waitUntilStarted() async {
+		if started {
+			return
+		}
+
+		await withCheckedContinuation { continuation in
+			startedContinuation = continuation
+		}
+	}
+
+	func complete() {
+		let tempDir = FileManager.default.temporaryDirectory
+		let url = tempDir.appendingPathComponent("media-\(UUID().uuidString).m4a")
+		try? Data("media".utf8).write(to: url)
+		let result = MediaDownloadResult(duration: 120, mediaLocation: url)
+		let continuation = resultContinuation
+		resultContinuation = nil
+
+		continuation?.resume(returning: result)
+	}
+
+	func download(
+		taskId: String,
+		manifestURL: URL,
+		licenseDownloadResult: LicenseDownloadResult?,
+		title: String,
+		onProgress: @escaping @Sendable (Double) async -> Void
+	) async throws -> MediaDownloadResult {
+		try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<MediaDownloadResult, Error>) in
+			resultContinuation = continuation
+			started = true
+			let startedContinuation = startedContinuation
+			self.startedContinuation = nil
+
+			startedContinuation?.resume()
+		}
+	}
+}
+
 // MARK: - Manifest Fetcher Fakes
 
 final class SucceedingTrackManifestFetcher: TrackManifestFetcherProtocol {
@@ -296,4 +412,40 @@ enum FakeError: Error {
 	case backendFailed
 	case artworkDownloadFailed
 	case downloadFailed
+}
+
+// MARK: - AsyncStream Test Helpers
+
+extension AsyncStream where Element == OfflineCollection? {
+	func latest() async -> OfflineCollection? {
+		var result: OfflineCollection?
+		for await value in self { result = value }
+		return result
+	}
+}
+
+extension AsyncStream where Element == Set<OfflineCollection> {
+	func latest() async -> Set<OfflineCollection> {
+		var result: Set<OfflineCollection> = []
+		for await value in self { result = value }
+		return result
+	}
+}
+
+extension AsyncStream where Element == OfflineCollectionDownloadState {
+	func first() async -> OfflineCollectionDownloadState? {
+		var iterator = makeAsyncIterator()
+		return await iterator.next()
+	}
+
+	func first(_ count: Int) async -> [OfflineCollectionDownloadState] {
+		var result: [OfflineCollectionDownloadState] = []
+		for await value in self {
+			result.append(value)
+			if result.count == count {
+				break
+			}
+		}
+		return result
+	}
 }

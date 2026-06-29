@@ -33,7 +33,7 @@
 ## Commit & Pull Request Guidelines
 - Commit messages: imperative, concise; include scope when helpful, e.g., `Player: Fix stall on seek`; reference tickets (e.g., `TDAPEX-123`).
 - PRs: pass build/tests/lint; include clear description, rationale, linked issues, and doc updates.
-- Versioning/releases: bump `version.txt` + update `CHANGELOG.md` (CI enforces sync via `Scripts/checkVersionSync.sh`).
+- Versioning/releases: bump `version.txt` + update `CHANGELOG.md` (CI enforces sync via `.agents/skills/prepare-release/scripts/check-version-sync.sh`). See the `prepare-release` skill in `.agents/skills/prepare-release/` for the full workflow and bundled scripts.
 - CI runs lint and unit tests on macOS; address failures before requesting review.
 - Never edit files in `Sources/TidalAPI/Generated`—regenerate instead.
 

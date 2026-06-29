@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **stripeDashboardLinksGet**
 ```swift
-    open class func stripeDashboardLinksGet(include: [String]? = nil, filterOwnersId: [String]? = nil, completion: @escaping (_ data: StripeDashboardLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func stripeDashboardLinksGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: StripeDashboardLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple stripeDashboardLinks.
@@ -22,11 +22,11 @@ Retrieves multiple stripeDashboardLinks by available filters, or without if appl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 
 // Get multiple stripeDashboardLinks.
-StripeDashboardLinksAPI.stripeDashboardLinksGet(include: include, filterOwnersId: filterOwnersId) { (response, error) in
+StripeDashboardLinksAPI.stripeDashboardLinksGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -42,8 +42,8 @@ StripeDashboardLinksAPI.stripeDashboardLinksGet(include: include, filterOwnersId
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
 
 ### Return type
 

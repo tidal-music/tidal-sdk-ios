@@ -32,26 +32,36 @@ public struct UsageRulesCreateOperationPayloadDataAttributes: Codable, Hashable 
     }
     public var countryCode: String?
     public var free: [Free]?
+    /** Tracks only. Set to true (with empty paid/subscription/free) to clear an explicit track-level override and inherit usage rules from the album. Must be omitted or false when providing explicit usage values. */
+    public var inherited: Bool?
     public var paid: [Paid]?
     public var subscription: [Subscription]?
+    /** Datetime from which these usage rules are valid (ISO 8601) */
+    public var validFrom: Date?
 
     public init(
         countryCode: String? = nil,
         free: [Free]? = nil,
+        inherited: Bool? = nil,
         paid: [Paid]? = nil,
-        subscription: [Subscription]? = nil
+        subscription: [Subscription]? = nil,
+        validFrom: Date? = nil
     ) {
         self.countryCode = countryCode
         self.free = free
+        self.inherited = inherited
         self.paid = paid
         self.subscription = subscription
+        self.validFrom = validFrom
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case countryCode
         case free
+        case inherited
         case paid
         case subscription
+        case validFrom
     }
 
     // Encodable protocol methods
@@ -60,7 +70,9 @@ public struct UsageRulesCreateOperationPayloadDataAttributes: Codable, Hashable 
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(countryCode, forKey: .countryCode)
         try container.encodeIfPresent(free, forKey: .free)
+        try container.encodeIfPresent(inherited, forKey: .inherited)
         try container.encodeIfPresent(paid, forKey: .paid)
         try container.encodeIfPresent(subscription, forKey: .subscription)
+        try container.encodeIfPresent(validFrom, forKey: .validFrom)
     }
 }

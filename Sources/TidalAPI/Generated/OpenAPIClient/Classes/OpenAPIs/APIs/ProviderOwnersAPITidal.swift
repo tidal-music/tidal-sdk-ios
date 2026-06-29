@@ -19,9 +19,9 @@ public enum ProviderOwnersAPITidal {
      
      - returns: ProviderOwnersMultiResourceDataDocument
      */
-	public static func providerOwnersGet(include: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> ProviderOwnersMultiResourceDataDocument {
+	public static func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ProviderOwnersMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ProviderOwnersAPI.providerOwnersGetWithRequestBuilder(include: include, filterOwnersId: filterOwnersId)
+			ProviderOwnersAPI.providerOwnersGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
 		}
 	}
 

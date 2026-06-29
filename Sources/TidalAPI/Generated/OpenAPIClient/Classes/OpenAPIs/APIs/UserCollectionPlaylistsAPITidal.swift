@@ -19,9 +19,9 @@ public enum UserCollectionPlaylistsAPITidal {
      
      - returns: UserCollectionPlaylistsSingleResourceDataDocument
      */
-	public static func userCollectionPlaylistsIdGet(id: String, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
+	public static func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, locale: locale, include: include)
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGetWithRequestBuilder(id: id, locale: locale, include: include)
 		}
 	}
 
@@ -42,10 +42,12 @@ public enum UserCollectionPlaylistsAPITidal {
 	 * enum for parameter collectionView
 	 */
 	public enum CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet: String, CaseIterable {
+		case flat = "FLAT"
 		case folders = "FOLDERS"
 
 		func toUserCollectionPlaylistsAPIEnum() -> UserCollectionPlaylistsAPI.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet {
 			switch self {
+			case .flat: return .flat
 			case .folders: return .folders
 			}
 		}
@@ -89,9 +91,9 @@ public enum UserCollectionPlaylistsAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument
      */
-	public static func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload)
 		}

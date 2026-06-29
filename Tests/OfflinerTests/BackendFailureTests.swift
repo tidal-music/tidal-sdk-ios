@@ -10,10 +10,10 @@ final class BackendFailureTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
+		try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-123"))
 		try await downloadAndWaitForCompletion(offliner)
 
-		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
 		XCTAssertNotNil(storedItem)
 	}
 
@@ -25,7 +25,7 @@ final class BackendFailureTests: OfflinerTestCase {
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.download(mediaType: .tracks, resourceId: "track-123")
+		try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-123"))
 
 		let downloads = offliner.newDownloads
 		async let runTask: () = offliner.run()
@@ -41,7 +41,7 @@ final class BackendFailureTests: OfflinerTestCase {
 
 		await runTask
 
-		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-123")
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
 		XCTAssertNotNil(storedItem)
 	}
 
@@ -53,7 +53,7 @@ final class BackendFailureTests: OfflinerTestCase {
 		)
 
 		do {
-			try await offliner.download(mediaType: .tracks, resourceId: "track-123")
+			try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-123"))
 			XCTFail("Expected download to throw when addItem fails")
 		} catch {
 			// Expected - addItem failure should propagate
@@ -71,7 +71,7 @@ final class BackendFailureTests: OfflinerTestCase {
 		)
 
 		do {
-			try await offliner.download(collectionType: .albums, resourceId: "album-123")
+			try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
 			XCTFail("Expected download to throw when addItem fails")
 		} catch {
 			// Expected - addItem failure should propagate

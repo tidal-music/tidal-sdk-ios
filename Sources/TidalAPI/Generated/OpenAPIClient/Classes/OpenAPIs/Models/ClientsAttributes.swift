@@ -18,20 +18,12 @@ public struct ClientsAttributes: Codable, Hashable {
         case partner = "PARTNER"
         case _internal = "INTERNAL"
     }
-    public enum PlatformPreset: String, Codable, CaseIterable {
-        case _none = "NONE"
-        case web = "WEB"
-        case android = "ANDROID"
-        case ios = "IOS"
-    }
     public static let scopesRule = ArrayRule(minItems: nil, maxItems: nil, uniqueItems: true)
     public var accessTier: AccessTier
     public var clientSecret: String?
     public var createdAt: Date?
     public var description: String?
-    public var enabled: Bool?
     public var name: String
-    public var platformPreset: PlatformPreset?
     public var redirectUris: [String]?
     public var scopes: Set<String>?
 
@@ -40,9 +32,7 @@ public struct ClientsAttributes: Codable, Hashable {
         clientSecret: String? = nil,
         createdAt: Date? = nil,
         description: String? = nil,
-        enabled: Bool? = nil,
         name: String,
-        platformPreset: PlatformPreset? = nil,
         redirectUris: [String]? = nil,
         scopes: Set<String>? = nil
     ) {
@@ -50,9 +40,7 @@ public struct ClientsAttributes: Codable, Hashable {
         self.clientSecret = clientSecret
         self.createdAt = createdAt
         self.description = description
-        self.enabled = enabled
         self.name = name
-        self.platformPreset = platformPreset
         self.redirectUris = redirectUris
         self.scopes = scopes
     }
@@ -62,9 +50,7 @@ public struct ClientsAttributes: Codable, Hashable {
         case clientSecret
         case createdAt
         case description
-        case enabled
         case name
-        case platformPreset
         case redirectUris
         case scopes
     }
@@ -77,9 +63,7 @@ public struct ClientsAttributes: Codable, Hashable {
         try container.encodeIfPresent(clientSecret, forKey: .clientSecret)
         try container.encodeIfPresent(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(description, forKey: .description)
-        try container.encodeIfPresent(enabled, forKey: .enabled)
         try container.encode(name, forKey: .name)
-        try container.encodeIfPresent(platformPreset, forKey: .platformPreset)
         try container.encodeIfPresent(redirectUris, forKey: .redirectUris)
         try container.encodeIfPresent(scopes, forKey: .scopes)
     }

@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Suggestions from search history */
+/** Suggestions from search history. Deprecated — use the history relationship instead. Will be deleted shortly. */
 public struct SearchSuggestionsHistory: Codable, Hashable {
 
     public static let queryRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)

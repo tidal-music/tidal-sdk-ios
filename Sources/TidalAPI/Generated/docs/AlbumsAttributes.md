@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **accessType** | **String** | Access type | [optional] 
+**ai** | **Bool** | Whether the album is AI-generated | [optional] 
 **albumType** | **String** | Album type | 
 **availability** | **[String]** | Available usage for this album. Deprecated: use &#39;usageRules&#39; instead. This field will be removed in a future version. | [optional] 
 **barcodeId** | **String** |  | 

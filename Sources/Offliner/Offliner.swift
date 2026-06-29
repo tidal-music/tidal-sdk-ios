@@ -5,10 +5,13 @@ import Player
 // MARK: - Offliner
 
 public final class Offliner {
+	static let defaultCollectionDownloadStatePollInterval: UInt64 = 1_000_000_000
+
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
 	private let mediaDownloader: MediaDownloaderProtocol
+	private let collectionDownloadStatePollInterval: UInt64
 	private var trackManifestFetcher: TrackManifestFetcherProtocol
 
 	public var audioFormats: [AudioFormat] {
@@ -50,6 +53,7 @@ public final class Offliner {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
+		self.collectionDownloadStatePollInterval = Self.defaultCollectionDownloadStatePollInterval
 		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
@@ -72,11 +76,13 @@ public final class Offliner {
 		mediaDownloader: MediaDownloaderProtocol,
 		licenseDownloader: LicenseDownloader = LicenseDownloader(),
 		trackManifestFetcher: TrackManifestFetcherProtocol,
-		videoManifestFetcher: VideoManifestFetcherProtocol
+		videoManifestFetcher: VideoManifestFetcherProtocol,
+		collectionDownloadStatePollInterval: UInt64 = Offliner.defaultCollectionDownloadStatePollInterval
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
+		self.collectionDownloadStatePollInterval = collectionDownloadStatePollInterval
 		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
@@ -97,8 +103,8 @@ public final class Offliner {
 
 	// MARK: - Offline Content
 
-	public func getOfflineMediaItem(mediaType: OfflineMediaItemType, resourceId: String) async throws -> OfflineMediaItem? {
-		try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId)
+	public func getOfflineMediaItem(mediaType: OfflineMediaItemType, resourceId: ResourceId) async throws -> OfflineMediaItem? {
+		try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId.stringValue)
 	}
 
 	public func getOfflineMediaItems(mediaType: OfflineMediaItemType) async throws -> [OfflineMediaItem] {
@@ -107,7 +113,7 @@ public final class Offliner {
 		if !failures.isEmpty {
 			Task {
 				for failure in failures {
-					try? await download(mediaType: failure.mediaType, resourceId: failure.resourceId)
+					try? await download(mediaType: failure.mediaType, resourceId: .identifier(failure.resourceId))
 				}
 			}
 		}
@@ -117,82 +123,257 @@ public final class Offliner {
 
 	public func getOfflineCollection(
 		collectionType: OfflineCollectionType,
-		resourceId: String
-	) async throws -> OfflineCollection? {
-		try await offlineStore.getCollection(collectionType: collectionType, resourceId: resourceId)
+		resourceId: ResourceId
+	) -> AsyncStream<OfflineCollection?> {
+		AsyncStream { continuation in
+			let task = Task {
+				let local = try? await offlineStore.getCollection(
+					collectionType: collectionType,
+					resourceId: resourceId.stringValue
+				)
+				continuation.yield(local)
+
+				if let remote = try? await offlineApiClient.getOfflineCollection(
+					type: collectionType,
+					id: resourceId.stringValue
+				) {
+					continuation.yield(remote)
+				}
+
+				continuation.finish()
+			}
+			continuation.onTermination = { _ in task.cancel() }
+		}
 	}
 
-	public func getOfflineCollections(collectionType: OfflineCollectionType) async throws -> [OfflineCollection] {
-		try await offlineStore.getCollections(collectionType: collectionType)
+	public func getOfflineCollections(
+		collectionType: OfflineCollectionType,
+		cursor: String? = nil
+	) -> AsyncStream<Set<OfflineCollection>> {
+		AsyncStream { continuation in
+			let task = Task {
+				let local = (try? await offlineStore.getCollections(collectionType: collectionType)) ?? []
+				var collections = Set(local)
+				continuation.yield(collections)
+
+				var nextCursor: String? = cursor
+				repeat {
+					let page = try? await offlineApiClient.getPendingCollections(
+						type: collectionType,
+						cursor: nextCursor
+					)
+
+					if let page, !page.collections.isEmpty {
+						for item in page.collections {
+							collections.update(with: item)
+						}
+						continuation.yield(collections)
+					}
+
+					nextCursor = page?.cursor
+				} while nextCursor != nil
+
+				continuation.finish()
+			}
+			continuation.onTermination = { _ in task.cancel() }
+		}
+	}
+
+	/// Streams collection-level offline availability.
+	///
+	/// The stream emits a fast initial value from local storage and active in-memory downloads, then continues polling for
+	/// later local changes.
+	///
+	/// The stream does not poll backend task inventory. Removal is represented as `.notDownloaded`; `.downloading` is
+	/// reserved for active download/acquisition work already known by this SDK instance.
+	public func getOfflineCollectionDownloadState(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) -> AsyncStream<OfflineCollectionDownloadState> {
+		AsyncStream { continuation in
+			let task = Task {
+				var lastState: OfflineCollectionDownloadState?
+				var consecutiveDownloadedObservations = 0
+
+				func yieldState(_ state: OfflineCollectionDownloadState) {
+					let shouldYield: Bool
+
+					// A second downloaded observation avoids transient completion between collection metadata and
+					// collection item tasks.
+					if state == .downloaded {
+						consecutiveDownloadedObservations += 1
+						shouldYield = lastState == .downloaded || consecutiveDownloadedObservations >= 2
+					} else {
+						consecutiveDownloadedObservations = 0
+						shouldYield = true
+					}
+
+					if shouldYield, state != lastState {
+						continuation.yield(state)
+						lastState = state
+					}
+				}
+
+				let initialState = await offlineCollectionDownloadState(
+					collectionType: collectionType,
+					resourceId: resourceId
+				)
+				continuation.yield(initialState)
+				lastState = initialState
+
+				while !Task.isCancelled {
+					try? await Task.sleep(nanoseconds: collectionDownloadStatePollInterval)
+					guard !Task.isCancelled else { break }
+
+					let state = await offlineCollectionDownloadState(
+						collectionType: collectionType,
+						resourceId: resourceId
+					)
+
+					yieldState(state)
+				}
+
+				continuation.finish()
+			}
+			continuation.onTermination = { _ in task.cancel() }
+		}
 	}
 
 	public func countOfflineCollectionItems(
 		collectionType: OfflineCollectionType,
-		resourceId: String
+		resourceId: ResourceId
 	) async throws -> Int {
-		try await offlineStore.countCollectionItems(collectionType: collectionType, resourceId: resourceId)
+		try await offlineStore.countCollectionItems(collectionType: collectionType, resourceId: resourceId.stringValue)
 	}
 
 	public func getOfflineCollectionItems(
 		collectionType: OfflineCollectionType,
-		resourceId: String,
+		resourceId: ResourceId,
 		limit: Int,
-		after cursor: Int64? = nil
+		sort: OfflineCollectionItemSort? = nil,
+		after cursor: String? = nil
 	) async throws -> OfflineCollectionItemsPage {
-		let (page, failures) = try await offlineStore.getCollectionItems(
-			collectionType: collectionType,
-			resourceId: resourceId,
-			limit: limit,
-			after: cursor
-		)
+		let resourceId = resourceId.stringValue
 
-		if !failures.isEmpty {
-			Task {
-				for failure in failures {
-					try? await download(mediaType: failure.mediaType, resourceId: failure.resourceId)
-				}
-			}
+		let (page, failures): (OfflineCollectionItemsPage, [FailedOfflineItem])
+		switch sort {
+		case nil:
+			(page, failures) = try await offlineStore.getCollectionItems(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				limit: limit,
+				after: cursor
+			)
+		case .title(let direction):
+			(page, failures) = try await offlineStore.getCollectionItemsOrderByTitle(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				direction: direction,
+				limit: limit,
+				after: cursor
+			)
+		case .album(let direction):
+			(page, failures) = try await offlineStore.getCollectionItemsOrderByAlbum(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				direction: direction,
+				limit: limit,
+				after: cursor
+			)
+		case .artist(let direction):
+			(page, failures) = try await offlineStore.getCollectionItemsOrderByArtist(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				direction: direction,
+				limit: limit,
+				after: cursor
+			)
+		case .dateAdded(let direction):
+			(page, failures) = try await offlineStore.getCollectionItemsOrderByDateAdded(
+				collectionType: collectionType,
+				resourceId: resourceId,
+				direction: direction,
+				limit: limit,
+				after: cursor
+			)
 		}
 
+		scheduleRedownload(for: failures)
 		return page
+	}
+
+	private func scheduleRedownload(for failures: [FailedOfflineItem]) {
+		guard !failures.isEmpty else { return }
+		Task {
+			for failure in failures {
+				try? await download(mediaType: failure.mediaType, resourceId: .identifier(failure.resourceId))
+			}
+		}
 	}
 
 	public func getAudioFormatOfCollection(
 		collectionType: OfflineCollectionType,
-		resourceId: String
+		resourceId: ResourceId
 	) async throws -> AudioFormat? {
-		try await offlineStore.getAudioFormatOfCollection(collectionType: collectionType, resourceId: resourceId)
+		try await offlineStore.getAudioFormatOfCollection(collectionType: collectionType, resourceId: resourceId.stringValue)
 	}
 
 	public func getCollectionDuration(
 		collectionType: OfflineCollectionType,
-		resourceId: String
+		resourceId: ResourceId
 	) async throws -> Int {
-		try await offlineStore.getCollectionDuration(collectionType: collectionType, resourceId: resourceId)
+		try await offlineStore.getCollectionDuration(collectionType: collectionType, resourceId: resourceId.stringValue)
 	}
 
 	// MARK: - Download/Remove
 
-	public func download(mediaType: OfflineMediaItemType, resourceId: String) async throws {
-		try await offlineApiClient.addItem(type: mediaType.toResourceType, id: resourceId)
+	public func download(mediaType: OfflineMediaItemType, resourceId: ResourceId) async throws {
+		try await offlineApiClient.addItem(type: mediaType.toResourceType, id: resourceId.stringValue)
 		await taskRunner.run()
 	}
 
-	public func download(collectionType: OfflineCollectionType, resourceId: String) async throws {
-		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId)
+	public func download(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
+		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId.stringValue)
 		await taskRunner.run()
 	}
 
-	public func remove(mediaType: OfflineMediaItemType, resourceId: String) async throws {
-		try await offlineApiClient.removeItem(type: mediaType.toResourceType, id: resourceId)
+	public func remove(mediaType: OfflineMediaItemType, resourceId: ResourceId) async throws {
+		try await offlineApiClient.removeItem(type: mediaType.toResourceType, id: resourceId.stringValue)
 		await taskRunner.run()
 	}
 
-	public func remove(collectionType: OfflineCollectionType, resourceId: String) async throws {
-		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId)
+	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
+		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
+		// Optimistically update local availability; the remove task performs the same idempotent cleanup.
+		try? offlineStore.deleteCollection(
+			resourceType: collectionType.rawValue,
+			resourceId: collectionLocalResourceId(collectionType: collectionType, resourceId: resourceId)
+		)
 		await taskRunner.run()
 	}
 
+	private func offlineCollectionDownloadState(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) async -> OfflineCollectionDownloadState {
+		if await taskRunner.hasCurrentDownload(relatedTo: collectionType, resourceId: resourceId) {
+			return .downloading
+		}
+
+		let localCollection = try? await offlineStore.getCollection(
+			collectionType: collectionType,
+			resourceId: collectionLocalResourceId(collectionType: collectionType, resourceId: resourceId)
+		)
+
+		return localCollection == nil ? .notDownloaded : .downloaded
+	}
+
+	private func collectionLocalResourceId(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId
+	) -> String {
+		collectionType == .userCollectionTracks ? ResourceId.me.stringValue : resourceId.stringValue
+	}
 }
 
 // MARK: - OfflineItemProvider
@@ -210,7 +391,7 @@ extension Offliner: OfflineItemProvider {
 			return try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: productId)
 				.map { OfflinePlaybackItem($0, productType: productType) }
 		} catch {
-			Task { try? await download(mediaType: mediaType, resourceId: productId) }
+			Task { try? await download(mediaType: mediaType, resourceId: .identifier(productId)) }
 		}
 
 		return nil

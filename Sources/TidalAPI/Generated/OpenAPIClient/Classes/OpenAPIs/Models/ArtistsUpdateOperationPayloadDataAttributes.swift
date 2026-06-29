@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct ArtistsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var contributionsEnabled: Bool?
     public var contributionsSalesPitch: String?
     public var externalLinks: [ExternalLinkPayload]?

@@ -3,6 +3,14 @@ import Foundation
 @testable import Player
 import XCTest
 
+private struct TestResponse: Codable, Equatable {
+	let id: Int
+
+	static func mock(id: Int = 1) -> Self {
+		TestResponse(id: id)
+	}
+}
+
 final class HTTPClientTests: XCTestCase {
 	var urlSession: URLSession!
 
@@ -83,14 +91,14 @@ final class HTTPClientTests: XCTestCase {
 	}
 
 	func testValidRequest() async {
-		JsonEncodedResponseURLProtocol.succeed(with: TrackPlaybackInfo.mock())
+		JsonEncodedResponseURLProtocol.succeed(with: TestResponse.mock())
 
 		do {
-			let playbackInfo: TrackPlaybackInfo = try await httpClient.getJson(
+			let playbackInfo: TestResponse = try await httpClient.getJson(
 				url: URL(string: "https://www.tidal.com")!,
 				headers: [:]
 			)
-			XCTAssertEqual(playbackInfo.trackId, TrackPlaybackInfo.mock().trackId)
+			XCTAssertEqual(playbackInfo.id, TestResponse.mock().id)
 			XCTAssertEqual(networkBackoffPolicy.counter, 0)
 			XCTAssertEqual(responseBackoffPolicy.counter, 0)
 			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
@@ -103,7 +111,7 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail(with: URLError(URLError.cancelled))
 
 		do {
-			let _: TrackPlaybackInfo = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
+			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
 			XCTFail("Request should have failed")
 		} catch {
 			XCTAssertTrue(error is CancellationError)
@@ -117,7 +125,7 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail(with: URLError(URLError.networkConnectionLost))
 
 		do {
-			let _: TrackPlaybackInfo = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
+			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
 			XCTFail("Request should have failed")
 		} catch {
 			guard let internalError = error as? PlayerInternalError else {
@@ -137,7 +145,7 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail(with: URLError(URLError.timedOut))
 
 		do {
-			let _: TrackPlaybackInfo = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
+			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
 			XCTFail("Request should have failed")
 		} catch {
 			guard let internalError = error as? PlayerInternalError else {
@@ -157,7 +165,7 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail(with: URLError(URLError.resourceUnavailable))
 
 		do {
-			let _: TrackPlaybackInfo = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
+			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
 			XCTFail("Request should have failed")
 		} catch {
 			guard let internalError = error as? PlayerInternalError else {
@@ -179,7 +187,7 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
-			let _: TrackPlaybackInfo = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
+			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
 			XCTFail("Request should have failed")
 		} catch {
 			guard let httpError = error as? HttpError else {
@@ -200,7 +208,7 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
-			let _: TrackPlaybackInfo = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
+			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
 			XCTFail("Request should have failed")
 		} catch {
 			guard let httpError = error as? HttpError else {
@@ -221,7 +229,7 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
-			let _: TrackPlaybackInfo = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
+			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
 			XCTFail("Request should have failed")
 		} catch {
 			guard let httpError = error as? HttpError else {
@@ -242,7 +250,7 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
-			let _: TrackPlaybackInfo = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
+			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
 			XCTFail("Request should have failed")
 		} catch {
 			guard let httpError = error as? HttpError else {
@@ -263,7 +271,7 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
-			let _: TrackPlaybackInfo = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
+			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
 			XCTFail("Request should have failed")
 		} catch {
 			guard let internalError = error as? PlayerInternalError else {
@@ -281,7 +289,7 @@ final class HTTPClientTests: XCTestCase {
 
 	func testSomeNetworkErrors_thenSucceed() async {
 		// swiftlint:disable force_try
-		let data = try! JSONEncoder().encode(TrackPlaybackInfo.mock())
+		let data = try! JSONEncoder().encode(TestResponse.mock())
 		// swiftlint:enable force_try
 
 		var responses = [JsonEncodedResponseURLProtocol.Response](
@@ -293,11 +301,11 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.replay(responses)
 
 		do {
-			let playbackInfo: TrackPlaybackInfo = try await httpClient.getJson(
+			let playbackInfo: TestResponse = try await httpClient.getJson(
 				url: URL(string: "https://www.tidal.com")!,
 				headers: [:]
 			)
-			XCTAssertEqual(playbackInfo.trackId, TrackPlaybackInfo.mock().trackId)
+			XCTAssertEqual(playbackInfo.id, TestResponse.mock().id)
 			XCTAssertEqual(networkBackoffPolicy.counter, 3)
 			XCTAssertEqual(responseBackoffPolicy.counter, 0)
 			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
@@ -308,7 +316,7 @@ final class HTTPClientTests: XCTestCase {
 
 	func testSomeNetworkErrors_thenResponseError_thenSucceed() async {
 		// swiftlint:disable force_try
-		let data = try! JSONEncoder().encode(TrackPlaybackInfo.mock())
+		let data = try! JSONEncoder().encode(TestResponse.mock())
 		// swiftlint:enable force_try
 
 		let httpErrorCode = 501
@@ -324,11 +332,11 @@ final class HTTPClientTests: XCTestCase {
 		JsonEncodedResponseURLProtocol.replay(responses)
 
 		do {
-			let playbackInfo: TrackPlaybackInfo = try await httpClient.getJson(
+			let playbackInfo: TestResponse = try await httpClient.getJson(
 				url: URL(string: "https://www.tidal.com")!,
 				headers: [:]
 			)
-			XCTAssertEqual(playbackInfo.trackId, TrackPlaybackInfo.mock().trackId)
+			XCTAssertEqual(playbackInfo.id, TestResponse.mock().id)
 			XCTAssertEqual(networkBackoffPolicy.counter, 3)
 			XCTAssertEqual(responseBackoffPolicy.counter, 1)
 			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
