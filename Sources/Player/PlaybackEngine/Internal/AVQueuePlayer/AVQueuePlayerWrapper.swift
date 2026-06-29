@@ -18,6 +18,11 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	@Atomic private(set) var player: AVQueuePlayer
 	private var playerMonitor: AVPlayerMonitor?
 
+	/// macOS bit-perfect routing: the Core Audio device unique id every new
+	/// `AVQueuePlayer` is pinned to (nil = system default). Read in
+	/// `createPlayer()` so it survives the per-load/reset player recreation.
+	static var preferredAudioOutputDeviceUID: String?
+
 	private let contentKeyDelegateQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.contentkeydelegate.queue")
 	private let playbackTimeProgressQueue: DispatchQueue = DispatchQueue(label: "com.tidal.player.playbacktimeprogress.queue")
 
@@ -28,6 +33,16 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	var onPlaybackProgress: ((Double, Double) -> Void)?
 
 	var externalVolumeControl = false
+
+	/// Pins this (currently active) player's audio output to a Core Audio device
+	/// by unique id, and updates the preference for future players. macOS only;
+	/// no-op elsewhere. nil routes to the system default.
+	func setAudioOutputDevice(uniqueID: String?) {
+		AVQueuePlayerWrapper.preferredAudioOutputDeviceUID = uniqueID
+		#if os(macOS)
+			player.audioOutputDeviceUniqueID = uniqueID
+		#endif
+	}
 
 	var currentAsset: AVPlayerAsset? {
 		player.currentItem.flatMap { playerItemAssets[$0] }
@@ -276,6 +291,9 @@ private extension AVQueuePlayerWrapper {
 		player.automaticallyWaitsToMinimizeStalling = true
 		player.actionAtItemEnd = .advance
 		player.allowsExternalPlayback = false
+		#if os(macOS)
+			player.audioOutputDeviceUniqueID = preferredAudioOutputDeviceUID
+		#endif
 		return player
 	}
 

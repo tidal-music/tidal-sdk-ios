@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `Player.setAudioOutputDevice(uniqueID:)` to pin audio output to a specific Core Audio device for bit-perfect/exclusive playback on macOS (Player)
+
 ## [0.11.10] - 2026-04-07
 
 ### Added
