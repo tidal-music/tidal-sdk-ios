@@ -34,9 +34,12 @@ jobs:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '26.2'
+    # -parallel-testing-enabled NO: PlayerTests use Swift Testing, which runs in
+    # parallel by default. Several suites share process-global state (PlayerWorld,
+    # the JsonEncodedResponseURLProtocol URL mock), so they must run serially.
     - name: Run Player tests (xcodebuild)
       run: |-
-        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination "$IOS_SIMULATOR_DESTINATION" test -skip-testing:PlayerTests/PlayLogTests -skip-testing:PlayerTests/PlayLogWithDeinitTests -skipPackagePluginValidation | xcbeautify --renderer github-actions
+        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination "$IOS_SIMULATOR_DESTINATION" test -parallel-testing-enabled NO -skip-testing:PlayerTests/PlayLogTests -skip-testing:PlayerTests/PlayLogWithDeinitTests -skipPackagePluginValidation | xcbeautify --renderer github-actions
 
   build-test-apps:
     name: Build Test Apps

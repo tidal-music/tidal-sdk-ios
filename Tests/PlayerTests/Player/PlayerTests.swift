@@ -1,16 +1,18 @@
 import Auth
+import Foundation
 import GRDB
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - PlayerTests
 
-final class PlayerTests: XCTestCase {
+@Suite(.serialized)
+final class PlayerTests {
 	private var player: Player!
 	private var playerEventSender: PlayerEventSenderMock!
 	private var dbQueue: DatabaseQueue!
 
-	override func setUpWithError() throws {
+	init() throws {
 		PlayerWorld = PlayerWorldClient.mock(developmentFeatureFlagProvider: DevelopmentFeatureFlagProvider.mock)
 
 		let sessionConfiguration = URLSessionConfiguration.default

@@ -1,7 +1,7 @@
 import Foundation
 import GRDB
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -25,35 +25,32 @@ private enum Constants {
 
 // MARK: - GRDBOfflineStorageTests
 
-final class GRDBOfflineStorageTests: XCTestCase {
+final class GRDBOfflineStorageTests {
 	var dbQueue: DatabaseQueue!
 	var offlineStorage: GRDBOfflineStorage!
 
-	override func setUpWithError() throws {
+	init() throws {
 		// Create an in-memory database for testing
 		dbQueue = try DatabaseQueue()
 		try GRDBOfflineStorage.initializeDatabase(dbQueue: dbQueue)
 		offlineStorage = GRDBOfflineStorage(dbQueue: dbQueue)
 	}
 
-	override func tearDownWithError() throws {
-		dbQueue = nil
-		offlineStorage = nil
-	}
-
+	@Test
 	func testInsertOfflineEntry() throws {
 		do {
 			let offlineEntry = Constants.offlineEntry1
 			try offlineStorage.save(Constants.offlineEntry1)
 
-			let fetchedEntry = try XCTUnwrap(offlineStorage.get(key: offlineEntry.productId))
-			XCTAssertEqual(fetchedEntry.productId, offlineEntry.productId)
+			let fetchedEntry = try #require(try offlineStorage.get(key: offlineEntry.productId))
+			#expect(fetchedEntry.productId == offlineEntry.productId)
 		} catch {
-			XCTFail("Test failed with error: \(error.localizedDescription)")
+			Issue.record("Test failed with error: \(error.localizedDescription)")
 			throw error
 		}
 	}
 
+	@Test
 	func testUpdateOfflineEntry() throws {
 		do {
 			var offlineEntry = Constants.offlineEntry1
@@ -64,14 +61,15 @@ final class GRDBOfflineStorageTests: XCTestCase {
 			offlineEntry.licenseURL = expectedLicenseURL
 			try offlineStorage.update(offlineEntry)
 
-			let fetchedEntry = try XCTUnwrap(offlineStorage.get(key: offlineEntry.productId))
-			XCTAssertEqual(fetchedEntry.licenseURL, expectedLicenseURL)
+			let fetchedEntry = try #require(try offlineStorage.get(key: offlineEntry.productId))
+			#expect(fetchedEntry.licenseURL == expectedLicenseURL)
 		} catch {
-			XCTFail("Test failed with error: \(error.localizedDescription)")
+			Issue.record("Test failed with error: \(error.localizedDescription)")
 			throw error
 		}
 	}
 
+	@Test
 	func testDeleteOfflineEntry() throws {
 		do {
 			let offlineEntry = Constants.offlineEntry1
@@ -80,28 +78,30 @@ final class GRDBOfflineStorageTests: XCTestCase {
 			try offlineStorage.delete(key: offlineEntry.productId)
 
 			let fetchedEntry = try offlineStorage.get(key: offlineEntry.productId)
-			XCTAssertNil(fetchedEntry)
+			#expect(fetchedEntry == nil)
 		} catch {
-			XCTFail("Test failed with error: \(error.localizedDescription)")
+			Issue.record("Test failed with error: \(error.localizedDescription)")
 			throw error
 		}
 	}
 
+	@Test
 	func testGetAllOfflineEntries() throws {
 		do {
 			try offlineStorage.save(Constants.offlineEntry1)
 			try offlineStorage.save(Constants.offlineEntry2)
 
 			let allEntries = try offlineStorage.getAll()
-			XCTAssertEqual(allEntries.count, 2)
-			XCTAssertEqual(allEntries[0].productId, Constants.offlineEntry1.productId)
-			XCTAssertEqual(allEntries[1].productId, Constants.offlineEntry2.productId)
+			#expect(allEntries.count == 2)
+			#expect(allEntries[0].productId == Constants.offlineEntry1.productId)
+			#expect(allEntries[1].productId == Constants.offlineEntry2.productId)
 		} catch {
-			XCTFail("Test failed with error: \(error.localizedDescription)")
+			Issue.record("Test failed with error: \(error.localizedDescription)")
 			throw error
 		}
 	}
 
+	@Test
 	func testCalculateTotalSize() throws {
 		do {
 			let expectedTotalSize = Constants.offlineEntry1.size + Constants.offlineEntry2.size
@@ -110,9 +110,9 @@ final class GRDBOfflineStorageTests: XCTestCase {
 			try offlineStorage.save(Constants.offlineEntry2)
 
 			let totalSize = try offlineStorage.totalSize()
-			XCTAssertEqual(totalSize, expectedTotalSize)
+			#expect(totalSize == expectedTotalSize)
 		} catch {
-			XCTFail("Test failed with error: \(error.localizedDescription)")
+			Issue.record("Test failed with error: \(error.localizedDescription)")
 			throw error
 		}
 	}
