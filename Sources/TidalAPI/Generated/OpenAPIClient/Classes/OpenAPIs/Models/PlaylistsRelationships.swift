@@ -18,6 +18,7 @@ public struct PlaylistsRelationships: Codable, Hashable {
     public var items: PlaylistsItemsMultiRelationshipDataDocument?
     public var ownerProfiles: MultiRelationshipDataDocument?
     public var owners: MultiRelationshipDataDocument?
+    public var suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument?
 
     public init(
         collaboratorProfiles: MultiRelationshipDataDocument? = nil,
@@ -25,7 +26,8 @@ public struct PlaylistsRelationships: Codable, Hashable {
         coverArt: MultiRelationshipDataDocument? = nil,
         items: PlaylistsItemsMultiRelationshipDataDocument? = nil,
         ownerProfiles: MultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil
+        owners: MultiRelationshipDataDocument? = nil,
+        suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument? = nil
     ) {
         self.collaboratorProfiles = collaboratorProfiles
         self.collaborators = collaborators
@@ -33,6 +35,7 @@ public struct PlaylistsRelationships: Codable, Hashable {
         self.items = items
         self.ownerProfiles = ownerProfiles
         self.owners = owners
+        self.suggestedCoverArts = suggestedCoverArts
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -42,6 +45,7 @@ public struct PlaylistsRelationships: Codable, Hashable {
         case items
         case ownerProfiles
         case owners
+        case suggestedCoverArts
     }
 
     // Encodable protocol methods
@@ -54,5 +58,6 @@ public struct PlaylistsRelationships: Codable, Hashable {
         try container.encodeIfPresent(items, forKey: .items)
         try container.encodeIfPresent(ownerProfiles, forKey: .ownerProfiles)
         try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(suggestedCoverArts, forKey: .suggestedCoverArts)
     }
 }

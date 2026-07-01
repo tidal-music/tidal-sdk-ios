@@ -265,6 +265,18 @@ public enum PlaylistsAPITidal {
 
 
 	/**
+     Get suggestedCoverArts relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsSuggestedCoverArtsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
      Create single playlist.
      
      - returns: PlaylistsSingleResourceDataDocument
