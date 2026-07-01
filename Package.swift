@@ -53,7 +53,10 @@ let package = Package(
 	] + (shouldIncludeDocCPlugin ? [.package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")] : []),
 	targets: [
 		.target(
-			name: "Template"
+			name: "Template",
+			exclude: [
+				"README.md",
+			]
 		),
 		.testTarget(
 			name: "TemplateTests",
@@ -67,6 +70,11 @@ let package = Package(
 				.AnyCodable,
 				.auth,
 				.common,
+			],
+			exclude: [
+				"Generated/docs",
+				"Config",
+				"README.md",
 			]
 		),
 		.target(
@@ -74,6 +82,9 @@ let package = Package(
 			dependencies: [
 				.Logging,
 				.AnyCodable,
+			],
+			exclude: [
+				"README.md",
 			]
 		),
 		.testTarget(
@@ -89,6 +100,11 @@ let package = Package(
 				.GRDB,
 				.SWXMLHash,
 				.auth,
+			],
+			exclude: [
+				"README.md",
+				"Monitoring/Persistence/MonitoringDatabase.sqlite",
+				"Events/Persistence/EventQueueDatabase.sqlite",
 			]
 		),
 		.testTarget(
@@ -105,6 +121,9 @@ let package = Package(
 				.common,
 				.KeychainAccess,
 				.Logging,
+			],
+			exclude: [
+				"README.md",
 			]
 		),
 		.testTarget(
@@ -145,6 +164,9 @@ let package = Package(
 				.tidalAPI,
 				.auth,
 				.player,
+			],
+			exclude: [
+				"README.md",
 			],
 			resources: [
 				.process("Internal/Resources"),
