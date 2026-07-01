@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **items** | [**PlaylistsItemsMultiRelationshipDataDocument**](PlaylistsItemsMultiRelationshipDataDocument.md) |  | [optional] 
 **ownerProfiles** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**suggestedCoverArts** | [**PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument**](PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

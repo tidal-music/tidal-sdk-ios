@@ -12,20 +12,23 @@ import AnyCodable
 
 public struct ProviderProductInfosAttributes: Codable, Hashable {
 
-    public var barcodeId: String
+    public var barcodeId: String?
     public var broken: Bool?
     public var brokenCode: Int?
+    public var grid: String?
     public var tracks: [TrackInfo]?
 
     public init(
-        barcodeId: String,
+        barcodeId: String? = nil,
         broken: Bool? = nil,
         brokenCode: Int? = nil,
+        grid: String? = nil,
         tracks: [TrackInfo]? = nil
     ) {
         self.barcodeId = barcodeId
         self.broken = broken
         self.brokenCode = brokenCode
+        self.grid = grid
         self.tracks = tracks
     }
 
@@ -33,6 +36,7 @@ public struct ProviderProductInfosAttributes: Codable, Hashable {
         case barcodeId
         case broken
         case brokenCode
+        case grid
         case tracks
     }
 
@@ -40,9 +44,10 @@ public struct ProviderProductInfosAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(barcodeId, forKey: .barcodeId)
+        try container.encodeIfPresent(barcodeId, forKey: .barcodeId)
         try container.encodeIfPresent(broken, forKey: .broken)
         try container.encodeIfPresent(brokenCode, forKey: .brokenCode)
+        try container.encodeIfPresent(grid, forKey: .grid)
         try container.encodeIfPresent(tracks, forKey: .tracks)
     }
 }

@@ -16,36 +16,7 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case spotlightInfo = "SPOTLIGHT_INFO"
         case unknown = "UNKNOWN"
     }
-    public enum LayoutType: String, Codable, CaseIterable {
-        case compact = "COMPACT"
-        case grid = "GRID"
-        case unknown = "UNKNOWN"
-    }
-    public enum ModuleType: String, Codable, CaseIterable {
-        case artistList = "ARTIST_LIST"
-        case compactGridCard = "COMPACT_GRID_CARD"
-        case compactHorizontalList = "COMPACT_HORIZONTAL_LIST"
-        case compactHorizontalListWithContext = "COMPACT_HORIZONTAL_LIST_WITH_CONTEXT"
-        case featuredCard = "FEATURED_CARD"
-        case gridCard = "GRID_CARD"
-        case gridCardWithContext = "GRID_CARD_WITH_CONTEXT"
-        case gridHighlightCard = "GRID_HIGHLIGHT_CARD"
-        case anniversaryCard = "ANNIVERSARY_CARD"
-        case artistBirthdayCard = "ARTIST_BIRTHDAY_CARD"
-        case artistMemoriamCard = "ARTIST_MEMORIAM_CARD"
-        case artistTrackCreditsCard = "ARTIST_TRACK_CREDITS_CARD"
-        case pillList = "PILL_LIST"
-        case verticalList = "VERTICAL_LIST"
-        case horizontalList = "HORIZONTAL_LIST"
-        case horizontalListWithContext = "HORIZONTAL_LIST_WITH_CONTEXT"
-        case shortcutList = "SHORTCUT_LIST"
-        case trackList = "TRACK_LIST"
-        case verticalListCard = "VERTICAL_LIST_CARD"
-        case textCard = "TEXT_CARD"
-        case linksList = "LINKS_LIST"
-        case publicPlaylistList = "PUBLIC_PLAYLIST_LIST"
-    }
-    public enum SourceType: String, Codable, CaseIterable {
+    public enum ModuleKind: String, Codable, CaseIterable {
         case albumRecommendations = "ALBUM_RECOMMENDATIONS"
         case becauseYouListenedToAlbum = "BECAUSE_YOU_LISTENED_TO_ALBUM"
         case becauseYouAddedAlbum = "BECAUSE_YOU_ADDED_ALBUM"
@@ -91,7 +62,7 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case albumOtherVersions = "ALBUM_OTHER_VERSIONS"
         case albumRelatedAlbums = "ALBUM_RELATED_ALBUMS"
         case albumRelatedArtists = "ALBUM_RELATED_ARTISTS"
-        case collectionItems = "COLLECTION_ITEMS"
+        case playlistItems = "PLAYLIST_ITEMS"
         case albumAnniversary = "ALBUM_ANNIVERSARY"
         case artistBirthday = "ARTIST_BIRTHDAY"
         case artistMemoriam = "ARTIST_MEMORIAM"
@@ -139,44 +110,78 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case exploreDecades = "EXPLORE_DECADES"
         case exploreGenres = "EXPLORE_GENRES"
         case exploreMoods = "EXPLORE_MOODS"
+        case artistPopularReleases = "ARTIST_POPULAR_RELEASES"
+        case purchasesForYou = "PURCHASES_FOR_YOU"
+        case unknown = "UNKNOWN"
+    }
+    public enum PreviewPresentation: String, Codable, CaseIterable {
+        case artistList = "ARTIST_LIST"
+        case compactGridCard = "COMPACT_GRID_CARD"
+        case compactHorizontalList = "COMPACT_HORIZONTAL_LIST"
+        case compactHorizontalListWithContext = "COMPACT_HORIZONTAL_LIST_WITH_CONTEXT"
+        case featuredCard = "FEATURED_CARD"
+        case gridCard = "GRID_CARD"
+        case gridCardWithContext = "GRID_CARD_WITH_CONTEXT"
+        case gridHighlightCard = "GRID_HIGHLIGHT_CARD"
+        case anniversaryCard = "ANNIVERSARY_CARD"
+        case artistBirthdayCard = "ARTIST_BIRTHDAY_CARD"
+        case artistMemoriamCard = "ARTIST_MEMORIAM_CARD"
+        case artistTrackCreditsCard = "ARTIST_TRACK_CREDITS_CARD"
+        case pillList = "PILL_LIST"
+        case verticalList = "VERTICAL_LIST"
+        case discographyTabs = "DISCOGRAPHY_TABS"
+        case magazineList = "MAGAZINE_LIST"
+        case horizontalList = "HORIZONTAL_LIST"
+        case horizontalListWithContext = "HORIZONTAL_LIST_WITH_CONTEXT"
+        case shortcutList = "SHORTCUT_LIST"
+        case trackList = "TRACK_LIST"
+        case verticalListCard = "VERTICAL_LIST_CARD"
+        case textCard = "TEXT_CARD"
+        case linksList = "LINKS_LIST"
+        case publicPlaylistList = "PUBLIC_PLAYLIST_LIST"
+        case unknown = "UNKNOWN"
+    }
+    public enum ViewAllPresentation: String, Codable, CaseIterable {
+        case compact = "COMPACT"
+        case grid = "GRID"
         case unknown = "UNKNOWN"
     }
     /** Type of icons the module should show */
     public var icons: [Icons]
-    /** Type of representation of the items in the module view all screen */
-    public var layoutType: LayoutType
-    /** Type of representation of the module */
-    public var moduleType: ModuleType
-    /** Type of source represented by the module */
-    public var sourceType: SourceType
+    /** Semantic kind of the module, describing its product purpose and expected item domain. */
+    public var moduleKind: ModuleKind
+    /** Presentation used when rendering the module preview on a dynamic page. */
+    public var previewPresentation: PreviewPresentation
     /** Subtitle of the module */
     public var subtitle: String?
     /** Title of the module */
     public var title: String?
+    /** Presentation used when rendering the module's items in the full view-all experience. */
+    public var viewAllPresentation: ViewAllPresentation
 
     public init(
         icons: [Icons],
-        layoutType: LayoutType,
-        moduleType: ModuleType,
-        sourceType: SourceType,
+        moduleKind: ModuleKind,
+        previewPresentation: PreviewPresentation,
         subtitle: String? = nil,
-        title: String? = nil
+        title: String? = nil,
+        viewAllPresentation: ViewAllPresentation
     ) {
         self.icons = icons
-        self.layoutType = layoutType
-        self.moduleType = moduleType
-        self.sourceType = sourceType
+        self.moduleKind = moduleKind
+        self.previewPresentation = previewPresentation
         self.subtitle = subtitle
         self.title = title
+        self.viewAllPresentation = viewAllPresentation
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case icons
-        case layoutType
-        case moduleType
-        case sourceType
+        case moduleKind
+        case previewPresentation
         case subtitle
         case title
+        case viewAllPresentation
     }
 
     // Encodable protocol methods
@@ -184,10 +189,10 @@ public struct DynamicModulesAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(icons, forKey: .icons)
-        try container.encode(layoutType, forKey: .layoutType)
-        try container.encode(moduleType, forKey: .moduleType)
-        try container.encode(sourceType, forKey: .sourceType)
+        try container.encode(moduleKind, forKey: .moduleKind)
+        try container.encode(previewPresentation, forKey: .previewPresentation)
         try container.encodeIfPresent(subtitle, forKey: .subtitle)
         try container.encodeIfPresent(title, forKey: .title)
+        try container.encode(viewAllPresentation, forKey: .viewAllPresentation)
     }
 }

@@ -12,19 +12,19 @@ import AnyCodable
 
 public struct DynamicPagesRelationships: Codable, Hashable {
 
-    public var dynamicModules: MultiRelationshipDataDocument?
+    public var modules: MultiRelationshipDataDocument?
     public var subject: SingleRelationshipDataDocument?
 
     public init(
-        dynamicModules: MultiRelationshipDataDocument? = nil,
+        modules: MultiRelationshipDataDocument? = nil,
         subject: SingleRelationshipDataDocument? = nil
     ) {
-        self.dynamicModules = dynamicModules
+        self.modules = modules
         self.subject = subject
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case dynamicModules
+        case modules
         case subject
     }
 
@@ -32,7 +32,7 @@ public struct DynamicPagesRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(dynamicModules, forKey: .dynamicModules)
+        try container.encodeIfPresent(modules, forKey: .modules)
         try container.encodeIfPresent(subject, forKey: .subject)
     }
 }

@@ -5,13 +5,13 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**dynamicPagesGet**](DynamicPagesAPI.md#dynamicpagesget) | **GET** /dynamicPages | Get multiple dynamicPages.
-[**dynamicPagesIdRelationshipsDynamicModulesGet**](DynamicPagesAPI.md#dynamicpagesidrelationshipsdynamicmodulesget) | **GET** /dynamicPages/{id}/relationships/dynamicModules | Get dynamicModules relationship (\&quot;to-many\&quot;).
+[**dynamicPagesIdRelationshipsModulesGet**](DynamicPagesAPI.md#dynamicpagesidrelationshipsmodulesget) | **GET** /dynamicPages/{id}/relationships/modules | Get modules relationship (\&quot;to-many\&quot;).
 [**dynamicPagesIdRelationshipsSubjectGet**](DynamicPagesAPI.md#dynamicpagesidrelationshipssubjectget) | **GET** /dynamicPages/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 
 
 # **dynamicPagesGet**
 ```swift
-    open class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], filterSubjectId: [String], refreshId: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: DynamicPagesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], filterSubjectId: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: DynamicPagesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple dynamicPages.
@@ -28,13 +28,13 @@ let systemType = "systemType_example" // String | The system type of the device 
 let clientVersion = "clientVersion_example" // String | Client version number
 let filterPageType = ["inner_example"] // [String] | type of the page (e.g. `ARTIST`)
 let filterSubjectId = ["inner_example"] // [String] | the subject id, eg. artistId (e.g. `67890`)
-let refreshId = "refreshId_example" // String |  (optional)
+let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: modules, subject (optional)
 
 // Get multiple dynamicPages.
-DynamicPagesAPI.dynamicPagesGet(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, filterSubjectId: filterSubjectId, refreshId: refreshId, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+DynamicPagesAPI.dynamicPagesGet(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, filterSubjectId: filterSubjectId, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -55,10 +55,10 @@ Name | Type | Description  | Notes
  **clientVersion** | **String** | Client version number | 
  **filterPageType** | [**[String]**](String.md) | type of the page (e.g. &#x60;ARTIST&#x60;) | 
  **filterSubjectId** | [**[String]**](String.md) | the subject id, eg. artistId (e.g. &#x60;67890&#x60;) | 
- **refreshId** | **String** |  | [optional] 
+ **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: modules, subject | [optional] 
 
 ### Return type
 
@@ -75,14 +75,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **dynamicPagesIdRelationshipsDynamicModulesGet**
+# **dynamicPagesIdRelationshipsModulesGet**
 ```swift
-    open class func dynamicPagesIdRelationshipsDynamicModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsDynamicModulesGet, clientVersion: String, refreshId: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: DynamicPagesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: DynamicPagesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get dynamicModules relationship (\"to-many\").
+Get modules relationship (\"to-many\").
 
-Retrieves dynamicModules relationship.
+Retrieves modules relationship.
 
 ### Example
 ```swift
@@ -93,14 +93,14 @@ let id = "id_example" // String | DynamicPages Id
 let deviceType = "deviceType_example" // String | The type of device making the request
 let systemType = "systemType_example" // String | The system type of the device making the request
 let clientVersion = "clientVersion_example" // String | Client version number
-let refreshId = "refreshId_example" // String |  (optional)
+let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: dynamicModules (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: modules (optional)
 
-// Get dynamicModules relationship (\"to-many\").
-DynamicPagesAPI.dynamicPagesIdRelationshipsDynamicModulesGet(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshId: refreshId, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+// Get modules relationship (\"to-many\").
+DynamicPagesAPI.dynamicPagesIdRelationshipsModulesGet(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -120,11 +120,11 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | 
  **systemType** | **String** | The system type of the device making the request | 
  **clientVersion** | **String** | Client version number | 
- **refreshId** | **String** |  | [optional] 
+ **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: dynamicModules | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: modules | [optional] 
 
 ### Return type
 

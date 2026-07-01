@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **attributes** | [**DynamicPagesAttributes**](DynamicPagesAttributes.md) |  | [optional] 
 **id** | **String** | Resource id | 
+**meta** | [**DynamicPagesResourceObjectMeta**](DynamicPagesResourceObjectMeta.md) |  | [optional] 
 **relationships** | [**DynamicPagesRelationships**](DynamicPagesRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 
 

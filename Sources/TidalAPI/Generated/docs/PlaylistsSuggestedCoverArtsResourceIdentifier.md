@@ -1,11 +1,11 @@
-# PlaylistsItemsResourceIdentifierMeta
+# PlaylistsSuggestedCoverArtsResourceIdentifier
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**addedAt** | **Date** |  | [optional] 
-**itemCursor** | **String** |  | [optional] 
-**itemId** | **String** |  | [optional] 
+**id** | **String** | Resource id | 
+**meta** | [**PlaylistsSuggestedCoverArtsResourceIdentifierMeta**](PlaylistsSuggestedCoverArtsResourceIdentifierMeta.md) |  | [optional] 
+**type** | **String** | Resource type | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
