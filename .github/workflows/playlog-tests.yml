@@ -3,6 +3,9 @@ name: Run PlayLog Unit Tests
 on:
   workflow_dispatch:
 
+env:
+  IOS_SIMULATOR_DESTINATION: 'platform=iOS Simulator,name=iPhone 17,OS=26.2'
+
 jobs:
   run-xcodebuild-tests:
     name: Run xcodebuild PlayLog Unit Tests
@@ -12,7 +15,6 @@ jobs:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '26.2'
-
     - name: Run Player PlayLog tests (xcodebuild)
       run: |-
-        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' test -only-testing:PlayerTests/PlayLogTests -only-testing:PlayerTests/PlayLogTestsWithDeinit -skipPackagePluginValidation | xcbeautify --renderer github-actions
+        set -o pipefail && xcodebuild -scheme 'Player' -sdk iphonesimulator -destination "$IOS_SIMULATOR_DESTINATION" test -only-testing:PlayerTests/PlayLogTests -only-testing:PlayerTests/PlayLogTestsWithDeinit -skipPackagePluginValidation | xcbeautify --renderer github-actions
