@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **country** | **String** | ISO 3166-1 alpha-2 country code | 
+**developerAccessTier** | **String** | Developer access tier for this user. | 
 **email** | **String** | email address | [optional] 
 **emailVerified** | **Bool** | Is the email verified | [optional] 
 **firstName** | **String** | Users first name | [optional] 

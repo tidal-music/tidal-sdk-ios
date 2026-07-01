@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `Player.setAudioOutputDevice(uniqueID:)` to pin audio output to a specific Core Audio device for bit-perfect/exclusive playback on macOS (Player)
+
+## [0.11.24] - 2026-06-23
+
+### Changed
+- Generated API code (TidalAPI)
+- Stop printing HTTP error response bodies (TidalAPI)
+
+## [0.11.23] - 2026-06-12
+
+### Added
+- Add sorting options for offline collection items (Offliner)
+- Stream collection download state (Offliner)
+
+### Fixed
+- Fix Offliner build broken by regenerated TidalAPI argument order (Offliner)
+
+### Changed
+- Generated API code (TidalAPI)
+- Bump CI to Xcode 26.2 on macOS 15 (CI)
+
 ## [0.11.22] - 2026-06-03
 
 ### Fixed

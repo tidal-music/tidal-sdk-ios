@@ -20,7 +20,7 @@ jobs:
           set +e
           result="false"
           version="$(cat version.txt)"
-          ./bin/check-version-bump.sh
+          ./.agents/skills/prepare-release/scripts/check-version-bump.sh
           
           # check-version-bump exits with 0 if it detects a bump, otherwise with 1
           if [ $? != "1" ]; then
