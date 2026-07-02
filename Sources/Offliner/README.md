@@ -270,12 +270,24 @@ Removal requests are registered with the backend and task processing is triggere
 
 ## Offline Playback
 
-Offliner conforms to `OfflineItemProvider` (from the Player module), so it can be used directly as the offline content source for the Player:
+The `OfflinerPlayerBridge` module provides `OfflinerOfflineItemProvider`, an adapter that exposes Offliner as the offline content source for the Player:
 
 ```swift
-let item = await offliner.get(productType: .TRACK, productId: "track-id")
+import OfflinerPlayerBridge
+
+let provider = OfflinerOfflineItemProvider(offliner: offliner)
+let item = await provider.get(productType: .TRACK, productId: "track-id")
 // Returns an OfflinePlaybackItem with mediaURL, licenseURL, format, and normalization data
 ```
+
+The adapter lives in a separate module so that Offliner itself has no Player dependency — Player does not support watchOS, while Offliner does.
+
+## Platform Support
+
+Offliner builds for iOS, tvOS, macOS, and watchOS. The download pipeline is shared; only the media download engine differs per platform:
+
+- **iOS/tvOS/macOS**: `MediaDownloader` downloads HLS content via `AVAssetDownloadURLSession`, with FairPlay license acquisition for protected content.
+- **watchOS**: `HTTPMediaDownloader` downloads HLS media playlists segment-by-segment over `URLSession` and assembles a single media file. watchOS has no `AVAssetDownloadURLSession` and no FairPlay Streaming support, so only clear (non-DRM) content can be downloaded; manifests that carry DRM data are rejected. Configure watchOS consumers with DRM-free `audioFormats`.
 
 ---
 
@@ -288,7 +300,7 @@ Offliner uses a task-based architecture where the backend is the source of truth
 - **OfflineApiClient**: Communicates with the TIDAL API to register requests and fetch pending tasks
 - **TaskRunner**: Manages concurrent task execution and dispatches to handlers
 - **Handlers**: Execute specific task types (store/remove for items/collections)
-- **MediaDownloader**: Downloads HLS content via `AVAssetDownloadURLSession`
+- **MediaDownloader / HTTPMediaDownloader**: Platform download engines behind `MediaDownloaderProtocol` (see Platform Support)
 - **LicenseDownloader**: Acquires FairPlay DRM licenses for protected content
 - **ManifestFetcher**: Fetches track and video manifests (playback URLs and metadata)
 - **ArtworkDownloader**: Downloads and stores artwork images locally
