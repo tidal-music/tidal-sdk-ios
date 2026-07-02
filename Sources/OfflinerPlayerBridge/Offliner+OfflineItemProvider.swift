@@ -2,20 +2,17 @@ import Foundation
 import Offliner
 import Player
 
-// MARK: - OfflinerOfflineItemProvider
+// MARK: - OfflineItemProvider
 
 /// Bridges ``Offliner`` into `Player`'s offline playback lookup.
 ///
-/// This lives in a separate module so that `Offliner` itself has no Player dependency: Player does not support
-/// watchOS, while Offliner does. Platforms that play through Player wire this adapter up as the player's
-/// `OfflineItemProvider`; watchOS consumers use Offliner directly.
-public final class OfflinerOfflineItemProvider: OfflineItemProvider {
-	private let offliner: Offliner
-
-	public init(offliner: Offliner) {
-		self.offliner = offliner
-	}
-
+/// The conformance lives in a separate module so that `Offliner` itself has no Player dependency: Player does not
+/// support watchOS, while Offliner does. Platforms that play through Player import this module and wire the offliner
+/// up as the player's `OfflineItemProvider` directly; watchOS consumers use Offliner without it.
+///
+/// Declaring the conformance here is safe even though both types are imported: Offliner and Player belong to this
+/// package, and this module is the only place the conformance is declared.
+extension Offliner: @retroactive OfflineItemProvider {
 	public func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem? {
 		let mediaType: OfflineMediaItemType
 		switch productType {
@@ -25,10 +22,10 @@ public final class OfflinerOfflineItemProvider: OfflineItemProvider {
 		}
 
 		do {
-			return try await offliner.getOfflineMediaItem(mediaType: mediaType, resourceId: .identifier(productId))
+			return try await getOfflineMediaItem(mediaType: mediaType, resourceId: .identifier(productId))
 				.map { OfflinePlaybackItem($0, productType: productType) }
 		} catch {
-			Task { try? await offliner.download(mediaType: mediaType, resourceId: .identifier(productId)) }
+			Task { try? await download(mediaType: mediaType, resourceId: .identifier(productId)) }
 		}
 
 		return nil
