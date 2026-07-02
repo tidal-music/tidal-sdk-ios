@@ -1,28 +1,8 @@
+#if !os(watchOS)
 import AVFoundation
 import CoreMedia
 import Foundation
 import OSLog
-
-// MARK: - MediaDownloadResult
-
-struct MediaDownloadResult {
-	let duration: Int
-	let mediaLocation: URL
-}
-
-// MARK: - MediaDownloaderProtocol
-
-protocol MediaDownloaderProtocol {
-	func download(
-		taskId: String,
-		manifestURL: URL,
-		licenseDownloadResult: LicenseDownloadResult?,
-		title: String,
-		onProgress: @escaping @Sendable (Double) async -> Void
-	) async throws -> MediaDownloadResult
-
-	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void)
-}
 
 // MARK: - MediaDownloader
 
@@ -198,10 +178,4 @@ private final class ActiveDownload {
 	}
 }
 
-// MARK: - MediaDownloaderError
-
-enum MediaDownloaderError: Error {
-	case failedToCreateTask
-	case noDownloadedFile
-	case manifestNotFound
-}
+#endif
