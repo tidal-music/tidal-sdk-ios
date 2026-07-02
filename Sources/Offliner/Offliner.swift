@@ -1,6 +1,5 @@
 import Foundation
 import GRDB
-import Player
 
 // MARK: - Offliner
 
@@ -45,7 +44,7 @@ public final class Offliner {
 		let offlineStore = OfflineStore(databaseQueue)
 		let offlineApiClient = OfflineApiClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
-		let mediaDownloader = MediaDownloader(configuration: configuration)
+		let mediaDownloader = MediaDownloaderFactory.make(configuration: configuration)
 		let licenseDownloader = LicenseDownloader()
 		let trackManifestFetcher = TrackManifestFetcher(audioFormats: configuration.audioFormats)
 		let videoManifestFetcher = VideoManifestFetcher()
@@ -376,28 +375,6 @@ public final class Offliner {
 	}
 }
 
-// MARK: - OfflineItemProvider
-
-extension Offliner: OfflineItemProvider {
-	public func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem? {
-		let mediaType: OfflineMediaItemType
-		switch productType {
-		case .TRACK: mediaType = .tracks
-		case .VIDEO: mediaType = .videos
-		case .UC: return nil
-		}
-
-		do {
-			return try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: productId)
-				.map { OfflinePlaybackItem($0, productType: productType) }
-		} catch {
-			Task { try? await download(mediaType: mediaType, resourceId: .identifier(productId)) }
-		}
-
-		return nil
-	}
-}
-
 // MARK: - Internal Mappings
 
 extension OfflineMediaItemType {
@@ -419,17 +396,3 @@ extension OfflineCollectionType {
 	}
 }
 
-// MARK: - OfflinePlaybackItem from OfflineMediaItem
-
-private extension OfflinePlaybackItem {
-	init(_ item: OfflineMediaItem, productType: ProductType) {
-		self.init(
-			mediaURL: item.mediaURL,
-			licenseURL: item.licenseURL,
-			format: item.playbackMetadata?.format.rawValue,
-			albumReplayGain: item.playbackMetadata?.albumNormalizationData?.replayGain,
-			albumPeakAmplitude: item.playbackMetadata?.albumNormalizationData?.peakAmplitude,
-			productType: productType
-		)
-	}
-}
