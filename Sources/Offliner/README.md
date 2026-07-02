@@ -270,17 +270,16 @@ Removal requests are registered with the backend and task processing is triggere
 
 ## Offline Playback
 
-The `OfflinerPlayerBridge` module provides `OfflinerOfflineItemProvider`, an adapter that exposes Offliner as the offline content source for the Player:
+The `OfflinerPlayerBridge` module makes Offliner conform to the Player module's `OfflineItemProvider`, so it can be used directly as the offline content source for the Player:
 
 ```swift
 import OfflinerPlayerBridge
 
-let provider = OfflinerOfflineItemProvider(offliner: offliner)
-let item = await provider.get(productType: .TRACK, productId: "track-id")
+let item = await offliner.get(productType: .TRACK, productId: "track-id")
 // Returns an OfflinePlaybackItem with mediaURL, licenseURL, format, and normalization data
 ```
 
-The adapter lives in a separate module so that Offliner itself has no Player dependency — Player does not support watchOS, while Offliner does.
+The conformance lives in a separate module so that Offliner itself has no Player dependency — Player does not support watchOS, while Offliner does.
 
 ## Platform Support
 
