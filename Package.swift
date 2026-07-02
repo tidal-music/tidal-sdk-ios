@@ -42,10 +42,6 @@ let package = Package(
 			name: "Offliner",
 			targets: ["Offliner"]
 		),
-		.library(
-			name: "OfflinerPlayerBridge",
-			targets: ["OfflinerPlayerBridge"]
-		),
 	],
 	dependencies: [
 		.package(url: "https://github.com/groue/GRDB.swift.git", from: "6.27.0"),
@@ -159,13 +155,6 @@ let package = Package(
 			],
 			resources: [
 				.process("Resources"),
-			]
-		),
-		.target(
-			name: "OfflinerPlayerBridge",
-			dependencies: [
-				.offliner,
-				.player,
 			]
 		),
 		.target(
