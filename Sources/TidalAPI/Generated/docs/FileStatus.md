@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**aiScanningFileStatus** | **String** | Status of scanning the file for being AI-generated. Present only for file types that support AI scanning (e.g. track source files); absent otherwise. | [optional] 
 **moderationFileStatus** | **String** | Moderation status for file | 
 **technicalFileStatus** | **String** | Technical status for file | 
 

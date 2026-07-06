@@ -13,6 +13,13 @@ import AnyCodable
 /** File status */
 public struct FileStatus: Codable, Hashable {
 
+    public enum AiScanningFileStatus: String, Codable, CaseIterable {
+        case notScanned = "NOT_SCANNED"
+        case scanning = "SCANNING"
+        case isAi = "IS_AI"
+        case notAi = "NOT_AI"
+        case error = "ERROR"
+    }
     public enum ModerationFileStatus: String, Codable, CaseIterable {
         case notModerated = "NOT_MODERATED"
         case scanning = "SCANNING"
@@ -28,20 +35,25 @@ public struct FileStatus: Codable, Hashable {
         case error = "ERROR"
         case deleted = "DELETED"
     }
+    /** Status of scanning the file for being AI-generated. Present only for file types that support AI scanning (e.g. track source files); absent otherwise. */
+    public var aiScanningFileStatus: AiScanningFileStatus?
     /** Moderation status for file */
     public var moderationFileStatus: ModerationFileStatus
     /** Technical status for file */
     public var technicalFileStatus: TechnicalFileStatus
 
     public init(
+        aiScanningFileStatus: AiScanningFileStatus? = nil,
         moderationFileStatus: ModerationFileStatus,
         technicalFileStatus: TechnicalFileStatus
     ) {
+        self.aiScanningFileStatus = aiScanningFileStatus
         self.moderationFileStatus = moderationFileStatus
         self.technicalFileStatus = technicalFileStatus
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case aiScanningFileStatus
         case moderationFileStatus
         case technicalFileStatus
     }
@@ -50,6 +62,7 @@ public struct FileStatus: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(aiScanningFileStatus, forKey: .aiScanningFileStatus)
         try container.encode(moderationFileStatus, forKey: .moderationFileStatus)
         try container.encode(technicalFileStatus, forKey: .technicalFileStatus)
     }
