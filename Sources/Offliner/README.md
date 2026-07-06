@@ -270,12 +270,45 @@ Removal requests are registered with the backend and task processing is triggere
 
 ## Offline Playback
 
-Offliner conforms to `OfflineItemProvider` (from the Player module), so it can be used directly as the offline content source for the Player:
+Offliner has no dependency on the Player module — Player does not support watchOS, while Offliner does. Consumers that play through Player declare the `OfflineItemProvider` conformance themselves, in a target that links both modules (everything needed is public Offliner API):
 
 ```swift
-let item = await offliner.get(productType: .TRACK, productId: "track-id")
-// Returns an OfflinePlaybackItem with mediaURL, licenseURL, format, and normalization data
+import Offliner
+import Player
+
+extension Offliner: @retroactive OfflineItemProvider {
+    public func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem? {
+        let mediaType: OfflineMediaItemType
+        switch productType {
+        case .TRACK: mediaType = .tracks
+        case .VIDEO: mediaType = .videos
+        case .UC: return nil
+        }
+
+        do {
+            return try await getOfflineMediaItem(mediaType: mediaType, resourceId: .identifier(productId))
+                .map {
+                    OfflinePlaybackItem(
+                        mediaURL: $0.mediaURL,
+                        licenseURL: $0.licenseURL,
+                        format: $0.playbackMetadata?.format.rawValue,
+                        albumReplayGain: $0.playbackMetadata?.albumNormalizationData?.replayGain,
+                        albumPeakAmplitude: $0.playbackMetadata?.albumNormalizationData?.peakAmplitude,
+                        productType: productType
+                    )
+                }
+        } catch {
+            Task { try? await download(mediaType: mediaType, resourceId: .identifier(productId)) }
+        }
+
+        return nil
+    }
+}
 ```
+
+## Platform Support
+
+Offliner builds for iOS, macOS, and watchOS with a single shared download pipeline. `MediaDownloader` uses `AVAssetDownloadURLSession` with the configuration-based task API (`AVAssetDownloadConfiguration`), which is available on watchOS 10+ — hence the package's watchOS 10 floor.
 
 ---
 
