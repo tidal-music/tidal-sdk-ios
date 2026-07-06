@@ -44,7 +44,7 @@ public final class Offliner {
 		let offlineStore = OfflineStore(databaseQueue)
 		let offlineApiClient = OfflineApiClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
-		let mediaDownloader = MediaDownloaderFactory.make(configuration: configuration)
+		let mediaDownloader = MediaDownloader(configuration: configuration)
 		let licenseDownloader = LicenseDownloader()
 		let trackManifestFetcher = TrackManifestFetcher(audioFormats: configuration.audioFormats)
 		let videoManifestFetcher = VideoManifestFetcher()

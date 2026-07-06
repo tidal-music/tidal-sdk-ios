@@ -1,34 +1,7 @@
 import Auth
+import AVFoundation
 import Foundation
 import TidalAPI
-
-#if os(watchOS)
-
-// MARK: - LicenseDownloadResult
-
-/// watchOS has no FairPlay Streaming support, so licenses can never be acquired there. The type exists so the shared
-/// download pipeline compiles unchanged; instances are never created on watchOS.
-struct LicenseDownloadResult {
-	let licenseURL: URL
-}
-
-// MARK: - LicenseDownloader
-
-/// watchOS cannot persist FairPlay content keys, so only clear (non-DRM) content can be downloaded. Manifests that
-/// carry DRM data are rejected.
-actor LicenseDownloader {
-	func downloadLicense(drmData: DrmData?) async throws -> LicenseDownloadResult? {
-		guard drmData == nil else {
-			throw LicenseDownloaderError.drmNotSupportedOnThisPlatform
-		}
-
-		return nil
-	}
-}
-
-#else
-
-import AVFoundation
 
 // MARK: - LicenseDownloadResult
 
@@ -237,6 +210,75 @@ private extension ActiveLicenseDownload {
 	}
 }
 
+// MARK: - HttpClient
+
+final class HttpClient {
+	private let urlSession: URLSession
+
+	init(urlSession: URLSession = .shared) {
+		self.urlSession = urlSession
+	}
+
+	func get(url: URL, headers: [String: String]) async throws -> Data {
+		let request = createRequest(method: "GET", url: url, headers: headers)
+		return try await perform(request)
+	}
+
+	func post(url: URL, headers: [String: String], body: Data?) async throws -> Data {
+		var request = createRequest(method: "POST", url: url, headers: headers)
+		request.httpBody = body
+		return try await perform(request)
+	}
+
+	private func createRequest(method: String, url: URL, headers: [String: String]) -> URLRequest {
+		var request = URLRequest(url: url)
+		request.httpMethod = method
+		headers.forEach { name, value in
+			request.addValue(value, forHTTPHeaderField: name)
+		}
+		return request
+	}
+
+	private func perform(_ request: URLRequest) async throws -> Data {
+		let (data, response) = try await urlSession.data(for: request)
+
+		guard let httpResponse = response as? HTTPURLResponse else {
+			throw HttpClientError.noResponse
+		}
+
+		guard (200 ... 299).contains(httpResponse.statusCode) else {
+			if (400 ... 499).contains(httpResponse.statusCode) {
+				throw HttpClientError.clientError(statusCode: httpResponse.statusCode)
+			} else {
+				throw HttpClientError.serverError(statusCode: httpResponse.statusCode)
+			}
+		}
+
+		guard !data.isEmpty else {
+			throw HttpClientError.emptyResponse
+		}
+
+		return data
+	}
+}
+
+// MARK: - HttpClientError
+
+private enum HttpClientError: Error {
+	case noResponse
+	case emptyResponse
+	case clientError(statusCode: Int)
+	case serverError(statusCode: Int)
+}
+
+// MARK: - LicenseDownloaderError
+
+enum LicenseDownloaderError: Error {
+	case missingCredentialsProvider
+	case missingAccessToken
+	case invalidKeyIdentifier
+}
+
 extension AVContentKeyRequest {
 	func getKeyId() throws -> Data {
 		guard
@@ -248,15 +290,4 @@ extension AVContentKeyRequest {
 		}
 		return keyId
 	}
-}
-
-#endif
-
-// MARK: - LicenseDownloaderError
-
-enum LicenseDownloaderError: Error {
-	case missingCredentialsProvider
-	case missingAccessToken
-	case invalidKeyIdentifier
-	case drmNotSupportedOnThisPlatform
 }
