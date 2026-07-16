@@ -35,7 +35,7 @@ public struct FileStatus: Codable, Hashable {
         case error = "ERROR"
         case deleted = "DELETED"
     }
-    /** Status of scanning the file for being AI-generated. Present only for file types that support AI scanning (e.g. track source files); absent otherwise. */
+    /** Status of scanning the file for being AI-generated. Only present for file types that support AI scanning (e.g. track source files) and when a scanning status is available for the file; absent otherwise. */
     public var aiScanningFileStatus: AiScanningFileStatus?
     /** Moderation status for file */
     public var moderationFileStatus: ModerationFileStatus

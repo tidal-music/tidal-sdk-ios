@@ -15,7 +15,7 @@ public struct CommentsCreateOperationPayloadDataRelationshipsParentComment: Coda
     public var data: CommentsCreateOperationPayloadDataRelationshipsParentCommentData?
 
     public init(
-        data: CommentsCreateOperationPayloadDataRelationshipsParentCommentData? = nil
+        data: CommentsCreateOperationPayloadDataRelationshipsParentCommentData?
     ) {
         self.data = data
     }
@@ -28,6 +28,6 @@ public struct CommentsCreateOperationPayloadDataRelationshipsParentComment: Coda
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(data, forKey: .data)
+        try container.encode(data, forKey: .data)
     }
 }
