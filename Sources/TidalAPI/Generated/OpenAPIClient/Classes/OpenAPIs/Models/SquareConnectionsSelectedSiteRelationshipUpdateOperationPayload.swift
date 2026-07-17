@@ -12,12 +12,10 @@ import AnyCodable
 
 public struct SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload: Codable, Hashable {
 
-    public static let dataRule = ArrayRule(minItems: 0, maxItems: 1, uniqueItems: false)
-    /** The site to select; an empty array clears the selection. At most one site can be selected. */
-    public var data: [SquareConnectionsSelectedSiteRelationshipUpdateOperationPayloadData]
+    public var data: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayloadData?
 
     public init(
-        data: [SquareConnectionsSelectedSiteRelationshipUpdateOperationPayloadData]
+        data: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayloadData?
     ) {
         self.data = data
     }

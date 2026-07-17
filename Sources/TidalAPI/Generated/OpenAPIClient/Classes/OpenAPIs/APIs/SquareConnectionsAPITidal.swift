@@ -27,23 +27,23 @@ public enum SquareConnectionsAPITidal {
 
 
 	/**
-     Get selectedSite relationship (\&quot;to-many\&quot;).
+     Get selectedSite relationship (\&quot;to-one\&quot;).
      
-     - returns: SquareConnectionsMultiRelationshipDataDocument
+     - returns: SquareConnectionsSingleRelationshipDataDocument
      */
-	public static func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareConnectionsMultiRelationshipDataDocument {
+	public static func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil) async throws -> SquareConnectionsSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+			SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: id, include: include)
 		}
 	}
 
 
 	/**
-     Update selectedSite relationship (\&quot;to-many\&quot;).
+     Update selectedSite relationship (\&quot;to-one\&quot;).
      
-     - returns: 
+     - returns: SquareConnectionsSingleRelationshipDataDocument
      */
-	public static func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) async throws -> SquareConnectionsSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSitePatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: squareConnectionsSelectedSiteRelationshipUpdateOperationPayload)
 		}
