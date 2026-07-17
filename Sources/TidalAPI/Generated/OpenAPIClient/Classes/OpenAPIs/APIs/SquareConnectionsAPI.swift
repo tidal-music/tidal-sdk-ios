@@ -65,17 +65,16 @@ internal class SquareConnectionsAPI {
     }
 
     /**
-     Get selectedSite relationship (\"to-many\").
+     Get selectedSite relationship (\"to-one\").
      
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: selectedSite (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: SquareConnectionsMultiRelationshipDataDocument
+     - returns: SquareConnectionsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareConnectionsMultiRelationshipDataDocument {
+    internal class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil) async throws -> SquareConnectionsSingleRelationshipDataDocument {
         do {
-            return try await squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+            return try await squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -83,7 +82,7 @@ internal class SquareConnectionsAPI {
     }
 
     /**
-     Get selectedSite relationship (\"to-many\").
+     Get selectedSite relationship (\"to-one\").
      - GET /squareConnections/{id}/relationships/selectedSite
      - Retrieves selectedSite relationship.
      - OAuth:
@@ -91,10 +90,9 @@ internal class SquareConnectionsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: selectedSite (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<SquareConnectionsMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<SquareConnectionsSingleRelationshipDataDocument> 
      */
-    internal class func squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SquareConnectionsMultiRelationshipDataDocument> {
+    internal class func squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<SquareConnectionsSingleRelationshipDataDocument> {
         var localVariablePath = "/squareConnections/{id}/relationships/selectedSite"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -105,7 +103,6 @@ internal class SquareConnectionsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -114,21 +111,21 @@ internal class SquareConnectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**
-     Update selectedSite relationship (\"to-many\").
+     Update selectedSite relationship (\"to-one\").
      
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: SquareConnectionsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) async throws -> SquareConnectionsSingleRelationshipDataDocument {
         do {
             return try await squareConnectionsIdRelationshipsSelectedSitePatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: squareConnectionsSelectedSiteRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -138,7 +135,7 @@ internal class SquareConnectionsAPI {
     }
 
     /**
-     Update selectedSite relationship (\"to-many\").
+     Update selectedSite relationship (\"to-one\").
      - PATCH /squareConnections/{id}/relationships/selectedSite
      - Updates selectedSite relationship.
      - OAuth:
@@ -147,9 +144,9 @@ internal class SquareConnectionsAPI {
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<SquareConnectionsSingleRelationshipDataDocument> 
      */
-    internal class func squareConnectionsIdRelationshipsSelectedSitePatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func squareConnectionsIdRelationshipsSelectedSitePatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<SquareConnectionsSingleRelationshipDataDocument> {
         var localVariablePath = "/squareConnections/{id}/relationships/selectedSite"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -166,7 +163,7 @@ internal class SquareConnectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

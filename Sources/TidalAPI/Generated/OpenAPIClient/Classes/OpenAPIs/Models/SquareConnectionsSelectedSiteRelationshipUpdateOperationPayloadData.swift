@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** The site to select; an empty array clears the selection. At most one site can be selected. */
+/** The site to select; null clears the selection. */
 public struct SquareConnectionsSelectedSiteRelationshipUpdateOperationPayloadData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {

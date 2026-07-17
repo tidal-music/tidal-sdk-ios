@@ -5,8 +5,8 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**squareConnectionsIdGet**](SquareConnectionsAPI.md#squareconnectionsidget) | **GET** /squareConnections/{id} | Get single squareConnection.
-[**squareConnectionsIdRelationshipsSelectedSiteGet**](SquareConnectionsAPI.md#squareconnectionsidrelationshipsselectedsiteget) | **GET** /squareConnections/{id}/relationships/selectedSite | Get selectedSite relationship (\&quot;to-many\&quot;).
-[**squareConnectionsIdRelationshipsSelectedSitePatch**](SquareConnectionsAPI.md#squareconnectionsidrelationshipsselectedsitepatch) | **PATCH** /squareConnections/{id}/relationships/selectedSite | Update selectedSite relationship (\&quot;to-many\&quot;).
+[**squareConnectionsIdRelationshipsSelectedSiteGet**](SquareConnectionsAPI.md#squareconnectionsidrelationshipsselectedsiteget) | **GET** /squareConnections/{id}/relationships/selectedSite | Get selectedSite relationship (\&quot;to-one\&quot;).
+[**squareConnectionsIdRelationshipsSelectedSitePatch**](SquareConnectionsAPI.md#squareconnectionsidrelationshipsselectedsitepatch) | **PATCH** /squareConnections/{id}/relationships/selectedSite | Update selectedSite relationship (\&quot;to-one\&quot;).
 [**squareConnectionsIdRelationshipsSitesGet**](SquareConnectionsAPI.md#squareconnectionsidrelationshipssitesget) | **GET** /squareConnections/{id}/relationships/sites | Get sites relationship (\&quot;to-many\&quot;).
 [**squareConnectionsPost**](SquareConnectionsAPI.md#squareconnectionspost) | **POST** /squareConnections | Create single squareConnection.
 
@@ -65,10 +65,10 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSelectedSiteGet**
 ```swift
-    open class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SquareConnectionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SquareConnectionsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get selectedSite relationship (\"to-many\").
+Get selectedSite relationship (\"to-one\").
 
 Retrieves selectedSite relationship.
 
@@ -79,10 +79,9 @@ import OpenAPIClient
 
 let id = "id_example" // String | Square connection id. Use `me` for the authenticated user's resource
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: selectedSite (optional)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
-// Get selectedSite relationship (\"to-many\").
-SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSiteGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+// Get selectedSite relationship (\"to-one\").
+SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSiteGet(id: id, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -100,11 +99,10 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: selectedSite | [optional] 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 
-[**SquareConnectionsMultiRelationshipDataDocument**](SquareConnectionsMultiRelationshipDataDocument.md)
+[**SquareConnectionsSingleRelationshipDataDocument**](SquareConnectionsSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -119,10 +117,10 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSelectedSitePatch**
 ```swift
-    open class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: SquareConnectionsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
-Update selectedSite relationship (\"to-many\").
+Update selectedSite relationship (\"to-one\").
 
 Updates selectedSite relationship.
 
@@ -133,9 +131,9 @@ import OpenAPIClient
 
 let id = "id_example" // String | Square connection id. Use `me` for the authenticated user's resource
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let squareConnectionsSelectedSiteRelationshipUpdateOperationPayload = SquareConnectionsSelectedSiteRelationshipUpdateOperation_Payload(data: [SquareConnectionsSelectedSiteRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload |  (optional)
+let squareConnectionsSelectedSiteRelationshipUpdateOperationPayload = SquareConnectionsSelectedSiteRelationshipUpdateOperation_Payload(data: SquareConnectionsSelectedSiteRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload |  (optional)
 
-// Update selectedSite relationship (\"to-many\").
+// Update selectedSite relationship (\"to-one\").
 SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSitePatch(id: id, idempotencyKey: idempotencyKey, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: squareConnectionsSelectedSiteRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
@@ -158,7 +156,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**SquareConnectionsSingleRelationshipDataDocument**](SquareConnectionsSingleRelationshipDataDocument.md)
 
 ### Authorization
 
