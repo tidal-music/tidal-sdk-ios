@@ -511,7 +511,7 @@ Creates a new userCollectionFolder.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(collectionType: "collectionType_example", name: "name_example"), relationships: UserCollectionFoldersCreateOperation_Payload_Data_Relationships(userCollection: UserCollectionFoldersCreateOperation_Payload_Data_Relationships_UserCollection(data: UserCollection(id: "id_example", type: "type_example"))), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
+let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(name: "name_example"), relationships: UserCollectionFoldersCreateOperation_Payload_Data_Relationships(userCollection: UserCollectionFoldersCreateOperation_Payload_Data_Relationships_UserCollection(data: UserCollection(id: "id_example", type: "type_example"))), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
 
 // Create single userCollectionFolder.
 UserCollectionFoldersAPI.userCollectionFoldersPost(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload) { (response, error) in
