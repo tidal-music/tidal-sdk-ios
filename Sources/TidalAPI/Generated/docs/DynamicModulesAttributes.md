@@ -4,7 +4,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **icons** | **[String]** | Type of icons the module should show | 
-**moduleKind** | **String** | Semantic kind of the module, describing its product purpose and expected item domain. | 
 **previewPresentation** | **String** | Presentation used when rendering the module preview on a dynamic page. | 
 **subtitle** | **String** | Subtitle of the module | [optional] 
 **title** | **String** | Title of the module | [optional] 
