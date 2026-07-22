@@ -23,7 +23,6 @@ actor TaskRunner {
 	private var taskIds: Set<String> = []
 
 	private var processTask: Task<Void, Never>?
-	private var cursor: String?
 
 	private(set) var currentDownloads: [Download] = []
 	private var downloadsContinuation: AsyncStream<Download>.Continuation?
@@ -106,7 +105,14 @@ actor TaskRunner {
 	}
 
 	private func refresh() async throws {
-		let (tasks, cursor) = try await offlineApiClient.getTasks(cursor: self.cursor)
+		// The backend `/offline/tasks` endpoint returns the *current* set of pending tasks and drains
+		// as the client PATCHes tasks to `.completed`/`.failed`. It is a live work queue, not a stable
+		// append-only log, so we must always re-read from the head (cursor: nil). Persisting a
+		// monotonically-advancing cursor across refreshes skips tasks that shift toward the head as
+		// earlier ones complete, and never revisits the head to pick up items added after the queue has
+		// drained — the "can't download more than one page of a collection" and "newly-added tracks
+		// never download" regressions (introduced by 2bb80702, "Use cursor for incremental task fetching").
+		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
 
 		for task in tasks where taskIds.insert(task.id).inserted {
 			let pendingTask = handle(task)
@@ -115,10 +121,6 @@ actor TaskRunner {
 				currentDownloads.append(download)
 				downloadsContinuation?.yield(download)
 			}
-		}
-
-		if let cursor {
-			self.cursor = cursor
 		}
 	}
 
