@@ -252,7 +252,7 @@ internal class DynamicModulesAPI {
     /**
      Get items relationship (\"to-many\").
      - GET /dynamicModules/{id}/relationships/items
-     - Retrieves items relationship.
+     - The resources to render, in order; may be a bounded prefix.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

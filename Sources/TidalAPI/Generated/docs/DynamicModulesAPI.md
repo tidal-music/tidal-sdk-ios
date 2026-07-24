@@ -144,7 +144,7 @@ Name | Type | Description  | Notes
 
 Get items relationship (\"to-many\").
 
-Retrieves items relationship.
+The resources to render, in order; may be a bounded prefix.
 
 ### Example
 ```swift
