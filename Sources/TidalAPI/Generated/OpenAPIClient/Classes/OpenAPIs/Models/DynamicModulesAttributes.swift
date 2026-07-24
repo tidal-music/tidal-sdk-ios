@@ -12,83 +12,63 @@ import AnyCodable
 
 public struct DynamicModulesAttributes: Codable, Hashable {
 
+    public enum FullViewLayout: String, Codable, CaseIterable {
+        case grid = "GRID"
+        case list = "LIST"
+        case compact = "COMPACT"
+        case unknown = "UNKNOWN"
+    }
     public enum Icons: String, Codable, CaseIterable {
         case spotlightInfo = "SPOTLIGHT_INFO"
         case unknown = "UNKNOWN"
     }
-    public enum PreviewPresentation: String, Codable, CaseIterable {
-        case artistList = "ARTIST_LIST"
-        case compactGridCard = "COMPACT_GRID_CARD"
-        case compactHorizontalList = "COMPACT_HORIZONTAL_LIST"
-        case compactHorizontalListWithContext = "COMPACT_HORIZONTAL_LIST_WITH_CONTEXT"
-        case featuredCard = "FEATURED_CARD"
-        case gridCard = "GRID_CARD"
-        case gridCardWithContext = "GRID_CARD_WITH_CONTEXT"
-        case gridHighlightCard = "GRID_HIGHLIGHT_CARD"
-        case anniversaryCard = "ANNIVERSARY_CARD"
-        case artistBirthdayCard = "ARTIST_BIRTHDAY_CARD"
-        case artistMemoriamCard = "ARTIST_MEMORIAM_CARD"
-        case artistTrackCreditsCard = "ARTIST_TRACK_CREDITS_CARD"
-        case pillList = "PILL_LIST"
-        case verticalList = "VERTICAL_LIST"
-        case discographyTabs = "DISCOGRAPHY_TABS"
-        case magazineList = "MAGAZINE_LIST"
-        case horizontalList = "HORIZONTAL_LIST"
-        case horizontalListWithContext = "HORIZONTAL_LIST_WITH_CONTEXT"
-        case shortcutList = "SHORTCUT_LIST"
-        case trackList = "TRACK_LIST"
-        case verticalListCard = "VERTICAL_LIST_CARD"
-        case textCard = "TEXT_CARD"
-        case linksList = "LINKS_LIST"
-        case publicPlaylistList = "PUBLIC_PLAYLIST_LIST"
-        case unknown = "UNKNOWN"
-    }
-    public enum ViewAllPresentation: String, Codable, CaseIterable {
-        case compact = "COMPACT"
+    public enum PreviewLayout: String, Codable, CaseIterable {
         case grid = "GRID"
+        case list = "LIST"
+        case compact = "COMPACT"
         case unknown = "UNKNOWN"
     }
-    /** Type of icons the module should show */
+    /** Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. fullViewLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
+    public var fullViewLayout: FullViewLayout?
+    /** Semantic icons the module should show. SPOTLIGHT_INFO identifies modules whose content was selected by TIDAL's editorial team. */
     public var icons: [Icons]
-    /** Presentation used when rendering the module preview on a dynamic page. */
-    public var previewPresentation: PreviewPresentation
+    /** Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. fullViewLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
+    public var previewLayout: PreviewLayout
     /** Subtitle of the module */
     public var subtitle: String?
     /** Title of the module */
     public var title: String?
-    /** Presentation used when rendering the module's items in the full view-all experience. */
-    public var viewAllPresentation: ViewAllPresentation
 
     public init(
+        fullViewLayout: FullViewLayout? = nil,
         icons: [Icons],
-        previewPresentation: PreviewPresentation,
+        previewLayout: PreviewLayout,
         subtitle: String? = nil,
-        title: String? = nil,
-        viewAllPresentation: ViewAllPresentation
+        title: String? = nil
     ) {
+        self.fullViewLayout = fullViewLayout
         self.icons = icons
-        self.previewPresentation = previewPresentation
+        self.previewLayout = previewLayout
         self.subtitle = subtitle
         self.title = title
-        self.viewAllPresentation = viewAllPresentation
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case fullViewLayout
         case icons
-        case previewPresentation
+        case previewLayout
         case subtitle
         case title
-        case viewAllPresentation
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(fullViewLayout, forKey: .fullViewLayout)
         try container.encode(icons, forKey: .icons)
-        try container.encode(previewPresentation, forKey: .previewPresentation)
+        try container.encode(previewLayout, forKey: .previewLayout)
         try container.encodeIfPresent(subtitle, forKey: .subtitle)
         try container.encodeIfPresent(title, forKey: .title)
-        try container.encode(viewAllPresentation, forKey: .viewAllPresentation)
     }
 }
