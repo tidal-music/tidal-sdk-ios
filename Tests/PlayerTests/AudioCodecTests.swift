@@ -7,8 +7,12 @@ struct AudioCodecTests {
 		#expect(AudioCodec(from: nil, mode: nil) == nil)
 		#expect(AudioCodec(from: nil, mode: AudioMode.STEREO) == nil)
 		#expect(AudioCodec(from: AudioQuality.LOW, mode: nil) == nil)
-		#expect(AudioCodec(from: AudioQuality.LOW, mode: AudioMode.DOLBY_ATMOS) == nil)
 		#expect(AudioCodec(from: AudioQuality.LOW, mode: AudioMode.SONY_360RA) == nil)
+
+		// Dolby Atmos always resolves to E-AC-3, regardless of the reported quality tier.
+		#expect(AudioCodec(from: AudioQuality.LOW, mode: AudioMode.DOLBY_ATMOS) == AudioCodec.EAC3)
+		#expect(AudioCodec(from: AudioQuality.HI_RES, mode: AudioMode.DOLBY_ATMOS) == AudioCodec.EAC3)
+		#expect(AudioCodec(from: nil, mode: AudioMode.DOLBY_ATMOS) == AudioCodec.EAC3)
 
 		#expect(AudioCodec(from: AudioQuality.HIGH, mode: nil) == AudioCodec.AAC_LC)
 		#expect(AudioCodec(from: AudioQuality.HIGH, mode: AudioMode.STEREO) == AudioCodec.AAC_LC)

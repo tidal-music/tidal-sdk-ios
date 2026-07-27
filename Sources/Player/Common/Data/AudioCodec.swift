@@ -103,7 +103,14 @@ public enum AudioCodec: Equatable, Codable {
 				return nil
 			}
 			switch quality {
-			case .LOW: self = .HE_AAC_V1
+			case .LOW:
+				// At LOW quality the codec depends on the mode (Atmos/360RA are handled above);
+				// with an unknown mode we can't disambiguate, so bail.
+				guard mode != nil else {
+					PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithLowQualityAndNilMode)
+					return nil
+				}
+				self = .HE_AAC_V1
 			case .HIGH: self = .AAC_LC
 			case .LOSSLESS: self = .FLAC // Could be .ALAC, but we need to update Player to get that
 			case .HI_RES: self = .MQA
