@@ -1,7 +1,8 @@
 import Auth
 import EventProducer
+import Foundation
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -23,7 +24,8 @@ private enum Constants {
 
 // MARK: - PlayerEventSenderTests
 
-final class PlayerEventSenderTests: XCTestCase {
+@Suite(.serialized)
+final class PlayerEventSenderTests {
 	private let timestamp: UInt64 = 1
 	private var uuid = "uuid"
 	private var deviceType = DeviceInfoProvider.Constants.deviceTypeMobile
@@ -52,7 +54,7 @@ final class PlayerEventSenderTests: XCTestCase {
 	private let encoder = JSONEncoder()
 	private let decoder = JSONDecoder()
 
-	override func setUp() {
+	init() {
 		// Set up time and uuid provider
 		let timeProvider = TimeProvider.mock(
 			timestamp: {
@@ -133,6 +135,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: StreamingSessionStart
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_StreamingSessionStart_legacy() async {
 		shouldUseEventProducer = false
 
@@ -150,6 +153,7 @@ extension PlayerEventSenderTests {
 		await assertLegacyStreamingMetricsEvent(event: streamingSessionStart, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_StreamingSessionStart() async {
 		shouldUseEventProducer = true
 
@@ -167,6 +171,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: StreamingSessionEnd
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_StreamingSessionEnd_legacy() async {
 		shouldUseEventProducer = false
 
@@ -184,6 +189,7 @@ extension PlayerEventSenderTests {
 		await assertLegacyStreamingMetricsEvent(event: streamingSessionEnd, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_StreamingSessionEnd() async {
 		shouldUseEventProducer = true
 
@@ -201,6 +207,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: DownloadStatistics
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_DownloadStatistics_legacy() async {
 		shouldUseEventProducer = false
 
@@ -218,6 +225,7 @@ extension PlayerEventSenderTests {
 		await assertLegacyStreamingMetricsEvent(event: downloadStatistics, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_DownloadStatistics() async {
 		shouldUseEventProducer = true
 
@@ -235,6 +243,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: DrmLicenseFetch
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_DrmLicenseFetch_legacy() async {
 		shouldUseEventProducer = false
 
@@ -252,6 +261,7 @@ extension PlayerEventSenderTests {
 		await assertLegacyStreamingMetricsEvent(event: drmLicenseFetch, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_DrmLicenseFetch() async {
 		shouldUseEventProducer = true
 
@@ -269,6 +279,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: PlaybackInfoFetch
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_PlaybackInfoFetch_legacy() async {
 		shouldUseEventProducer = false
 
@@ -286,6 +297,7 @@ extension PlayerEventSenderTests {
 		await assertLegacyStreamingMetricsEvent(event: playbackInfoFetch, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_PlaybackInfoFetch() async {
 		shouldUseEventProducer = true
 
@@ -303,6 +315,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: PlaybackStatistics
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_PlaybackStatistics_legacy() async {
 		shouldUseEventProducer = false
 
@@ -320,6 +333,7 @@ extension PlayerEventSenderTests {
 		await assertLegacyStreamingMetricsEvent(event: playbackStatistics, expectedDecodedEvent: expectedDecodedEvent)
 	}
 
+	@Test
 	func test_send_StreamingMetricsEvent_with_PlaybackStatistics() async {
 		shouldUseEventProducer = true
 
@@ -337,34 +351,40 @@ extension PlayerEventSenderTests {
 
 	// MARK: - PlayLogEvent
 
+	@Test
 	func test_send_PlayLogEvent_legacy() async {
 		shouldUseEventProducer = false
 		await assertLegacyPlayLogEvent()
 	}
 
+	@Test
 	func test_send_PlayLogEvent() async {
 		shouldUseEventProducer = true
 		await assertPlayLogEvent()
 	}
 
+	@Test
 	func test_send_PlayLogEvent_with_tablet_deviceType_legacy() async {
 		deviceType = DeviceInfoProvider.Constants.deviceTypeTablet
 		shouldUseEventProducer = false
 		await assertLegacyPlayLogEvent()
 	}
 
+	@Test
 	func test_send_PlayLogEvent_with_tablet_deviceType() async {
 		deviceType = DeviceInfoProvider.Constants.deviceTypeTablet
 		shouldUseEventProducer = true
 		await assertPlayLogEvent()
 	}
 
+	@Test
 	func test_send_PlayLogEvent_with_embedded_deviceType_legacy() async {
 		deviceType = DeviceInfoProvider.Constants.deviceTypeEmbedded
 		shouldUseEventProducer = false
 		await assertLegacyPlayLogEvent()
 	}
 
+	@Test
 	func test_send_PlayLogEvent_with_embedded_deviceType() async {
 		deviceType = DeviceInfoProvider.Constants.deviceTypeEmbedded
 		shouldUseEventProducer = true
@@ -373,6 +393,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: - OfflinePlay
 
+	@Test
 	func test_send_OfflinePlay() async {
 		let offlinePlay = OfflinePlay.mock()
 		playerEventSender.send(offlinePlay)
@@ -386,6 +407,7 @@ extension PlayerEventSenderTests {
 
 	// MARK: Credentials testing
 
+	@Test
 	func test_send_event_whenUserIsNotAuthenticated_legacy() async {
 		shouldUseEventProducer = false
 
@@ -396,6 +418,7 @@ extension PlayerEventSenderTests {
 		await assertLegacyStreamingMetricsEventWasNotSent(event: streamingSessionStart)
 	}
 
+	@Test
 	func test_send_event_whenUserIsNotLoggedIn_legacy() async {
 		shouldUseEventProducer = false
 
@@ -413,13 +436,13 @@ private extension PlayerEventSenderTests {
 	func assertLegacyEvent<T: Decodable & Equatable>(expectedDecodedEvent: T, from eventData: Data) {
 		do {
 			let decodedEvent = try decoder.decode(T.self, from: eventData)
-			XCTAssertEqual(expectedDecodedEvent, decodedEvent)
+			#expect(expectedDecodedEvent == decodedEvent)
 		} catch {
-			XCTFail("Fail to decode instance of \(T.self)")
+			Issue.record("Fail to decode instance of \(T.self)")
 		}
 
-		XCTAssertEqual(dataWriter.urls.first?.lastPathComponent, uuid)
-		XCTAssertEqual(dataWriter.optionsList.first, Data.WritingOptions.atomic)
+		#expect(dataWriter.urls.first?.lastPathComponent == uuid)
+		#expect(dataWriter.optionsList.first == Data.WritingOptions.atomic)
 	}
 
 	func assertLegacyStreamingMetricsEvent<T: Decodable & Equatable>(
@@ -448,7 +471,7 @@ private extension PlayerEventSenderTests {
 
 		await asyncSchedulerFactory.executeAll()
 
-		XCTAssertTrue(dataWriter.dataList.isEmpty)
+		#expect(dataWriter.dataList.isEmpty)
 	}
 
 	func assertLegacyPlayLogEvent() async {
@@ -503,7 +526,7 @@ private extension PlayerEventSenderTests {
 		)
 
 		guard let data = try? encoder.encode(expectedEvent), let payloadString = String(data: data, encoding: .utf8) else {
-			XCTFail("Failed to encode event: \(expectedEvent)")
+			Issue.record("Failed to encode event: \(expectedEvent)")
 			return
 		}
 
@@ -515,28 +538,28 @@ private extension PlayerEventSenderTests {
 		)
 
 		guard let sentEvent = eventSender.sentEvents.first else {
-			XCTFail("Failed to send event to EventSenderMock")
+			Issue.record("Failed to send event to EventSenderMock")
 			return
 		}
 
 		// Since we don't guarantee the sorting keys in payload, we compare each property individually.
 		// Payload is then decoded and asserted afterwards.
-		XCTAssertEqual(expectedEventSent.name, sentEvent.name)
-		XCTAssertEqual(expectedEventSent.consentCategory, sentEvent.consentCategory)
-		XCTAssertEqual(expectedEventSent.headers, sentEvent.headers)
+		#expect(expectedEventSent.name == sentEvent.name)
+		#expect(expectedEventSent.consentCategory == sentEvent.consentCategory)
+		#expect(expectedEventSent.headers == sentEvent.headers)
 
 		let sendEventPayload = sentEvent.payload
 		guard let sendEventPayloadData = sendEventPayload.data(using: .utf8) else {
-			XCTFail("Failed to convert string to data: \(sendEventPayload)")
+			Issue.record("Failed to convert string to data: \(sendEventPayload)")
 			return
 		}
 
 		do {
 			let sentPlayerEvent = try decoder.decode(PlayerEvent<T>.self, from: sendEventPayloadData)
 			let actualObject = sentPlayerEvent.payload
-			XCTAssertEqual(playerEvent, actualObject)
+			#expect(playerEvent == actualObject)
 		} catch {
-			XCTFail("Failed to decode PlayerEvent of \(T.self): \(error)")
+			Issue.record("Failed to decode PlayerEvent of \(T.self): \(error)")
 		}
 	}
 }

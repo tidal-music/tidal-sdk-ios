@@ -1,9 +1,10 @@
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - ConfigurationTests
 
-final class ConfigurationTests: XCTestCase {
+@Suite(.serialized)
+final class ConfigurationTests {
 	private var isAirPlayOutputRoute = false
 	private let configuration: Configuration = {
 		var configuration = Configuration.mock()
@@ -13,7 +14,7 @@ final class ConfigurationTests: XCTestCase {
 		return configuration
 	}()
 
-	override func setUp() {
+	init() {
 		var audioInfoProvider = AudioInfoProvider.mock
 		audioInfoProvider.isAirPlayOutputRoute = {
 			self.isAirPlayOutputRoute
@@ -28,17 +29,19 @@ final class ConfigurationTests: XCTestCase {
 extension ConfigurationTests {
 	// MARK: - currentPreAmpValue
 
+	@Test
 	func test_currentPreAmpValue_when_AirPlay() {
 		let configuration = configuration
 
 		isAirPlayOutputRoute = true
-		XCTAssertEqual(configuration.currentPreAmpValue, configuration.loudnessNormalizationPreAmpAirplay)
+		#expect(configuration.currentPreAmpValue == configuration.loudnessNormalizationPreAmpAirplay)
 	}
 
+	@Test
 	func test_currentPreAmpValue_when_not_AirPlay() {
 		let configuration = configuration
 
 		isAirPlayOutputRoute = false
-		XCTAssertEqual(configuration.currentPreAmpValue, configuration.loudnessNormalizationPreAmp)
+		#expect(configuration.currentPreAmpValue == configuration.loudnessNormalizationPreAmp)
 	}
 }

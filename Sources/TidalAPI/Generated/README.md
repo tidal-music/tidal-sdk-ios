@@ -1,11 +1,64 @@
 # Swift5 API client for OpenAPIClient
 
-The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)
+The TIDAL API is a [JSON:API](https://jsonapi.org/)-compliant web API exposing TIDAL's music catalogue, metadata, and user functionality. Guides, authorization documentation, and API key management live at [developer.tidal.com](https://developer.tidal.com).
+
+All endpoints exchange `application/vnd.api+json` documents per the [JSON:API specification](https://jsonapi.org/format/): [resource objects](https://jsonapi.org/format/#document-resource-objects) with `attributes` and `relationships`, [compound documents](https://jsonapi.org/format/#document-compound-documents) via `include`, and standard [error objects](https://jsonapi.org/format/#error-objects).
+
+### Authentication and authorization
+
+Every request requires an OAuth 2.0 access token in the `Authorization: Bearer` header. Tokens are issued at `https://auth.tidal.com/v1/oauth2/token` via the client-credentials flow (server-to-server) or the authorization-code + PKCE flow (user context; authorize at `https://login.tidal.com/authorize`). Each endpoint documents which flows it accepts, the access tier it requires, and the scopes that apply. Scopes protect private user data: fields you are not authorized to read are redacted from the response rather than causing an error, and resources you cannot access at all behave as if they do not exist. See the [authorization guide](https://developer.tidal.com/documentation/api-sdk/api-sdk-authorization) for details.
+
+### Working with responses
+
+- **Enums** — new values can be added to any enum at any time. Treat unknown values as forward-compatible, not as errors.
+- **IDs** are opaque strings. Never parse, construct, or infer meaning from them.
+- **Formats** — dates, times and durations are ISO 8601 (`2024-05-01T12:00:00Z`, `PT3M5S`); countries ISO 3166-1 alpha-2; languages BCP 47; currencies ISO 4217; colors six-digit hex.
+
+### Relationships and includes
+
+[Relationships](https://jsonapi.org/format/#document-resource-object-relationships) are returned only on request: a resource's `relationships` object contains just the relationships named in [`include`](https://jsonapi.org/format/#fetching-includes) — a relationship that was not requested is absent from the response, not empty. The full set of relationships a resource supports is documented in its schema.
+
+Request related resources in one round trip with `?include=`, a comma-separated list of dot-separated relationship paths — e.g. `include=coverArt,artists.profileArt` on an album. A nested path automatically embeds its intermediate resources: `artists.profileArt` includes the artists as well as their profile art. Include paths are always relative to the request's root resource, also on relationship endpoints. Including a relationship never changes the primary data; the related resources are added to `included`.
+
+Include paths are validated: a path that cannot be resolved against the resources' documented relationships is rejected with `400`. Include trees are also bounded in path depth (default 3 levels) and in the total number of distinct resources they name (default 10); individual endpoints may apply different limits. A request exceeding either limit is rejected with `400`, with the effective limit stated in the error.
+
+### Filtering, sorting, pagination
+
+- [`filter[<member>]=value`](https://jsonapi.org/format/#fetching-filtering) filters collections; each endpoint documents its available filters, and most collections require at least one.
+- [`sort=<member>`](https://jsonapi.org/format/#fetching-sorting) sorts ascending, `-<member>` descending (`sort=-addedAt`). Filter and sort members are relative to the resources being returned.
+- Parameters an endpoint cannot honor are rejected with `400`: a `filter[...]` parameter the endpoint does not document (the error lists the available filters), or `sort` on an endpoint that documents no sort values.
+- [Pagination](https://jsonapi.org/format/#fetching-pagination) is cursor-based: responses carry `links.self` and, while more pages exist, `links.next` with an opaque `page[cursor]`. Follow `next` until absent — there are no offset or total-page parameters. Collection sizes, when available, appear as `meta.total` and may be approximate.
+
+### Type qualifiers
+
+Where a relationship can contain several resource types, a path segment may be prefixed with a concrete type to scope which type's member is accessed. A playlist's `items` are `tracks` or `videos`: `GET /playlists/{id}?include=items.tracks:albums` resolves `albums` only for the items that are tracks. Qualifiers scope member access — they never filter which resources appear in a relationship — and can be chained.
+
+The same syntax applies to `filter` and `sort` member paths on endpoints that support it; where supported, the qualified member is listed among the endpoint's documented filters and sort values. The syntax follows JSON:API proposal [json-api#1695](https://github.com/json-api/json-api/issues/1695).
+
+### Mutations
+
+- [Partial updates](https://jsonapi.org/format/#crud-updating-resource-attributes) follow JSON:API semantics: attributes omitted from the payload are left unchanged; attributes set to `null` are cleared.
+- Every mutation accepts an [`Idempotency-Key`](https://www.ietf.org/archive/id/draft-ietf-httpapi-idempotency-key-header-07.html) header. Once the original request has completed, retrying with the same key and payload within one hour replays its response; a retry while it is still processing is rejected with `409`, and the same key with a different payload with `422`.
+- After a successful write, your own subsequent reads reflect the change; other clients may observe it with a delay.
+
+### [DRAFT] Availability and replacements
+
+Media resources — `tracks`, `albums`, `videos` — are licensed per territory: a resource's `usageRules` relationship describes what it may be used for (e.g. `STREAM`) in a given country, so a resource may not be streamable in the requested `countryCode`. When it isn't, it may have a streamable substitute, exposed through its to-one `replacement` relationship — empty when the resource is streamable as-is or no substitute exists.
+
+Identifiers stored in collections never change: the primary data always shows what was originally added. To find what can be played instead, include the replacement — e.g. `include=items.replacement` on a user's track collection.
+
+### Compression
+
+Responses are gzip-compressed when the request includes `Accept-Encoding: gzip` (bodies over 2 KB).
+
+### Deprecation
+
+Deprecated endpoints, parameters, and fields are marked `deprecated` in this specification, with the replacement noted in their description. Deprecated functionality keeps working for at least six months after being marked, and is only removed once a replacement is generally available.
 
 ## Overview
 This API client was generated by the [OpenAPI Generator](https://openapi-generator.tech) project.  By using the [openapi-spec](https://github.com/OAI/OpenAPI-Specification) from a remote server, you can easily generate an API client.
 
-- API version: 1.10.39
+- API version: 1.10.65
 - Package version: 
 - Generator version: 7.23.0
 - Build package: org.openapitools.codegen.languages.Swift5ClientCodegen
@@ -127,9 +180,11 @@ Class | Method | HTTP request | Description
 *DownloadsAPI* | [**downloadsIdRelationshipsOwnersGet**](docs/DownloadsAPI.md#downloadsidrelationshipsownersget) | **GET** /downloads/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 *DspSharingLinksAPI* | [**dspSharingLinksGet**](docs/DspSharingLinksAPI.md#dspsharinglinksget) | **GET** /dspSharingLinks | Get multiple dspSharingLinks.
 *DspSharingLinksAPI* | [**dspSharingLinksIdRelationshipsSubjectGet**](docs/DspSharingLinksAPI.md#dspsharinglinksidrelationshipssubjectget) | **GET** /dspSharingLinks/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
+*DynamicModulesAPI* | [**dynamicModulesGet**](docs/DynamicModulesAPI.md#dynamicmodulesget) | **GET** /dynamicModules | Get multiple dynamicModules.
+*DynamicModulesAPI* | [**dynamicModulesIdGet**](docs/DynamicModulesAPI.md#dynamicmodulesidget) | **GET** /dynamicModules/{id} | Get single dynamicModule.
 *DynamicModulesAPI* | [**dynamicModulesIdRelationshipsItemsGet**](docs/DynamicModulesAPI.md#dynamicmodulesidrelationshipsitemsget) | **GET** /dynamicModules/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
 *DynamicPagesAPI* | [**dynamicPagesGet**](docs/DynamicPagesAPI.md#dynamicpagesget) | **GET** /dynamicPages | Get multiple dynamicPages.
-*DynamicPagesAPI* | [**dynamicPagesIdRelationshipsDynamicModulesGet**](docs/DynamicPagesAPI.md#dynamicpagesidrelationshipsdynamicmodulesget) | **GET** /dynamicPages/{id}/relationships/dynamicModules | Get dynamicModules relationship (\&quot;to-many\&quot;).
+*DynamicPagesAPI* | [**dynamicPagesIdRelationshipsModulesGet**](docs/DynamicPagesAPI.md#dynamicpagesidrelationshipsmodulesget) | **GET** /dynamicPages/{id}/relationships/modules | Get modules relationship (\&quot;to-many\&quot;).
 *DynamicPagesAPI* | [**dynamicPagesIdRelationshipsSubjectGet**](docs/DynamicPagesAPI.md#dynamicpagesidrelationshipssubjectget) | **GET** /dynamicPages/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 *GenresAPI* | [**genresGet**](docs/GenresAPI.md#genresget) | **GET** /genres | Get multiple genres.
 *GenresAPI* | [**genresIdGet**](docs/GenresAPI.md#genresidget) | **GET** /genres/{id} | Get single genre.
@@ -182,6 +237,7 @@ Class | Method | HTTP request | Description
 *PlaylistsAPI* | [**playlistsIdRelationshipsItemsPost**](docs/PlaylistsAPI.md#playlistsidrelationshipsitemspost) | **POST** /playlists/{id}/relationships/items | Add to items relationship (\&quot;to-many\&quot;).
 *PlaylistsAPI* | [**playlistsIdRelationshipsOwnerProfilesGet**](docs/PlaylistsAPI.md#playlistsidrelationshipsownerprofilesget) | **GET** /playlists/{id}/relationships/ownerProfiles | Get ownerProfiles relationship (\&quot;to-many\&quot;).
 *PlaylistsAPI* | [**playlistsIdRelationshipsOwnersGet**](docs/PlaylistsAPI.md#playlistsidrelationshipsownersget) | **GET** /playlists/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+*PlaylistsAPI* | [**playlistsIdRelationshipsSuggestedCoverArtsGet**](docs/PlaylistsAPI.md#playlistsidrelationshipssuggestedcoverartsget) | **GET** /playlists/{id}/relationships/suggestedCoverArts | Get suggestedCoverArts relationship (\&quot;to-many\&quot;).
 *PlaylistsAPI* | [**playlistsPost**](docs/PlaylistsAPI.md#playlistspost) | **POST** /playlists | Create single playlist.
 *PriceConfigurationsAPI* | [**priceConfigurationsGet**](docs/PriceConfigurationsAPI.md#priceconfigurationsget) | **GET** /priceConfigurations | Get multiple priceConfigurations.
 *PriceConfigurationsAPI* | [**priceConfigurationsIdGet**](docs/PriceConfigurationsAPI.md#priceconfigurationsidget) | **GET** /priceConfigurations/{id} | Get single priceConfiguration.
@@ -220,6 +276,9 @@ Class | Method | HTTP request | Description
 *SharesAPI* | [**sharesIdRelationshipsSharedResourcesGet**](docs/SharesAPI.md#sharesidrelationshipssharedresourcesget) | **GET** /shares/{id}/relationships/sharedResources | Get sharedResources relationship (\&quot;to-many\&quot;).
 *SharesAPI* | [**sharesPost**](docs/SharesAPI.md#sharespost) | **POST** /shares | Create single share.
 *SquareConnectionsAPI* | [**squareConnectionsIdGet**](docs/SquareConnectionsAPI.md#squareconnectionsidget) | **GET** /squareConnections/{id} | Get single squareConnection.
+*SquareConnectionsAPI* | [**squareConnectionsIdRelationshipsSelectedSiteGet**](docs/SquareConnectionsAPI.md#squareconnectionsidrelationshipsselectedsiteget) | **GET** /squareConnections/{id}/relationships/selectedSite | Get selectedSite relationship (\&quot;to-one\&quot;).
+*SquareConnectionsAPI* | [**squareConnectionsIdRelationshipsSelectedSitePatch**](docs/SquareConnectionsAPI.md#squareconnectionsidrelationshipsselectedsitepatch) | **PATCH** /squareConnections/{id}/relationships/selectedSite | Update selectedSite relationship (\&quot;to-one\&quot;).
+*SquareConnectionsAPI* | [**squareConnectionsIdRelationshipsSitesGet**](docs/SquareConnectionsAPI.md#squareconnectionsidrelationshipssitesget) | **GET** /squareConnections/{id}/relationships/sites | Get sites relationship (\&quot;to-many\&quot;).
 *SquareConnectionsAPI* | [**squareConnectionsPost**](docs/SquareConnectionsAPI.md#squareconnectionspost) | **POST** /squareConnections | Create single squareConnection.
 *StripeConnectionsAPI* | [**stripeConnectionsGet**](docs/StripeConnectionsAPI.md#stripeconnectionsget) | **GET** /stripeConnections | Get multiple stripeConnections.
 *StripeConnectionsAPI* | [**stripeConnectionsIdRelationshipsOwnersGet**](docs/StripeConnectionsAPI.md#stripeconnectionsidrelationshipsownersget) | **GET** /stripeConnections/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
@@ -613,6 +672,7 @@ Class | Method | HTTP request | Description
  - [DynamicPagesMultiResourceDataDocument](docs/DynamicPagesMultiResourceDataDocument.md)
  - [DynamicPagesRelationships](docs/DynamicPagesRelationships.md)
  - [DynamicPagesResourceObject](docs/DynamicPagesResourceObject.md)
+ - [DynamicPagesResourceObjectMeta](docs/DynamicPagesResourceObjectMeta.md)
  - [DynamicPagesSingleRelationshipDataDocument](docs/DynamicPagesSingleRelationshipDataDocument.md)
  - [DynamicPagesSingleResourceDataDocument](docs/DynamicPagesSingleResourceDataDocument.md)
  - [ErrorObject](docs/ErrorObject.md)
@@ -703,6 +763,7 @@ Class | Method | HTTP request | Description
  - [PlayQueuesFutureMultiRelationshipDataDocument](docs/PlayQueuesFutureMultiRelationshipDataDocument.md)
  - [PlayQueuesFutureRelationshipAddOperationPayload](docs/PlayQueuesFutureRelationshipAddOperationPayload.md)
  - [PlayQueuesFutureRelationshipAddOperationPayloadData](docs/PlayQueuesFutureRelationshipAddOperationPayloadData.md)
+ - [PlayQueuesFutureRelationshipAddOperationPayloadDataMeta](docs/PlayQueuesFutureRelationshipAddOperationPayloadDataMeta.md)
  - [PlayQueuesFutureRelationshipAddOperationPayloadMeta](docs/PlayQueuesFutureRelationshipAddOperationPayloadMeta.md)
  - [PlayQueuesFutureRelationshipRemoveOperationPayload](docs/PlayQueuesFutureRelationshipRemoveOperationPayload.md)
  - [PlayQueuesFutureRelationshipRemoveOperationPayloadData](docs/PlayQueuesFutureRelationshipRemoveOperationPayloadData.md)
@@ -754,6 +815,9 @@ Class | Method | HTTP request | Description
  - [PlaylistsRelationships](docs/PlaylistsRelationships.md)
  - [PlaylistsResourceObject](docs/PlaylistsResourceObject.md)
  - [PlaylistsSingleResourceDataDocument](docs/PlaylistsSingleResourceDataDocument.md)
+ - [PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument](docs/PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument.md)
+ - [PlaylistsSuggestedCoverArtsResourceIdentifier](docs/PlaylistsSuggestedCoverArtsResourceIdentifier.md)
+ - [PlaylistsSuggestedCoverArtsResourceIdentifierMeta](docs/PlaylistsSuggestedCoverArtsResourceIdentifierMeta.md)
  - [PlaylistsUpdateOperationPayload](docs/PlaylistsUpdateOperationPayload.md)
  - [PlaylistsUpdateOperationPayloadData](docs/PlaylistsUpdateOperationPayloadData.md)
  - [PlaylistsUpdateOperationPayloadDataAttributes](docs/PlaylistsUpdateOperationPayloadDataAttributes.md)
@@ -852,12 +916,24 @@ Class | Method | HTTP request | Description
  - [SharesSingleResourceDataDocument](docs/SharesSingleResourceDataDocument.md)
  - [SingleRelationshipDataDocument](docs/SingleRelationshipDataDocument.md)
  - [SquareConnectionsAttributes](docs/SquareConnectionsAttributes.md)
+ - [SquareConnectionsCapability](docs/SquareConnectionsCapability.md)
  - [SquareConnectionsCreateOperationPayload](docs/SquareConnectionsCreateOperationPayload.md)
  - [SquareConnectionsCreateOperationPayloadData](docs/SquareConnectionsCreateOperationPayloadData.md)
  - [SquareConnectionsCreateOperationPayloadMeta](docs/SquareConnectionsCreateOperationPayloadMeta.md)
+ - [SquareConnectionsMultiRelationshipDataDocument](docs/SquareConnectionsMultiRelationshipDataDocument.md)
  - [SquareConnectionsMultiResourceDataDocument](docs/SquareConnectionsMultiResourceDataDocument.md)
+ - [SquareConnectionsRelationships](docs/SquareConnectionsRelationships.md)
  - [SquareConnectionsResourceObject](docs/SquareConnectionsResourceObject.md)
+ - [SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload](docs/SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload.md)
+ - [SquareConnectionsSelectedSiteRelationshipUpdateOperationPayloadData](docs/SquareConnectionsSelectedSiteRelationshipUpdateOperationPayloadData.md)
+ - [SquareConnectionsSingleRelationshipDataDocument](docs/SquareConnectionsSingleRelationshipDataDocument.md)
  - [SquareConnectionsSingleResourceDataDocument](docs/SquareConnectionsSingleResourceDataDocument.md)
+ - [SquareConnectionsUpdateSingleDataRelationship409ResponseBody](docs/SquareConnectionsUpdateSingleDataRelationship409ResponseBody.md)
+ - [SquareConnectionsUpdateSingleDataRelationship409ResponseBodyErrorsInner](docs/SquareConnectionsUpdateSingleDataRelationship409ResponseBodyErrorsInner.md)
+ - [SquareSitesAttributes](docs/SquareSitesAttributes.md)
+ - [SquareSitesMultiResourceDataDocument](docs/SquareSitesMultiResourceDataDocument.md)
+ - [SquareSitesResourceObject](docs/SquareSitesResourceObject.md)
+ - [SquareSitesSingleResourceDataDocument](docs/SquareSitesSingleResourceDataDocument.md)
  - [StripeConnectionsAttributes](docs/StripeConnectionsAttributes.md)
  - [StripeConnectionsCreateOperationPayload](docs/StripeConnectionsCreateOperationPayload.md)
  - [StripeConnectionsCreateOperationPayloadData](docs/StripeConnectionsCreateOperationPayloadData.md)
@@ -884,6 +960,7 @@ Class | Method | HTTP request | Description
  - [TermsAttributes](docs/TermsAttributes.md)
  - [TermsMultiResourceDataDocument](docs/TermsMultiResourceDataDocument.md)
  - [TermsResourceObject](docs/TermsResourceObject.md)
+ - [TermsResourceObjectMeta](docs/TermsResourceObjectMeta.md)
  - [TermsSingleResourceDataDocument](docs/TermsSingleResourceDataDocument.md)
  - [ThirdPartyLyricsProvider](docs/ThirdPartyLyricsProvider.md)
  - [TidalLyricsProvider](docs/TidalLyricsProvider.md)

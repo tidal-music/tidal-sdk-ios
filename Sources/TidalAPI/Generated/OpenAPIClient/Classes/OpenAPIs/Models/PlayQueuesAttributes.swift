@@ -17,12 +17,19 @@ public struct PlayQueuesAttributes: Codable, Hashable {
         case one = "ONE"
         case batch = "BATCH"
     }
+    public enum Shuffle: String, Codable, CaseIterable {
+        case off = "OFF"
+        case batch = "BATCH"
+        case all = "ALL"
+    }
     /** ISO 8601 creation timestamp */
     public var createdAt: Date
     /** ISO 8601 last modified timestamp */
     public var lastModifiedAt: Date
     /** Queue's repeat mode */
     public var _repeat: Repeat
+    /** Queue's shuffle mode */
+    public var shuffle: Shuffle
     /** Queue is shuffled or not */
     public var shuffled: Bool
 
@@ -30,11 +37,13 @@ public struct PlayQueuesAttributes: Codable, Hashable {
         createdAt: Date,
         lastModifiedAt: Date,
         _repeat: Repeat,
+        shuffle: Shuffle,
         shuffled: Bool
     ) {
         self.createdAt = createdAt
         self.lastModifiedAt = lastModifiedAt
         self._repeat = _repeat
+        self.shuffle = shuffle
         self.shuffled = shuffled
     }
 
@@ -42,6 +51,7 @@ public struct PlayQueuesAttributes: Codable, Hashable {
         case createdAt
         case lastModifiedAt
         case _repeat = "repeat"
+        case shuffle
         case shuffled
     }
 
@@ -52,6 +62,7 @@ public struct PlayQueuesAttributes: Codable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(_repeat, forKey: ._repeat)
+        try container.encode(shuffle, forKey: .shuffle)
         try container.encode(shuffled, forKey: .shuffled)
     }
 }

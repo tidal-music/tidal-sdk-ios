@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.28] - 2026-07-17
+
+### Changed
+- Generated API code using spec version 1.10.65 (TidalAPI)
+
+## [0.11.27] - 2026-07-16
+
+### Changed
+- Generated API code using spec version 1.10.62 (TidalAPI)
+
+## [0.11.26] - 2026-07-06
+
+### Changed
+- Generated API code using spec version 1.10.54 (TidalAPI)
+
+## [0.11.25] - 2026-07-01
+
+### Added
+- `Player.setAudioOutputDevice(uniqueID:)` to pin audio output to a specific Core Audio device for bit-perfect/exclusive playback on macOS (Player)
+
+### Changed
+- Generated API code using spec version 1.10.51 (TidalAPI)
+- Declare unhandled package files (`TidalAPI` generated docs/config, module READMEs, EventProducer seed `.sqlite`) as `exclude:` so `swift build` no longer warns (Build)
+- Migrate Player tests from XCTest to Swift Testing and stabilize shared-state test execution (PlayerTests)
+
+### Fixed
+- Fix Offliner license continuation race (Offliner)
+- Fix CI simulator destination (CI)
+
 ## [0.11.24] - 2026-06-23
 
 ### Changed

@@ -325,6 +325,17 @@ public extension Player {
 		}
 	}
 
+	/// Pins audio output to a specific Core Audio device (by unique id) for
+	/// bit-perfect/exclusive playback; nil routes to the system default.
+	/// macOS only — no-op on other platforms. Applies to the currently playing
+	/// item immediately and to all subsequently loaded items.
+	func setAudioOutputDevice(uniqueID: String?) {
+		queue.dispatch {
+			AVQueuePlayerWrapper.preferredAudioOutputDeviceUID = uniqueID
+			(self.playerEngine.currentPlayer() as? AVQueuePlayerWrapper)?.setAudioOutputDevice(uniqueID: uniqueID)
+		}
+	}
+
 	func getAssetPosition() -> Double? {
 		playerEngine.getAssetPosition()
 	}

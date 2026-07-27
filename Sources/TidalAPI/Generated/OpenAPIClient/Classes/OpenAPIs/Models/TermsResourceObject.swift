@@ -16,22 +16,26 @@ public struct TermsResourceObject: Codable, Hashable {
     public var attributes: TermsAttributes?
     /** Resource id */
     public var id: String
+    public var meta: TermsResourceObjectMeta?
     /** Resource type */
     public var type: String
 
     public init(
         attributes: TermsAttributes? = nil,
         id: String,
+        meta: TermsResourceObjectMeta? = nil,
         type: String
     ) {
         self.attributes = attributes
         self.id = id
+        self.meta = meta
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case attributes
         case id
+        case meta
         case type
     }
 
@@ -41,6 +45,7 @@ public struct TermsResourceObject: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(attributes, forKey: .attributes)
         try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(meta, forKey: .meta)
         try container.encode(type, forKey: .type)
     }
 }

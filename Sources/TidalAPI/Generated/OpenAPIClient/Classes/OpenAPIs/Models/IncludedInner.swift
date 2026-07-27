@@ -51,6 +51,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
     case squareConnectionsResourceObject(SquareConnectionsResourceObject)
+    case squareSitesResourceObject(SquareSitesResourceObject)
     case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
     case stripeDashboardLinksResourceObject(StripeDashboardLinksResourceObject)
     case temporaryUserTokensResourceObject(TemporaryUserTokensResourceObject)
@@ -164,6 +165,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .sharesResourceObject(let value):
             try container.encode(value)
         case .squareConnectionsResourceObject(let value):
+            try container.encode(value)
+        case .squareSitesResourceObject(let value):
             try container.encode(value)
         case .stripeConnectionsResourceObject(let value):
             try container.encode(value)
@@ -357,6 +360,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "squareConnections":
             let value = try SquareConnectionsResourceObject(from: decoder)
             self = .squareConnectionsResourceObject(value)
+        case "squareSites":
+            let value = try SquareSitesResourceObject(from: decoder)
+            self = .squareSitesResourceObject(value)
         case "stripeConnections":
             let value = try StripeConnectionsResourceObject(from: decoder)
             self = .stripeConnectionsResourceObject(value)
@@ -497,6 +503,7 @@ extension IncludedInner: Identifiable {
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id
         case .squareConnectionsResourceObject(let value): return value.id
+        case .squareSitesResourceObject(let value): return value.id
         case .stripeConnectionsResourceObject(let value): return value.id
         case .stripeDashboardLinksResourceObject(let value): return value.id
         case .temporaryUserTokensResourceObject(let value): return value.id

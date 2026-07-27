@@ -1,16 +1,22 @@
 import Auth
 import EventProducer
+import Foundation
 @testable import Player
-import XCTest
+import Testing
 
-final class FeatureFlagProviderTests: XCTestCase {
+final class FeatureFlagProviderTests {
 	private var featureFlagProvider: FeatureFlagProvider!
 
-	override func setUp() {
+	init() {
 		Player.shared = nil
 		featureFlagProvider = FeatureFlagProvider.mock
 	}
 
+	deinit {
+		Player.shared = nil
+	}
+
+	@Test
 	func testOffliningIsInitialized() throws {
 		let playerInstance = Player.bootstrap(
 			playerListener: PlayerListenerMock(),
@@ -21,9 +27,9 @@ final class FeatureFlagProviderTests: XCTestCase {
 			eventSender: EventSenderMock()
 		)
 
-		let player = try XCTUnwrap(playerInstance)
-		XCTAssertNotNil(player.playerEngine)
-		XCTAssertNotNil(player.offlineStorage)
-		XCTAssertNotNil(player.offlineEngine)
+		let player = try #require(playerInstance)
+		#expect(player.playerEngine != nil)
+		#expect(player.offlineStorage != nil)
+		#expect(player.offlineEngine != nil)
 	}
 }

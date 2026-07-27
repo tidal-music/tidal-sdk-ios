@@ -1,6 +1,6 @@
 import Auth
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -11,12 +11,11 @@ private enum Constants {
 
 // MARK: - CredentialsProviderPlayerTests
 
-final class CredentialsProviderPlayerTests: XCTestCase {
+@Suite(.serialized)
+final class CredentialsProviderPlayerTests {
 	private var credentialsProvider: CredentialsProviderMock!
 
-	override func setUp() {
-		super.setUp()
-
+	init() {
 		PlayerWorld = PlayerWorldClient.mock
 
 		credentialsProvider = CredentialsProviderMock()
@@ -26,6 +25,7 @@ final class CredentialsProviderPlayerTests: XCTestCase {
 extension CredentialsProviderPlayerTests {
 	// MARK: - getAuthBearerToken
 
+	@Test
 	func test_getAuthBearerToken_when_getCredentialsSucceed_shouldReturnBearerToken() async throws {
 		// GIVEN
 		// Provide a successful token
@@ -36,9 +36,10 @@ extension CredentialsProviderPlayerTests {
 		let authBearerToken = try await credentialsProvider.getAuthBearerToken()
 
 		// THEN
-		XCTAssertEqual(authBearerToken, Constants.bearerToken)
+		#expect(authBearerToken == Constants.bearerToken)
 	}
 
+	@Test
 	func test_getAuthBearerToken_when_getCredentialsFail_shouldThrowErrorThrownByAuth() async throws {
 		// GIVEN
 		// Provide a failed token
@@ -49,10 +50,10 @@ extension CredentialsProviderPlayerTests {
 			// WHEN
 			_ = try await credentialsProvider.getAuthBearerToken()
 
-			XCTFail("getAuthBearerToken should have returned an error when Auth getCredential fails")
+			Issue.record("getAuthBearerToken should have returned an error when Auth getCredential fails")
 		} catch {
 			// THEN
-			XCTAssertEqual(error as? TidalErrorMock, tidalError)
+			#expect(error as? TidalErrorMock == tidalError)
 		}
 	}
 }

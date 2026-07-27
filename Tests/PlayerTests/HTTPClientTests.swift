@@ -1,7 +1,9 @@
 // swiftlint:disable type_body_length
 import Foundation
 @testable import Player
-import XCTest
+import Testing
+
+// MARK: - TestResponse
 
 private struct TestResponse: Codable, Equatable {
 	let id: Int
@@ -11,7 +13,10 @@ private struct TestResponse: Codable, Equatable {
 	}
 }
 
-final class HTTPClientTests: XCTestCase {
+// MARK: - HTTPClientTests
+
+@Suite(.serialized)
+final class HTTPClientTests {
 	var urlSession: URLSession!
 
 	var httpClient: HttpClient!
@@ -20,7 +25,7 @@ final class HTTPClientTests: XCTestCase {
 	let responseBackoffPolicy = BackoffPolicyMock()
 	let timeoutBackoffPolicy = BackoffPolicyMock()
 
-	override func setUp() {
+	init() {
 		let configuration = URLSessionConfiguration.default
 		configuration.protocolClasses = [JsonEncodedResponseURLProtocol.self]
 		urlSession = URLSession(configuration: configuration)
@@ -35,10 +40,11 @@ final class HTTPClientTests: XCTestCase {
 		)
 	}
 
-	override func tearDown() {
+	deinit {
 		JsonEncodedResponseURLProtocol.reset()
 	}
 
+	@Test
 	func testBackoffCancellation() async {
 		let longBackoffPolicy = ForcedLongBackoffPolicy()
 		let customHttpClient = HttpClient(
@@ -50,8 +56,8 @@ final class HTTPClientTests: XCTestCase {
 
 		JsonEncodedResponseURLProtocol.replay([
 			JsonEncodedResponseURLProtocol.Response(error: URLError(URLError.networkConnectionLost)),
-			JsonEncodedResponseURLProtocol.Response(data: "Success 1".data(using: .utf8)),
-			JsonEncodedResponseURLProtocol.Response(data: "Success 2".data(using: .utf8)),
+			JsonEncodedResponseURLProtocol.Response(data: Data("Success 1".utf8)),
+			JsonEncodedResponseURLProtocol.Response(data: Data("Success 2".utf8)),
 		])
 
 		do {
@@ -61,7 +67,6 @@ final class HTTPClientTests: XCTestCase {
 			}
 
 			let _: [String] = try await withThrowingTaskGroup(of: Data.self) { taskGroup in
-
 				var responses = [String]()
 
 				taskGroup.addTask {
@@ -83,13 +88,14 @@ final class HTTPClientTests: XCTestCase {
 				return responses
 			}
 
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
-			XCTAssertTrue(error is CancellationError)
-			XCTAssertEqual(longBackoffPolicy.counter, 1)
+			#expect(error is CancellationError)
+			#expect(longBackoffPolicy.counter == 1)
 		}
 	}
 
+	@Test
 	func testValidRequest() async {
 		JsonEncodedResponseURLProtocol.succeed(with: TestResponse.mock())
 
@@ -98,195 +104,205 @@ final class HTTPClientTests: XCTestCase {
 				url: URL(string: "https://www.tidal.com")!,
 				headers: [:]
 			)
-			XCTAssertEqual(playbackInfo.id, TestResponse.mock().id)
-			XCTAssertEqual(networkBackoffPolicy.counter, 0)
-			XCTAssertEqual(responseBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(playbackInfo.id == TestResponse.mock().id)
+			#expect(networkBackoffPolicy.counter == 0)
+			#expect(responseBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		} catch {
-			XCTFail("Import fail: \(error)")
+			Issue.record("Import fail: \(error)")
 		}
 	}
 
+	@Test
 	func testCancelledError() async {
 		JsonEncodedResponseURLProtocol.fail(with: URLError(URLError.cancelled))
 
 		do {
 			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
-			XCTAssertTrue(error is CancellationError)
-			XCTAssertEqual(networkBackoffPolicy.counter, 0)
-			XCTAssertEqual(responseBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(error is CancellationError)
+			#expect(networkBackoffPolicy.counter == 0)
+			#expect(responseBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		}
 	}
 
+	@Test
 	func testNetworkConnectionLost() async {
 		JsonEncodedResponseURLProtocol.fail(with: URLError(URLError.networkConnectionLost))
 
 		do {
 			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
 			guard let internalError = error as? PlayerInternalError else {
-				XCTFail("Invalid error type")
+				Issue.record("Invalid error type")
 				return
 			}
-			XCTAssertEqual(internalError.errorId, .PENetwork)
-			XCTAssertEqual(internalError.errorType, .networkError)
-			XCTAssertEqual(internalError.errorCode, URLError.networkConnectionLost.rawValue)
-			XCTAssertEqual(networkBackoffPolicy.counter, 10)
-			XCTAssertEqual(responseBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(internalError.errorId == .PENetwork)
+			#expect(internalError.errorType == .networkError)
+			#expect(internalError.errorCode == URLError.networkConnectionLost.rawValue)
+			#expect(networkBackoffPolicy.counter == 10)
+			#expect(responseBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		}
 	}
 
+	@Test
 	func testTimeoutError() async {
 		JsonEncodedResponseURLProtocol.fail(with: URLError(URLError.timedOut))
 
 		do {
 			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
 			guard let internalError = error as? PlayerInternalError else {
-				XCTFail("Invalid error type")
+				Issue.record("Invalid error type")
 				return
 			}
-			XCTAssertEqual(internalError.errorId, .PENetwork)
-			XCTAssertEqual(internalError.errorType, .timeOutError)
-			XCTAssertEqual(internalError.errorCode, URLError.timedOut.rawValue)
-			XCTAssertEqual(networkBackoffPolicy.counter, 0)
-			XCTAssertEqual(responseBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 3)
+			#expect(internalError.errorId == .PENetwork)
+			#expect(internalError.errorType == .timeOutError)
+			#expect(internalError.errorCode == URLError.timedOut.rawValue)
+			#expect(networkBackoffPolicy.counter == 0)
+			#expect(responseBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 3)
 		}
 	}
 
+	@Test
 	func testUnexpectedURLError() async {
 		JsonEncodedResponseURLProtocol.fail(with: URLError(URLError.resourceUnavailable))
 
 		do {
 			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
 			guard let internalError = error as? PlayerInternalError else {
-				XCTFail("Invalid error type")
+				Issue.record("Invalid error type")
 				return
 			}
-			XCTAssertEqual(internalError.errorId, .PERetryable)
-			XCTAssertEqual(internalError.errorType, .urlSessionError)
-			XCTAssertEqual(internalError.errorCode, URLError.resourceUnavailable.rawValue)
-			XCTAssertEqual(networkBackoffPolicy.counter, 10)
-			XCTAssertEqual(responseBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(internalError.errorId == .PERetryable)
+			#expect(internalError.errorType == .urlSessionError)
+			#expect(internalError.errorCode == URLError.resourceUnavailable.rawValue)
+			#expect(networkBackoffPolicy.counter == 10)
+			#expect(responseBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		}
 	}
 
+	@Test
 	func test4XXError_HTTPClientError() async {
 		let httpErrorCode = 401
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
 			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
 			guard let httpError = error as? HttpError else {
-				XCTFail("Invalid error type")
+				Issue.record("Invalid error type")
 				return
 			}
 
-			XCTAssertEqual(httpError, .httpClientError(statusCode: httpErrorCode, message: randomData))
-			XCTAssertEqual(networkBackoffPolicy.counter, 0)
-			XCTAssertEqual(responseBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(httpError == .httpClientError(statusCode: httpErrorCode, message: randomData))
+			#expect(networkBackoffPolicy.counter == 0)
+			#expect(responseBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		}
 	}
 
+	@Test
 	func test429Error_HTTPClientError() async {
 		let httpErrorCode = 429
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
 			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
 			guard let httpError = error as? HttpError else {
-				XCTFail("Invalid error type")
+				Issue.record("Invalid error type")
 				return
 			}
 
-			XCTAssertEqual(httpError, .httpClientError(statusCode: httpErrorCode, message: randomData))
-			XCTAssertEqual(responseBackoffPolicy.counter, 3)
-			XCTAssertEqual(networkBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(httpError == .httpClientError(statusCode: httpErrorCode, message: randomData))
+			#expect(responseBackoffPolicy.counter == 3)
+			#expect(networkBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		}
 	}
 
+	@Test
 	func test5XXError_HTTPServerError() async {
 		let httpErrorCode = 501
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
 			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
 			guard let httpError = error as? HttpError else {
-				XCTFail("Invalid error type")
+				Issue.record("Invalid error type")
 				return
 			}
 
-			XCTAssertEqual(httpError, .httpServerError(statusCode: httpErrorCode))
-			XCTAssertEqual(responseBackoffPolicy.counter, 3)
-			XCTAssertEqual(networkBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(httpError == .httpServerError(statusCode: httpErrorCode))
+			#expect(responseBackoffPolicy.counter == 3)
+			#expect(networkBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		}
 	}
 
+	@Test
 	func test503Error_HTTPServerError() async {
 		let httpErrorCode = 503
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
 			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
 			guard let httpError = error as? HttpError else {
-				XCTFail("Invalid error type")
+				Issue.record("Invalid error type")
 				return
 			}
 
-			XCTAssertEqual(httpError, .httpServerError(statusCode: httpErrorCode))
-			XCTAssertEqual(responseBackoffPolicy.counter, 3)
-			XCTAssertEqual(networkBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(httpError == .httpServerError(statusCode: httpErrorCode))
+			#expect(responseBackoffPolicy.counter == 3)
+			#expect(networkBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		}
 	}
 
+	@Test
 	func test7XXError_UnsupportedHttpStatus() async {
 		let httpErrorCode = 707
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 		JsonEncodedResponseURLProtocol.fail(with: httpErrorCode, data: randomData)
 
 		do {
 			let _: TestResponse = try await httpClient.getJson(url: URL(string: "https://www.tidal.com")!, headers: [:])
-			XCTFail("Request should have failed")
+			Issue.record("Request should have failed")
 		} catch {
 			guard let internalError = error as? PlayerInternalError else {
-				XCTFail("Invalid error type")
+				Issue.record("Invalid error type")
 				return
 			}
-			XCTAssertEqual(internalError.errorId, .EUnexpected)
-			XCTAssertEqual(internalError.errorType, .httpClientError)
-			XCTAssertEqual(internalError.errorCode, ErrorCode.unsupportedHttpStatus.rawValue)
-			XCTAssertEqual(responseBackoffPolicy.counter, 0)
-			XCTAssertEqual(networkBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(internalError.errorId == .EUnexpected)
+			#expect(internalError.errorType == .httpClientError)
+			#expect(internalError.errorCode == ErrorCode.unsupportedHttpStatus.rawValue)
+			#expect(responseBackoffPolicy.counter == 0)
+			#expect(networkBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		}
 	}
 
+	@Test
 	func testSomeNetworkErrors_thenSucceed() async {
 		// swiftlint:disable force_try
 		let data = try! JSONEncoder().encode(TestResponse.mock())
@@ -305,22 +321,23 @@ final class HTTPClientTests: XCTestCase {
 				url: URL(string: "https://www.tidal.com")!,
 				headers: [:]
 			)
-			XCTAssertEqual(playbackInfo.id, TestResponse.mock().id)
-			XCTAssertEqual(networkBackoffPolicy.counter, 3)
-			XCTAssertEqual(responseBackoffPolicy.counter, 0)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(playbackInfo.id == TestResponse.mock().id)
+			#expect(networkBackoffPolicy.counter == 3)
+			#expect(responseBackoffPolicy.counter == 0)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		} catch {
-			XCTFail("Import fail: \(error)")
+			Issue.record("Import fail: \(error)")
 		}
 	}
 
+	@Test
 	func testSomeNetworkErrors_thenResponseError_thenSucceed() async {
 		// swiftlint:disable force_try
 		let data = try! JSONEncoder().encode(TestResponse.mock())
 		// swiftlint:enable force_try
 
 		let httpErrorCode = 501
-		let randomData = "RandomData".data(using: .utf8)
+		let randomData = Data("RandomData".utf8)
 
 		var responses = [JsonEncodedResponseURLProtocol.Response](
 			repeating: JsonEncodedResponseURLProtocol.Response(error: URLError(URLError.networkConnectionLost)),
@@ -336,12 +353,12 @@ final class HTTPClientTests: XCTestCase {
 				url: URL(string: "https://www.tidal.com")!,
 				headers: [:]
 			)
-			XCTAssertEqual(playbackInfo.id, TestResponse.mock().id)
-			XCTAssertEqual(networkBackoffPolicy.counter, 3)
-			XCTAssertEqual(responseBackoffPolicy.counter, 1)
-			XCTAssertEqual(timeoutBackoffPolicy.counter, 0)
+			#expect(playbackInfo.id == TestResponse.mock().id)
+			#expect(networkBackoffPolicy.counter == 3)
+			#expect(responseBackoffPolicy.counter == 1)
+			#expect(timeoutBackoffPolicy.counter == 0)
 		} catch {
-			XCTFail("Import fail: \(error)")
+			Issue.record("Import fail: \(error)")
 		}
 	}
 
@@ -351,18 +368,16 @@ final class HTTPClientTests: XCTestCase {
 	/// https://stackoverflow.com/questions/62406384/how-to-load-nil-data-with-a-urlprotocol-subclass
 	/// So we would need to modify the current httpClient implementation to check if data.length == 0
 	///
-	func testNoDataError() async throws {
-		throw XCTSkip("No way for this error to happen")
-	}
+	@Test(.disabled("No way for this error to happen"))
+	func testNoDataError() async throws {}
 
 	/// Seems like there is no way for that error to actually happen
 	/// https://developer.apple.com/forums/thread/120099
 	/// As long as the url has an http scheme, the URLResponse can always be downcastto an HTTPURLResponse
 	/// so we will never reach that part of the code
 	///
-	func testNoResponseError() async throws {
-		throw XCTSkip("No way for this error to happen")
-	}
+	@Test(.disabled("No way for this error to happen"))
+	func testNoResponseError() async throws {}
 }
 
 // swiftlint:enable type_body_length

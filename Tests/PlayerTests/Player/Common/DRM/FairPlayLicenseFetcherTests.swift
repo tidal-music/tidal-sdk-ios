@@ -1,7 +1,7 @@
 import Auth
 import AVFoundation
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -11,15 +11,14 @@ private enum Constants {
 
 // MARK: - FairPlayLicenseFetcherTests
 
-final class FairPlayLicenseFetcherTests: XCTestCase {
+@Suite(.serialized)
+final class FairPlayLicenseFetcherTests {
 	private var httpClient: HttpClient!
 	private var credentialsProvider: CredentialsProviderMock!
 	private var playerEventSender: PlayerEventSender!
 	private var fetcher: FairPlayLicenseFetcher!
 
-	override func setUp() {
-		super.setUp()
-
+	init() {
 		PlayerWorld = PlayerWorldClient.mock
 
 		let sessionConfiguration = URLSessionConfiguration.default
@@ -42,6 +41,7 @@ final class FairPlayLicenseFetcherTests: XCTestCase {
 extension FairPlayLicenseFetcherTests {
 	// MARK: - getLicense
 
+	@Test
 	func test_getLicense_shouldSucceed() async throws {
 		// Given
 		let keyRequest = KeyRequestMock()
@@ -61,9 +61,10 @@ extension FairPlayLicenseFetcherTests {
 		let licence = try await fetcher.getLicense(streamingSessionId: "streamingSessionId", keyRequest: keyRequest)
 
 		// Then
-		XCTAssertEqual(licence, expectedLicense)
+		#expect(licence == expectedLicense)
 	}
 
+	@Test
 	func test_getLicense_whenTokenIsNil_shouldFail() async throws {
 		// Given
 		let keyRequest = KeyRequestMock()
@@ -82,13 +83,14 @@ extension FairPlayLicenseFetcherTests {
 			// When
 			_ = try await fetcher.getLicense(streamingSessionId: "streamingSessionId", keyRequest: keyRequest)
 
-			XCTFail("getLicense should have returned an error when token returned is nil")
+			Issue.record("getLicense should have returned an error when token returned is nil")
 		} catch {
 			// Then
-			XCTAssertEqual(error as? PlayerInternalError, Constants.authNilTokenError)
+			#expect(error as? PlayerInternalError == Constants.authNilTokenError)
 		}
 	}
 
+	@Test
 	func test_getLicense_whenGetKeyIdFails_shouldFail() async throws {
 		// Given
 		let keyRequest = KeyRequestMock()
@@ -107,14 +109,15 @@ extension FairPlayLicenseFetcherTests {
 			// When
 			_ = try await fetcher.getLicense(streamingSessionId: "streamingSessionId", keyRequest: keyRequest)
 
-			XCTFail("getLicense should have returned an error when getKeyId of key request fails")
+			Issue.record("getLicense should have returned an error when getKeyId of key request fails")
 		} catch {
 			// Then
 			let expectedError = keyRequest.error
-			XCTAssertEqual(error as? PlayerInternalError, expectedError)
+			#expect(error as? PlayerInternalError == expectedError)
 		}
 	}
 
+	@Test
 	func test_getLicense_whenGetKeyIdSucceedsAndCreateServerPlaybackContextFails() async throws {
 		// Given
 		let keyRequest = KeyRequestMock()
@@ -133,11 +136,11 @@ extension FairPlayLicenseFetcherTests {
 			// When
 			_ = try await fetcher.getLicense(streamingSessionId: "streamingSessionId", keyRequest: keyRequest)
 
-			XCTFail("getLicense should have returned an error when createServerPlaybackContext of key request fails")
+			Issue.record("getLicense should have returned an error when createServerPlaybackContext of key request fails")
 		} catch {
 			// Then
 			let expectedError = keyRequest.error
-			XCTAssertEqual(error as? PlayerInternalError, expectedError)
+			#expect(error as? PlayerInternalError == expectedError)
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && cd .. && pwd)
+ROOT_DIR=$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)
 readonly ROOT_DIR
 
 VERSION_FILE="$ROOT_DIR/version.txt"
@@ -11,15 +11,15 @@ readonly SEMVER_REGEX='(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d
 
 echo "Checking '$VERSION_FILE'"
 
-last_commit="$(git rev-parse @)"
-previous_commit="$(git rev-parse @~)"
+last_commit="$(git -C "$ROOT_DIR" rev-parse @)"
+previous_commit="$(git -C "$ROOT_DIR" rev-parse @~)"
 
 # Check if the submitted file exists and is correctly named
 verify_file_validity() {
     file=$1
     if [ ! -f "$file" ]; then
         echo "File '$file' not found. Cannot check for version bump in '$DIR'"
-        exit 1
+        exit 2
     fi
 }
 
@@ -43,7 +43,7 @@ is_version_bump() {
 
 verify_file_validity "$VERSION_FILE"
 
-version_diff="$(git diff $previous_commit $last_commit -- "$VERSION_FILE")"
+version_diff="$(git -C "$ROOT_DIR" diff "$previous_commit" "$last_commit" -- "$VERSION_FILE")"
 should_build_release=false
 
 if [ -n "$version_diff" ]; then

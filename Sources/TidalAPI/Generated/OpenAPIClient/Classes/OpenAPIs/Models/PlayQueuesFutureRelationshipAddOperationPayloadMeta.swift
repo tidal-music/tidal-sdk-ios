@@ -17,6 +17,8 @@ public struct PlayQueuesFutureRelationshipAddOperationPayloadMeta: Codable, Hash
         case addToBack = "ADD_TO_BACK"
         case addBefore = "ADD_BEFORE"
         case replaceAll = "REPLACE_ALL"
+        case replaceAllAndCurrent = "REPLACE_ALL_AND_CURRENT"
+        case addToFrontReplaceCurrent = "ADD_TO_FRONT_REPLACE_CURRENT"
     }
     public var batchId: UUID?
     public var legacySource: LegacySource?

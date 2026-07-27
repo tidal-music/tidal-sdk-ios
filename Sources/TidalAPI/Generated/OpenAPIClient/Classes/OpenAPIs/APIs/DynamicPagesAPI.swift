@@ -43,16 +43,16 @@ internal class DynamicPagesAPI {
      - parameter clientVersion: (query) Client version number 
      - parameter filterPageType: (query) type of the page (e.g. &#x60;ARTIST&#x60;) 
      - parameter filterSubjectId: (query) the subject id, eg. artistId (e.g. &#x60;67890&#x60;) 
-     - parameter refreshId: (query)  (optional)
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules, subject (optional)
      - returns: DynamicPagesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], filterSubjectId: [String], refreshId: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+    internal class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], filterSubjectId: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
         do {
-            return try await dynamicPagesGetWithRequestBuilder(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, filterSubjectId: filterSubjectId, refreshId: refreshId, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await dynamicPagesGetWithRequestBuilder(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, filterSubjectId: filterSubjectId, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -74,20 +74,20 @@ internal class DynamicPagesAPI {
      - parameter clientVersion: (query) Client version number 
      - parameter filterPageType: (query) type of the page (e.g. &#x60;ARTIST&#x60;) 
      - parameter filterSubjectId: (query) the subject id, eg. artistId (e.g. &#x60;67890&#x60;) 
-     - parameter refreshId: (query)  (optional)
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules, subject (optional)
      - returns: RequestBuilder<DynamicPagesMultiResourceDataDocument> 
      */
-    internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], filterSubjectId: [String], refreshId: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
+    internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], filterSubjectId: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
         let localVariablePath = "/dynamicPages"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "refreshId": (wrappedValue: refreshId?.encodeToJSON(), isExplode: true),
+            "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "deviceType": (wrappedValue: deviceType.encodeToJSON(), isExplode: true),
@@ -112,7 +112,7 @@ internal class DynamicPagesAPI {
     /**
      * enum for parameter deviceType
      */
-    public enum DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet: String, CaseIterable {
+    public enum DeviceType_dynamicPagesIdRelationshipsModulesGet: String, CaseIterable {
         case browser = "BROWSER"
         case car = "CAR"
         case desktop = "DESKTOP"
@@ -124,7 +124,7 @@ internal class DynamicPagesAPI {
     /**
      * enum for parameter systemType
      */
-    public enum SystemType_dynamicPagesIdRelationshipsDynamicModulesGet: String, CaseIterable {
+    public enum SystemType_dynamicPagesIdRelationshipsModulesGet: String, CaseIterable {
         case android = "ANDROID"
         case desktop = "DESKTOP"
         case tesla = "TESLA"
@@ -133,23 +133,23 @@ internal class DynamicPagesAPI {
     }
 
     /**
-     Get dynamicModules relationship (\"to-many\").
+     Get modules relationship (\"to-many\").
      
      - parameter id: (path) DynamicPages Id 
      - parameter deviceType: (query) The type of device making the request 
      - parameter systemType: (query) The system type of the device making the request 
      - parameter clientVersion: (query) Client version number 
-     - parameter refreshId: (query)  (optional)
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: dynamicModules (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules (optional)
      - returns: DynamicPagesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesIdRelationshipsDynamicModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsDynamicModulesGet, clientVersion: String, refreshId: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicPagesMultiRelationshipDataDocument {
+    internal class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicPagesMultiRelationshipDataDocument {
         do {
-            return try await dynamicPagesIdRelationshipsDynamicModulesGetWithRequestBuilder(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshId: refreshId, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -157,9 +157,9 @@ internal class DynamicPagesAPI {
     }
 
     /**
-     Get dynamicModules relationship (\"to-many\").
-     - GET /dynamicPages/{id}/relationships/dynamicModules
-     - Retrieves dynamicModules relationship.
+     Get modules relationship (\"to-many\").
+     - GET /dynamicPages/{id}/relationships/modules
+     - Retrieves modules relationship.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -170,15 +170,15 @@ internal class DynamicPagesAPI {
      - parameter deviceType: (query) The type of device making the request 
      - parameter systemType: (query) The system type of the device making the request 
      - parameter clientVersion: (query) Client version number 
-     - parameter refreshId: (query)  (optional)
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: dynamicModules (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules (optional)
      - returns: RequestBuilder<DynamicPagesMultiRelationshipDataDocument> 
      */
-    internal class func dynamicPagesIdRelationshipsDynamicModulesGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsDynamicModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsDynamicModulesGet, clientVersion: String, refreshId: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicPagesMultiRelationshipDataDocument> {
-        var localVariablePath = "/dynamicPages/{id}/relationships/dynamicModules"
+    internal class func dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicPagesMultiRelationshipDataDocument> {
+        var localVariablePath = "/dynamicPages/{id}/relationships/modules"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
@@ -187,7 +187,7 @@ internal class DynamicPagesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "refreshId": (wrappedValue: refreshId?.encodeToJSON(), isExplode: true),
+            "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),

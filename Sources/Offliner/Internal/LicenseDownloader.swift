@@ -19,29 +19,30 @@ actor LicenseDownloader {
 	private var certificateTask: Task<Data, Error>?
 
 	init() {
-		self.httpClient = HttpClient()
+		httpClient = HttpClient()
 	}
 
 	func downloadLicense(drmData: DrmData?) async throws -> LicenseDownloadResult? {
 		guard let keyIdentifier = drmData?.initData?.first,
-			  let certificateURLString = drmData?.certificateUrl,
-			  let certificateURL = URL(string: certificateURLString),
-			  let licenseURLString = drmData?.licenseUrl,
-			  let licenseURL = URL(string: licenseURLString)
+		      let certificateURLString = drmData?.certificateUrl,
+		      let certificateURL = URL(string: certificateURLString),
+		      let licenseURLString = drmData?.licenseUrl,
+		      let licenseURL = URL(string: licenseURLString)
 		else {
 			return nil
 		}
 
 		let contentKeySession = AVContentKeySession(keySystem: .fairPlayStreaming)
+		let certificate = try await getCertificate(url: certificateURL)
 		let delegate = ActiveLicenseDownload(
-			certificate: try await getCertificate(url: certificateURL),
+			certificate: certificate,
 			httpClient: httpClient,
 			licenseURL: licenseURL
 		)
 
 		let storedLicenseURL: URL = try await withCheckedThrowingContinuation { continuation in
 			self.queue.async {
-				delegate.continuation = continuation
+				delegate.setContinuation(continuation)
 				contentKeySession.setDelegate(delegate, queue: self.queue)
 				contentKeySession.processContentKeyRequest(
 					withIdentifier: keyIdentifier,
@@ -87,16 +88,50 @@ private final class ActiveLicenseDownload: NSObject {
 	let certificate: Data
 	let httpClient: HttpClient
 	let licenseURL: URL
-	var continuation: CheckedContinuation<URL, Error>?
+	private let continuationLock = NSLock()
+	private var continuation: CheckedContinuation<URL, Error>?
 
 	init(certificate: Data, httpClient: HttpClient, licenseURL: URL) {
 		self.certificate = certificate
 		self.httpClient = httpClient
 		self.licenseURL = licenseURL
 	}
+
+	func setContinuation(_ continuation: CheckedContinuation<URL, Error>) {
+		continuationLock.lock()
+		self.continuation = continuation
+		continuationLock.unlock()
+	}
+
+	func finish(returning url: URL) {
+		guard let continuation = takeContinuation() else {
+			return
+		}
+
+		continuation.resume(returning: url)
+	}
+
+	func finish(throwing error: Error) {
+		guard let continuation = takeContinuation() else {
+			return
+		}
+
+		continuation.resume(throwing: error)
+	}
+
+	private func takeContinuation() -> CheckedContinuation<URL, Error>? {
+		continuationLock.lock()
+		defer {
+			continuationLock.unlock()
+		}
+
+		let continuation = continuation
+		self.continuation = nil
+		return continuation
+	}
 }
 
-// MARK: - AVContentKeySessionDelegate
+// MARK: AVContentKeySessionDelegate
 
 extension ActiveLicenseDownload: AVContentKeySessionDelegate {
 	func contentKeySession(
@@ -107,6 +142,7 @@ extension ActiveLicenseDownload: AVContentKeySessionDelegate {
 			try keyRequest.respondByRequestingPersistableContentKeyRequest()
 		} catch {
 			keyRequest.processContentKeyResponseError(error)
+			finish(throwing: error)
 		}
 	}
 
@@ -114,7 +150,9 @@ extension ActiveLicenseDownload: AVContentKeySessionDelegate {
 		_ session: AVContentKeySession,
 		didProvide keyRequest: AVPersistableContentKeyRequest
 	) {
-		Task {
+		Task { [session] in
+			_ = session
+
 			do {
 				let spc = try await createSpc(keyRequest: keyRequest)
 				let license = try await fetchLicense(spc: spc)
@@ -129,12 +167,10 @@ extension ActiveLicenseDownload: AVContentKeySessionDelegate {
 				let keyResponse = AVContentKeyResponse(fairPlayStreamingKeyResponseData: persistableKey)
 				keyRequest.processContentKeyResponse(keyResponse)
 
-				continuation?.resume(returning: url)
-				continuation = nil
+				finish(returning: url)
 			} catch {
 				keyRequest.processContentKeyResponseError(error)
-				continuation?.resume(throwing: error)
-				continuation = nil
+				finish(throwing: error)
 			}
 		}
 	}
@@ -144,8 +180,7 @@ extension ActiveLicenseDownload: AVContentKeySessionDelegate {
 		contentKeyRequest keyRequest: AVContentKeyRequest,
 		didFailWithError error: Error
 	) {
-		continuation?.resume(throwing: error)
-		continuation = nil
+		finish(throwing: error)
 	}
 }
 
@@ -168,7 +203,7 @@ private extension ActiveLicenseDownload {
 			url: licenseURL,
 			headers: [
 				"Authorization": "Bearer \(token)",
-				"Content-Type": "application/octet-stream"
+				"Content-Type": "application/octet-stream",
 			],
 			body: spc
 		)
@@ -227,12 +262,16 @@ final class HttpClient {
 	}
 }
 
+// MARK: - HttpClientError
+
 private enum HttpClientError: Error {
 	case noResponse
 	case emptyResponse
 	case clientError(statusCode: Int)
 	case serverError(statusCode: Int)
 }
+
+// MARK: - LicenseDownloaderError
 
 enum LicenseDownloaderError: Error {
 	case missingCredentialsProvider

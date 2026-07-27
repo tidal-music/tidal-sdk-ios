@@ -1,7 +1,8 @@
 name: Trigger Releases
 on:
   push:
-    branches: 'main'
+    branches:
+      - main
 
 jobs: 
   check-bump:
@@ -21,10 +22,13 @@ jobs:
           result="false"
           version="$(cat version.txt)"
           ./.agents/skills/prepare-release/scripts/check-version-bump.sh
+          status=$?
           
-          # check-version-bump exits with 0 if it detects a bump, otherwise with 1
-          if [ $? != "1" ]; then
+          # check-version-bump exits with 0 for a bump, 1 for no bump, and >1 for errors.
+          if [ "$status" = "0" ]; then
             result="true"
+          elif [ "$status" != "1" ]; then
+            exit "$status"
           fi
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "bump_detected=$result" >> $GITHUB_OUTPUT
@@ -53,5 +57,3 @@ jobs:
     with: 
         version: ${{ needs.check-bump.outputs.version }}
     secrets: inherit
-
-

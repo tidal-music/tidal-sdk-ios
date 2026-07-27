@@ -1,6 +1,7 @@
 import Auth
+import Foundation
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -11,12 +12,13 @@ private enum Constants {
 
 // MARK: - InternalPlayerLoaderTests
 
-final class InternalPlayerLoaderTests: XCTestCase {
+@Suite(.serialized)
+final class InternalPlayerLoaderTests {
 	private var fairPlayLicenseFetcher: FairPlayLicenseFetcher!
 	private var internalLoader: InternalPlayerLoader!
 	private var mockPlayer: PlayerMock!
 
-	override func setUpWithError() throws {
+	init() throws {
 		fairPlayLicenseFetcher = FairPlayLicenseFetcher.mock()
 		let cachePath = URL(fileURLWithPath: NSTemporaryDirectory())
 		internalLoader = InternalPlayerLoader(
@@ -31,18 +33,18 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		mockPlayer = internalLoader.players.first { $0 is PlayerMock } as? PlayerMock
 	}
 
-	override func tearDown() {
+	deinit {
 		// Reset isSimulator to its default value after each test
 		#if targetEnvironment(simulator)
-		PlayerWorld.isSimulator = true
+			PlayerWorld.isSimulator = true
 		#else
-		PlayerWorld.isSimulator = false
+			PlayerWorld.isSimulator = false
 		#endif
-		super.tearDown()
 	}
 
 	// MARK: - DRM
 
+	@Test
 	func testProduct_withDRM_hasLicenseLoader() async throws {
 		// GIVEN
 		let sessionId = "1"
@@ -56,16 +58,17 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		)
 
 		// THEN
-		XCTAssertEqual(mockPlayer.loadCallCount, 1)
-		XCTAssertEqual(mockPlayer.licenseLoaders.count, 1)
+		#expect(mockPlayer.loadCallCount == 1)
+		#expect(mockPlayer.licenseLoaders.count == 1)
 		let expectedLicenseLoader = StreamingLicenseLoader(
 			fairPlayLicenseFetcher: fairPlayLicenseFetcher,
 			streamingSessionId: sessionId,
 			featureFlagProvider: .mock
 		)
-		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader], [expectedLicenseLoader])
+		#expect(mockPlayer.licenseLoaders as? [StreamingLicenseLoader] == [expectedLicenseLoader])
 	}
 
+	@Test
 	func testProduct_track_alwaysHasLicenseLoader() async throws {
 		// GIVEN
 		let sessionId = "1"
@@ -83,13 +86,14 @@ final class InternalPlayerLoaderTests: XCTestCase {
 			streamingSessionId: sessionId,
 			featureFlagProvider: .mock
 		)
-		XCTAssertEqual(mockPlayer.loadCallCount, 1)
-		XCTAssertEqual(mockPlayer.licenseLoaders.count, 1)
-		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader], [expectedLicenseLoader])
+		#expect(mockPlayer.loadCallCount == 1)
+		#expect(mockPlayer.licenseLoaders.count == 1)
+		#expect(mockPlayer.licenseLoaders as? [StreamingLicenseLoader] == [expectedLicenseLoader])
 	}
 
 	// MARK: - load
 
+	@Test
 	func test_load_PlayableStorageItem() async throws {
 		// GIVEN
 		let playbackInfo = PlaybackInfo.mock(
@@ -121,13 +125,14 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		)
 		let expectedAsset = AssetMock(with: mockPlayer, loudnessNormalizationConfiguration: expectedLoudnessConfiguration)
 
-		XCTAssertEqual(asset, expectedAsset)
-		XCTAssertEqual(mockPlayer.loadCallCount, 1)
-		XCTAssertEqual(mockPlayer.assets, [expectedAsset])
-		XCTAssertEqual(mockPlayer.licenseLoaders.count, 1)
-		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader?], [nil])
+		#expect(asset == expectedAsset)
+		#expect(mockPlayer.loadCallCount == 1)
+		#expect(mockPlayer.assets == [expectedAsset])
+		#expect(mockPlayer.licenseLoaders.count == 1)
+		#expect(mockPlayer.licenseLoaders as? [StreamingLicenseLoader?] == [nil])
 	}
 
+	@Test
 	func test_load_StoredMediaProduct() async throws {
 		// GIVEN
 		let storedMediaProduct = StoredMediaProduct.mock(albumReplayGain: 4, albumPeakAmplitude: 1)
@@ -149,13 +154,14 @@ final class InternalPlayerLoaderTests: XCTestCase {
 		)
 		let expectedAsset = AssetMock(with: mockPlayer, loudnessNormalizationConfiguration: expectedLoudnessConfiguration)
 
-		XCTAssertEqual(asset, expectedAsset)
-		XCTAssertEqual(mockPlayer.loadCallCount, 1)
-		XCTAssertEqual(mockPlayer.assets, [expectedAsset])
-		XCTAssertEqual(mockPlayer.licenseLoaders.count, 1)
-		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader?], [nil])
+		#expect(asset == expectedAsset)
+		#expect(mockPlayer.loadCallCount == 1)
+		#expect(mockPlayer.assets == [expectedAsset])
+		#expect(mockPlayer.licenseLoaders.count == 1)
+		#expect(mockPlayer.licenseLoaders as? [StreamingLicenseLoader?] == [nil])
 	}
 
+	@Test
 	func test_load_PlaybackInfo() async throws {
 		// GIVEN
 		PlayerWorld.isSimulator = false
@@ -183,10 +189,10 @@ final class InternalPlayerLoaderTests: XCTestCase {
 			featureFlagProvider: .mock
 		)
 
-		XCTAssertEqual(asset, expectedAsset)
-		XCTAssertEqual(mockPlayer.loadCallCount, 1)
-		XCTAssertEqual(mockPlayer.assets, [expectedAsset])
-		XCTAssertEqual(mockPlayer.licenseLoaders.count, 1)
-		XCTAssertEqual(mockPlayer.licenseLoaders as? [StreamingLicenseLoader], [expectedLicenseLoader])
+		#expect(asset == expectedAsset)
+		#expect(mockPlayer.loadCallCount == 1)
+		#expect(mockPlayer.assets == [expectedAsset])
+		#expect(mockPlayer.licenseLoaders.count == 1)
+		#expect(mockPlayer.licenseLoaders as? [StreamingLicenseLoader] == [expectedLicenseLoader])
 	}
 }

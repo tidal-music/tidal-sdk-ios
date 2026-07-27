@@ -12,12 +12,15 @@ import AnyCodable
 
 public struct UserCollectionFoldersItemsRelationshipRemoveOperationPayloadData: Codable, Hashable {
 
+    public enum ModelType: String, Codable, CaseIterable {
+        case playlists = "playlists"
+    }
     public var id: String
-    public var type: String
+    public var type: ModelType
 
     public init(
         id: String,
-        type: String
+        type: ModelType
     ) {
         self.id = id
         self.type = type

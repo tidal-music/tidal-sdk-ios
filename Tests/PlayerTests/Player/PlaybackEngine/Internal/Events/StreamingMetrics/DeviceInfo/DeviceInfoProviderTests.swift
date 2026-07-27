@@ -1,23 +1,23 @@
 @testable import Player
-import XCTest
+import Testing
 
-final class DeviceInfoProviderTests: XCTestCase {
+final class DeviceInfoProviderTests {
 	private var deviceInfoProvider: DeviceInfoProvider!
 
-	override func setUp() {
+	init() {
 		deviceInfoProvider = DeviceInfoProvider.live
 	}
 
-	override func tearDown() {}
-
+	@Test
 	func test_getMobileNetworkType_whenNotUsingData() {
 		let mobileNetworkType = deviceInfoProvider.mobileNetworkType(.WIFI)
-		XCTAssertEqual(mobileNetworkType, DeviceInfoProvider.Constants.NA)
+		#expect(mobileNetworkType == DeviceInfoProvider.Constants.NA)
 	}
 
 	/// In simulator, there's no Telephony, so we are only testing that it returns the default value in such case.
+	@Test
 	func test_getMobileNetworkType_whenUsingData() {
 		let mobileNetworkType = deviceInfoProvider.mobileNetworkType(.MOBILE)
-		XCTAssertEqual(mobileNetworkType, DeviceInfoProvider.Constants.NA)
+		#expect(mobileNetworkType == DeviceInfoProvider.Constants.NA)
 	}
 }

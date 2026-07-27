@@ -1,5 +1,5 @@
 @testable import Player
-import XCTest
+import Testing
 
 // MARK: - Constants
 
@@ -24,75 +24,82 @@ private enum Constants {
 
 // MARK: - LoudnessNormalizerTests
 
-final class LoudnessNormalizerTests: XCTestCase {
+struct LoudnessNormalizerTests {
 	// MARK: - init()
 
+	@Test
 	func test_init_returnsNilIfAnyParameterIsNil() {
 		let loudnessNormalizer = LoudnessNormalizer(preAmp: 1, replayGain: 2, peakAmplitude: nil)
-		XCTAssertEqual(loudnessNormalizer, nil)
+		#expect(loudnessNormalizer == nil)
 
 		let loudnessNormalizer2 = LoudnessNormalizer(preAmp: nil, replayGain: 1, peakAmplitude: 2)
-		XCTAssertEqual(loudnessNormalizer2, nil)
+		#expect(loudnessNormalizer2 == nil)
 
 		let loudnessNormalizer3 = LoudnessNormalizer(preAmp: 1, replayGain: nil, peakAmplitude: 2)
-		XCTAssertEqual(loudnessNormalizer3, nil)
+		#expect(loudnessNormalizer3 == nil)
 	}
 
 	// MARK: - getScaleFactor()
 
+	@Test
 	func test_getScaleFactor() {
 		let loudnessNormalizer = LoudnessNormalizer(preAmp: 4, replayGain: 16, peakAmplitude: 2)
-		XCTAssertEqual(loudnessNormalizer?.getScaleFactor(), 1)
+		#expect(loudnessNormalizer?.getScaleFactor() == 1)
 
 		let loudnessNormalizer2 = LoudnessNormalizer(preAmp: 0.000000001, replayGain: 0, peakAmplitude: 2)
-		XCTAssertEqual(loudnessNormalizer2?.getScaleFactor(), 1)
+		#expect(loudnessNormalizer2?.getScaleFactor() == 1)
 	}
 
 	// MARK: - getDecibelValue()
 
+	@Test
 	func test_getDecibelValue() {
 		let loudnessNormalizer = LoudnessNormalizer(preAmp: 4, replayGain: 16, peakAmplitude: 2)
-		XCTAssertEqual(loudnessNormalizer?.getDecibelValue(), 20)
+		#expect(loudnessNormalizer?.getDecibelValue() == 20)
 
 		let loudnessNormalizer2 = LoudnessNormalizer(preAmp: 0.000000001, replayGain: 0, peakAmplitude: 2)
-		XCTAssertEqual(loudnessNormalizer2?.getDecibelValue(), 0.000000001)
+		#expect(loudnessNormalizer2?.getDecibelValue() == 0.000000001)
 	}
 
 	// MARK: - updatePreAmp()
 
+	@Test
 	func test_updatePreAmp() {
 		let loudnessNormalizer = LoudnessNormalizer(preAmp: 4, replayGain: 16, peakAmplitude: 2)
 		let newPreAmp: Float = 20
 		loudnessNormalizer?.updatePreAmp(newPreAmp)
 
-		XCTAssertEqual(loudnessNormalizer?.preAmp, newPreAmp)
+		#expect(loudnessNormalizer?.preAmp == newPreAmp)
 	}
 
 	// MARK: - create(from playbackInfo: PlaybackInfo)
 
+	@Test
 	func test_create_from_PlaybackInfo() {
 		let playbackInfo = Constants.playbackInfo
 
 		let loudnessNormalizer = LoudnessNormalizer.create(from: playbackInfo, preAmp: Constants.preAmp)
 
-		XCTAssertEqual(loudnessNormalizer, Constants.expectedLoudnessNormalizer)
+		#expect(loudnessNormalizer == Constants.expectedLoudnessNormalizer)
 	}
 
 	// MARK: - create(from playableStorageItem: PlayableStorageItem)
 
+	@Test
 	func test_create_from_PlayableStorageItem() {
 		guard let offlinedProduct = PlayableOfflinedMediaProduct(from: OfflineEntry.mock(from: Constants.playbackInfo)) else {
-			XCTFail("Failed to create mock of PlayableOfflinedProduct")
+			Issue.record("Failed to create mock of PlayableOfflinedProduct")
 			return
 		}
 
 		let loudnessNormalizer = LoudnessNormalizer.create(from: offlinedProduct, preAmp: Constants.preAmp)
 
-		XCTAssertEqual(loudnessNormalizer, Constants.expectedLoudnessNormalizer)
+		#expect(loudnessNormalizer == Constants.expectedLoudnessNormalizer)
 	}
 
 	// MARK: - create(from storedMediaProduct: StoredMediaProduct)
 
+	@Test
 	func test_create_from_StoredMediaProduct() {
 		let storedMediaProduct = StoredMediaProduct.mock(
 			albumReplayGain: Constants.albumReplayGain,
@@ -103,6 +110,6 @@ final class LoudnessNormalizerTests: XCTestCase {
 
 		let loudnessNormalizer = LoudnessNormalizer.create(from: storedMediaProduct, preAmp: Constants.preAmp)
 
-		XCTAssertEqual(loudnessNormalizer, nil)
+		#expect(loudnessNormalizer == nil)
 	}
 }
