@@ -84,27 +84,31 @@ public enum AudioCodec: Equatable, Codable {
 	/// - Parameter quality: The AudioQuality value
 	/// - Parameter mode: The AudioMode value
 	public init?(from quality: AudioQuality?, mode: AudioMode?) {
-		guard let quality else {
-			PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithNilQuality(audioMode: mode?.rawValue ?? "nil"))
+		switch mode {
+		// Dolby Atmos is delivered in the E-AC-3 (JOC) codec; the quality tier is irrelevant.
+		case .DOLBY_ATMOS?:
+			self = .EAC3
+
+		// Sony 360 Reality Audio has no codec the client needs, so it is unsupported here.
+		case .SONY_360RA?:
+			PlayerWorld.logger?.log(
+				loggable: PlayerLoggable.audioCodecInitWithLowQualityAndUnsupportedMode(mode: mode?.rawValue ?? "nil")
+			)
 			return nil
-		}
-		switch quality {
-		case AudioQuality.LOW:
-			guard let mode else {
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithLowQualityAndNilMode)
+
+		// Stereo (or an unknown mode): the codec is determined solely by the audio quality.
+		case .STEREO?, nil:
+			guard let quality else {
+				PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithNilQuality(audioMode: mode?.rawValue ?? "nil"))
 				return nil
 			}
-			switch mode {
-			// We can't know the exact codec, but the client does not need it.
-			case AudioMode.DOLBY_ATMOS, AudioMode.SONY_360RA:
-				PlayerWorld.logger?.log(loggable: PlayerLoggable.audioCodecInitWithLowQualityAndUnsupportedMode(mode: mode.rawValue))
-				return nil
-			case AudioMode.STEREO: self = .HE_AAC_V1
+			switch quality {
+			case .LOW: self = .HE_AAC_V1
+			case .HIGH: self = .AAC_LC
+			case .LOSSLESS: self = .FLAC // Could be .ALAC, but we need to update Player to get that
+			case .HI_RES: self = .MQA
+			case .HI_RES_LOSSLESS: self = .FLAC
 			}
-		case AudioQuality.HIGH: self = .AAC_LC
-		case AudioQuality.LOSSLESS: self = .FLAC // Could be .ALAC, but we need to update Player to get that
-		case AudioQuality.HI_RES: self = .MQA
-		case AudioQuality.HI_RES_LOSSLESS: self = .FLAC
 		}
 	}
 }
