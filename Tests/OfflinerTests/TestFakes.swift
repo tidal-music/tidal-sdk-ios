@@ -128,8 +128,8 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		}
 	}
 
-	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
-		(tasks, nil)
+	func getTasks() async throws -> [OfflineTask] {
+		tasks
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {
@@ -163,6 +163,53 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	}
 }
 
+/// Serves store-track tasks in two batches. The second batch only becomes visible from `getTasks()` once every task in
+/// the first batch has been completed, mimicking a backend whose pending-task list shrinks as tasks finish. This exercises
+/// the task runner's re-poll/drain loop, where a later `getTasks()` must surface tasks that were absent from the first response.
+final class BatchedOfflineApiClient: OfflineApiClientProtocol {
+	private let firstBatch: [OfflineTask]
+	private let secondBatch: [OfflineTask]
+	private var completed: Set<String> = []
+	private(set) var getTasksCallCount = 0
+
+	init(firstBatch: [OfflineTask], secondBatch: [OfflineTask]) {
+		self.firstBatch = firstBatch
+		self.secondBatch = secondBatch
+	}
+
+	func addItem(type: ResourceType, id: String) async throws {}
+
+	func removeItem(type: ResourceType, id: String) async throws {}
+
+	func getTasks() async throws -> [OfflineTask] {
+		getTasksCallCount += 1
+		let remainingFirst = firstBatch.filter { !completed.contains($0.id) }
+		guard remainingFirst.isEmpty else { return remainingFirst }
+		return secondBatch.filter { !completed.contains($0.id) }
+	}
+
+	func updateTask(taskId: String, state: Download.State) async throws {
+		if state == .completed || state == .failed {
+			completed.insert(taskId)
+		}
+	}
+}
+
+extension OfflineTask {
+	static func storeTrackStub(id: String, trackId: String) -> OfflineTask {
+		.storeTrack(StoreTrackTask(
+			id: id,
+			track: TracksResourceObject(id: trackId, type: "tracks"),
+			artists: [],
+			artwork: nil,
+			collectionResourceType: "albums",
+			collectionResourceId: "stub-album",
+			volume: 1,
+			position: 1
+		))
+	}
+}
+
 final class FailingOfflineApiClient: OfflineApiClientProtocol {
 	func addItem(type: ResourceType, id: String) async throws {
 		throw FakeError.backendFailed
@@ -172,7 +219,7 @@ final class FailingOfflineApiClient: OfflineApiClientProtocol {
 		throw FakeError.backendFailed
 	}
 
-	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
+	func getTasks() async throws -> [OfflineTask] {
 		throw FakeError.backendFailed
 	}
 
@@ -192,8 +239,8 @@ final class FailOnUpdateToInProgressOfflineApiClient: OfflineApiClientProtocol {
 		try await stub.removeItem(type: type, id: id)
 	}
 
-	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
-		try await stub.getTasks(cursor: cursor)
+	func getTasks() async throws -> [OfflineTask] {
+		try await stub.getTasks()
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {
@@ -215,8 +262,8 @@ final class FailOnUpdateToCompletedOfflineApiClient: OfflineApiClientProtocol {
 		try await stub.removeItem(type: type, id: id)
 	}
 
-	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
-		try await stub.getTasks(cursor: cursor)
+	func getTasks() async throws -> [OfflineTask] {
+		try await stub.getTasks()
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {
@@ -232,7 +279,7 @@ final class FailOnGetTasksOfflineApiClient: OfflineApiClientProtocol {
 
 	func removeItem(type: ResourceType, id: String) async throws {}
 
-	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
+	func getTasks() async throws -> [OfflineTask] {
 		throw FakeError.backendFailed
 	}
 

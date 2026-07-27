@@ -44,6 +44,25 @@ class OfflinerTestCase: XCTestCase {
 		)
 	}
 
+	/// Polls the local store until at least `target` media items of the given type are present, or the poll budget is
+	/// exhausted. Used by tests that let the task runner drain in the background rather than observing the download stream.
+	@discardableResult
+	func waitForStoredMediaItems(
+		_ offliner: Offliner,
+		mediaType: OfflineMediaItemType,
+		target: Int,
+		maxPolls: Int = 300
+	) async throws -> [OfflineMediaItem] {
+		for _ in 0..<maxPolls {
+			let items = try await offliner.getOfflineMediaItems(mediaType: mediaType)
+			if items.count >= target {
+				return items
+			}
+			try? await Task.sleep(nanoseconds: 10_000_000)
+		}
+		return try await offliner.getOfflineMediaItems(mediaType: mediaType)
+	}
+
 	func downloadAndWaitForCompletion(_ offliner: Offliner) async throws {
 		let downloads = offliner.newDownloads
 		async let runTask: () = offliner.run()

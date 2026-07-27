@@ -167,7 +167,7 @@ struct OfflineCollectionReference: Hashable, Sendable {
 protocol OfflineApiClientProtocol {
 	func addItem(type: ResourceType, id: String) async throws
 	func removeItem(type: ResourceType, id: String) async throws
-	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?)
+	func getTasks() async throws -> [OfflineTask]
 	func updateTask(taskId: String, state: Download.State) async throws
 	func getPendingCollections(
 		type: OfflineCollectionType,
@@ -218,10 +218,9 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 		)
 	}
 
-	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
+	func getTasks() async throws -> [OfflineTask] {
 		let response = try await OfflineTasksAPITidal.offlineTasksGet(
 			filterInstallationId: [installationId],
-			pageCursor: cursor,
 			include: ["item", "item.albums.coverArt", "item.coverArt", "item.thumbnailArt", "item.artists", "collection"]
 		)
 
@@ -231,7 +230,7 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 			try? await updateTask(taskId: taskId, state: .failed)
 		}
 
-		return (tasks.compactMap { $0.1 }, response.links.meta?.nextCursor)
+		return tasks.compactMap { $0.1 }
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {

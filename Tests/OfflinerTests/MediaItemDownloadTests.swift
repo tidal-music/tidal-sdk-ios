@@ -212,6 +212,51 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		XCTAssertTrue(resourceIds.contains("track-3"))
 	}
 
+	func testDownloadsMoreTracksThanMaxConcurrentTasks() async throws {
+		let offliner = createOffliner(
+			offlineApiClient: StubOfflineApiClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let trackCount = 12
+		for index in 0..<trackCount {
+			try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-\(index)"))
+		}
+
+		await offliner.run()
+
+		let storedItems = try await waitForStoredMediaItems(offliner, mediaType: .tracks, target: trackCount)
+		XCTAssertEqual(storedItems.count, trackCount)
+	}
+
+	func testDownloadsTasksSurfacedByLaterFetch() async throws {
+		// The first getTasks() returns a single task; the remaining two are only surfaced by a *later* getTasks() once the
+		// first has completed. This is the core behavior of the small-queue change — the runner must keep re-polling and
+		// draining rather than stopping after the first response.
+		let apiClient = BatchedOfflineApiClient(
+			firstBatch: [.storeTrackStub(id: "task-1", trackId: "track-1")],
+			secondBatch: [
+				.storeTrackStub(id: "task-2", trackId: "track-2"),
+				.storeTrackStub(id: "task-3", trackId: "track-3"),
+			]
+		)
+
+		let offliner = createOffliner(
+			offlineApiClient: apiClient,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		await offliner.run()
+
+		let storedItems = try await waitForStoredMediaItems(offliner, mediaType: .tracks, target: 3)
+		XCTAssertEqual(storedItems.count, 3, "Tasks surfaced by a later getTasks() were not downloaded")
+
+		let ids = Set(storedItems.map(\.catalogMetadata.id))
+		XCTAssertEqual(ids, ["track-1", "track-2", "track-3"])
+	}
+
 	func testDownloadTrackReportsProgress() async throws {
 		let media = SucceedingMediaDownloader()
 		media.progressValues = [0.25, 0.5, 0.75]
