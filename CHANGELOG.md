@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.29] - 2026-07-27
+
 ### Fixed
-- Player: Resolve Dolby Atmos tracks to the E-AC-3 codec so downloaded and streamed Atmos plays back. `AudioCodec(from:mode:)` previously returned `nil` for `DOLBY_ATMOS`.
+- Resolve Dolby Atmos tracks to the E-AC-3 codec so downloaded and streamed Atmos plays back; `AudioCodec(from:mode:)` previously returned `nil` for `DOLBY_ATMOS` (Player)
 
 ## [0.11.28] - 2026-07-17
 
