@@ -88,6 +88,57 @@ final class CollectionItemsTests: OfflinerTestCase {
 		XCTAssertEqual(page.items[2].position, 3)
 	}
 
+	// MARK: - Corrupted entries
+
+	func testItemWithDeletedMediaFileRemainsListedButIsNotPlayable() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let albumId = "album-corrupted"
+
+		let collectionTask = StoreAlbumTask(
+			id: "offline-task-300",
+			album: AlbumsResourceObject(id: albumId, type: "albums"),
+			artists: [],
+			artwork: nil
+		)
+
+		var tasks: [OfflineTask] = [.storeAlbum(collectionTask)]
+		for i in 1 ... 3 {
+			tasks.append(.storeTrack(StoreTrackTask(
+				id: "offline-task-30\(i)",
+				track: TracksResourceObject(id: "track-\(i)", type: "tracks"),
+				artists: [],
+				artwork: nil,
+				collectionResourceType: "albums",
+				collectionResourceId: albumId,
+				volume: 1,
+				position: i
+			)))
+		}
+
+		backend.enqueueTasks(tasks)
+		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
+
+		let storedPlayableItem = await offliner.get(productType: .TRACK, productId: "track-2")
+		let mediaURL = try XCTUnwrap(storedPlayableItem?.mediaURL)
+		try FileManager.default.removeItem(at: mediaURL)
+
+		let page = try await offliner.getOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: .identifier(albumId),
+			limit: 100
+		)
+
+		XCTAssertEqual(page.items.map(\.item.catalogMetadata.id), ["track-1", "track-2", "track-3"])
+		let playableItem = await offliner.get(productType: .TRACK, productId: "track-2")
+		XCTAssertNil(playableItem)
+	}
+
 	// MARK: - Empty collection
 
 	func testGetCollectionItemsReturnsEmptyForCollectionWithNoItems() async throws {

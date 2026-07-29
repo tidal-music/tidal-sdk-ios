@@ -6,15 +6,11 @@ public extension OfflineMediaItem {
 	static func mock(
 		catalogMetadata: Metadata = .track(.mock()),
 		playbackMetadata: PlaybackMetadata? = .mock(),
-		mediaURL: URL = URL(string: "file:///mock/media.flac")!,
-		licenseURL: URL? = nil,
 		artworkURL: URL? = URL(string: "https://example.com/track-artwork.jpg")
 	) -> Self {
 		.init(
 			catalogMetadata: catalogMetadata,
 			playbackMetadata: playbackMetadata,
-			mediaURL: mediaURL,
-			licenseURL: licenseURL,
 			artworkURL: artworkURL
 		)
 	}
