@@ -13,15 +13,19 @@ import AnyCodable
 public struct DynamicModulesRelationships: Codable, Hashable {
 
     public var items: MultiRelationshipDataDocument?
+    public var seedItem: SingleRelationshipDataDocument?
 
     public init(
-        items: MultiRelationshipDataDocument? = nil
+        items: MultiRelationshipDataDocument? = nil,
+        seedItem: SingleRelationshipDataDocument? = nil
     ) {
         self.items = items
+        self.seedItem = seedItem
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case items
+        case seedItem
     }
 
     // Encodable protocol methods
@@ -29,5 +33,6 @@ public struct DynamicModulesRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(items, forKey: .items)
+        try container.encodeIfPresent(seedItem, forKey: .seedItem)
     }
 }

@@ -45,7 +45,7 @@ internal class DynamicModulesAPI {
      - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, seedItem (optional)
      - returns: DynamicModulesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -75,7 +75,7 @@ internal class DynamicModulesAPI {
      - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, seedItem (optional)
      - returns: RequestBuilder<DynamicModulesMultiResourceDataDocument> 
      */
     internal class func dynamicModulesGetWithRequestBuilder(deviceType: DeviceType_dynamicModulesGet, systemType: SystemType_dynamicModulesGet, clientVersion: String, filterId: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicModulesMultiResourceDataDocument> {
@@ -139,7 +139,7 @@ internal class DynamicModulesAPI {
      - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, seedItem (optional)
      - returns: DynamicModulesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -169,7 +169,7 @@ internal class DynamicModulesAPI {
      - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, seedItem (optional)
      - returns: RequestBuilder<DynamicModulesSingleResourceDataDocument> 
      */
     internal class func dynamicModulesIdGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicModulesIdGet, systemType: SystemType_dynamicModulesIdGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicModulesSingleResourceDataDocument> {
@@ -252,7 +252,7 @@ internal class DynamicModulesAPI {
     /**
      Get items relationship (\"to-many\").
      - GET /dynamicModules/{id}/relationships/items
-     - The resources to render, in order; may be a bounded prefix.
+     - The module's items, in order — one stable collection per module, consistent for a given refreshSeed. Reads without a cursor return the first page (the slice a page shelf renders, sized for the module's previewLayout and device) with a continuation cursor; passing the cursor returns subsequent pages.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -297,6 +297,102 @@ internal class DynamicModulesAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<DynamicModulesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     * enum for parameter deviceType
+     */
+    public enum DeviceType_dynamicModulesIdRelationshipsSeedItemGet: String, CaseIterable {
+        case browser = "BROWSER"
+        case car = "CAR"
+        case desktop = "DESKTOP"
+        case phone = "PHONE"
+        case tablet = "TABLET"
+        case tv = "TV"
+    }
+
+    /**
+     * enum for parameter systemType
+     */
+    public enum SystemType_dynamicModulesIdRelationshipsSeedItemGet: String, CaseIterable {
+        case android = "ANDROID"
+        case desktop = "DESKTOP"
+        case tesla = "TESLA"
+        case ios = "IOS"
+        case web = "WEB"
+    }
+
+    /**
+     Get seedItem relationship (\"to-one\").
+     
+     - parameter id: (path) DynamicModules Id 
+     - parameter deviceType: (query) The type of device making the request 
+     - parameter systemType: (query) The system type of the device making the request 
+     - parameter clientVersion: (query) Client version number 
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: seedItem (optional)
+     - returns: DynamicModulesSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func dynamicModulesIdRelationshipsSeedItemGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsSeedItemGet, systemType: SystemType_dynamicModulesIdRelationshipsSeedItemGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicModulesSingleRelationshipDataDocument {
+        do {
+            return try await dynamicModulesIdRelationshipsSeedItemGetWithRequestBuilder(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get seedItem relationship (\"to-one\").
+     - GET /dynamicModules/{id}/relationships/seedItem
+     - The item whose listen or add event seeded this module's collection (e.g. the album a BECAUSE_YOU_* module is based on); null for modules that are not seeded by an item. The seed comes from the same fetch as the module's items, so the two always agree.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter id: (path) DynamicModules Id 
+     - parameter deviceType: (query) The type of device making the request 
+     - parameter systemType: (query) The system type of the device making the request 
+     - parameter clientVersion: (query) Client version number 
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: seedItem (optional)
+     - returns: RequestBuilder<DynamicModulesSingleRelationshipDataDocument> 
+     */
+    internal class func dynamicModulesIdRelationshipsSeedItemGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsSeedItemGet, systemType: SystemType_dynamicModulesIdRelationshipsSeedItemGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicModulesSingleRelationshipDataDocument> {
+        var localVariablePath = "/dynamicModules/{id}/relationships/seedItem"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
+            "deviceType": (wrappedValue: deviceType.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType.encodeToJSON(), isExplode: true),
+            "clientVersion": (wrappedValue: clientVersion.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DynamicModulesSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

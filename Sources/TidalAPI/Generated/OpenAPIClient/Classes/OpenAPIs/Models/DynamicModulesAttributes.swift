@@ -12,12 +12,6 @@ import AnyCodable
 
 public struct DynamicModulesAttributes: Codable, Hashable {
 
-    public enum FullViewLayout: String, Codable, CaseIterable {
-        case grid = "GRID"
-        case list = "LIST"
-        case compact = "COMPACT"
-        case unknown = "UNKNOWN"
-    }
     public enum Icons: String, Codable, CaseIterable {
         case spotlightInfo = "SPOTLIGHT_INFO"
         case unknown = "UNKNOWN"
@@ -28,47 +22,53 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case compact = "COMPACT"
         case unknown = "UNKNOWN"
     }
-    /** Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. fullViewLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
-    public var fullViewLayout: FullViewLayout?
+    public enum ViewAllLayout: String, Codable, CaseIterable {
+        case grid = "GRID"
+        case list = "LIST"
+        case compact = "COMPACT"
+        case unknown = "UNKNOWN"
+    }
     /** Semantic icons the module should show. SPOTLIGHT_INFO identifies modules whose content was selected by TIDAL's editorial team. */
     public var icons: [Icons]
-    /** Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. fullViewLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
+    /** Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. viewAllLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
     public var previewLayout: PreviewLayout
     /** Subtitle of the module */
     public var subtitle: String?
     /** Title of the module */
     public var title: String?
+    /** Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. viewAllLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
+    public var viewAllLayout: ViewAllLayout?
 
     public init(
-        fullViewLayout: FullViewLayout? = nil,
         icons: [Icons],
         previewLayout: PreviewLayout,
         subtitle: String? = nil,
-        title: String? = nil
+        title: String? = nil,
+        viewAllLayout: ViewAllLayout? = nil
     ) {
-        self.fullViewLayout = fullViewLayout
         self.icons = icons
         self.previewLayout = previewLayout
         self.subtitle = subtitle
         self.title = title
+        self.viewAllLayout = viewAllLayout
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case fullViewLayout
         case icons
         case previewLayout
         case subtitle
         case title
+        case viewAllLayout
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(fullViewLayout, forKey: .fullViewLayout)
         try container.encode(icons, forKey: .icons)
         try container.encode(previewLayout, forKey: .previewLayout)
         try container.encodeIfPresent(subtitle, forKey: .subtitle)
         try container.encodeIfPresent(title, forKey: .title)
+        try container.encodeIfPresent(viewAllLayout, forKey: .viewAllLayout)
     }
 }

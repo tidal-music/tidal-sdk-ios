@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**dynamicModulesGet**](DynamicModulesAPI.md#dynamicmodulesget) | **GET** /dynamicModules | Get multiple dynamicModules.
 [**dynamicModulesIdGet**](DynamicModulesAPI.md#dynamicmodulesidget) | **GET** /dynamicModules/{id} | Get single dynamicModule.
 [**dynamicModulesIdRelationshipsItemsGet**](DynamicModulesAPI.md#dynamicmodulesidrelationshipsitemsget) | **GET** /dynamicModules/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
+[**dynamicModulesIdRelationshipsSeedItemGet**](DynamicModulesAPI.md#dynamicmodulesidrelationshipsseeditemget) | **GET** /dynamicModules/{id}/relationships/seedItem | Get seedItem relationship (\&quot;to-one\&quot;).
 
 
 # **dynamicModulesGet**
@@ -30,7 +31,7 @@ let filterId = ["inner_example"] // [String] | DynamicModules Id (e.g. `nejMcAhh
 let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, seedItem (optional)
 
 // Get multiple dynamicModules.
 DynamicModulesAPI.dynamicModulesGet(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterId: filterId, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include) { (response, error) in
@@ -56,7 +57,7 @@ Name | Type | Description  | Notes
  **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, seedItem | [optional] 
 
 ### Return type
 
@@ -94,7 +95,7 @@ let clientVersion = "clientVersion_example" // String | Client version number
 let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, seedItem (optional)
 
 // Get single dynamicModule.
 DynamicModulesAPI.dynamicModulesIdGet(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include) { (response, error) in
@@ -120,7 +121,7 @@ Name | Type | Description  | Notes
  **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, seedItem | [optional] 
 
 ### Return type
 
@@ -144,7 +145,7 @@ Name | Type | Description  | Notes
 
 Get items relationship (\"to-many\").
 
-The resources to render, in order; may be a bounded prefix.
+The module's items, in order — one stable collection per module, consistent for a given refreshSeed. Reads without a cursor return the first page (the slice a page shelf renders, sized for the module's previewLayout and device) with a continuation cursor; passing the cursor returns subsequent pages.
 
 ### Example
 ```swift
@@ -191,6 +192,70 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**DynamicModulesMultiRelationshipDataDocument**](DynamicModulesMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **dynamicModulesIdRelationshipsSeedItemGet**
+```swift
+    open class func dynamicModulesIdRelationshipsSeedItemGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsSeedItemGet, systemType: SystemType_dynamicModulesIdRelationshipsSeedItemGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: DynamicModulesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get seedItem relationship (\"to-one\").
+
+The item whose listen or add event seeded this module's collection (e.g. the album a BECAUSE_YOU_* module is based on); null for modules that are not seeded by an item. The seed comes from the same fetch as the module's items, so the two always agree.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | DynamicModules Id
+let deviceType = "deviceType_example" // String | The type of device making the request
+let systemType = "systemType_example" // String | The system type of the device making the request
+let clientVersion = "clientVersion_example" // String | Client version number
+let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: seedItem (optional)
+
+// Get seedItem relationship (\"to-one\").
+DynamicModulesAPI.dynamicModulesIdRelationshipsSeedItemGet(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | DynamicModules Id | 
+ **deviceType** | **String** | The type of device making the request | 
+ **systemType** | **String** | The system type of the device making the request | 
+ **clientVersion** | **String** | Client version number | 
+ **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: seedItem | [optional] 
+
+### Return type
+
+[**DynamicModulesSingleRelationshipDataDocument**](DynamicModulesSingleRelationshipDataDocument.md)
 
 ### Authorization
 

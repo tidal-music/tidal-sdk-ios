@@ -180,4 +180,60 @@ public enum DynamicModulesAPITidal {
 			DynamicModulesAPI.dynamicModulesIdRelationshipsItemsGetWithRequestBuilder(id: id, deviceType: deviceType.toDynamicModulesAPIEnum(), systemType: systemType.toDynamicModulesAPIEnum(), clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include)
 		}
 	}
+
+
+	/**
+	 * enum for parameter deviceType
+	 */
+	public enum DeviceType_dynamicModulesIdRelationshipsSeedItemGet: String, CaseIterable {
+		case browser = "BROWSER"
+		case car = "CAR"
+		case desktop = "DESKTOP"
+		case phone = "PHONE"
+		case tablet = "TABLET"
+		case tv = "TV"
+
+		func toDynamicModulesAPIEnum() -> DynamicModulesAPI.DeviceType_dynamicModulesIdRelationshipsSeedItemGet {
+			switch self {
+			case .browser: return .browser
+			case .car: return .car
+			case .desktop: return .desktop
+			case .phone: return .phone
+			case .tablet: return .tablet
+			case .tv: return .tv
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter systemType
+	 */
+	public enum SystemType_dynamicModulesIdRelationshipsSeedItemGet: String, CaseIterable {
+		case android = "ANDROID"
+		case desktop = "DESKTOP"
+		case tesla = "TESLA"
+		case ios = "IOS"
+		case web = "WEB"
+
+		func toDynamicModulesAPIEnum() -> DynamicModulesAPI.SystemType_dynamicModulesIdRelationshipsSeedItemGet {
+			switch self {
+			case .android: return .android
+			case .desktop: return .desktop
+			case .tesla: return .tesla
+			case .ios: return .ios
+			case .web: return .web
+			}
+		}
+	}
+
+	/**
+     Get seedItem relationship (\&quot;to-one\&quot;).
+     
+     - returns: DynamicModulesSingleRelationshipDataDocument
+     */
+	public static func dynamicModulesIdRelationshipsSeedItemGet(id: String, deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesIdRelationshipsSeedItemGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesIdRelationshipsSeedItemGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicModulesSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			DynamicModulesAPI.dynamicModulesIdRelationshipsSeedItemGetWithRequestBuilder(id: id, deviceType: deviceType.toDynamicModulesAPIEnum(), systemType: systemType.toDynamicModulesAPIEnum(), clientVersion: clientVersion, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include)
+		}
+	}
 }

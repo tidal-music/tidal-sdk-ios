@@ -182,9 +182,9 @@ public enum TracksAPITidal {
      
      - returns: TracksMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
+			TracksAPI.tracksIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
 		}
 	}
 
