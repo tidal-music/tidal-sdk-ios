@@ -388,7 +388,7 @@ extension Offliner: OfflineItemProvider {
 		}
 
 		do {
-			return try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: productId)
+			return try await offlineStore.getPlayableMediaItem(mediaType: mediaType, resourceId: productId)
 				.map { OfflinePlaybackItem($0, productType: productType) }
 		} catch {
 			Task { try? await download(mediaType: mediaType, resourceId: .identifier(productId)) }
@@ -419,10 +419,10 @@ extension OfflineCollectionType {
 	}
 }
 
-// MARK: - OfflinePlaybackItem from OfflineMediaItem
+// MARK: - OfflinePlaybackItem from PlayableOfflineMediaItem
 
 private extension OfflinePlaybackItem {
-	init(_ item: OfflineMediaItem, productType: ProductType) {
+	init(_ item: PlayableOfflineMediaItem, productType: ProductType) {
 		self.init(
 			mediaURL: item.mediaURL,
 			licenseURL: item.licenseURL,
