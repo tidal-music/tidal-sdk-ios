@@ -66,7 +66,7 @@ Void (empty response body)
 
 # **lyricsIdGet**
 ```swift
-    open class func lyricsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single lyric.
@@ -80,9 +80,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: track (optional)
 
 // Get single lyric.
-LyricsAPI.lyricsIdGet(id: id, include: include) { (response, error) in
+LyricsAPI.lyricsIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -100,6 +101,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, track | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track | [optional] 
 
 ### Return type
 
@@ -228,7 +230,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdRelationshipsTrackGet**
 ```swift
-    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: LyricsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: LyricsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get track relationship (\"to-one\").
@@ -243,9 +245,10 @@ import OpenAPIClient
 let id = "id_example" // String | Lyrics Id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: track (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: track (optional)
 
 // Get track relationship (\"to-one\").
-LyricsAPI.lyricsIdRelationshipsTrackGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+LyricsAPI.lyricsIdRelationshipsTrackGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -264,6 +267,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Lyrics Id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: track | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track | [optional] 
 
 ### Return type
 

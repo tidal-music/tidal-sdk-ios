@@ -34,9 +34,9 @@ public enum SearchSuggestionsAPITidal {
      
      - returns: SearchSuggestionsSingleResourceDataDocument
      */
-	public static func searchSuggestionsIdGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
+	public static func searchSuggestionsIdGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include)
+			SearchSuggestionsAPI.searchSuggestionsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -61,9 +61,9 @@ public enum SearchSuggestionsAPITidal {
      
      - returns: SearchSuggestionsMultiRelationshipDataDocument
      */
-	public static func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
+	public static func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, pageCursor: pageCursor)
+			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

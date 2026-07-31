@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionVideosIdGet**
 ```swift
-    open class func userCollectionVideosIdGet(id: String, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionVideosSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionVideosIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionVideosSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollectionVideo.
@@ -28,9 +28,10 @@ import OpenAPIClient
 let id = "id_example" // String | User collection videos id. Use `me` for the authenticated user's resource
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get single userCollectionVideo.
-UserCollectionVideosAPI.userCollectionVideosIdGet(id: id, locale: locale, include: include) { (response, error) in
+UserCollectionVideosAPI.userCollectionVideosIdGet(id: id, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -49,6 +50,7 @@ Name | Type | Description  | Notes
  **id** | **String** | User collection videos id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
 
@@ -121,7 +123,7 @@ Void (empty response body)
 
 # **userCollectionVideosIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionVideosIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionVideosIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionVideosItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionVideosIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionVideosIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionVideosItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -138,9 +140,10 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get items relationship (\"to-many\").
-UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include) { (response, error) in
+UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -161,6 +164,7 @@ Name | Type | Description  | Notes
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
 

@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct DynamicModulesRelationships: Codable, Hashable {
 
-    public var items: MultiRelationshipDataDocument?
-    public var seedItem: SingleRelationshipDataDocument?
+    public var items: DynamicModulesItemsMultiRelationshipDataDocument?
+    public var seedItem: DynamicModulesSeedItemSingleRelationshipDataDocument?
 
     public init(
-        items: MultiRelationshipDataDocument? = nil,
-        seedItem: SingleRelationshipDataDocument? = nil
+        items: DynamicModulesItemsMultiRelationshipDataDocument? = nil,
+        seedItem: DynamicModulesSeedItemSingleRelationshipDataDocument? = nil
     ) {
         self.items = items
         self.seedItem = seedItem

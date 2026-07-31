@@ -47,12 +47,13 @@ internal class DynamicPagesAPI {
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules, subject (optional)
      - parameter filterSubjectId: (query) The subject resource ID. Required except for HOME_FREE, where it must be omitted. (e.g. &#x60;67890&#x60;) (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: DynamicPagesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubjectId: [String]? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+    internal class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubjectId: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
         do {
-            return try await dynamicPagesGetWithRequestBuilder(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, filterSubjectId: filterSubjectId).execute().body
+            return try await dynamicPagesGetWithRequestBuilder(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, filterSubjectId: filterSubjectId, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -78,9 +79,10 @@ internal class DynamicPagesAPI {
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules, subject (optional)
      - parameter filterSubjectId: (query) The subject resource ID. Required except for HOME_FREE, where it must be omitted. (e.g. &#x60;67890&#x60;) (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: RequestBuilder<DynamicPagesMultiResourceDataDocument> 
      */
-    internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubjectId: [String]? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
+    internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubjectId: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
         let localVariablePath = "/dynamicPages"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -96,6 +98,7 @@ internal class DynamicPagesAPI {
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[pageType]": (wrappedValue: filterPageType.encodeToJSON(), isExplode: true),
             "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -144,12 +147,13 @@ internal class DynamicPagesAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: DynamicPagesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> DynamicPagesMultiRelationshipDataDocument {
+    internal class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiRelationshipDataDocument {
         do {
-            return try await dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include).execute().body
+            return try await dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -175,9 +179,10 @@ internal class DynamicPagesAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: RequestBuilder<DynamicPagesMultiRelationshipDataDocument> 
      */
-    internal class func dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<DynamicPagesMultiRelationshipDataDocument> {
+    internal class func dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesMultiRelationshipDataDocument> {
         var localVariablePath = "/dynamicPages/{id}/relationships/modules"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -195,6 +200,7 @@ internal class DynamicPagesAPI {
             "systemType": (wrappedValue: systemType.encodeToJSON(), isExplode: true),
             "clientVersion": (wrappedValue: clientVersion.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -213,12 +219,13 @@ internal class DynamicPagesAPI {
      
      - parameter id: (path) DynamicPages Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: DynamicPagesSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil) async throws -> DynamicPagesSingleRelationshipDataDocument {
+    internal class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesSingleRelationshipDataDocument {
         do {
-            return try await dynamicPagesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await dynamicPagesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -237,9 +244,10 @@ internal class DynamicPagesAPI {
        - name: Client_Credentials
      - parameter id: (path) DynamicPages Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<DynamicPagesSingleRelationshipDataDocument> 
      */
-    internal class func dynamicPagesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<DynamicPagesSingleRelationshipDataDocument> {
+    internal class func dynamicPagesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesSingleRelationshipDataDocument> {
         var localVariablePath = "/dynamicPages/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -250,6 +258,7 @@ internal class DynamicPagesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

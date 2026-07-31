@@ -19,9 +19,9 @@ public enum UserCollectionSaveForLatersAPITidal {
      
      - returns: UserCollectionSaveForLatersSingleResourceDataDocument
      */
-	public static func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil) async throws -> UserCollectionSaveForLatersSingleResourceDataDocument {
+	public static func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdGetWithRequestBuilder(id: id, include: include)
+			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum UserCollectionSaveForLatersAPITidal {
      
      - returns: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument {
+	public static func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

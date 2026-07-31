@@ -18,12 +18,13 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, owners, tracks, videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - returns: UserRecommendationBlocksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
+    internal class func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
         do {
-            return try await userRecommendationBlocksIdGetWithRequestBuilder(id: id, locale: locale, include: include).execute().body
+            return try await userRecommendationBlocksIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,9 +41,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists, owners, tracks, videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - returns: RequestBuilder<UserRecommendationBlocksSingleResourceDataDocument> 
      */
-    internal class func userRecommendationBlocksIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksSingleResourceDataDocument> {
+    internal class func userRecommendationBlocksIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserRecommendationBlocksSingleResourceDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -54,6 +56,7 @@ internal class UserRecommendationBlocksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -125,12 +128,13 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - returns: UserRecommendationBlocksArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+            return try await userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -147,9 +151,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - returns: RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -161,6 +166,7 @@ internal class UserRecommendationBlocksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -339,12 +345,13 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: UserRecommendationBlocksTracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+            return try await userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -361,9 +368,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -375,6 +383,7 @@ internal class UserRecommendationBlocksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -498,12 +507,13 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: UserRecommendationBlocksVideosMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+            return try await userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -520,9 +530,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -534,6 +545,7 @@ internal class UserRecommendationBlocksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

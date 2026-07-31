@@ -19,9 +19,9 @@ public enum UserDailyMixesAPITidal {
      
      - returns: UserDailyMixesSingleResourceDataDocument
      */
-	public static func userDailyMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserDailyMixesSingleResourceDataDocument {
+	public static func userDailyMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserDailyMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDailyMixesAPI.userDailyMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include)
+			UserDailyMixesAPI.userDailyMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum UserDailyMixesAPITidal {
      
      - returns: UserDailyMixesMultiRelationshipDataDocument
      */
-	public static func userDailyMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserDailyMixesMultiRelationshipDataDocument {
+	public static func userDailyMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserDailyMixesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDailyMixesAPI.userDailyMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include)
+			UserDailyMixesAPI.userDailyMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 }
