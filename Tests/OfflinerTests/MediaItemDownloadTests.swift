@@ -1,4 +1,5 @@
 @testable import Offliner
+import GRDB
 import XCTest
 
 final class MediaItemDownloadTests: OfflinerTestCase {
@@ -83,6 +84,39 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		}
 	}
 
+	func testMovedArtworkFileRenewsStoredBookmark() async throws {
+		let offliner = createOffliner(
+			offlineApiClient: StubOfflineApiClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-123"))
+		try await downloadAndWaitForCompletion(offliner)
+
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
+		let artworkURL = try XCTUnwrap(storedItem?.artworkURL)
+		let movedURL = artworkURL.deletingLastPathComponent().appendingPathComponent("moved-artwork.jpg")
+		try FileManager.default.moveItem(at: artworkURL, to: movedURL)
+
+		let renewedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
+		let renewedArtworkURL = try XCTUnwrap(renewedItem?.artworkURL)
+		XCTAssertEqual(renewedArtworkURL.standardizedFileURL.path, movedURL.standardizedFileURL.path)
+
+		let renewedBookmark = try await lastDatabaseQueue.read { database in
+			try Data.fetchOne(
+				database,
+				sql: "SELECT artwork_bookmark FROM offline_item WHERE resource_type = 'tracks' AND resource_id = 'track-123'"
+			)
+		}
+		let embeddedValues = URL.resourceValues(
+			forKeys: [.pathKey, .canonicalPathKey],
+			fromBookmarkData: try XCTUnwrap(renewedBookmark)
+		)
+		let embeddedPath = try XCTUnwrap(embeddedValues?.path ?? embeddedValues?.canonicalPath)
+		XCTAssertEqual(URL(fileURLWithPath: embeddedPath).standardizedFileURL.path, movedURL.standardizedFileURL.path)
+	}
+
 	func testRedownloadTrackDeletesOldFilesAndStoresNewOnes() async throws {
 		let offliner = createOffliner(
 			offlineApiClient: StubOfflineApiClient(),
@@ -95,7 +129,8 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		let firstItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
 		let firstItemUnwrapped = try XCTUnwrap(firstItem)
-		let firstMediaURL = firstItemUnwrapped.mediaURL
+		let firstPlayableItem = await offliner.get(productType: .TRACK, productId: "track-123")
+		let firstMediaURL = try XCTUnwrap(firstPlayableItem?.mediaURL)
 		let firstArtworkURL = try XCTUnwrap(firstItemUnwrapped.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstMediaURL.path))
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
@@ -105,7 +140,8 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		let secondItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
 		let secondItemUnwrapped = try XCTUnwrap(secondItem)
-		let secondMediaURL = secondItemUnwrapped.mediaURL
+		let secondPlayableItem = await offliner.get(productType: .TRACK, productId: "track-123")
+		let secondMediaURL = try XCTUnwrap(secondPlayableItem?.mediaURL)
 		let secondArtworkURL = try XCTUnwrap(secondItemUnwrapped.artworkURL)
 
 		XCTAssertFalse(FileManager.default.fileExists(atPath: firstMediaURL.path))
