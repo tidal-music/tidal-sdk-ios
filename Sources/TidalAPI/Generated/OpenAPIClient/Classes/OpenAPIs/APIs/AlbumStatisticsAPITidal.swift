@@ -19,9 +19,9 @@ public enum AlbumStatisticsAPITidal {
      
      - returns: AlbumStatisticsSingleResourceDataDocument
      */
-	public static func albumStatisticsIdGet(id: String, include: [String]? = nil) async throws -> AlbumStatisticsSingleResourceDataDocument {
+	public static func albumStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> AlbumStatisticsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumStatisticsAPI.albumStatisticsIdGetWithRequestBuilder(id: id, include: include)
+			AlbumStatisticsAPI.albumStatisticsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum AlbumStatisticsAPITidal {
      
      - returns: AlbumStatisticsMultiRelationshipDataDocument
      */
-	public static func albumStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumStatisticsMultiRelationshipDataDocument {
+	public static func albumStatisticsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumStatisticsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumStatisticsAPI.albumStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+			AlbumStatisticsAPI.albumStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 }

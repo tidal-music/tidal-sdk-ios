@@ -18,13 +18,14 @@ internal class UserRecommendationsAPI {
      - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: discoveryMixes.items (optional)
      - returns: UserRecommendationsSingleResourceDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
+    internal class func userRecommendationsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationsSingleResourceDataDocument {
         do {
-            return try await userRecommendationsIdGetWithRequestBuilder(id: id, locale: locale, include: include).execute().body
+            return try await userRecommendationsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -41,10 +42,11 @@ internal class UserRecommendationsAPI {
      - parameter id: (path) User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: discoveryMixes.items (optional)
      - returns: RequestBuilder<UserRecommendationsSingleResourceDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userRecommendationsIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsSingleResourceDataDocument> {
+    internal class func userRecommendationsIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserRecommendationsSingleResourceDataDocument> {
         var localVariablePath = "/userRecommendations/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -56,6 +58,7 @@ internal class UserRecommendationsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -76,13 +79,14 @@ internal class UserRecommendationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: discoveryMixes.items (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include).execute().body
+            return try await userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -100,10 +104,11 @@ internal class UserRecommendationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: discoveryMixes.items (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
+    internal class func userRecommendationsIdRelationshipsDiscoveryMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/discoveryMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -116,6 +121,7 @@ internal class UserRecommendationsAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -136,13 +142,14 @@ internal class UserRecommendationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: myMixes.items (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsMyMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+    internal class func userRecommendationsIdRelationshipsMyMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include).execute().body
+            return try await userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -160,10 +167,11 @@ internal class UserRecommendationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: myMixes.items (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
+    internal class func userRecommendationsIdRelationshipsMyMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/myMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -176,6 +184,7 @@ internal class UserRecommendationsAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -196,13 +205,14 @@ internal class UserRecommendationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: newArrivalMixes.items (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include).execute().body
+            return try await userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -220,10 +230,11 @@ internal class UserRecommendationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: newArrivalMixes.items (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
+    internal class func userRecommendationsIdRelationshipsNewArrivalMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/newArrivalMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -236,6 +247,7 @@ internal class UserRecommendationsAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -256,13 +268,14 @@ internal class UserRecommendationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineMixes.items (optional)
      - returns: UserRecommendationsMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationsIdRelationshipsOfflineMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
+    internal class func userRecommendationsIdRelationshipsOfflineMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationsMultiRelationshipDataDocument {
         do {
-            return try await userRecommendationsIdRelationshipsOfflineMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include).execute().body
+            return try await userRecommendationsIdRelationshipsOfflineMixesGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -280,10 +293,11 @@ internal class UserRecommendationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineMixes (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineMixes.items (optional)
      - returns: RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userRecommendationsIdRelationshipsOfflineMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
+    internal class func userRecommendationsIdRelationshipsOfflineMixesGetWithRequestBuilder(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserRecommendationsMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendations/{id}/relationships/offlineMixes"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -296,6 +310,7 @@ internal class UserRecommendationsAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

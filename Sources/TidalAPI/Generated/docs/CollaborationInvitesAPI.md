@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **collaborationInvitesGet**
 ```swift
-    open class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, completion: @escaping (_ data: CollaborationInvitesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple collaborationInvites.
@@ -28,9 +28,10 @@ import OpenAPIClient
 
 let filterCode = ["inner_example"] // [String] | Invite code
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.items (optional)
 
 // Get multiple collaborationInvites.
-CollaborationInvitesAPI.collaborationInvitesGet(filterCode: filterCode, include: include) { (response, error) in
+CollaborationInvitesAPI.collaborationInvitesGet(filterCode: filterCode, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -48,6 +49,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterCode** | [**[String]**](String.md) | Invite code | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, subject | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items | [optional] 
 
 ### Return type
 
@@ -118,7 +120,7 @@ Void (empty response body)
 
 # **collaborationInvitesIdGet**
 ```swift
-    open class func collaborationInvitesIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: CollaborationInvitesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInvitesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single collaborationInvite.
@@ -132,9 +134,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Collaboration invite id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.items (optional)
 
 // Get single collaborationInvite.
-CollaborationInvitesAPI.collaborationInvitesIdGet(id: id, include: include) { (response, error) in
+CollaborationInvitesAPI.collaborationInvitesIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -152,6 +155,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Collaboration invite id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, subject | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items | [optional] 
 
 ### Return type
 
@@ -224,7 +228,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesIdRelationshipsSubjectGet**
 ```swift
-    open class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, completion: @escaping (_ data: CollaborationInvitesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -238,9 +242,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Collaboration invite id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.items (optional)
 
 // Get subject relationship (\"to-one\").
-CollaborationInvitesAPI.collaborationInvitesIdRelationshipsSubjectGet(id: id, include: include) { (response, error) in
+CollaborationInvitesAPI.collaborationInvitesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -258,6 +263,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Collaboration invite id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items | [optional] 
 
 ### Return type
 

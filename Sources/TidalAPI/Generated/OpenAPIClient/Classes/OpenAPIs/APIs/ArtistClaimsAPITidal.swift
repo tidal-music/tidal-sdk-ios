@@ -19,9 +19,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: ArtistClaimsMultiResourceDataDocument
      */
-	public static func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
+	public static func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
+			ArtistClaimsAPI.artistClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: ArtistClaimsSingleResourceDataDocument
      */
-	public static func artistClaimsIdGet(id: String, include: [String]? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
+	public static func artistClaimsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdGetWithRequestBuilder(id: id, include: include)
+			ArtistClaimsAPI.artistClaimsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -67,9 +67,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: ArtistClaimsMultiRelationshipDataDocument
      */
-	public static func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
+	public static func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -103,9 +103,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: ArtistClaimsMultiRelationshipDataDocument
      */
-	public static func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
+	public static func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdRelationshipsRecommendedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+			ArtistClaimsAPI.artistClaimsIdRelationshipsRecommendedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

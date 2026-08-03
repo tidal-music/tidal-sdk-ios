@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **dspSharingLinksGet**
 ```swift
-    open class func dspSharingLinksGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_dspSharingLinksGet], include: [String]? = nil, completion: @escaping (_ data: DspSharingLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func dspSharingLinksGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_dspSharingLinksGet], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DspSharingLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple dspSharingLinks.
@@ -25,9 +25,10 @@ import OpenAPIClient
 let filterSubjectId = ["inner_example"] // [String] | The id of the subject resource
 let filterSubjectType = ["filterSubjectType_example"] // [String] | The type of the subject resource (e.g., albums, tracks, artists) (e.g. `tracks`)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple dspSharingLinks.
-DspSharingLinksAPI.dspSharingLinksGet(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, include: include) { (response, error) in
+DspSharingLinksAPI.dspSharingLinksGet(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -46,6 +47,7 @@ Name | Type | Description  | Notes
  **filterSubjectId** | [**[String]**](String.md) | The id of the subject resource | 
  **filterSubjectType** | [**[String]**](String.md) | The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type
 
@@ -64,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **dspSharingLinksIdRelationshipsSubjectGet**
 ```swift
-    open class func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, completion: @escaping (_ data: DspSharingLinksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DspSharingLinksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -78,9 +80,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | DspSharingLinks Id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-DspSharingLinksAPI.dspSharingLinksIdRelationshipsSubjectGet(id: id, include: include) { (response, error) in
+DspSharingLinksAPI.dspSharingLinksIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -98,6 +101,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | DspSharingLinks Id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type
 

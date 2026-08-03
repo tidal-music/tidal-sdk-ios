@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **contentClaimsGet**
 ```swift
-    open class func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: ContentClaimsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple contentClaims.
@@ -28,9 +28,10 @@ import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimedResource (optional)
 
 // Get multiple contentClaims.
-ContentClaimsAPI.contentClaimsGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
+ContentClaimsAPI.contentClaimsGet(filterOwnersId: filterOwnersId, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -48,6 +49,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource | [optional] 
 
 ### Return type
 
@@ -66,7 +68,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdGet**
 ```swift
-    open class func contentClaimsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ContentClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single contentClaim.
@@ -80,9 +82,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Content claim id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimedResource (optional)
 
 // Get single contentClaim.
-ContentClaimsAPI.contentClaimsIdGet(id: id, include: include) { (response, error) in
+ContentClaimsAPI.contentClaimsIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -100,6 +103,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Content claim id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource | [optional] 
 
 ### Return type
 
@@ -118,7 +122,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdRelationshipsClaimedResourceGet**
 ```swift
-    open class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ContentClaimsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get claimedResource relationship (\"to-one\").
@@ -132,9 +136,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Content claim id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: claimedResource (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimedResource (optional)
 
 // Get claimedResource relationship (\"to-one\").
-ContentClaimsAPI.contentClaimsIdRelationshipsClaimedResourceGet(id: id, include: include) { (response, error) in
+ContentClaimsAPI.contentClaimsIdRelationshipsClaimedResourceGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -152,6 +157,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Content claim id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: claimedResource | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource | [optional] 
 
 ### Return type
 
@@ -170,7 +176,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdRelationshipsClaimingArtistGet**
 ```swift
-    open class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ContentClaimsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get claimingArtist relationship (\"to-one\").
@@ -184,9 +190,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Content claim id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: claimingArtist (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimingArtist.albums (optional)
 
 // Get claimingArtist relationship (\"to-one\").
-ContentClaimsAPI.contentClaimsIdRelationshipsClaimingArtistGet(id: id, include: include) { (response, error) in
+ContentClaimsAPI.contentClaimsIdRelationshipsClaimingArtistGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -204,6 +211,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Content claim id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: claimingArtist | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimingArtist.albums | [optional] 
 
 ### Return type
 

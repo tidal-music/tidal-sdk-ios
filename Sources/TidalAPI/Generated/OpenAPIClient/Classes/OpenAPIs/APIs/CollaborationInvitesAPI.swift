@@ -17,12 +17,13 @@ internal class CollaborationInvitesAPI {
      
      - parameter filterCode: (query) Invite code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: CollaborationInvitesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
+    internal class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
         do {
-            return try await collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include).execute().body
+            return try await collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,9 +39,10 @@ internal class CollaborationInvitesAPI {
        - name: Authorization_Code_PKCE
      - parameter filterCode: (query) Invite code 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: RequestBuilder<CollaborationInvitesMultiResourceDataDocument> 
      */
-    internal class func collaborationInvitesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil) -> RequestBuilder<CollaborationInvitesMultiResourceDataDocument> {
+    internal class func collaborationInvitesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesMultiResourceDataDocument> {
         let localVariablePath = "/collaborationInvites"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -49,6 +51,7 @@ internal class CollaborationInvitesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[code]": (wrappedValue: filterCode.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -116,12 +119,13 @@ internal class CollaborationInvitesAPI {
      
      - parameter id: (path) Collaboration invite id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: CollaborationInvitesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func collaborationInvitesIdGet(id: String, include: [String]? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
+    internal class func collaborationInvitesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
         do {
-            return try await collaborationInvitesIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await collaborationInvitesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -137,9 +141,10 @@ internal class CollaborationInvitesAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Collaboration invite id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: RequestBuilder<CollaborationInvitesSingleResourceDataDocument> 
      */
-    internal class func collaborationInvitesIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CollaborationInvitesSingleResourceDataDocument> {
+    internal class func collaborationInvitesIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesSingleResourceDataDocument> {
         var localVariablePath = "/collaborationInvites/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -150,6 +155,7 @@ internal class CollaborationInvitesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -223,12 +229,13 @@ internal class CollaborationInvitesAPI {
      
      - parameter id: (path) Collaboration invite id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: CollaborationInvitesSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil) async throws -> CollaborationInvitesSingleRelationshipDataDocument {
+    internal class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleRelationshipDataDocument {
         do {
-            return try await collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -244,9 +251,10 @@ internal class CollaborationInvitesAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Collaboration invite id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: RequestBuilder<CollaborationInvitesSingleRelationshipDataDocument> 
      */
-    internal class func collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CollaborationInvitesSingleRelationshipDataDocument> {
+    internal class func collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesSingleRelationshipDataDocument> {
         var localVariablePath = "/collaborationInvites/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -257,6 +265,7 @@ internal class CollaborationInvitesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

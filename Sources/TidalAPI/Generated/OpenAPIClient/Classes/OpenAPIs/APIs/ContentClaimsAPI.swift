@@ -17,12 +17,13 @@ internal class ContentClaimsAPI {
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource (optional)
      - returns: ContentClaimsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ContentClaimsMultiResourceDataDocument {
+    internal class func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsMultiResourceDataDocument {
         do {
-            return try await contentClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include).execute().body
+            return try await contentClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,9 +39,10 @@ internal class ContentClaimsAPI {
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource (optional)
      - returns: RequestBuilder<ContentClaimsMultiResourceDataDocument> 
      */
-    internal class func contentClaimsGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil) -> RequestBuilder<ContentClaimsMultiResourceDataDocument> {
+    internal class func contentClaimsGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ContentClaimsMultiResourceDataDocument> {
         let localVariablePath = "/contentClaims"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -49,6 +51,7 @@ internal class ContentClaimsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -67,12 +70,13 @@ internal class ContentClaimsAPI {
      
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource (optional)
      - returns: ContentClaimsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func contentClaimsIdGet(id: String, include: [String]? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
+    internal class func contentClaimsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
         do {
-            return try await contentClaimsIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await contentClaimsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -88,9 +92,10 @@ internal class ContentClaimsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource (optional)
      - returns: RequestBuilder<ContentClaimsSingleResourceDataDocument> 
      */
-    internal class func contentClaimsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ContentClaimsSingleResourceDataDocument> {
+    internal class func contentClaimsIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ContentClaimsSingleResourceDataDocument> {
         var localVariablePath = "/contentClaims/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -101,6 +106,7 @@ internal class ContentClaimsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -119,12 +125,13 @@ internal class ContentClaimsAPI {
      
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource (optional)
      - returns: ContentClaimsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
+    internal class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
         do {
-            return try await contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -140,9 +147,10 @@ internal class ContentClaimsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource (optional)
      - returns: RequestBuilder<ContentClaimsSingleRelationshipDataDocument> 
      */
-    internal class func contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ContentClaimsSingleRelationshipDataDocument> {
+    internal class func contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ContentClaimsSingleRelationshipDataDocument> {
         var localVariablePath = "/contentClaims/{id}/relationships/claimedResource"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -153,6 +161,7 @@ internal class ContentClaimsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -171,12 +180,13 @@ internal class ContentClaimsAPI {
      
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimingArtist (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimingArtist.albums (optional)
      - returns: ContentClaimsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
+    internal class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
         do {
-            return try await contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -192,9 +202,10 @@ internal class ContentClaimsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimingArtist (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimingArtist.albums (optional)
      - returns: RequestBuilder<ContentClaimsSingleRelationshipDataDocument> 
      */
-    internal class func contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ContentClaimsSingleRelationshipDataDocument> {
+    internal class func contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ContentClaimsSingleRelationshipDataDocument> {
         var localVariablePath = "/contentClaims/{id}/relationships/claimingArtist"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -205,6 +216,7 @@ internal class ContentClaimsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

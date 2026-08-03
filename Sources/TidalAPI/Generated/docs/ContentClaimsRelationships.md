@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**claimedResource** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+**claimedResource** | [**ContentClaimsClaimedResourceSingleRelationshipDataDocument**](ContentClaimsClaimedResourceSingleRelationshipDataDocument.md) |  | [optional] 
 **claimingArtist** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
 **owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 

@@ -14,15 +14,19 @@ public struct UserRecommendationBlocksVideosResourceIdentifierMeta: Codable, Has
 
     /** When the item was blocked */
     public var createdAt: Date
+    public var replacement: ReplacementProvenance?
 
     public init(
-        createdAt: Date
+        createdAt: Date,
+        replacement: ReplacementProvenance? = nil
     ) {
         self.createdAt = createdAt
+        self.replacement = replacement
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case createdAt
+        case replacement
     }
 
     // Encodable protocol methods
@@ -30,5 +34,6 @@ public struct UserRecommendationBlocksVideosResourceIdentifierMeta: Codable, Has
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(replacement, forKey: .replacement)
     }
 }

@@ -19,9 +19,9 @@ public enum UserCollectionAlbumsAPITidal {
      
      - returns: UserCollectionAlbumsSingleResourceDataDocument
      */
-	public static func userCollectionAlbumsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionAlbumsSingleResourceDataDocument {
+	public static func userCollectionAlbumsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionAlbumsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionAlbumsAPI.userCollectionAlbumsIdGetWithRequestBuilder(id: id, locale: locale, include: include)
+			UserCollectionAlbumsAPI.userCollectionAlbumsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -70,9 +70,9 @@ public enum UserCollectionAlbumsAPITidal {
      
      - returns: UserCollectionAlbumsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionAlbumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionAlbumsAPITidal.Sort_userCollectionAlbumsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionAlbumsItemsMultiRelationshipDataDocument {
+	public static func userCollectionAlbumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionAlbumsAPITidal.Sort_userCollectionAlbumsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionAlbumsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionAlbumsAPIEnum() }, locale: locale, include: include)
+			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionAlbumsAPIEnum() }, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

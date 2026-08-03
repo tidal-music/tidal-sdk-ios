@@ -19,9 +19,9 @@ public enum UserCollectionPlaylistsAPITidal {
      
      - returns: UserCollectionPlaylistsSingleResourceDataDocument
      */
-	public static func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
+	public static func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGetWithRequestBuilder(id: id, locale: locale, include: include)
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -81,9 +81,9 @@ public enum UserCollectionPlaylistsAPITidal {
      
      - returns: UserCollectionPlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: UserCollectionPlaylistsAPITidal.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, pageCursor: String? = nil, sort: [UserCollectionPlaylistsAPITidal.Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
+	public static func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: UserCollectionPlaylistsAPITidal.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, pageCursor: String? = nil, sort: [UserCollectionPlaylistsAPITidal.Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: id, collectionView: collectionView?.toUserCollectionPlaylistsAPIEnum(), pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionPlaylistsAPIEnum() }, include: include)
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: id, collectionView: collectionView?.toUserCollectionPlaylistsAPIEnum(), pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionPlaylistsAPIEnum() }, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

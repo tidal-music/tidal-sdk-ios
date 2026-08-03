@@ -13,6 +13,7 @@ import AnyCodable
 public struct AlbumsItemsResourceIdentifierMeta: Codable, Hashable {
 
     public var itemCursor: String?
+    public var replacement: ReplacementProvenance?
     /** track number */
     public var trackNumber: Int
     /** volume number */
@@ -20,16 +21,19 @@ public struct AlbumsItemsResourceIdentifierMeta: Codable, Hashable {
 
     public init(
         itemCursor: String? = nil,
+        replacement: ReplacementProvenance? = nil,
         trackNumber: Int,
         volumeNumber: Int
     ) {
         self.itemCursor = itemCursor
+        self.replacement = replacement
         self.trackNumber = trackNumber
         self.volumeNumber = volumeNumber
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case itemCursor
+        case replacement
         case trackNumber
         case volumeNumber
     }
@@ -39,6 +43,7 @@ public struct AlbumsItemsResourceIdentifierMeta: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(itemCursor, forKey: .itemCursor)
+        try container.encodeIfPresent(replacement, forKey: .replacement)
         try container.encode(trackNumber, forKey: .trackNumber)
         try container.encode(volumeNumber, forKey: .volumeNumber)
     }

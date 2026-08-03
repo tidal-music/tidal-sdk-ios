@@ -27,12 +27,13 @@ internal class PurchasesAPI {
      - parameter filterSubjectType: (query) The type of purchased content (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: PurchasesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil) async throws -> PurchasesMultiResourceDataDocument {
+    internal class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument {
         do {
-            return try await purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, include: include).execute().body
+            return try await purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -50,9 +51,10 @@ internal class PurchasesAPI {
      - parameter filterSubjectType: (query) The type of purchased content (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<PurchasesMultiResourceDataDocument> 
      */
-    internal class func purchasesGetWithRequestBuilder(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<PurchasesMultiResourceDataDocument> {
+    internal class func purchasesGetWithRequestBuilder(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PurchasesMultiResourceDataDocument> {
         let localVariablePath = "/purchases"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -63,6 +65,7 @@ internal class PurchasesAPI {
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
             "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -136,12 +139,13 @@ internal class PurchasesAPI {
      
      - parameter id: (path) Purchase id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: PurchasesSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil) async throws -> PurchasesSingleRelationshipDataDocument {
+    internal class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesSingleRelationshipDataDocument {
         do {
-            return try await purchasesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await purchasesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -157,9 +161,10 @@ internal class PurchasesAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Purchase id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<PurchasesSingleRelationshipDataDocument> 
      */
-    internal class func purchasesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<PurchasesSingleRelationshipDataDocument> {
+    internal class func purchasesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PurchasesSingleRelationshipDataDocument> {
         var localVariablePath = "/purchases/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -170,6 +175,7 @@ internal class PurchasesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

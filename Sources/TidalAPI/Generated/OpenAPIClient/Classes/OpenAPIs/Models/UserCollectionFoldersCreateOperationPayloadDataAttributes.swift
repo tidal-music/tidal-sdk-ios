@@ -12,24 +12,15 @@ import AnyCodable
 
 public struct UserCollectionFoldersCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum CollectionType: String, Codable, CaseIterable {
-        case playlists = "PLAYLISTS"
-    }
-    /** The type of user collection this folder belongs to. Deprecated: send the 'userCollection' relationship instead. Accepted for backward compatibility during migration and will be removed in a future version. */
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var collectionType: CollectionType?
     public var name: String
 
     public init(
-        collectionType: CollectionType? = nil,
         name: String
     ) {
-        self.collectionType = collectionType
         self.name = name
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case collectionType
         case name
     }
 
@@ -37,7 +28,6 @@ public struct UserCollectionFoldersCreateOperationPayloadDataAttributes: Codable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(collectionType, forKey: .collectionType)
         try container.encode(name, forKey: .name)
     }
 }

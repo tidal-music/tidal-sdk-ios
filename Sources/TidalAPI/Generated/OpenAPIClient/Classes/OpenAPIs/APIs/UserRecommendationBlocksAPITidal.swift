@@ -19,9 +19,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksSingleResourceDataDocument
      */
-	public static func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
+	public static func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdGetWithRequestBuilder(id: id, locale: locale, include: include)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksArtistsMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -91,9 +91,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksTracksMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -127,9 +127,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksVideosMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

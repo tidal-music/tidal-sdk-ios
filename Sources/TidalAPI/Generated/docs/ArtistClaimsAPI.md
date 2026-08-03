@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 # **artistClaimsGet**
 ```swift
-    open class func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: ArtistClaimsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artistClaims.
@@ -31,9 +31,10 @@ import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: acceptedArtists.albums (optional)
 
 // Get multiple artistClaims.
-ArtistClaimsAPI.artistClaimsGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
+ArtistClaimsAPI.artistClaimsGet(filterOwnersId: filterOwnersId, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -51,6 +52,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums | [optional] 
 
 ### Return type
 
@@ -121,7 +123,7 @@ Void (empty response body)
 
 # **artistClaimsIdGet**
 ```swift
-    open class func artistClaimsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artistClaim.
@@ -135,9 +137,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: acceptedArtists.albums (optional)
 
 // Get single artistClaim.
-ArtistClaimsAPI.artistClaimsIdGet(id: id, include: include) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -155,6 +158,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums | [optional] 
 
 ### Return type
 
@@ -229,7 +233,7 @@ Void (empty response body)
 
 # **artistClaimsIdRelationshipsAcceptedArtistsGet**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get acceptedArtists relationship (\"to-many\").
@@ -244,9 +248,10 @@ import OpenAPIClient
 let id = "id_example" // String | Artist claim id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: acceptedArtists (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: acceptedArtists.albums (optional)
 
 // Get acceptedArtists relationship (\"to-many\").
-ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -265,6 +270,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Artist claim id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: acceptedArtists | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums | [optional] 
 
 ### Return type
 
@@ -393,7 +399,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsRecommendedArtistsGet**
 ```swift
-    open class func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get recommendedArtists relationship (\"to-many\").
@@ -408,9 +414,10 @@ import OpenAPIClient
 let id = "id_example" // String | Artist claim id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: recommendedArtists (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: recommendedArtists.albums (optional)
 
 // Get recommendedArtists relationship (\"to-many\").
-ArtistClaimsAPI.artistClaimsIdRelationshipsRecommendedArtistsGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdRelationshipsRecommendedArtistsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -429,6 +436,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Artist claim id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: recommendedArtists | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: recommendedArtists.albums | [optional] 
 
 ### Return type
 

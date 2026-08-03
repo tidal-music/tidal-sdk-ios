@@ -19,9 +19,9 @@ public enum ContentClaimsAPITidal {
      
      - returns: ContentClaimsMultiResourceDataDocument
      */
-	public static func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ContentClaimsMultiResourceDataDocument {
+	public static func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ContentClaimsAPI.contentClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
+			ContentClaimsAPI.contentClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum ContentClaimsAPITidal {
      
      - returns: ContentClaimsSingleResourceDataDocument
      */
-	public static func contentClaimsIdGet(id: String, include: [String]? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
+	public static func contentClaimsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ContentClaimsAPI.contentClaimsIdGetWithRequestBuilder(id: id, include: include)
+			ContentClaimsAPI.contentClaimsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum ContentClaimsAPITidal {
      
      - returns: ContentClaimsSingleRelationshipDataDocument
      */
-	public static func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
+	public static func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ContentClaimsAPI.contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: id, include: include)
+			ContentClaimsAPI.contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum ContentClaimsAPITidal {
      
      - returns: ContentClaimsSingleRelationshipDataDocument
      */
-	public static func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
+	public static func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ContentClaimsAPI.contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: id, include: include)
+			ContentClaimsAPI.contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

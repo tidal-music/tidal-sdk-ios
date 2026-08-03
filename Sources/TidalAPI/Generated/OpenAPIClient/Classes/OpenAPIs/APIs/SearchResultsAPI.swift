@@ -21,18 +21,45 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter deviceType
+     */
+    public enum DeviceType_searchResultsIdGet: String, CaseIterable {
+        case browser = "BROWSER"
+        case car = "CAR"
+        case desktop = "DESKTOP"
+        case phone = "PHONE"
+        case tablet = "TABLET"
+        case tv = "TV"
+    }
+
+    /**
+     * enum for parameter systemType
+     */
+    public enum SystemType_searchResultsIdGet: String, CaseIterable {
+        case android = "ANDROID"
+        case desktop = "DESKTOP"
+        case tesla = "TESLA"
+        case ios = "IOS"
+        case web = "WEB"
+    }
+
+    /**
      Get single searchResult.
      
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: SearchResultsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchResultsSingleResourceDataDocument {
+    internal class func searchResultsIdGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdGet? = nil, systemType: SystemType_searchResultsIdGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsSingleResourceDataDocument {
         do {
-            return try await searchResultsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include).execute().body
+            return try await searchResultsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -52,10 +79,14 @@ internal class SearchResultsAPI {
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<SearchResultsSingleResourceDataDocument> 
      */
-    internal class func searchResultsIdGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsSingleResourceDataDocument> {
+    internal class func searchResultsIdGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdGet? = nil, systemType: SystemType_searchResultsIdGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsSingleResourceDataDocument> {
         var localVariablePath = "/searchResults/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -67,7 +98,11 @@ internal class SearchResultsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "deviceType": (wrappedValue: deviceType?.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType?.encodeToJSON(), isExplode: true),
+            "clientVersion": (wrappedValue: clientVersion?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -90,19 +125,46 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter deviceType
+     */
+    public enum DeviceType_searchResultsIdRelationshipsAlbumsGet: String, CaseIterable {
+        case browser = "BROWSER"
+        case car = "CAR"
+        case desktop = "DESKTOP"
+        case phone = "PHONE"
+        case tablet = "TABLET"
+        case tv = "TV"
+    }
+
+    /**
+     * enum for parameter systemType
+     */
+    public enum SystemType_searchResultsIdRelationshipsAlbumsGet: String, CaseIterable {
+        case android = "ANDROID"
+        case desktop = "DESKTOP"
+        case tesla = "TESLA"
+        case ios = "IOS"
+        case web = "WEB"
+    }
+
+    /**
      Get albums relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsAlbumsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsAlbumsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsAlbumsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+            return try await searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -123,10 +185,14 @@ internal class SearchResultsAPI {
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsAlbumsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -139,7 +205,11 @@ internal class SearchResultsAPI {
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "deviceType": (wrappedValue: deviceType?.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType?.encodeToJSON(), isExplode: true),
+            "clientVersion": (wrappedValue: clientVersion?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -162,19 +232,46 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter deviceType
+     */
+    public enum DeviceType_searchResultsIdRelationshipsArtistsGet: String, CaseIterable {
+        case browser = "BROWSER"
+        case car = "CAR"
+        case desktop = "DESKTOP"
+        case phone = "PHONE"
+        case tablet = "TABLET"
+        case tv = "TV"
+    }
+
+    /**
+     * enum for parameter systemType
+     */
+    public enum SystemType_searchResultsIdRelationshipsArtistsGet: String, CaseIterable {
+        case android = "ANDROID"
+        case desktop = "DESKTOP"
+        case tesla = "TESLA"
+        case ios = "IOS"
+        case web = "WEB"
+    }
+
+    /**
      Get artists relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsArtistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsArtistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsArtistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+            return try await searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -195,10 +292,14 @@ internal class SearchResultsAPI {
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsArtistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -211,7 +312,11 @@ internal class SearchResultsAPI {
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "deviceType": (wrappedValue: deviceType?.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType?.encodeToJSON(), isExplode: true),
+            "clientVersion": (wrappedValue: clientVersion?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -234,19 +339,46 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter deviceType
+     */
+    public enum DeviceType_searchResultsIdRelationshipsPlaylistsGet: String, CaseIterable {
+        case browser = "BROWSER"
+        case car = "CAR"
+        case desktop = "DESKTOP"
+        case phone = "PHONE"
+        case tablet = "TABLET"
+        case tv = "TV"
+    }
+
+    /**
+     * enum for parameter systemType
+     */
+    public enum SystemType_searchResultsIdRelationshipsPlaylistsGet: String, CaseIterable {
+        case android = "ANDROID"
+        case desktop = "DESKTOP"
+        case tesla = "TESLA"
+        case ios = "IOS"
+        case web = "WEB"
+    }
+
+    /**
      Get playlists relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlists (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsPlaylistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsPlaylistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+            return try await searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -267,10 +399,14 @@ internal class SearchResultsAPI {
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlists (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -283,7 +419,11 @@ internal class SearchResultsAPI {
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "deviceType": (wrappedValue: deviceType?.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType?.encodeToJSON(), isExplode: true),
+            "clientVersion": (wrappedValue: clientVersion?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -306,19 +446,46 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter deviceType
+     */
+    public enum DeviceType_searchResultsIdRelationshipsTopHitsGet: String, CaseIterable {
+        case browser = "BROWSER"
+        case car = "CAR"
+        case desktop = "DESKTOP"
+        case phone = "PHONE"
+        case tablet = "TABLET"
+        case tv = "TV"
+    }
+
+    /**
+     * enum for parameter systemType
+     */
+    public enum SystemType_searchResultsIdRelationshipsTopHitsGet: String, CaseIterable {
+        case android = "ANDROID"
+        case desktop = "DESKTOP"
+        case tesla = "TESLA"
+        case ios = "IOS"
+        case web = "WEB"
+    }
+
+    /**
      Get topHits relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: topHits (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsTopHitsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsTopHitsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTopHitsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+            return try await searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -339,10 +506,14 @@ internal class SearchResultsAPI {
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: topHits (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTopHitsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/topHits"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -355,7 +526,11 @@ internal class SearchResultsAPI {
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "deviceType": (wrappedValue: deviceType?.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType?.encodeToJSON(), isExplode: true),
+            "clientVersion": (wrappedValue: clientVersion?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -378,19 +553,46 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter deviceType
+     */
+    public enum DeviceType_searchResultsIdRelationshipsTracksGet: String, CaseIterable {
+        case browser = "BROWSER"
+        case car = "CAR"
+        case desktop = "DESKTOP"
+        case phone = "PHONE"
+        case tablet = "TABLET"
+        case tv = "TV"
+    }
+
+    /**
+     * enum for parameter systemType
+     */
+    public enum SystemType_searchResultsIdRelationshipsTracksGet: String, CaseIterable {
+        case android = "ANDROID"
+        case desktop = "DESKTOP"
+        case tesla = "TESLA"
+        case ios = "IOS"
+        case web = "WEB"
+    }
+
+    /**
      Get tracks relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsTracksGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsTracksGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTracksGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTracksGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+            return try await searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -411,10 +613,14 @@ internal class SearchResultsAPI {
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTracksGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTracksGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -427,7 +633,11 @@ internal class SearchResultsAPI {
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "deviceType": (wrappedValue: deviceType?.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType?.encodeToJSON(), isExplode: true),
+            "clientVersion": (wrappedValue: clientVersion?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -450,19 +660,46 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter deviceType
+     */
+    public enum DeviceType_searchResultsIdRelationshipsVideosGet: String, CaseIterable {
+        case browser = "BROWSER"
+        case car = "CAR"
+        case desktop = "DESKTOP"
+        case phone = "PHONE"
+        case tablet = "TABLET"
+        case tv = "TV"
+    }
+
+    /**
+     * enum for parameter systemType
+     */
+    public enum SystemType_searchResultsIdRelationshipsVideosGet: String, CaseIterable {
+        case android = "ANDROID"
+        case desktop = "DESKTOP"
+        case tesla = "TESLA"
+        case ios = "IOS"
+        case web = "WEB"
+    }
+
+    /**
      Get videos relationship (\"to-many\").
      
      - parameter id: (path) Search query string used as the resource identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: SearchResultsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdRelationshipsVideosGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+    internal class func searchResultsIdRelationshipsVideosGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsVideosGet? = nil, systemType: SystemType_searchResultsIdRelationshipsVideosGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
         do {
-            return try await searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include).execute().body
+            return try await searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -483,10 +720,14 @@ internal class SearchResultsAPI {
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter deviceType: (query) The type of device making the request (optional)
+     - parameter systemType: (query) The system type of the device making the request (optional)
+     - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: RequestBuilder<SearchResultsMultiRelationshipDataDocument> 
      */
-    internal class func searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
+    internal class func searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsVideosGet? = nil, systemType: SystemType_searchResultsIdRelationshipsVideosGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsMultiRelationshipDataDocument> {
         var localVariablePath = "/searchResults/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -499,7 +740,11 @@ internal class SearchResultsAPI {
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "deviceType": (wrappedValue: deviceType?.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType?.encodeToJSON(), isExplode: true),
+            "clientVersion": (wrappedValue: clientVersion?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

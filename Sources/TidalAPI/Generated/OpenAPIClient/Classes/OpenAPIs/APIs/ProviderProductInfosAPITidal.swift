@@ -19,9 +19,9 @@ public enum ProviderProductInfosAPITidal {
      
      - returns: ProviderProductInfosMultiResourceDataDocument
      */
-	public static func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
+	public static func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ProviderProductInfosAPI.providerProductInfosGetWithRequestBuilder(filterProviderId: filterProviderId, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid)
+			ProviderProductInfosAPI.providerProductInfosGetWithRequestBuilder(filterProviderId: filterProviderId, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum ProviderProductInfosAPITidal {
      
      - returns: ProviderProductInfosSingleRelationshipDataDocument
      */
-	public static func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
+	public static func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ProviderProductInfosAPI.providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+			ProviderProductInfosAPI.providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}
 	}
 }

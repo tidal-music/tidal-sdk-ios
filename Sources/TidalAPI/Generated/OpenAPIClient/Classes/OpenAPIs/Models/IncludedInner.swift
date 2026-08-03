@@ -54,6 +54,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case squareSitesResourceObject(SquareSitesResourceObject)
     case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
     case stripeDashboardLinksResourceObject(StripeDashboardLinksResourceObject)
+    case subscriptionPriceChangeDecisionsResourceObject(SubscriptionPriceChangeDecisionsResourceObject)
     case temporaryUserTokensResourceObject(TemporaryUserTokensResourceObject)
     case termsResourceObject(TermsResourceObject)
     case trackFilesResourceObject(TrackFilesResourceObject)
@@ -79,6 +80,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userRecommendationBlocksResourceObject(UserRecommendationBlocksResourceObject)
     case userRecommendationsResourceObject(UserRecommendationsResourceObject)
     case userReportsResourceObject(UserReportsResourceObject)
+    case userSubscriptionPriceChangesResourceObject(UserSubscriptionPriceChangesResourceObject)
     case usersResourceObject(UsersResourceObject)
     case videoManifestsResourceObject(VideoManifestsResourceObject)
     case videosResourceObject(VideosResourceObject)
@@ -172,6 +174,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .stripeDashboardLinksResourceObject(let value):
             try container.encode(value)
+        case .subscriptionPriceChangeDecisionsResourceObject(let value):
+            try container.encode(value)
         case .temporaryUserTokensResourceObject(let value):
             try container.encode(value)
         case .termsResourceObject(let value):
@@ -221,6 +225,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .userRecommendationsResourceObject(let value):
             try container.encode(value)
         case .userReportsResourceObject(let value):
+            try container.encode(value)
+        case .userSubscriptionPriceChangesResourceObject(let value):
             try container.encode(value)
         case .usersResourceObject(let value):
             try container.encode(value)
@@ -369,6 +375,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "stripeDashboardLinks":
             let value = try StripeDashboardLinksResourceObject(from: decoder)
             self = .stripeDashboardLinksResourceObject(value)
+        case "subscriptionPriceChangeDecisions":
+            let value = try SubscriptionPriceChangeDecisionsResourceObject(from: decoder)
+            self = .subscriptionPriceChangeDecisionsResourceObject(value)
         case "temporaryUserTokens":
             let value = try TemporaryUserTokensResourceObject(from: decoder)
             self = .temporaryUserTokensResourceObject(value)
@@ -444,6 +453,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userReports":
             let value = try UserReportsResourceObject(from: decoder)
             self = .userReportsResourceObject(value)
+        case "userSubscriptionPriceChanges":
+            let value = try UserSubscriptionPriceChangesResourceObject(from: decoder)
+            self = .userSubscriptionPriceChangesResourceObject(value)
         case "users":
             let value = try UsersResourceObject(from: decoder)
             self = .usersResourceObject(value)
@@ -506,6 +518,7 @@ extension IncludedInner: Identifiable {
         case .squareSitesResourceObject(let value): return value.id
         case .stripeConnectionsResourceObject(let value): return value.id
         case .stripeDashboardLinksResourceObject(let value): return value.id
+        case .subscriptionPriceChangeDecisionsResourceObject(let value): return value.id
         case .temporaryUserTokensResourceObject(let value): return value.id
         case .termsResourceObject(let value): return value.id
         case .trackFilesResourceObject(let value): return value.id
@@ -531,6 +544,7 @@ extension IncludedInner: Identifiable {
         case .userRecommendationBlocksResourceObject(let value): return value.id
         case .userRecommendationsResourceObject(let value): return value.id
         case .userReportsResourceObject(let value): return value.id
+        case .userSubscriptionPriceChangesResourceObject(let value): return value.id
         case .usersResourceObject(let value): return value.id
         case .videoManifestsResourceObject(let value): return value.id
         case .videosResourceObject(let value): return value.id

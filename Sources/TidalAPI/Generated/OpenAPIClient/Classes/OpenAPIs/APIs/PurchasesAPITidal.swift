@@ -34,9 +34,9 @@ public enum PurchasesAPITidal {
      
      - returns: PurchasesMultiResourceDataDocument
      */
-	public static func purchasesGet(filterOwnersId: [String], filterSubjectType: [PurchasesAPITidal.FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil) async throws -> PurchasesMultiResourceDataDocument {
+	public static func purchasesGet(filterOwnersId: [String], filterSubjectType: [PurchasesAPITidal.FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PurchasesAPI.purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType.compactMap { $0.toPurchasesAPIEnum() }, pageCursor: pageCursor, include: include)
+			PurchasesAPI.purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType.compactMap { $0.toPurchasesAPIEnum() }, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -58,9 +58,9 @@ public enum PurchasesAPITidal {
      
      - returns: PurchasesSingleRelationshipDataDocument
      */
-	public static func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil) async throws -> PurchasesSingleRelationshipDataDocument {
+	public static func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PurchasesAPI.purchasesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include)
+			PurchasesAPI.purchasesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 }
