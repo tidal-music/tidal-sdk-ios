@@ -181,8 +181,18 @@ final class FailingOfflineApiClient: OfflineApiClientProtocol {
 	}
 }
 
-final class FailOnUpdateToInProgressOfflineApiClient: OfflineApiClientProtocol {
+actor FailOnUpdateToInProgressOfflineApiClient: OfflineApiClientProtocol {
 	private let stub = StubOfflineApiClient()
+	private var failingInProgressTaskIds: Set<String> = []
+	private(set) var performedTaskIds: [String] = []
+
+	var remainingTaskIds: [String] {
+		stub.tasks.map(\.id)
+	}
+
+	func setFailingInProgressTaskIds(_ taskIds: Set<String>) {
+		failingInProgressTaskIds = taskIds
+	}
 
 	func addItem(type: ResourceType, id: String) async throws {
 		try await stub.addItem(type: type, id: id)
@@ -197,8 +207,11 @@ final class FailOnUpdateToInProgressOfflineApiClient: OfflineApiClientProtocol {
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {
-		if state == .inProgress {
+		if state == .inProgress, failingInProgressTaskIds.contains(taskId) {
 			throw FakeError.backendFailed
+		}
+		if state == .completed {
+			performedTaskIds.append(taskId)
 		}
 		try await stub.updateTask(taskId: taskId, state: state)
 	}

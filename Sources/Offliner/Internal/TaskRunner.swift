@@ -162,8 +162,16 @@ actor TaskRunner {
 		pendingTasks.removeAll { $0 === task }
 		runningTasks.append(task)
 
+		do {
+			try await offlineApiClient.updateTask(taskId: task.id, state: .inProgress)
+		} catch {
+			Self.logger.error("Failed to mark task \(task.id, privacy: .public) as in progress, skipping it: \(error, privacy: .public)")
+			await task.download?.updateState(.failed)
+			finish(task)
+			return
+		}
+
 		await task.download?.updateState(.inProgress)
-		try? await offlineApiClient.updateTask(taskId: task.id, state: .inProgress)
 
 		do {
 			try await task.run()
@@ -175,6 +183,10 @@ actor TaskRunner {
 			try? await offlineApiClient.updateTask(taskId: task.id, state: .failed)
 		}
 
+		finish(task)
+	}
+
+	private func finish(_ task: InternalTask) {
 		runningTasks.removeAll { $0 === task }
 		taskIds.remove(task.id)
 		if let download = task.download {
