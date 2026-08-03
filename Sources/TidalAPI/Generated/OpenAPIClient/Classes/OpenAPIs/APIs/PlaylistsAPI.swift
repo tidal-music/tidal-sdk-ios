@@ -33,12 +33,13 @@ internal class PlaylistsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners, suggestedCoverArts (optional)
      - parameter filterId: (query) List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: PlaylistsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsGet(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) async throws -> PlaylistsMultiResourceDataDocument {
+    internal class func playlistsGet(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsMultiResourceDataDocument {
         do {
-            return try await playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterId: filterId, filterOwnersId: filterOwnersId).execute().body
+            return try await playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterId: filterId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -61,9 +62,10 @@ internal class PlaylistsAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners, suggestedCoverArts (optional)
      - parameter filterId: (query) List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: RequestBuilder<PlaylistsMultiResourceDataDocument> 
      */
-    internal class func playlistsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil) -> RequestBuilder<PlaylistsMultiResourceDataDocument> {
+    internal class func playlistsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistsMultiResourceDataDocument> {
         let localVariablePath = "/playlists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -76,6 +78,7 @@ internal class PlaylistsAPI {
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -144,12 +147,13 @@ internal class PlaylistsAPI {
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners, suggestedCoverArts (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: PlaylistsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> PlaylistsSingleResourceDataDocument {
+    internal class func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsSingleResourceDataDocument {
         do {
-            return try await playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+            return try await playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -169,9 +173,10 @@ internal class PlaylistsAPI {
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners, suggestedCoverArts (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: RequestBuilder<PlaylistsSingleResourceDataDocument> 
      */
-    internal class func playlistsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<PlaylistsSingleResourceDataDocument> {
+    internal class func playlistsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistsSingleResourceDataDocument> {
         var localVariablePath = "/playlists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -183,6 +188,7 @@ internal class PlaylistsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -664,12 +670,13 @@ internal class PlaylistsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+    internal class func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
         do {
-            return try await playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include).execute().body
+            return try await playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -691,9 +698,10 @@ internal class PlaylistsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> 
      */
-    internal class func playlistsIdRelationshipsItemsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> {
+    internal class func playlistsIdRelationshipsItemsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> {
         var localVariablePath = "/playlists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -707,6 +715,7 @@ internal class PlaylistsAPI {
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

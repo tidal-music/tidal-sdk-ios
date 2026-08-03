@@ -32,13 +32,14 @@ internal class TracksAPI {
      - parameter filterId: (query) List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
      - parameter filterIsrc: (query) List of ISRCs. When a single ISRC is provided, pagination is supported and multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is returned without pagination. (e.g. &#x60;QMJMT1701237&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksGet(pageCursor: String? = nil, sort: [Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiResourceDataDocument {
+    internal class func tracksGet(pageCursor: String? = nil, sort: [Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiResourceDataDocument {
         do {
-            return try await tracksGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, shareCode: shareCode).execute().body
+            return try await tracksGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -62,10 +63,11 @@ internal class TracksAPI {
      - parameter filterId: (query) List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
      - parameter filterIsrc: (query) List of ISRCs. When a single ISRC is provided, pagination is supported and multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is returned without pagination. (e.g. &#x60;QMJMT1701237&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiResourceDataDocument> 
      */
-    internal class func tracksGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiResourceDataDocument> {
+    internal class func tracksGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiResourceDataDocument> {
         let localVariablePath = "/tracks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -79,6 +81,7 @@ internal class TracksAPI {
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
             "filter[isrc]": (wrappedValue: filterIsrc?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -148,13 +151,14 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleResourceDataDocument {
+    internal class func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSingleResourceDataDocument {
         do {
-            return try await tracksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode).execute().body
+            return try await tracksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -174,10 +178,11 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksSingleResourceDataDocument> 
      */
-    internal class func tracksIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSingleResourceDataDocument> {
+    internal class func tracksIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSingleResourceDataDocument> {
         var localVariablePath = "/tracks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -189,6 +194,7 @@ internal class TracksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -262,13 +268,14 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+    internal class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -289,10 +296,11 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -305,6 +313,7 @@ internal class TracksAPI {
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -378,13 +387,14 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+    internal class func tracksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -405,10 +415,11 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -421,6 +432,7 @@ internal class TracksAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -441,13 +453,14 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: credits (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+    internal class func tracksIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsCreditsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsCreditsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -467,10 +480,11 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: credits (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsCreditsGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsCreditsGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/credits"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -482,6 +496,7 @@ internal class TracksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -621,13 +636,14 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: lyrics (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: lyrics.track (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+    internal class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsLyricsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsLyricsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -647,10 +663,11 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: lyrics (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: lyrics.track (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsLyricsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsLyricsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/lyrics"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -662,6 +679,7 @@ internal class TracksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -735,15 +753,16 @@ internal class TracksAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Track id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+    internal class func tracksIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -761,12 +780,13 @@ internal class TracksAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Track id 
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsOwnersGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -776,6 +796,7 @@ internal class TracksAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
@@ -923,13 +944,14 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: radio (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: radio.items (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+    internal class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsRadioGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsRadioGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -949,10 +971,11 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: radio (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: radio.items (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsRadioGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsRadioGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/radio"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -964,6 +987,7 @@ internal class TracksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -984,13 +1008,14 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: replacement (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
+    internal class func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSingleRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsReplacementGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsReplacementGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -1010,10 +1035,11 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: replacement (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksSingleRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsReplacementGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSingleRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsReplacementGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSingleRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/replacement"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1025,6 +1051,7 @@ internal class TracksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -1045,13 +1072,14 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: shares (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+    internal class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsSharesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsSharesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -1068,10 +1096,11 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: shares (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsSharesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsSharesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/shares"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1083,6 +1112,7 @@ internal class TracksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -1104,13 +1134,14 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarTracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarTracks (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsSimilarTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+    internal class func tracksIdRelationshipsSimilarTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -1131,10 +1162,11 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarTracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarTracks (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/similarTracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1147,6 +1179,7 @@ internal class TracksAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
@@ -1226,13 +1259,14 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: suggestedTracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: suggestedTracks (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: TracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsSuggestedTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
+    internal class func tracksIdRelationshipsSuggestedTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiRelationshipDataDocument {
         do {
-            return try await tracksIdRelationshipsSuggestedTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode).execute().body
+            return try await tracksIdRelationshipsSuggestedTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -1253,10 +1287,11 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: suggestedTracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: suggestedTracks (optional)
      - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
      - returns: RequestBuilder<TracksMultiRelationshipDataDocument> 
      */
-    internal class func tracksIdRelationshipsSuggestedTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
+    internal class func tracksIdRelationshipsSuggestedTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/suggestedTracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1269,6 +1304,7 @@ internal class TracksAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 

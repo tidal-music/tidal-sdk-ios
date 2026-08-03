@@ -17,12 +17,13 @@ internal class SharesAPI {
      
      - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesGet(filterCode: [String], include: [String]? = nil) async throws -> SharesMultiResourceDataDocument {
+    internal class func sharesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
         do {
-            return try await sharesGetWithRequestBuilder(filterCode: filterCode, include: include).execute().body
+            return try await sharesGetWithRequestBuilder(filterCode: filterCode, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -41,9 +42,10 @@ internal class SharesAPI {
        - name: Client_Credentials
      - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesMultiResourceDataDocument> 
      */
-    internal class func sharesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
+    internal class func sharesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
         let localVariablePath = "/shares"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -52,6 +54,7 @@ internal class SharesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[code]": (wrappedValue: filterCode.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -70,12 +73,13 @@ internal class SharesAPI {
      
      - parameter id: (path) User share id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesIdGet(id: String, include: [String]? = nil) async throws -> SharesSingleResourceDataDocument {
+    internal class func sharesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesSingleResourceDataDocument {
         do {
-            return try await sharesIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await sharesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -94,9 +98,10 @@ internal class SharesAPI {
        - name: Client_Credentials
      - parameter id: (path) User share id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesSingleResourceDataDocument> 
      */
-    internal class func sharesIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<SharesSingleResourceDataDocument> {
+    internal class func sharesIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesSingleResourceDataDocument> {
         var localVariablePath = "/shares/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -107,6 +112,7 @@ internal class SharesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -184,12 +190,13 @@ internal class SharesAPI {
      - parameter id: (path) User share id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sharedResources (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> SharesMultiRelationshipDataDocument {
+    internal class func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiRelationshipDataDocument {
         do {
-            return try await sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+            return try await sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -209,9 +216,10 @@ internal class SharesAPI {
      - parameter id: (path) User share id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sharedResources (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesMultiRelationshipDataDocument> 
      */
-    internal class func sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<SharesMultiRelationshipDataDocument> {
+    internal class func sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesMultiRelationshipDataDocument> {
         var localVariablePath = "/shares/{id}/relationships/sharedResources"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -223,6 +231,7 @@ internal class SharesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

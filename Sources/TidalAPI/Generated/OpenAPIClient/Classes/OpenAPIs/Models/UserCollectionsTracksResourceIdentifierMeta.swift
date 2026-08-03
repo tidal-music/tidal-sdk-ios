@@ -13,15 +13,19 @@ import AnyCodable
 public struct UserCollectionsTracksResourceIdentifierMeta: Codable, Hashable {
 
     public var addedAt: Date
+    public var replacement: ReplacementProvenance?
 
     public init(
-        addedAt: Date
+        addedAt: Date,
+        replacement: ReplacementProvenance? = nil
     ) {
         self.addedAt = addedAt
+        self.replacement = replacement
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case addedAt
+        case replacement
     }
 
     // Encodable protocol methods
@@ -29,5 +33,6 @@ public struct UserCollectionsTracksResourceIdentifierMeta: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(addedAt, forKey: .addedAt)
+        try container.encodeIfPresent(replacement, forKey: .replacement)
     }
 }

@@ -12,24 +12,24 @@ import AnyCodable
 
 public struct VideosRelationships: Codable, Hashable {
 
-    public var albums: MultiRelationshipDataDocument?
+    public var albums: VideosAlbumsMultiRelationshipDataDocument?
     public var artists: MultiRelationshipDataDocument?
     public var credits: MultiRelationshipDataDocument?
     public var providers: MultiRelationshipDataDocument?
-    public var replacement: SingleRelationshipDataDocument?
-    public var similarVideos: MultiRelationshipDataDocument?
-    public var suggestedVideos: MultiRelationshipDataDocument?
+    public var replacement: VideosReplacementSingleRelationshipDataDocument?
+    public var similarVideos: VideosSimilarVideosMultiRelationshipDataDocument?
+    public var suggestedVideos: VideosSuggestedVideosMultiRelationshipDataDocument?
     public var thumbnailArt: MultiRelationshipDataDocument?
     public var usageRules: SingleRelationshipDataDocument?
 
     public init(
-        albums: MultiRelationshipDataDocument? = nil,
+        albums: VideosAlbumsMultiRelationshipDataDocument? = nil,
         artists: MultiRelationshipDataDocument? = nil,
         credits: MultiRelationshipDataDocument? = nil,
         providers: MultiRelationshipDataDocument? = nil,
-        replacement: SingleRelationshipDataDocument? = nil,
-        similarVideos: MultiRelationshipDataDocument? = nil,
-        suggestedVideos: MultiRelationshipDataDocument? = nil,
+        replacement: VideosReplacementSingleRelationshipDataDocument? = nil,
+        similarVideos: VideosSimilarVideosMultiRelationshipDataDocument? = nil,
+        suggestedVideos: VideosSuggestedVideosMultiRelationshipDataDocument? = nil,
         thumbnailArt: MultiRelationshipDataDocument? = nil,
         usageRules: SingleRelationshipDataDocument? = nil
     ) {

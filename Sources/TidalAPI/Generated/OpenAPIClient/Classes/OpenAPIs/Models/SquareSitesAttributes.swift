@@ -16,18 +16,23 @@ public struct SquareSitesAttributes: Codable, Hashable {
     public var domain: String?
     /** Whether the site is published on Square Online */
     public var published: Bool?
+    /** The site's title as set by the seller in Square */
+    public var siteTitle: String?
 
     public init(
         domain: String? = nil,
-        published: Bool? = nil
+        published: Bool? = nil,
+        siteTitle: String? = nil
     ) {
         self.domain = domain
         self.published = published
+        self.siteTitle = siteTitle
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case domain
         case published
+        case siteTitle
     }
 
     // Encodable protocol methods
@@ -36,5 +41,6 @@ public struct SquareSitesAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(domain, forKey: .domain)
         try container.encodeIfPresent(published, forKey: .published)
+        try container.encodeIfPresent(siteTitle, forKey: .siteTitle)
     }
 }

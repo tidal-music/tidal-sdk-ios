@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **trackStatisticsIdGet**
 ```swift
-    open class func trackStatisticsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: TrackStatisticsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: TrackStatisticsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single trackStatistic.
@@ -23,10 +23,11 @@ Retrieves single trackStatistic by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Track statistic id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 
 // Get single trackStatistic.
-TrackStatisticsAPI.trackStatisticsIdGet(id: id, include: include) { (response, error) in
+TrackStatisticsAPI.trackStatisticsIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -43,6 +44,7 @@ TrackStatisticsAPI.trackStatisticsIdGet(id: id, include: include) { (response, e
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track statistic id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
 
 ### Return type
@@ -62,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **trackStatisticsIdRelationshipsOwnersGet**
 ```swift
-    open class func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TrackStatisticsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func trackStatisticsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TrackStatisticsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -75,11 +77,12 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Track statistic id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -96,6 +99,7 @@ TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGet(id: id, include: incl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track statistic id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 

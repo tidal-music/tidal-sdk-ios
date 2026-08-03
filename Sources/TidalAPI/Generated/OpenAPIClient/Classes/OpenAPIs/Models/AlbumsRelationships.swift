@@ -20,9 +20,9 @@ public struct AlbumsRelationships: Codable, Hashable {
     public var owners: MultiRelationshipDataDocument?
     public var priceConfig: SingleRelationshipDataDocument?
     public var providers: MultiRelationshipDataDocument?
-    public var replacement: SingleRelationshipDataDocument?
+    public var replacement: AlbumsReplacementSingleRelationshipDataDocument?
     public var shares: MultiRelationshipDataDocument?
-    public var similarAlbums: MultiRelationshipDataDocument?
+    public var similarAlbums: AlbumsSimilarAlbumsMultiRelationshipDataDocument?
     public var suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument?
     public var usageRules: SingleRelationshipDataDocument?
 
@@ -35,9 +35,9 @@ public struct AlbumsRelationships: Codable, Hashable {
         owners: MultiRelationshipDataDocument? = nil,
         priceConfig: SingleRelationshipDataDocument? = nil,
         providers: MultiRelationshipDataDocument? = nil,
-        replacement: SingleRelationshipDataDocument? = nil,
+        replacement: AlbumsReplacementSingleRelationshipDataDocument? = nil,
         shares: MultiRelationshipDataDocument? = nil,
-        similarAlbums: MultiRelationshipDataDocument? = nil,
+        similarAlbums: AlbumsSimilarAlbumsMultiRelationshipDataDocument? = nil,
         suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = nil,
         usageRules: SingleRelationshipDataDocument? = nil
     ) {

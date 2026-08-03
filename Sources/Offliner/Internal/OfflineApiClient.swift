@@ -437,22 +437,24 @@ private final class IncludedItemsMap {
 			case .tracksResourceObject(let track):
 				guard let includedItem = get(type: track.type, id: track.id),
 					  let rels = track.relationships else { continue }
-				wireRelationships(for: includedItem, albums: rels.albums, artists: rels.artists, coverArt: nil)
+				let album = rels.albums?.data?.first.map { (type: $0.type, id: $0.id) }
+				wireRelationships(for: includedItem, album: album, artists: rels.artists, coverArt: nil)
 
 			case .videosResourceObject(let video):
 				guard let includedItem = get(type: video.type, id: video.id),
 					  let rels = video.relationships else { continue }
-				wireRelationships(for: includedItem, albums: rels.albums, artists: rels.artists, coverArt: rels.thumbnailArt)
+				let album = rels.albums?.data?.first.map { (type: $0.type, id: $0.id) }
+				wireRelationships(for: includedItem, album: album, artists: rels.artists, coverArt: rels.thumbnailArt)
 
 			case .albumsResourceObject(let album):
 				guard let includedItem = get(type: album.type, id: album.id),
 					  let rels = album.relationships else { continue }
-				wireRelationships(for: includedItem, albums: nil, artists: rels.artists, coverArt: rels.coverArt)
+				wireRelationships(for: includedItem, album: nil, artists: rels.artists, coverArt: rels.coverArt)
 
 			case .playlistsResourceObject(let playlist):
 				guard let includedItem = get(type: playlist.type, id: playlist.id),
 					  let rels = playlist.relationships else { continue }
-				wireRelationships(for: includedItem, albums: nil, artists: nil, coverArt: rels.coverArt)
+				wireRelationships(for: includedItem, album: nil, artists: nil, coverArt: rels.coverArt)
 
 			default:
 				break
@@ -470,12 +472,12 @@ private final class IncludedItemsMap {
 
 	private func wireRelationships(
 		for item: IncludedItem,
-		albums: MultiRelationshipDataDocument?,
+		album: (type: String, id: String)?,
 		artists: MultiRelationshipDataDocument?,
 		coverArt: MultiRelationshipDataDocument?
 	) {
-		if let albumData = albums?.data?.first {
-			item.album = get(type: albumData.type, id: albumData.id)
+		if let album {
+			item.album = get(type: album.type, id: album.id)
 		}
 
 		if let artistsData = artists?.data, !artistsData.isEmpty {
@@ -541,7 +543,7 @@ private class IncludedItem {
 		return albumObject
 	}
 
-	func playlistItemAddedAt(for itemData: ResourceIdentifier) -> Date? {
+	func playlistItemAddedAt(for itemData: OfflineTasksItemResourceIdentifier) -> Date? {
 		guard case .playlist(let playlist) = resource else {
 			return nil
 		}
@@ -585,7 +587,7 @@ private class IncludedItem {
 private extension ArtworksResourceObject {
 	var largestFileURL: URL? {
 		attributes?.files
-			.max { ($0.meta?.width ?? 0) * ($0.meta?.height ?? 0) < ($1.meta?.width ?? 0) * ($1.meta?.height ?? 0) }
+			.max { $0.meta.width * $0.meta.height < $1.meta.width * $1.meta.height }
 			.flatMap { URL(string: $0.href) }
 	}
 }
@@ -597,7 +599,7 @@ private extension StoreTrackTask {
 		_ resourceObject: OfflineTasksResourceObject,
 		attributes: OfflineTasksAttributes,
 		item: IncludedItem?,
-		collectionData: ResourceIdentifier?,
+		collectionData: OfflineTasksCollectionResourceIdentifier?,
 		addedAt: Date?
 	) {
 		guard let item, case .track(let track) = item.resource, let collectionData else { return nil }
@@ -621,7 +623,7 @@ private extension StoreVideoTask {
 		_ resourceObject: OfflineTasksResourceObject,
 		attributes: OfflineTasksAttributes,
 		item: IncludedItem?,
-		collectionData: ResourceIdentifier?,
+		collectionData: OfflineTasksCollectionResourceIdentifier?,
 		addedAt: Date?
 	) {
 		guard let item, case .video(let video) = item.resource, let collectionData else { return nil }
@@ -654,7 +656,11 @@ private extension StorePlaylistTask {
 }
 
 private extension RemoveItemTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, itemData: ResourceIdentifier, collectionData: ResourceIdentifier?) {
+	init?(
+		_ resourceObject: OfflineTasksResourceObject,
+		itemData: OfflineTasksItemResourceIdentifier,
+		collectionData: OfflineTasksCollectionResourceIdentifier?
+	) {
 		guard let collectionData else {
 			return nil
 		}

@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **creditsIdGet**
 ```swift
-    open class func creditsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: CreditsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func creditsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CreditsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single credit.
@@ -25,9 +25,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Credit id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artist, category (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get single credit.
-CreditsAPI.creditsIdGet(id: id, include: include) { (response, error) in
+CreditsAPI.creditsIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,6 +46,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Credit id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artist, category | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artist.albums | [optional] 
 
 ### Return type
 
@@ -63,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **creditsIdRelationshipsArtistGet**
 ```swift
-    open class func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, completion: @escaping (_ data: CreditsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CreditsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artist relationship (\"to-one\").
@@ -77,9 +79,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Credit id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artist (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get artist relationship (\"to-one\").
-CreditsAPI.creditsIdRelationshipsArtistGet(id: id, include: include) { (response, error) in
+CreditsAPI.creditsIdRelationshipsArtistGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -97,6 +100,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Credit id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artist | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artist.albums | [optional] 
 
 ### Return type
 

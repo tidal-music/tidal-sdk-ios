@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionSaveForLatersIdGet**
 ```swift
-    open class func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollectionSaveForLater.
@@ -27,9 +27,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection save for later id. Use `me` for the authenticated user's resource
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get single userCollectionSaveForLater.
-UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdGet(id: id, include: include) { (response, error) in
+UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -47,6 +48,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
 
@@ -119,7 +121,7 @@ Void (empty response body)
 
 # **userCollectionSaveForLatersIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -134,9 +136,10 @@ import OpenAPIClient
 let id = "id_example" // String | User collection save for later id. Use `me` for the authenticated user's resource
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get items relationship (\"to-many\").
-UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, include: include) { (response, error) in
+UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -155,6 +158,7 @@ Name | Type | Description  | Notes
  **id** | **String** | User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
 

@@ -19,9 +19,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: PlayQueuesMultiResourceDataDocument
      */
-	public static func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
+	public static func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include)
+			PlayQueuesAPI.playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: PlayQueuesSingleResourceDataDocument
      */
-	public static func playQueuesIdGet(id: String, include: [String]? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
+	public static func playQueuesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdGetWithRequestBuilder(id: id, include: include)
+			PlayQueuesAPI.playQueuesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -67,9 +67,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: PlayQueuesCurrentSingleRelationshipDataDocument
      */
-	public static func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil) async throws -> PlayQueuesCurrentSingleRelationshipDataDocument {
+	public static func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesCurrentSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdRelationshipsCurrentGetWithRequestBuilder(id: id, include: include)
+			PlayQueuesAPI.playQueuesIdRelationshipsCurrentGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -103,9 +103,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: PlayQueuesFutureMultiRelationshipDataDocument
      */
-	public static func playQueuesIdRelationshipsFutureGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlayQueuesFutureMultiRelationshipDataDocument {
+	public static func playQueuesIdRelationshipsFutureGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesFutureMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdRelationshipsFutureGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			PlayQueuesAPI.playQueuesIdRelationshipsFutureGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -151,9 +151,9 @@ public enum PlayQueuesAPITidal {
      
      - returns: PlayQueuesPastMultiRelationshipDataDocument
      */
-	public static func playQueuesIdRelationshipsPastGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> PlayQueuesPastMultiRelationshipDataDocument {
+	public static func playQueuesIdRelationshipsPastGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesPastMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdRelationshipsPastGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			PlayQueuesAPI.playQueuesIdRelationshipsPastGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

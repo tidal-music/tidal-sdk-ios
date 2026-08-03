@@ -66,12 +66,13 @@ internal class LyricsAPI {
      
      - parameter id: (path) Lyrics Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track (optional)
      - returns: LyricsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdGet(id: String, include: [String]? = nil) async throws -> LyricsSingleResourceDataDocument {
+    internal class func lyricsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleResourceDataDocument {
         do {
-            return try await lyricsIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await lyricsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -90,9 +91,10 @@ internal class LyricsAPI {
        - name: Client_Credentials
      - parameter id: (path) Lyrics Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track (optional)
      - returns: RequestBuilder<LyricsSingleResourceDataDocument> 
      */
-    internal class func lyricsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<LyricsSingleResourceDataDocument> {
+    internal class func lyricsIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<LyricsSingleResourceDataDocument> {
         var localVariablePath = "/lyrics/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -103,6 +105,7 @@ internal class LyricsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -235,12 +238,13 @@ internal class LyricsAPI {
      - parameter id: (path) Lyrics Id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track (optional)
      - returns: LyricsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
+    internal class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleRelationshipDataDocument {
         do {
-            return try await lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+            return try await lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -260,9 +264,10 @@ internal class LyricsAPI {
      - parameter id: (path) Lyrics Id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track (optional)
      - returns: RequestBuilder<LyricsSingleRelationshipDataDocument> 
      */
-    internal class func lyricsIdRelationshipsTrackGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<LyricsSingleRelationshipDataDocument> {
+    internal class func lyricsIdRelationshipsTrackGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<LyricsSingleRelationshipDataDocument> {
         var localVariablePath = "/lyrics/{id}/relationships/track"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -274,6 +279,7 @@ internal class LyricsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

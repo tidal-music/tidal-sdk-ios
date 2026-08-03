@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct Default415ResponseBody: Codable, Hashable {
 
-    public var errors: [Default400ResponseBodyErrorsInner]
+    public var errors: [Default415ResponseBodyErrorsInner]
 
     public init(
-        errors: [Default400ResponseBodyErrorsInner]
+        errors: [Default415ResponseBodyErrorsInner]
     ) {
         self.errors = errors
     }

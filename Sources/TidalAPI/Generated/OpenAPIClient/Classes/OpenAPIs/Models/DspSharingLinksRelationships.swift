@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct DspSharingLinksRelationships: Codable, Hashable {
 
-    public var subject: SingleRelationshipDataDocument?
+    public var subject: DspSharingLinksSubjectSingleRelationshipDataDocument?
 
     public init(
-        subject: SingleRelationshipDataDocument? = nil
+        subject: DspSharingLinksSubjectSingleRelationshipDataDocument? = nil
     ) {
         self.subject = subject
     }

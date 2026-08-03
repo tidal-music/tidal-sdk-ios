@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **sharesGet**
 ```swift
-    open class func sharesGet(filterCode: [String], include: [String]? = nil, completion: @escaping (_ data: SharesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func sharesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SharesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple shares.
@@ -27,9 +27,10 @@ import OpenAPIClient
 
 let filterCode = ["inner_example"] // [String] | A share code (e.g. `xyz`)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
 
 // Get multiple shares.
-SharesAPI.sharesGet(filterCode: filterCode, include: include) { (response, error) in
+SharesAPI.sharesGet(filterCode: filterCode, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -47,6 +48,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterCode** | [**[String]**](String.md) | A share code (e.g. &#x60;xyz&#x60;) | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, sharedResources | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources | [optional] 
 
 ### Return type
 
@@ -65,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdGet**
 ```swift
-    open class func sharesIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SharesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func sharesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SharesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single share.
@@ -79,9 +81,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User share id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
 
 // Get single share.
-SharesAPI.sharesIdGet(id: id, include: include) { (response, error) in
+SharesAPI.sharesIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -99,6 +102,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User share id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, sharedResources | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources | [optional] 
 
 ### Return type
 
@@ -171,7 +175,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdRelationshipsSharedResourcesGet**
 ```swift
-    open class func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SharesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SharesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get sharedResources relationship (\"to-many\").
@@ -186,9 +190,10 @@ import OpenAPIClient
 let id = "id_example" // String | User share id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: sharedResources (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
 
 // Get sharedResources relationship (\"to-many\").
-SharesAPI.sharesIdRelationshipsSharedResourcesGet(id: id, pageCursor: pageCursor, include: include) { (response, error) in
+SharesAPI.sharesIdRelationshipsSharedResourcesGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -207,6 +212,7 @@ Name | Type | Description  | Notes
  **id** | **String** | User share id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: sharedResources | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources | [optional] 
 
 ### Return type
 

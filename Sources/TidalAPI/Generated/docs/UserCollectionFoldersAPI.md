@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 # **userCollectionFoldersGet**
 ```swift
-    open class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, completion: @escaping (_ data: UserCollectionFoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple userCollectionFolders.
@@ -32,9 +32,10 @@ import OpenAPIClient
 
 let filterId = ["inner_example"] // [String] | Folder Id (e.g. `CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX`)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get multiple userCollectionFolders.
-UserCollectionFoldersAPI.userCollectionFoldersGet(filterId: filterId, include: include) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersGet(filterId: filterId, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -52,6 +53,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterId** | [**[String]**](String.md) | Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
 
 ### Return type
 
@@ -122,7 +124,7 @@ Void (empty response body)
 
 # **userCollectionFoldersIdGet**
 ```swift
-    open class func userCollectionFoldersIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollectionFolder.
@@ -136,9 +138,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersIdGet(id: id, include: include) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -156,6 +159,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
 
 ### Return type
 
@@ -282,7 +286,7 @@ Void (empty response body)
 
 # **userCollectionFoldersIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil, include: [String]? = nil, completion: @escaping (_ data: UserCollectionFoldersItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -298,9 +302,10 @@ let id = "id_example" // String | Folder Id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get items relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, include: include) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -320,6 +325,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
 
 ### Return type
 
@@ -446,7 +452,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsUserCollectionGet**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get userCollection relationship (\"to-one\").
@@ -460,9 +466,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: userCollection (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: userCollection.items.items (optional)
 
 // Get userCollection relationship (\"to-one\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGet(id: id, include: include) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -480,6 +487,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: userCollection | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: userCollection.items.items | [optional] 
 
 ### Return type
 
@@ -511,7 +519,7 @@ Creates a new userCollectionFolder.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(collectionType: "collectionType_example", name: "name_example"), relationships: UserCollectionFoldersCreateOperation_Payload_Data_Relationships(userCollection: UserCollectionFoldersCreateOperation_Payload_Data_Relationships_UserCollection(data: UserCollection(id: "id_example", type: "type_example"))), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
+let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(name: "name_example"), relationships: UserCollectionFoldersCreateOperation_Payload_Data_Relationships(userCollection: UserCollectionFoldersCreateOperation_Payload_Data_Relationships_UserCollection(data: UserCollection(id: "id_example", type: "type_example"))), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
 
 // Create single userCollectionFolder.
 UserCollectionFoldersAPI.userCollectionFoldersPost(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload) { (response, error) in
