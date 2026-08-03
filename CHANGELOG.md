@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-08-03
+
+### Changed
+- Generated API code using spec version 1.10.80 (TidalAPI)
+
+### Fixed
+- Update Offliner to the regenerated TidalAPI types so the module compiles again (Offliner)
+
 ## [0.12.0] - 2026-07-30
 
 ### Changed
