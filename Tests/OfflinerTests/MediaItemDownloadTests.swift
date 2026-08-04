@@ -96,7 +96,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
 		let artworkURL = try XCTUnwrap(storedItem?.artworkURL)
-		let movedURL = artworkURL.deletingLastPathComponent().appendingPathComponent("moved-artwork.jpg")
+		let movedURL = artworkURL.deletingLastPathComponent().appendingPathComponent("moved-artwork-\(UUID().uuidString).jpg")
 		try FileManager.default.moveItem(at: artworkURL, to: movedURL)
 
 		let renewedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
