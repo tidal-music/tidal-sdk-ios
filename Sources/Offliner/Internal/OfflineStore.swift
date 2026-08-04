@@ -613,16 +613,16 @@ final class OfflineStore {
 		let searchSort = SearchSort(sort)
 		let (cursorPredicate, cursorArguments) = searchSort.cursorClause(for: cursor)
 
-		let (hits, failures) = try await databaseQueue.write { [self] database -> ([OfflineCollectionSearchHit], [FailedOfflineItem]) in
-			var arguments: [DatabaseValueConvertible?] = [collectionType.rawValue, resourceId, pattern, pattern]
-			arguments += cursorArguments
-			arguments.append(limit)
+		var arguments: [DatabaseValueConvertible?] = [collectionType.rawValue, resourceId, pattern, pattern]
+		arguments += cursorArguments
+		arguments.append(limit)
 
-			let rows = try Row.fetchAll(
+		let rows = try await databaseQueue.read { database in
+			try Row.fetchAll(
 				database,
 				sql: """
 					SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
-					       i.media_bookmark, i.license_bookmark, i.artwork_bookmark,
+					       i.artwork_bookmark,
 					       r.volume, r.position, r.id AS relationship_id, r.added_at AS relationship_added_at
 					       \(searchSort.sortColumnSelect)
 					FROM offline_item_relationship r
@@ -637,21 +637,22 @@ final class OfflineStore {
 					""",
 				arguments: StatementArguments(arguments)
 			)
-
-			var hits: [OfflineCollectionSearchHit] = []
-			var failures: [FailedOfflineItem] = []
-
-			for row in rows {
-				do {
-					let item = try makeCollectionItem(from: row, database: database)
-					hits.append(OfflineCollectionSearchHit(item: item, cursor: searchSort.rowCursor(row)))
-				} catch {
-					FailedOfflineItem(from: row).map { failures.append($0) }
-				}
-			}
-
-			return (hits, failures)
 		}
+
+		var hits: [OfflineCollectionSearchHit] = []
+		var failures: [FailedOfflineItem] = []
+		var renewals: [BookmarkRenewal] = []
+
+		for row in rows {
+			do {
+				let item = try makeCollectionItem(from: row, renewals: &renewals)
+				hits.append(OfflineCollectionSearchHit(item: item, cursor: searchSort.rowCursor(row)))
+			} catch {
+				FailedOfflineItem(from: row).map { failures.append($0) }
+			}
+		}
+
+		try await storeRenewedBookmarks(renewals)
 
 		return (OfflineCollectionSearchPage(hits: hits, cursor: hits.last?.cursor), failures)
 	}
