@@ -348,7 +348,7 @@ final class SearchTests: OfflinerTestCase {
 		var enqueued: [OfflineTask] = [.storeAlbum(albumTask(id: "task-0", albumId: albumId, title: "Album", artistNames: []))]
 		for (index, title) in titles.enumerated() {
 			enqueued.append(.storeTrack(trackTask(
-				id: "task-\(index)", trackId: "track-\(index)", albumId: albumId, title: title, artistNames: [], position: index + 1
+				id: "task-\(index + 1)", trackId: "track-\(index)", albumId: albumId, title: title, artistNames: [], position: index + 1
 			)))
 		}
 		backend.enqueueTasks(enqueued)
