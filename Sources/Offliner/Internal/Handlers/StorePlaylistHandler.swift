@@ -33,6 +33,10 @@ private final class InternalPlaylistTask: InternalTask {
 		self.artworkDownloader = artworkDownloader
 	}
 
+	var concurrencyKey: OfflineTaskConcurrencyKey {
+		OfflineTaskConcurrencyKey(resourceType: OfflineCollectionType.playlists.rawValue, resourceId: task.playlist.id)
+	}
+
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
 		collection.collectionType == .playlists && collection.resourceId == task.playlist.id
 	}

@@ -24,6 +24,15 @@ private final class InternalRemoveItemTask: InternalTask {
 		self.offlineStore = offlineStore
 	}
 
+	var concurrencyKey: OfflineTaskConcurrencyKey {
+		OfflineTaskConcurrencyKey(
+			collectionType: task.collectionResourceType,
+			collectionId: task.collectionResourceId,
+			resourceType: task.resourceType,
+			resourceId: task.resourceId
+		)
+	}
+
 	func run() async throws {
 		try offlineStore.deleteMediaItem(
 			resourceType: task.resourceType,
