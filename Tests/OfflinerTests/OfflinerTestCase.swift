@@ -4,6 +4,7 @@ import XCTest
 
 class OfflinerTestCase: XCTestCase {
 	var tempDir: URL!
+	var lastDatabaseQueue: DatabaseQueue!
 
 	override func setUp() {
 		super.setUp()
@@ -31,6 +32,7 @@ class OfflinerTestCase: XCTestCase {
 		let databaseQueue = try! OfflineStore.makeDatabaseQueue(path: dbPath)
 		// swiftlint:disable:next force_try
 		try! Migrations.run(databaseQueue)
+		lastDatabaseQueue = databaseQueue
 		let offlineStore = OfflineStore(databaseQueue)
 
 		return Offliner(

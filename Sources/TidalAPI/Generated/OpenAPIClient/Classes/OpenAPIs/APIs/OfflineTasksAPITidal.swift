@@ -19,9 +19,9 @@ public enum OfflineTasksAPITidal {
      
      - returns: OfflineTasksMultiResourceDataDocument
      */
-	public static func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
+	public static func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			OfflineTasksAPI.offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include)
+			OfflineTasksAPI.offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum OfflineTasksAPITidal {
      
      - returns: OfflineTasksSingleResourceDataDocument
      */
-	public static func offlineTasksIdGet(id: String, include: [String]? = nil) async throws -> OfflineTasksSingleResourceDataDocument {
+	public static func offlineTasksIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			OfflineTasksAPI.offlineTasksIdGetWithRequestBuilder(id: id, include: include)
+			OfflineTasksAPI.offlineTasksIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum OfflineTasksAPITidal {
      
      - returns: OfflineTasksSingleRelationshipDataDocument
      */
-	public static func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+	public static func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			OfflineTasksAPI.offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: id, include: include)
+			OfflineTasksAPI.offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -67,9 +67,9 @@ public enum OfflineTasksAPITidal {
      
      - returns: OfflineTasksSingleRelationshipDataDocument
      */
-	public static func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+	public static func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			OfflineTasksAPI.offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: id, include: include)
+			OfflineTasksAPI.offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

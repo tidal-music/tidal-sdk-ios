@@ -2,19 +2,35 @@
 import XCTest
 
 final class BackendFailureTests: OfflinerTestCase {
-	func testDownloadTrackCompletesLocallyEvenWhenBackendInProgressUpdateFails() async throws {
+	func testTaskIsSkippedWhenInProgressUpdateFailsAndRetriedWhenRedelivered() async throws {
 		let backend = FailOnUpdateToInProgressOfflineApiClient()
+		await backend.setFailingInProgressTaskIds(["task-0"])
 		let offliner = createOffliner(
 			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
 
-		try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-123"))
-		try await downloadAndWaitForCompletion(offliner)
+		try await offliner.download(mediaType: .tracks, resourceId: .identifier("failing-track"))
+		try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-456"))
 
-		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
+		await runUntil(offliner) { await !backend.remainingTaskIds.contains("task-1") }
+
+		let skippedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("failing-track"))
+		XCTAssertNil(skippedItem)
+
+		let storedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-456"))
 		XCTAssertNotNil(storedItem)
+
+		await backend.setFailingInProgressTaskIds([])
+		await runUntil(offliner) { await backend.remainingTaskIds.isEmpty }
+		await runUntil(offliner) { await offliner.currentDownloads.isEmpty }
+
+		let retriedItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("failing-track"))
+		XCTAssertNotNil(retriedItem)
+
+		let performedTaskIds = await backend.performedTaskIds
+		XCTAssertEqual(performedTaskIds, ["task-1", "task-0"])
 	}
 
 	func testDownloadTrackCompletesLocallyEvenWhenBackendUpdateFails() async throws {
@@ -87,5 +103,22 @@ final class BackendFailureTests: OfflinerTestCase {
 		)
 
 		await offliner.run()
+	}
+
+	private func runUntil(
+		_ offliner: Offliner,
+		timeout: TimeInterval = 10,
+		file: StaticString = #filePath,
+		line: UInt = #line,
+		condition: () async -> Bool
+	) async {
+		let deadline = Date().addingTimeInterval(timeout)
+		while await !condition() {
+			guard Date() < deadline else {
+				return XCTFail("Timed out waiting for condition", file: file, line: line)
+			}
+			await offliner.run()
+			try? await Task.sleep(nanoseconds: 10_000_000)
+		}
 	}
 }

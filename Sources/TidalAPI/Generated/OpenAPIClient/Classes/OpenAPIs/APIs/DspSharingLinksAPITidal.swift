@@ -36,9 +36,9 @@ public enum DspSharingLinksAPITidal {
      
      - returns: DspSharingLinksMultiResourceDataDocument
      */
-	public static func dspSharingLinksGet(filterSubjectId: [String], filterSubjectType: [DspSharingLinksAPITidal.FilterSubjectType_dspSharingLinksGet], include: [String]? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
+	public static func dspSharingLinksGet(filterSubjectId: [String], filterSubjectType: [DspSharingLinksAPITidal.FilterSubjectType_dspSharingLinksGet], include: [String]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DspSharingLinksAPI.dspSharingLinksGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType.compactMap { $0.toDspSharingLinksAPIEnum() }, include: include)
+			DspSharingLinksAPI.dspSharingLinksGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType.compactMap { $0.toDspSharingLinksAPIEnum() }, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -48,9 +48,9 @@ public enum DspSharingLinksAPITidal {
      
      - returns: DspSharingLinksSingleRelationshipDataDocument
      */
-	public static func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil) async throws -> DspSharingLinksSingleRelationshipDataDocument {
+	public static func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			DspSharingLinksAPI.dspSharingLinksIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include)
+			DspSharingLinksAPI.dspSharingLinksIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 }

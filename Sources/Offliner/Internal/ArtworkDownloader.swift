@@ -45,6 +45,6 @@ enum ArtworkDownloaderError: Error {
 
 private extension ArtworkFile {
 	var area: Int {
-		(meta?.width ?? 0) * (meta?.height ?? 0)
+		meta.width * meta.height
 	}
 }

@@ -19,9 +19,9 @@ public enum TrackStatisticsAPITidal {
      
      - returns: TrackStatisticsSingleResourceDataDocument
      */
-	public static func trackStatisticsIdGet(id: String, include: [String]? = nil) async throws -> TrackStatisticsSingleResourceDataDocument {
+	public static func trackStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> TrackStatisticsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackStatisticsAPI.trackStatisticsIdGetWithRequestBuilder(id: id, include: include)
+			TrackStatisticsAPI.trackStatisticsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum TrackStatisticsAPITidal {
      
      - returns: TrackStatisticsMultiRelationshipDataDocument
      */
-	public static func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackStatisticsMultiRelationshipDataDocument {
+	public static func trackStatisticsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackStatisticsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+			TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
 	}
 }

@@ -3,13 +3,13 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**albums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**albums** | [**VideosAlbumsMultiRelationshipDataDocument**](VideosAlbumsMultiRelationshipDataDocument.md) |  | [optional] 
 **artists** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **credits** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
-**replacement** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
-**similarVideos** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
-**suggestedVideos** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**replacement** | [**VideosReplacementSingleRelationshipDataDocument**](VideosReplacementSingleRelationshipDataDocument.md) |  | [optional] 
+**similarVideos** | [**VideosSimilarVideosMultiRelationshipDataDocument**](VideosSimilarVideosMultiRelationshipDataDocument.md) |  | [optional] 
+**suggestedVideos** | [**VideosSuggestedVideosMultiRelationshipDataDocument**](VideosSuggestedVideosMultiRelationshipDataDocument.md) |  | [optional] 
 **thumbnailArt** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **usageRules** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
 

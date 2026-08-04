@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userRecommendationsIdGet**
 ```swift
-    open class func userRecommendationsIdGet(id: String, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserRecommendationsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userRecommendation.
@@ -28,9 +28,10 @@ import OpenAPIClient
 let id = "id_example" // String | User recommendations id. Use `me` for the authenticated user's resource
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: discoveryMixes.items (optional)
 
 // Get single userRecommendation.
-UserRecommendationsAPI.userRecommendationsIdGet(id: id, locale: locale, include: include) { (response, error) in
+UserRecommendationsAPI.userRecommendationsIdGet(id: id, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -49,6 +50,7 @@ Name | Type | Description  | Notes
  **id** | **String** | User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: discoveryMixes.items | [optional] 
 
 ### Return type
 
@@ -67,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsDiscoveryMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsDiscoveryMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get discoveryMixes relationship (\"to-many\").
@@ -83,9 +85,10 @@ let id = "id_example" // String | User recommendations id. Use `me` for the auth
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: discoveryMixes (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: discoveryMixes.items (optional)
 
 // Get discoveryMixes relationship (\"to-many\").
-UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include) { (response, error) in
+UserRecommendationsAPI.userRecommendationsIdRelationshipsDiscoveryMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -105,6 +108,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: discoveryMixes | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: discoveryMixes.items | [optional] 
 
 ### Return type
 
@@ -123,7 +127,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsMyMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsMyMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsMyMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get myMixes relationship (\"to-many\").
@@ -139,9 +143,10 @@ let id = "id_example" // String | User recommendations id. Use `me` for the auth
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: myMixes (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: myMixes.items (optional)
 
 // Get myMixes relationship (\"to-many\").
-UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include) { (response, error) in
+UserRecommendationsAPI.userRecommendationsIdRelationshipsMyMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -161,6 +166,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: myMixes | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: myMixes.items | [optional] 
 
 ### Return type
 
@@ -179,7 +185,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsNewArrivalMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsNewArrivalMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get newArrivalMixes relationship (\"to-many\").
@@ -195,9 +201,10 @@ let id = "id_example" // String | User recommendations id. Use `me` for the auth
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: newArrivalMixes (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: newArrivalMixes.items (optional)
 
 // Get newArrivalMixes relationship (\"to-many\").
-UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include) { (response, error) in
+UserRecommendationsAPI.userRecommendationsIdRelationshipsNewArrivalMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -217,6 +224,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: newArrivalMixes | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: newArrivalMixes.items | [optional] 
 
 ### Return type
 
@@ -235,7 +243,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationsIdRelationshipsOfflineMixesGet**
 ```swift
-    open class func userRecommendationsIdRelationshipsOfflineMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationsIdRelationshipsOfflineMixesGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserRecommendationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get offlineMixes relationship (\"to-many\").
@@ -251,9 +259,10 @@ let id = "id_example" // String | User recommendations id. Use `me` for the auth
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineMixes (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineMixes.items (optional)
 
 // Get offlineMixes relationship (\"to-many\").
-UserRecommendationsAPI.userRecommendationsIdRelationshipsOfflineMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include) { (response, error) in
+UserRecommendationsAPI.userRecommendationsIdRelationshipsOfflineMixesGet(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -273,6 +282,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineMixes | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineMixes.items | [optional] 
 
 ### Return type
 

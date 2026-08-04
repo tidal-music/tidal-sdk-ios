@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **offlineTasksGet**
 ```swift
-    open class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: OfflineTasksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple offlineTasks.
@@ -29,9 +29,10 @@ import OpenAPIClient
 let filterInstallationId = ["inner_example"] // [String] | List of offline task IDs (e.g. `a468bee88def`)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get multiple offlineTasks.
-OfflineTasksAPI.offlineTasksGet(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include) { (response, error) in
+OfflineTasksAPI.offlineTasksGet(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -50,6 +51,7 @@ Name | Type | Description  | Notes
  **filterInstallationId** | [**[String]**](String.md) | List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collection, item, owners | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection | [optional] 
 
 ### Return type
 
@@ -68,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdGet**
 ```swift
-    open class func offlineTasksIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: OfflineTasksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single offlineTask.
@@ -82,9 +84,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Offline task id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get single offlineTask.
-OfflineTasksAPI.offlineTasksIdGet(id: id, include: include) { (response, error) in
+OfflineTasksAPI.offlineTasksIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -102,6 +105,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Offline task id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collection, item, owners | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection | [optional] 
 
 ### Return type
 
@@ -174,7 +178,7 @@ Void (empty response body)
 
 # **offlineTasksIdRelationshipsCollectionGet**
 ```swift
-    open class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, completion: @escaping (_ data: OfflineTasksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get collection relationship (\"to-one\").
@@ -188,9 +192,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Offline task id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collection (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get collection relationship (\"to-one\").
-OfflineTasksAPI.offlineTasksIdRelationshipsCollectionGet(id: id, include: include) { (response, error) in
+OfflineTasksAPI.offlineTasksIdRelationshipsCollectionGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -208,6 +213,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Offline task id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collection | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection | [optional] 
 
 ### Return type
 
@@ -226,7 +232,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdRelationshipsItemGet**
 ```swift
-    open class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, completion: @escaping (_ data: OfflineTasksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get item relationship (\"to-one\").
@@ -240,9 +246,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Offline task id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: item (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: item (optional)
 
 // Get item relationship (\"to-one\").
-OfflineTasksAPI.offlineTasksIdRelationshipsItemGet(id: id, include: include) { (response, error) in
+OfflineTasksAPI.offlineTasksIdRelationshipsItemGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -260,6 +267,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Offline task id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: item | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: item | [optional] 
 
 ### Return type
 

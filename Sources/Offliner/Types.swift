@@ -76,9 +76,15 @@ public struct OfflineMediaItem {
 
 	public let catalogMetadata: Metadata
 	public let playbackMetadata: PlaybackMetadata?
-	public let mediaURL: URL
-	public let licenseURL: URL?
 	public let artworkURL: URL?
+}
+
+// MARK: - PlayableOfflineMediaItem
+
+struct PlayableOfflineMediaItem {
+	let playbackMetadata: OfflineMediaItem.PlaybackMetadata?
+	let mediaURL: URL
+	let licenseURL: URL?
 }
 
 // MARK: - OfflineCollectionState

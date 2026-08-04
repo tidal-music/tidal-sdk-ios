@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **purchasesGet**
 ```swift
-    open class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, completion: @escaping (_ data: PurchasesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PurchasesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple purchases.
@@ -27,9 +27,10 @@ let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the a
 let filterSubjectType = ["filterSubjectType_example"] // [String] | The type of purchased content (e.g. `albums`)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple purchases.
-PurchasesAPI.purchasesGet(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, include: include) { (response, error) in
+PurchasesAPI.purchasesGet(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -49,6 +50,7 @@ Name | Type | Description  | Notes
  **filterSubjectType** | [**[String]**](String.md) | The type of purchased content (e.g. &#x60;albums&#x60;) | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, subject | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type
 
@@ -121,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **purchasesIdRelationshipsSubjectGet**
 ```swift
-    open class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, completion: @escaping (_ data: PurchasesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PurchasesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -135,9 +137,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | Purchase id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-PurchasesAPI.purchasesIdRelationshipsSubjectGet(id: id, include: include) { (response, error) in
+PurchasesAPI.purchasesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -155,6 +158,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Purchase id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type
 

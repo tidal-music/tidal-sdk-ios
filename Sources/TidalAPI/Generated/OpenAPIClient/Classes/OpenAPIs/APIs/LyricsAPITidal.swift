@@ -31,9 +31,9 @@ public enum LyricsAPITidal {
      
      - returns: LyricsSingleResourceDataDocument
      */
-	public static func lyricsIdGet(id: String, include: [String]? = nil) async throws -> LyricsSingleResourceDataDocument {
+	public static func lyricsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			LyricsAPI.lyricsIdGetWithRequestBuilder(id: id, include: include)
+			LyricsAPI.lyricsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -67,9 +67,9 @@ public enum LyricsAPITidal {
      
      - returns: LyricsSingleRelationshipDataDocument
      */
-	public static func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> LyricsSingleRelationshipDataDocument {
+	public static func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			LyricsAPI.lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+			LyricsAPI.lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

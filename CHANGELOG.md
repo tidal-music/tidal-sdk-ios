@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-08-03
+
+### Changed
+- Generated API code using spec version 1.10.80 (TidalAPI)
+
+### Fixed
+- Update Offliner to the regenerated TidalAPI types so the module compiles again (Offliner)
+
+## [0.12.0] - 2026-07-30
+
+### Changed
+- Speed up offline collection enumeration (~15s → <1s for a ~2300-track playlist): bookmarks are resolved in bulk outside the database queue, created with embedded path resource keys for fast verification, and renewed in batched SQL writes (Offliner)
+- Media and license files are now verified at playback time instead of while browsing; a missing file keeps the item listed but `OfflineItemProvider.get` returns `nil` and schedules a redownload (Offliner)
+
+### Removed
+- `OfflineMediaItem.mediaURL` and `OfflineMediaItem.licenseURL` — playback URLs are resolved internally through the Player integration (Offliner)
+
+## [0.11.29] - 2026-07-27
+
+### Fixed
+- Resolve Dolby Atmos tracks to the E-AC-3 codec so downloaded and streamed Atmos plays back; `AudioCodec(from:mode:)` previously returned `nil` for `DOLBY_ATMOS` (Player)
+
 ## [0.11.28] - 2026-07-17
 
 ### Changed

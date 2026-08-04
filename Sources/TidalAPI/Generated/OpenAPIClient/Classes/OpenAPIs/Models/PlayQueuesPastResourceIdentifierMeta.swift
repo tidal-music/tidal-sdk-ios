@@ -16,21 +16,25 @@ public struct PlayQueuesPastResourceIdentifierMeta: Codable, Hashable {
     public var batchId: UUID
     public var itemId: String
     public var legacySource: LegacySource?
+    public var replacement: ReplacementProvenance?
 
     public init(
         batchId: UUID,
         itemId: String,
-        legacySource: LegacySource? = nil
+        legacySource: LegacySource? = nil,
+        replacement: ReplacementProvenance? = nil
     ) {
         self.batchId = batchId
         self.itemId = itemId
         self.legacySource = legacySource
+        self.replacement = replacement
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case batchId
         case itemId
         case legacySource
+        case replacement
     }
 
     // Encodable protocol methods
@@ -40,5 +44,6 @@ public struct PlayQueuesPastResourceIdentifierMeta: Codable, Hashable {
         try container.encode(batchId, forKey: .batchId)
         try container.encode(itemId, forKey: .itemId)
         try container.encodeIfPresent(legacySource, forKey: .legacySource)
+        try container.encodeIfPresent(replacement, forKey: .replacement)
     }
 }

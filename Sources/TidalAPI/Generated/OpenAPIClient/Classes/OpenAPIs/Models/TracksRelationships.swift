@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct TracksRelationships: Codable, Hashable {
 
-    public var albums: MultiRelationshipDataDocument?
+    public var albums: TracksAlbumsMultiRelationshipDataDocument?
     public var artists: MultiRelationshipDataDocument?
     public var credits: MultiRelationshipDataDocument?
     public var download: SingleRelationshipDataDocument?
@@ -23,16 +23,16 @@ public struct TracksRelationships: Codable, Hashable {
     public var priceConfig: SingleRelationshipDataDocument?
     public var providers: MultiRelationshipDataDocument?
     public var radio: MultiRelationshipDataDocument?
-    public var replacement: SingleRelationshipDataDocument?
+    public var replacement: TracksReplacementSingleRelationshipDataDocument?
     public var shares: MultiRelationshipDataDocument?
-    public var similarTracks: MultiRelationshipDataDocument?
+    public var similarTracks: TracksSimilarTracksMultiRelationshipDataDocument?
     public var sourceFile: SingleRelationshipDataDocument?
-    public var suggestedTracks: MultiRelationshipDataDocument?
+    public var suggestedTracks: TracksSuggestedTracksMultiRelationshipDataDocument?
     public var trackStatistics: SingleRelationshipDataDocument?
     public var usageRules: SingleRelationshipDataDocument?
 
     public init(
-        albums: MultiRelationshipDataDocument? = nil,
+        albums: TracksAlbumsMultiRelationshipDataDocument? = nil,
         artists: MultiRelationshipDataDocument? = nil,
         credits: MultiRelationshipDataDocument? = nil,
         download: SingleRelationshipDataDocument? = nil,
@@ -43,11 +43,11 @@ public struct TracksRelationships: Codable, Hashable {
         priceConfig: SingleRelationshipDataDocument? = nil,
         providers: MultiRelationshipDataDocument? = nil,
         radio: MultiRelationshipDataDocument? = nil,
-        replacement: SingleRelationshipDataDocument? = nil,
+        replacement: TracksReplacementSingleRelationshipDataDocument? = nil,
         shares: MultiRelationshipDataDocument? = nil,
-        similarTracks: MultiRelationshipDataDocument? = nil,
+        similarTracks: TracksSimilarTracksMultiRelationshipDataDocument? = nil,
         sourceFile: SingleRelationshipDataDocument? = nil,
-        suggestedTracks: MultiRelationshipDataDocument? = nil,
+        suggestedTracks: TracksSuggestedTracksMultiRelationshipDataDocument? = nil,
         trackStatistics: SingleRelationshipDataDocument? = nil,
         usageRules: SingleRelationshipDataDocument? = nil
     ) {

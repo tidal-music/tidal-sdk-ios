@@ -19,9 +19,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: UserCollectionFoldersMultiResourceDataDocument
      */
-	public static func userCollectionFoldersGet(filterId: [String], include: [String]? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
+	public static func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include)
+			UserCollectionFoldersAPI.userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: UserCollectionFoldersSingleResourceDataDocument
      */
-	public static func userCollectionFoldersIdGet(id: String, include: [String]? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+	public static func userCollectionFoldersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdGetWithRequestBuilder(id: id, include: include)
+			UserCollectionFoldersAPI.userCollectionFoldersIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -102,9 +102,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: UserCollectionFoldersItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionFoldersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionFoldersAPITidal.Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionFoldersItemsMultiRelationshipDataDocument {
+	public static func userCollectionFoldersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionFoldersAPITidal.Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionFoldersAPIEnum() }, include: include)
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionFoldersAPIEnum() }, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -138,9 +138,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: UserCollectionFoldersSingleRelationshipDataDocument
      */
-	public static func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil) async throws -> UserCollectionFoldersSingleRelationshipDataDocument {
+	public static func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: id, include: include)
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

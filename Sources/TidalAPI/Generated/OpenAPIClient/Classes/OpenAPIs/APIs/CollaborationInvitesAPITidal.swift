@@ -19,9 +19,9 @@ public enum CollaborationInvitesAPITidal {
      
      - returns: CollaborationInvitesMultiResourceDataDocument
      */
-	public static func collaborationInvitesGet(filterCode: [String], include: [String]? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
+	public static func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CollaborationInvitesAPI.collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include)
+			CollaborationInvitesAPI.collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -43,9 +43,9 @@ public enum CollaborationInvitesAPITidal {
      
      - returns: CollaborationInvitesSingleResourceDataDocument
      */
-	public static func collaborationInvitesIdGet(id: String, include: [String]? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
+	public static func collaborationInvitesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CollaborationInvitesAPI.collaborationInvitesIdGetWithRequestBuilder(id: id, include: include)
+			CollaborationInvitesAPI.collaborationInvitesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -67,9 +67,9 @@ public enum CollaborationInvitesAPITidal {
      
      - returns: CollaborationInvitesSingleRelationshipDataDocument
      */
-	public static func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil) async throws -> CollaborationInvitesSingleRelationshipDataDocument {
+	public static func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			CollaborationInvitesAPI.collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include)
+			CollaborationInvitesAPI.collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

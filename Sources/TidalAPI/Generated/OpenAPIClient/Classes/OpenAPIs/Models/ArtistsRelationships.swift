@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct ArtistsRelationships: Codable, Hashable {
 
-    public var albums: MultiRelationshipDataDocument?
+    public var albums: ArtistsAlbumsMultiRelationshipDataDocument?
     public var biography: SingleRelationshipDataDocument?
     public var claimStatus: SingleRelationshipDataDocument?
     public var followers: ArtistsFollowersMultiRelationshipDataDocument?
@@ -23,11 +23,11 @@ public struct ArtistsRelationships: Codable, Hashable {
     public var roles: MultiRelationshipDataDocument?
     public var similarArtists: MultiRelationshipDataDocument?
     public var trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument?
-    public var tracks: MultiRelationshipDataDocument?
-    public var videos: MultiRelationshipDataDocument?
+    public var tracks: ArtistsTracksMultiRelationshipDataDocument?
+    public var videos: ArtistsVideosMultiRelationshipDataDocument?
 
     public init(
-        albums: MultiRelationshipDataDocument? = nil,
+        albums: ArtistsAlbumsMultiRelationshipDataDocument? = nil,
         biography: SingleRelationshipDataDocument? = nil,
         claimStatus: SingleRelationshipDataDocument? = nil,
         followers: ArtistsFollowersMultiRelationshipDataDocument? = nil,
@@ -38,8 +38,8 @@ public struct ArtistsRelationships: Codable, Hashable {
         roles: MultiRelationshipDataDocument? = nil,
         similarArtists: MultiRelationshipDataDocument? = nil,
         trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument? = nil,
-        tracks: MultiRelationshipDataDocument? = nil,
-        videos: MultiRelationshipDataDocument? = nil
+        tracks: ArtistsTracksMultiRelationshipDataDocument? = nil,
+        videos: ArtistsVideosMultiRelationshipDataDocument? = nil
     ) {
         self.albums = albums
         self.biography = biography

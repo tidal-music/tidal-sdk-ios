@@ -20,12 +20,13 @@ internal class ProviderProductInfosAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider, subject (optional)
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) (optional)
      - parameter filterGrid: (query) List of GRIDs (Global Release Identifier, ISO 7064) (e.g. &#x60;A10302B0013941653J&#x60;) (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: ProviderProductInfosMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
+    internal class func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
         do {
-            return try await providerProductInfosGetWithRequestBuilder(filterProviderId: filterProviderId, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid).execute().body
+            return try await providerProductInfosGetWithRequestBuilder(filterProviderId: filterProviderId, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -44,9 +45,10 @@ internal class ProviderProductInfosAPI {
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider, subject (optional)
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) (optional)
      - parameter filterGrid: (query) List of GRIDs (Global Release Identifier, ISO 7064) (e.g. &#x60;A10302B0013941653J&#x60;) (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<ProviderProductInfosMultiResourceDataDocument> 
      */
-    internal class func providerProductInfosGetWithRequestBuilder(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil) -> RequestBuilder<ProviderProductInfosMultiResourceDataDocument> {
+    internal class func providerProductInfosGetWithRequestBuilder(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ProviderProductInfosMultiResourceDataDocument> {
         let localVariablePath = "/providerProductInfos"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -58,6 +60,7 @@ internal class ProviderProductInfosAPI {
             "filter[barcodeId]": (wrappedValue: filterBarcodeId?.encodeToJSON(), isExplode: true),
             "filter[grid]": (wrappedValue: filterGrid?.encodeToJSON(), isExplode: true),
             "filter[provider.id]": (wrappedValue: filterProviderId.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -129,12 +132,13 @@ internal class ProviderProductInfosAPI {
      - parameter id: (path) Provider product info id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: ProviderProductInfosSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
+    internal class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
         do {
-            return try await providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+            return try await providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -151,9 +155,10 @@ internal class ProviderProductInfosAPI {
      - parameter id: (path) Provider product info id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> 
      */
-    internal class func providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> {
+    internal class func providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> {
         var localVariablePath = "/providerProductInfos/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -165,6 +170,7 @@ internal class ProviderProductInfosAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

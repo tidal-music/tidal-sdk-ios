@@ -32,7 +32,7 @@ Method | HTTP request | Description
 
 # **tracksGet**
 ```swift
-    open class func tracksGet(pageCursor: String? = nil, sort: [Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksGet(pageCursor: String? = nil, sort: [Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple tracks.
@@ -51,10 +51,11 @@ let include = ["inner_example"] // [String] | Allows the client to customize whi
 let filterId = ["inner_example"] // [String] | List of track IDs (e.g. `75413016`) (optional)
 let filterIsrc = ["inner_example"] // [String] | List of ISRCs. When a single ISRC is provided, pagination is supported and multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is returned without pagination. (e.g. `QMJMT1701237`) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get multiple tracks.
-TracksAPI.tracksGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -77,6 +78,7 @@ Name | Type | Description  | Notes
  **filterId** | [**[String]**](String.md) | List of track IDs (e.g. &#x60;75413016&#x60;) | [optional] 
  **filterIsrc** | [**[String]**](String.md) | List of ISRCs. When a single ISRC is provided, pagination is supported and multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is returned without pagination. (e.g. &#x60;QMJMT1701237&#x60;) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -148,7 +150,7 @@ Void (empty response body)
 
 # **tracksIdGet**
 ```swift
-    open class func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single track.
@@ -163,10 +165,11 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get single track.
-TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -185,6 +188,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -258,7 +262,7 @@ Void (empty response body)
 
 # **tracksIdRelationshipsAlbumsGet**
 ```swift
-    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -274,10 +278,11 @@ let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get albums relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -297,6 +302,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -370,7 +376,7 @@ Void (empty response body)
 
 # **tracksIdRelationshipsArtistsGet**
 ```swift
-    open class func tracksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -386,10 +392,11 @@ let id = "id_example" // String | Track id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get artists relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -409,6 +416,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -428,7 +436,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsCreditsGet**
 ```swift
-    open class func tracksIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get credits relationship (\"to-many\").
@@ -443,10 +451,11 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: credits (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: credits.artist.albums (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get credits relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsCreditsGet(id: id, pageCursor: pageCursor, include: include, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsCreditsGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -465,6 +474,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: credits | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: credits.artist.albums | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -596,7 +606,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsLyricsGet**
 ```swift
-    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get lyrics relationship (\"to-many\").
@@ -611,10 +621,11 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: lyrics (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: lyrics.track (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get lyrics relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsLyricsGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsLyricsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -633,6 +644,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: lyrics | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: lyrics.track | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -706,7 +718,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsOwnersGet**
 ```swift
-    open class func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -719,12 +731,13 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Track id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get owners relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsOwnersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -741,6 +754,7 @@ TracksAPI.tracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: p
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
@@ -876,7 +890,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsRadioGet**
 ```swift
-    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get radio relationship (\"to-many\").
@@ -891,10 +905,11 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: radio (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: radio.items (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get radio relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsRadioGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsRadioGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -913,6 +928,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: radio | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: radio.items | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -932,7 +948,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsReplacementGet**
 ```swift
-    open class func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get replacement relationship (\"to-one\").
@@ -947,10 +963,11 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: replacement (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get replacement relationship (\"to-one\").
-TracksAPI.tracksIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -969,6 +986,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: replacement | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: replacement | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -988,7 +1006,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSharesGet**
 ```swift
-    open class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get shares relationship (\"to-many\").
@@ -1003,10 +1021,11 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: shares (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: shares.sharedResources (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get shares relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1025,6 +1044,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: shares | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: shares.sharedResources | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -1044,7 +1064,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSimilarTracksGet**
 ```swift
-    open class func tracksIdRelationshipsSimilarTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSimilarTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarTracks relationship (\"to-many\").
@@ -1060,10 +1080,11 @@ let id = "id_example" // String | Track id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarTracks (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: similarTracks (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get similarTracks relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsSimilarTracksGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsSimilarTracksGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1083,6 +1104,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: similarTracks | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarTracks | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
@@ -1156,7 +1178,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSuggestedTracksGet**
 ```swift
-    open class func tracksIdRelationshipsSuggestedTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSuggestedTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get suggestedTracks relationship (\"to-many\").
@@ -1172,10 +1194,11 @@ let id = "id_example" // String | Track id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: suggestedTracks (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: suggestedTracks (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get suggestedTracks relationship (\"to-many\").
-TracksAPI.tracksIdRelationshipsSuggestedTracksGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
+TracksAPI.tracksIdRelationshipsSuggestedTracksGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1195,6 +1218,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: suggestedTracks | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: suggestedTracks | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type

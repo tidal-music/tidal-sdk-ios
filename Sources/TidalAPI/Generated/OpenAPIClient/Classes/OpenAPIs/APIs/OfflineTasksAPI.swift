@@ -18,12 +18,13 @@ internal class OfflineTasksAPI {
      - parameter filterInstallationId: (query) List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
      - returns: OfflineTasksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
+    internal class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
         do {
-            return try await offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include).execute().body
+            return try await offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,9 +41,10 @@ internal class OfflineTasksAPI {
      - parameter filterInstallationId: (query) List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
      - returns: RequestBuilder<OfflineTasksMultiResourceDataDocument> 
      */
-    internal class func offlineTasksGetWithRequestBuilder(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<OfflineTasksMultiResourceDataDocument> {
+    internal class func offlineTasksGetWithRequestBuilder(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksMultiResourceDataDocument> {
         let localVariablePath = "/offlineTasks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -52,6 +54,7 @@ internal class OfflineTasksAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[installation.id]": (wrappedValue: filterInstallationId.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -70,12 +73,13 @@ internal class OfflineTasksAPI {
      
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
      - returns: OfflineTasksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksIdGet(id: String, include: [String]? = nil) async throws -> OfflineTasksSingleResourceDataDocument {
+    internal class func offlineTasksIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleResourceDataDocument {
         do {
-            return try await offlineTasksIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await offlineTasksIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -91,9 +95,10 @@ internal class OfflineTasksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
      - returns: RequestBuilder<OfflineTasksSingleResourceDataDocument> 
      */
-    internal class func offlineTasksIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<OfflineTasksSingleResourceDataDocument> {
+    internal class func offlineTasksIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksSingleResourceDataDocument> {
         var localVariablePath = "/offlineTasks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -104,6 +109,7 @@ internal class OfflineTasksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -174,12 +180,13 @@ internal class OfflineTasksAPI {
      
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
      - returns: OfflineTasksSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+    internal class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
         do {
-            return try await offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -195,9 +202,10 @@ internal class OfflineTasksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
      - returns: RequestBuilder<OfflineTasksSingleRelationshipDataDocument> 
      */
-    internal class func offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<OfflineTasksSingleRelationshipDataDocument> {
+    internal class func offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksSingleRelationshipDataDocument> {
         var localVariablePath = "/offlineTasks/{id}/relationships/collection"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -208,6 +216,7 @@ internal class OfflineTasksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -226,12 +235,13 @@ internal class OfflineTasksAPI {
      
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: item (optional)
      - returns: OfflineTasksSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+    internal class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
         do {
-            return try await offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -247,9 +257,10 @@ internal class OfflineTasksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: item (optional)
      - returns: RequestBuilder<OfflineTasksSingleRelationshipDataDocument> 
      */
-    internal class func offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<OfflineTasksSingleRelationshipDataDocument> {
+    internal class func offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksSingleRelationshipDataDocument> {
         var localVariablePath = "/offlineTasks/{id}/relationships/item"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -260,6 +271,7 @@ internal class OfflineTasksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

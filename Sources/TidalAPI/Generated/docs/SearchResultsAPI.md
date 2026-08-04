@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **searchResultsIdGet**
 ```swift
-    open class func searchResultsIdGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdGet? = nil, systemType: SystemType_searchResultsIdGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single searchResult.
@@ -30,10 +30,14 @@ import OpenAPIClient
 let id = "id_example" // String | Search query string used as the resource identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request (optional)
+let systemType = "systemType_example" // String | The system type of the device making the request (optional)
+let clientVersion = "clientVersion_example" // String | Client version number (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get single searchResult.
-SearchResultsAPI.searchResultsIdGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include) { (response, error) in
+SearchResultsAPI.searchResultsIdGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -52,7 +56,11 @@ Name | Type | Description  | Notes
  **id** | **String** | Search query string used as the resource identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **deviceType** | **String** | The type of device making the request | [optional] 
+ **systemType** | **String** | The system type of the device making the request | [optional] 
+ **clientVersion** | **String** | Client version number | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
 
 ### Return type
 
@@ -71,7 +79,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsAlbumsGet**
 ```swift
-    open class func searchResultsIdRelationshipsAlbumsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsAlbumsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsAlbumsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -87,10 +95,14 @@ let id = "id_example" // String | Search query string used as the resource ident
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request (optional)
+let systemType = "systemType_example" // String | The system type of the device making the request (optional)
+let clientVersion = "clientVersion_example" // String | Client version number (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get albums relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsAlbumsGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsAlbumsGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -110,7 +122,11 @@ Name | Type | Description  | Notes
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **deviceType** | **String** | The type of device making the request | [optional] 
+ **systemType** | **String** | The system type of the device making the request | [optional] 
+ **clientVersion** | **String** | Client version number | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
 
 ### Return type
 
@@ -129,7 +145,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsArtistsGet**
 ```swift
-    open class func searchResultsIdRelationshipsArtistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsArtistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsArtistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -145,10 +161,14 @@ let id = "id_example" // String | Search query string used as the resource ident
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request (optional)
+let systemType = "systemType_example" // String | The system type of the device making the request (optional)
+let clientVersion = "clientVersion_example" // String | Client version number (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists (optional)
 
 // Get artists relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsArtistsGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsArtistsGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -168,7 +188,11 @@ Name | Type | Description  | Notes
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **deviceType** | **String** | The type of device making the request | [optional] 
+ **systemType** | **String** | The system type of the device making the request | [optional] 
+ **clientVersion** | **String** | Client version number | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists | [optional] 
 
 ### Return type
 
@@ -187,7 +211,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsPlaylistsGet**
 ```swift
-    open class func searchResultsIdRelationshipsPlaylistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsPlaylistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get playlists relationship (\"to-many\").
@@ -203,10 +227,14 @@ let id = "id_example" // String | Search query string used as the resource ident
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request (optional)
+let systemType = "systemType_example" // String | The system type of the device making the request (optional)
+let clientVersion = "clientVersion_example" // String | Client version number (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlists (optional)
 
 // Get playlists relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -226,7 +254,11 @@ Name | Type | Description  | Notes
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **deviceType** | **String** | The type of device making the request | [optional] 
+ **systemType** | **String** | The system type of the device making the request | [optional] 
+ **clientVersion** | **String** | Client version number | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlists | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlists | [optional] 
 
 ### Return type
 
@@ -245,7 +277,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsTopHitsGet**
 ```swift
-    open class func searchResultsIdRelationshipsTopHitsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsTopHitsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTopHitsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get topHits relationship (\"to-many\").
@@ -261,10 +293,14 @@ let id = "id_example" // String | Search query string used as the resource ident
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request (optional)
+let systemType = "systemType_example" // String | The system type of the device making the request (optional)
+let clientVersion = "clientVersion_example" // String | Client version number (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: topHits (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: topHits (optional)
 
 // Get topHits relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsTopHitsGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsTopHitsGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -284,7 +320,11 @@ Name | Type | Description  | Notes
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **deviceType** | **String** | The type of device making the request | [optional] 
+ **systemType** | **String** | The system type of the device making the request | [optional] 
+ **clientVersion** | **String** | Client version number | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: topHits | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: topHits | [optional] 
 
 ### Return type
 
@@ -303,7 +343,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsTracksGet**
 ```swift
-    open class func searchResultsIdRelationshipsTracksGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsTracksGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTracksGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTracksGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get tracks relationship (\"to-many\").
@@ -319,10 +359,14 @@ let id = "id_example" // String | Search query string used as the resource ident
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request (optional)
+let systemType = "systemType_example" // String | The system type of the device making the request (optional)
+let clientVersion = "clientVersion_example" // String | Client version number (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: tracks (optional)
 
 // Get tracks relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsTracksGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsTracksGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -342,7 +386,11 @@ Name | Type | Description  | Notes
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **deviceType** | **String** | The type of device making the request | [optional] 
+ **systemType** | **String** | The system type of the device making the request | [optional] 
+ **clientVersion** | **String** | Client version number | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks | [optional] 
 
 ### Return type
 
@@ -361,7 +409,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsVideosGet**
 ```swift
-    open class func searchResultsIdRelationshipsVideosGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsVideosGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsVideosGet? = nil, systemType: SystemType_searchResultsIdRelationshipsVideosGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get videos relationship (\"to-many\").
@@ -377,10 +425,14 @@ let id = "id_example" // String | Search query string used as the resource ident
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request (optional)
+let systemType = "systemType_example" // String | The system type of the device making the request (optional)
+let clientVersion = "clientVersion_example" // String | Client version number (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: videos (optional)
 
 // Get videos relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsVideosGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
+SearchResultsAPI.searchResultsIdRelationshipsVideosGet(id: id, explicitFilter: explicitFilter, pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -400,7 +452,11 @@ Name | Type | Description  | Notes
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **deviceType** | **String** | The type of device making the request | [optional] 
+ **systemType** | **String** | The system type of the device making the request | [optional] 
+ **clientVersion** | **String** | Client version number | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos | [optional] 
 
 ### Return type
 

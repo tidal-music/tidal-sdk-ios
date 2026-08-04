@@ -19,9 +19,9 @@ public enum UserCollectionArtistsAPITidal {
      
      - returns: UserCollectionArtistsSingleResourceDataDocument
      */
-	public static func userCollectionArtistsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionArtistsSingleResourceDataDocument {
+	public static func userCollectionArtistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionArtistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionArtistsAPI.userCollectionArtistsIdGetWithRequestBuilder(id: id, locale: locale, include: include)
+			UserCollectionArtistsAPI.userCollectionArtistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -62,9 +62,9 @@ public enum UserCollectionArtistsAPITidal {
      
      - returns: UserCollectionArtistsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionArtistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionArtistsAPITidal.Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
+	public static func userCollectionArtistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionArtistsAPITidal.Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionArtistsAPIEnum() }, locale: locale, include: include)
+			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionArtistsAPIEnum() }, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

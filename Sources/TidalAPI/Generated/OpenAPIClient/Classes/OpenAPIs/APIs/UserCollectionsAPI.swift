@@ -18,13 +18,14 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: UserCollectionsSingleResourceDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
+    internal class func userCollectionsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionsSingleResourceDataDocument {
         do {
-            return try await userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, include: include).execute().body
+            return try await userCollectionsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -41,10 +42,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<UserCollectionsSingleResourceDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
+    internal class func userCollectionsIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionsSingleResourceDataDocument> {
         var localVariablePath = "/userCollections/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -56,6 +58,7 @@ internal class UserCollectionsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -145,13 +148,14 @@ internal class UserCollectionsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: UserCollectionsAlbumsMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionsAlbumsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include).execute().body
+            return try await userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -170,10 +174,11 @@ internal class UserCollectionsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsAlbumsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsAlbumsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionsAlbumsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -187,6 +192,7 @@ internal class UserCollectionsAPI {
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -326,13 +332,14 @@ internal class UserCollectionsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - returns: UserCollectionsArtistsMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionsArtistsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include).execute().body
+            return try await userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -351,10 +358,11 @@ internal class UserCollectionsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - returns: RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsArtistsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionsArtistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -368,6 +376,7 @@ internal class UserCollectionsAPI {
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -571,13 +580,14 @@ internal class UserCollectionsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlists.items (optional)
      - returns: UserCollectionsPlaylistsMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, collectionView: CollectionView_userCollectionsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsPlaylistsGet(id: String, collectionView: CollectionView_userCollectionsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionsPlaylistsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, collectionView: collectionView, pageCursor: pageCursor, sort: sort, include: include).execute().body
+            return try await userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, collectionView: collectionView, pageCursor: pageCursor, sort: sort, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -596,10 +606,11 @@ internal class UserCollectionsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlists.items (optional)
      - returns: RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, collectionView: CollectionView_userCollectionsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsPlaylistsGetWithRequestBuilder(id: String, collectionView: CollectionView_userCollectionsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsPlaylistsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionsPlaylistsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -613,6 +624,7 @@ internal class UserCollectionsAPI {
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -758,13 +770,14 @@ internal class UserCollectionsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: UserCollectionsTracksMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionsTracksMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include).execute().body
+            return try await userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -783,10 +796,11 @@ internal class UserCollectionsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsTracksGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionsTracksMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -800,6 +814,7 @@ internal class UserCollectionsAPI {
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -943,13 +958,14 @@ internal class UserCollectionsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: UserCollectionsVideosMultiRelationshipDataDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
+    internal class func userCollectionsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionsVideosMultiRelationshipDataDocument {
         do {
-            return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include).execute().body
+            return try await userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -968,10 +984,11 @@ internal class UserCollectionsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, locale: String? = nil, include: [String]? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
+    internal class func userCollectionsIdRelationshipsVideosGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionsIdRelationshipsVideosGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionsVideosMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -985,6 +1002,7 @@ internal class UserCollectionsAPI {
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

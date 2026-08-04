@@ -15,11 +15,11 @@ public struct ArtworkFile: Codable, Hashable {
 
     /** Artwork file href */
     public var href: String
-    public var meta: ArtworkFileMeta?
+    public var meta: ArtworkFileMeta
 
     public init(
         href: String,
-        meta: ArtworkFileMeta? = nil
+        meta: ArtworkFileMeta
     ) {
         self.href = href
         self.meta = meta
@@ -35,6 +35,6 @@ public struct ArtworkFile: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(href, forKey: .href)
-        try container.encodeIfPresent(meta, forKey: .meta)
+        try container.encode(meta, forKey: .meta)
     }
 }

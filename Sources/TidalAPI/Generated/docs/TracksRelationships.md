@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**albums** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**albums** | [**TracksAlbumsMultiRelationshipDataDocument**](TracksAlbumsMultiRelationshipDataDocument.md) |  | [optional] 
 **artists** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **credits** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **download** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
@@ -14,11 +14,11 @@ Name | Type | Description | Notes
 **priceConfig** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
 **providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
 **radio** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
-**replacement** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+**replacement** | [**TracksReplacementSingleRelationshipDataDocument**](TracksReplacementSingleRelationshipDataDocument.md) |  | [optional] 
 **shares** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
-**similarTracks** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**similarTracks** | [**TracksSimilarTracksMultiRelationshipDataDocument**](TracksSimilarTracksMultiRelationshipDataDocument.md) |  | [optional] 
 **sourceFile** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
-**suggestedTracks** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**suggestedTracks** | [**TracksSuggestedTracksMultiRelationshipDataDocument**](TracksSuggestedTracksMultiRelationshipDataDocument.md) |  | [optional] 
 **trackStatistics** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
 **usageRules** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
 

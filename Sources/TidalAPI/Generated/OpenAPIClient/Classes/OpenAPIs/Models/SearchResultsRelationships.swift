@@ -12,20 +12,20 @@ import AnyCodable
 
 public struct SearchResultsRelationships: Codable, Hashable {
 
-    public var albums: MultiRelationshipDataDocument?
-    public var artists: MultiRelationshipDataDocument?
-    public var playlists: MultiRelationshipDataDocument?
-    public var topHits: MultiRelationshipDataDocument?
-    public var tracks: MultiRelationshipDataDocument?
-    public var videos: MultiRelationshipDataDocument?
+    public var albums: SearchResultsAlbumsMultiRelationshipDataDocument?
+    public var artists: SearchResultsArtistsMultiRelationshipDataDocument?
+    public var playlists: SearchResultsPlaylistsMultiRelationshipDataDocument?
+    public var topHits: SearchResultsTopHitsMultiRelationshipDataDocument?
+    public var tracks: SearchResultsTracksMultiRelationshipDataDocument?
+    public var videos: SearchResultsVideosMultiRelationshipDataDocument?
 
     public init(
-        albums: MultiRelationshipDataDocument? = nil,
-        artists: MultiRelationshipDataDocument? = nil,
-        playlists: MultiRelationshipDataDocument? = nil,
-        topHits: MultiRelationshipDataDocument? = nil,
-        tracks: MultiRelationshipDataDocument? = nil,
-        videos: MultiRelationshipDataDocument? = nil
+        albums: SearchResultsAlbumsMultiRelationshipDataDocument? = nil,
+        artists: SearchResultsArtistsMultiRelationshipDataDocument? = nil,
+        playlists: SearchResultsPlaylistsMultiRelationshipDataDocument? = nil,
+        topHits: SearchResultsTopHitsMultiRelationshipDataDocument? = nil,
+        tracks: SearchResultsTracksMultiRelationshipDataDocument? = nil,
+        videos: SearchResultsVideosMultiRelationshipDataDocument? = nil
     ) {
         self.albums = albums
         self.artists = artists

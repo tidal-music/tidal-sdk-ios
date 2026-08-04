@@ -19,9 +19,9 @@ public enum SharesAPITidal {
      
      - returns: SharesMultiResourceDataDocument
      */
-	public static func sharesGet(filterCode: [String], include: [String]? = nil) async throws -> SharesMultiResourceDataDocument {
+	public static func sharesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesGetWithRequestBuilder(filterCode: filterCode, include: include)
+			SharesAPI.sharesGetWithRequestBuilder(filterCode: filterCode, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum SharesAPITidal {
      
      - returns: SharesSingleResourceDataDocument
      */
-	public static func sharesIdGet(id: String, include: [String]? = nil) async throws -> SharesSingleResourceDataDocument {
+	public static func sharesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesIdGetWithRequestBuilder(id: id, include: include)
+			SharesAPI.sharesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -55,9 +55,9 @@ public enum SharesAPITidal {
      
      - returns: SharesMultiRelationshipDataDocument
      */
-	public static func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> SharesMultiRelationshipDataDocument {
+	public static func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			SharesAPI.sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

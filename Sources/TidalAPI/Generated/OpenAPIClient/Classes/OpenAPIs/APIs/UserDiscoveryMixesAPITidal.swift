@@ -19,9 +19,9 @@ public enum UserDiscoveryMixesAPITidal {
      
      - returns: UserDiscoveryMixesSingleResourceDataDocument
      */
-	public static func userDiscoveryMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument {
+	public static func userDiscoveryMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDiscoveryMixesAPI.userDiscoveryMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include)
+			UserDiscoveryMixesAPI.userDiscoveryMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -31,9 +31,9 @@ public enum UserDiscoveryMixesAPITidal {
      
      - returns: UserDiscoveryMixesMultiRelationshipDataDocument
      */
-	public static func userDiscoveryMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil) async throws -> UserDiscoveryMixesMultiRelationshipDataDocument {
+	public static func userDiscoveryMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDiscoveryMixesAPI.userDiscoveryMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include)
+			UserDiscoveryMixesAPI.userDiscoveryMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
 	}
 }
