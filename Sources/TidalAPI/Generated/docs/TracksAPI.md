@@ -1348,7 +1348,7 @@ Name | Type | Description  | Notes
 
 # **tracksPost**
 ```swift
-    open class func tracksPost(idempotencyKey: String? = nil, tracksCreateOperationPayload: TracksCreateOperationPayload? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func tracksPost(idempotencyKey: String? = nil, tracksCreateOperationPayload: TracksCreateOperationPayload? = nil, completion: @escaping (_ data: TracksCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single track.
@@ -1385,7 +1385,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingleResourceDataDocument**](TracksSingleResourceDataDocument.md)
+[**TracksCreateSingleResourceDataDocument**](TracksCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

@@ -416,10 +416,10 @@ internal class CommentsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter commentsCreateOperationPayload: (body)  (optional)
-     - returns: CommentsSingleResourceDataDocument
+     - returns: CommentsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsPost(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil) async throws -> CommentsSingleResourceDataDocument {
+    internal class func commentsPost(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil) async throws -> CommentsCreateSingleResourceDataDocument {
         do {
             return try await commentsPostWithRequestBuilder(idempotencyKey: idempotencyKey, commentsCreateOperationPayload: commentsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -437,9 +437,9 @@ internal class CommentsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter commentsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<CommentsSingleResourceDataDocument> 
+     - returns: RequestBuilder<CommentsCreateSingleResourceDataDocument> 
      */
-    internal class func commentsPostWithRequestBuilder(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil) -> RequestBuilder<CommentsSingleResourceDataDocument> {
+    internal class func commentsPostWithRequestBuilder(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil) -> RequestBuilder<CommentsCreateSingleResourceDataDocument> {
         let localVariablePath = "/comments"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: commentsCreateOperationPayload)
@@ -453,7 +453,7 @@ internal class CommentsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CommentsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CommentsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

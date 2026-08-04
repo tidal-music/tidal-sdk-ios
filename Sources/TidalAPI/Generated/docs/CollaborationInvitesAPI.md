@@ -282,7 +282,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesPost**
 ```swift
-    open class func collaborationInvitesPost(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil, completion: @escaping (_ data: CollaborationInvitesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInvitesPost(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil, completion: @escaping (_ data: CollaborationInvitesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single collaborationInvite.
@@ -319,7 +319,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CollaborationInvitesSingleResourceDataDocument**](CollaborationInvitesSingleResourceDataDocument.md)
+[**CollaborationInvitesCreateSingleResourceDataDocument**](CollaborationInvitesCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

@@ -53,9 +53,9 @@ public enum ArtworksAPITidal {
 	/**
      Create single artwork.
      
-     - returns: ArtworksSingleResourceDataDocument
+     - returns: ArtworksCreateSingleResourceDataDocument
      */
-	public static func artworksPost(idempotencyKey: String? = nil, artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) async throws -> ArtworksSingleResourceDataDocument {
+	public static func artworksPost(idempotencyKey: String? = nil, artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) async throws -> ArtworksCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtworksAPI.artworksPostWithRequestBuilder(idempotencyKey: idempotencyKey, artworksCreateOperationPayload: artworksCreateOperationPayload)
 		}

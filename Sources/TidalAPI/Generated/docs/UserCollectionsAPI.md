@@ -422,7 +422,7 @@ Void (empty response body)
 
 Get owners relationship (\"to-many\").
 
-Retrieves owners relationship.
+Deprecated. Use the owners relationship on the dedicated collection resources instead: userCollectionAlbums, userCollectionArtists, userCollectionTracks, userCollectionVideos, or userCollectionPlaylists.
 
 ### Example
 ```swift

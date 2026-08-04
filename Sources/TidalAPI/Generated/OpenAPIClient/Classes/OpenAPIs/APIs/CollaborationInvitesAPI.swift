@@ -284,10 +284,10 @@ internal class CollaborationInvitesAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter collaborationInvitesCreateOperationPayload: (body)  (optional)
-     - returns: CollaborationInvitesSingleResourceDataDocument
+     - returns: CollaborationInvitesCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func collaborationInvitesPost(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
+    internal class func collaborationInvitesPost(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil) async throws -> CollaborationInvitesCreateSingleResourceDataDocument {
         do {
             return try await collaborationInvitesPostWithRequestBuilder(idempotencyKey: idempotencyKey, collaborationInvitesCreateOperationPayload: collaborationInvitesCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -305,9 +305,9 @@ internal class CollaborationInvitesAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter collaborationInvitesCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<CollaborationInvitesSingleResourceDataDocument> 
+     - returns: RequestBuilder<CollaborationInvitesCreateSingleResourceDataDocument> 
      */
-    internal class func collaborationInvitesPostWithRequestBuilder(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil) -> RequestBuilder<CollaborationInvitesSingleResourceDataDocument> {
+    internal class func collaborationInvitesPostWithRequestBuilder(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil) -> RequestBuilder<CollaborationInvitesCreateSingleResourceDataDocument> {
         let localVariablePath = "/collaborationInvites"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: collaborationInvitesCreateOperationPayload)
@@ -321,7 +321,7 @@ internal class CollaborationInvitesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CollaborationInvitesSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CollaborationInvitesCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

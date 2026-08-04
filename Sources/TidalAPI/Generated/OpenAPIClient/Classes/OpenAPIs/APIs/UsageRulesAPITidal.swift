@@ -29,9 +29,9 @@ public enum UsageRulesAPITidal {
 	/**
      Create single usageRule.
      
-     - returns: UsageRulesSingleResourceDataDocument
+     - returns: UsageRulesCreateSingleResourceDataDocument
      */
-	public static func usageRulesPost(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil) async throws -> UsageRulesSingleResourceDataDocument {
+	public static func usageRulesPost(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil) async throws -> UsageRulesCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UsageRulesAPI.usageRulesPostWithRequestBuilder(idempotencyKey: idempotencyKey, usageRulesCreateOperationPayload: usageRulesCreateOperationPayload)
 		}

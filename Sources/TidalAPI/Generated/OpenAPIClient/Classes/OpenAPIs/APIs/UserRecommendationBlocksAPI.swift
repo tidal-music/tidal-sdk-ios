@@ -186,10 +186,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: UserRecommendationBlocksArtistsMultiRelationshipDataDocument
+     - returns: UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument {
         do {
             return try await userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -208,9 +208,9 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -227,7 +227,7 @@ internal class UserRecommendationBlocksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserRecommendationBlocksArtistsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -403,10 +403,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipAddOperationPayload: (body)  (optional)
-     - returns: UserRecommendationBlocksTracksMultiRelationshipDataDocument
+     - returns: UserRecommendationBlocksTracksAddMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksTracksAddMultiRelationshipDataDocument {
         do {
             return try await userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -425,9 +425,9 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<UserRecommendationBlocksTracksAddMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksTracksAddMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -444,7 +444,7 @@ internal class UserRecommendationBlocksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserRecommendationBlocksTracksMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationBlocksTracksAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -565,10 +565,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipAddOperationPayload: (body)  (optional)
-     - returns: UserRecommendationBlocksVideosMultiRelationshipDataDocument
+     - returns: UserRecommendationBlocksVideosAddMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
+    internal class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksVideosAddMultiRelationshipDataDocument {
         do {
             return try await userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -587,9 +587,9 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<UserRecommendationBlocksVideosAddMultiRelationshipDataDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument> {
+    internal class func userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserRecommendationBlocksVideosAddMultiRelationshipDataDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -606,7 +606,7 @@ internal class UserRecommendationBlocksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserRecommendationBlocksVideosMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserRecommendationBlocksVideosAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -3,8 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [UserCollectionVideosItemsResourceIdentifier] |  | [optional] 
-**included** | [IncludedInner] |  | [optional] 
+**data** | [UserCollectionVideosItemsAddResourceIdentifier] |  | 
 **links** | [**Links**](Links.md) |  | 
 **meta** | [**UserCollectionVideosItemsAddMultiRelationshipDataDocumentMeta**](UserCollectionVideosItemsAddMultiRelationshipDataDocumentMeta.md) |  | [optional] 
 

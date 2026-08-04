@@ -298,10 +298,10 @@ internal class LyricsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter lyricsCreateOperationPayload: (body)  (optional)
-     - returns: LyricsSingleResourceDataDocument
+     - returns: LyricsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsSingleResourceDataDocument {
+    internal class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsCreateSingleResourceDataDocument {
         do {
             return try await lyricsPostWithRequestBuilder(idempotencyKey: idempotencyKey, lyricsCreateOperationPayload: lyricsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -319,9 +319,9 @@ internal class LyricsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter lyricsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<LyricsSingleResourceDataDocument> 
+     - returns: RequestBuilder<LyricsCreateSingleResourceDataDocument> 
      */
-    internal class func lyricsPostWithRequestBuilder(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) -> RequestBuilder<LyricsSingleResourceDataDocument> {
+    internal class func lyricsPostWithRequestBuilder(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) -> RequestBuilder<LyricsCreateSingleResourceDataDocument> {
         let localVariablePath = "/lyrics"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: lyricsCreateOperationPayload)
@@ -335,7 +335,7 @@ internal class LyricsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<LyricsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<LyricsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

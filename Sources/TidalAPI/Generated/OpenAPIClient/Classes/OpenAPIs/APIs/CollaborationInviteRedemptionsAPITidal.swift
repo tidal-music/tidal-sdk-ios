@@ -17,9 +17,9 @@ public enum CollaborationInviteRedemptionsAPITidal {
 	/**
      Create single collaborationInviteRedemption.
      
-     - returns: CollaborationInviteRedemptionsSingleResourceDataDocument
+     - returns: CollaborationInviteRedemptionsCreateSingleResourceDataDocument
      */
-	public static func collaborationInviteRedemptionsPost(idempotencyKey: String? = nil, collaborationInviteRedemptionsCreateOperationPayload: CollaborationInviteRedemptionsCreateOperationPayload? = nil) async throws -> CollaborationInviteRedemptionsSingleResourceDataDocument {
+	public static func collaborationInviteRedemptionsPost(idempotencyKey: String? = nil, collaborationInviteRedemptionsCreateOperationPayload: CollaborationInviteRedemptionsCreateOperationPayload? = nil) async throws -> CollaborationInviteRedemptionsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			CollaborationInviteRedemptionsAPI.collaborationInviteRedemptionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, collaborationInviteRedemptionsCreateOperationPayload: collaborationInviteRedemptionsCreateOperationPayload)
 		}

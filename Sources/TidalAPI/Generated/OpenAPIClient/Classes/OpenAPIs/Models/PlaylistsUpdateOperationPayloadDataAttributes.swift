@@ -16,7 +16,7 @@ public struct PlaylistsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
     }
-    /** Access type */
+    /** User-selectable playlist visibility. */
     public var accessType: AccessType?
     public var description: String?
     public var name: String?

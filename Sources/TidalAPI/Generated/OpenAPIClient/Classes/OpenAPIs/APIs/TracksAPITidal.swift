@@ -312,9 +312,9 @@ public enum TracksAPITidal {
 	/**
      Create single track.
      
-     - returns: TracksSingleResourceDataDocument
+     - returns: TracksCreateSingleResourceDataDocument
      */
-	public static func tracksPost(idempotencyKey: String? = nil, tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) async throws -> TracksSingleResourceDataDocument {
+	public static func tracksPost(idempotencyKey: String? = nil, tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) async throws -> TracksCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksPostWithRequestBuilder(idempotencyKey: idempotencyKey, tracksCreateOperationPayload: tracksCreateOperationPayload)
 		}

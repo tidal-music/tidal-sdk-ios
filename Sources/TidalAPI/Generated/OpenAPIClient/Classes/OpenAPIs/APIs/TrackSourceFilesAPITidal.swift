@@ -41,9 +41,9 @@ public enum TrackSourceFilesAPITidal {
 	/**
      Create single trackSourceFile.
      
-     - returns: TrackSourceFilesSingleResourceDataDocument
+     - returns: TrackSourceFilesCreateSingleResourceDataDocument
      */
-	public static func trackSourceFilesPost(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
+	public static func trackSourceFilesPost(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) async throws -> TrackSourceFilesCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			TrackSourceFilesAPI.trackSourceFilesPostWithRequestBuilder(idempotencyKey: idempotencyKey, trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload)
 		}

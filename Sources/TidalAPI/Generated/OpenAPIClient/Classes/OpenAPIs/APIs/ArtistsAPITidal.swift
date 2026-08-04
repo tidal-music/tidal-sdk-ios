@@ -260,9 +260,9 @@ public enum ArtistsAPITidal {
 	/**
      Create single artist.
      
-     - returns: ArtistsSingleResourceDataDocument
+     - returns: ArtistsCreateSingleResourceDataDocument
      */
-	public static func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> ArtistsSingleResourceDataDocument {
+	public static func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> ArtistsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistsAPI.artistsPostWithRequestBuilder(idempotencyKey: idempotencyKey, artistsCreateOperationPayload: artistsCreateOperationPayload)
 		}

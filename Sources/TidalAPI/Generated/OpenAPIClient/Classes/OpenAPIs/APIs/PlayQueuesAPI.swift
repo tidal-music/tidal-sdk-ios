@@ -663,10 +663,10 @@ internal class PlayQueuesAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesCreateOperationPayload: (body)  (optional)
-     - returns: PlayQueuesSingleResourceDataDocument
+     - returns: PlayQueuesCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesPost(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
+    internal class func playQueuesPost(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) async throws -> PlayQueuesCreateSingleResourceDataDocument {
         do {
             return try await playQueuesPostWithRequestBuilder(idempotencyKey: idempotencyKey, playQueuesCreateOperationPayload: playQueuesCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -684,9 +684,9 @@ internal class PlayQueuesAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<PlayQueuesSingleResourceDataDocument> 
+     - returns: RequestBuilder<PlayQueuesCreateSingleResourceDataDocument> 
      */
-    internal class func playQueuesPostWithRequestBuilder(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) -> RequestBuilder<PlayQueuesSingleResourceDataDocument> {
+    internal class func playQueuesPostWithRequestBuilder(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) -> RequestBuilder<PlayQueuesCreateSingleResourceDataDocument> {
         let localVariablePath = "/playQueues"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playQueuesCreateOperationPayload)
@@ -700,7 +700,7 @@ internal class PlayQueuesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlayQueuesSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlayQueuesCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

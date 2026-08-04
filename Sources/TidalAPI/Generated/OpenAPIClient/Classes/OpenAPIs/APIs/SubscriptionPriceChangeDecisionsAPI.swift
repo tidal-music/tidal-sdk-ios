@@ -68,10 +68,10 @@ internal class SubscriptionPriceChangeDecisionsAPI {
      - parameter id: (path) Price change decision id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter subscriptionPriceChangeDecisionsUpdateOperationPayload: (body)  (optional)
-     - returns: SubscriptionPriceChangeDecisionsSingleResourceDataDocument
+     - returns: SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func subscriptionPriceChangeDecisionsIdPatch(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsSingleResourceDataDocument {
+    internal class func subscriptionPriceChangeDecisionsIdPatch(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument {
         do {
             return try await subscriptionPriceChangeDecisionsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, subscriptionPriceChangeDecisionsUpdateOperationPayload: subscriptionPriceChangeDecisionsUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -90,9 +90,9 @@ internal class SubscriptionPriceChangeDecisionsAPI {
      - parameter id: (path) Price change decision id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter subscriptionPriceChangeDecisionsUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<SubscriptionPriceChangeDecisionsSingleResourceDataDocument> 
+     - returns: RequestBuilder<SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument> 
      */
-    internal class func subscriptionPriceChangeDecisionsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil) -> RequestBuilder<SubscriptionPriceChangeDecisionsSingleResourceDataDocument> {
+    internal class func subscriptionPriceChangeDecisionsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil) -> RequestBuilder<SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument> {
         var localVariablePath = "/subscriptionPriceChangeDecisions/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -109,7 +109,7 @@ internal class SubscriptionPriceChangeDecisionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SubscriptionPriceChangeDecisionsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -171,10 +171,10 @@ internal class SubscriptionPriceChangeDecisionsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter subscriptionPriceChangeDecisionsCreateOperationPayload: (body)  (optional)
-     - returns: SubscriptionPriceChangeDecisionsSingleResourceDataDocument
+     - returns: SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func subscriptionPriceChangeDecisionsPost(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsSingleResourceDataDocument {
+    internal class func subscriptionPriceChangeDecisionsPost(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument {
         do {
             return try await subscriptionPriceChangeDecisionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, subscriptionPriceChangeDecisionsCreateOperationPayload: subscriptionPriceChangeDecisionsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -192,9 +192,9 @@ internal class SubscriptionPriceChangeDecisionsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter subscriptionPriceChangeDecisionsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<SubscriptionPriceChangeDecisionsSingleResourceDataDocument> 
+     - returns: RequestBuilder<SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument> 
      */
-    internal class func subscriptionPriceChangeDecisionsPostWithRequestBuilder(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil) -> RequestBuilder<SubscriptionPriceChangeDecisionsSingleResourceDataDocument> {
+    internal class func subscriptionPriceChangeDecisionsPostWithRequestBuilder(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil) -> RequestBuilder<SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument> {
         let localVariablePath = "/subscriptionPriceChangeDecisions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: subscriptionPriceChangeDecisionsCreateOperationPayload)
@@ -208,7 +208,7 @@ internal class SubscriptionPriceChangeDecisionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SubscriptionPriceChangeDecisionsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

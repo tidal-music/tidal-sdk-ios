@@ -68,9 +68,9 @@ public enum AcceptedTermsAPITidal {
 	/**
      Create single acceptedTerm.
      
-     - returns: AcceptedTermsSingleResourceDataDocument
+     - returns: AcceptedTermsCreateSingleResourceDataDocument
      */
-	public static func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil) async throws -> AcceptedTermsSingleResourceDataDocument {
+	public static func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil) async throws -> AcceptedTermsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			AcceptedTermsAPI.acceptedTermsPostWithRequestBuilder(idempotencyKey: idempotencyKey, acceptedTermsCreateOperationPayload: acceptedTermsCreateOperationPayload)
 		}

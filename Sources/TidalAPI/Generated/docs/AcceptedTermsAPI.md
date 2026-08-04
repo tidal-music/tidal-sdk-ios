@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 
 # **acceptedTermsPost**
 ```swift
-    open class func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil, completion: @escaping (_ data: AcceptedTermsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil, completion: @escaping (_ data: AcceptedTermsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single acceptedTerm.
@@ -211,7 +211,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AcceptedTermsSingleResourceDataDocument**](AcceptedTermsSingleResourceDataDocument.md)
+[**AcceptedTermsCreateSingleResourceDataDocument**](AcceptedTermsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

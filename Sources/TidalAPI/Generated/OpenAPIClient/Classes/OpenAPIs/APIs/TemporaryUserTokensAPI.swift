@@ -124,10 +124,10 @@ internal class TemporaryUserTokensAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter temporaryUserTokensCreateOperationPayload: (body)  (optional)
-     - returns: TemporaryUserTokensSingleResourceDataDocument
+     - returns: TemporaryUserTokensCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil) async throws -> TemporaryUserTokensSingleResourceDataDocument {
+    internal class func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil) async throws -> TemporaryUserTokensCreateSingleResourceDataDocument {
         do {
             return try await temporaryUserTokensPostWithRequestBuilder(idempotencyKey: idempotencyKey, temporaryUserTokensCreateOperationPayload: temporaryUserTokensCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -145,9 +145,9 @@ internal class TemporaryUserTokensAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter temporaryUserTokensCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<TemporaryUserTokensSingleResourceDataDocument> 
+     - returns: RequestBuilder<TemporaryUserTokensCreateSingleResourceDataDocument> 
      */
-    internal class func temporaryUserTokensPostWithRequestBuilder(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil) -> RequestBuilder<TemporaryUserTokensSingleResourceDataDocument> {
+    internal class func temporaryUserTokensPostWithRequestBuilder(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil) -> RequestBuilder<TemporaryUserTokensCreateSingleResourceDataDocument> {
         let localVariablePath = "/temporaryUserTokens"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: temporaryUserTokensCreateOperationPayload)
@@ -161,7 +161,7 @@ internal class TemporaryUserTokensAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<TemporaryUserTokensSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<TemporaryUserTokensCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

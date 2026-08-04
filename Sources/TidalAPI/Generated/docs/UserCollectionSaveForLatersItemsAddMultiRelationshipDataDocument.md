@@ -3,8 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [UserCollectionSaveForLatersItemsResourceIdentifier] |  | [optional] 
-**included** | [IncludedInner] |  | [optional] 
+**data** | [UserCollectionSaveForLatersItemsAddResourceIdentifier] |  | 
 **links** | [**Links**](Links.md) |  | 
 **meta** | [**UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocumentMeta**](UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocumentMeta.md) |  | [optional] 
 

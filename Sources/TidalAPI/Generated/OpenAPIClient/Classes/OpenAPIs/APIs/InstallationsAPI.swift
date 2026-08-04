@@ -376,10 +376,10 @@ internal class InstallationsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsCreateOperationPayload: (body)  (optional)
-     - returns: InstallationsSingleResourceDataDocument
+     - returns: InstallationsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsSingleResourceDataDocument {
+    internal class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsCreateSingleResourceDataDocument {
         do {
             return try await installationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, installationsCreateOperationPayload: installationsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -397,9 +397,9 @@ internal class InstallationsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<InstallationsSingleResourceDataDocument> 
+     - returns: RequestBuilder<InstallationsCreateSingleResourceDataDocument> 
      */
-    internal class func installationsPostWithRequestBuilder(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) -> RequestBuilder<InstallationsSingleResourceDataDocument> {
+    internal class func installationsPostWithRequestBuilder(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) -> RequestBuilder<InstallationsCreateSingleResourceDataDocument> {
         let localVariablePath = "/installations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: installationsCreateOperationPayload)
@@ -413,7 +413,7 @@ internal class InstallationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<InstallationsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<InstallationsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

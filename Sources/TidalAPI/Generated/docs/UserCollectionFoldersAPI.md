@@ -506,7 +506,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersPost**
 ```swift
-    open class func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil, completion: @escaping (_ data: UserCollectionFoldersCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single userCollectionFolder.
@@ -543,7 +543,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionFoldersSingleResourceDataDocument**](UserCollectionFoldersSingleResourceDataDocument.md)
+[**UserCollectionFoldersCreateSingleResourceDataDocument**](UserCollectionFoldersCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

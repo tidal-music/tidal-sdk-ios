@@ -3,8 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [UserCollectionAlbumsItemsResourceIdentifier] |  | [optional] 
-**included** | [IncludedInner] |  | [optional] 
+**data** | [UserCollectionAlbumsItemsAddResourceIdentifier] |  | 
 **links** | [**Links**](Links.md) |  | 
 **meta** | [**UserCollectionAlbumsItemsAddMultiRelationshipDataDocumentMeta**](UserCollectionAlbumsItemsAddMultiRelationshipDataDocumentMeta.md) |  | [optional] 
 

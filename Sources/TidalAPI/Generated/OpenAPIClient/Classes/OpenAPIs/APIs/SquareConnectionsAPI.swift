@@ -122,10 +122,10 @@ internal class SquareConnectionsAPI {
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: SquareConnectionsSingleRelationshipDataDocument
+     - returns: SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) async throws -> SquareConnectionsSingleRelationshipDataDocument {
+    internal class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) async throws -> SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument {
         do {
             return try await squareConnectionsIdRelationshipsSelectedSitePatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: squareConnectionsSelectedSiteRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -144,9 +144,9 @@ internal class SquareConnectionsAPI {
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<SquareConnectionsSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument> 
      */
-    internal class func squareConnectionsIdRelationshipsSelectedSitePatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<SquareConnectionsSingleRelationshipDataDocument> {
+    internal class func squareConnectionsIdRelationshipsSelectedSitePatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument> {
         var localVariablePath = "/squareConnections/{id}/relationships/selectedSite"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -163,7 +163,7 @@ internal class SquareConnectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -229,10 +229,10 @@ internal class SquareConnectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter squareConnectionsCreateOperationPayload: (body)  (optional)
-     - returns: SquareConnectionsSingleResourceDataDocument
+     - returns: SquareConnectionsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) async throws -> SquareConnectionsSingleResourceDataDocument {
+    internal class func squareConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) async throws -> SquareConnectionsCreateSingleResourceDataDocument {
         do {
             return try await squareConnectionsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -251,9 +251,9 @@ internal class SquareConnectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter squareConnectionsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<SquareConnectionsSingleResourceDataDocument> 
+     - returns: RequestBuilder<SquareConnectionsCreateSingleResourceDataDocument> 
      */
-    internal class func squareConnectionsPostWithRequestBuilder(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) -> RequestBuilder<SquareConnectionsSingleResourceDataDocument> {
+    internal class func squareConnectionsPostWithRequestBuilder(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) -> RequestBuilder<SquareConnectionsCreateSingleResourceDataDocument> {
         let localVariablePath = "/squareConnections"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: squareConnectionsCreateOperationPayload)
@@ -270,7 +270,7 @@ internal class SquareConnectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

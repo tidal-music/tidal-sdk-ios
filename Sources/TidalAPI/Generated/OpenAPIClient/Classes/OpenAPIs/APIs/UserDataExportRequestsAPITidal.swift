@@ -17,9 +17,9 @@ public enum UserDataExportRequestsAPITidal {
 	/**
      Create single userDataExportRequest.
      
-     - returns: UserDataExportRequestsSingleResourceDataDocument
+     - returns: UserDataExportRequestsCreateSingleResourceDataDocument
      */
-	public static func userDataExportRequestsPost(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil) async throws -> UserDataExportRequestsSingleResourceDataDocument {
+	public static func userDataExportRequestsPost(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil) async throws -> UserDataExportRequestsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UserDataExportRequestsAPI.userDataExportRequestsPostWithRequestBuilder(idempotencyKey: idempotencyKey, userDataExportRequestsCreateOperationPayload: userDataExportRequestsCreateOperationPayload)
 		}

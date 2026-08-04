@@ -351,7 +351,7 @@ Name | Type | Description  | Notes
 
 # **installationsPost**
 ```swift
-    open class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil, completion: @escaping (_ data: InstallationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil, completion: @escaping (_ data: InstallationsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single installation.
@@ -388,7 +388,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InstallationsSingleResourceDataDocument**](InstallationsSingleResourceDataDocument.md)
+[**InstallationsCreateSingleResourceDataDocument**](InstallationsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

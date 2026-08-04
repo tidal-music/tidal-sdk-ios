@@ -161,9 +161,9 @@ public enum PlayQueuesAPITidal {
 	/**
      Create single playQueue.
      
-     - returns: PlayQueuesSingleResourceDataDocument
+     - returns: PlayQueuesCreateSingleResourceDataDocument
      */
-	public static func playQueuesPost(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
+	public static func playQueuesPost(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) async throws -> PlayQueuesCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			PlayQueuesAPI.playQueuesPostWithRequestBuilder(idempotencyKey: idempotencyKey, playQueuesCreateOperationPayload: playQueuesCreateOperationPayload)
 		}

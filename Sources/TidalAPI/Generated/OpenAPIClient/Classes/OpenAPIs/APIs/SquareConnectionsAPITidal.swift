@@ -41,9 +41,9 @@ public enum SquareConnectionsAPITidal {
 	/**
      Update selectedSite relationship (\&quot;to-one\&quot;).
      
-     - returns: SquareConnectionsSingleRelationshipDataDocument
+     - returns: SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument
      */
-	public static func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) async throws -> SquareConnectionsSingleRelationshipDataDocument {
+	public static func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) async throws -> SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSitePatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: squareConnectionsSelectedSiteRelationshipUpdateOperationPayload)
 		}
@@ -65,9 +65,9 @@ public enum SquareConnectionsAPITidal {
 	/**
      Create single squareConnection.
      
-     - returns: SquareConnectionsSingleResourceDataDocument
+     - returns: SquareConnectionsCreateSingleResourceDataDocument
      */
-	public static func squareConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) async throws -> SquareConnectionsSingleResourceDataDocument {
+	public static func squareConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) async throws -> SquareConnectionsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareConnectionsAPI.squareConnectionsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload)
 		}

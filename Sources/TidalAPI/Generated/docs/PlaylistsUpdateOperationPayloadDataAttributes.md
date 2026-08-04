@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**accessType** | **String** | Access type | [optional] 
+**accessType** | **String** | User-selectable playlist visibility. | [optional] 
 **description** | **String** |  | [optional] 
 **name** | **String** |  | [optional] 
 

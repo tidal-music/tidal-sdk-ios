@@ -125,9 +125,9 @@ public enum InstallationsAPITidal {
 	/**
      Create single installation.
      
-     - returns: InstallationsSingleResourceDataDocument
+     - returns: InstallationsCreateSingleResourceDataDocument
      */
-	public static func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsSingleResourceDataDocument {
+	public static func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			InstallationsAPI.installationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, installationsCreateOperationPayload: installationsCreateOperationPayload)
 		}

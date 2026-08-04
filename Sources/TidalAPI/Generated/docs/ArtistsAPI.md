@@ -1094,7 +1094,7 @@ Name | Type | Description  | Notes
 
 # **artistsPost**
 ```swift
-    open class func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artist.
@@ -1131,7 +1131,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistsSingleResourceDataDocument**](ArtistsSingleResourceDataDocument.md)
+[**ArtistsCreateSingleResourceDataDocument**](ArtistsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **manualArtistClaimsPost**
 ```swift
-    open class func manualArtistClaimsPost(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ManualArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func manualArtistClaimsPost(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ManualArtistClaimsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single manualArtistClaim.
@@ -46,7 +46,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ManualArtistClaimsSingleResourceDataDocument**](ManualArtistClaimsSingleResourceDataDocument.md)
+[**ManualArtistClaimsCreateSingleResourceDataDocument**](ManualArtistClaimsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

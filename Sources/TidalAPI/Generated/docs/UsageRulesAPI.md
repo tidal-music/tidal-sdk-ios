@@ -60,7 +60,7 @@ Name | Type | Description  | Notes
 
 # **usageRulesPost**
 ```swift
-    open class func usageRulesPost(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil, completion: @escaping (_ data: UsageRulesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func usageRulesPost(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil, completion: @escaping (_ data: UsageRulesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single usageRule.
@@ -97,7 +97,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UsageRulesSingleResourceDataDocument**](UsageRulesSingleResourceDataDocument.md)
+[**UsageRulesCreateSingleResourceDataDocument**](UsageRulesCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

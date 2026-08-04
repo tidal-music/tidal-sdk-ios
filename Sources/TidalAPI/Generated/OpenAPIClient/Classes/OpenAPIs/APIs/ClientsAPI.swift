@@ -169,10 +169,10 @@ internal class ClientsAPI {
      - parameter id: (path) OAuth client identifier 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter clientsUpdateOperationPayload: (body)  (optional)
-     - returns: ClientsSingleResourceDataDocument
+     - returns: ClientsUpdateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws -> ClientsSingleResourceDataDocument {
+    internal class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws -> ClientsUpdateSingleResourceDataDocument {
         do {
             return try await clientsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -191,9 +191,9 @@ internal class ClientsAPI {
      - parameter id: (path) OAuth client identifier 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter clientsUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<ClientsSingleResourceDataDocument> 
+     - returns: RequestBuilder<ClientsUpdateSingleResourceDataDocument> 
      */
-    internal class func clientsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) -> RequestBuilder<ClientsSingleResourceDataDocument> {
+    internal class func clientsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) -> RequestBuilder<ClientsUpdateSingleResourceDataDocument> {
         var localVariablePath = "/clients/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -210,7 +210,7 @@ internal class ClientsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ClientsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ClientsUpdateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -275,10 +275,10 @@ internal class ClientsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter clientsCreateOperationPayload: (body)  (optional)
-     - returns: ClientsSingleResourceDataDocument
+     - returns: ClientsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil) async throws -> ClientsSingleResourceDataDocument {
+    internal class func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil) async throws -> ClientsCreateSingleResourceDataDocument {
         do {
             return try await clientsPostWithRequestBuilder(idempotencyKey: idempotencyKey, clientsCreateOperationPayload: clientsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -296,9 +296,9 @@ internal class ClientsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter clientsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<ClientsSingleResourceDataDocument> 
+     - returns: RequestBuilder<ClientsCreateSingleResourceDataDocument> 
      */
-    internal class func clientsPostWithRequestBuilder(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil) -> RequestBuilder<ClientsSingleResourceDataDocument> {
+    internal class func clientsPostWithRequestBuilder(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil) -> RequestBuilder<ClientsCreateSingleResourceDataDocument> {
         let localVariablePath = "/clients"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: clientsCreateOperationPayload)
@@ -312,7 +312,7 @@ internal class ClientsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ClientsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ClientsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
