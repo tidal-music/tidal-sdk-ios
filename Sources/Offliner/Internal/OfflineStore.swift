@@ -4,14 +4,10 @@ import GRDB
 final class OfflineStore {
 	private let databaseQueue: DatabaseQueue
 
-	/// Lower-cases and removes diacritics (accents) so that the column value and the query are normalized the same
-	/// way, making substring matching both case- and accent-insensitive.
 	static func searchKey(_ value: String) -> String {
 		value.lowercased().folding(options: .diacriticInsensitive, locale: Locale(identifier: "en_US_POSIX"))
 	}
 
-	/// Exposes `searchKey` to SQL as `FOLD(x)` so diacritic-insensitive matching can run against the existing
-	/// `*_sort` columns without storing a second, pre-folded copy of each value.
 	static let foldFunction = DatabaseFunction("FOLD", argumentCount: 1, pure: true) { values in
 		guard let value = String.fromDatabaseValue(values[0]) else { return nil }
 		return searchKey(value)
@@ -150,17 +146,6 @@ final class OfflineStore {
 		var bookmarksToDelete: [Data] = []
 
 		try databaseQueue.inTransaction { database in
-			let members = try Row.fetchAll(
-				database,
-				sql: """
-					SELECT DISTINCT member_resource_type, member_resource_id
-					FROM offline_item_relationship
-					WHERE collection_resource_type = ? AND collection_resource_id = ?
-					  AND (member_resource_type != collection_resource_type OR member_resource_id != collection_resource_id)
-					""",
-				arguments: [resourceType, resourceId]
-			)
-
 			bookmarksToDelete = try collectBookmarks(resourceType: resourceType, resourceId: resourceId, database: database)
 
 			try database.execute(
@@ -172,26 +157,6 @@ final class OfflineStore {
 				sql: "DELETE FROM offline_item WHERE resource_type = ? AND resource_id = ?",
 				arguments: [resourceType, resourceId]
 			)
-
-			for member in members {
-				let memberType: String = member["member_resource_type"]
-				let memberId: String = member["member_resource_id"]
-
-				let hasRelationships = try Bool.fetchOne(
-					database,
-					sql: "SELECT EXISTS(SELECT 1 FROM offline_item_relationship WHERE member_resource_type = ? AND member_resource_id = ?)",
-					arguments: [memberType, memberId]
-				) ?? false
-
-				guard !hasRelationships else { continue }
-
-				bookmarksToDelete += try collectBookmarks(resourceType: memberType, resourceId: memberId, database: database)
-
-				try database.execute(
-					sql: "DELETE FROM offline_item WHERE resource_type = ? AND resource_id = ?",
-					arguments: [memberType, memberId]
-				)
-			}
 
 			return .commit
 		}

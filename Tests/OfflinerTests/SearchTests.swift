@@ -378,64 +378,6 @@ final class SearchTests: OfflinerTestCase {
 		XCTAssertEqual(collected, ["track-4", "track-3", "track-2", "track-1", "track-0"])
 	}
 
-	// MARK: - Removing a collection reclaims orphaned members
-
-	func testRemovingCollectionDeletesOrphanedMembers() async throws {
-		let backend = StubOfflineApiClient()
-		let offliner = makeOffliner(backend)
-
-		let albumId = "album-1"
-		backend.enqueueTasks([
-			.storeAlbum(albumTask(id: "task-0", albumId: albumId, title: "Album", artistNames: [])),
-			.storeTrack(trackTask(id: "task-1", trackId: "track-1", albumId: albumId, title: "Halo", artistNames: [], position: 1)),
-			.storeTrack(trackTask(id: "task-2", trackId: "track-2", albumId: albumId, title: "Sorry", artistNames: [], position: 2)),
-		])
-		try await runAllTasks(offliner, backend: backend, expectedDownloads: 2)
-
-		backend.enqueueTasks([.removeCollection(RemoveCollectionTask(
-			id: "task-99",
-			resourceType: OfflineCollectionType.albums.rawValue,
-			resourceId: albumId
-		))])
-		try await runAllTasks(offliner, backend: backend, expectedDownloads: 0)
-
-		let track1 = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-1"))
-		let track2 = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-2"))
-		XCTAssertNil(track1)
-		XCTAssertNil(track2)
-	}
-
-	func testRemovingCollectionKeepsMembersSharedWithAnotherCollection() async throws {
-		let backend = StubOfflineApiClient()
-		let offliner = makeOffliner(backend)
-
-		let albumA = "album-A"
-		let albumB = "album-B"
-		backend.enqueueTasks([
-			.storeAlbum(albumTask(id: "task-a0", albumId: albumA, title: "A", artistNames: [])),
-			.storeAlbum(albumTask(id: "task-b0", albumId: albumB, title: "B", artistNames: [])),
-			.storeTrack(trackTask(id: "task-s-a", trackId: "track-shared", albumId: albumA, title: "Halo", artistNames: [], position: 1)),
-			.storeTrack(trackTask(id: "task-s-b", trackId: "track-shared", albumId: albumB, title: "Halo", artistNames: [], position: 1)),
-			.storeTrack(trackTask(id: "task-a1", trackId: "track-onlyA", albumId: albumA, title: "Solo", artistNames: [], position: 2)),
-		])
-		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
-
-		backend.enqueueTasks([.removeCollection(RemoveCollectionTask(
-			id: "task-99",
-			resourceType: OfflineCollectionType.albums.rawValue,
-			resourceId: albumA
-		))])
-		try await runAllTasks(offliner, backend: backend, expectedDownloads: 0)
-
-		let onlyA = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-onlyA"))
-		let shared = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-shared"))
-		XCTAssertNil(onlyA)
-		XCTAssertNotNil(shared)
-
-		let hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumB)).hits
-		XCTAssertEqual(hits.map(\.item.item.catalogMetadata.id), ["track-shared"])
-	}
-
 	// MARK: - Helpers
 
 	private func makeOffliner(_ backend: StubOfflineApiClient) -> Offliner {
