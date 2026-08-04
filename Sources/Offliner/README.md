@@ -247,21 +247,46 @@ string: first in ascending order, last in descending order.
 ### Searching Within a Collection
 
 Search the offline tracks/videos of a single collection by title or any credited artist. Matching is
-case- and accent-insensitive substring matching (e.g. `kiss` matches `One Kiss`, `beyonce` matches `Beyoncé`). Each hit carries the pagination `cursor`
-for the page that immediately follows it in the supplied sort order, so jumping from a search result into the
-collection at that position is a single follow-up call:
+case- and accent-insensitive substring matching (e.g. `kiss` matches `One Kiss`, `beyonce` matches `Beyoncé`).
+A blank query returns an empty result.
 
 ```swift
-let hits = try await offliner.findInOfflineCollection(
+let page = try await offliner.findInOfflineCollection(
     search: "halo",
     collectionType: .albums,
     resourceId: .identifier("album-id"),
     sort: .title(direction: .ascending)
 )
+```
 
-if let hit = hits.first {
-    // hit.item is an OfflineCollectionItem; hit.cursor points at the next page in the same sort order.
-    let nextPage = try await offliner.getOfflineCollectionItems(
+Omitting `sort` orders hits (and their cursors) by natural stored order. A page holds at most `limit` hits
+(default 20). A non-empty page always carries a `cursor`; pass it back via `after` and keep fetching until a
+page comes back empty:
+
+```swift
+var hits = page.hits
+var cursor = page.cursor
+
+while let after = cursor {
+    let next = try await offliner.findInOfflineCollection(
+        search: "halo",
+        collectionType: .albums,
+        resourceId: .identifier("album-id"),
+        sort: .title(direction: .ascending),
+        after: after
+    )
+    guard !next.hits.isEmpty else { break }
+    hits += next.hits
+    cursor = next.cursor
+}
+```
+
+Each hit also carries the `cursor` of the page that immediately follows it in the supplied sort order, so
+jumping from a search result into the collection at that position is a single follow-up call:
+
+```swift
+if let hit = page.hits.first {
+    let following = try await offliner.getOfflineCollectionItems(
         collectionType: .albums,
         resourceId: .identifier("album-id"),
         limit: 50,
@@ -270,9 +295,6 @@ if let hit = hits.first {
     )
 }
 ```
-
-Omitting `sort` orders results (and their cursors) by natural stored order. A blank query returns an empty result.
-At most `limit` hits are returned (default 20).
 
 ### Collection Utilities
 
