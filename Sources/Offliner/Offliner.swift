@@ -45,7 +45,14 @@ public final class Offliner {
 		let offlineStore = OfflineStore(databaseQueue)
 		let offlineApiClient = OfflineApiClient(installationId: installationId)
 		let artworkDownloader = ArtworkDownloader()
-		let mediaDownloader = MediaDownloader(configuration: configuration)
+		var taskRunner: TaskRunner?
+		let mediaDownloader = MediaDownloader(configuration: configuration) { taskId in
+			guard let taskId else { return }
+			Task {
+				try? await offlineApiClient.updateTask(taskId: taskId, state: .pending)
+				await taskRunner?.run()
+			}
+		}
 		let licenseDownloader = LicenseDownloader()
 		let trackManifestFetcher = TrackManifestFetcher(audioFormats: configuration.audioFormats)
 		let videoManifestFetcher = VideoManifestFetcher()
@@ -66,6 +73,7 @@ public final class Offliner {
 			trackManifestFetcher: trackManifestFetcher,
 			videoManifestFetcher: videoManifestFetcher
 		)
+		taskRunner = self.taskRunner
 	}
 
 	init(

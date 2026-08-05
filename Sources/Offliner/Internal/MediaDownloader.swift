@@ -31,12 +31,14 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	static let backgroundSessionIdentifier = "com.tidal.offliner.download.session"
 
 	private let queue: DispatchQueue
+	private let orphanedTaskHandler: (String?) -> Void
 	private var session: AVAssetDownloadURLSession!
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 	private var backgroundCompletionHandler: (() -> Void)?
 
-	init(configuration: Configuration) {
+	init(configuration: Configuration, orphanedTaskHandler: @escaping (String?) -> Void) {
 		self.queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
+		self.orphanedTaskHandler = orphanedTaskHandler
 
 		super.init()
 
@@ -116,6 +118,7 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 			Self.logger.debug("orphaned didFinishDownloadingTo called [task: \(assetDownloadTask.taskDescription ?? "?", privacy: .public)]")
 
 			try? FileStorage.delete(url: location)
+			orphanedTaskHandler(assetDownloadTask.taskDescription)
 			return
 		}
 
