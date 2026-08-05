@@ -14,6 +14,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	private(set) var tasks: [OfflineTask] = []
 	private(set) var addedItems: [RecordedItem] = []
 	private(set) var removedItems: [RecordedItem] = []
+	private(set) var completedTaskIds: [String] = []
 	var taskIdCounter = 0
 
 	var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] = []
@@ -133,6 +134,9 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {
+		if state == .completed {
+			completedTaskIds.append(taskId)
+		}
 		if state == .completed || state == .failed {
 			tasks.removeAll { $0.id == taskId }
 		}
