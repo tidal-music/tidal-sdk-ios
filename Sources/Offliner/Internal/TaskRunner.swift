@@ -23,6 +23,7 @@ actor TaskRunner {
 	private var taskIds: Set<String> = []
 
 	private var processTask: Task<Void, Never>?
+	private var rerunRequested = false
 	private var cursor: String?
 
 	private(set) var currentDownloads: [Download] = []
@@ -84,10 +85,16 @@ actor TaskRunner {
 	}
 
 	func run() {
-		guard processTask == nil else { return }
+		guard processTask == nil else {
+			rerunRequested = true
+			return
+		}
 
 		processTask = Task {
-			await process()
+			repeat {
+				rerunRequested = false
+				await process()
+			} while rerunRequested
 			processTask = nil
 		}
 	}
