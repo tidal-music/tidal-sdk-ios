@@ -49,7 +49,13 @@ public final class Offliner {
 		let mediaDownloader = MediaDownloader(configuration: configuration) { taskId in
 			guard let taskId else { return }
 			Task {
-				try? await offlineApiClient.updateTask(taskId: taskId, state: .pending)
+				print("orphanedTaskHandler: updating task \(taskId) to pending")
+				do {
+					try await offlineApiClient.updateTask(taskId: taskId, state: .pending)
+					print("orphanedTaskHandler: task \(taskId) updated to pending, running TaskRunner")
+				} catch {
+					print("orphanedTaskHandler: failed to update task \(taskId): \(error)")
+				}
 				await taskRunner?.run()
 			}
 		}
