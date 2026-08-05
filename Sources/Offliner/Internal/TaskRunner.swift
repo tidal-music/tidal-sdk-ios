@@ -5,7 +5,7 @@ import OSLog
 actor TaskRunner {
 	private static let logger = Logger(subsystem: "com.tidal.sdk.offliner", category: "TaskRunner")
 	private static let maxConcurrentTasks = 5
-	private static let maxQueueSize = 80
+	private static let refreshThreshold = 10
 
 	private let storeTrackHandler: StoreTrackHandler
 	private let storeVideoHandler: StoreVideoHandler
@@ -24,7 +24,6 @@ actor TaskRunner {
 
 	private var processTask: Task<Void, Never>?
 	private var rerunRequested = false
-	private var cursor: String?
 
 	private(set) var currentDownloads: [Download] = []
 	private var downloadsContinuation: AsyncStream<Download>.Continuation?
@@ -113,7 +112,7 @@ actor TaskRunner {
 	}
 
 	private func refresh() async throws {
-		let (tasks, cursor) = try await offlineApiClient.getTasks(cursor: self.cursor)
+		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
 
 		for task in tasks where taskIds.insert(task.id).inserted {
 			let pendingTask = handle(task)
@@ -122,10 +121,6 @@ actor TaskRunner {
 				currentDownloads.append(download)
 				downloadsContinuation?.yield(download)
 			}
-		}
-
-		if let cursor {
-			self.cursor = cursor
 		}
 	}
 
@@ -142,7 +137,7 @@ actor TaskRunner {
 	}
 
 	private func process() async {
-		if pendingTasks.count < Self.maxQueueSize {
+		if pendingTasks.count < Self.refreshThreshold {
 			try? await refresh()
 		}
 
@@ -158,7 +153,7 @@ actor TaskRunner {
 					group.addTask { await self.start(task) }
 				}
 
-				if pendingTasks.count < Self.maxQueueSize {
+				if pendingTasks.count < Self.refreshThreshold {
 					try? await refresh()
 				}
 			}
