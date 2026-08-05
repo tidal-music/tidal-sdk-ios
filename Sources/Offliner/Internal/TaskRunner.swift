@@ -149,12 +149,12 @@ actor TaskRunner {
 			}
 
 			for await _ in group {
-				if let task = getTask() {
-					group.addTask { await self.start(task) }
-				}
-
 				if pendingTasks.count < Self.refreshThreshold {
 					try? await refresh()
+				}
+
+				if let task = getTask() {
+					group.addTask { await self.start(task) }
 				}
 			}
 		}
