@@ -24,6 +24,10 @@ private final class InternalRemoveCollectionTask: InternalTask {
 		self.offlineStore = offlineStore
 	}
 
+	var concurrencyKey: OfflineTaskConcurrencyKey {
+		OfflineTaskConcurrencyKey(resourceType: task.resourceType, resourceId: task.resourceId)
+	}
+
 	func run() async throws {
 		try offlineStore.deleteCollection(resourceType: task.resourceType, resourceId: task.resolvedResourceId)
 	}

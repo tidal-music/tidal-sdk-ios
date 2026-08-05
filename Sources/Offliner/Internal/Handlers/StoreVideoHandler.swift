@@ -78,6 +78,15 @@ private final class InternalVideoTask: InternalTask {
 		self.licenseDownloader = licenseDownloader
 	}
 
+	var concurrencyKey: OfflineTaskConcurrencyKey {
+		OfflineTaskConcurrencyKey(
+			collectionType: task.collectionResourceType,
+			collectionId: task.collectionResourceId,
+			resourceType: OfflineMediaItemType.videos.rawValue,
+			resourceId: task.video.id
+		)
+	}
+
 	func run() async throws {
 		try await withFileCleanup { cleanup in
 			async let artworkTask = artworkDownloader.downloadArtwork(for: task.artwork)
