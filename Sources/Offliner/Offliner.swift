@@ -39,7 +39,7 @@ public final class Offliner {
 	}
 
 	public init(installationId: String, configuration: Configuration) throws {
-		let databaseQueue = try DatabaseQueue(path: OfflineStore.url().path)
+		let databaseQueue = try OfflineStore.makeDatabaseQueue(path: OfflineStore.url().path)
 		try Migrations.run(databaseQueue)
 
 		let offlineStore = OfflineStore(databaseQueue)
@@ -66,6 +66,14 @@ public final class Offliner {
 			trackManifestFetcher: trackManifestFetcher,
 			videoManifestFetcher: videoManifestFetcher
 		)
+
+		mediaDownloader.orphanedTaskHandler = { [weak self] taskId in
+			guard let self, let taskId else { return }
+			Task {
+				try? await self.offlineApiClient.updateTask(taskId: taskId, state: .failed)
+				await self.run()
+			}
+		}
 	}
 
 	init(
@@ -297,6 +305,27 @@ public final class Offliner {
 				after: cursor
 			)
 		}
+
+		scheduleRedownload(for: failures)
+		return page
+	}
+
+	public func findInOfflineCollection(
+		search: String,
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId,
+		sort: OfflineCollectionItemSort? = nil,
+		limit: Int = 20,
+		after cursor: String? = nil
+	) async throws -> OfflineCollectionSearchPage {
+		let (page, failures) = try await offlineStore.searchCollectionItems(
+			collectionType: collectionType,
+			resourceId: resourceId.stringValue,
+			query: search,
+			sort: sort,
+			limit: limit,
+			after: cursor
+		)
 
 		scheduleRedownload(for: failures)
 		return page

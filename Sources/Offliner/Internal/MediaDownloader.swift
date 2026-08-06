@@ -35,6 +35,8 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 	private var backgroundCompletionHandler: (() -> Void)?
 
+	var orphanedTaskHandler: ((String?) -> Void)?
+
 	init(configuration: Configuration) {
 		self.queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
 
@@ -96,7 +98,7 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 				self.activeDownloads[task.taskIdentifier] = activeDownload
 				task.resume()
 
-				Self.logger.debug("started download [task: \(taskId, privacy: .public)]")
+				Self.logger.debug("started download [task: \(taskId, privacy: .public), state: \(task.state.rawValue, privacy: .public)]")
 			}
 		}
 	}
@@ -131,6 +133,7 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 
 		guard let activeDownload = activeDownloads.removeValue(forKey: task.taskIdentifier) else {
 			Self.logger.debug("orphaned didCompleteWithError called [task: \(task.taskDescription ?? "?", privacy: .public)]")
+			orphanedTaskHandler?(task.taskDescription)
 			return
 		}
 

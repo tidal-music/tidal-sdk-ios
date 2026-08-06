@@ -5,7 +5,7 @@ import OSLog
 actor TaskRunner {
 	private static let logger = Logger(subsystem: "com.tidal.sdk.offliner", category: "TaskRunner")
 	private static let maxConcurrentTasks = 5
-	private static let maxQueueSize = 80
+	private static let refreshThreshold = 10
 
 	private let storeTrackHandler: StoreTrackHandler
 	private let storeVideoHandler: StoreVideoHandler
@@ -23,7 +23,7 @@ actor TaskRunner {
 	private var taskIds: Set<String> = []
 
 	private var processTask: Task<Void, Never>?
-	private var cursor: String?
+	private var rerunRequested = false
 
 	private(set) var currentDownloads: [Download] = []
 	private var downloadsContinuation: AsyncStream<Download>.Continuation?
@@ -84,10 +84,16 @@ actor TaskRunner {
 	}
 
 	func run() {
-		guard processTask == nil else { return }
+		guard processTask == nil else {
+			rerunRequested = true
+			return
+		}
 
 		processTask = Task {
-			await process()
+			repeat {
+				rerunRequested = false
+				await process()
+			} while rerunRequested
 			processTask = nil
 		}
 	}
@@ -106,7 +112,7 @@ actor TaskRunner {
 	}
 
 	private func refresh() async throws {
-		let (tasks, cursor) = try await offlineApiClient.getTasks(cursor: self.cursor)
+		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
 
 		for task in tasks where taskIds.insert(task.id).inserted {
 			let pendingTask = handle(task)
@@ -115,10 +121,6 @@ actor TaskRunner {
 				currentDownloads.append(download)
 				downloadsContinuation?.yield(download)
 			}
-		}
-
-		if let cursor {
-			self.cursor = cursor
 		}
 	}
 
@@ -135,32 +137,45 @@ actor TaskRunner {
 	}
 
 	private func process() async {
-		if pendingTasks.count < Self.maxQueueSize {
+		if pendingTasks.count < Self.refreshThreshold {
 			try? await refresh()
 		}
 
 		await withTaskGroup(of: Void.self) { group in
-			for task in pendingTasks.prefix(Self.maxConcurrentTasks) {
-				group.addTask { await self.start(task) }
+			for _ in 0 ..< Self.maxConcurrentTasks {
+				if let task = getTask() {
+					group.addTask { await self.start(task) }
+				}
 			}
 
 			for await _ in group {
-				if let task = pendingTasks.first {
-					group.addTask { await self.start(task) }
+				if pendingTasks.count < Self.refreshThreshold {
+					try? await refresh()
 				}
 
-				if pendingTasks.count < Self.maxQueueSize {
-					try? await refresh()
+				if let task = getTask() {
+					group.addTask { await self.start(task) }
 				}
 			}
 		}
 	}
 
-	private func start(_ task: InternalTask) async {
-		guard await network.isInexpensive || allowDownloadsOnExpensiveNetworks else { return }
+	private func getTask() -> InternalTask? {
+		let runningKeys = Set(runningTasks.map(\.concurrencyKey))
 
-		pendingTasks.removeAll { $0 === task }
+		guard let index = pendingTasks.firstIndex(where: { !runningKeys.contains($0.concurrencyKey) }) else {
+			return nil
+		}
+
+		let task = pendingTasks.remove(at: index)
 		runningTasks.append(task)
+		return task
+	}
+
+	private func start(_ task: InternalTask) async {
+		while !allowDownloadsOnExpensiveNetworks, !(await network.isInexpensive) {
+			try? await Task.sleep(nanoseconds: 1_000_000_000)
+		}
 
 		do {
 			try await offlineApiClient.updateTask(taskId: task.id, state: .inProgress)
@@ -216,11 +231,29 @@ private actor Network {
 	}
 }
 
+// MARK: - OfflineTaskConcurrencyKey
+
+struct OfflineTaskConcurrencyKey: Hashable, Sendable {
+	let collectionType: String?
+	let collectionId: String?
+	let resourceType: String
+	let resourceId: String
+
+	init(collectionType: String? = nil, collectionId: String? = nil, resourceType: String, resourceId: String) {
+		let userCollectionTracks = OfflineCollectionType.userCollectionTracks.rawValue
+		self.collectionType = collectionType
+		self.collectionId = collectionType == userCollectionTracks ? ResourceId.me.stringValue : collectionId
+		self.resourceType = resourceType
+		self.resourceId = resourceType == userCollectionTracks ? ResourceId.me.stringValue : resourceId
+	}
+}
+
 // MARK: - InternalTask
 
 protocol InternalTask: AnyObject {
 	var id: String { get }
 	var download: Download? { get }
+	var concurrencyKey: OfflineTaskConcurrencyKey { get }
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool
 	func run() async throws
 }
