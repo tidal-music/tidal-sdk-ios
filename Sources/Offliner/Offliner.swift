@@ -39,7 +39,6 @@ public final class Offliner {
 	}
 
 	public init(installationId: String, configuration: Configuration) throws {
-		print("Offliner: installationId \(installationId)")
 		let databaseQueue = try OfflineStore.makeDatabaseQueue(path: OfflineStore.url().path)
 		try Migrations.run(databaseQueue)
 
@@ -50,13 +49,7 @@ public final class Offliner {
 		let mediaDownloader = MediaDownloader(configuration: configuration) { taskId in
 			guard let taskId else { return }
 			Task {
-				print("orphanedTaskHandler: updating task \(taskId) to failed")
-				do {
-					try await offlineApiClient.updateTask(taskId: taskId, state: .failed)
-					print("orphanedTaskHandler: task \(taskId) updated to failed, running TaskRunner")
-				} catch {
-					print("orphanedTaskHandler: failed to update task \(taskId): \(error)")
-				}
+				try? await offlineApiClient.updateTask(taskId: taskId, state: .failed)
 				await taskRunner?.run()
 			}
 		}
