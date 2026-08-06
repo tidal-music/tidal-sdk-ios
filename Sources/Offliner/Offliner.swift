@@ -66,6 +66,14 @@ public final class Offliner {
 			trackManifestFetcher: trackManifestFetcher,
 			videoManifestFetcher: videoManifestFetcher
 		)
+
+		mediaDownloader.orphanedTaskHandler = { [weak self] taskId in
+			guard let self, let taskId else { return }
+			Task {
+				try? await self.offlineApiClient.updateTask(taskId: taskId, state: .failed)
+				await self.run()
+			}
+		}
 	}
 
 	init(
