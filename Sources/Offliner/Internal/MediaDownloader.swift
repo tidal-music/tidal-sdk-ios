@@ -98,7 +98,7 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 				self.activeDownloads[task.taskIdentifier] = activeDownload
 				task.resume()
 
-				Self.logger.debug("started download [task: \(taskId, privacy: .public)]")
+				Self.logger.debug("started download [task: \(taskId, privacy: .public), state: \(task.state.rawValue, privacy: .public)]")
 			}
 		}
 	}
@@ -118,7 +118,6 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 			Self.logger.debug("orphaned didFinishDownloadingTo called [task: \(assetDownloadTask.taskDescription ?? "?", privacy: .public)]")
 
 			try? FileStorage.delete(url: location)
-			orphanedTaskHandler(assetDownloadTask.taskDescription)
 			return
 		}
 
@@ -134,6 +133,7 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 
 		guard let activeDownload = activeDownloads.removeValue(forKey: task.taskIdentifier) else {
 			Self.logger.debug("orphaned didCompleteWithError called [task: \(task.taskDescription ?? "?", privacy: .public)]")
+			orphanedTaskHandler(task.taskDescription)
 			return
 		}
 
