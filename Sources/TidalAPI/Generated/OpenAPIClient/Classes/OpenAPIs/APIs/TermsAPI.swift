@@ -18,12 +18,13 @@ internal class TermsAPI {
     public enum FilterTermsType_termsGet: String, CaseIterable {
         case developer = "DEVELOPER"
         case uploadMarketplace = "UPLOAD_MARKETPLACE"
+        case merchGuidelines = "MERCH_GUIDELINES"
     }
 
     /**
      Get multiple terms.
      
-     - parameter filterTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) 
+     - parameter filterTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) 
      - parameter filterCountryCode: (query) Filter by countryCode (optional)
      - parameter filterIsLatestVersion: (query) Filter by isLatestVersion (optional)
      - returns: TermsMultiResourceDataDocument
@@ -48,7 +49,7 @@ internal class TermsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) 
+     - parameter filterTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) 
      - parameter filterCountryCode: (query) Filter by countryCode (optional)
      - parameter filterIsLatestVersion: (query) Filter by isLatestVersion (optional)
      - returns: RequestBuilder<TermsMultiResourceDataDocument> 
