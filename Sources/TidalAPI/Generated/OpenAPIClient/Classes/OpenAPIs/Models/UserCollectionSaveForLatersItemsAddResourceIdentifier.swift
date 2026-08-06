@@ -20,18 +20,22 @@ public struct UserCollectionSaveForLatersItemsAddResourceIdentifier: Codable, Ha
         case videos = "videos"
     }
     public var id: String
+    public var meta: UserCollectionSaveForLatersItemsAddResourceIdentifierMeta?
     public var type: ModelType
 
     public init(
         id: String,
+        meta: UserCollectionSaveForLatersItemsAddResourceIdentifierMeta? = nil,
         type: ModelType
     ) {
         self.id = id
+        self.meta = meta
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
+        case meta
         case type
     }
 
@@ -40,6 +44,7 @@ public struct UserCollectionSaveForLatersItemsAddResourceIdentifier: Codable, Ha
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(meta, forKey: .meta)
         try container.encode(type, forKey: .type)
     }
 }

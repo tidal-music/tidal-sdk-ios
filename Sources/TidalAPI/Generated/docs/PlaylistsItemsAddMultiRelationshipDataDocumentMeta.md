@@ -1,11 +1,9 @@
-# UserCollectionSaveForLatersItemsAddResourceIdentifier
+# PlaylistsItemsAddMultiRelationshipDataDocumentMeta
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **String** |  | 
-**meta** | [**UserCollectionSaveForLatersItemsAddResourceIdentifierMeta**](UserCollectionSaveForLatersItemsAddResourceIdentifierMeta.md) |  | [optional] 
-**type** | **String** |  | 
+**skipped** | [PlaylistsItemsRelationshipAddOperationResponseMetaSkippedItem] |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
