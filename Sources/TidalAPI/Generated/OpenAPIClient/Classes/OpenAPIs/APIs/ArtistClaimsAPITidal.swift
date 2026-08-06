@@ -113,9 +113,9 @@ public enum ArtistClaimsAPITidal {
 	/**
      Create single artistClaim.
      
-     - returns: ArtistClaimsSingleResourceDataDocument
+     - returns: ArtistClaimsCreateSingleResourceDataDocument
      */
-	public static func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
+	public static func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistClaimsAPI.artistClaimsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload)
 		}

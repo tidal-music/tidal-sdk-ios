@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **stripeConnectionsPost**
 ```swift
-    open class func stripeConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: StripeConnectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: StripeConnectionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single stripeConnection.
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**StripeConnectionsSingleResourceDataDocument**](StripeConnectionsSingleResourceDataDocument.md)
+[**StripeConnectionsCreateSingleResourceDataDocument**](StripeConnectionsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

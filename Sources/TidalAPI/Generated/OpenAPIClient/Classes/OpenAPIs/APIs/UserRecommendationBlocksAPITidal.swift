@@ -53,9 +53,9 @@ public enum UserRecommendationBlocksAPITidal {
 	/**
      Add to artists relationship (\&quot;to-many\&quot;).
      
-     - returns: UserRecommendationBlocksArtistsMultiRelationshipDataDocument
+     - returns: UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload)
 		}
@@ -101,9 +101,9 @@ public enum UserRecommendationBlocksAPITidal {
 	/**
      Add to tracks relationship (\&quot;to-many\&quot;).
      
-     - returns: UserRecommendationBlocksTracksMultiRelationshipDataDocument
+     - returns: UserRecommendationBlocksTracksAddMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksTracksAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload)
 		}
@@ -137,9 +137,9 @@ public enum UserRecommendationBlocksAPITidal {
 	/**
      Add to videos relationship (\&quot;to-many\&quot;).
      
-     - returns: UserRecommendationBlocksVideosMultiRelationshipDataDocument
+     - returns: UserRecommendationBlocksVideosAddMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksVideosAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload)
 		}

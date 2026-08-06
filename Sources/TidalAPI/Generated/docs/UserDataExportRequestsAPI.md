@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **userDataExportRequestsPost**
 ```swift
-    open class func userDataExportRequestsPost(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil, completion: @escaping (_ data: UserDataExportRequestsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userDataExportRequestsPost(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil, completion: @escaping (_ data: UserDataExportRequestsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single userDataExportRequest.
@@ -46,7 +46,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserDataExportRequestsSingleResourceDataDocument**](UserDataExportRequestsSingleResourceDataDocument.md)
+[**UserDataExportRequestsCreateSingleResourceDataDocument**](UserDataExportRequestsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

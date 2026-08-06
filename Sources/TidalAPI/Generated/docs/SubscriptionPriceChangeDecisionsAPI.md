@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **subscriptionPriceChangeDecisionsIdPatch**
 ```swift
-    open class func subscriptionPriceChangeDecisionsIdPatch(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func subscriptionPriceChangeDecisionsIdPatch(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single subscriptionPriceChangeDecision.
@@ -103,7 +103,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SubscriptionPriceChangeDecisionsSingleResourceDataDocument**](SubscriptionPriceChangeDecisionsSingleResourceDataDocument.md)
+[**SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument**](SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 
 # **subscriptionPriceChangeDecisionsPost**
 ```swift
-    open class func subscriptionPriceChangeDecisionsPost(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func subscriptionPriceChangeDecisionsPost(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single subscriptionPriceChangeDecision.
@@ -207,7 +207,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SubscriptionPriceChangeDecisionsSingleResourceDataDocument**](SubscriptionPriceChangeDecisionsSingleResourceDataDocument.md)
+[**SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument**](SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

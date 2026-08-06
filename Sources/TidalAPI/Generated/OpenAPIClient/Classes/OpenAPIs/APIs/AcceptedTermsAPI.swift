@@ -18,13 +18,14 @@ internal class AcceptedTermsAPI {
     public enum FilterTermsTermsType_acceptedTermsGet: String, CaseIterable {
         case developer = "DEVELOPER"
         case uploadMarketplace = "UPLOAD_MARKETPLACE"
+        case merchGuidelines = "MERCH_GUIDELINES"
     }
 
     /**
      Get multiple acceptedTerms.
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) 
+     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
      - returns: AcceptedTermsMultiResourceDataDocument
@@ -47,7 +48,7 @@ internal class AcceptedTermsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) 
+     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
      - returns: RequestBuilder<AcceptedTermsMultiResourceDataDocument> 
@@ -188,10 +189,10 @@ internal class AcceptedTermsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter acceptedTermsCreateOperationPayload: (body)  (optional)
-     - returns: AcceptedTermsSingleResourceDataDocument
+     - returns: AcceptedTermsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil) async throws -> AcceptedTermsSingleResourceDataDocument {
+    internal class func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil) async throws -> AcceptedTermsCreateSingleResourceDataDocument {
         do {
             return try await acceptedTermsPostWithRequestBuilder(idempotencyKey: idempotencyKey, acceptedTermsCreateOperationPayload: acceptedTermsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -209,9 +210,9 @@ internal class AcceptedTermsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter acceptedTermsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<AcceptedTermsSingleResourceDataDocument> 
+     - returns: RequestBuilder<AcceptedTermsCreateSingleResourceDataDocument> 
      */
-    internal class func acceptedTermsPostWithRequestBuilder(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil) -> RequestBuilder<AcceptedTermsSingleResourceDataDocument> {
+    internal class func acceptedTermsPostWithRequestBuilder(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil) -> RequestBuilder<AcceptedTermsCreateSingleResourceDataDocument> {
         let localVariablePath = "/acceptedTerms"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: acceptedTermsCreateOperationPayload)
@@ -225,7 +226,7 @@ internal class AcceptedTermsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<AcceptedTermsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<AcceptedTermsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

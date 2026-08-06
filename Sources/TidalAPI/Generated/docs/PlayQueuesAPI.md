@@ -673,7 +673,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesPost**
 ```swift
-    open class func playQueuesPost(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playQueuesPost(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single playQueue.
@@ -710,7 +710,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlayQueuesSingleResourceDataDocument**](PlayQueuesSingleResourceDataDocument.md)
+[**PlayQueuesCreateSingleResourceDataDocument**](PlayQueuesCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

@@ -286,7 +286,7 @@ Name | Type | Description  | Notes
 
 # **lyricsPost**
 ```swift
-    open class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil, completion: @escaping (_ data: LyricsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single lyric.
@@ -323,7 +323,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**LyricsSingleResourceDataDocument**](LyricsSingleResourceDataDocument.md)
+[**LyricsCreateSingleResourceDataDocument**](LyricsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

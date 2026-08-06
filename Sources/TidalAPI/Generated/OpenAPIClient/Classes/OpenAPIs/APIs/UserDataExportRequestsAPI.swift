@@ -17,10 +17,10 @@ internal class UserDataExportRequestsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userDataExportRequestsCreateOperationPayload: (body)  (optional)
-     - returns: UserDataExportRequestsSingleResourceDataDocument
+     - returns: UserDataExportRequestsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userDataExportRequestsPost(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil) async throws -> UserDataExportRequestsSingleResourceDataDocument {
+    internal class func userDataExportRequestsPost(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil) async throws -> UserDataExportRequestsCreateSingleResourceDataDocument {
         do {
             return try await userDataExportRequestsPostWithRequestBuilder(idempotencyKey: idempotencyKey, userDataExportRequestsCreateOperationPayload: userDataExportRequestsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -38,9 +38,9 @@ internal class UserDataExportRequestsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userDataExportRequestsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserDataExportRequestsSingleResourceDataDocument> 
+     - returns: RequestBuilder<UserDataExportRequestsCreateSingleResourceDataDocument> 
      */
-    internal class func userDataExportRequestsPostWithRequestBuilder(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil) -> RequestBuilder<UserDataExportRequestsSingleResourceDataDocument> {
+    internal class func userDataExportRequestsPostWithRequestBuilder(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil) -> RequestBuilder<UserDataExportRequestsCreateSingleResourceDataDocument> {
         let localVariablePath = "/userDataExportRequests"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userDataExportRequestsCreateOperationPayload)
@@ -54,7 +54,7 @@ internal class UserDataExportRequestsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserDataExportRequestsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserDataExportRequestsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

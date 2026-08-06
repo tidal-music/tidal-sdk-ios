@@ -1116,7 +1116,7 @@ Name | Type | Description  | Notes
 
 # **albumsPost**
 ```swift
-    open class func albumsPost(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil, completion: @escaping (_ data: AlbumsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumsPost(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil, completion: @escaping (_ data: AlbumsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single album.
@@ -1153,7 +1153,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsSingleResourceDataDocument**](AlbumsSingleResourceDataDocument.md)
+[**AlbumsCreateSingleResourceDataDocument**](AlbumsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

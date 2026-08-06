@@ -1187,10 +1187,10 @@ internal class AlbumsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter albumsCreateOperationPayload: (body)  (optional)
-     - returns: AlbumsSingleResourceDataDocument
+     - returns: AlbumsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func albumsPost(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) async throws -> AlbumsSingleResourceDataDocument {
+    internal class func albumsPost(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) async throws -> AlbumsCreateSingleResourceDataDocument {
         do {
             return try await albumsPostWithRequestBuilder(idempotencyKey: idempotencyKey, albumsCreateOperationPayload: albumsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -1208,9 +1208,9 @@ internal class AlbumsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter albumsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<AlbumsSingleResourceDataDocument> 
+     - returns: RequestBuilder<AlbumsCreateSingleResourceDataDocument> 
      */
-    internal class func albumsPostWithRequestBuilder(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) -> RequestBuilder<AlbumsSingleResourceDataDocument> {
+    internal class func albumsPostWithRequestBuilder(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) -> RequestBuilder<AlbumsCreateSingleResourceDataDocument> {
         let localVariablePath = "/albums"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: albumsCreateOperationPayload)
@@ -1224,7 +1224,7 @@ internal class AlbumsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<AlbumsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<AlbumsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -20,11 +20,13 @@ public enum AcceptedTermsAPITidal {
 	public enum FilterTermsTermsType_acceptedTermsGet: String, CaseIterable {
 		case developer = "DEVELOPER"
 		case uploadMarketplace = "UPLOAD_MARKETPLACE"
+		case merchGuidelines = "MERCH_GUIDELINES"
 
 		func toAcceptedTermsAPIEnum() -> AcceptedTermsAPI.FilterTermsTermsType_acceptedTermsGet {
 			switch self {
 			case .developer: return .developer
 			case .uploadMarketplace: return .uploadMarketplace
+			case .merchGuidelines: return .merchGuidelines
 			}
 		}
 	}
@@ -68,9 +70,9 @@ public enum AcceptedTermsAPITidal {
 	/**
      Create single acceptedTerm.
      
-     - returns: AcceptedTermsSingleResourceDataDocument
+     - returns: AcceptedTermsCreateSingleResourceDataDocument
      */
-	public static func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil) async throws -> AcceptedTermsSingleResourceDataDocument {
+	public static func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil) async throws -> AcceptedTermsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			AcceptedTermsAPI.acceptedTermsPostWithRequestBuilder(idempotencyKey: idempotencyKey, acceptedTermsCreateOperationPayload: acceptedTermsCreateOperationPayload)
 		}

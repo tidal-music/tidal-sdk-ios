@@ -264,9 +264,9 @@ public enum AlbumsAPITidal {
 	/**
      Create single album.
      
-     - returns: AlbumsSingleResourceDataDocument
+     - returns: AlbumsCreateSingleResourceDataDocument
      */
-	public static func albumsPost(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) async throws -> AlbumsSingleResourceDataDocument {
+	public static func albumsPost(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) async throws -> AlbumsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			AlbumsAPI.albumsPostWithRequestBuilder(idempotencyKey: idempotencyKey, albumsCreateOperationPayload: albumsCreateOperationPayload)
 		}

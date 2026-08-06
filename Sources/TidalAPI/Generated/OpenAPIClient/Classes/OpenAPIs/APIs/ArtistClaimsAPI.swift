@@ -460,10 +460,10 @@ internal class ArtistClaimsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistClaimsCreateOperationPayload: (body)  (optional)
-     - returns: ArtistClaimsSingleResourceDataDocument
+     - returns: ArtistClaimsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
+    internal class func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsCreateSingleResourceDataDocument {
         do {
             return try await artistClaimsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -482,9 +482,9 @@ internal class ArtistClaimsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistClaimsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<ArtistClaimsSingleResourceDataDocument> 
+     - returns: RequestBuilder<ArtistClaimsCreateSingleResourceDataDocument> 
      */
-    internal class func artistClaimsPostWithRequestBuilder(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) -> RequestBuilder<ArtistClaimsSingleResourceDataDocument> {
+    internal class func artistClaimsPostWithRequestBuilder(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) -> RequestBuilder<ArtistClaimsCreateSingleResourceDataDocument> {
         let localVariablePath = "/artistClaims"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistClaimsCreateOperationPayload)
@@ -501,7 +501,7 @@ internal class ArtistClaimsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ArtistClaimsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ArtistClaimsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

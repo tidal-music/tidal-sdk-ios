@@ -185,7 +185,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsArtistsPost**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to artists relationship (\"to-many\").
@@ -224,7 +224,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserRecommendationBlocksArtistsMultiRelationshipDataDocument**](UserRecommendationBlocksArtistsMultiRelationshipDataDocument.md)
+[**UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument**](UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -403,7 +403,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsTracksPost**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksTracksAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to tracks relationship (\"to-many\").
@@ -442,7 +442,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserRecommendationBlocksTracksMultiRelationshipDataDocument**](UserRecommendationBlocksTracksMultiRelationshipDataDocument.md)
+[**UserRecommendationBlocksTracksAddMultiRelationshipDataDocument**](UserRecommendationBlocksTracksAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -567,7 +567,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsVideosPost**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksVideosAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to videos relationship (\"to-many\").
@@ -606,7 +606,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserRecommendationBlocksVideosMultiRelationshipDataDocument**](UserRecommendationBlocksVideosMultiRelationshipDataDocument.md)
+[**UserRecommendationBlocksVideosAddMultiRelationshipDataDocument**](UserRecommendationBlocksVideosAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 

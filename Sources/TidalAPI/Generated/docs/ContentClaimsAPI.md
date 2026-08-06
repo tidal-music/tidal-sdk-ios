@@ -284,7 +284,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsPost**
 ```swift
-    open class func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ContentClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ContentClaimsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single contentClaim.
@@ -321,7 +321,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ContentClaimsSingleResourceDataDocument**](ContentClaimsSingleResourceDataDocument.md)
+[**ContentClaimsCreateSingleResourceDataDocument**](ContentClaimsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

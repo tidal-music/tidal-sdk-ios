@@ -53,9 +53,9 @@ public enum ClientsAPITidal {
 	/**
      Update single client.
      
-     - returns: ClientsSingleResourceDataDocument
+     - returns: ClientsUpdateSingleResourceDataDocument
      */
-	public static func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws -> ClientsSingleResourceDataDocument {
+	public static func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws -> ClientsUpdateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ClientsAPI.clientsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload)
 		}
@@ -77,9 +77,9 @@ public enum ClientsAPITidal {
 	/**
      Create single client.
      
-     - returns: ClientsSingleResourceDataDocument
+     - returns: ClientsCreateSingleResourceDataDocument
      */
-	public static func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil) async throws -> ClientsSingleResourceDataDocument {
+	public static func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil) async throws -> ClientsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ClientsAPI.clientsPostWithRequestBuilder(idempotencyKey: idempotencyKey, clientsCreateOperationPayload: clientsCreateOperationPayload)
 		}

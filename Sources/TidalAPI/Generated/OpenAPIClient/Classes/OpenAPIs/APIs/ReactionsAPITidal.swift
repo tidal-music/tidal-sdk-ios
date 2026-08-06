@@ -105,9 +105,9 @@ public enum ReactionsAPITidal {
 	/**
      Create single reaction.
      
-     - returns: ReactionsSingleResourceDataDocument
+     - returns: ReactionsCreateSingleResourceDataDocument
      */
-	public static func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsSingleResourceDataDocument {
+	public static func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ReactionsAPI.reactionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, reactionsCreateOperationPayload: reactionsCreateOperationPayload)
 		}

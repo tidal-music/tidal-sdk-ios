@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdPatch**
 ```swift
-    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil, completion: @escaping (_ data: ClientsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil, completion: @escaping (_ data: ClientsUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single client.
@@ -209,7 +209,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ClientsSingleResourceDataDocument**](ClientsSingleResourceDataDocument.md)
+[**ClientsUpdateSingleResourceDataDocument**](ClientsUpdateSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -278,7 +278,7 @@ Name | Type | Description  | Notes
 
 # **clientsPost**
 ```swift
-    open class func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil, completion: @escaping (_ data: ClientsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil, completion: @escaping (_ data: ClientsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single client.
@@ -315,7 +315,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ClientsSingleResourceDataDocument**](ClientsSingleResourceDataDocument.md)
+[**ClientsCreateSingleResourceDataDocument**](ClientsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

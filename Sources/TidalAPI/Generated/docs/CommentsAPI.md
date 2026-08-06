@@ -394,7 +394,7 @@ Name | Type | Description  | Notes
 
 # **commentsPost**
 ```swift
-    open class func commentsPost(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil, completion: @escaping (_ data: CommentsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func commentsPost(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil, completion: @escaping (_ data: CommentsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single comment.
@@ -431,7 +431,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CommentsSingleResourceDataDocument**](CommentsSingleResourceDataDocument.md)
+[**CommentsCreateSingleResourceDataDocument**](CommentsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

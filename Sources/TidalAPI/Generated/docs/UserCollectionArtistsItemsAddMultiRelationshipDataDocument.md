@@ -3,8 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [UserCollectionArtistsItemsResourceIdentifier] |  | [optional] 
-**included** | [IncludedInner] |  | [optional] 
+**data** | [UserCollectionArtistsItemsAddResourceIdentifier] |  | 
 **links** | [**Links**](Links.md) |  | 
 **meta** | [**UserCollectionArtistsItemsAddMultiRelationshipDataDocumentMeta**](UserCollectionArtistsItemsAddMultiRelationshipDataDocumentMeta.md) |  | [optional] 
 

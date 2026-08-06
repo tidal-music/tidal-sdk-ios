@@ -3,8 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [UserCollectionTracksItemsResourceIdentifier] |  | [optional] 
-**included** | [IncludedInner] |  | [optional] 
+**data** | [UserCollectionTracksItemsAddResourceIdentifier] |  | 
 **links** | [**Links**](Links.md) |  | 
 **meta** | [**UserCollectionTracksItemsAddMultiRelationshipDataDocumentMeta**](UserCollectionTracksItemsAddMultiRelationshipDataDocumentMeta.md) |  | [optional] 
 

@@ -12,26 +12,22 @@ import AnyCodable
 
 public struct UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument: Codable, Hashable {
 
-    public var data: [UserCollectionSaveForLatersItemsResourceIdentifier]?
-    public var included: [IncludedInner]?
+    public var data: [UserCollectionSaveForLatersItemsAddResourceIdentifier]
     public var links: Links
     public var meta: UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocumentMeta?
 
     public init(
-        data: [UserCollectionSaveForLatersItemsResourceIdentifier]? = nil,
-        included: [IncludedInner]? = nil,
+        data: [UserCollectionSaveForLatersItemsAddResourceIdentifier],
         links: Links,
         meta: UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocumentMeta? = nil
     ) {
         self.data = data
-        self.included = included
         self.links = links
         self.meta = meta
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case data
-        case included
         case links
         case meta
     }
@@ -40,8 +36,7 @@ public struct UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument: 
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(data, forKey: .data)
-        try container.encodeIfPresent(included, forKey: .included)
+        try container.encode(data, forKey: .data)
         try container.encode(links, forKey: .links)
         try container.encodeIfPresent(meta, forKey: .meta)
     }

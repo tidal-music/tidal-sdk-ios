@@ -148,9 +148,9 @@ public enum UserCollectionFoldersAPITidal {
 	/**
      Create single userCollectionFolder.
      
-     - returns: UserCollectionFoldersSingleResourceDataDocument
+     - returns: UserCollectionFoldersCreateSingleResourceDataDocument
      */
-	public static func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+	public static func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionFoldersAPI.userCollectionFoldersPostWithRequestBuilder(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload)
 		}

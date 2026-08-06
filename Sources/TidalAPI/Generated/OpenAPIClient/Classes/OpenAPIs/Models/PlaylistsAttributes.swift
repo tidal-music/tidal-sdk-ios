@@ -15,6 +15,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
     public enum AccessType: String, Codable, CaseIterable {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
+        case _private = "PRIVATE"
     }
     public enum PlaylistType: String, Codable, CaseIterable {
         case editorial = "EDITORIAL"

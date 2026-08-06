@@ -17,9 +17,9 @@ public enum AppreciationsAPITidal {
 	/**
      Create single appreciation.
      
-     - returns: AppreciationsSingleResourceDataDocument
+     - returns: AppreciationsCreateSingleResourceDataDocument
      */
-	public static func appreciationsPost(idempotencyKey: String? = nil, appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil) async throws -> AppreciationsSingleResourceDataDocument {
+	public static func appreciationsPost(idempotencyKey: String? = nil, appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil) async throws -> AppreciationsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			AppreciationsAPI.appreciationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, appreciationsCreateOperationPayload: appreciationsCreateOperationPayload)
 		}

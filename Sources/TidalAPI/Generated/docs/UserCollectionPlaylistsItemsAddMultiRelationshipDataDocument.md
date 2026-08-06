@@ -3,8 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [UserCollectionPlaylistsItemsResourceIdentifier] |  | [optional] 
-**included** | [IncludedInner] |  | [optional] 
+**data** | [UserCollectionPlaylistsItemsAddResourceIdentifier] |  | 
 **links** | [**Links**](Links.md) |  | 
 **meta** | [**UserCollectionPlaylistsItemsAddMultiRelationshipDataDocumentMeta**](UserCollectionPlaylistsItemsAddMultiRelationshipDataDocumentMeta.md) |  | [optional] 
 

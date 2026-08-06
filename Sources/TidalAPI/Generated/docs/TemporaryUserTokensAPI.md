@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **temporaryUserTokensPost**
 ```swift
-    open class func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil, completion: @escaping (_ data: TemporaryUserTokensSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil, completion: @escaping (_ data: TemporaryUserTokensCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single temporaryUserToken.
@@ -154,7 +154,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TemporaryUserTokensSingleResourceDataDocument**](TemporaryUserTokensSingleResourceDataDocument.md)
+[**TemporaryUserTokensCreateSingleResourceDataDocument**](TemporaryUserTokensCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

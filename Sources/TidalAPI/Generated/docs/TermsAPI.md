@@ -22,7 +22,7 @@ Retrieves multiple terms by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterTermsType = ["filterTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. `DEVELOPER`)
+let filterTermsType = ["filterTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. `DEVELOPER`)
 let filterCountryCode = ["inner_example"] // [String] | Filter by countryCode (optional)
 let filterIsLatestVersion = ["inner_example"] // [String] | Filter by isLatestVersion (optional)
 
@@ -43,7 +43,7 @@ TermsAPI.termsGet(filterTermsType: filterTermsType, filterCountryCode: filterCou
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;) | 
+ **filterTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) | 
  **filterCountryCode** | [**[String]**](String.md) | Filter by countryCode | [optional] 
  **filterIsLatestVersion** | [**[String]**](String.md) | Filter by isLatestVersion | [optional] 
 

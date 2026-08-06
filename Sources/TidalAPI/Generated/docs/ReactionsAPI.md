@@ -237,7 +237,7 @@ Name | Type | Description  | Notes
 
 # **reactionsPost**
 ```swift
-    open class func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil, completion: @escaping (_ data: ReactionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil, completion: @escaping (_ data: ReactionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single reaction.
@@ -274,7 +274,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ReactionsSingleResourceDataDocument**](ReactionsSingleResourceDataDocument.md)
+[**ReactionsCreateSingleResourceDataDocument**](ReactionsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

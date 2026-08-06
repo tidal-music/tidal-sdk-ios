@@ -452,6 +452,7 @@ internal class UserCollectionsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: UserCollectionsMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionsMultiRelationshipDataDocument {
         do {
@@ -465,7 +466,7 @@ internal class UserCollectionsAPI {
     /**
      Get owners relationship (\"to-many\").
      - GET /userCollections/{id}/relationships/owners
-     - Retrieves owners relationship.
+     - Deprecated. Use the owners relationship on the dedicated collection resources instead: userCollectionAlbums, userCollectionArtists, userCollectionTracks, userCollectionVideos, or userCollectionPlaylists.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -474,6 +475,7 @@ internal class UserCollectionsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<UserCollectionsMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func userCollectionsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserCollectionsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"

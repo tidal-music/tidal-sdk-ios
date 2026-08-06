@@ -15,6 +15,7 @@ public struct TermsAttributes: Codable, Hashable {
     public enum TermsType: String, Codable, CaseIterable {
         case developer = "DEVELOPER"
         case uploadMarketplace = "UPLOAD_MARKETPLACE"
+        case merchGuidelines = "MERCH_GUIDELINES"
     }
     public var contentLink: LinkObject
     public var countryCode: String

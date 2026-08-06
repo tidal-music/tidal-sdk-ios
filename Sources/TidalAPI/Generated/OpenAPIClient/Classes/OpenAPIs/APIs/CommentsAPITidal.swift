@@ -143,9 +143,9 @@ public enum CommentsAPITidal {
 	/**
      Create single comment.
      
-     - returns: CommentsSingleResourceDataDocument
+     - returns: CommentsCreateSingleResourceDataDocument
      */
-	public static func commentsPost(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil) async throws -> CommentsSingleResourceDataDocument {
+	public static func commentsPost(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil) async throws -> CommentsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			CommentsAPI.commentsPostWithRequestBuilder(idempotencyKey: idempotencyKey, commentsCreateOperationPayload: commentsCreateOperationPayload)
 		}

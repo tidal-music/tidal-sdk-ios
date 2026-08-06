@@ -17,10 +17,10 @@ internal class SavedSharesAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter savedSharesCreateOperationPayload: (body)  (optional)
-     - returns: SavedSharesSingleResourceDataDocument
+     - returns: SavedSharesCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func savedSharesPost(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil) async throws -> SavedSharesSingleResourceDataDocument {
+    internal class func savedSharesPost(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil) async throws -> SavedSharesCreateSingleResourceDataDocument {
         do {
             return try await savedSharesPostWithRequestBuilder(idempotencyKey: idempotencyKey, savedSharesCreateOperationPayload: savedSharesCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -38,9 +38,9 @@ internal class SavedSharesAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter savedSharesCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<SavedSharesSingleResourceDataDocument> 
+     - returns: RequestBuilder<SavedSharesCreateSingleResourceDataDocument> 
      */
-    internal class func savedSharesPostWithRequestBuilder(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil) -> RequestBuilder<SavedSharesSingleResourceDataDocument> {
+    internal class func savedSharesPostWithRequestBuilder(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil) -> RequestBuilder<SavedSharesCreateSingleResourceDataDocument> {
         let localVariablePath = "/savedShares"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: savedSharesCreateOperationPayload)
@@ -54,7 +54,7 @@ internal class SavedSharesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SavedSharesSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SavedSharesCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

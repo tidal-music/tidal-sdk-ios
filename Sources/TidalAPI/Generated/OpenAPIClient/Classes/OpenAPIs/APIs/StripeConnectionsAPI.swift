@@ -123,10 +123,10 @@ internal class StripeConnectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter stripeConnectionsCreateOperationPayload: (body)  (optional)
-     - returns: StripeConnectionsSingleResourceDataDocument
+     - returns: StripeConnectionsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func stripeConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) async throws -> StripeConnectionsSingleResourceDataDocument {
+    internal class func stripeConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) async throws -> StripeConnectionsCreateSingleResourceDataDocument {
         do {
             return try await stripeConnectionsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -145,9 +145,9 @@ internal class StripeConnectionsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter stripeConnectionsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<StripeConnectionsSingleResourceDataDocument> 
+     - returns: RequestBuilder<StripeConnectionsCreateSingleResourceDataDocument> 
      */
-    internal class func stripeConnectionsPostWithRequestBuilder(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) -> RequestBuilder<StripeConnectionsSingleResourceDataDocument> {
+    internal class func stripeConnectionsPostWithRequestBuilder(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) -> RequestBuilder<StripeConnectionsCreateSingleResourceDataDocument> {
         let localVariablePath = "/stripeConnections"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: stripeConnectionsCreateOperationPayload)
@@ -164,7 +164,7 @@ internal class StripeConnectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<StripeConnectionsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<StripeConnectionsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

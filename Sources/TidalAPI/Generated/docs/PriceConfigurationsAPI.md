@@ -111,7 +111,7 @@ Name | Type | Description  | Notes
 
 # **priceConfigurationsPost**
 ```swift
-    open class func priceConfigurationsPost(idempotencyKey: String? = nil, priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil, completion: @escaping (_ data: PriceConfigurationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func priceConfigurationsPost(idempotencyKey: String? = nil, priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil, completion: @escaping (_ data: PriceConfigurationsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single priceConfiguration.
@@ -148,7 +148,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PriceConfigurationsSingleResourceDataDocument**](PriceConfigurationsSingleResourceDataDocument.md)
+[**PriceConfigurationsCreateSingleResourceDataDocument**](PriceConfigurationsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

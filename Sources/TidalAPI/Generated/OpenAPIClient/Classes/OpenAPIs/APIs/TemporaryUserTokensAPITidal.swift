@@ -41,9 +41,9 @@ public enum TemporaryUserTokensAPITidal {
 	/**
      Create single temporaryUserToken.
      
-     - returns: TemporaryUserTokensSingleResourceDataDocument
+     - returns: TemporaryUserTokensCreateSingleResourceDataDocument
      */
-	public static func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil) async throws -> TemporaryUserTokensSingleResourceDataDocument {
+	public static func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil) async throws -> TemporaryUserTokensCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			TemporaryUserTokensAPI.temporaryUserTokensPostWithRequestBuilder(idempotencyKey: idempotencyKey, temporaryUserTokensCreateOperationPayload: temporaryUserTokensCreateOperationPayload)
 		}

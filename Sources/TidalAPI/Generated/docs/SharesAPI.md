@@ -231,7 +231,7 @@ Name | Type | Description  | Notes
 
 # **sharesPost**
 ```swift
-    open class func sharesPost(idempotencyKey: String? = nil, sharesCreateOperationPayload: SharesCreateOperationPayload? = nil, completion: @escaping (_ data: SharesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func sharesPost(idempotencyKey: String? = nil, sharesCreateOperationPayload: SharesCreateOperationPayload? = nil, completion: @escaping (_ data: SharesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single share.
@@ -268,7 +268,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SharesSingleResourceDataDocument**](SharesSingleResourceDataDocument.md)
+[**SharesCreateSingleResourceDataDocument**](SharesCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

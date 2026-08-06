@@ -455,7 +455,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsPost**
 ```swift
-    open class func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artistClaim.
@@ -494,7 +494,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistClaimsSingleResourceDataDocument**](ArtistClaimsSingleResourceDataDocument.md)
+[**ArtistClaimsCreateSingleResourceDataDocument**](ArtistClaimsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

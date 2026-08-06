@@ -29,9 +29,9 @@ public enum SubscriptionPriceChangeDecisionsAPITidal {
 	/**
      Update single subscriptionPriceChangeDecision.
      
-     - returns: SubscriptionPriceChangeDecisionsSingleResourceDataDocument
+     - returns: SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument
      */
-	public static func subscriptionPriceChangeDecisionsIdPatch(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsSingleResourceDataDocument {
+	public static func subscriptionPriceChangeDecisionsIdPatch(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, subscriptionPriceChangeDecisionsUpdateOperationPayload: subscriptionPriceChangeDecisionsUpdateOperationPayload)
 		}
@@ -53,9 +53,9 @@ public enum SubscriptionPriceChangeDecisionsAPITidal {
 	/**
      Create single subscriptionPriceChangeDecision.
      
-     - returns: SubscriptionPriceChangeDecisionsSingleResourceDataDocument
+     - returns: SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument
      */
-	public static func subscriptionPriceChangeDecisionsPost(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsSingleResourceDataDocument {
+	public static func subscriptionPriceChangeDecisionsPost(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, subscriptionPriceChangeDecisionsCreateOperationPayload: subscriptionPriceChangeDecisionsCreateOperationPayload)
 		}

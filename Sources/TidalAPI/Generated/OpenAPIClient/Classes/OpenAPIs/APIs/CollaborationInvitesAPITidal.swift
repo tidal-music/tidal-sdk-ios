@@ -77,9 +77,9 @@ public enum CollaborationInvitesAPITidal {
 	/**
      Create single collaborationInvite.
      
-     - returns: CollaborationInvitesSingleResourceDataDocument
+     - returns: CollaborationInvitesCreateSingleResourceDataDocument
      */
-	public static func collaborationInvitesPost(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
+	public static func collaborationInvitesPost(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil) async throws -> CollaborationInvitesCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			CollaborationInvitesAPI.collaborationInvitesPostWithRequestBuilder(idempotencyKey: idempotencyKey, collaborationInvitesCreateOperationPayload: collaborationInvitesCreateOperationPayload)
 		}

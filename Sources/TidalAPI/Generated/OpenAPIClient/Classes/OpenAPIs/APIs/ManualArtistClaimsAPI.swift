@@ -17,10 +17,10 @@ internal class ManualArtistClaimsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter manualArtistClaimsCreateOperationPayload: (body)  (optional)
-     - returns: ManualArtistClaimsSingleResourceDataDocument
+     - returns: ManualArtistClaimsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func manualArtistClaimsPost(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) async throws -> ManualArtistClaimsSingleResourceDataDocument {
+    internal class func manualArtistClaimsPost(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) async throws -> ManualArtistClaimsCreateSingleResourceDataDocument {
         do {
             return try await manualArtistClaimsPostWithRequestBuilder(idempotencyKey: idempotencyKey, manualArtistClaimsCreateOperationPayload: manualArtistClaimsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -38,9 +38,9 @@ internal class ManualArtistClaimsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter manualArtistClaimsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<ManualArtistClaimsSingleResourceDataDocument> 
+     - returns: RequestBuilder<ManualArtistClaimsCreateSingleResourceDataDocument> 
      */
-    internal class func manualArtistClaimsPostWithRequestBuilder(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) -> RequestBuilder<ManualArtistClaimsSingleResourceDataDocument> {
+    internal class func manualArtistClaimsPostWithRequestBuilder(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) -> RequestBuilder<ManualArtistClaimsCreateSingleResourceDataDocument> {
         let localVariablePath = "/manualArtistClaims"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: manualArtistClaimsCreateOperationPayload)
@@ -54,7 +54,7 @@ internal class ManualArtistClaimsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ManualArtistClaimsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ManualArtistClaimsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -42,9 +42,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsMultiResourceDataDocument
      */
-	public static func playlistsGet(pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsMultiResourceDataDocument {
+	public static func playlistsGet(pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterId: filterId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia)
+			PlaylistsAPI.playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -76,11 +76,11 @@ public enum PlaylistsAPITidal {
 	/**
      Update single playlist.
      
-     - returns: 
+     - returns: PlaylistsUpdateSingleResourceDataDocument
      */
-	public static func playlistsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil) async throws {
+	public static func playlistsIdPatch(id: String, idempotencyKey: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil) async throws -> PlaylistsUpdateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, playlistsUpdateOperationPayload: playlistsUpdateOperationPayload)
+			PlaylistsAPI.playlistsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsUpdateOperationPayload: playlistsUpdateOperationPayload)
 		}
 	}
 
@@ -231,11 +231,11 @@ public enum PlaylistsAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: PlaylistsItemsMultiRelationshipDataDocument
+     - returns: PlaylistsItemsAddMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsItemsPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> PlaylistsItemsAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload)
+			PlaylistsAPI.playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload)
 		}
 	}
 
@@ -279,11 +279,11 @@ public enum PlaylistsAPITidal {
 	/**
      Create single playlist.
      
-     - returns: PlaylistsSingleResourceDataDocument
+     - returns: PlaylistsCreateSingleResourceDataDocument
      */
-	public static func playlistsPost(countryCode: String? = nil, idempotencyKey: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil) async throws -> PlaylistsSingleResourceDataDocument {
+	public static func playlistsPost(idempotencyKey: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil) async throws -> PlaylistsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, playlistsCreateOperationPayload: playlistsCreateOperationPayload)
+			PlaylistsAPI.playlistsPostWithRequestBuilder(idempotencyKey: idempotencyKey, playlistsCreateOperationPayload: playlistsCreateOperationPayload)
 		}
 	}
 }

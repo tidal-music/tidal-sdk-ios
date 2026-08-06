@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **trackSourceFilesPost**
 ```swift
-    open class func trackSourceFilesPost(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil, completion: @escaping (_ data: TrackSourceFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesPost(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil, completion: @escaping (_ data: TrackSourceFilesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single trackSourceFile.
@@ -154,7 +154,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TrackSourceFilesSingleResourceDataDocument**](TrackSourceFilesSingleResourceDataDocument.md)
+[**TrackSourceFilesCreateSingleResourceDataDocument**](TrackSourceFilesCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

@@ -513,10 +513,10 @@ internal class UserCollectionFoldersAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersCreateOperationPayload: (body)  (optional)
-     - returns: UserCollectionFoldersSingleResourceDataDocument
+     - returns: UserCollectionFoldersCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+    internal class func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersCreateSingleResourceDataDocument {
         do {
             return try await userCollectionFoldersPostWithRequestBuilder(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -534,9 +534,9 @@ internal class UserCollectionFoldersAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionFoldersCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> 
+     - returns: RequestBuilder<UserCollectionFoldersCreateSingleResourceDataDocument> 
      */
-    internal class func userCollectionFoldersPostWithRequestBuilder(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) -> RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> {
+    internal class func userCollectionFoldersPostWithRequestBuilder(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) -> RequestBuilder<UserCollectionFoldersCreateSingleResourceDataDocument> {
         let localVariablePath = "/userCollectionFolders"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userCollectionFoldersCreateOperationPayload)
@@ -550,7 +550,7 @@ internal class UserCollectionFoldersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionFoldersSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionFoldersCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

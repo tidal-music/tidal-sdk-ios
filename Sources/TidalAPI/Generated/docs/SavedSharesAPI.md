@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **savedSharesPost**
 ```swift
-    open class func savedSharesPost(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil, completion: @escaping (_ data: SavedSharesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func savedSharesPost(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil, completion: @escaping (_ data: SavedSharesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single savedShare.
@@ -46,7 +46,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SavedSharesSingleResourceDataDocument**](SavedSharesSingleResourceDataDocument.md)
+[**SavedSharesCreateSingleResourceDataDocument**](SavedSharesCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

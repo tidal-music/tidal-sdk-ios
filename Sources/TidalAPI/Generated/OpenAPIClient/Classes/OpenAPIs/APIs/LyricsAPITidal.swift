@@ -77,9 +77,9 @@ public enum LyricsAPITidal {
 	/**
      Create single lyric.
      
-     - returns: LyricsSingleResourceDataDocument
+     - returns: LyricsCreateSingleResourceDataDocument
      */
-	public static func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsSingleResourceDataDocument {
+	public static func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsPostWithRequestBuilder(idempotencyKey: idempotencyKey, lyricsCreateOperationPayload: lyricsCreateOperationPayload)
 		}

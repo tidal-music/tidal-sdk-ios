@@ -77,9 +77,9 @@ public enum ContentClaimsAPITidal {
 	/**
      Create single contentClaim.
      
-     - returns: ContentClaimsSingleResourceDataDocument
+     - returns: ContentClaimsCreateSingleResourceDataDocument
      */
-	public static func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
+	public static func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) async throws -> ContentClaimsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ContentClaimsAPI.contentClaimsPostWithRequestBuilder(idempotencyKey: idempotencyKey, contentClaimsCreateOperationPayload: contentClaimsCreateOperationPayload)
 		}

@@ -290,10 +290,10 @@ internal class ContentClaimsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter contentClaimsCreateOperationPayload: (body)  (optional)
-     - returns: ContentClaimsSingleResourceDataDocument
+     - returns: ContentClaimsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
+    internal class func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) async throws -> ContentClaimsCreateSingleResourceDataDocument {
         do {
             return try await contentClaimsPostWithRequestBuilder(idempotencyKey: idempotencyKey, contentClaimsCreateOperationPayload: contentClaimsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -311,9 +311,9 @@ internal class ContentClaimsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter contentClaimsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<ContentClaimsSingleResourceDataDocument> 
+     - returns: RequestBuilder<ContentClaimsCreateSingleResourceDataDocument> 
      */
-    internal class func contentClaimsPostWithRequestBuilder(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) -> RequestBuilder<ContentClaimsSingleResourceDataDocument> {
+    internal class func contentClaimsPostWithRequestBuilder(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) -> RequestBuilder<ContentClaimsCreateSingleResourceDataDocument> {
         let localVariablePath = "/contentClaims"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: contentClaimsCreateOperationPayload)
@@ -327,7 +327,7 @@ internal class ContentClaimsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ContentClaimsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ContentClaimsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

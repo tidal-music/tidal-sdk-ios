@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **collaborationInviteRedemptionsPost**
 ```swift
-    open class func collaborationInviteRedemptionsPost(idempotencyKey: String? = nil, collaborationInviteRedemptionsCreateOperationPayload: CollaborationInviteRedemptionsCreateOperationPayload? = nil, completion: @escaping (_ data: CollaborationInviteRedemptionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInviteRedemptionsPost(idempotencyKey: String? = nil, collaborationInviteRedemptionsCreateOperationPayload: CollaborationInviteRedemptionsCreateOperationPayload? = nil, completion: @escaping (_ data: CollaborationInviteRedemptionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single collaborationInviteRedemption.
@@ -46,7 +46,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CollaborationInviteRedemptionsSingleResourceDataDocument**](CollaborationInviteRedemptionsSingleResourceDataDocument.md)
+[**CollaborationInviteRedemptionsCreateSingleResourceDataDocument**](CollaborationInviteRedemptionsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 
 # **artworksPost**
 ```swift
-    open class func artworksPost(idempotencyKey: String? = nil, artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksPost(idempotencyKey: String? = nil, artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artwork.
@@ -211,7 +211,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtworksSingleResourceDataDocument**](ArtworksSingleResourceDataDocument.md)
+[**ArtworksCreateSingleResourceDataDocument**](ArtworksCreateSingleResourceDataDocument.md)
 
 ### Authorization
 

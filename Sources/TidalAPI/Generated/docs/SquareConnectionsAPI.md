@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSelectedSitePatch**
 ```swift
-    open class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: SquareConnectionsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update selectedSite relationship (\"to-one\").
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SquareConnectionsSingleRelationshipDataDocument**](SquareConnectionsSingleRelationshipDataDocument.md)
+[**SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument**](SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -225,7 +225,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsPost**
 ```swift
-    open class func squareConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: SquareConnectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func squareConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: SquareConnectionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single squareConnection.
@@ -264,7 +264,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SquareConnectionsSingleResourceDataDocument**](SquareConnectionsSingleResourceDataDocument.md)
+[**SquareConnectionsCreateSingleResourceDataDocument**](SquareConnectionsCreateSingleResourceDataDocument.md)
 
 ### Authorization
 
