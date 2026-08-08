@@ -15,9 +15,31 @@ enum RequestHelper {
 					customHeaders: customHeaders,
 					builder: builder
 				)
-			})
+			}
+		)
 
 		return try await retryHandler.execute()
+	}
+
+	static func createRequestIgnoringResponseBody<T>(
+		customHeaders: [String: String] = [:],
+		requestBuilder: @escaping () async throws -> RequestBuilder<T>
+	) async throws {
+		let builder = try await requestBuilder()
+		try await createRequest(customHeaders: customHeaders) {
+			requestBuilderIgnoringResponseBody(builder)
+		}
+	}
+
+	static func requestBuilderIgnoringResponseBody<T>(_ builder: RequestBuilder<T>) -> RequestBuilder<Void> {
+		let builderType: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+		return builderType.init(
+			method: builder.method,
+			URLString: builder.URLString,
+			parameters: builder.parameters,
+			headers: builder.headers,
+			requiresAuthentication: builder.requiresAuthentication
+		)
 	}
 
 	private static func executeRequestWithAuth<T>(

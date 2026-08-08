@@ -77,6 +77,12 @@ let package = Package(
 				"README.md",
 			]
 		),
+		.testTarget(
+			name: "TidalAPITests",
+			dependencies: [
+				.tidalAPI,
+			]
+		),
 		.target(
 			name: "Common",
 			dependencies: [
