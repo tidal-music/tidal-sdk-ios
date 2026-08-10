@@ -76,24 +76,20 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 
 		return try await withCheckedThrowingContinuation { continuation in
 			queue.async {
-				guard let task = self.session.makeAssetDownloadTask(
-					asset: asset,
-					assetTitle: title,
-					assetArtworkData: nil,
-					options: nil
-				) else {
-					continuation.resume(throwing: MediaDownloaderError.failedToCreateTask)
-					return
-				}
+				let downloadConfiguration = AVAssetDownloadConfiguration(asset: asset, title: title)
+				let task = self.session.makeAssetDownloadTask(downloadConfiguration: downloadConfiguration)
 
 				let activeDownload = ActiveDownload(
 					duration: duration,
-					continuation: continuation,
-					onProgress: onProgress
+					continuation: continuation
 				)
 
 				task.taskDescription = taskId
 				task.priority = 1.0
+
+				activeDownload.progressObservation = task.progress.observe(\.fractionCompleted) { progress, _ in
+					Task { await onProgress(progress.fractionCompleted) }
+				}
 
 				self.activeDownloads[task.taskIdentifier] = activeDownload
 				task.resume()
@@ -113,11 +109,29 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		didFinishDownloadingTo location: URL
 	) {
 		Self.logger.debug("didFinishDownloadingTo called [task: \(assetDownloadTask.taskDescription ?? "?", privacy: .public)]")
+		recordDownloadedLocation(location, for: assetDownloadTask, deleteIfOrphaned: true)
+	}
 
+	@available(iOS 18.0, macOS 14.0, watchOS 10.0, *)
+	func urlSession(
+		_ session: URLSession,
+		assetDownloadTask: AVAssetDownloadTask,
+		willDownloadTo location: URL
+	) {
+		Self.logger.debug("willDownloadTo called [task: \(assetDownloadTask.taskDescription ?? "?", privacy: .public)]")
+		recordDownloadedLocation(location, for: assetDownloadTask, deleteIfOrphaned: false)
+	}
+
+	private func recordDownloadedLocation(
+		_ location: URL,
+		for assetDownloadTask: AVAssetDownloadTask,
+		deleteIfOrphaned: Bool
+	) {
 		guard let activeDownload = activeDownloads[assetDownloadTask.taskIdentifier] else {
-			Self.logger.debug("orphaned didFinishDownloadingTo called [task: \(assetDownloadTask.taskDescription ?? "?", privacy: .public)]")
-
-			try? FileStorage.delete(url: location)
+			Self.logger.debug("orphaned download location [task: \(assetDownloadTask.taskDescription ?? "?", privacy: .public)]")
+			if deleteIfOrphaned {
+				try? FileStorage.delete(url: location)
+			}
 			return
 		}
 
@@ -136,6 +150,8 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 			orphanedTaskHandler?(task.taskDescription)
 			return
 		}
+
+		activeDownload.progressObservation?.invalidate()
 
 		if let error {
 			try? activeDownload.downloadedLocation.map(FileStorage.delete)
@@ -156,22 +172,6 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		activeDownload.continuation.resume(returning: result)
 	}
 
-	func urlSession(
-		_ session: URLSession,
-		assetDownloadTask: AVAssetDownloadTask,
-		didLoad timeRange: CMTimeRange,
-		totalTimeRangesLoaded loadedTimeRanges: [NSValue],
-		timeRangeExpectedToLoad: CMTimeRange
-	) {
-		let loaded = loadedTimeRanges.reduce(0.0) { $0 + CMTimeGetSeconds($1.timeRangeValue.duration) }
-		let expected = CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
-		let progress = expected > 0 ? loaded / expected : 0
-
-		if let onProgress = activeDownloads[assetDownloadTask.taskIdentifier]?.onProgress {
-			Task { await onProgress(progress) }
-		}
-	}
-
 	func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
 		Self.logger.debug("urlSessionDidFinishEvents forBackgroundURLSession")
 		DispatchQueue.main.async { [weak self] in
@@ -186,25 +186,22 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 private final class ActiveDownload {
 	let duration: Int
 	let continuation: CheckedContinuation<MediaDownloadResult, Error>
-	let onProgress: @Sendable (Double) async -> Void
 
 	var downloadedLocation: URL?
+	var progressObservation: NSKeyValueObservation?
 
 	init(
 		duration: Int,
-		continuation: CheckedContinuation<MediaDownloadResult, Error>,
-		onProgress: @escaping @Sendable (Double) async -> Void
+		continuation: CheckedContinuation<MediaDownloadResult, Error>
 	) {
 		self.duration = duration
 		self.continuation = continuation
-		self.onProgress = onProgress
 	}
 }
 
 // MARK: - MediaDownloaderError
 
 enum MediaDownloaderError: Error {
-	case failedToCreateTask
 	case noDownloadedFile
 	case manifestNotFound
 }

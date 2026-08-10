@@ -1,5 +1,4 @@
 import Foundation
-import Player
 
 // MARK: - OfflineMediaItemType
 
@@ -79,12 +78,22 @@ public struct OfflineMediaItem {
 	public let artworkURL: URL?
 }
 
-// MARK: - PlayableOfflineMediaItem
+// MARK: - OfflinePlaybackAsset
 
-struct PlayableOfflineMediaItem {
-	let playbackMetadata: OfflineMediaItem.PlaybackMetadata?
-	let mediaURL: URL
-	let licenseURL: URL?
+public struct OfflinePlaybackAsset {
+	public let playbackMetadata: OfflineMediaItem.PlaybackMetadata?
+	public let mediaURL: URL
+	public let licenseURL: URL?
+
+	public init(
+		playbackMetadata: OfflineMediaItem.PlaybackMetadata?,
+		mediaURL: URL,
+		licenseURL: URL?
+	) {
+		self.playbackMetadata = playbackMetadata
+		self.mediaURL = mediaURL
+		self.licenseURL = licenseURL
+	}
 }
 
 // MARK: - OfflineCollectionState

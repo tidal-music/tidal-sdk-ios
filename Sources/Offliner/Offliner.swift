@@ -1,11 +1,10 @@
 import Foundation
 import GRDB
-import Player
 
 // MARK: - Offliner
 
 public final class Offliner {
-	static let defaultCollectionDownloadStatePollInterval: UInt64 = 1_000_000_000
+	static let defaultCollectionPollInterval: UInt64 = 1_000_000_000
 
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
@@ -53,7 +52,7 @@ public final class Offliner {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
-		self.collectionDownloadStatePollInterval = Self.defaultCollectionDownloadStatePollInterval
+		self.collectionDownloadStatePollInterval = Self.defaultCollectionPollInterval
 		self.trackManifestFetcher = trackManifestFetcher
 		self.audioFormats = configuration.audioFormats
 		self.taskRunner = TaskRunner(
@@ -85,7 +84,7 @@ public final class Offliner {
 		licenseDownloader: LicenseDownloader = LicenseDownloader(),
 		trackManifestFetcher: TrackManifestFetcherProtocol,
 		videoManifestFetcher: VideoManifestFetcherProtocol,
-		collectionDownloadStatePollInterval: UInt64 = Offliner.defaultCollectionDownloadStatePollInterval
+		collectionDownloadStatePollInterval: UInt64 = Offliner.defaultCollectionPollInterval
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
@@ -127,6 +126,22 @@ public final class Offliner {
 		}
 
 		return items
+	}
+
+	/// Returns the locally playable asset for an offlined track or video.
+	///
+	/// File bookmarks are resolved only for playback so enumerating offline content remains fast. If a stored file can no
+	/// longer be resolved, the item is scheduled for download again and this method returns `nil`.
+	public func getOfflinePlaybackAsset(
+		mediaType: OfflineMediaItemType,
+		resourceId: ResourceId
+	) async -> OfflinePlaybackAsset? {
+		do {
+			return try await offlineStore.getPlaybackAsset(mediaType: mediaType, resourceId: resourceId.stringValue)
+		} catch {
+			Task { try? await download(mediaType: mediaType, resourceId: resourceId) }
+			return nil
+		}
 	}
 
 	public func getOfflineCollection(
@@ -405,28 +420,6 @@ public final class Offliner {
 	}
 }
 
-// MARK: - OfflineItemProvider
-
-extension Offliner: OfflineItemProvider {
-	public func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem? {
-		let mediaType: OfflineMediaItemType
-		switch productType {
-		case .TRACK: mediaType = .tracks
-		case .VIDEO: mediaType = .videos
-		case .UC: return nil
-		}
-
-		do {
-			return try await offlineStore.getPlayableMediaItem(mediaType: mediaType, resourceId: productId)
-				.map { OfflinePlaybackItem($0, productType: productType) }
-		} catch {
-			Task { try? await download(mediaType: mediaType, resourceId: .identifier(productId)) }
-		}
-
-		return nil
-	}
-}
-
 // MARK: - Internal Mappings
 
 extension OfflineMediaItemType {
@@ -445,20 +438,5 @@ extension OfflineCollectionType {
 		case .playlists: return .playlist
 		case .userCollectionTracks: return .userCollectionTracks
 		}
-	}
-}
-
-// MARK: - OfflinePlaybackItem from PlayableOfflineMediaItem
-
-private extension OfflinePlaybackItem {
-	init(_ item: PlayableOfflineMediaItem, productType: ProductType) {
-		self.init(
-			mediaURL: item.mediaURL,
-			licenseURL: item.licenseURL,
-			format: item.playbackMetadata?.format.rawValue,
-			albumReplayGain: item.playbackMetadata?.albumNormalizationData?.replayGain,
-			albumPeakAmplitude: item.playbackMetadata?.albumNormalizationData?.peakAmplitude,
-			productType: productType
-		)
 	}
 }

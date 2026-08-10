@@ -161,7 +161,7 @@ Retrieve a specific offline media item:
 
 ```swift
 if let track = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-id") {
-    // Access mediaURL, licenseURL, artworkURL, catalogMetadata, and playbackMetadata
+    // Access artworkURL, catalogMetadata, and playbackMetadata without resolving playback files
 }
 ```
 
@@ -322,12 +322,53 @@ Removal requests are registered with the backend and task processing is triggere
 
 ## Offline Playback
 
-Offliner conforms to `OfflineItemProvider` (from the Player module), so it can be used directly as the offline content source for the Player:
+Offliner exposes a Player-independent playback asset lookup. The lookup resolves the stored media and license file bookmarks only when playback is requested:
 
 ```swift
-let item = await offliner.get(productType: .TRACK, productId: "track-id")
-// Returns an OfflinePlaybackItem with mediaURL, licenseURL, format, and normalization data
+let asset = await offliner.getOfflinePlaybackAsset(
+    mediaType: .tracks,
+    resourceId: .identifier("track-id")
+)
+// Returns mediaURL, licenseURL, and playback metadata, or nil when no playable asset is stored.
 ```
+
+Offliner has no dependency on the Player module because Player does not support watchOS. Consumers that use Player can declare the `OfflineItemProvider` conformance in a target that links both products:
+
+```swift
+import Offliner
+import Player
+
+extension Offliner: @retroactive OfflineItemProvider {
+    public func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem? {
+        let mediaType: OfflineMediaItemType
+        switch productType {
+        case .TRACK: mediaType = .tracks
+        case .VIDEO: mediaType = .videos
+        case .UC: return nil
+        }
+
+        guard let asset = await getOfflinePlaybackAsset(
+            mediaType: mediaType,
+            resourceId: .identifier(productId)
+        ) else {
+            return nil
+        }
+
+        return OfflinePlaybackItem(
+            mediaURL: asset.mediaURL,
+            licenseURL: asset.licenseURL,
+            format: asset.playbackMetadata?.format.rawValue,
+            albumReplayGain: asset.playbackMetadata?.albumNormalizationData?.replayGain,
+            albumPeakAmplitude: asset.playbackMetadata?.albumNormalizationData?.peakAmplitude,
+            productType: productType
+        )
+    }
+}
+```
+
+## Platform Support
+
+Offliner supports iOS 15+, macOS 12+, and watchOS 10+. Its shared download pipeline uses `AVAssetDownloadConfiguration`, KVO progress observation, and the platform-appropriate asset location delegate callback.
 
 ---
 

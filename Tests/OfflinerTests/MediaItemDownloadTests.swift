@@ -132,7 +132,10 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		let firstItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
 		let firstItemUnwrapped = try XCTUnwrap(firstItem)
-		let firstPlayableItem = await offliner.get(productType: .TRACK, productId: "track-123")
+		let firstPlayableItem = await offliner.getOfflinePlaybackAsset(
+			mediaType: .tracks,
+			resourceId: .identifier("track-123")
+		)
 		let firstMediaURL = try XCTUnwrap(firstPlayableItem?.mediaURL)
 		let firstArtworkURL = try XCTUnwrap(firstItemUnwrapped.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstMediaURL.path))
@@ -143,7 +146,10 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 
 		let secondItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
 		let secondItemUnwrapped = try XCTUnwrap(secondItem)
-		let secondPlayableItem = await offliner.get(productType: .TRACK, productId: "track-123")
+		let secondPlayableItem = await offliner.getOfflinePlaybackAsset(
+			mediaType: .tracks,
+			resourceId: .identifier("track-123")
+		)
 		let secondMediaURL = try XCTUnwrap(secondPlayableItem?.mediaURL)
 		let secondArtworkURL = try XCTUnwrap(secondItemUnwrapped.artworkURL)
 
