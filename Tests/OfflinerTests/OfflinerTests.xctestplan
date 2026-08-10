@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "5A1D5C3E-8F42-4B7A-9C15-2E6B04AD7F31",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "OfflinerTests",
+        "name" : "OfflinerTests"
+      }
+    }
+  ],
+  "version" : 1
+}
