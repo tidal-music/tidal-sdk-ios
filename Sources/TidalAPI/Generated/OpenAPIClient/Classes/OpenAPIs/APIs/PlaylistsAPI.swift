@@ -674,13 +674,14 @@ internal class PlaylistsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter filterQuery: (query) Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+    internal class func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
         do {
-            return try await playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -702,10 +703,11 @@ internal class PlaylistsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter filterQuery: (query) Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> 
      */
-    internal class func playlistsIdRelationshipsItemsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> {
+    internal class func playlistsIdRelationshipsItemsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> {
         var localVariablePath = "/playlists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -719,6 +721,7 @@ internal class PlaylistsAPI {
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[query]": (wrappedValue: filterQuery?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

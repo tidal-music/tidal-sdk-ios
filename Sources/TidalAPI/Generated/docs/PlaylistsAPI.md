@@ -636,7 +636,7 @@ Void (empty response body)
 
 # **playlistsIdRelationshipsItemsGet**
 ```swift
-    open class func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -653,10 +653,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+let filterQuery = "filterQuery_example" // String | Filter playlist items by a free-text query (e.g. `halo`) (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get items relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -677,6 +678,7 @@ Name | Type | Description  | Notes
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+ **filterQuery** | **String** | Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
