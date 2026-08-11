@@ -217,6 +217,11 @@ public enum OfflineCollectionItemSort: Hashable {
 	case dateAdded(direction: SortDirection)
 }
 
+/// An error produced when an operation is attempted on an Offliner instance after it has been reset.
+public enum OfflinerLifecycleError: Error {
+	case reset
+}
+
 // MARK: - OfflineCollectionItem
 
 public struct OfflineCollectionItem {

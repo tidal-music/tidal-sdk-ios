@@ -1,14 +1,28 @@
 import Foundation
 
-enum FileStorage {
-	static func store(_ data: Data, subdirectory: String, filename: String) throws -> URL {
+final class FileStorage {
+	let rootDirectory: URL
+	private let writeLock = NSLock()
+	private var acceptsWrites = true
+
+	init(rootDirectory: URL) {
+		self.rootDirectory = rootDirectory
+	}
+
+	func store(_ data: Data, subdirectory: String, filename: String) throws -> URL {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWrites()
 		let dir = try directory(for: subdirectory)
 		let url = dir.appendingPathComponent(filename)
 		try data.write(to: url, options: .atomic)
 		return url
 	}
 
-	static func move(from source: URL, subdirectory: String, filename: String) throws -> URL {
+	func move(from source: URL, subdirectory: String, filename: String) throws -> URL {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWrites()
 		let dir = try directory(for: subdirectory)
 		let destination = dir.appendingPathComponent(filename)
 		_ = try FileManager.default.replaceItemAt(destination, withItemAt: source)
@@ -30,12 +44,18 @@ enum FileStorage {
 		try delete(url: url)
 	}
 
-	private static func directory(for subdirectory: String) throws -> URL {
-		let appSupportURLs = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
-		guard let appSupportDirectory = appSupportURLs.first else {
-			throw FileStorageError.noApplicationSupportDirectory
-		}
-		let directory = appSupportDirectory.appendingPathComponent("Offliner/\(subdirectory)", isDirectory: true)
+	func invalidateWrites() {
+		writeLock.lock()
+		acceptsWrites = false
+		writeLock.unlock()
+	}
+
+	private func ensureAcceptsWrites() throws {
+		guard acceptsWrites else { throw OfflinerLifecycleError.reset }
+	}
+
+	private func directory(for subdirectory: String) throws -> URL {
+		let directory = rootDirectory.appendingPathComponent(subdirectory, isDirectory: true)
 		try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 		return directory
 	}

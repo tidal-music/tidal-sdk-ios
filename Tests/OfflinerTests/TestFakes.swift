@@ -316,6 +316,7 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	var progressValues: [Double] = []
 
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+	func cancelAll() async {}
 
 	func download(
 		taskId: String,
@@ -341,6 +342,7 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 
 final class FailingMediaDownloader: MediaDownloaderProtocol {
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+	func cancelAll() async {}
 
 	func download(
 		taskId: String,
@@ -355,10 +357,37 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 
 actor SuspendingMediaDownloader: MediaDownloaderProtocol {
 	private var startedContinuation: CheckedContinuation<Void, Never>?
+	private var cancelledContinuation: CheckedContinuation<Void, Never>?
 	private var resultContinuation: CheckedContinuation<MediaDownloadResult, Error>?
 	private var started = false
+	private var cancelled = false
+	private let resumesOnCancel: Bool
+
+	init(resumesOnCancel: Bool = true) {
+		self.resumesOnCancel = resumesOnCancel
+	}
 
 	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+
+	func cancelAll() {
+		cancelled = true
+		cancelledContinuation?.resume()
+		cancelledContinuation = nil
+		guard resumesOnCancel else { return }
+		let continuation = resultContinuation
+		resultContinuation = nil
+		continuation?.resume(throwing: CancellationError())
+	}
+
+	func waitUntilCancelled() async {
+		if cancelled {
+			return
+		}
+
+		await withCheckedContinuation { continuation in
+			cancelledContinuation = continuation
+		}
+	}
 
 	func waitUntilStarted() async {
 		if started {

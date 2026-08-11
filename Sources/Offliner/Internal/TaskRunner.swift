@@ -17,6 +17,8 @@ actor TaskRunner {
 
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let network: Network
+	private let mediaDownloader: MediaDownloaderProtocol
+	private let licenseDownloader: LicenseDownloader
 
 	private var pendingTasks: [InternalTask] = []
 	private var runningTasks: [InternalTask] = []
@@ -24,6 +26,7 @@ actor TaskRunner {
 
 	private var processTask: Task<Void, Never>?
 	private var rerunRequested = false
+	private var isShutdown = false
 
 	private(set) var currentDownloads: [Download] = []
 	private var downloadsContinuation: AsyncStream<Download>.Continuation?
@@ -45,6 +48,8 @@ actor TaskRunner {
 		self.offlineApiClient = offlineApiClient
 		self.allowDownloadsOnExpensiveNetworks = configuration.allowDownloadsOnExpensiveNetworks
 		self.network = Network()
+		self.mediaDownloader = mediaDownloader
+		self.licenseDownloader = licenseDownloader
 
 		let (stream, continuation) = AsyncStream<Download>.makeStream()
 		self.newDownloads = stream
@@ -84,6 +89,7 @@ actor TaskRunner {
 	}
 
 	func run() {
+		guard !isShutdown else { return }
 		guard processTask == nil else {
 			rerunRequested = true
 			return
@@ -99,6 +105,7 @@ actor TaskRunner {
 	}
 
 	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) {
+		guard !isShutdown else { return }
 		allowDownloadsOnExpensiveNetworks = allowed
 		if allowed {
 			run()
@@ -106,13 +113,39 @@ actor TaskRunner {
 	}
 
 	func hasCurrentDownload(relatedTo collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
+		guard !isShutdown else { return false }
 		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
 		return pendingTasks.contains { $0.isDownloadTask(for: collection) } ||
 			runningTasks.contains { $0.isDownloadTask(for: collection) }
 	}
 
+	func shutdown() async {
+		guard !isShutdown else {
+			if let processTask { await processTask.value }
+			return
+		}
+
+		isShutdown = true
+		rerunRequested = false
+		let task = processTask
+		task?.cancel()
+		await mediaDownloader.cancelAll()
+		await licenseDownloader.cancelAll()
+		await task?.value
+		pendingTasks.removeAll()
+		runningTasks.removeAll()
+		taskIds.removeAll()
+		currentDownloads.removeAll()
+		downloadsContinuation?.finish()
+		downloadsContinuation = nil
+	}
+
 	private func refresh() async throws {
+		try Task.checkCancellation()
+		guard !isShutdown else { return }
 		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
+		try Task.checkCancellation()
+		guard !isShutdown else { return }
 
 		for task in tasks where taskIds.insert(task.id).inserted {
 			let pendingTask = handle(task)
@@ -137,18 +170,23 @@ actor TaskRunner {
 	}
 
 	private func process() async {
+		guard !isShutdown, !Task.isCancelled else { return }
 		if pendingTasks.count < Self.refreshThreshold {
 			try? await refresh()
 		}
 
 		await withTaskGroup(of: Void.self) { group in
-			for _ in 0 ..< Self.maxConcurrentTasks {
+			for _ in 0 ..< Self.maxConcurrentTasks where !Task.isCancelled && !isShutdown {
 				if let task = getTask() {
 					group.addTask { await self.start(task) }
 				}
 			}
 
 			for await _ in group {
+				guard !Task.isCancelled, !isShutdown else {
+					group.cancelAll()
+					continue
+				}
 				if pendingTasks.count < Self.refreshThreshold {
 					try? await refresh()
 				}
@@ -161,6 +199,7 @@ actor TaskRunner {
 	}
 
 	private func getTask() -> InternalTask? {
+		guard !isShutdown, !Task.isCancelled else { return nil }
 		let runningKeys = Set(runningTasks.map(\.concurrencyKey))
 
 		guard let index = pendingTasks.firstIndex(where: { !runningKeys.contains($0.concurrencyKey) }) else {
@@ -173,8 +212,17 @@ actor TaskRunner {
 	}
 
 	private func start(_ task: InternalTask) async {
+		guard !isShutdown, !Task.isCancelled else {
+			finish(task)
+			return
+		}
 		while !allowDownloadsOnExpensiveNetworks, !(await network.isInexpensive) {
-			try? await Task.sleep(nanoseconds: 1_000_000_000)
+			do {
+				try await Task.sleep(nanoseconds: 1_000_000_000)
+			} catch {
+				finish(task)
+				return
+			}
 		}
 
 		do {
@@ -190,9 +238,18 @@ actor TaskRunner {
 
 		do {
 			try await task.run()
+			try Task.checkCancellation()
+			guard !isShutdown else { throw CancellationError() }
 			await task.download?.updateState(.completed)
 			try? await offlineApiClient.updateTask(taskId: task.id, state: .completed)
+		} catch is CancellationError {
+			finish(task)
+			return
 		} catch {
+			guard !isShutdown, !Task.isCancelled else {
+				finish(task)
+				return
+			}
 			Self.logger.error("Task \(task.id, privacy: .public) failed: \(error, privacy: .public)")
 			await task.download?.updateState(.failed)
 			try? await offlineApiClient.updateTask(taskId: task.id, state: .failed)

@@ -20,6 +20,7 @@ class OfflinerTestCase: XCTestCase {
 	}
 
 	func createOffliner(
+		installationId: String = UUID().uuidString,
 		offlineApiClient: OfflineApiClientProtocol,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
@@ -27,17 +28,13 @@ class OfflinerTestCase: XCTestCase {
 		videoManifestFetcher: VideoManifestFetcherProtocol = SucceedingVideoManifestFetcher(),
 		collectionDownloadStatePollInterval: UInt64 = 1_000_000_000
 	) -> Offliner {
-		let dbPath = tempDir.appendingPathComponent("test-\(UUID().uuidString).sqlite").path
 		// swiftlint:disable:next force_try
-		let databaseQueue = try! OfflineStore.makeDatabaseQueue(path: dbPath)
-		// swiftlint:disable:next force_try
-		try! Migrations.run(databaseQueue)
-		lastDatabaseQueue = databaseQueue
-		let offlineStore = OfflineStore(databaseQueue)
+		let storage = try! OfflinerStorage(installationId: installationId, baseDirectory: tempDir)
+		lastDatabaseQueue = storage.databaseQueue
 
 		return Offliner(
+			storage: storage,
 			offlineApiClient: offlineApiClient,
-			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			trackManifestFetcher: trackManifestFetcher,

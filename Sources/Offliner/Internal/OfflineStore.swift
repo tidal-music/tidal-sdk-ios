@@ -3,6 +3,8 @@ import GRDB
 
 final class OfflineStore {
 	private let databaseQueue: DatabaseQueue
+	private let writeLock = NSLock()
+	private var acceptsWrites = true
 
 	static func searchKey(_ value: String) -> String {
 		value.lowercased().folding(options: .diacriticInsensitive, locale: Locale(identifier: "en_US_POSIX"))
@@ -21,21 +23,14 @@ final class OfflineStore {
 		return try DatabaseQueue(path: path, configuration: configuration)
 	}
 
-	static func url() throws -> URL {
-		let appSupportURLs = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
-		guard let appSupportDirectory = appSupportURLs.first else {
-			throw FileStorageError.noApplicationSupportDirectory
-		}
-		let directory = appSupportDirectory.appendingPathComponent("Offliner", isDirectory: true)
-		try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-		return directory.appendingPathComponent("offline.sqlite")
-	}
-
 	init(_ databaseQueue: DatabaseQueue) {
 		self.databaseQueue = databaseQueue
 	}
 
 	func storeMediaItem(_ result: StoreItemTaskResult) throws {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
 		let catalogMetadataJson = try result.catalogMetadata.serialize()
 		let playbackMetadataJson = try result.playbackMetadata?.serialize()
 
@@ -116,6 +111,9 @@ final class OfflineStore {
 	}
 
 	func storeCollection(_ result: StoreCollectionTaskResult) throws {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
 		let catalogMetadataJson = try result.catalogMetadata.serialize()
 		let artworkBookmark = try result.artworkURL.map { try Self.makeBookmark(for: $0) }
 
@@ -143,6 +141,9 @@ final class OfflineStore {
 	}
 
 	func deleteCollection(resourceType: String, resourceId: String) throws {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
 		var bookmarksToDelete: [Data] = []
 
 		try databaseQueue.inTransaction { database in
@@ -170,6 +171,9 @@ final class OfflineStore {
 		fromCollection collectionType: String,
 		collectionId: String
 	) throws {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
 		var bookmarksToDelete: [Data] = []
 
 		try databaseQueue.inTransaction { database in
@@ -737,6 +741,31 @@ final class OfflineStore {
 		return ["media_bookmark", "license_bookmark", "artwork_bookmark"].compactMap { row?[$0] as Data? }
 	}
 
+	func invalidateWrites() {
+		writeLock.lock()
+		acceptsWrites = false
+		writeLock.unlock()
+	}
+
+	func allBookmarks() throws -> [Data] {
+		try databaseQueue.read { database in
+			let rows = try Row.fetchAll(database, sql: "SELECT media_bookmark, license_bookmark, artwork_bookmark FROM offline_item")
+			return rows.flatMap { row in
+				["media_bookmark", "license_bookmark", "artwork_bookmark"].compactMap { row[$0] as Data? }
+			}
+		}
+	}
+
+	private func ensureAcceptsWritesLocked() throws {
+		guard acceptsWrites else { throw OfflinerLifecycleError.reset }
+	}
+
+	private func ensureAcceptsWrites() throws {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
+	}
+
 	private func deleteFiles(for bookmarks: [Data]) {
 		for bookmarkData in bookmarks {
 			try? FileStorage.delete(bookmark: bookmarkData)
@@ -1032,6 +1061,7 @@ extension OfflineStore {
 		guard !renewals.isEmpty else {
 			return
 		}
+		try ensureAcceptsWrites()
 
 		let chunkSize = 300
 

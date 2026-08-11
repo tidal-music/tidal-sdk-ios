@@ -7,8 +7,10 @@ protocol ArtworkDownloaderProtocol {
 
 final class ArtworkDownloader: ArtworkDownloaderProtocol {
 	private let urlSession: URLSession
+	private let fileStorage: FileStorage
 
-	init(urlSession: URLSession = .shared) {
+	init(fileStorage: FileStorage, urlSession: URLSession = .shared) {
+		self.fileStorage = fileStorage
 		self.urlSession = urlSession
 	}
 
@@ -34,7 +36,8 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 		let fileExtension = imageURL.pathExtension.isEmpty ? "jpg" : imageURL.pathExtension
 		let filename = "\(UUID().uuidString).\(fileExtension)"
 
-		return try FileStorage.move(from: tempURL, subdirectory: "Artworks", filename: filename)
+		try Task.checkCancellation()
+		return try fileStorage.move(from: tempURL, subdirectory: "Artworks", filename: filename)
 	}
 }
 

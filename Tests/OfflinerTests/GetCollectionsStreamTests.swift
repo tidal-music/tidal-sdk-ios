@@ -2,6 +2,25 @@
 import XCTest
 
 final class GetCollectionsStreamTests: OfflinerTestCase {
+	func testStoredCollectionsSnapshotIsLocalOnlyAndPreservesDatabaseErrors() async throws {
+		let offliner = createOffliner(
+			offlineApiClient: FailingOfflineApiClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let collections = try await offliner.getStoredOfflineCollections(collectionType: .albums)
+		XCTAssertTrue(collections.isEmpty)
+		try await lastDatabaseQueue.write { database in
+			try database.drop(table: "offline_item")
+		}
+
+		do {
+			_ = try await offliner.getStoredOfflineCollections(collectionType: .albums)
+			XCTFail("Expected the local database error to be preserved")
+		} catch {}
+	}
+
 	func testGetOfflineCollectionEmitsLocalThenBackendPending() async throws {
 		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(

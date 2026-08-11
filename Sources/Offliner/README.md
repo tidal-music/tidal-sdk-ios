@@ -189,6 +189,32 @@ let allAlbums = try await offliner.getOfflineCollections(collectionType: .albums
 let allPlaylists = try await offliner.getOfflineCollections(collectionType: .playlists)
 ```
 
+For a finite, local-only snapshot that preserves database errors and works without a network connection, use:
+
+```swift
+let storedAlbums = try await offliner.getStoredOfflineCollections(collectionType: .albums)
+let storedPlaylists = try await offliner.getStoredOfflineCollections(collectionType: .playlists)
+```
+
+The existing streams continue to combine local state with pending backend inventory for compatibility.
+
+### Logout and Installation Changes
+
+Offline databases, artwork, licenses, media bookmarks, and background download sessions are isolated by the
+`installationId` passed to `Offliner`. Before discarding an instance during logout or an installation/account change,
+reset it and await completion:
+
+```swift
+try await offliner.reset()
+```
+
+Reset is local-only: it cancels and awaits ongoing work, removes that installation's local data and artifacts, and does
+not enqueue backend removals. A reset instance is permanently invalid; create a new `Offliner` for the next session.
+
+When upgrading from an SDK version that used the original unscoped store, the first installation initialized after the
+upgrade claims and migrates that existing database and its artwork/license directories into installation-scoped
+storage. Its persisted bookmarks are retained and renewed when needed.
+
 ### Collection Items (Paginated)
 
 Get items within a collection using cursor-based pagination:
