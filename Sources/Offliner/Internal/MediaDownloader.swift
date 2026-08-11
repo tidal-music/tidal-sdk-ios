@@ -230,4 +230,5 @@ private final class ActiveDownload {
 enum MediaDownloaderError: Error {
 	case noDownloadedFile
 	case manifestNotFound
+	case previewManifest
 }

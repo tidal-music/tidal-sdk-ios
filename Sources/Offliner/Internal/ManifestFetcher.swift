@@ -43,6 +43,8 @@ final class TrackManifestFetcher: TrackManifestFetcherProtocol {
 
 		let attributes = response.data.attributes
 
+		try validateFullTrackPresentation(attributes?.trackPresentation)
+
 		guard let uriString = attributes?.uri,
 			  let url = URL(string: uriString) else {
 			throw MediaDownloaderError.manifestNotFound
@@ -60,6 +62,10 @@ final class TrackManifestFetcher: TrackManifestFetcherProtocol {
 
 		return ManifestFetchResult(manifestURL: url, drmData: attributes?.drmData, playbackMetadata: playbackMetadata)
 	}
+}
+
+func validateFullTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) throws {
+	guard presentation == .full else { throw MediaDownloaderError.previewManifest }
 }
 
 // MARK: - VideoManifestFetcher
