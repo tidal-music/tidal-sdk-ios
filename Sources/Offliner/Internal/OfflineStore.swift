@@ -350,6 +350,24 @@ final class OfflineStore {
 		deleteFiles(for: bookmarksToDelete)
 	}
 
+	func invalidateMediaItem(resourceType: String, resourceId: String) throws {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
+		var bookmarksToDelete: [Data] = []
+
+		try databaseQueue.inTransaction { database in
+			bookmarksToDelete = try collectBookmarks(resourceType: resourceType, resourceId: resourceId, database: database)
+			try database.execute(
+				sql: "DELETE FROM offline_item WHERE resource_type = ? AND resource_id = ?",
+				arguments: [resourceType, resourceId]
+			)
+			return .commit
+		}
+
+		deleteFiles(for: bookmarksToDelete)
+	}
+
 	func getCollection(collectionType: OfflineCollectionType, resourceId: String) async throws -> OfflineCollection? {
 		let row = try await databaseQueue.read { database in
 			try Row.fetchOne(

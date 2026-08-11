@@ -12,8 +12,10 @@ public final class Offliner {
 	private let resourceStateTracker: ResourceStateTracker
 	private var trackManifestFetcher: TrackManifestFetcherProtocol
 	private let lifecycleLock = NSLock()
+	private let playbackReplacementLock = NSLock()
 	private var isReset = false
 	private var resetTask: Task<Void, Error>?
+	private var playbackReplacementResources: Set<OfflineResourceKey> = []
 
 	public var audioFormats: [AudioFormat] {
 		didSet {
@@ -182,9 +184,53 @@ public final class Offliner {
 		do {
 			return try await offlineStore.getPlaybackAsset(mediaType: mediaType, resourceId: resourceId.stringValue)
 		} catch {
-			Task { try? await download(mediaType: mediaType, resourceId: resourceId) }
+			schedulePlaybackAssetReplacement(mediaType: mediaType, resourceId: resourceId)
 			return nil
 		}
+	}
+
+	/// Returns an AVFoundation asset prepared for unprotected or stored-license playback.
+	///
+	/// Retain the returned object for the entire lifetime of every `AVPlayerItem` made from its `urlAsset`, including while
+	/// queued. If stored playback files or license preparation cannot be resolved, this returns `nil` and schedules one
+	/// idempotent replacement download.
+	public func getOfflinePlaybackAVAsset(
+		mediaType: OfflineMediaItemType,
+		resourceId: ResourceId
+	) async -> OfflinePlaybackAVAsset? {
+		guard let playbackAsset = await getOfflinePlaybackAsset(mediaType: mediaType, resourceId: resourceId) else {
+			return nil
+		}
+		do {
+			return try OfflinePlaybackAVAsset(playbackAsset: playbackAsset)
+		} catch {
+			schedulePlaybackAssetReplacement(mediaType: mediaType, resourceId: resourceId)
+			return nil
+		}
+	}
+
+	private func schedulePlaybackAssetReplacement(mediaType: OfflineMediaItemType, resourceId: ResourceId) {
+		let resource = OfflineResourceKey(resourceType: mediaType.rawValue, resourceId: resourceId.stringValue)
+		playbackReplacementLock.lock()
+		let inserted = playbackReplacementResources.insert(resource).inserted
+		playbackReplacementLock.unlock()
+		guard inserted else { return }
+
+		Task {
+			defer { finishPlaybackAssetReplacement(resource) }
+			do {
+				try offlineStore.invalidateMediaItem(resourceType: mediaType.rawValue, resourceId: resourceId.stringValue)
+				try await download(mediaType: mediaType, resourceId: resourceId)
+			} catch {
+				// Playback lookup remains nonthrowing. Resource state exposes a failed replacement registration.
+			}
+		}
+	}
+
+	private func finishPlaybackAssetReplacement(_ resource: OfflineResourceKey) {
+		playbackReplacementLock.lock()
+		playbackReplacementResources.remove(resource)
+		playbackReplacementLock.unlock()
 	}
 
 	public func getOfflineCollection(

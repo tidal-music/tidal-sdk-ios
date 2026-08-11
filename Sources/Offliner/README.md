@@ -403,6 +403,45 @@ let asset = await offliner.getOfflinePlaybackAsset(
 // Returns mediaURL, licenseURL, and playback metadata, or nil when no playable asset is stored.
 ```
 
+On watchOS, do not create a plain `AVURLAsset` from `mediaURL` when `licenseURL` is present. Prepare the asset through
+Offliner so protected downloads receive their persisted FairPlay license:
+
+```swift
+import AVFoundation
+import Offliner
+
+final class QueuedOfflinePlayback {
+    // Retain this wrapper for the entire lifetime of playerItem, including while it is queued.
+    let preparedAsset: OfflinePlaybackAVAsset
+    let playerItem: AVPlayerItem
+
+    init(preparedAsset: OfflinePlaybackAVAsset) {
+        self.preparedAsset = preparedAsset
+        playerItem = AVPlayerItem(asset: preparedAsset.urlAsset)
+    }
+}
+
+guard let preparedAsset = await offliner.getOfflinePlaybackAVAsset(
+    mediaType: .tracks,
+    resourceId: .identifier("track-id")
+) else {
+    // The item is unavailable; Offliner schedules an idempotent replacement download when stored files are corrupt.
+    return
+}
+
+let queuedPlayback = QueuedOfflinePlayback(preparedAsset: preparedAsset)
+player.insert(queuedPlayback.playerItem, after: nil)
+// Keep queuedPlayback alive until its playerItem has been removed from the queue.
+```
+
+`getOfflinePlaybackAVAsset` is the supported watchOS lookup. `OfflinePlaybackAVAsset` creates no content-key session for
+unprotected media. For protected media it loads the stored
+license, creates an `AVContentKeySession(.fairPlayStreaming)`, installs the stored-license delegate, and registers its
+`urlAsset` as the content-key recipient. If preparation fails, the lookup returns `nil`, invalidates the corrupt local item,
+and schedules one idempotent replacement download without enqueueing a backend removal. The public throwing initializer is
+also available when a consumer needs the exact missing/unreadable stored-license error for diagnostics.
+Real FairPlay playback remains part of TM-1574 device validation.
+
 Offliner has no dependency on the Player module because Player does not support watchOS. Consumers that use Player can declare the `OfflineItemProvider` conformance in a target that links both products:
 
 ```swift
