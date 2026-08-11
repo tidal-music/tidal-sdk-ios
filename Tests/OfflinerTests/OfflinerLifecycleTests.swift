@@ -2,6 +2,37 @@
 import XCTest
 
 final class OfflinerLifecycleTests: OfflinerTestCase {
+	func testBackgroundSessionEventHandlingReturnsDownloaderDecision() {
+		let mediaDownloader = SucceedingMediaDownloader()
+		mediaDownloader.handlesBackgroundSessionEvents = true
+		let offliner = createOffliner(
+			offlineApiClient: FailingOfflineApiClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: mediaDownloader
+		)
+
+		let handled = offliner.handleBackgroundURLSessionEvents(identifier: "matching-session") {}
+
+		XCTAssertTrue(handled)
+		XCTAssertEqual(mediaDownloader.backgroundSessionIdentifiers, ["matching-session"])
+	}
+
+	func testBackgroundSessionEventHandlingRejectsResetInstance() async throws {
+		let mediaDownloader = SucceedingMediaDownloader()
+		mediaDownloader.handlesBackgroundSessionEvents = true
+		let offliner = createOffliner(
+			offlineApiClient: FailingOfflineApiClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: mediaDownloader
+		)
+		try await offliner.reset()
+
+		let handled = offliner.handleBackgroundURLSessionEvents(identifier: "matching-session") {}
+
+		XCTAssertFalse(handled)
+		XCTAssertTrue(mediaDownloader.backgroundSessionIdentifiers.isEmpty)
+	}
+
 	func testInstallationIdsHaveIsolatedCollectionsAndBackgroundSessions() async throws {
 		let firstBackend = StubOfflineApiClient()
 		let first = createOffliner(

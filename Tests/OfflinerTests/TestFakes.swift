@@ -342,8 +342,13 @@ actor SuspendingArtworkDownloader: ArtworkDownloaderProtocol {
 
 final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	var progressValues: [Double] = []
+	var handlesBackgroundSessionEvents = false
+	private(set) var backgroundSessionIdentifiers: [String] = []
 
-	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool {
+		backgroundSessionIdentifiers.append(identifier)
+		return handlesBackgroundSessionEvents
+	}
 	func cancelAll() async {}
 
 	func download(
@@ -369,7 +374,7 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 }
 
 final class FailingMediaDownloader: MediaDownloaderProtocol {
-	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool { false }
 	func cancelAll() async {}
 
 	func download(
@@ -395,7 +400,7 @@ actor SuspendingMediaDownloader: MediaDownloaderProtocol {
 		self.resumesOnCancel = resumesOnCancel
 	}
 
-	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool { false }
 
 	func cancelAll() {
 		cancelled = true
@@ -465,7 +470,7 @@ actor SelectiveSuspendingMediaDownloader: MediaDownloaderProtocol {
 		self.failingTaskIds = failingTaskIds
 	}
 
-	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool { false }
 
 	func cancelAll() {
 		for continuation in continuations.values {

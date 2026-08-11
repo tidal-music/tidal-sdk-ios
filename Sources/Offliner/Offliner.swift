@@ -38,9 +38,13 @@ public final class Offliner {
 		}
 	}
 
-	public func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {
-		guard isActive else { return }
-		mediaDownloader.handleBackgroundURLSessionEvents(identifier: identifier, completionHandler: completionHandler)
+	@discardableResult
+	public func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool {
+		guard isActive else { return false }
+		return mediaDownloader.handleBackgroundURLSessionEvents(
+			identifier: identifier,
+			completionHandler: completionHandler
+		)
 	}
 
 	public init(installationId: String, configuration: Configuration) throws {

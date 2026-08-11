@@ -21,7 +21,7 @@ protocol MediaDownloaderProtocol {
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult
 
-	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void)
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool
 	func cancelAll() async
 }
 
@@ -57,11 +57,12 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		)
 	}
 
-	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool {
+		guard identifier == backgroundSessionIdentifier else { return false }
 		DispatchQueue.main.async {
-			guard identifier == self.backgroundSessionIdentifier else { return }
 			self.backgroundCompletionHandler = completionHandler
 		}
+		return true
 	}
 
 	func cancelAll() async {
