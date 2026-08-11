@@ -36,6 +36,8 @@ final class StoreVideoHandler {
 				title: title,
 				artists: artists,
 				imageURL: imageURL,
+				taskId: task.id,
+				resource: .media(type: .videos, resourceId: task.video.id),
 				relatedCollection: relatedCollection
 			),
 			offlineStore: offlineStore,

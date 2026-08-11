@@ -120,9 +120,10 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		XCTAssertEqual(URL(fileURLWithPath: embeddedPath).standardizedFileURL.path, movedURL.standardizedFileURL.path)
 	}
 
-	func testRedownloadTrackDeletesOldFilesAndStoresNewOnes() async throws {
+	func testRepeatedDownloadTrackIsIdempotentAfterCompletion() async throws {
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			offlineApiClient: StubOfflineApiClient(),
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SucceedingMediaDownloader()
 		)
@@ -142,7 +143,6 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
 
 		try await offliner.download(mediaType: .tracks, resourceId: .identifier("track-123"))
-		try await downloadAndWaitForCompletion(offliner)
 
 		let secondItem = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
 		let secondItemUnwrapped = try XCTUnwrap(secondItem)
@@ -153,14 +153,15 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		let secondMediaURL = try XCTUnwrap(secondPlayableItem?.mediaURL)
 		let secondArtworkURL = try XCTUnwrap(secondItemUnwrapped.artworkURL)
 
-		XCTAssertFalse(FileManager.default.fileExists(atPath: firstMediaURL.path))
-		XCTAssertFalse(FileManager.default.fileExists(atPath: firstArtworkURL.path))
+		XCTAssertTrue(FileManager.default.fileExists(atPath: firstMediaURL.path))
+		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
 
 		XCTAssertTrue(FileManager.default.fileExists(atPath: secondMediaURL.path))
 		XCTAssertTrue(FileManager.default.fileExists(atPath: secondArtworkURL.path))
 
-		XCTAssertNotEqual(firstMediaURL, secondMediaURL)
-		XCTAssertNotEqual(firstArtworkURL, secondArtworkURL)
+		XCTAssertEqual(firstMediaURL, secondMediaURL)
+		XCTAssertEqual(firstArtworkURL, secondArtworkURL)
+		XCTAssertEqual(backend.addedItems.count, 1)
 	}
 
 	func testDownloadTrackFailsWhenMediaDownloadFails() async throws {

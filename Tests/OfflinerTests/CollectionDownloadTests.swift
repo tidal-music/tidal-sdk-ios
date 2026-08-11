@@ -155,7 +155,7 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		XCTAssertEqual(state, .notDownloaded)
 	}
 
-	func testRedownloadAlbumDeletesOldArtworkAndStoresNewOne() async throws {
+	func testRepeatedDownloadAlbumIsIdempotentAfterCompletion() async throws {
 		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
 			offlineApiClient: backend,
@@ -180,9 +180,10 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		let secondCollection = try XCTUnwrap(secondCollectionOptional)
 		let secondArtworkURL = try XCTUnwrap(secondCollection.artworkURL)
 
-		XCTAssertFalse(FileManager.default.fileExists(atPath: firstArtworkURL.path))
+		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
 		XCTAssertTrue(FileManager.default.fileExists(atPath: secondArtworkURL.path))
-		XCTAssertNotEqual(firstArtworkURL, secondArtworkURL)
+		XCTAssertEqual(firstArtworkURL, secondArtworkURL)
+		XCTAssertEqual(backend.addedItems.count, 1)
 	}
 
 	func testDownloadAlbumFailsWhenArtworkDownloadFails() async throws {

@@ -16,6 +16,12 @@ public actor Download {
 	public nonisolated let title: String
 	public nonisolated let artists: [String]
 	public nonisolated let imageURL: URL?
+	/// The backend task identifier used to correlate this transfer with task processing.
+	public nonisolated let taskId: String
+	/// The track or video transferred by this download.
+	public nonisolated let resource: OfflineResource
+	/// The collection that caused the transfer, when applicable.
+	public nonisolated let collection: OfflineResource?
 	public nonisolated let events: AsyncStream<Event>
 	nonisolated let relatedCollection: OfflineCollectionReference?
 
@@ -25,12 +31,19 @@ public actor Download {
 		title: String,
 		artists: [String],
 		imageURL: URL?,
+		taskId: String,
+		resource: OfflineResource,
 		relatedCollection: OfflineCollectionReference? = nil
 	) {
 		self.title = title
 		self.artists = artists
 		self.imageURL = imageURL
+		self.taskId = taskId
+		self.resource = resource
 		self.relatedCollection = relatedCollection
+		self.collection = relatedCollection.map {
+			.collection(type: $0.collectionType, resourceId: $0.resourceId)
+		}
 
 		let (stream, continuation) = AsyncStream<Event>.makeStream()
 		self.events = stream

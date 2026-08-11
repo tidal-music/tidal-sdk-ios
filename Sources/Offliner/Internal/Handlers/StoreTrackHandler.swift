@@ -36,6 +36,8 @@ final class StoreTrackHandler {
 				title: title,
 				artists: artists,
 				imageURL: imageURL,
+				taskId: task.id,
+				resource: .media(type: .tracks, resourceId: task.track.id),
 				relatedCollection: relatedCollection
 			),
 			offlineStore: offlineStore,

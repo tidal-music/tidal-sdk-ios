@@ -11,7 +11,9 @@ public extension Download {
 		Download(
 			title: title,
 			artists: artists,
-			imageURL: imageURL
+			imageURL: imageURL,
+			taskId: "mock-task",
+			resource: .media(type: .tracks, resourceId: "mock-track")
 		)
 	}
 }

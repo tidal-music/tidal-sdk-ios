@@ -2,14 +2,14 @@ import Foundation
 
 // MARK: - OfflineMediaItemType
 
-public enum OfflineMediaItemType: String, Sendable {
+public enum OfflineMediaItemType: String, Sendable, Hashable {
 	case tracks
 	case videos
 }
 
 // MARK: - OfflineCollectionType
 
-public enum OfflineCollectionType: String, Sendable {
+public enum OfflineCollectionType: String, Sendable, Hashable {
 	case albums
 	case playlists
 	case userCollectionTracks
@@ -17,7 +17,7 @@ public enum OfflineCollectionType: String, Sendable {
 
 // MARK: - ResourceId
 
-public enum ResourceId: Sendable {
+public enum ResourceId: Sendable, Hashable {
 	case identifier(String)
 	case me
 
@@ -27,6 +27,40 @@ public enum ResourceId: Sendable {
 		case .me: "me"
 		}
 	}
+}
+
+// MARK: - OfflineResource
+
+/// A stable identity for a resource managed by Offliner.
+public enum OfflineResource: Sendable, Hashable {
+	case media(type: OfflineMediaItemType, resourceId: String)
+	case collection(type: OfflineCollectionType, resourceId: String)
+}
+
+/// The operation requested for an offline resource.
+public enum OfflineResourceAction: String, Sendable, Hashable {
+	case download
+	case remove
+}
+
+// MARK: - OfflineResourceState
+
+/// The normalized local operation and availability state of an offline resource.
+public enum OfflineResourceState: Sendable, Hashable {
+	case notDownloaded
+	case queued
+	case downloading
+	case downloaded
+	case removing
+	/// The operation failed. The associated action is the stable retry direction.
+	case failed(action: OfflineResourceAction)
+}
+
+// MARK: - OfflineResourceOperationError
+
+public enum OfflineResourceOperationError: Error, Sendable, Equatable {
+	/// The requested action conflicts with an operation already in progress for this resource.
+	case conflictingOperationInProgress(currentState: OfflineResourceState)
 }
 
 // MARK: - OfflineMediaItem
@@ -105,19 +139,17 @@ public enum OfflineCollectionState: Hashable {
 
 // MARK: - OfflineCollectionDownloadState
 
-/// Collection-level offline availability for albums, playlists, and user collection tracks.
+/// Compatibility collection availability for albums, playlists, and user collection tracks.
 ///
-/// This state describes whether collection media is available offline or known by this SDK instance to be acquired. It
-/// does not model generic offliner task activity: collection removal is represented as `notDownloaded`, not
-/// `downloading`.
+/// Use `OfflineResourceState` when queued, removal, and failure states are needed.
 public enum OfflineCollectionDownloadState: Sendable, Hashable {
-	/// The collection is not locally downloaded, or it is being removed.
+	/// The collection is not locally downloaded, is being removed, or its download failed.
 	case notDownloaded
 
 	/// The collection or one of its members has active download/acquisition work known by this SDK instance.
 	case downloading
 
-	/// The collection is locally stored and there is no locally known pending download/acquisition work.
+	/// The collection is locally stored, including after a failed removal.
 	case downloaded
 }
 

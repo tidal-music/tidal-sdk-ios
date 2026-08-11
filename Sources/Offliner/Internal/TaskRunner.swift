@@ -19,10 +19,12 @@ actor TaskRunner {
 	private let network: Network
 	private let mediaDownloader: MediaDownloaderProtocol
 	private let licenseDownloader: LicenseDownloader
+	private let resourceStateTracker: ResourceStateTracker
 
 	private var pendingTasks: [InternalTask] = []
 	private var runningTasks: [InternalTask] = []
 	private var taskIds: Set<String> = []
+	private var taskActions: [String: InternalOfflineResourceAction] = [:]
 
 	private var processTask: Task<Void, Never>?
 	private var rerunRequested = false
@@ -42,6 +44,7 @@ actor TaskRunner {
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
 		licenseDownloader: LicenseDownloader,
+		resourceStateTracker: ResourceStateTracker,
 		trackManifestFetcher: TrackManifestFetcherProtocol,
 		videoManifestFetcher: VideoManifestFetcherProtocol
 	) {
@@ -50,6 +53,7 @@ actor TaskRunner {
 		self.network = Network()
 		self.mediaDownloader = mediaDownloader
 		self.licenseDownloader = licenseDownloader
+		self.resourceStateTracker = resourceStateTracker
 
 		let (stream, continuation) = AsyncStream<Download>.makeStream()
 		self.newDownloads = stream
@@ -104,6 +108,11 @@ actor TaskRunner {
 		}
 	}
 
+	func synchronizeState() async {
+		guard !isShutdown else { return }
+		try? await refresh()
+	}
+
 	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) {
 		guard !isShutdown else { return }
 		allowDownloadsOnExpensiveNetworks = allowed
@@ -135,26 +144,41 @@ actor TaskRunner {
 		pendingTasks.removeAll()
 		runningTasks.removeAll()
 		taskIds.removeAll()
+		taskActions.removeAll()
 		currentDownloads.removeAll()
 		downloadsContinuation?.finish()
 		downloadsContinuation = nil
+		await resourceStateTracker.shutdown()
 	}
 
 	private func refresh() async throws {
 		try Task.checkCancellation()
 		guard !isShutdown else { return }
-		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
-		try Task.checkCancellation()
-		guard !isShutdown else { return }
+		var cursor: String?
+		repeat {
+			let page = try await offlineApiClient.getTasks(cursor: cursor)
+			try Task.checkCancellation()
+			guard !isShutdown else { return }
 
-		for task in tasks where taskIds.insert(task.id).inserted {
-			let pendingTask = handle(task)
-			pendingTasks.append(pendingTask)
-			if let download = pendingTask.download {
-				currentDownloads.append(download)
-				downloadsContinuation?.yield(download)
+			for task in page.tasks where taskIds.insert(task.id).inserted {
+				taskActions[task.id] = task.action
+				let state = task.resourceState
+				await resourceStateTracker.record(
+					taskId: task.id,
+					action: task.action,
+					state: state,
+					resources: task.resourceKeys
+				)
+				guard task.state == .pending || task.state == .inProgress else { continue }
+				let pendingTask = handle(task)
+				pendingTasks.append(pendingTask)
+				if let download = pendingTask.download {
+					currentDownloads.append(download)
+					downloadsContinuation?.yield(download)
+				}
 			}
-		}
+			cursor = page.cursor
+		} while cursor != nil
 	}
 
 	private func handle(_ offlineTask: OfflineTask) -> InternalTask {
@@ -166,6 +190,7 @@ actor TaskRunner {
 		case .storeUserCollectionTracks(let task): storeUserCollectionTracksHandler.handle(task)
 		case .removeItem(let task): removeItemHandler.handle(task)
 		case .removeCollection(let task): removeCollectionHandler.handle(task)
+		case .terminal: preconditionFailure("Terminal offline tasks are never executed")
 		}
 	}
 
@@ -200,9 +225,15 @@ actor TaskRunner {
 
 	private func getTask() -> InternalTask? {
 		guard !isShutdown, !Task.isCancelled else { return nil }
-		let runningKeys = Set(runningTasks.map(\.concurrencyKey))
-
-		guard let index = pendingTasks.firstIndex(where: { !runningKeys.contains($0.concurrencyKey) }) else {
+		guard let index = pendingTasks.firstIndex(where: { candidate in
+			runningTasks.allSatisfy { running in
+				guard candidate.concurrencyKey != running.concurrencyKey else { return false }
+				let actionsDiffer = taskActions[candidate.id] != taskActions[running.id]
+				guard actionsDiffer else { return true }
+				let includesCollectionWideOperation = candidate.isCollectionWide || running.isCollectionWide
+				return !includesCollectionWideOperation || candidate.resourceKeys.isDisjoint(with: running.resourceKeys)
+			}
+		}) else {
 			return nil
 		}
 
@@ -230,11 +261,14 @@ actor TaskRunner {
 		} catch {
 			Self.logger.error("Failed to mark task \(task.id, privacy: .public) as in progress, skipping it: \(error, privacy: .public)")
 			await task.download?.updateState(.failed)
+			await resourceStateTracker.finish(taskId: task.id, succeeded: false)
 			finish(task)
 			return
 		}
 
 		await task.download?.updateState(.inProgress)
+		let activeState: OfflineResourceState = taskActions[task.id] == .remove ? .removing : .downloading
+		await resourceStateTracker.update(taskId: task.id, state: activeState)
 
 		do {
 			try await task.run()
@@ -242,6 +276,7 @@ actor TaskRunner {
 			guard !isShutdown else { throw CancellationError() }
 			await task.download?.updateState(.completed)
 			try? await offlineApiClient.updateTask(taskId: task.id, state: .completed)
+			await resourceStateTracker.finish(taskId: task.id, succeeded: true)
 		} catch is CancellationError {
 			finish(task)
 			return
@@ -253,6 +288,7 @@ actor TaskRunner {
 			Self.logger.error("Task \(task.id, privacy: .public) failed: \(error, privacy: .public)")
 			await task.download?.updateState(.failed)
 			try? await offlineApiClient.updateTask(taskId: task.id, state: .failed)
+			await resourceStateTracker.finish(taskId: task.id, succeeded: false)
 		}
 
 		finish(task)
@@ -261,6 +297,7 @@ actor TaskRunner {
 	private func finish(_ task: InternalTask) {
 		runningTasks.removeAll { $0 === task }
 		taskIds.remove(task.id)
+		taskActions.removeValue(forKey: task.id)
 		if let download = task.download {
 			currentDownloads.removeAll { $0 === download }
 		}
@@ -311,6 +348,7 @@ protocol InternalTask: AnyObject {
 	var id: String { get }
 	var download: Download? { get }
 	var concurrencyKey: OfflineTaskConcurrencyKey { get }
+	var resourceKeys: Set<OfflineResourceKey> { get }
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool
 	func run() async throws
 }
@@ -320,5 +358,34 @@ extension InternalTask {
 
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
 		download?.relatedCollection == collection
+	}
+
+	var resourceKeys: Set<OfflineResourceKey> {
+		var keys = Set([OfflineResourceKey(
+			resourceType: concurrencyKey.resourceType,
+			resourceId: concurrencyKey.resourceId
+		)])
+		if let collectionType = concurrencyKey.collectionType, let collectionId = concurrencyKey.collectionId {
+			keys.insert(OfflineResourceKey(resourceType: collectionType, resourceId: collectionId))
+		}
+		return keys
+	}
+
+	var isCollectionWide: Bool {
+		OfflineCollectionType(rawValue: concurrencyKey.resourceType) != nil
+	}
+}
+
+private extension OfflineTask {
+	var resourceState: OfflineResourceState {
+		switch (action, state) {
+		case (.store, .pending): .queued
+		case (.store, .inProgress): .downloading
+		case (.store, .failed): .failed(action: .download)
+		case (.store, .completed): .downloaded
+		case (.remove, .pending), (.remove, .inProgress): .removing
+		case (.remove, .failed): .failed(action: .remove)
+		case (.remove, .completed): .notDownloaded
+		}
 	}
 }

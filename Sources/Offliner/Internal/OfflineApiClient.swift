@@ -16,6 +16,7 @@ enum ResourceType {
 
 struct StoreTrackTask {
 	let id: String
+	let state: Download.State
 	let track: TracksResourceObject
 	let album: AlbumsResourceObject?
 	let artists: [ArtistsResourceObject]
@@ -28,6 +29,7 @@ struct StoreTrackTask {
 
 	init(
 		id: String,
+		state: Download.State = .pending,
 		track: TracksResourceObject,
 		album: AlbumsResourceObject? = nil,
 		artists: [ArtistsResourceObject],
@@ -39,6 +41,7 @@ struct StoreTrackTask {
 		addedAt: Date? = nil
 	) {
 		self.id = id
+		self.state = state
 		self.track = track
 		self.album = album
 		self.artists = artists
@@ -53,6 +56,7 @@ struct StoreTrackTask {
 
 struct StoreVideoTask {
 	let id: String
+	let state: Download.State
 	let video: VideosResourceObject
 	let artists: [ArtistsResourceObject]
 	let artwork: ArtworksResourceObject?
@@ -64,6 +68,7 @@ struct StoreVideoTask {
 
 	init(
 		id: String,
+		state: Download.State = .pending,
 		video: VideosResourceObject,
 		artists: [ArtistsResourceObject],
 		artwork: ArtworksResourceObject?,
@@ -74,6 +79,7 @@ struct StoreVideoTask {
 		addedAt: Date? = nil
 	) {
 		self.id = id
+		self.state = state
 		self.video = video
 		self.artists = artists
 		self.artwork = artwork
@@ -87,6 +93,7 @@ struct StoreVideoTask {
 
 struct StoreAlbumTask {
 	let id: String
+	var state: Download.State = .pending
 	let album: AlbumsResourceObject
 	let artists: [ArtistsResourceObject]
 	let artwork: ArtworksResourceObject?
@@ -94,17 +101,20 @@ struct StoreAlbumTask {
 
 struct StorePlaylistTask {
 	let id: String
+	var state: Download.State = .pending
 	let playlist: PlaylistsResourceObject
 	let artwork: ArtworksResourceObject?
 }
 
 struct StoreUserCollectionTracksTask {
 	let id: String
+	var state: Download.State = .pending
 	let resourceId: String
 }
 
 struct RemoveItemTask {
 	let id: String
+	var state: Download.State = .pending
 	let resourceType: String
 	let resourceId: String
 	let collectionResourceType: String
@@ -113,8 +123,19 @@ struct RemoveItemTask {
 
 struct RemoveCollectionTask {
 	let id: String
+	var state: Download.State = .pending
 	let resourceType: String
 	let resourceId: String
+}
+
+struct TerminalOfflineTask {
+	let id: String
+	let state: Download.State
+	let action: InternalOfflineResourceAction
+	let resourceType: String
+	let resourceId: String
+	let collectionResourceType: String?
+	let collectionResourceId: String?
 }
 
 // MARK: - OfflineTask
@@ -127,6 +148,7 @@ enum OfflineTask {
 	case storeUserCollectionTracks(StoreUserCollectionTracksTask)
 	case removeItem(RemoveItemTask)
 	case removeCollection(RemoveCollectionTask)
+	case terminal(TerminalOfflineTask)
 
 	var id: String {
 		switch self {
@@ -137,6 +159,62 @@ enum OfflineTask {
 		case .storeUserCollectionTracks(let task): return task.id
 		case .removeItem(let task): return task.id
 		case .removeCollection(let task): return task.id
+		case .terminal(let task): return task.id
+		}
+	}
+
+	var state: Download.State {
+		switch self {
+		case .storeTrack(let task): task.state
+		case .storeVideo(let task): task.state
+		case .storeAlbum(let task): task.state
+		case .storePlaylist(let task): task.state
+		case .storeUserCollectionTracks(let task): task.state
+		case .removeItem(let task): task.state
+		case .removeCollection(let task): task.state
+		case .terminal(let task): task.state
+		}
+	}
+
+	var action: InternalOfflineResourceAction {
+		switch self {
+		case .storeTrack, .storeVideo, .storeAlbum, .storePlaylist, .storeUserCollectionTracks: .store
+		case .removeItem, .removeCollection: .remove
+		case .terminal(let task): task.action
+		}
+	}
+
+	var resourceKeys: Set<OfflineResourceKey> {
+		switch self {
+		case .storeTrack(let task):
+			return [
+				OfflineResourceKey(resourceType: OfflineMediaItemType.tracks.rawValue, resourceId: task.track.id),
+				OfflineResourceKey(resourceType: task.collectionResourceType, resourceId: task.collectionResourceId),
+			]
+		case .storeVideo(let task):
+			return [
+				OfflineResourceKey(resourceType: OfflineMediaItemType.videos.rawValue, resourceId: task.video.id),
+				OfflineResourceKey(resourceType: task.collectionResourceType, resourceId: task.collectionResourceId),
+			]
+		case .storeAlbum(let task):
+			return [OfflineResourceKey(resourceType: OfflineCollectionType.albums.rawValue, resourceId: task.album.id)]
+		case .storePlaylist(let task):
+			return [OfflineResourceKey(resourceType: OfflineCollectionType.playlists.rawValue, resourceId: task.playlist.id)]
+		case .storeUserCollectionTracks(let task):
+			return [OfflineResourceKey(resourceType: OfflineCollectionType.userCollectionTracks.rawValue, resourceId: task.resourceId)]
+		case .removeItem(let task):
+			return [
+				OfflineResourceKey(resourceType: task.resourceType, resourceId: task.resourceId),
+				OfflineResourceKey(resourceType: task.collectionResourceType, resourceId: task.collectionResourceId),
+			]
+		case .removeCollection(let task):
+			return [OfflineResourceKey(resourceType: task.resourceType, resourceId: task.resourceId)]
+		case .terminal(let task):
+			var resources = Set([OfflineResourceKey(resourceType: task.resourceType, resourceId: task.resourceId)])
+			if let collectionType = task.collectionResourceType, let collectionId = task.collectionResourceId {
+				resources.insert(OfflineResourceKey(resourceType: collectionType, resourceId: collectionId))
+			}
+			return resources
 		}
 	}
 }
@@ -359,6 +437,17 @@ private extension OfflineTasksResourceObject {
 		let includedItem = includedItems.get(type: itemData.type, id: itemData.id)
 		let includedCollection = collectionData.flatMap { includedItems.get(type: $0.type, id: $0.id) }
 		let addedAt = includedCollection?.playlistItemAddedAt(for: itemData)
+		if attributes.state == .failed || attributes.state == .completed {
+			return .terminal(TerminalOfflineTask(
+				id: id,
+				state: attributes.state.downloadState,
+				action: attributes.action == .store ? .store : .remove,
+				resourceType: itemData.type,
+				resourceId: itemData.id,
+				collectionResourceType: collectionData?.type,
+				collectionResourceId: collectionData?.id
+			))
+		}
 
 		switch attributes.action {
 		case .store:
@@ -370,23 +459,32 @@ private extension OfflineTasksResourceObject {
 				return StoreVideoTask(self, attributes: attributes, item: includedItem, collectionData: collectionData, addedAt: addedAt)
 					.map { .storeVideo($0) }
 			case "albums":
-				return StoreAlbumTask(self, item: includedItem)
+				return StoreAlbumTask(self, attributes: attributes, item: includedItem)
 					.map { .storeAlbum($0) }
 			case "playlists":
-				return StorePlaylistTask(self, item: includedItem)
+				return StorePlaylistTask(self, attributes: attributes, item: includedItem)
 					.map { .storePlaylist($0) }
 			case "userCollectionTracks":
-				return .storeUserCollectionTracks(StoreUserCollectionTracksTask(id: id, resourceId: itemData.id))
+				return .storeUserCollectionTracks(StoreUserCollectionTracksTask(
+					id: id,
+					state: attributes.state.downloadState,
+					resourceId: itemData.id
+				))
 			default:
 				return nil
 			}
 		case .remove:
 			switch itemData.type {
 			case "tracks", "videos":
-				return RemoveItemTask(self, itemData: itemData, collectionData: collectionData)
+				return RemoveItemTask(self, attributes: attributes, itemData: itemData, collectionData: collectionData)
 					.map { .removeItem($0) }
 			case "albums", "playlists", "userCollectionTracks":
-				return .removeCollection(RemoveCollectionTask(id: id, resourceType: itemData.type, resourceId: itemData.id))
+				return .removeCollection(RemoveCollectionTask(
+					id: id,
+					state: attributes.state.downloadState,
+					resourceType: itemData.type,
+					resourceId: itemData.id
+				))
 			default:
 				return nil
 			}
@@ -605,6 +703,7 @@ private extension StoreTrackTask {
 		guard let item, case .track(let track) = item.resource, let collectionData else { return nil }
 		self.init(
 			id: resourceObject.id,
+			state: attributes.state.downloadState,
 			track: track,
 			album: item.albumObject,
 			artists: item.artistObjects,
@@ -629,6 +728,7 @@ private extension StoreVideoTask {
 		guard let item, case .video(let video) = item.resource, let collectionData else { return nil }
 		self.init(
 			id: resourceObject.id,
+			state: attributes.state.downloadState,
 			video: video,
 			artists: item.artistObjects,
 			artwork: item.artworkObject,
@@ -642,22 +742,25 @@ private extension StoreVideoTask {
 }
 
 private extension StoreAlbumTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
+	init?(_ resourceObject: OfflineTasksResourceObject, attributes: OfflineTasksAttributes, item: IncludedItem?) {
 		guard let item, case .album(let album) = item.resource else { return nil }
 		self.init(id: resourceObject.id, album: album, artists: item.artistObjects, artwork: item.artworkObject)
+		state = attributes.state.downloadState
 	}
 }
 
 private extension StorePlaylistTask {
-	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
+	init?(_ resourceObject: OfflineTasksResourceObject, attributes: OfflineTasksAttributes, item: IncludedItem?) {
 		guard let item, case .playlist(let playlist) = item.resource else { return nil }
 		self.init(id: resourceObject.id, playlist: playlist, artwork: item.artworkObject)
+		state = attributes.state.downloadState
 	}
 }
 
 private extension RemoveItemTask {
 	init?(
 		_ resourceObject: OfflineTasksResourceObject,
+		attributes: OfflineTasksAttributes,
 		itemData: OfflineTasksItemResourceIdentifier,
 		collectionData: OfflineTasksCollectionResourceIdentifier?
 	) {
@@ -671,5 +774,17 @@ private extension RemoveItemTask {
 			collectionResourceType: collectionData.type,
 			collectionResourceId: collectionData.id
 		)
+		state = attributes.state.downloadState
+	}
+}
+
+private extension OfflineTasksAttributes.State {
+	var downloadState: Download.State {
+		switch self {
+		case .pending: .pending
+		case .inProgress: .inProgress
+		case .failed: .failed
+		case .completed: .completed
+		}
 	}
 }

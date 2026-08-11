@@ -5,6 +5,7 @@ import XCTest
 class OfflinerTestCase: XCTestCase {
 	var tempDir: URL!
 	var lastDatabaseQueue: DatabaseQueue!
+	private var offliners: [Offliner] = []
 
 	override func setUp() {
 		super.setUp()
@@ -12,11 +13,15 @@ class OfflinerTestCase: XCTestCase {
 		try? FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
 	}
 
-	override func tearDown() {
+	override func tearDown() async throws {
+		for offliner in offliners {
+			try? await offliner.reset()
+		}
+		offliners.removeAll()
 		if let tempDir {
 			try? FileManager.default.removeItem(at: tempDir)
 		}
-		super.tearDown()
+		try await super.tearDown()
 	}
 
 	func createOffliner(
@@ -25,22 +30,22 @@ class OfflinerTestCase: XCTestCase {
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
 		trackManifestFetcher: TrackManifestFetcherProtocol = SucceedingTrackManifestFetcher(),
-		videoManifestFetcher: VideoManifestFetcherProtocol = SucceedingVideoManifestFetcher(),
-		collectionDownloadStatePollInterval: UInt64 = 1_000_000_000
+		videoManifestFetcher: VideoManifestFetcherProtocol = SucceedingVideoManifestFetcher()
 	) -> Offliner {
 		// swiftlint:disable:next force_try
 		let storage = try! OfflinerStorage(installationId: installationId, baseDirectory: tempDir)
 		lastDatabaseQueue = storage.databaseQueue
 
-		return Offliner(
+		let offliner = Offliner(
 			storage: storage,
 			offlineApiClient: offlineApiClient,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			trackManifestFetcher: trackManifestFetcher,
-			videoManifestFetcher: videoManifestFetcher,
-			collectionDownloadStatePollInterval: collectionDownloadStatePollInterval
+			videoManifestFetcher: videoManifestFetcher
 		)
+		offliners.append(offliner)
+		return offliner
 	}
 
 	func downloadAndWaitForCompletion(_ offliner: Offliner) async throws {
