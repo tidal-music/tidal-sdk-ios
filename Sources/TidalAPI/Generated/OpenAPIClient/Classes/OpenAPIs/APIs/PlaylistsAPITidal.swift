@@ -209,9 +209,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
 		}
 	}
 

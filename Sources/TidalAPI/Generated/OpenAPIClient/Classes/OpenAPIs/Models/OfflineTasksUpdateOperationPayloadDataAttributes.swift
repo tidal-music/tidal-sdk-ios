@@ -13,6 +13,7 @@ import AnyCodable
 public struct OfflineTasksUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public enum State: String, Codable, CaseIterable {
+        case pending = "PENDING"
         case inProgress = "IN_PROGRESS"
         case failed = "FAILED"
         case completed = "COMPLETED"
