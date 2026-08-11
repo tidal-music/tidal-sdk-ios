@@ -217,6 +217,62 @@ enum OfflineTask {
 			return resources
 		}
 	}
+
+	var downloadQueueTask: DownloadQueueTask? {
+		switch self {
+		case .storeTrack(let task):
+			return DownloadQueueTask(
+				resource: .media(type: .tracks, resourceId: task.track.id),
+				parentCollection: OfflineResourceKey(
+					resourceType: task.collectionResourceType,
+					resourceId: task.collectionResourceId
+				).publicCollection,
+				supportsProgress: true
+			)
+		case .storeVideo(let task):
+			return DownloadQueueTask(
+				resource: .media(type: .videos, resourceId: task.video.id),
+				parentCollection: OfflineResourceKey(
+					resourceType: task.collectionResourceType,
+					resourceId: task.collectionResourceId
+				).publicCollection,
+				supportsProgress: true
+			)
+		case .storeAlbum(let task):
+			return DownloadQueueTask(
+				resource: .collection(type: .albums, resourceId: task.album.id),
+				parentCollection: nil,
+				supportsProgress: false
+			)
+		case .storePlaylist(let task):
+			return DownloadQueueTask(
+				resource: .collection(type: .playlists, resourceId: task.playlist.id),
+				parentCollection: nil,
+				supportsProgress: false
+			)
+		case .storeUserCollectionTracks(let task):
+			return DownloadQueueTask(
+				resource: .collection(type: .userCollectionTracks, resourceId: task.resourceId),
+				parentCollection: nil,
+				supportsProgress: false
+			)
+		case .terminal(let task) where task.action == .store:
+			let resourceKey = OfflineResourceKey(resourceType: task.resourceType, resourceId: task.resourceId)
+			guard let resource = resourceKey.publicResource else { return nil }
+			let parentCollection = task.collectionResourceType.flatMap { type in
+				task.collectionResourceId.flatMap { id in
+					OfflineResourceKey(resourceType: type, resourceId: id).publicCollection
+				}
+			}
+			return DownloadQueueTask(
+				resource: resource,
+				parentCollection: parentCollection,
+				supportsProgress: resourceKey.publicCollection == nil
+			)
+		case .removeItem, .removeCollection, .terminal:
+			return nil
+		}
+	}
 }
 
 // MARK: - OfflineCollectionReference

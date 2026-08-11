@@ -77,6 +77,99 @@ final class OfflineStore {
 		}
 	}
 
+	func getDownloadQueueEntries() throws -> [OfflineDownloadQueueEntry] {
+		try databaseQueue.read { database in
+			try Row.fetchAll(
+				database,
+				sql: """
+					SELECT resource_type, resource_id, parent_collection_type, parent_collection_id, state, progress
+					FROM offline_download_queue
+					ORDER BY resource_type, resource_id
+					"""
+			).compactMap(Self.downloadQueueEntry)
+		}
+	}
+
+	func getDownloadQueueEntry(resourceType: String, resourceId: String) throws -> OfflineDownloadQueueEntry? {
+		try databaseQueue.read { database in
+			try Row.fetchOne(
+				database,
+				sql: """
+					SELECT resource_type, resource_id, parent_collection_type, parent_collection_id, state, progress
+					FROM offline_download_queue
+					WHERE resource_type = ? AND resource_id = ?
+					""",
+				arguments: [resourceType, resourceId]
+			).flatMap(Self.downloadQueueEntry)
+		}
+	}
+
+	func setDownloadQueueEntry(_ entry: OfflineDownloadQueueEntry) throws {
+		let resource = OfflineResourceKey(entry.resource)
+		let parentCollection = entry.parentCollection.map(OfflineResourceKey.init)
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
+		try databaseQueue.write { database in
+			try database.execute(
+				sql: """
+					INSERT INTO offline_download_queue \
+					(resource_type, resource_id, parent_collection_type, parent_collection_id, state, progress)
+					VALUES (?, ?, ?, ?, ?, ?)
+					ON CONFLICT (resource_type, resource_id) DO UPDATE SET
+						parent_collection_type = excluded.parent_collection_type,
+						parent_collection_id = excluded.parent_collection_id,
+						state = excluded.state,
+						progress = excluded.progress,
+						updated_at = CURRENT_TIMESTAMP
+					""",
+				arguments: [
+					resource.resourceType,
+					resource.resourceId,
+					parentCollection?.resourceType,
+					parentCollection?.resourceId,
+					entry.state.storageValue,
+					entry.progress,
+				]
+			)
+		}
+	}
+
+	func deleteDownloadQueueEntry(resourceType: String, resourceId: String) throws {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
+		try databaseQueue.write { database in
+			try database.execute(
+				sql: "DELETE FROM offline_download_queue WHERE resource_type = ? AND resource_id = ?",
+				arguments: [resourceType, resourceId]
+			)
+		}
+	}
+
+	private static func downloadQueueEntry(_ row: Row) -> OfflineDownloadQueueEntry? {
+		guard let resource = OfflineResourceKey(
+			resourceType: row["resource_type"],
+			resourceId: row["resource_id"]
+		).publicResource,
+		let state = OfflineDownloadQueueEntry.State(storageValue: row["state"])
+		else { return nil }
+
+		let parentCollection: OfflineResource?
+		if let parentType: String = row["parent_collection_type"],
+		   let parentId: String = row["parent_collection_id"] {
+			parentCollection = OfflineResourceKey(resourceType: parentType, resourceId: parentId).publicCollection
+		} else {
+			parentCollection = nil
+		}
+		return OfflineDownloadQueueEntry(
+			resource: resource,
+			parentCollection: parentCollection,
+			state: state,
+			progress: row["progress"]
+		)
+	}
+
 	func storeMediaItem(_ result: StoreItemTaskResult) throws {
 		writeLock.lock()
 		defer { writeLock.unlock() }
@@ -1152,5 +1245,25 @@ private extension OfflineMediaItem {
 			playbackMetadata: playbackMetadata,
 			artworkURL: try? OfflineStore.resolveBookmarkIfPresent(row, column: "artwork_bookmark", renewals: &renewals)
 		)
+	}
+}
+
+private extension OfflineDownloadQueueEntry.State {
+	init?(storageValue: String) {
+		switch storageValue {
+		case "queued": self = .queued
+		case "downloading": self = .downloading
+		case "failed_download": self = .failed(action: .download)
+		default: return nil
+		}
+	}
+
+	var storageValue: String {
+		switch self {
+		case .queued: "queued"
+		case .downloading: "downloading"
+		case .failed(.download): "failed_download"
+		case .failed(.remove): "failed_remove"
+		}
 	}
 }

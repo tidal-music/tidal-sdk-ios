@@ -7,19 +7,22 @@ final class StoreTrackHandler {
 	private let mediaDownloader: MediaDownloaderProtocol
 	private let manifestFetcher: TrackManifestFetcherProtocol
 	private let licenseDownloader: LicenseDownloader
+	private let resourceStateTracker: ResourceStateTracker
 
 	init(
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
 		manifestFetcher: TrackManifestFetcherProtocol,
-		licenseDownloader: LicenseDownloader
+		licenseDownloader: LicenseDownloader,
+		resourceStateTracker: ResourceStateTracker
 	) {
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
 		self.manifestFetcher = manifestFetcher
 		self.licenseDownloader = licenseDownloader
+		self.resourceStateTracker = resourceStateTracker
 	}
 
 	func handle(_ task: StoreTrackTask) -> InternalTask {
@@ -38,7 +41,10 @@ final class StoreTrackHandler {
 				imageURL: imageURL,
 				taskId: task.id,
 				resource: .media(type: .tracks, resourceId: task.track.id),
-				relatedCollection: relatedCollection
+				relatedCollection: relatedCollection,
+				progressHandler: { [resourceStateTracker] progress in
+					await resourceStateTracker.updateProgress(taskId: task.id, progress: progress)
+				}
 			),
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,

@@ -26,6 +26,7 @@ public actor Download {
 	nonisolated let relatedCollection: OfflineCollectionReference?
 
 	private let continuation: AsyncStream<Event>.Continuation
+	private let progressHandler: (@Sendable (Double) async -> Void)?
 
 	internal init(
 		title: String,
@@ -33,7 +34,8 @@ public actor Download {
 		imageURL: URL?,
 		taskId: String,
 		resource: OfflineResource,
-		relatedCollection: OfflineCollectionReference? = nil
+		relatedCollection: OfflineCollectionReference? = nil,
+		progressHandler: (@Sendable (Double) async -> Void)? = nil
 	) {
 		self.title = title
 		self.artists = artists
@@ -44,6 +46,7 @@ public actor Download {
 		self.collection = relatedCollection.map {
 			.collection(type: $0.collectionType, resourceId: $0.resourceId)
 		}
+		self.progressHandler = progressHandler
 
 		let (stream, continuation) = AsyncStream<Event>.makeStream()
 		self.events = stream
@@ -58,7 +61,8 @@ public actor Download {
 		}
 	}
 
-	internal func updateProgress(_ newProgress: Double) {
+	internal func updateProgress(_ newProgress: Double) async {
 		continuation.yield(.progress(newProgress))
+		await progressHandler?(newProgress)
 	}
 }

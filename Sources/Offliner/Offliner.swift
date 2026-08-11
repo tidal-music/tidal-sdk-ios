@@ -292,6 +292,41 @@ public final class Offliner {
 		}
 	}
 
+	/// Returns the active aggregate download queue after backend task synchronization completes.
+	///
+	/// Collection metadata and member tasks count as one collection entry. Direct media downloads remain separate entries.
+	/// Successful operations disappear; failed downloads remain until explicitly retried, removed, or reset.
+	public func getOfflineDownloadQueue() async throws -> [OfflineDownloadQueueEntry] {
+		try ensureActive()
+		try await taskRunner.synchronizeDownloadQueue()
+		return try await resourceStateTracker.downloadQueueSnapshot()
+	}
+
+	/// Observes distinct aggregate download queue snapshots until cancellation or reset.
+	///
+	/// Every subscriber receives its own synchronized initial snapshot and all subsequent broadcasts. An initial backend or
+	/// local persistence failure terminates only that subscriber with the original error.
+	public func observeOfflineDownloadQueue() -> AsyncThrowingStream<[OfflineDownloadQueueEntry], Error> {
+		guard isActive else {
+			return AsyncThrowingStream { $0.finish(throwing: OfflinerLifecycleError.reset) }
+		}
+		return AsyncThrowingStream { continuation in
+			let task = Task {
+				do {
+					try await taskRunner.synchronizeDownloadQueue()
+					for await snapshot in try await resourceStateTracker.observeDownloadQueue() {
+						try Task.checkCancellation()
+						continuation.yield(snapshot)
+					}
+					continuation.finish()
+				} catch {
+					continuation.finish(throwing: error)
+				}
+			}
+			continuation.onTermination = { _ in task.cancel() }
+		}
+	}
+
 	/// Streams collection-level offline availability.
 	///
 	/// This compatibility stream maps the resource-scoped operation state into the original three availability states.

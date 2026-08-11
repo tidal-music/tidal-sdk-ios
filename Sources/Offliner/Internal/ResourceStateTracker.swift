@@ -45,6 +45,26 @@ struct OfflineResourceKey: Hashable, Sendable {
 			? ResourceId.me.stringValue
 			: resourceId
 	}
+
+	var publicResource: OfflineResource? {
+		if let type = OfflineMediaItemType(rawValue: resourceType) {
+			return .media(type: type, resourceId: resourceId)
+		}
+		return publicCollection
+	}
+
+	var publicCollection: OfflineResource? {
+		guard let type = OfflineCollectionType(rawValue: resourceType) else { return nil }
+		return .collection(type: type, resourceId: resourceId)
+	}
+}
+
+// MARK: - DownloadQueueTask
+
+struct DownloadQueueTask: Sendable {
+	let resource: OfflineResource
+	let parentCollection: OfflineResource?
+	let supportsProgress: Bool
 }
 
 // MARK: - ResourceStateTracker
@@ -56,11 +76,22 @@ actor ResourceStateTracker {
 		let resources: Set<OfflineResourceKey>
 	}
 
+	private struct QueueTaskState {
+		let root: OfflineResourceKey
+		let parentCollection: OfflineResource?
+		var state: OfflineResourceState
+		let supportsProgress: Bool
+		var progress: Double?
+	}
+
 	private let offlineStore: OfflineStore
 	private var taskStates: [String: TaskState] = [:]
+	private var queueTaskStates: [String: QueueTaskState] = [:]
 	private var transientStates: [OfflineResourceKey: (InternalOfflineResourceAction, OfflineResourceState)] = [:]
 	private var continuations: [OfflineResourceKey: [UUID: AsyncStream<OfflineResourceState>.Continuation]] = [:]
+	private var queueContinuations: [UUID: AsyncStream<[OfflineDownloadQueueEntry]>.Continuation] = [:]
 	private var lastEmittedStates: [OfflineResourceKey: OfflineResourceState] = [:]
+	private var lastEmittedQueue: [OfflineDownloadQueueEntry]?
 	private var isShutdown = false
 
 	init(offlineStore: OfflineStore) {
@@ -95,6 +126,25 @@ actor ResourceStateTracker {
 			}
 			continuation.onTermination = { [weak self] _ in
 				Task { await self?.removeContinuation(id, for: resource) }
+			}
+		}
+	}
+
+	func downloadQueueSnapshot() throws -> [OfflineDownloadQueueEntry] {
+		guard !isShutdown else { return [] }
+		return try offlineStore.getDownloadQueueEntries()
+	}
+
+	func observeDownloadQueue() throws -> AsyncStream<[OfflineDownloadQueueEntry]> {
+		guard !isShutdown else { return AsyncStream { $0.finish() } }
+		let initial = try downloadQueueSnapshot()
+		lastEmittedQueue = initial
+		return AsyncStream { continuation in
+			let id = UUID()
+			queueContinuations[id] = continuation
+			continuation.yield(initial)
+			continuation.onTermination = { [weak self] _ in
+				Task { await self?.removeQueueContinuation(id) }
 			}
 		}
 	}
@@ -142,16 +192,42 @@ actor ResourceStateTracker {
 				action: action,
 				state: state
 			)
+			if action == .store, let publicResource = resource.publicResource {
+				queueTaskStates = queueTaskStates.filter { $0.value.root != resource }
+				try offlineStore.setDownloadQueueEntry(OfflineDownloadQueueEntry(
+					resource: publicResource,
+					parentCollection: nil,
+					state: .queued,
+					progress: nil
+				))
+			} else if action == .remove {
+				queueTaskStates = queueTaskStates.filter { $0.value.root != resource }
+				try offlineStore.deleteDownloadQueueEntry(
+					resourceType: resource.resourceType,
+					resourceId: resource.resourceId
+				)
+			}
 		} catch {
 			transientStates.removeValue(forKey: resource)
+			try? offlineStore.deleteResourceOperation(resourceType: resource.resourceType, resourceId: resource.resourceId)
 			throw error
 		}
 		emitChanges(for: [resource])
+		emitDownloadQueueIfChanged()
 		return true
 	}
 
 	func registrationFailed(_ action: InternalOfflineResourceAction, for resource: OfflineResourceKey) {
 		setTransient(action: action, state: .failed(action: action.publicAction), for: resource, persist: true)
+		if action == .store, let publicResource = resource.publicResource {
+			try? offlineStore.setDownloadQueueEntry(OfflineDownloadQueueEntry(
+				resource: publicResource,
+				parentCollection: nil,
+				state: .failed(action: .download),
+				progress: nil
+			))
+			emitDownloadQueueIfChanged()
+		}
 	}
 
 	func resolve(_ resource: OfflineResourceKey, state: OfflineResourceState) {
@@ -160,15 +236,19 @@ actor ResourceStateTracker {
 		}
 		transientStates[resource] = (.store, state)
 		try? offlineStore.deleteResourceOperation(resourceType: resource.resourceType, resourceId: resource.resourceId)
+		try? offlineStore.deleteDownloadQueueEntry(resourceType: resource.resourceType, resourceId: resource.resourceId)
+		queueTaskStates = queueTaskStates.filter { $0.value.root != resource }
 		emitChanges(for: [resource])
+		emitDownloadQueueIfChanged()
 	}
 
 	func record(
 		taskId: String,
 		action: InternalOfflineResourceAction,
 		state: OfflineResourceState,
-		resources: Set<OfflineResourceKey>
-	) {
+		resources: Set<OfflineResourceKey>,
+		downloadQueueTask: DownloadQueueTask?
+	) throws {
 		guard !isShutdown else {
 			return
 		}
@@ -183,6 +263,9 @@ actor ResourceStateTracker {
 			}
 			persistEffectiveOperation(for: resource)
 		}
+		if action == .store, let downloadQueueTask {
+			try recordDownloadQueueTask(taskId: taskId, state: state, task: downloadQueueTask)
+		}
 		emitChanges(for: affected)
 	}
 
@@ -195,7 +278,19 @@ actor ResourceStateTracker {
 		for resource in task.resources {
 			persistEffectiveOperation(for: resource)
 		}
+		if var queueTask = queueTaskStates[taskId] {
+			queueTask.state = state
+			queueTaskStates[taskId] = queueTask
+			persistDownloadQueue(root: queueTask.root)
+		}
 		emitChanges(for: task.resources)
+	}
+
+	func updateProgress(taskId: String, progress: Double) {
+		guard !isShutdown, var task = queueTaskStates[taskId] else { return }
+		task.progress = min(max(progress, 0), 1)
+		queueTaskStates[taskId] = task
+		persistDownloadQueue(root: task.root)
 	}
 
 	func finish(taskId: String, succeeded: Bool) {
@@ -207,6 +302,11 @@ actor ResourceStateTracker {
 			taskStates[taskId] = task
 			for resource in task.resources {
 				persistEffectiveOperation(for: resource)
+			}
+			if var queueTask = queueTaskStates[taskId] {
+				queueTask.state = .failed(action: .download)
+				queueTaskStates[taskId] = queueTask
+				persistDownloadQueue(root: queueTask.root)
 			}
 			emitChanges(for: task.resources)
 			return
@@ -220,6 +320,12 @@ actor ResourceStateTracker {
 			}
 			persistEffectiveOperation(for: resource)
 		}
+		if var queueTask = queueTaskStates[taskId] {
+			queueTask.state = .downloaded
+			queueTask.progress = queueTask.supportsProgress ? 1 : nil
+			queueTaskStates[taskId] = queueTask
+			persistDownloadQueue(root: queueTask.root)
+		}
 		emitChanges(for: task.resources)
 	}
 
@@ -232,9 +338,15 @@ actor ResourceStateTracker {
 			continuation.finish()
 		}
 		continuations.removeAll()
+		for continuation in queueContinuations.values {
+			continuation.finish()
+		}
+		queueContinuations.removeAll()
 		taskStates.removeAll()
+		queueTaskStates.removeAll()
 		transientStates.removeAll()
 		lastEmittedStates.removeAll()
+		lastEmittedQueue = nil
 	}
 
 	private func setTransient(
@@ -278,6 +390,123 @@ actor ResourceStateTracker {
 		}
 	}
 
+	private func recordDownloadQueueTask(
+		taskId: String,
+		state: OfflineResourceState,
+		task: DownloadQueueTask
+	) throws {
+		let resource = OfflineResourceKey(task.resource)
+		let parent = task.parentCollection.map(OfflineResourceKey.init)
+		let root: OfflineResourceKey
+		let hasCollectionDownloadIntent = state == .queued
+			|| state == .downloading
+			|| state == .failed(action: .download)
+		if parent == nil, resource.publicCollection != nil, hasCollectionDownloadIntent {
+			root = resource
+			let storedMembers = try offlineStore.getDownloadQueueEntries().filter {
+				$0.parentCollection.map(OfflineResourceKey.init) == resource
+			}
+			for member in storedMembers {
+				let memberKey = OfflineResourceKey(member.resource)
+				try offlineStore.deleteDownloadQueueEntry(
+					resourceType: memberKey.resourceType,
+					resourceId: memberKey.resourceId
+				)
+			}
+			queueTaskStates = queueTaskStates.mapValues { existing in
+				guard existing.parentCollection.map(OfflineResourceKey.init) == resource else { return existing }
+				return QueueTaskState(
+					root: resource,
+					parentCollection: nil,
+					state: existing.state,
+					supportsProgress: existing.supportsProgress,
+					progress: existing.progress
+				)
+			}
+		} else if let parent,
+		   try offlineStore.getDownloadQueueEntry(resourceType: parent.resourceType, resourceId: parent.resourceId) != nil {
+			root = parent
+			if resource != parent {
+				try offlineStore.deleteDownloadQueueEntry(resourceType: resource.resourceType, resourceId: resource.resourceId)
+				queueTaskStates = queueTaskStates.mapValues { existing in
+					guard existing.root == resource else { return existing }
+					return QueueTaskState(
+						root: parent,
+						parentCollection: nil,
+						state: existing.state,
+						supportsProgress: existing.supportsProgress,
+						progress: existing.progress
+					)
+				}
+			}
+		} else if try offlineStore.getDownloadQueueEntry(
+			resourceType: resource.resourceType,
+			resourceId: resource.resourceId
+		) != nil {
+			root = resource
+		} else if let parent {
+			root = parent
+		} else {
+			root = resource
+		}
+
+		queueTaskStates[taskId] = QueueTaskState(
+			root: root,
+			parentCollection: root == resource ? task.parentCollection : nil,
+			state: state,
+			supportsProgress: task.supportsProgress,
+			progress: nil
+		)
+		try persistDownloadQueueThrowing(root: root)
+	}
+
+	private func persistDownloadQueue(root: OfflineResourceKey) {
+		try? persistDownloadQueueThrowing(root: root)
+	}
+
+	private func persistDownloadQueueThrowing(root: OfflineResourceKey) throws {
+		let tasks = queueTaskStates.values.filter { $0.root == root }
+		let failed = tasks.contains { $0.state == .failed(action: .download) }
+		let downloading = tasks.contains { $0.state == .downloading }
+		let queued = tasks.contains { $0.state == .queued }
+		guard failed || downloading || queued else {
+			try offlineStore.deleteDownloadQueueEntry(resourceType: root.resourceType, resourceId: root.resourceId)
+			queueTaskStates = queueTaskStates.filter { $0.value.root != root }
+			emitDownloadQueueIfChanged()
+			return
+		}
+
+		guard let resource = root.publicResource else { return }
+		let state: OfflineDownloadQueueEntry.State = if failed {
+			.failed(action: .download)
+		} else if downloading {
+			.downloading
+		} else {
+			.queued
+		}
+		let progressTasks = tasks.filter(\.supportsProgress)
+		let hasKnownProgress = progressTasks.contains { $0.progress != nil }
+		let progress = hasKnownProgress && !progressTasks.isEmpty
+			? progressTasks.reduce(0) { $0 + ($1.progress ?? 0) } / Double(progressTasks.count)
+			: nil
+		let parentCollection = tasks.lazy.compactMap(\.parentCollection).first
+		try offlineStore.setDownloadQueueEntry(OfflineDownloadQueueEntry(
+			resource: resource,
+			parentCollection: parentCollection,
+			state: state,
+			progress: progress
+		))
+		emitDownloadQueueIfChanged()
+	}
+
+	private func emitDownloadQueueIfChanged() {
+		guard let queue = try? offlineStore.getDownloadQueueEntries(), queue != lastEmittedQueue else { return }
+		lastEmittedQueue = queue
+		for continuation in queueContinuations.values {
+			continuation.yield(queue)
+		}
+	}
+
 	private func emitChanges(for resources: Set<OfflineResourceKey>) {
 		for resource in resources {
 			guard let state = effectiveState(for: resource), state != lastEmittedStates[resource] else {
@@ -295,6 +524,10 @@ actor ResourceStateTracker {
 		if continuations[resource]?.isEmpty == true {
 			continuations.removeValue(forKey: resource)
 		}
+	}
+
+	private func removeQueueContinuation(_ id: UUID) {
+		queueContinuations.removeValue(forKey: id)
 	}
 }
 

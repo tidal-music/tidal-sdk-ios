@@ -64,14 +64,16 @@ actor TaskRunner {
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			manifestFetcher: trackManifestFetcher,
-			licenseDownloader: licenseDownloader
+			licenseDownloader: licenseDownloader,
+			resourceStateTracker: resourceStateTracker
 		)
 		self.storeVideoHandler = StoreVideoHandler(
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			manifestFetcher: videoManifestFetcher,
-			licenseDownloader: licenseDownloader
+			licenseDownloader: licenseDownloader,
+			resourceStateTracker: resourceStateTracker
 		)
 		self.storeAlbumHandler = StoreAlbumHandler(
 			offlineStore: offlineStore,
@@ -111,6 +113,11 @@ actor TaskRunner {
 	func synchronizeState() async {
 		guard !isShutdown else { return }
 		try? await refresh()
+	}
+
+	func synchronizeDownloadQueue() async throws {
+		guard !isShutdown else { return }
+		try await refresh()
 	}
 
 	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) {
@@ -160,15 +167,17 @@ actor TaskRunner {
 			try Task.checkCancellation()
 			guard !isShutdown else { return }
 
-			for task in page.tasks where taskIds.insert(task.id).inserted {
-				taskActions[task.id] = task.action
+			for task in page.tasks where !taskIds.contains(task.id) {
 				let state = task.resourceState
-				await resourceStateTracker.record(
+				try await resourceStateTracker.record(
 					taskId: task.id,
 					action: task.action,
 					state: state,
-					resources: task.resourceKeys
+					resources: task.resourceKeys,
+					downloadQueueTask: task.downloadQueueTask
 				)
+				guard taskIds.insert(task.id).inserted else { continue }
+				taskActions[task.id] = task.action
 				guard task.state == .pending || task.state == .inProgress else { continue }
 				let pendingTask = handle(task)
 				pendingTasks.append(pendingTask)
