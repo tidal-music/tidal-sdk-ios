@@ -5,7 +5,6 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**searchResultsGet**](SearchResultsAPI.md#searchresultsget) | **GET** /searchResults | Get search results by query.
-[**searchResultsIdGet**](SearchResultsAPI.md#searchresultsidget) | **GET** /searchResults/{id} | Get single searchResult.
 [**searchResultsIdRelationshipsAlbumsGet**](SearchResultsAPI.md#searchresultsidrelationshipsalbumsget) | **GET** /searchResults/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
 [**searchResultsIdRelationshipsArtistsGet**](SearchResultsAPI.md#searchresultsidrelationshipsartistsget) | **GET** /searchResults/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
 [**searchResultsIdRelationshipsPlaylistsGet**](SearchResultsAPI.md#searchresultsidrelationshipsplaylistsget) | **GET** /searchResults/{id}/relationships/playlists | Get playlists relationship (\&quot;to-many\&quot;).
@@ -66,70 +65,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**SearchResultsMultiResourceDataDocument**](SearchResultsMultiResourceDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **searchResultsIdGet**
-```swift
-    open class func searchResultsIdGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdGet? = nil, systemType: SystemType_searchResultsIdGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsSingleResourceDataDocument?, _ error: Error?) -> Void)
-```
-
-Get single searchResult.
-
-Deprecated. Use GET /searchResults?filter[query]=... to search instead. Opaque identifiers returned by that operation remain valid for searchResults relationship operations.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | An opaque search results identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let deviceType = "deviceType_example" // String | The type of device making the request (optional)
-let systemType = "systemType_example" // String | The system type of the device making the request (optional)
-let clientVersion = "clientVersion_example" // String | Client version number (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
-let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
-
-// Get single searchResult.
-SearchResultsAPI.searchResultsIdGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | An opaque search results identifier | 
- **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **deviceType** | **String** | The type of device making the request | [optional] 
- **systemType** | **String** | The system type of the device making the request | [optional] 
- **clientVersion** | **String** | Client version number | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos | [optional] 
- **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
-
-### Return type
-
-[**SearchResultsSingleResourceDataDocument**](SearchResultsSingleResourceDataDocument.md)
 
 ### Authorization
 

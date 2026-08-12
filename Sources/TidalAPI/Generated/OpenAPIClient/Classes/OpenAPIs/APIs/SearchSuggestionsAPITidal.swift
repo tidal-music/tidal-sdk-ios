@@ -44,33 +44,6 @@ public enum SearchSuggestionsAPITidal {
 	/**
 	 * enum for parameter explicitFilter
 	 */
-	public enum ExplicitFilter_searchSuggestionsIdGet: String, CaseIterable {
-		case include = "INCLUDE"
-		case exclude = "EXCLUDE"
-
-		func toSearchSuggestionsAPIEnum() -> SearchSuggestionsAPI.ExplicitFilter_searchSuggestionsIdGet {
-			switch self {
-			case .include: return .include
-			case .exclude: return .exclude
-			}
-		}
-	}
-
-	/**
-     Get single searchSuggestion.
-     
-     - returns: SearchSuggestionsSingleResourceDataDocument
-     */
-	public static func searchSuggestionsIdGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, replaceMedia: replaceMedia)
-		}
-	}
-
-
-	/**
-	 * enum for parameter explicitFilter
-	 */
 	public enum ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet: String, CaseIterable {
 		case include = "INCLUDE"
 		case exclude = "EXCLUDE"
