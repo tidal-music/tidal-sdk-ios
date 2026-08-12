@@ -13,26 +13,25 @@ import AnyCodable
 public struct SearchSuggestionsAttributes: Codable, Hashable {
 
     public static let trackingIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
-    /** Suggestions from search history. Deprecated — use the history relationship instead. Will be deleted shortly. */
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var history: [SearchSuggestionsHistory]?
+    /** The search query represented by this resource */
+    public var query: String
     /** Suggested search queries */
     public var suggestions: [SearchSuggestionsSuggestions]?
     /** Unique tracking id */
     public var trackingId: String
 
     public init(
-        history: [SearchSuggestionsHistory]? = nil,
+        query: String,
         suggestions: [SearchSuggestionsSuggestions]? = nil,
         trackingId: String
     ) {
-        self.history = history
+        self.query = query
         self.suggestions = suggestions
         self.trackingId = trackingId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case history
+        case query
         case suggestions
         case trackingId
     }
@@ -41,7 +40,7 @@ public struct SearchSuggestionsAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(history, forKey: .history)
+        try container.encode(query, forKey: .query)
         try container.encodeIfPresent(suggestions, forKey: .suggestions)
         try container.encode(trackingId, forKey: .trackingId)
     }

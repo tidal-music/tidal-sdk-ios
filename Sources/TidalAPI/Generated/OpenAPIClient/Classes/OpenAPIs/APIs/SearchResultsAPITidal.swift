@@ -17,6 +17,77 @@ public enum SearchResultsAPITidal {
 	/**
 	 * enum for parameter explicitFilter
 	 */
+	public enum ExplicitFilter_searchResultsGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsGet {
+			switch self {
+			case .include: return .include
+			case .exclude: return .exclude
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter deviceType
+	 */
+	public enum DeviceType_searchResultsGet: String, CaseIterable {
+		case browser = "BROWSER"
+		case car = "CAR"
+		case desktop = "DESKTOP"
+		case phone = "PHONE"
+		case tablet = "TABLET"
+		case tv = "TV"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.DeviceType_searchResultsGet {
+			switch self {
+			case .browser: return .browser
+			case .car: return .car
+			case .desktop: return .desktop
+			case .phone: return .phone
+			case .tablet: return .tablet
+			case .tv: return .tv
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter systemType
+	 */
+	public enum SystemType_searchResultsGet: String, CaseIterable {
+		case android = "ANDROID"
+		case desktop = "DESKTOP"
+		case tesla = "TESLA"
+		case ios = "IOS"
+		case web = "WEB"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.SystemType_searchResultsGet {
+			switch self {
+			case .android: return .android
+			case .desktop: return .desktop
+			case .tesla: return .tesla
+			case .ios: return .ios
+			case .web: return .web
+			}
+		}
+	}
+
+	/**
+     Get search results by query.
+     
+     - returns: SearchResultsMultiResourceDataDocument
+     */
+	public static func searchResultsGet(filterQuery: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			SearchResultsAPI.searchResultsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+	 * enum for parameter explicitFilter
+	 */
 	public enum ExplicitFilter_searchResultsIdGet: String, CaseIterable {
 		case include = "INCLUDE"
 		case exclude = "EXCLUDE"

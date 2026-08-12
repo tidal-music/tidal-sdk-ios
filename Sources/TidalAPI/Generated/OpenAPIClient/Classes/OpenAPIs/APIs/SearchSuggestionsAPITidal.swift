@@ -17,6 +17,33 @@ public enum SearchSuggestionsAPITidal {
 	/**
 	 * enum for parameter explicitFilter
 	 */
+	public enum ExplicitFilter_searchSuggestionsGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
+
+		func toSearchSuggestionsAPIEnum() -> SearchSuggestionsAPI.ExplicitFilter_searchSuggestionsGet {
+			switch self {
+			case .include: return .include
+			case .exclude: return .exclude
+			}
+		}
+	}
+
+	/**
+     Get search suggestions by query.
+     
+     - returns: SearchSuggestionsMultiResourceDataDocument
+     */
+	public static func searchSuggestionsGet(filterQuery: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			SearchSuggestionsAPI.searchSuggestionsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+	 * enum for parameter explicitFilter
+	 */
 	public enum ExplicitFilter_searchSuggestionsIdGet: String, CaseIterable {
 		case include = "INCLUDE"
 		case exclude = "EXCLUDE"

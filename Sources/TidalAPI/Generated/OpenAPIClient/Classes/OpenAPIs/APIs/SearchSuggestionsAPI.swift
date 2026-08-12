@@ -15,6 +15,76 @@ internal class SearchSuggestionsAPI {
     /**
      * enum for parameter explicitFilter
      */
+    public enum ExplicitFilter_searchSuggestionsGet: String, CaseIterable {
+        case include = "INCLUDE"
+        case exclude = "EXCLUDE"
+    }
+
+    /**
+     Get search suggestions by query.
+     
+     - parameter filterQuery: (query) Search query (e.g. &#x60;hello&#x60;) 
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits (optional)
+     - returns: SearchSuggestionsMultiResourceDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func searchSuggestionsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument {
+        do {
+            return try await searchSuggestionsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get search suggestions by query.
+     - GET /searchSuggestions
+     - Searches for a query and returns a collection containing exactly one search suggestions resource.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
+     - parameter filterQuery: (query) Search query (e.g. &#x60;hello&#x60;) 
+     - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
+     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits (optional)
+     - returns: RequestBuilder<SearchSuggestionsMultiResourceDataDocument> 
+     */
+    internal class func searchSuggestionsGetWithRequestBuilder(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchSuggestionsMultiResourceDataDocument> {
+        let localVariablePath = "/searchSuggestions"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[query]": (wrappedValue: filterQuery.encodeToJSON(), isExplode: true),
+            "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SearchSuggestionsMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     * enum for parameter explicitFilter
+     */
     public enum ExplicitFilter_searchSuggestionsIdGet: String, CaseIterable {
         case include = "INCLUDE"
         case exclude = "EXCLUDE"
@@ -23,13 +93,14 @@ internal class SearchSuggestionsAPI {
     /**
      Get single searchSuggestion.
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits (optional)
      - returns: SearchSuggestionsSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func searchSuggestionsIdGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
         do {
@@ -43,20 +114,21 @@ internal class SearchSuggestionsAPI {
     /**
      Get single searchSuggestion.
      - GET /searchSuggestions/{id}
-     - Retrieves single searchSuggestion by id.
+     - Deprecated. Use GET /searchSuggestions?filter[query]=... to search instead. Opaque identifiers returned by that operation remain valid for searchSuggestions relationship operations.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits (optional)
      - returns: RequestBuilder<SearchSuggestionsSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func searchSuggestionsIdGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchSuggestionsSingleResourceDataDocument> {
         var localVariablePath = "/searchSuggestions/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -95,7 +167,7 @@ internal class SearchSuggestionsAPI {
     /**
      Get directHits relationship (\"to-many\").
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
@@ -123,7 +195,7 @@ internal class SearchSuggestionsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
@@ -170,7 +242,7 @@ internal class SearchSuggestionsAPI {
     /**
      Get history relationship (\"to-many\").
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: history (optional)
@@ -194,7 +266,7 @@ internal class SearchSuggestionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: history (optional)

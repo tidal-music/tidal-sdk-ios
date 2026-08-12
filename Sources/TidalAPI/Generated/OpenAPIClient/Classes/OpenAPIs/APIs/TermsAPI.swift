@@ -61,9 +61,9 @@ internal class TermsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[termsType]": (wrappedValue: filterTermsType.encodeToJSON(), isExplode: true),
             "filter[countryCode]": (wrappedValue: filterCountryCode?.encodeToJSON(), isExplode: true),
             "filter[isLatestVersion]": (wrappedValue: filterIsLatestVersion?.encodeToJSON(), isExplode: true),
-            "filter[termsType]": (wrappedValue: filterTermsType.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

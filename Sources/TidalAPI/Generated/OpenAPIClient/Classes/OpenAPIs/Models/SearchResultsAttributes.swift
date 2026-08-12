@@ -14,19 +14,24 @@ public struct SearchResultsAttributes: Codable, Hashable {
 
     /** 'did you mean' prompt */
     public var didYouMean: String?
+    /** The search query represented by this resource */
+    public var query: String
     /** search request unique tracking number */
     public var trackingId: String
 
     public init(
         didYouMean: String? = nil,
+        query: String,
         trackingId: String
     ) {
         self.didYouMean = didYouMean
+        self.query = query
         self.trackingId = trackingId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case didYouMean
+        case query
         case trackingId
     }
 
@@ -35,6 +40,7 @@ public struct SearchResultsAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(didYouMean, forKey: .didYouMean)
+        try container.encode(query, forKey: .query)
         try container.encode(trackingId, forKey: .trackingId)
     }
 }

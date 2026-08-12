@@ -1,11 +1,11 @@
-# SearchResultsAttributes
+# SearchSuggestionsMultiResourceDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**didYouMean** | **String** | &#39;did you mean&#39; prompt | [optional] 
-**query** | **String** | The search query represented by this resource | 
-**trackingId** | **String** | search request unique tracking number | 
+**data** | [SearchSuggestionsResourceObject] |  | 
+**included** | [IncludedInner] |  | [optional] 
+**links** | [**Links**](Links.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
