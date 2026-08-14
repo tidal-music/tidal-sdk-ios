@@ -195,6 +195,7 @@ internal class InstallationsAPI {
     public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
         case pending = "PENDING"
         case stored = "STORED"
+        case failed = "FAILED"
     }
 
     /**
@@ -205,7 +206,7 @@ internal class InstallationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
      - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
-     - parameter filterState: (query) One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
+     - parameter filterState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
@@ -231,7 +232,7 @@ internal class InstallationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
      - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
-     - parameter filterState: (query) One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
+     - parameter filterState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> 
      */

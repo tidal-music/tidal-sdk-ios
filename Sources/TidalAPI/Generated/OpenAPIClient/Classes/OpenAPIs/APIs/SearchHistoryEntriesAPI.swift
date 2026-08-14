@@ -15,7 +15,7 @@ internal class SearchHistoryEntriesAPI {
     /**
      Delete single searchHistoryEntrie.
      
-     - parameter id: (path) Opaque identifier for a search history entry 
+     - parameter id: (path) Canonical opaque identifier for a user&#39;s exact saved history query. 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: Void
      */
@@ -36,7 +36,7 @@ internal class SearchHistoryEntriesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter id: (path) Opaque identifier for a search history entry 
+     - parameter id: (path) Canonical opaque identifier for a user&#39;s exact saved history query. 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<Void> 
      */

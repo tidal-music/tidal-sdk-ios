@@ -77,11 +77,13 @@ public enum InstallationsAPITidal {
 	public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
 		case pending = "PENDING"
 		case stored = "STORED"
+		case failed = "FAILED"
 
 		func toInstallationsAPIEnum() -> InstallationsAPI.FilterState_installationsIdRelationshipsOfflineInventoryGet {
 			switch self {
 			case .pending: return .pending
 			case .stored: return .stored
+			case .failed: return .failed
 			}
 		}
 	}

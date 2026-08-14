@@ -21,7 +21,7 @@ Deletes existing searchHistoryEntrie.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Opaque identifier for a search history entry
+let id = "id_example" // String | Canonical opaque identifier for a user's exact saved history query.
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 
 // Delete single searchHistoryEntrie.
@@ -41,7 +41,7 @@ SearchHistoryEntriesAPI.searchHistoryEntriesIdDelete(id: id, idempotencyKey: ide
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Opaque identifier for a search history entry | 
+ **id** | **String** | Canonical opaque identifier for a user&#39;s exact saved history query. | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
 
 ### Return type

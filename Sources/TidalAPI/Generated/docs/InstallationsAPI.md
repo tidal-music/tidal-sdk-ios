@@ -198,7 +198,7 @@ let filterType = ["filterType_example"] // [String] | One of: tracks, videos, al
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
 let filterId = ["inner_example"] // [String] | Offline item id (e.g. `1234`) (optional)
-let filterState = ["filterState_example"] // [String] | One of: PENDING, STORED (e.g. `PENDING`) (optional)
+let filterState = ["filterState_example"] // [String] | One of: PENDING, STORED, FAILED (e.g. `PENDING`) (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get offlineInventory relationship (\"to-many\").
@@ -223,7 +223,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: offlineInventory | [optional] 
  **filterId** | [**[String]**](String.md) | Offline item id (e.g. &#x60;1234&#x60;) | [optional] 
- **filterState** | [**[String]**](String.md) | One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) | [optional] 
+ **filterState** | [**[String]**](String.md) | One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory | [optional] 
 
 ### Return type
