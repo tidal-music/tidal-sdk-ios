@@ -87,6 +87,30 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await runTask.value
 	}
 
+	func testOfflineCollectionDownloadStateUsesRequestBeforeTaskIsAvailable() async throws {
+		let backend = SuspendingAddOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		let downloadTask = Task {
+			try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
+		}
+		await backend.waitUntilAddStarted()
+
+		let state = await offliner.getOfflineCollectionDownloadState(
+			collectionType: .albums,
+			resourceId: .identifier("album-123")
+		).first()
+
+		XCTAssertEqual(state, .downloading)
+
+		await backend.completeAdd()
+		try await downloadTask.value
+	}
+
 	func testOfflineCollectionDownloadStateUsesCurrentRelatedDownloads() async throws {
 		let backend = StubOfflineApiClient()
 		let mediaDownloader = SuspendingMediaDownloader()
@@ -113,6 +137,34 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		XCTAssertEqual(state, .downloading)
 
 		await mediaDownloader.complete()
+		await backend.waitForTasksToComplete()
+	}
+
+	func testOfflineCollectionDownloadStateKeepsDownloadedStateDuringRelatedWork() async throws {
+		let backend = StubOfflineApiClient()
+		let mediaDownloader = SuspendingMediaDownloader()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: mediaDownloader
+		)
+
+		try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
+		await backend.waitForTasksToComplete()
+
+		try await backend.addItem(type: .track, id: "track-123")
+		let runTask = Task { await offliner.run() }
+		await mediaDownloader.waitUntilStarted()
+
+		let state = await offliner.getOfflineCollectionDownloadState(
+			collectionType: .albums,
+			resourceId: .identifier("album-123")
+		).first()
+
+		XCTAssertEqual(state, .downloaded)
+
+		await mediaDownloader.complete()
+		await runTask.value
 		await backend.waitForTasksToComplete()
 	}
 
@@ -155,6 +207,26 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		XCTAssertEqual(state, .notDownloaded)
 	}
 
+	func testOfflineCollectionDownloadStateClearsRequestWhenSubmissionFails() async throws {
+		let offliner = createOffliner(
+			offlineApiClient: FailingOfflineApiClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+
+		do {
+			try await offliner.download(collectionType: .albums, resourceId: .identifier("album-123"))
+			XCTFail("Expected download submission to fail")
+		} catch {}
+
+		let state = await offliner.getOfflineCollectionDownloadState(
+			collectionType: .albums,
+			resourceId: .identifier("album-123")
+		).first()
+
+		XCTAssertEqual(state, .notDownloaded)
+	}
+
 	func testRedownloadAlbumDeletesOldArtworkAndStoresNewOne() async throws {
 		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
@@ -167,7 +239,8 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let firstCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
+		let firstCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123"))
+			.latest()
 		let firstCollection = try XCTUnwrap(firstCollectionOptional)
 		let firstArtworkURL = try XCTUnwrap(firstCollection.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
@@ -176,7 +249,8 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let secondCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
+		let secondCollectionOptional = await offliner
+			.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
 		let secondCollection = try XCTUnwrap(secondCollectionOptional)
 		let secondArtworkURL = try XCTUnwrap(secondCollection.artworkURL)
 

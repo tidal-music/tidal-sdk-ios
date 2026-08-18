@@ -105,10 +105,10 @@ public enum OfflineCollectionDownloadState: Sendable, Hashable {
 	/// The collection is not locally downloaded, or it is being removed.
 	case notDownloaded
 
-	/// The collection or one of its members has active download/acquisition work known by this SDK instance.
+	/// The collection is not yet locally available and has requested or active download/acquisition work known by this SDK instance.
 	case downloading
 
-	/// The collection is locally stored and there is no locally known pending download/acquisition work.
+	/// The collection is locally stored, regardless of any background acquisition work.
 	case downloaded
 }
 
@@ -196,10 +196,14 @@ public struct OfflineCollection: Hashable {
 	}
 }
 
+// MARK: - SortDirection
+
 public enum SortDirection: Hashable {
 	case ascending
 	case descending
 }
+
+// MARK: - OfflineCollectionItemSort
 
 public enum OfflineCollectionItemSort: Hashable {
 	case title(direction: SortDirection)

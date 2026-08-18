@@ -2,7 +2,14 @@ import Foundation
 import Network
 import OSLog
 
+// MARK: - TaskRunner
+
 actor TaskRunner {
+	private enum CollectionDownloadRequestState {
+		case requested
+		case acknowledged
+	}
+
 	private static let logger = Logger(subsystem: "com.tidal.sdk.offliner", category: "TaskRunner")
 	private static let maxConcurrentTasks = 5
 	private static let refreshThreshold = 10
@@ -21,6 +28,7 @@ actor TaskRunner {
 	private var pendingTasks: [InternalTask] = []
 	private var runningTasks: [InternalTask] = []
 	private var taskIds: Set<String> = []
+	private var collectionDownloadRequests: [OfflineCollectionReference: CollectionDownloadRequestState] = [:]
 
 	private var processTask: Task<Void, Never>?
 	private var rerunRequested = false
@@ -43,42 +51,42 @@ actor TaskRunner {
 		videoManifestFetcher: VideoManifestFetcherProtocol
 	) {
 		self.offlineApiClient = offlineApiClient
-		self.allowDownloadsOnExpensiveNetworks = configuration.allowDownloadsOnExpensiveNetworks
-		self.network = Network()
+		allowDownloadsOnExpensiveNetworks = configuration.allowDownloadsOnExpensiveNetworks
+		network = Network()
 
 		let (stream, continuation) = AsyncStream<Download>.makeStream()
-		self.newDownloads = stream
-		self.downloadsContinuation = continuation
+		newDownloads = stream
+		downloadsContinuation = continuation
 
-		self.storeTrackHandler = StoreTrackHandler(
+		storeTrackHandler = StoreTrackHandler(
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			manifestFetcher: trackManifestFetcher,
 			licenseDownloader: licenseDownloader
 		)
-		self.storeVideoHandler = StoreVideoHandler(
+		storeVideoHandler = StoreVideoHandler(
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			manifestFetcher: videoManifestFetcher,
 			licenseDownloader: licenseDownloader
 		)
-		self.storeAlbumHandler = StoreAlbumHandler(
+		storeAlbumHandler = StoreAlbumHandler(
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
 		)
-		self.storePlaylistHandler = StorePlaylistHandler(
+		storePlaylistHandler = StorePlaylistHandler(
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader
 		)
-		self.storeUserCollectionTracksHandler = StoreUserCollectionTracksHandler(
+		storeUserCollectionTracksHandler = StoreUserCollectionTracksHandler(
 			offlineStore: offlineStore
 		)
-		self.removeItemHandler = RemoveItemHandler(
+		removeItemHandler = RemoveItemHandler(
 			offlineStore: offlineStore
 		)
-		self.removeCollectionHandler = RemoveCollectionHandler(
+		removeCollectionHandler = RemoveCollectionHandler(
 			offlineStore: offlineStore
 		)
 	}
@@ -107,7 +115,45 @@ actor TaskRunner {
 
 	func hasCurrentDownload(relatedTo collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
 		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
-		return pendingTasks.contains { $0.isDownloadTask(for: collection) } ||
+		return hasCurrentDownload(for: collection)
+	}
+
+	func beginCollectionDownload(collectionType: OfflineCollectionType, resourceId: ResourceId) {
+		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
+		if collectionDownloadRequests[collection] == nil {
+			collectionDownloadRequests[collection] = hasCurrentDownload(for: collection) ? .acknowledged : .requested
+		}
+	}
+
+	func cancelCollectionDownloadRequest(collectionType: OfflineCollectionType, resourceId: ResourceId) {
+		collectionDownloadRequests.removeValue(
+			forKey: OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
+		)
+	}
+
+	func isCollectionDownloadRequestActive(relatedTo collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
+		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
+		guard let requestState = collectionDownloadRequests[collection] else {
+			return false
+		}
+
+		let hasCurrentDownload = hasCurrentDownload(for: collection)
+		switch requestState {
+		case .requested:
+			if hasCurrentDownload {
+				collectionDownloadRequests[collection] = .acknowledged
+			}
+			return true
+		case .acknowledged where hasCurrentDownload:
+			return true
+		case .acknowledged:
+			collectionDownloadRequests[collection] = nil
+			return false
+		}
+	}
+
+	private func hasCurrentDownload(for collection: OfflineCollectionReference) -> Bool {
+		pendingTasks.contains { $0.isDownloadTask(for: collection) } ||
 			runningTasks.contains { $0.isDownloadTask(for: collection) }
 	}
 
@@ -116,6 +162,10 @@ actor TaskRunner {
 
 		for task in tasks where taskIds.insert(task.id).inserted {
 			let pendingTask = handle(task)
+			let matchingRequests = collectionDownloadRequests.keys.filter { pendingTask.isDownloadTask(for: $0) }
+			for collection in matchingRequests {
+				collectionDownloadRequests[collection] = .acknowledged
+			}
 			pendingTasks.append(pendingTask)
 			if let download = pendingTask.download {
 				currentDownloads.append(download)
@@ -126,13 +176,13 @@ actor TaskRunner {
 
 	private func handle(_ offlineTask: OfflineTask) -> InternalTask {
 		switch offlineTask {
-		case .storeTrack(let task): storeTrackHandler.handle(task)
-		case .storeVideo(let task): storeVideoHandler.handle(task)
-		case .storeAlbum(let task): storeAlbumHandler.handle(task)
-		case .storePlaylist(let task): storePlaylistHandler.handle(task)
-		case .storeUserCollectionTracks(let task): storeUserCollectionTracksHandler.handle(task)
-		case .removeItem(let task): removeItemHandler.handle(task)
-		case .removeCollection(let task): removeCollectionHandler.handle(task)
+		case let .storeTrack(task): storeTrackHandler.handle(task)
+		case let .storeVideo(task): storeVideoHandler.handle(task)
+		case let .storeAlbum(task): storeAlbumHandler.handle(task)
+		case let .storePlaylist(task): storePlaylistHandler.handle(task)
+		case let .storeUserCollectionTracks(task): storeUserCollectionTracksHandler.handle(task)
+		case let .removeItem(task): removeItemHandler.handle(task)
+		case let .removeCollection(task): removeCollectionHandler.handle(task)
 		}
 	}
 
@@ -173,7 +223,7 @@ actor TaskRunner {
 	}
 
 	private func start(_ task: InternalTask) async {
-		while !allowDownloadsOnExpensiveNetworks, !(await network.isInexpensive) {
+		while !allowDownloadsOnExpensiveNetworks, await !(network.isInexpensive) {
 			try? await Task.sleep(nanoseconds: 1_000_000_000)
 		}
 
@@ -218,8 +268,12 @@ private actor Network {
 
 	init() {
 		monitor.pathUpdateHandler = { [weak self] path in
-			guard path.status == .satisfied else { return }
-			guard let self else { return }
+			guard path.status == .satisfied else {
+				return
+			}
+			guard let self else {
+				return
+			}
 			let inexpensive = !path.isExpensive && !path.isConstrained
 			Task { await self.setInexpensive(inexpensive) }
 		}
