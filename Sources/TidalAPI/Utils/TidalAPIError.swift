@@ -35,9 +35,12 @@ public struct TidalAPIError: LocalizedError, Equatable {
 		self.underlyingError = underlyingError
 	}
 
-	public var errorDescription: String {
+	/// Must be `String?` to witness `LocalizedError.errorDescription`; a non-optional declaration is ignored and
+	/// `localizedDescription` falls back to the generic "The operation couldn't be completed" NSError text.
+	public var errorDescription: String? {
 		"""
 		API Error: \(String(describing: statusCode))
+		Message: \(message)
 		URL: \(url)
 		SubStatus: \(String(describing: subStatus))
 		"""
