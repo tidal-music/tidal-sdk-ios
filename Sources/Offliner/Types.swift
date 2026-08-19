@@ -65,6 +65,41 @@ public enum OfflineResourceOperationError: Error, Sendable, Equatable {
 	case conflictingOperationInProgress(currentState: OfflineResourceState)
 }
 
+// MARK: - OfflineDownloadQueueEntry
+
+/// One top-level download operation in the active Offliner queue.
+///
+/// Collection metadata and member tasks are aggregated into one collection entry when their relationship is known.
+/// A directly requested media item remains a media entry and exposes its related collection separately.
+public struct OfflineDownloadQueueEntry: Sendable, Hashable {
+	public enum State: Sendable, Hashable {
+		case queued
+		case downloading
+		/// A terminal failure. Download queues only expose the `.download` action.
+		case failed(action: OfflineResourceAction)
+	}
+
+	/// The stable top-level resource identity to pass back to `download(...)` when retrying.
+	public let resource: OfflineResource
+	/// The related collection for a directly requested media item, when supplied by the backend task.
+	public let parentCollection: OfflineResource?
+	public let state: State
+	/// Aggregate transfer progress in `0 ... 1`, or `nil` until progress is known.
+	public let progress: Double?
+
+	public init(
+		resource: OfflineResource,
+		parentCollection: OfflineResource?,
+		state: State,
+		progress: Double?
+	) {
+		self.resource = resource
+		self.parentCollection = parentCollection
+		self.state = state
+		self.progress = progress
+	}
+}
+
 // MARK: - OfflineMediaItem
 
 public struct OfflineMediaItem {

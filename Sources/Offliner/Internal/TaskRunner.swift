@@ -66,14 +66,16 @@ actor TaskRunner {
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			manifestFetcher: trackManifestFetcher,
-			licenseDownloader: licenseDownloader
+			licenseDownloader: licenseDownloader,
+			resourceStateTracker: resourceStateTracker
 		)
 		storeVideoHandler = StoreVideoHandler(
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			manifestFetcher: videoManifestFetcher,
-			licenseDownloader: licenseDownloader
+			licenseDownloader: licenseDownloader,
+			resourceStateTracker: resourceStateTracker
 		)
 		storeAlbumHandler = StoreAlbumHandler(
 			offlineStore: offlineStore,
@@ -112,6 +114,20 @@ actor TaskRunner {
 		}
 	}
 
+	func synchronizeState() async {
+		guard !isShutdown else {
+			return
+		}
+		try? await refresh()
+	}
+
+	func synchronizeDownloadQueue() async throws {
+		guard !isShutdown else {
+			return
+		}
+		try await refresh()
+	}
+
 	func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) {
 		guard !isShutdown else {
 			return
@@ -129,13 +145,6 @@ actor TaskRunner {
 		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
 		return pendingTasks.contains { $0.isDownloadTask(for: collection) } ||
 			runningTasks.contains { $0.isDownloadTask(for: collection) }
-	}
-
-	func synchronizeState() async {
-		guard !isShutdown else {
-			return
-		}
-		try? await refresh()
 	}
 
 	func shutdown() async {
@@ -182,7 +191,8 @@ actor TaskRunner {
 					taskId: task.id,
 					action: task.action,
 					state: state,
-					resources: task.resourceKeys
+					resources: task.resourceKeys,
+					downloadQueueTask: task.downloadQueueTask
 				)
 				guard taskIds.insert(task.id).inserted else {
 					continue

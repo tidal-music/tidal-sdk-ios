@@ -1,4 +1,3 @@
-import AVFoundation
 import Foundation
 import TidalAPI
 
@@ -10,19 +9,22 @@ final class StoreVideoHandler {
 	private let mediaDownloader: MediaDownloaderProtocol
 	private let manifestFetcher: VideoManifestFetcherProtocol
 	private let licenseDownloader: LicenseDownloader
+	private let resourceStateTracker: ResourceStateTracker
 
 	init(
 		offlineStore: OfflineStore,
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
 		manifestFetcher: VideoManifestFetcherProtocol,
-		licenseDownloader: LicenseDownloader
+		licenseDownloader: LicenseDownloader,
+		resourceStateTracker: ResourceStateTracker
 	) {
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader
 		self.mediaDownloader = mediaDownloader
 		self.manifestFetcher = manifestFetcher
 		self.licenseDownloader = licenseDownloader
+		self.resourceStateTracker = resourceStateTracker
 	}
 
 	func handle(_ task: StoreVideoTask) -> InternalTask {
@@ -39,7 +41,10 @@ final class StoreVideoHandler {
 				title: title,
 				artists: artists,
 				imageURL: imageURL,
-				relatedCollection: relatedCollection
+				relatedCollection: relatedCollection,
+				progressHandler: { [resourceStateTracker] progress in
+					await resourceStateTracker.updateProgress(taskId: task.id, progress: progress)
+				}
 			),
 			offlineStore: offlineStore,
 			artworkDownloader: artworkDownloader,
