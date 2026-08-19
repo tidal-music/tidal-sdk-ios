@@ -32,17 +32,27 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	let backgroundSessionIdentifier: String
 
 	private let queue: DispatchQueue
+	private let fileStorage: FileStorage
 	private var session: AVAssetDownloadURLSession!
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 	private var backgroundCompletionHandler: (() -> Void)?
 	private let cancellationLock = NSLock()
 	private var isCancelled = false
 
+	private static let isSimulator: Bool = {
+		#if targetEnvironment(simulator)
+			true
+		#else
+			false
+		#endif
+	}()
+
 	var orphanedTaskHandler: ((String?) -> Void)?
 
-	init(configuration: Configuration, backgroundSessionIdentifier: String) {
-		self.queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
+	init(configuration: Configuration, backgroundSessionIdentifier: String, fileStorage: FileStorage) {
+		queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
 		self.backgroundSessionIdentifier = backgroundSessionIdentifier
+		self.fileStorage = fileStorage
 
 		super.init()
 
@@ -50,7 +60,7 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		delegateQueue.underlyingQueue = queue
 		delegateQueue.maxConcurrentOperationCount = 1
 
-		self.session = AVAssetDownloadURLSession(
+		session = AVAssetDownloadURLSession(
 			configuration: URLSessionConfiguration.background(withIdentifier: backgroundSessionIdentifier),
 			assetDownloadDelegate: self,
 			delegateQueue: delegateQueue
@@ -58,7 +68,9 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	}
 
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool {
-		guard identifier == backgroundSessionIdentifier else { return false }
+		guard identifier == backgroundSessionIdentifier else {
+			return false
+		}
 		DispatchQueue.main.async {
 			self.backgroundCompletionHandler = completionHandler
 		}
@@ -91,8 +103,17 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		let asset = AVURLAsset(url: manifestURL)
 		licenseDownloadResult?.contentKeySession.addContentKeyRecipient(asset)
 
-		let duration = Int(CMTimeGetSeconds(try await asset.load(.duration)))
+		let duration = try await Int(CMTimeGetSeconds(asset.load(.duration)))
 		try Task.checkCancellation()
+
+		if Self.isSimulator {
+			return try await simulatorDownload(
+				taskId: taskId,
+				manifestURL: manifestURL,
+				duration: duration,
+				onProgress: onProgress
+			)
+		}
 
 		return try await withCheckedThrowingContinuation { continuation in
 			queue.async {
@@ -125,9 +146,28 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 			}
 		}
 	}
+
+	/// `AVAssetDownloadURLSession` tasks never complete on simulators. Store the manifest itself as the media file so
+	/// the download pipeline completes for development and UI validation; playback resolves the manifest's remote
+	/// segment URLs over the network.
+	private func simulatorDownload(
+		taskId: String,
+		manifestURL: URL,
+		duration: Int,
+		onProgress: @escaping @Sendable (Double) async -> Void
+	) async throws -> MediaDownloadResult {
+		Self.logger.warning(
+			"Storing manifest instead of media segments: AVAssetDownloadTask is not supported on simulators [task: \(taskId, privacy: .public)]"
+		)
+		let (data, _) = try await URLSession.shared.data(from: manifestURL)
+		try Task.checkCancellation()
+		let location = try fileStorage.store(data, subdirectory: "Media", filename: "\(UUID().uuidString).m3u8")
+		await onProgress(1.0)
+		return MediaDownloadResult(duration: duration, mediaLocation: location)
+	}
 }
 
-// MARK: - AVAssetDownloadDelegate
+// MARK: AVAssetDownloadDelegate
 
 extension MediaDownloader: AVAssetDownloadDelegate {
 	func urlSession(
@@ -170,7 +210,10 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		task: URLSessionTask,
 		didCompleteWithError error: Error?
 	) {
-		Self.logger.debug("didCompleteWithError called: \(error.map { "\($0)" } ?? "success", privacy: .public) [task: \(task.taskDescription ?? "?", privacy: .public)]")
+		Self.logger
+			.debug(
+				"didCompleteWithError called: \(error.map { "\($0)" } ?? "success", privacy: .public) [task: \(task.taskDescription ?? "?", privacy: .public)]"
+			)
 
 		guard let activeDownload = activeDownloads.removeValue(forKey: task.taskIdentifier) else {
 			Self.logger.debug("orphaned didCompleteWithError called [task: \(task.taskDescription ?? "?", privacy: .public)]")

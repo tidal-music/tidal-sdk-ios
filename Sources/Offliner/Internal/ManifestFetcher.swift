@@ -36,7 +36,7 @@ final class TrackManifestFetcher: TrackManifestFetcherProtocol {
 			id: trackId,
 			manifestType: .hls,
 			formats: audioFormats.map(\.toAPIFormat),
-			uriScheme: .data,
+			uriScheme: simulatorSafeURIScheme(.data),
 			usage: .download,
 			adaptive: false
 		)
@@ -46,7 +46,8 @@ final class TrackManifestFetcher: TrackManifestFetcherProtocol {
 		try validateFullTrackPresentation(attributes?.trackPresentation)
 
 		guard let uriString = attributes?.uri,
-			  let url = URL(string: uriString) else {
+		      let url = URL(string: uriString)
+		else {
 			throw MediaDownloaderError.manifestNotFound
 		}
 
@@ -65,7 +66,9 @@ final class TrackManifestFetcher: TrackManifestFetcherProtocol {
 }
 
 func validateFullTrackPresentation(_ presentation: TrackManifestsAttributes.TrackPresentation?) throws {
-	guard presentation == .full else { throw MediaDownloaderError.previewManifest }
+	guard presentation == .full else {
+		throw MediaDownloaderError.previewManifest
+	}
 }
 
 // MARK: - VideoManifestFetcher
@@ -74,14 +77,15 @@ final class VideoManifestFetcher: VideoManifestFetcherProtocol {
 	func fetchVideoManifest(videoId: String) async throws -> ManifestFetchResult {
 		let response = try await VideoManifestsAPITidal.videoManifestsIdGet(
 			id: videoId,
-			uriScheme: .data,
+			uriScheme: simulatorSafeURIScheme(.data),
 			usage: .download
 		)
 
 		let attributes = response.data.attributes
 
 		guard let hrefString = attributes?.link?.href,
-			  let url = URL(string: hrefString) else {
+		      let url = URL(string: hrefString)
+		else {
 			throw MediaDownloaderError.manifestNotFound
 		}
 
@@ -89,11 +93,38 @@ final class VideoManifestFetcher: VideoManifestFetcherProtocol {
 	}
 }
 
+// MARK: - Simulator URI Scheme
+
+/// Simulators reject `data:` manifest URIs in `AVAssetDownloadTask` with `NSURLErrorUnsupportedURL`. Request regular
+/// HTTPS manifests there so development and UI-validation downloads can complete; devices keep the `data:` scheme,
+/// which avoids a second manifest fetch at download time.
+private func simulatorSafeURIScheme(
+	_ scheme: TrackManifestsAPITidal.UriScheme_trackManifestsIdGet
+) -> TrackManifestsAPITidal.UriScheme_trackManifestsIdGet {
+	#if targetEnvironment(simulator)
+		.https
+	#else
+		scheme
+	#endif
+}
+
+private func simulatorSafeURIScheme(
+	_ scheme: VideoManifestsAPITidal.UriScheme_videoManifestsIdGet
+) -> VideoManifestsAPITidal.UriScheme_videoManifestsIdGet {
+	#if targetEnvironment(simulator)
+		.https
+	#else
+		scheme
+	#endif
+}
+
 // MARK: - NormalizationData Conversion
 
 private extension OfflineMediaItem.NormalizationData {
 	init?(_ apiData: AudioNormalizationData?) {
-		guard let apiData else { return nil }
+		guard let apiData else {
+			return nil
+		}
 		self.init(peakAmplitude: apiData.peakAmplitude, replayGain: apiData.replayGain)
 	}
 }

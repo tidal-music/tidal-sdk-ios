@@ -1,6 +1,7 @@
 import Auth
 import AVFoundation
 import Foundation
+import OSLog
 import TidalAPI
 
 // MARK: - LicenseDownloadResult
@@ -21,6 +22,16 @@ actor LicenseDownloader {
 	private var activeDownloads: [UUID: ActiveLicenseDownload] = [:]
 	private var isCancelled = false
 
+	private static let logger = Logger(subsystem: "com.tidal.sdk.offliner", category: "LicenseDownloader")
+
+	private static let isSimulator: Bool = {
+		#if targetEnvironment(simulator)
+			true
+		#else
+			false
+		#endif
+	}()
+
 	init(fileStorage: FileStorage) {
 		httpClient = HttpClient()
 		self.fileStorage = fileStorage
@@ -28,13 +39,23 @@ actor LicenseDownloader {
 
 	func downloadLicense(drmData: DrmData?) async throws -> LicenseDownloadResult? {
 		try Task.checkCancellation()
-		guard !isCancelled else { throw CancellationError() }
+		guard !isCancelled else {
+			throw CancellationError()
+		}
 		guard let keyIdentifier = drmData?.initData?.first,
 		      let certificateURLString = drmData?.certificateUrl,
 		      let certificateURL = URL(string: certificateURLString),
 		      let licenseURLString = drmData?.licenseUrl,
 		      let licenseURL = URL(string: licenseURLString)
 		else {
+			return nil
+		}
+
+		// AVContentKeySession(keySystem: .fairPlayStreaming) raises an uncatchable Objective-C exception on
+		// simulators. Skip license acquisition there so downloads complete for development and UI validation;
+		// playback of protected media is not possible on simulators either way.
+		guard !Self.isSimulator else {
+			Self.logger.warning("Skipping FairPlay license download: FairPlay is not supported on simulators")
 			return nil
 		}
 

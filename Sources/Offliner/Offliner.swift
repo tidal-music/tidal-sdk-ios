@@ -24,7 +24,9 @@ public final class Offliner {
 	}
 
 	public func setAllowDownloadsOnExpensiveNetworks(_ allowed: Bool) async {
-		guard isActive else { return }
+		guard isActive else {
+			return
+		}
 		await taskRunner.setAllowDownloadsOnExpensiveNetworks(allowed)
 	}
 
@@ -40,7 +42,9 @@ public final class Offliner {
 
 	@discardableResult
 	public func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool {
-		guard isActive else { return false }
+		guard isActive else {
+			return false
+		}
 		return mediaDownloader.handleBackgroundURLSessionEvents(
 			identifier: identifier,
 			completionHandler: completionHandler
@@ -54,7 +58,8 @@ public final class Offliner {
 		let artworkDownloader = ArtworkDownloader(fileStorage: storage.fileStorage)
 		let mediaDownloader = MediaDownloader(
 			configuration: configuration,
-			backgroundSessionIdentifier: storage.backgroundSessionIdentifier
+			backgroundSessionIdentifier: storage.backgroundSessionIdentifier,
+			fileStorage: storage.fileStorage
 		)
 		let licenseDownloader = LicenseDownloader(fileStorage: storage.fileStorage)
 		let resourceStateTracker = ResourceStateTracker(offlineStore: offlineStore)
@@ -67,8 +72,8 @@ public final class Offliner {
 		self.mediaDownloader = mediaDownloader
 		self.resourceStateTracker = resourceStateTracker
 		self.trackManifestFetcher = trackManifestFetcher
-		self.audioFormats = configuration.audioFormats
-		self.taskRunner = TaskRunner(
+		audioFormats = configuration.audioFormats
+		taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
@@ -81,11 +86,17 @@ public final class Offliner {
 		)
 
 		mediaDownloader.orphanedTaskHandler = { [weak self] taskId in
-			guard let self, self.isActive, let taskId else { return }
+			guard let self, isActive, let taskId else {
+				return
+			}
 			Task {
-				guard self.isActive else { return }
+				guard self.isActive else {
+					return
+				}
 				try? await self.offlineApiClient.updateTask(taskId: taskId, state: .failed)
-				guard self.isActive else { return }
+				guard self.isActive else {
+					return
+				}
 				await self.run()
 			}
 		}
@@ -110,8 +121,8 @@ public final class Offliner {
 		self.mediaDownloader = mediaDownloader
 		self.resourceStateTracker = resourceStateTracker
 		self.trackManifestFetcher = trackManifestFetcher
-		self.audioFormats = configuration.audioFormats
-		self.taskRunner = TaskRunner(
+		audioFormats = configuration.audioFormats
+		taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
@@ -125,7 +136,9 @@ public final class Offliner {
 	}
 
 	public func run() async {
-		guard isActive else { return }
+		guard isActive else {
+			return
+		}
 		await taskRunner.run()
 	}
 
@@ -184,7 +197,9 @@ public final class Offliner {
 		mediaType: OfflineMediaItemType,
 		resourceId: ResourceId
 	) async -> OfflinePlaybackAsset? {
-		guard isActive else { return nil }
+		guard isActive else {
+			return nil
+		}
 		do {
 			return try await offlineStore.getPlaybackAsset(mediaType: mediaType, resourceId: resourceId.stringValue)
 		} catch {
@@ -218,7 +233,9 @@ public final class Offliner {
 		playbackReplacementLock.lock()
 		let inserted = playbackReplacementResources.insert(resource).inserted
 		playbackReplacementLock.unlock()
-		guard inserted else { return }
+		guard inserted else {
+			return
+		}
 
 		Task {
 			defer { finishPlaybackAssetReplacement(resource) }
@@ -241,7 +258,9 @@ public final class Offliner {
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId
 	) -> AsyncStream<OfflineCollection?> {
-		guard isActive else { return AsyncStream { $0.finish() } }
+		guard isActive else {
+			return AsyncStream { $0.finish() }
+		}
 		return AsyncStream { continuation in
 			let task = Task {
 				let local = try? await offlineStore.getCollection(
@@ -267,10 +286,12 @@ public final class Offliner {
 		collectionType: OfflineCollectionType,
 		cursor: String? = nil
 	) -> AsyncStream<Set<OfflineCollection>> {
-		guard isActive else { return AsyncStream { $0.finish() } }
+		guard isActive else {
+			return AsyncStream { $0.finish() }
+		}
 		return AsyncStream { continuation in
 			let task = Task {
-				let local = (try? await offlineStore.getCollections(collectionType: collectionType)) ?? []
+				let local = await (try? offlineStore.getCollections(collectionType: collectionType)) ?? []
 				var collections = Set(local)
 				continuation.yield(collections)
 
@@ -304,7 +325,7 @@ public final class Offliner {
 		collectionType: OfflineCollectionType
 	) async throws -> Set<OfflineCollection> {
 		try ensureActive()
-		return Set(try await offlineStore.getCollections(collectionType: collectionType))
+		return try await Set(offlineStore.getCollections(collectionType: collectionType))
 	}
 
 	/// Returns the latest operation or local availability state for a media item or collection.
@@ -322,7 +343,9 @@ public final class Offliner {
 
 	/// Observes distinct state changes for one media item or collection until reset or cancellation.
 	public func observeOfflineResourceState(for resource: OfflineResource) -> AsyncStream<OfflineResourceState> {
-		guard isActive else { return AsyncStream { $0.finish() } }
+		guard isActive else {
+			return AsyncStream { $0.finish() }
+		}
 		let key = OfflineResourceKey(resource)
 		return AsyncStream { continuation in
 			let task = Task {
@@ -394,7 +417,7 @@ public final class Offliner {
 					case .downloaded: .downloaded
 					case .notDownloaded, .removing, .failed(action: .download): .notDownloaded
 					case .failed(action: .remove):
-						(try? await localResourceState(for: resource)) == .downloaded ? .downloaded : .notDownloaded
+						await (try? localResourceState(for: resource)) == .downloaded ? .downloaded : .notDownloaded
 					}
 					continuation.yield(legacyState)
 				}
@@ -431,7 +454,7 @@ public final class Offliner {
 				limit: limit,
 				after: cursor
 			)
-		case .title(let direction):
+		case let .title(direction):
 			(page, failures) = try await offlineStore.getCollectionItemsOrderByTitle(
 				collectionType: collectionType,
 				resourceId: resourceId,
@@ -439,7 +462,7 @@ public final class Offliner {
 				limit: limit,
 				after: cursor
 			)
-		case .album(let direction):
+		case let .album(direction):
 			(page, failures) = try await offlineStore.getCollectionItemsOrderByAlbum(
 				collectionType: collectionType,
 				resourceId: resourceId,
@@ -447,7 +470,7 @@ public final class Offliner {
 				limit: limit,
 				after: cursor
 			)
-		case .artist(let direction):
+		case let .artist(direction):
 			(page, failures) = try await offlineStore.getCollectionItemsOrderByArtist(
 				collectionType: collectionType,
 				resourceId: resourceId,
@@ -455,7 +478,7 @@ public final class Offliner {
 				limit: limit,
 				after: cursor
 			)
-		case .dateAdded(let direction):
+		case let .dateAdded(direction):
 			(page, failures) = try await offlineStore.getCollectionItemsOrderByDateAdded(
 				collectionType: collectionType,
 				resourceId: resourceId,
@@ -492,7 +515,9 @@ public final class Offliner {
 	}
 
 	private func scheduleRedownload(for failures: [FailedOfflineItem]) {
-		guard !failures.isEmpty else { return }
+		guard !failures.isEmpty else {
+			return
+		}
 		Task {
 			for failure in failures {
 				try? await download(mediaType: failure.mediaType, resourceId: .identifier(failure.resourceId))
@@ -560,19 +585,27 @@ public final class Offliner {
 		let localState = try await localResourceState(for: resource)
 		if let knownState = try await resourceStateTracker.state(for: key) {
 			if action == .store, localState == .downloaded,
-			   knownState == .downloaded || knownState == .failed(action: .remove) {
+			   knownState == .downloaded || knownState == .failed(action: .remove)
+			{
 				await resourceStateTracker.resolve(key, state: .downloaded)
 				return
 			}
 			if action == .remove, localState == .notDownloaded,
-			   knownState == .notDownloaded || knownState == .failed(action: .download) {
+			   knownState == .notDownloaded || knownState == .failed(action: .download)
+			{
 				await resourceStateTracker.resolve(key, state: .notDownloaded)
 				return
 			}
-			guard try await resourceStateTracker.begin(action, for: key) else { return }
+			guard try await resourceStateTracker.begin(action, for: key) else {
+				return
+			}
 		} else {
-			if action == .store, localState == .downloaded { return }
-			guard try await resourceStateTracker.begin(action, for: key) else { return }
+			if action == .store, localState == .downloaded {
+				return
+			}
+			guard try await resourceStateTracker.begin(action, for: key) else {
+				return
+			}
 		}
 		do {
 			switch action {
@@ -590,12 +623,12 @@ public final class Offliner {
 
 	private func localResourceState(for resource: OfflineResource) async throws -> OfflineResourceState {
 		switch resource {
-		case .media(let mediaType, let resourceId):
-			return try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId) == nil
+		case let .media(mediaType, resourceId):
+			try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId) == nil
 				? .notDownloaded
 				: .downloaded
-		case .collection(let collectionType, let resourceId):
-			return try await offlineStore.getCollection(
+		case let .collection(collectionType, resourceId):
+			try await offlineStore.getCollection(
 				collectionType: collectionType,
 				resourceId: collectionLocalResourceId(
 					collectionType: collectionType,
@@ -619,7 +652,9 @@ public final class Offliner {
 	}
 
 	private func ensureActive() throws {
-		guard isActive else { throw OfflinerLifecycleError.reset }
+		guard isActive else {
+			throw OfflinerLifecycleError.reset
+		}
 	}
 }
 
@@ -628,8 +663,8 @@ public final class Offliner {
 extension OfflineMediaItemType {
 	var toResourceType: ResourceType {
 		switch self {
-		case .tracks: return .track
-		case .videos: return .video
+		case .tracks: .track
+		case .videos: .video
 		}
 	}
 }
@@ -637,9 +672,9 @@ extension OfflineMediaItemType {
 extension OfflineCollectionType {
 	var toResourceType: ResourceType {
 		switch self {
-		case .albums: return .album
-		case .playlists: return .playlist
-		case .userCollectionTracks: return .userCollectionTracks
+		case .albums: .album
+		case .playlists: .playlist
+		case .userCollectionTracks: .userCollectionTracks
 		}
 	}
 }
