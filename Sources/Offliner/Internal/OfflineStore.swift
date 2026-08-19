@@ -262,7 +262,7 @@ final class OfflineStore {
 		return item
 	}
 
-	func getPlayableMediaItem(mediaType: OfflineMediaItemType, resourceId: String) async throws -> PlayableOfflineMediaItem? {
+	func getPlaybackAsset(mediaType: OfflineMediaItemType, resourceId: String) async throws -> OfflinePlaybackAsset? {
 		let row = try await databaseQueue.read { database in
 			try Row.fetchOne(
 				database,
@@ -282,7 +282,7 @@ final class OfflineStore {
 		let playbackMetadataJson: String? = row["playback_metadata"]
 
 		var renewals: [BookmarkRenewal] = []
-		let item = try PlayableOfflineMediaItem(
+		let item = try OfflinePlaybackAsset(
 			playbackMetadata: playbackMetadataJson.map { try OfflineMediaItem.PlaybackMetadata.deserialize($0) },
 			mediaURL: Self.resolveBookmark(row, column: "media_bookmark", renewals: &renewals),
 			licenseURL: Self.resolveBookmarkIfPresent(row, column: "license_bookmark", renewals: &renewals)

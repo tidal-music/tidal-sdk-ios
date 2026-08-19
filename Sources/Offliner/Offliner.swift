@@ -1,6 +1,5 @@
 import Foundation
 import GRDB
-import Player
 
 // MARK: - Offliner
 
@@ -129,6 +128,31 @@ public final class Offliner {
 		}
 
 		return items
+	}
+
+	/// Returns the locally playable asset for an offlined track or video.
+	///
+	/// File bookmarks are resolved only for playback so enumerating offline content remains fast. If a stored file can no
+	/// longer be resolved, this method returns `nil`.
+	public func getOfflinePlaybackAsset(
+		mediaType: OfflineMediaItemType,
+		resourceId: ResourceId
+	) async -> OfflinePlaybackAsset? {
+		try? await offlineStore.getPlaybackAsset(mediaType: mediaType, resourceId: resourceId.stringValue)
+	}
+
+	/// Returns an AVFoundation asset prepared for unprotected or stored-license playback.
+	///
+	/// Retain the returned object for the entire lifetime of every `AVPlayerItem` made from its `urlAsset`, including while
+	/// queued. If stored playback files or license preparation cannot be resolved, this returns `nil`.
+	public func getOfflinePlaybackAVAsset(
+		mediaType: OfflineMediaItemType,
+		resourceId: ResourceId
+	) async -> OfflinePlaybackAVAsset? {
+		guard let playbackAsset = await getOfflinePlaybackAsset(mediaType: mediaType, resourceId: resourceId) else {
+			return nil
+		}
+		return try? OfflinePlaybackAVAsset(playbackAsset: playbackAsset)
 	}
 
 	public func getOfflineCollection(
@@ -411,28 +435,6 @@ public final class Offliner {
 	}
 }
 
-// MARK: OfflineItemProvider
-
-extension Offliner: OfflineItemProvider {
-	public func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem? {
-		let mediaType: OfflineMediaItemType
-		switch productType {
-		case .TRACK: mediaType = .tracks
-		case .VIDEO: mediaType = .videos
-		case .UC: return nil
-		}
-
-		do {
-			return try await offlineStore.getPlayableMediaItem(mediaType: mediaType, resourceId: productId)
-				.map { OfflinePlaybackItem($0, productType: productType) }
-		} catch {
-			Task { try? await download(mediaType: mediaType, resourceId: .identifier(productId)) }
-		}
-
-		return nil
-	}
-}
-
 // MARK: - Internal Mappings
 
 extension OfflineMediaItemType {
@@ -451,20 +453,5 @@ extension OfflineCollectionType {
 		case .playlists: .playlist
 		case .userCollectionTracks: .userCollectionTracks
 		}
-	}
-}
-
-// MARK: - OfflinePlaybackItem from PlayableOfflineMediaItem
-
-private extension OfflinePlaybackItem {
-	init(_ item: PlayableOfflineMediaItem, productType: ProductType) {
-		self.init(
-			mediaURL: item.mediaURL,
-			licenseURL: item.licenseURL,
-			format: item.playbackMetadata?.format.rawValue,
-			albumReplayGain: item.playbackMetadata?.albumNormalizationData?.replayGain,
-			albumPeakAmplitude: item.playbackMetadata?.albumNormalizationData?.peakAmplitude,
-			productType: productType
-		)
 	}
 }

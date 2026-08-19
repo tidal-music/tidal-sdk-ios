@@ -163,7 +163,6 @@ let package = Package(
 				.GRDB,
 				.tidalAPI,
 				.auth,
-				.player,
 			],
 			exclude: [
 				"README.md",
