@@ -328,8 +328,15 @@ actor SuspendingArtworkDownloader: ArtworkDownloaderProtocol {
 
 final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	var progressValues: [Double] = []
+	var handlesBackgroundSessionEvents = false
+	private(set) var backgroundSessionIdentifiers: [String] = []
 
-	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool {
+		backgroundSessionIdentifiers.append(identifier)
+		return handlesBackgroundSessionEvents
+	}
+
+	func cancelAll() async {}
 
 	func download(
 		taskId: String,
@@ -356,7 +363,8 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 // MARK: - FailingMediaDownloader
 
 final class FailingMediaDownloader: MediaDownloaderProtocol {
-	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool { false }
+	func cancelAll() async {}
 
 	func download(
 		taskId: String,
@@ -373,10 +381,41 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 
 actor SuspendingMediaDownloader: MediaDownloaderProtocol {
 	private var startedContinuation: CheckedContinuation<Void, Never>?
+	private var cancelledContinuation: CheckedContinuation<Void, Never>?
 	private var resultContinuation: CheckedContinuation<MediaDownloadResult, Error>?
 	private var started = false
+	private var cancelled = false
+	private let resumesOnCancel: Bool
 
-	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+	init(resumesOnCancel: Bool = true) {
+		self.resumesOnCancel = resumesOnCancel
+	}
+
+	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool {
+		false
+	}
+
+	func cancelAll() {
+		cancelled = true
+		cancelledContinuation?.resume()
+		cancelledContinuation = nil
+		guard resumesOnCancel else {
+			return
+		}
+		let continuation = resultContinuation
+		resultContinuation = nil
+		continuation?.resume(throwing: CancellationError())
+	}
+
+	func waitUntilCancelled() async {
+		if cancelled {
+			return
+		}
+
+		await withCheckedContinuation { continuation in
+			cancelledContinuation = continuation
+		}
+	}
 
 	func waitUntilStarted() async {
 		if started {
