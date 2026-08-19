@@ -14,15 +14,23 @@ struct LicenseDownloadResult {
 
 actor LicenseDownloader {
 	private let httpClient: HttpClient
+	private let fileStorage: FileStorage
 	private let queue = DispatchQueue(label: "com.tidal.offliner.license-downloader")
 	private var certificate: Data?
 	private var certificateTask: Task<Data, Error>?
+	private var activeDownloads: [UUID: ActiveLicenseDownload] = [:]
+	private var isCancelled = false
 
-	init() {
+	init(fileStorage: FileStorage) {
 		httpClient = HttpClient()
+		self.fileStorage = fileStorage
 	}
 
 	func downloadLicense(drmData: DrmData?) async throws -> LicenseDownloadResult? {
+		try Task.checkCancellation()
+		guard !isCancelled else {
+			throw CancellationError()
+		}
 		guard let keyIdentifier = drmData?.initData?.first,
 		      let certificateURLString = drmData?.certificateUrl,
 		      let certificateURL = URL(string: certificateURLString),
@@ -37,22 +45,46 @@ actor LicenseDownloader {
 		let delegate = ActiveLicenseDownload(
 			certificate: certificate,
 			httpClient: httpClient,
-			licenseURL: licenseURL
+			licenseURL: licenseURL,
+			fileStorage: fileStorage
 		)
+		let downloadId = UUID()
+		activeDownloads[downloadId] = delegate
 
-		let storedLicenseURL: URL = try await withCheckedThrowingContinuation { continuation in
-			self.queue.async {
-				delegate.setContinuation(continuation)
-				contentKeySession.setDelegate(delegate, queue: self.queue)
-				contentKeySession.processContentKeyRequest(
-					withIdentifier: keyIdentifier,
-					initializationData: nil,
-					options: nil
-				)
+		let storedLicenseURL: URL
+		do {
+			storedLicenseURL = try await withTaskCancellationHandler {
+				try await withCheckedThrowingContinuation { continuation in
+					self.queue.async {
+						delegate.setContinuation(continuation)
+						contentKeySession.setDelegate(delegate, queue: self.queue)
+						contentKeySession.processContentKeyRequest(
+							withIdentifier: keyIdentifier,
+							initializationData: nil,
+							options: nil
+						)
+					}
+				}
+			} onCancel: {
+				delegate.cancel()
 			}
+		} catch {
+			activeDownloads.removeValue(forKey: downloadId)
+			throw error
 		}
+		activeDownloads.removeValue(forKey: downloadId)
 
 		return LicenseDownloadResult(contentKeySession: contentKeySession, licenseURL: storedLicenseURL)
+	}
+
+	func cancelAll() {
+		isCancelled = true
+		certificateTask?.cancel()
+		certificateTask = nil
+		for download in activeDownloads.values {
+			download.cancel()
+		}
+		activeDownloads.removeAll()
 	}
 
 	private func getCertificate(url: URL) async throws -> Data {
@@ -88,17 +120,25 @@ private final class ActiveLicenseDownload: NSObject {
 	let certificate: Data
 	let httpClient: HttpClient
 	let licenseURL: URL
+	let fileStorage: FileStorage
 	private let continuationLock = NSLock()
 	private var continuation: CheckedContinuation<URL, Error>?
+	private var isCancelled = false
 
-	init(certificate: Data, httpClient: HttpClient, licenseURL: URL) {
+	init(certificate: Data, httpClient: HttpClient, licenseURL: URL, fileStorage: FileStorage) {
 		self.certificate = certificate
 		self.httpClient = httpClient
 		self.licenseURL = licenseURL
+		self.fileStorage = fileStorage
 	}
 
 	func setContinuation(_ continuation: CheckedContinuation<URL, Error>) {
 		continuationLock.lock()
+		guard !isCancelled else {
+			continuationLock.unlock()
+			continuation.resume(throwing: CancellationError())
+			return
+		}
 		self.continuation = continuation
 		continuationLock.unlock()
 	}
@@ -117,6 +157,15 @@ private final class ActiveLicenseDownload: NSObject {
 		}
 
 		continuation.resume(throwing: error)
+	}
+
+	func cancel() {
+		continuationLock.lock()
+		isCancelled = true
+		let continuation = continuation
+		self.continuation = nil
+		continuationLock.unlock()
+		continuation?.resume(throwing: CancellationError())
 	}
 
 	private func takeContinuation() -> CheckedContinuation<URL, Error>? {
@@ -158,7 +207,8 @@ extension ActiveLicenseDownload: AVContentKeySessionDelegate {
 				let license = try await fetchLicense(spc: spc)
 				let persistableKey = try keyRequest.persistableContentKey(fromKeyVendorResponse: license)
 
-				let url = try FileStorage.store(
+				try Task.checkCancellation()
+				let url = try fileStorage.store(
 					persistableKey,
 					subdirectory: "Licenses",
 					filename: "\(UUID().uuidString).key"

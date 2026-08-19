@@ -21,24 +21,30 @@ protocol MediaDownloaderProtocol {
 		onProgress: @escaping @Sendable (Double) async -> Void
 	) async throws -> MediaDownloadResult
 
-	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void)
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool
+	func cancelAll() async
 }
 
 // MARK: - MediaDownloader
 
 final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 	private static let logger = Logger(subsystem: "com.tidal.sdk.offliner", category: "MediaDownloader")
-	static let backgroundSessionIdentifier = "com.tidal.offliner.download.session"
+	let backgroundSessionIdentifier: String
 
 	private let queue: DispatchQueue
+	private let fileStorage: FileStorage
 	private var session: AVAssetDownloadURLSession!
 	private var activeDownloads: [Int: ActiveDownload] = [:]
 	private var backgroundCompletionHandler: (() -> Void)?
+	private let cancellationLock = NSLock()
+	private var isCancelled = false
 
 	var orphanedTaskHandler: ((String?) -> Void)?
 
-	init(configuration: Configuration) {
+	init(configuration: Configuration, backgroundSessionIdentifier: String, fileStorage: FileStorage) {
 		queue = DispatchQueue(label: "com.tidal.offliner.media-downloader", qos: .userInitiated)
+		self.backgroundSessionIdentifier = backgroundSessionIdentifier
+		self.fileStorage = fileStorage
 
 		super.init()
 
@@ -47,19 +53,34 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		delegateQueue.maxConcurrentOperationCount = 1
 
 		session = AVAssetDownloadURLSession(
-			configuration: URLSessionConfiguration.background(withIdentifier: Self.backgroundSessionIdentifier),
+			configuration: URLSessionConfiguration.background(withIdentifier: backgroundSessionIdentifier),
 			assetDownloadDelegate: self,
 			delegateQueue: delegateQueue
 		)
 	}
 
-	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {
+	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool {
+		guard identifier == backgroundSessionIdentifier else {
+			return false
+		}
 		DispatchQueue.main.async {
-			guard identifier == Self.backgroundSessionIdentifier else {
-				return
-			}
 			self.backgroundCompletionHandler = completionHandler
 		}
+		return true
+	}
+
+	func cancelAll() async {
+		invalidate()
+		let tasks = await session.allTasks
+		for task in tasks {
+			task.cancel()
+		}
+	}
+
+	private func invalidate() {
+		cancellationLock.lock()
+		isCancelled = true
+		cancellationLock.unlock()
 	}
 
 	func download(
@@ -75,9 +96,17 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 		licenseDownloadResult?.contentKeySession.addContentKeyRecipient(asset)
 
 		let duration = try await Int(CMTimeGetSeconds(asset.load(.duration)))
+		try Task.checkCancellation()
 
 		return try await withCheckedThrowingContinuation { continuation in
 			queue.async {
+				self.cancellationLock.lock()
+				let isCancelled = self.isCancelled
+				self.cancellationLock.unlock()
+				guard !isCancelled else {
+					continuation.resume(throwing: CancellationError())
+					return
+				}
 				let downloadConfiguration = AVAssetDownloadConfiguration(asset: asset, title: title)
 				let task = self.session.makeAssetDownloadTask(downloadConfiguration: downloadConfiguration)
 
