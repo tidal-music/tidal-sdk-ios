@@ -2,14 +2,14 @@ import Foundation
 
 // MARK: - OfflineMediaItemType
 
-public enum OfflineMediaItemType: String, Sendable {
+public enum OfflineMediaItemType: String, Sendable, Hashable {
 	case tracks
 	case videos
 }
 
 // MARK: - OfflineCollectionType
 
-public enum OfflineCollectionType: String, Sendable {
+public enum OfflineCollectionType: String, Sendable, Hashable {
 	case albums
 	case playlists
 	case userCollectionTracks
@@ -27,6 +27,42 @@ public enum ResourceId: Sendable {
 		case .me: "me"
 		}
 	}
+}
+
+// MARK: - OfflineResource
+
+/// A stable identity for a resource managed by Offliner.
+public enum OfflineResource: Sendable, Hashable {
+	case media(type: OfflineMediaItemType, resourceId: String)
+	case collection(type: OfflineCollectionType, resourceId: String)
+}
+
+// MARK: - OfflineResourceAction
+
+/// The operation requested for an offline resource.
+public enum OfflineResourceAction: String, Sendable, Hashable {
+	case download
+	case remove
+}
+
+// MARK: - OfflineResourceState
+
+/// The normalized local operation and availability state of an offline resource.
+public enum OfflineResourceState: Sendable, Hashable {
+	case notDownloaded
+	case queued
+	case downloading
+	case downloaded
+	case removing
+	/// The operation failed. The associated action is the stable retry direction.
+	case failed(action: OfflineResourceAction)
+}
+
+// MARK: - OfflineResourceOperationError
+
+public enum OfflineResourceOperationError: Error, Sendable, Equatable {
+	/// The requested action conflicts with an operation already in progress for this resource.
+	case conflictingOperationInProgress(currentState: OfflineResourceState)
 }
 
 // MARK: - OfflineMediaItem

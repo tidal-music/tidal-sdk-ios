@@ -116,9 +116,6 @@ for await state in offliner.getOfflineCollectionDownloadState(
 }
 ```
 
-The stream is optimized for view entry and does not poll backend task inventory. Backend-provided per-collection
-activity metadata would be required for authoritative task state after a cold start.
-
 | State | Meaning |
 | --- | --- |
 | `.notDownloaded` | The collection is not locally available, or it is being removed. |
@@ -127,6 +124,27 @@ activity metadata would be required for authoritative task state after a cold st
 
 Removal tasks are not surfaced as `.downloading`; callers can map this state directly to a download button label:
 `Download`, `Downloading...`, and `Downloaded`.
+
+For resource-scoped media and collection state, use the normalized snapshot API:
+
+```swift
+let resource = OfflineResource.collection(type: .albums, resourceId: "album-id")
+let state = try await offliner.getOfflineResourceState(for: resource)
+
+switch state {
+case .notDownloaded, .queued, .downloading, .downloaded, .removing:
+    break
+case .failed(let action):
+    // `action` is `.download` or `.remove` and is the stable retry direction.
+    break
+}
+```
+
+Queued, removing, and failed operation state is stored in the installation-scoped Offliner database and recovered on a
+new `Offliner` instance. Backend task inventory refreshes queued versus active transfer state when connectivity permits;
+a refresh failure does not hide locally stored content or discard the last known operation. Repeating the same active
+request is idempotent. An opposite request while work is queued, downloading, or removing throws
+`OfflineResourceOperationError.conflictingOperationInProgress` so collection removal cannot race its member stores.
 
 #### Tracking Individual Download Progress
 

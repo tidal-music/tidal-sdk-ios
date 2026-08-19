@@ -31,6 +31,56 @@ final class OfflineStore {
 		self.databaseQueue = databaseQueue
 	}
 
+	func getResourceOperation(resourceType: String, resourceId: String) throws -> StoredResourceOperation? {
+		try databaseQueue.read { database in
+			try Row.fetchOne(
+				database,
+				sql: "SELECT action, state FROM offline_resource_operation WHERE resource_type = ? AND resource_id = ?",
+				arguments: [resourceType, resourceId]
+			).flatMap { row in
+				guard let action = InternalOfflineResourceAction(rawValue: row["action"]),
+				      let state = OfflineResourceState(storageValue: row["state"]) else { return nil }
+				return StoredResourceOperation(action: action, state: state)
+			}
+		}
+	}
+
+	func setResourceOperation(
+		resourceType: String,
+		resourceId: String,
+		action: InternalOfflineResourceAction,
+		state: OfflineResourceState
+	) throws {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
+		try databaseQueue.write { database in
+			try database.execute(
+				sql: """
+				INSERT INTO offline_resource_operation (resource_type, resource_id, action, state)
+				VALUES (?, ?, ?, ?)
+				ON CONFLICT (resource_type, resource_id) DO UPDATE SET
+					action = excluded.action,
+					state = excluded.state,
+					updated_at = CURRENT_TIMESTAMP
+				""",
+				arguments: [resourceType, resourceId, action.rawValue, state.storageValue]
+			)
+		}
+	}
+
+	func deleteResourceOperation(resourceType: String, resourceId: String) throws {
+		writeLock.lock()
+		defer { writeLock.unlock() }
+		try ensureAcceptsWritesLocked()
+		try databaseQueue.write { database in
+			try database.execute(
+				sql: "DELETE FROM offline_resource_operation WHERE resource_type = ? AND resource_id = ?",
+				arguments: [resourceType, resourceId]
+			)
+		}
+	}
+
 	func storeMediaItem(_ result: StoreItemTaskResult) throws {
 		writeLock.lock()
 		defer { writeLock.unlock() }

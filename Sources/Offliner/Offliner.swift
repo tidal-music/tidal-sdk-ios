@@ -11,6 +11,7 @@ public final class Offliner {
 	private let storage: OfflinerStorage
 	private let taskRunner: TaskRunner
 	private let mediaDownloader: MediaDownloaderProtocol
+	private let resourceStateTracker: ResourceStateTracker
 	private let collectionDownloadStatePollInterval: UInt64
 	private var trackManifestFetcher: TrackManifestFetcherProtocol
 	private let lifecycleLock = NSLock()
@@ -62,6 +63,7 @@ public final class Offliner {
 			fileStorage: storage.fileStorage
 		)
 		let licenseDownloader = LicenseDownloader(fileStorage: storage.fileStorage)
+		let resourceStateTracker = ResourceStateTracker(offlineStore: offlineStore)
 		let trackManifestFetcher = TrackManifestFetcher(audioFormats: configuration.audioFormats)
 		let videoManifestFetcher = VideoManifestFetcher()
 
@@ -69,6 +71,7 @@ public final class Offliner {
 		self.offlineStore = offlineStore
 		self.storage = storage
 		self.mediaDownloader = mediaDownloader
+		self.resourceStateTracker = resourceStateTracker
 		collectionDownloadStatePollInterval = Self.defaultCollectionDownloadStatePollInterval
 		self.trackManifestFetcher = trackManifestFetcher
 		audioFormats = configuration.audioFormats
@@ -79,6 +82,7 @@ public final class Offliner {
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			licenseDownloader: licenseDownloader,
+			resourceStateTracker: resourceStateTracker,
 			trackManifestFetcher: trackManifestFetcher,
 			videoManifestFetcher: videoManifestFetcher
 		)
@@ -113,10 +117,12 @@ public final class Offliner {
 	) {
 		let offlineStore = storage.offlineStore
 		let licenseDownloader = licenseDownloader ?? LicenseDownloader(fileStorage: storage.fileStorage)
+		let resourceStateTracker = ResourceStateTracker(offlineStore: offlineStore)
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
 		self.storage = storage
 		self.mediaDownloader = mediaDownloader
+		self.resourceStateTracker = resourceStateTracker
 		self.collectionDownloadStatePollInterval = collectionDownloadStatePollInterval
 		self.trackManifestFetcher = trackManifestFetcher
 		audioFormats = configuration.audioFormats
@@ -127,6 +133,7 @@ public final class Offliner {
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			licenseDownloader: licenseDownloader,
+			resourceStateTracker: resourceStateTracker,
 			trackManifestFetcher: trackManifestFetcher,
 			videoManifestFetcher: videoManifestFetcher
 		)
@@ -286,6 +293,19 @@ public final class Offliner {
 	) async throws -> Set<OfflineCollection> {
 		try ensureActive()
 		return try await Set(offlineStore.getCollections(collectionType: collectionType))
+	}
+
+	/// Returns the latest operation or local availability state for a media item or collection.
+	///
+	/// Locally persisted queued, removing, and failed operations survive Offliner recreation. A backend refresh is scheduled
+	/// to recover task progress, but a temporary network failure does not hide the locally known state.
+	public func getOfflineResourceState(for resource: OfflineResource) async throws -> OfflineResourceState {
+		try ensureActive()
+		await taskRunner.synchronizeState()
+		if let state = try await resourceStateTracker.state(for: OfflineResourceKey(resource)) {
+			return state
+		}
+		return try await localResourceState(for: resource)
 	}
 
 	/// Streams collection-level offline availability.
@@ -470,32 +490,40 @@ public final class Offliner {
 	// MARK: - Download/Remove
 
 	public func download(mediaType: OfflineMediaItemType, resourceId: ResourceId) async throws {
-		try ensureActive()
-		try await offlineApiClient.addItem(type: mediaType.toResourceType, id: resourceId.stringValue)
-		await taskRunner.run()
+		try await perform(
+			action: .store,
+			resource: .media(type: mediaType, resourceId: resourceId.stringValue),
+			resourceType: mediaType.toResourceType
+		)
 	}
 
 	public func download(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
-		try ensureActive()
-		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId.stringValue)
-		await taskRunner.run()
+		try await perform(
+			action: .store,
+			resource: .collection(type: collectionType, resourceId: resourceId.stringValue),
+			resourceType: collectionType.toResourceType
+		)
 	}
 
 	public func remove(mediaType: OfflineMediaItemType, resourceId: ResourceId) async throws {
-		try ensureActive()
-		try await offlineApiClient.removeItem(type: mediaType.toResourceType, id: resourceId.stringValue)
-		await taskRunner.run()
+		try await perform(
+			action: .remove,
+			resource: .media(type: mediaType, resourceId: resourceId.stringValue),
+			resourceType: mediaType.toResourceType
+		)
 	}
 
 	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
-		try ensureActive()
-		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
+		try await perform(
+			action: .remove,
+			resource: .collection(type: collectionType, resourceId: resourceId.stringValue),
+			resourceType: collectionType.toResourceType
+		)
 		// Optimistically update local availability; the remove task performs the same idempotent cleanup.
 		try? offlineStore.deleteCollection(
 			resourceType: collectionType.rawValue,
 			resourceId: collectionLocalResourceId(collectionType: collectionType, resourceId: resourceId)
 		)
-		await taskRunner.run()
 	}
 
 	private func offlineCollectionDownloadState(
@@ -512,6 +540,69 @@ public final class Offliner {
 		)
 
 		return localCollection == nil ? .notDownloaded : .downloaded
+	}
+
+	private func perform(
+		action: InternalOfflineResourceAction,
+		resource: OfflineResource,
+		resourceType: ResourceType
+	) async throws {
+		try ensureActive()
+		let key = OfflineResourceKey(resource)
+		let localState = try await localResourceState(for: resource)
+		if let knownState = try await resourceStateTracker.state(for: key) {
+			if action == .store, localState == .downloaded,
+			   knownState == .downloaded || knownState == .failed(action: .remove)
+			{
+				await resourceStateTracker.resolve(key, state: .downloaded)
+				return
+			}
+			if action == .remove, localState == .notDownloaded,
+			   knownState == .notDownloaded || knownState == .failed(action: .download)
+			{
+				await resourceStateTracker.resolve(key, state: .notDownloaded)
+				return
+			}
+			guard try await resourceStateTracker.begin(action, for: key) else {
+				return
+			}
+		} else {
+			if action == .store, localState == .downloaded {
+				return
+			}
+			guard try await resourceStateTracker.begin(action, for: key) else {
+				return
+			}
+		}
+		do {
+			switch action {
+			case .store:
+				try await offlineApiClient.addItem(type: resourceType, id: key.resourceId)
+			case .remove:
+				try await offlineApiClient.removeItem(type: resourceType, id: key.resourceId)
+			}
+		} catch {
+			await resourceStateTracker.registrationFailed(action, for: key)
+			throw error
+		}
+		await taskRunner.run()
+	}
+
+	private func localResourceState(for resource: OfflineResource) async throws -> OfflineResourceState {
+		switch resource {
+		case let .media(mediaType, resourceId):
+			try await offlineStore.getMediaItem(mediaType: mediaType, resourceId: resourceId) == nil
+				? .notDownloaded
+				: .downloaded
+		case let .collection(collectionType, resourceId):
+			try await offlineStore.getCollection(
+				collectionType: collectionType,
+				resourceId: collectionLocalResourceId(
+					collectionType: collectionType,
+					resourceId: .identifier(resourceId)
+				)
+			) == nil ? .notDownloaded : .downloaded
+		}
 	}
 
 	private func collectionLocalResourceId(

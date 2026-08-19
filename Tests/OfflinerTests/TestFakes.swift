@@ -266,6 +266,36 @@ final class FailOnGetTasksOfflineApiClient: OfflineApiClientProtocol {
 	func updateTask(taskId: String, state: Download.State) async throws {}
 }
 
+// MARK: - HoldingOfflineApiClient
+
+final class HoldingOfflineApiClient: OfflineApiClientProtocol {
+	private let lock = NSLock()
+	private var addedItemsStorage: [StubOfflineApiClient.RecordedItem] = []
+	private var removedItemsStorage: [StubOfflineApiClient.RecordedItem] = []
+
+	var addedItems: [StubOfflineApiClient.RecordedItem] {
+		lock.withLock { addedItemsStorage }
+	}
+
+	var removedItems: [StubOfflineApiClient.RecordedItem] {
+		lock.withLock { removedItemsStorage }
+	}
+
+	func addItem(type: ResourceType, id: String) async throws {
+		lock.withLock { addedItemsStorage.append(.init(type: type, id: id)) }
+	}
+
+	func removeItem(type: ResourceType, id: String) async throws {
+		lock.withLock { removedItemsStorage.append(.init(type: type, id: id)) }
+	}
+
+	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
+		([], nil)
+	}
+
+	func updateTask(taskId: String, state: Download.State) async throws {}
+}
+
 // MARK: - SucceedingArtworkDownloader
 
 final class SucceedingArtworkDownloader: ArtworkDownloaderProtocol {
@@ -391,9 +421,7 @@ actor SuspendingMediaDownloader: MediaDownloaderProtocol {
 		self.resumesOnCancel = resumesOnCancel
 	}
 
-	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool {
-		false
-	}
+	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool { false }
 
 	func cancelAll() {
 		cancelled = true
@@ -452,6 +480,55 @@ actor SuspendingMediaDownloader: MediaDownloaderProtocol {
 			self.startedContinuation = nil
 
 			startedContinuation?.resume()
+		}
+	}
+}
+
+// MARK: - SelectiveSuspendingMediaDownloader
+
+actor SelectiveSuspendingMediaDownloader: MediaDownloaderProtocol {
+	private var startedTaskIds: Set<String> = []
+	private var continuations: [String: CheckedContinuation<MediaDownloadResult, Error>] = [:]
+	private let failingTaskIds: Set<String>
+
+	init(failingTaskIds: Set<String> = []) {
+		self.failingTaskIds = failingTaskIds
+	}
+
+	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) -> Bool { false }
+
+	func cancelAll() {
+		for continuation in continuations.values {
+			continuation.resume(throwing: CancellationError())
+		}
+		continuations.removeAll()
+	}
+
+	func waitUntilStarted(count: Int) async {
+		while startedTaskIds.count < count {
+			await Task.yield()
+		}
+	}
+
+	func complete(taskId: String) {
+		let url = FileManager.default.temporaryDirectory.appendingPathComponent("media-\(taskId)-\(UUID().uuidString).m4a")
+		try? Data("media".utf8).write(to: url)
+		continuations.removeValue(forKey: taskId)?.resume(returning: MediaDownloadResult(duration: 120, mediaLocation: url))
+	}
+
+	func download(
+		taskId: String,
+		manifestURL: URL,
+		licenseDownloadResult: LicenseDownloadResult?,
+		title: String,
+		onProgress: @escaping @Sendable (Double) async -> Void
+	) async throws -> MediaDownloadResult {
+		startedTaskIds.insert(taskId)
+		if failingTaskIds.contains(taskId) {
+			throw FakeError.downloadFailed
+		}
+		return try await withCheckedThrowingContinuation { continuation in
+			continuations[taskId] = continuation
 		}
 	}
 }

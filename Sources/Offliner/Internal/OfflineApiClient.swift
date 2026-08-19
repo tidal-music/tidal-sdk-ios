@@ -140,13 +140,6 @@ struct RemoveCollectionTask {
 	let resourceId: String
 }
 
-// MARK: - InternalOfflineResourceAction
-
-enum InternalOfflineResourceAction: String, Sendable {
-	case store
-	case remove
-}
-
 // MARK: - TerminalOfflineTask
 
 struct TerminalOfflineTask {
@@ -202,6 +195,40 @@ enum OfflineTask {
 		case .storeTrack, .storeVideo, .storeAlbum, .storePlaylist, .storeUserCollectionTracks: .store
 		case .removeItem, .removeCollection: .remove
 		case let .terminal(task): task.action
+		}
+	}
+
+	var resourceKeys: Set<OfflineResourceKey> {
+		switch self {
+		case let .storeTrack(task):
+			return [
+				OfflineResourceKey(resourceType: OfflineMediaItemType.tracks.rawValue, resourceId: task.track.id),
+				OfflineResourceKey(resourceType: task.collectionResourceType, resourceId: task.collectionResourceId),
+			]
+		case let .storeVideo(task):
+			return [
+				OfflineResourceKey(resourceType: OfflineMediaItemType.videos.rawValue, resourceId: task.video.id),
+				OfflineResourceKey(resourceType: task.collectionResourceType, resourceId: task.collectionResourceId),
+			]
+		case let .storeAlbum(task):
+			return [OfflineResourceKey(resourceType: OfflineCollectionType.albums.rawValue, resourceId: task.album.id)]
+		case let .storePlaylist(task):
+			return [OfflineResourceKey(resourceType: OfflineCollectionType.playlists.rawValue, resourceId: task.playlist.id)]
+		case let .storeUserCollectionTracks(task):
+			return [OfflineResourceKey(resourceType: OfflineCollectionType.userCollectionTracks.rawValue, resourceId: task.resourceId)]
+		case let .removeItem(task):
+			return [
+				OfflineResourceKey(resourceType: task.resourceType, resourceId: task.resourceId),
+				OfflineResourceKey(resourceType: task.collectionResourceType, resourceId: task.collectionResourceId),
+			]
+		case let .removeCollection(task):
+			return [OfflineResourceKey(resourceType: task.resourceType, resourceId: task.resourceId)]
+		case let .terminal(task):
+			var resources = Set([OfflineResourceKey(resourceType: task.resourceType, resourceId: task.resourceId)])
+			if let collectionType = task.collectionResourceType, let collectionId = task.collectionResourceId {
+				resources.insert(OfflineResourceKey(resourceType: collectionType, resourceId: collectionId))
+			}
+			return resources
 		}
 	}
 }
