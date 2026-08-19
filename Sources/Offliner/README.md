@@ -84,6 +84,29 @@ These methods register the download request with the backend and automatically t
 
 ### Monitoring Downloads
 
+#### Aggregate Download Queue
+
+Use the aggregate queue when the UI needs a relaunch-safe list of queued, active, and failed download operations. The
+stream's initial snapshot waits for backend task synchronization and preserves synchronization or local persistence errors:
+
+```swift
+for try await queue in offliner.observeOfflineDownloadQueue() {
+    for entry in queue {
+        print("\(entry.resource): \(entry.state), progress: \(String(describing: entry.progress))")
+    }
+}
+```
+
+Every observer receives the same synchronized initial snapshot and subsequent distinct snapshots. Collection metadata
+and member tasks are counted once under the top-level collection when their relationship is known. A directly requested
+track or video remains a media entry and may expose its `parentCollection`. `progress` is optional because metadata tasks
+and restored backend tasks may not expose transfer progress.
+
+Queue state is limited to `.queued`, `.downloading`, and `.failed(action: .download)`. A successful operation disappears
+from the active queue. A terminal failure remains available after relaunch until retry, removal, or reset; pass
+`entry.resource` back to the matching media or collection `download(...)` overload to retry. Queue observers are
+independent broadcasts and finish when the Offliner instance is reset.
+
 #### New Downloads Stream
 
 Subscribe to new downloads as they're picked up for processing:
