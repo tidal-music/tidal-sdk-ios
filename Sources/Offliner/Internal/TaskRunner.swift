@@ -155,20 +155,27 @@ actor TaskRunner {
 		guard !isShutdown else {
 			return
 		}
-		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
-		try Task.checkCancellation()
-		guard !isShutdown else {
-			return
-		}
-
-		for task in tasks where taskIds.insert(task.id).inserted {
-			let pendingTask = handle(task)
-			pendingTasks.append(pendingTask)
-			if let download = pendingTask.download {
-				currentDownloads.append(download)
-				downloadsContinuation?.yield(download)
+		var cursor: String?
+		repeat {
+			let page = try await offlineApiClient.getTasks(cursor: cursor)
+			try Task.checkCancellation()
+			guard !isShutdown else {
+				return
 			}
-		}
+
+			for task in page.tasks where taskIds.insert(task.id).inserted {
+				guard task.state == .pending || task.state == .inProgress else {
+					continue
+				}
+				let pendingTask = handle(task)
+				pendingTasks.append(pendingTask)
+				if let download = pendingTask.download {
+					currentDownloads.append(download)
+					downloadsContinuation?.yield(download)
+				}
+			}
+			cursor = page.cursor
+		} while cursor != nil
 	}
 
 	private func handle(_ offlineTask: OfflineTask) -> InternalTask {
@@ -180,6 +187,7 @@ actor TaskRunner {
 		case let .storeUserCollectionTracks(task): storeUserCollectionTracksHandler.handle(task)
 		case let .removeItem(task): removeItemHandler.handle(task)
 		case let .removeCollection(task): removeCollectionHandler.handle(task)
+		case .terminal: preconditionFailure("Terminal offline tasks are never executed")
 		}
 	}
 
