@@ -60,7 +60,35 @@ final class TaskConflictTests: OfflinerTestCase {
 		await runTask
 	}
 
-	private func storeTrackTask(id: String, trackId: String) -> StoreTrackTask {
+	func testAlbumMemberStoresRunConcurrentlyWhileCollectionRemoveWaits() async throws {
+		let backend = StubOfflineApiClient()
+		let media = SelectiveSuspendingMediaDownloader()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: media
+		)
+
+		backend.enqueueTasks([
+			.storeTrack(storeTrackTask(id: "store-1", trackId: "track-1", position: 1)),
+			.storeTrack(storeTrackTask(id: "store-2", trackId: "track-2", position: 2)),
+			.removeCollection(RemoveCollectionTask(id: "remove-album", resourceType: "albums", resourceId: "album-1")),
+		])
+
+		await offliner.run()
+		await media.waitUntilStarted(count: 2)
+		try await Task.sleep(nanoseconds: 100_000_000)
+		XCTAssertFalse(backend.completedTaskIds.contains("remove-album"))
+
+		await media.complete(taskId: "store-1")
+		await media.complete(taskId: "store-2")
+		await backend.waitForTasksToComplete()
+
+		XCTAssertEqual(Set(backend.completedTaskIds.prefix(2)), Set(["store-1", "store-2"]))
+		XCTAssertEqual(backend.completedTaskIds.last, "remove-album")
+	}
+
+	private func storeTrackTask(id: String, trackId: String, position: Int = 1) -> StoreTrackTask {
 		StoreTrackTask(
 			id: id,
 			track: TracksResourceObject(id: trackId, type: "tracks"),
@@ -69,7 +97,7 @@ final class TaskConflictTests: OfflinerTestCase {
 			collectionResourceType: "albums",
 			collectionResourceId: "album-1",
 			volume: 1,
-			position: 1
+			position: position
 		)
 	}
 
