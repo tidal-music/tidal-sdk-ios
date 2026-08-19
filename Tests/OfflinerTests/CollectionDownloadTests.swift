@@ -167,7 +167,8 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let firstCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
+		let firstCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123"))
+			.latest()
 		let firstCollection = try XCTUnwrap(firstCollectionOptional)
 		let firstArtworkURL = try XCTUnwrap(firstCollection.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: firstArtworkURL.path))
@@ -176,7 +177,8 @@ final class CollectionDownloadTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let secondCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
+		let secondCollectionOptional = await offliner
+			.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
 		let secondCollection = try XCTUnwrap(secondCollectionOptional)
 		let secondArtworkURL = try XCTUnwrap(secondCollection.artworkURL)
 

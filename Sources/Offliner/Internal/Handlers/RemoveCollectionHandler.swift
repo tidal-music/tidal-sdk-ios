@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - RemoveCollectionHandler
+
 final class RemoveCollectionHandler {
 	private let offlineStore: OfflineStore
 
@@ -12,6 +14,8 @@ final class RemoveCollectionHandler {
 	}
 }
 
+// MARK: - InternalRemoveCollectionTask
+
 private final class InternalRemoveCollectionTask: InternalTask {
 	let id: String
 
@@ -19,7 +23,7 @@ private final class InternalRemoveCollectionTask: InternalTask {
 	private let offlineStore: OfflineStore
 
 	init(task: RemoveCollectionTask, offlineStore: OfflineStore) {
-		self.id = task.id
+		id = task.id
 		self.task = task
 		self.offlineStore = offlineStore
 	}

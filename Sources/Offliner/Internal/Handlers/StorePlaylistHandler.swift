@@ -27,7 +27,7 @@ private final class InternalPlaylistTask: InternalTask {
 	private let artworkDownloader: ArtworkDownloaderProtocol
 
 	init(task: StorePlaylistTask, offlineStore: OfflineStore, artworkDownloader: ArtworkDownloaderProtocol) {
-		self.id = task.id
+		id = task.id
 		self.task = task
 		self.offlineStore = offlineStore
 		self.artworkDownloader = artworkDownloader

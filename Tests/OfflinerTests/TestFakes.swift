@@ -1,9 +1,9 @@
-@testable import Offliner
 import AVFoundation
 import Foundation
+@testable import Offliner
 import TidalAPI
 
-// MARK: - Backend Client Fakes
+// MARK: - StubOfflineApiClient
 
 final class StubOfflineApiClient: OfflineApiClientProtocol {
 	struct RecordedItem {
@@ -152,7 +152,9 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		type: OfflineCollectionType,
 		cursor: String?
 	) async throws -> (collections: [OfflineCollection], cursor: String?) {
-		guard !pendingCollectionsPages.isEmpty else { return ([], nil) }
+		guard !pendingCollectionsPages.isEmpty else {
+			return ([], nil)
+		}
 		return pendingCollectionsPages.removeFirst()
 	}
 
@@ -166,6 +168,8 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		return pendingCollection
 	}
 }
+
+// MARK: - FailingOfflineApiClient
 
 final class FailingOfflineApiClient: OfflineApiClientProtocol {
 	func addItem(type: ResourceType, id: String) async throws {
@@ -184,6 +188,8 @@ final class FailingOfflineApiClient: OfflineApiClientProtocol {
 		throw FakeError.backendFailed
 	}
 }
+
+// MARK: - FailOnUpdateToInProgressOfflineApiClient
 
 actor FailOnUpdateToInProgressOfflineApiClient: OfflineApiClientProtocol {
 	private let stub = StubOfflineApiClient()
@@ -221,6 +227,8 @@ actor FailOnUpdateToInProgressOfflineApiClient: OfflineApiClientProtocol {
 	}
 }
 
+// MARK: - FailOnUpdateToCompletedOfflineApiClient
+
 final class FailOnUpdateToCompletedOfflineApiClient: OfflineApiClientProtocol {
 	private let stub = StubOfflineApiClient()
 
@@ -244,6 +252,8 @@ final class FailOnUpdateToCompletedOfflineApiClient: OfflineApiClientProtocol {
 	}
 }
 
+// MARK: - FailOnGetTasksOfflineApiClient
+
 final class FailOnGetTasksOfflineApiClient: OfflineApiClientProtocol {
 	func addItem(type: ResourceType, id: String) async throws {}
 
@@ -256,7 +266,7 @@ final class FailOnGetTasksOfflineApiClient: OfflineApiClientProtocol {
 	func updateTask(taskId: String, state: Download.State) async throws {}
 }
 
-// MARK: - Artwork Downloader Fakes
+// MARK: - SucceedingArtworkDownloader
 
 final class SucceedingArtworkDownloader: ArtworkDownloaderProtocol {
 	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL? {
@@ -267,11 +277,15 @@ final class SucceedingArtworkDownloader: ArtworkDownloaderProtocol {
 	}
 }
 
+// MARK: - FailingArtworkDownloader
+
 final class FailingArtworkDownloader: ArtworkDownloaderProtocol {
 	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL? {
 		throw FakeError.artworkDownloadFailed
 	}
 }
+
+// MARK: - SuspendingArtworkDownloader
 
 actor SuspendingArtworkDownloader: ArtworkDownloaderProtocol {
 	private var startedContinuation: CheckedContinuation<Void, Never>?
@@ -310,7 +324,7 @@ actor SuspendingArtworkDownloader: ArtworkDownloaderProtocol {
 	}
 }
 
-// MARK: - Media Downloader Fakes
+// MARK: - SucceedingMediaDownloader
 
 final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	var progressValues: [Double] = []
@@ -339,6 +353,8 @@ final class SucceedingMediaDownloader: MediaDownloaderProtocol {
 	}
 }
 
+// MARK: - FailingMediaDownloader
+
 final class FailingMediaDownloader: MediaDownloaderProtocol {
 	func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
 
@@ -352,6 +368,8 @@ final class FailingMediaDownloader: MediaDownloaderProtocol {
 		throw FakeError.downloadFailed
 	}
 }
+
+// MARK: - SuspendingMediaDownloader
 
 actor SuspendingMediaDownloader: MediaDownloaderProtocol {
 	private var startedContinuation: CheckedContinuation<Void, Never>?
@@ -399,7 +417,7 @@ actor SuspendingMediaDownloader: MediaDownloaderProtocol {
 	}
 }
 
-// MARK: - Manifest Fetcher Fakes
+// MARK: - SucceedingTrackManifestFetcher
 
 final class SucceedingTrackManifestFetcher: TrackManifestFetcherProtocol {
 	var audioFormats: [AudioFormat] = [.heaacv1]
@@ -413,6 +431,8 @@ final class SucceedingTrackManifestFetcher: TrackManifestFetcherProtocol {
 	}
 }
 
+// MARK: - SucceedingVideoManifestFetcher
+
 final class SucceedingVideoManifestFetcher: VideoManifestFetcherProtocol {
 	func fetchVideoManifest(videoId: String) async throws -> ManifestFetchResult {
 		ManifestFetchResult(
@@ -423,7 +443,7 @@ final class SucceedingVideoManifestFetcher: VideoManifestFetcherProtocol {
 	}
 }
 
-// MARK: - Errors
+// MARK: - FakeError
 
 enum FakeError: Error {
 	case backendFailed

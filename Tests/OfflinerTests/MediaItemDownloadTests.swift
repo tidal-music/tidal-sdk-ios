@@ -1,5 +1,5 @@
-@testable import Offliner
 import GRDB
+@testable import Offliner
 import XCTest
 
 final class MediaItemDownloadTests: OfflinerTestCase {
@@ -42,7 +42,9 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		for await download in downloads {
 			let events = download.events
 			await assertEventually(events) { event in
-				if case .state(.completed) = event { return true }
+				if case .state(.completed) = event {
+					return true
+				}
 				return false
 			}
 			break
@@ -66,7 +68,9 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		for await download in downloads {
 			let events = download.events
 			await assertEventually(events) { event in
-				if case .state(.completed) = event { return true }
+				if case .state(.completed) = event {
+					return true
+				}
 				return false
 			}
 			break
@@ -112,9 +116,9 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 				sql: "SELECT artwork_bookmark FROM offline_item WHERE resource_type = 'tracks' AND resource_id = 'track-123'"
 			)
 		}
-		let embeddedValues = URL.resourceValues(
+		let embeddedValues = try URL.resourceValues(
 			forKeys: [.pathKey, .canonicalPathKey],
-			fromBookmarkData: try XCTUnwrap(renewedBookmark)
+			fromBookmarkData: XCTUnwrap(renewedBookmark)
 		)
 		let embeddedPath = try XCTUnwrap(embeddedValues?.path ?? embeddedValues?.canonicalPath)
 		XCTAssertEqual(URL(fileURLWithPath: embeddedPath).standardizedFileURL.path, movedURL.standardizedFileURL.path)
@@ -172,7 +176,9 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		for await download in downloads {
 			let events = download.events
 			await assertEventually(events) { event in
-				if case .state(.failed) = event { return true }
+				if case .state(.failed) = event {
+					return true
+				}
 				return false
 			}
 			break
@@ -196,7 +202,9 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		for await download in downloads {
 			let events = download.events
 			await assertEventually(events) { event in
-				if case .state(.failed) = event { return true }
+				if case .state(.failed) = event {
+					return true
+				}
 				return false
 			}
 			break
@@ -225,7 +233,9 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		var downloadsList: [Download] = []
 		for await download in downloads {
 			downloadsList.append(download)
-			if downloadsList.count == 3 { break }
+			if downloadsList.count == 3 {
+				break
+			}
 		}
 
 		await withTaskGroup(of: Void.self) { group in
@@ -233,8 +243,12 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 				let events = download.events
 				group.addTask {
 					for await event in events {
-						if case .state(.completed) = event { break }
-						if case .state(.failed) = event { break }
+						if case .state(.completed) = event {
+							break
+						}
+						if case .state(.failed) = event {
+							break
+						}
 					}
 				}
 			}
@@ -270,7 +284,7 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			let events = download.events
 			var progressValues: [Double] = []
 			for await event in events {
-				if case .progress(let value) = event {
+				if case let .progress(value) = event {
 					progressValues.append(value)
 				}
 				if case .state(.completed) = event {
@@ -299,7 +313,9 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		for await download in downloads {
 			let events = download.events
 			await assertEventually(events) { event in
-				if case .state(.failed) = event { return true }
+				if case .state(.failed) = event {
+					return true
+				}
 				return false
 			}
 			break
@@ -325,7 +341,9 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 		for await download in downloads {
 			let events = download.events
 			await assertEventually(events) { event in
-				if case .state(.completed) = event { return true }
+				if case .state(.completed) = event {
+					return true
+				}
 				return false
 			}
 			break
@@ -342,5 +360,4 @@ final class MediaItemDownloadTests: OfflinerTestCase {
 			XCTFail("Expected video metadata")
 		}
 	}
-
 }

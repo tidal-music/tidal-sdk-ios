@@ -1,11 +1,10 @@
-@testable import Offliner
 import Foundation
 import GRDB
+@testable import Offliner
 import TidalAPI
 import XCTest
 
 final class CollectionItemsTests: OfflinerTestCase {
-
 	// MARK: - Happy Path: Album with tracks
 
 	func testOfflineAlbumWithTracksReturnsAllItems() async throws {
@@ -75,7 +74,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 
 		XCTAssertEqual(page.items.count, 3, "Album should contain 3 tracks")
-		guard page.items.count == 3 else { return }
+		guard page.items.count == 3 else {
+			return
+		}
 
 		let trackIds = page.items.map(\.item.catalogMetadata.id)
 		XCTAssertEqual(trackIds, ["track-1", "track-2", "track-3"])
@@ -411,7 +412,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 			limit: 10
 		)
 
-		guard case .track(let metadata) = page.items.first?.item.catalogMetadata else {
+		guard case let .track(metadata) = page.items.first?.item.catalogMetadata else {
 			XCTFail("Expected track metadata")
 			return
 		}
@@ -596,7 +597,9 @@ final class CollectionItemsTests: OfflinerTestCase {
 		var downloadsList: [Download] = []
 		for await download in downloads {
 			downloadsList.append(download)
-			if downloadsList.count == expectedDownloads { break }
+			if downloadsList.count == expectedDownloads {
+				break
+			}
 		}
 
 		await withTaskGroup(of: Void.self) { group in
@@ -604,8 +607,12 @@ final class CollectionItemsTests: OfflinerTestCase {
 				let events = download.events
 				group.addTask {
 					for await event in events {
-						if case .state(.completed) = event { break }
-						if case .state(.failed) = event { break }
+						if case .state(.completed) = event {
+							break
+						}
+						if case .state(.failed) = event {
+							break
+						}
 					}
 				}
 			}
