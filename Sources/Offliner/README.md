@@ -403,6 +403,10 @@ extension Offliner: @retroactive OfflineItemProvider {
 }
 ```
 
+## Platform Support
+
+Offliner supports iOS 15+, macOS 12+, and watchOS 10+. Its shared download pipeline uses `AVAssetDownloadConfiguration`, KVO progress observation, and the platform-appropriate asset location delegate callback.
+
 ---
 
 ## Architecture
