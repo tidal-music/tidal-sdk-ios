@@ -29,9 +29,9 @@ public enum UserCollectionAlbumsAPITidal {
 	/**
      Delete from items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionAlbumsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: UserCollectionAlbumsItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionAlbumsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: UserCollectionAlbumsItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionAlbumsItemsRelationshipRemoveOperationPayload: userCollectionAlbumsItemsRelationshipRemoveOperationPayload)
 		}

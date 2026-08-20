@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -108,7 +108,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

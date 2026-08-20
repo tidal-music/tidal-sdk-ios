@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **searchHistoryEntriesIdDelete**
 ```swift
-    open class func searchHistoryEntriesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func searchHistoryEntriesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single searchHistoryEntrie.
@@ -46,7 +46,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

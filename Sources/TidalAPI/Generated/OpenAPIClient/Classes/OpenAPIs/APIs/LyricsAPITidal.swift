@@ -17,9 +17,9 @@ public enum LyricsAPITidal {
 	/**
      Delete single lyric.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func lyricsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func lyricsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
@@ -41,9 +41,9 @@ public enum LyricsAPITidal {
 	/**
      Update single lyric.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws {
+	public static func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload)
 		}

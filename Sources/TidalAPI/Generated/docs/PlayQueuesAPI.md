@@ -77,7 +77,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdDelete**
 ```swift
-    open class func playQueuesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single playQueue.
@@ -114,7 +114,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -183,7 +183,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdPatch**
 ```swift
-    open class func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single playQueue.
@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -291,7 +291,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsCurrentPatch**
 ```swift
-    open class func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update current relationship (\"to-one\").
@@ -330,7 +330,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -345,7 +345,7 @@ Void (empty response body)
 
 # **playQueuesIdRelationshipsFutureDelete**
 ```swift
-    open class func playQueuesIdRelationshipsFutureDelete(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFutureDelete(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from future relationship (\"to-many\").
@@ -384,7 +384,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -455,7 +455,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFuturePatch**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update future relationship (\"to-many\").
@@ -494,7 +494,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -509,7 +509,7 @@ Void (empty response body)
 
 # **playQueuesIdRelationshipsFuturePost**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Add to future relationship (\"to-many\").
@@ -548,7 +548,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

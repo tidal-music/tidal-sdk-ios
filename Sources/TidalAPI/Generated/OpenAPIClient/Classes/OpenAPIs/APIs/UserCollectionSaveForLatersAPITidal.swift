@@ -29,9 +29,9 @@ public enum UserCollectionSaveForLatersAPITidal {
 	/**
      Delete from items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionSaveForLatersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload: UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionSaveForLatersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload: UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload: userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload)
 		}

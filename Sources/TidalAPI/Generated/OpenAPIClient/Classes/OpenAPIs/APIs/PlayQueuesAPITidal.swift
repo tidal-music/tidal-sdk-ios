@@ -29,9 +29,9 @@ public enum PlayQueuesAPITidal {
 	/**
      Delete single playQueue.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playQueuesIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func playQueuesIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlayQueuesAPI.playQueuesIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
@@ -53,9 +53,9 @@ public enum PlayQueuesAPITidal {
 	/**
      Update single playQueue.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) async throws {
+	public static func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlayQueuesAPI.playQueuesIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playQueuesUpdateOperationPayload: playQueuesUpdateOperationPayload)
 		}
@@ -77,9 +77,9 @@ public enum PlayQueuesAPITidal {
 	/**
      Update current relationship (\&quot;to-one\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playQueuesCurrentRelationshipUpdateOperationPayload: playQueuesCurrentRelationshipUpdateOperationPayload)
 		}
@@ -89,9 +89,9 @@ public enum PlayQueuesAPITidal {
 	/**
      Delete from future relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playQueuesIdRelationshipsFutureDelete(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func playQueuesIdRelationshipsFutureDelete(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlayQueuesAPI.playQueuesIdRelationshipsFutureDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipRemoveOperationPayload: playQueuesFutureRelationshipRemoveOperationPayload)
 		}
@@ -113,9 +113,9 @@ public enum PlayQueuesAPITidal {
 	/**
      Update future relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlayQueuesAPI.playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipUpdateOperationPayload: playQueuesFutureRelationshipUpdateOperationPayload)
 		}
@@ -125,9 +125,9 @@ public enum PlayQueuesAPITidal {
 	/**
      Add to future relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) async throws {
+	public static func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlayQueuesAPI.playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipAddOperationPayload: playQueuesFutureRelationshipAddOperationPayload)
 		}

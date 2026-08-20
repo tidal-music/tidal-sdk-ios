@@ -70,10 +70,10 @@ internal class ArtistClaimsAPI {
      
      - parameter id: (path) Artist claim id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+    internal class func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
         do {
             return try await artistClaimsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -91,9 +91,9 @@ internal class ArtistClaimsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist claim id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func artistClaimsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<Void> {
+    internal class func artistClaimsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/artistClaims/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -109,7 +109,7 @@ internal class ArtistClaimsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -176,10 +176,10 @@ internal class ArtistClaimsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistClaimsUpdateOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws {
+    internal class func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await artistClaimsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -199,9 +199,9 @@ internal class ArtistClaimsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistClaimsUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func artistClaimsIdPatchWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistClaimsIdPatchWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/artistClaims/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -221,7 +221,7 @@ internal class ArtistClaimsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -291,10 +291,10 @@ internal class ArtistClaimsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -314,9 +314,9 @@ internal class ArtistClaimsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/artistClaims/{id}/relationships/acceptedArtists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -336,7 +336,7 @@ internal class ArtistClaimsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

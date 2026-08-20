@@ -94,7 +94,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdDelete**
 ```swift
-    open class func albumsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single album.
@@ -131,7 +131,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -204,7 +204,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdPatch**
 ```swift
-    open class func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single album.
@@ -243,7 +243,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -430,7 +430,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtPatch**
 ```swift
-    open class func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update coverArt relationship (\"to-many\").
@@ -469,7 +469,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -602,7 +602,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsItemsPatch**
 ```swift
-    open class func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update items relationship (\"to-many\").
@@ -641,7 +641,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

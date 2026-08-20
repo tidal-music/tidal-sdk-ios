@@ -52,9 +52,9 @@ public enum PlaylistsAPITidal {
 	/**
      Delete single playlist.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playlistsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func playlistsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
@@ -88,9 +88,9 @@ public enum PlaylistsAPITidal {
 	/**
      Delete from collaboratorProfiles relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playlistsIdRelationshipsCollaboratorProfilesDelete(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsCollaboratorProfilesDelete(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: playlistsCollaboratorProfilesRelationshipRemoveOperationPayload)
 		}
@@ -112,9 +112,9 @@ public enum PlaylistsAPITidal {
 	/**
      Add to collaboratorProfiles relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipAddOperationPayload: playlistsCollaboratorProfilesRelationshipAddOperationPayload)
 		}
@@ -148,9 +148,9 @@ public enum PlaylistsAPITidal {
 	/**
      Update coverArt relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playlistsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCoverArtRelationshipUpdateOperationPayload: playlistsCoverArtRelationshipUpdateOperationPayload)
 		}
@@ -160,9 +160,9 @@ public enum PlaylistsAPITidal {
 	/**
      Delete from items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playlistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipRemoveOperationPayload: playlistsItemsRelationshipRemoveOperationPayload)
 		}
@@ -219,9 +219,9 @@ public enum PlaylistsAPITidal {
 	/**
      Update items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func playlistsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func playlistsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsItemsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipUpdateOperationPayload: playlistsItemsRelationshipUpdateOperationPayload)
 		}

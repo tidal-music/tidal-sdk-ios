@@ -29,9 +29,9 @@ public enum ArtistBiographiesAPITidal {
 	/**
      Update single artistBiographie.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func artistBiographiesIdPatch(id: String, idempotencyKey: String? = nil, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) async throws {
+	public static func artistBiographiesIdPatch(id: String, idempotencyKey: String? = nil, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistBiographiesAPI.artistBiographiesIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistBiographiesUpdateOperationPayload: artistBiographiesUpdateOperationPayload)
 		}

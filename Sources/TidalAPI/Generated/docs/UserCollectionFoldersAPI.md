@@ -72,7 +72,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdDelete**
 ```swift
-    open class func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single userCollectionFolder.
@@ -109,7 +109,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -178,7 +178,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdPatch**
 ```swift
-    open class func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single userCollectionFolder.
@@ -217,7 +217,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -232,7 +232,7 @@ Void (empty response body)
 
 # **userCollectionFoldersIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -271,7 +271,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -344,7 +344,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -383,7 +383,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **artistBiographiesIdPatch**
 ```swift
-    open class func artistBiographiesIdPatch(id: String, idempotencyKey: String? = nil, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistBiographiesIdPatch(id: String, idempotencyKey: String? = nil, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single artistBiographie.
@@ -104,7 +104,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

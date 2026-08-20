@@ -29,9 +29,9 @@ public enum UserRecommendationBlocksAPITidal {
 	/**
      Delete from artists relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload)
 		}
@@ -77,9 +77,9 @@ public enum UserRecommendationBlocksAPITidal {
 	/**
      Delete from tracks relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload)
 		}
@@ -113,9 +113,9 @@ public enum UserRecommendationBlocksAPITidal {
 	/**
      Delete from videos relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload)
 		}

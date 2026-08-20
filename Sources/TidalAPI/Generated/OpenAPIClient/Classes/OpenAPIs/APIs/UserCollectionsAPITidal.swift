@@ -29,9 +29,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Delete from albums relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsAlbumsDelete(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsAlbumsDelete(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipRemoveOperationPayload: userCollectionsAlbumsRelationshipRemoveOperationPayload)
 		}
@@ -80,9 +80,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Add to albums relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsAlbumsPost(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsAlbumsPost(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload)
 		}
@@ -92,9 +92,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Delete from artists relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipRemoveOperationPayload: userCollectionsArtistsRelationshipRemoveOperationPayload)
 		}
@@ -135,9 +135,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Add to artists relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload)
 		}
@@ -159,9 +159,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Delete from playlists relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsPlaylistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsPlaylistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsPlaylistsRelationshipRemoveOperationPayload: userCollectionsPlaylistsRelationshipRemoveOperationPayload)
 		}
@@ -219,9 +219,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Add to playlists relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsPlaylistsPost(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsPlaylistsPost(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsPlaylistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsPlaylistsRelationshipAddOperationPayload: userCollectionsPlaylistsRelationshipAddOperationPayload)
 		}
@@ -231,9 +231,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Delete from tracks relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsTracksDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipRemoveOperationPayload: userCollectionsTracksRelationshipRemoveOperationPayload)
 		}
@@ -286,9 +286,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Add to tracks relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload)
 		}
@@ -298,9 +298,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Delete from videos relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsVideosDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipRemoveOperationPayload: userCollectionsVideosRelationshipRemoveOperationPayload)
 		}
@@ -349,9 +349,9 @@ public enum UserCollectionsAPITidal {
 	/**
      Add to videos relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionsIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionsIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionsAPI.userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload)
 		}

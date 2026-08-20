@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **lyricsIdDelete**
 ```swift
-    open class func lyricsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func lyricsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single lyric.
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -120,7 +120,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdPatch**
 ```swift
-    open class func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single lyric.
@@ -159,7 +159,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

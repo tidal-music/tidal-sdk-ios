@@ -144,7 +144,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdPatch**
 ```swift
-    open class func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single artist.
@@ -183,7 +183,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -420,7 +420,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingDelete**
 ```swift
-    open class func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from following relationship (\"to-many\").
@@ -459,7 +459,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -532,7 +532,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingPost**
 ```swift
-    open class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Add to following relationship (\"to-many\").
@@ -573,7 +573,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -698,7 +698,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsProfileArtPatch**
 ```swift
-    open class func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update profileArt relationship (\"to-many\").
@@ -737,7 +737,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

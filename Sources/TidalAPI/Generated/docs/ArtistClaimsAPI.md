@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdDelete**
 ```swift
-    open class func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single artistClaim.
@@ -108,7 +108,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -177,7 +177,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdPatch**
 ```swift
-    open class func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single artistClaim.
@@ -218,7 +218,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -289,7 +289,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsPatch**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update acceptedArtists relationship (\"to-many\").
@@ -330,7 +330,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
