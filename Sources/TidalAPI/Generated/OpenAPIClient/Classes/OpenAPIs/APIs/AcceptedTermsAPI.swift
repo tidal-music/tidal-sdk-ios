@@ -60,10 +60,10 @@ internal class AcceptedTermsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
-            "filter[terms.isLatestVersion]": (wrappedValue: filterTermsIsLatestVersion?.encodeToJSON(), isExplode: true),
             "filter[terms.termsType]": (wrappedValue: filterTermsTermsType.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[terms.isLatestVersion]": (wrappedValue: filterTermsIsLatestVersion?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

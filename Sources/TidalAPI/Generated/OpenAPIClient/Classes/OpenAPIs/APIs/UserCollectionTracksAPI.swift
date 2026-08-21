@@ -76,10 +76,10 @@ internal class UserCollectionTracksAPI {
      - parameter id: (path) User collection tracks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionTracksItemsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionTracksIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipRemoveOperationPayload: userCollectionTracksItemsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -98,9 +98,9 @@ internal class UserCollectionTracksAPI {
      - parameter id: (path) User collection tracks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionTracksItemsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func userCollectionTracksIdRelationshipsItemsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionTracksIdRelationshipsItemsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollectionTracks/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -117,7 +117,7 @@ internal class UserCollectionTracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

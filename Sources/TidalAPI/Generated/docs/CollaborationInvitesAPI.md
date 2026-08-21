@@ -68,7 +68,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesIdDelete**
 ```swift
-    open class func collaborationInvitesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func collaborationInvitesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single collaborationInvite.
@@ -105,7 +105,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

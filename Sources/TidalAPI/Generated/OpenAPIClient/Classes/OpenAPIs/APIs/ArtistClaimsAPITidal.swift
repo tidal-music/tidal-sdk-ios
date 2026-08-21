@@ -29,9 +29,9 @@ public enum ArtistClaimsAPITidal {
 	/**
      Delete single artistClaim.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistClaimsAPI.artistClaimsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
@@ -53,9 +53,9 @@ public enum ArtistClaimsAPITidal {
 	/**
      Update single artistClaim.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws {
+	public static func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistClaimsAPI.artistClaimsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload)
 		}
@@ -77,9 +77,9 @@ public enum ArtistClaimsAPITidal {
 	/**
      Update acceptedArtists relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload)
 		}

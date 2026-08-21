@@ -29,9 +29,9 @@ public enum UserCollectionFoldersAPITidal {
 	/**
      Delete single userCollectionFolder.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionFoldersAPI.userCollectionFoldersIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
@@ -53,9 +53,9 @@ public enum UserCollectionFoldersAPITidal {
 	/**
      Update single userCollectionFolder.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws {
+	public static func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionFoldersAPI.userCollectionFoldersIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload)
 		}
@@ -65,9 +65,9 @@ public enum UserCollectionFoldersAPITidal {
 	/**
      Delete from items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload)
 		}
@@ -112,9 +112,9 @@ public enum UserCollectionFoldersAPITidal {
 	/**
      Add to items relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws {
+	public static func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload)
 		}

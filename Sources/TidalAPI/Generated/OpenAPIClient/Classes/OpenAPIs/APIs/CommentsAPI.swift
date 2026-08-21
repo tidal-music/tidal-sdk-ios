@@ -77,12 +77,12 @@ internal class CommentsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[subject.id]": (wrappedValue: filterSubjectId.encodeToJSON(), isExplode: true),
+            "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[parentComment.id]": (wrappedValue: filterParentCommentId?.encodeToJSON(), isExplode: true),
-            "filter[subject.id]": (wrappedValue: filterSubjectId.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -101,10 +101,10 @@ internal class CommentsAPI {
      
      - parameter id: (path) Comment Id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+    internal class func commentsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
         do {
             return try await commentsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -122,9 +122,9 @@ internal class CommentsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Comment Id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func commentsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<Void> {
+    internal class func commentsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/comments/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -140,7 +140,7 @@ internal class CommentsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -203,10 +203,10 @@ internal class CommentsAPI {
      - parameter id: (path) Comment Id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter commentsUpdateOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsIdPatch(id: String, idempotencyKey: String? = nil, commentsUpdateOperationPayload: CommentsUpdateOperationPayload? = nil) async throws {
+    internal class func commentsIdPatch(id: String, idempotencyKey: String? = nil, commentsUpdateOperationPayload: CommentsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await commentsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, commentsUpdateOperationPayload: commentsUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -225,9 +225,9 @@ internal class CommentsAPI {
      - parameter id: (path) Comment Id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter commentsUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func commentsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, commentsUpdateOperationPayload: CommentsUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func commentsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, commentsUpdateOperationPayload: CommentsUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/comments/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -244,7 +244,7 @@ internal class CommentsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

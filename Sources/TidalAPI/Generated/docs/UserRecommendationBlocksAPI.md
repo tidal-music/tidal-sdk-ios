@@ -75,7 +75,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsArtistsDelete**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from artists relationship (\"to-many\").
@@ -114,7 +114,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -293,7 +293,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsTracksDelete**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from tracks relationship (\"to-many\").
@@ -332,7 +332,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -457,7 +457,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsVideosDelete**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from videos relationship (\"to-many\").
@@ -496,7 +496,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

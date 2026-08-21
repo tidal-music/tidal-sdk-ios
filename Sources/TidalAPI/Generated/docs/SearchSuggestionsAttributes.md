@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**history** | [SearchSuggestionsHistory] | Suggestions from search history. Deprecated — use the history relationship instead. Will be deleted shortly. | [optional] 
+**query** | **String** | The search query represented by this resource | 
 **suggestions** | [SearchSuggestionsSuggestions] | Suggested search queries | [optional] 
 **trackingId** | **String** | Unique tracking id | 
 

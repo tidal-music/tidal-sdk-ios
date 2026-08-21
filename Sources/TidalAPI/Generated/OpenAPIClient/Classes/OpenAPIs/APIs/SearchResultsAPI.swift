@@ -15,7 +15,7 @@ internal class SearchResultsAPI {
     /**
      * enum for parameter explicitFilter
      */
-    public enum ExplicitFilter_searchResultsIdGet: String, CaseIterable {
+    public enum ExplicitFilter_searchResultsGet: String, CaseIterable {
         case include = "INCLUDE"
         case exclude = "EXCLUDE"
     }
@@ -23,7 +23,7 @@ internal class SearchResultsAPI {
     /**
      * enum for parameter deviceType
      */
-    public enum DeviceType_searchResultsIdGet: String, CaseIterable {
+    public enum DeviceType_searchResultsGet: String, CaseIterable {
         case browser = "BROWSER"
         case car = "CAR"
         case desktop = "DESKTOP"
@@ -35,7 +35,7 @@ internal class SearchResultsAPI {
     /**
      * enum for parameter systemType
      */
-    public enum SystemType_searchResultsIdGet: String, CaseIterable {
+    public enum SystemType_searchResultsGet: String, CaseIterable {
         case android = "ANDROID"
         case desktop = "DESKTOP"
         case tesla = "TESLA"
@@ -44,9 +44,9 @@ internal class SearchResultsAPI {
     }
 
     /**
-     Get single searchResult.
+     Get search results by query.
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter filterQuery: (query) Search query (e.g. &#x60;hello&#x60;) 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter deviceType: (query) The type of device making the request (optional)
@@ -54,12 +54,12 @@ internal class SearchResultsAPI {
      - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
-     - returns: SearchResultsSingleResourceDataDocument
+     - returns: SearchResultsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsIdGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdGet? = nil, systemType: SystemType_searchResultsIdGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsSingleResourceDataDocument {
+    internal class func searchResultsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, systemType: SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiResourceDataDocument {
         do {
-            return try await searchResultsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
+            return try await searchResultsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -67,16 +67,16 @@ internal class SearchResultsAPI {
     }
 
     /**
-     Get single searchResult.
-     - GET /searchResults/{id}
-     - Retrieves single searchResult by id.
+     Get search results by query.
+     - GET /searchResults
+     - Searches for a query and returns a collection containing exactly one search results resource.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter filterQuery: (query) Search query (e.g. &#x60;hello&#x60;) 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter deviceType: (query) The type of device making the request (optional)
@@ -84,18 +84,16 @@ internal class SearchResultsAPI {
      - parameter clientVersion: (query) Client version number (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
-     - returns: RequestBuilder<SearchResultsSingleResourceDataDocument> 
+     - returns: RequestBuilder<SearchResultsMultiResourceDataDocument> 
      */
-    internal class func searchResultsIdGetWithRequestBuilder(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdGet? = nil, systemType: SystemType_searchResultsIdGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsSingleResourceDataDocument> {
-        var localVariablePath = "/searchResults/{id}"
-        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
-        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+    internal class func searchResultsGetWithRequestBuilder(filterQuery: String, explicitFilter: ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, systemType: SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsMultiResourceDataDocument> {
+        let localVariablePath = "/searchResults"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[query]": (wrappedValue: filterQuery.encodeToJSON(), isExplode: true),
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "deviceType": (wrappedValue: deviceType?.encodeToJSON(), isExplode: true),
@@ -111,7 +109,7 @@ internal class SearchResultsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SearchResultsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SearchResultsMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -150,7 +148,7 @@ internal class SearchResultsAPI {
     /**
      Get albums relationship (\"to-many\").
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -181,7 +179,7 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -257,7 +255,7 @@ internal class SearchResultsAPI {
     /**
      Get artists relationship (\"to-many\").
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -288,7 +286,7 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -364,7 +362,7 @@ internal class SearchResultsAPI {
     /**
      Get playlists relationship (\"to-many\").
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -395,7 +393,7 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -471,7 +469,7 @@ internal class SearchResultsAPI {
     /**
      Get topHits relationship (\"to-many\").
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -502,7 +500,7 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -578,7 +576,7 @@ internal class SearchResultsAPI {
     /**
      Get tracks relationship (\"to-many\").
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -609,7 +607,7 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -685,7 +683,7 @@ internal class SearchResultsAPI {
     /**
      Get videos relationship (\"to-many\").
      
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
@@ -716,7 +714,7 @@ internal class SearchResultsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Search query string used as the resource identifier 
+     - parameter id: (path) An opaque search results identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)

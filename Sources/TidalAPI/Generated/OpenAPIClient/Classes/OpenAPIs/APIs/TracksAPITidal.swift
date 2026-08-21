@@ -48,9 +48,9 @@ public enum TracksAPITidal {
 	/**
      Delete single track.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func tracksIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func tracksIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
@@ -72,9 +72,9 @@ public enum TracksAPITidal {
 	/**
      Update single track.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws {
+	public static func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksUpdateOperationPayload: tracksUpdateOperationPayload)
 		}
@@ -96,9 +96,9 @@ public enum TracksAPITidal {
 	/**
      Update albums relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			TracksAPI.tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload)
 		}

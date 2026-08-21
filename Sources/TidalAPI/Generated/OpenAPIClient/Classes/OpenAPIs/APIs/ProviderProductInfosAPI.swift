@@ -55,11 +55,11 @@ internal class ProviderProductInfosAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[provider.id]": (wrappedValue: filterProviderId.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[barcodeId]": (wrappedValue: filterBarcodeId?.encodeToJSON(), isExplode: true),
             "filter[grid]": (wrappedValue: filterGrid?.encodeToJSON(), isExplode: true),
-            "filter[provider.id]": (wrappedValue: filterProviderId.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

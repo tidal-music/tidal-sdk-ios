@@ -4,7 +4,7 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**searchResultsIdGet**](SearchResultsAPI.md#searchresultsidget) | **GET** /searchResults/{id} | Get single searchResult.
+[**searchResultsGet**](SearchResultsAPI.md#searchresultsget) | **GET** /searchResults | Get search results by query.
 [**searchResultsIdRelationshipsAlbumsGet**](SearchResultsAPI.md#searchresultsidrelationshipsalbumsget) | **GET** /searchResults/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
 [**searchResultsIdRelationshipsArtistsGet**](SearchResultsAPI.md#searchresultsidrelationshipsartistsget) | **GET** /searchResults/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
 [**searchResultsIdRelationshipsPlaylistsGet**](SearchResultsAPI.md#searchresultsidrelationshipsplaylistsget) | **GET** /searchResults/{id}/relationships/playlists | Get playlists relationship (\&quot;to-many\&quot;).
@@ -13,21 +13,21 @@ Method | HTTP request | Description
 [**searchResultsIdRelationshipsVideosGet**](SearchResultsAPI.md#searchresultsidrelationshipsvideosget) | **GET** /searchResults/{id}/relationships/videos | Get videos relationship (\&quot;to-many\&quot;).
 
 
-# **searchResultsIdGet**
+# **searchResultsGet**
 ```swift
-    open class func searchResultsIdGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdGet? = nil, systemType: SystemType_searchResultsIdGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, systemType: SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get single searchResult.
+Get search results by query.
 
-Retrieves single searchResult by id.
+Searches for a query and returns a collection containing exactly one search results resource.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let filterQuery = "filterQuery_example" // String | Search query (e.g. `hello`)
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let deviceType = "deviceType_example" // String | The type of device making the request (optional)
@@ -36,8 +36,8 @@ let clientVersion = "clientVersion_example" // String | Client version number (o
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
-// Get single searchResult.
-SearchResultsAPI.searchResultsIdGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
+// Get search results by query.
+SearchResultsAPI.searchResultsGet(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -53,7 +53,7 @@ SearchResultsAPI.searchResultsIdGet(id: id, explicitFilter: explicitFilter, coun
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **filterQuery** | **String** | Search query (e.g. &#x60;hello&#x60;) | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **deviceType** | **String** | The type of device making the request | [optional] 
@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchResultsSingleResourceDataDocument**](SearchResultsSingleResourceDataDocument.md)
+[**SearchResultsMultiResourceDataDocument**](SearchResultsMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -91,7 +91,7 @@ Retrieves albums relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let id = "id_example" // String | An opaque search results identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
@@ -118,7 +118,7 @@ SearchResultsAPI.searchResultsIdRelationshipsAlbumsGet(id: id, explicitFilter: e
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **id** | **String** | An opaque search results identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
@@ -157,7 +157,7 @@ Retrieves artists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let id = "id_example" // String | An opaque search results identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
@@ -184,7 +184,7 @@ SearchResultsAPI.searchResultsIdRelationshipsArtistsGet(id: id, explicitFilter: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **id** | **String** | An opaque search results identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
@@ -223,7 +223,7 @@ Retrieves playlists relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let id = "id_example" // String | An opaque search results identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
@@ -250,7 +250,7 @@ SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGet(id: id, explicitFilter
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **id** | **String** | An opaque search results identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
@@ -289,7 +289,7 @@ Retrieves topHits relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let id = "id_example" // String | An opaque search results identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
@@ -316,7 +316,7 @@ SearchResultsAPI.searchResultsIdRelationshipsTopHitsGet(id: id, explicitFilter: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **id** | **String** | An opaque search results identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
@@ -355,7 +355,7 @@ Retrieves tracks relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let id = "id_example" // String | An opaque search results identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
@@ -382,7 +382,7 @@ SearchResultsAPI.searchResultsIdRelationshipsTracksGet(id: id, explicitFilter: e
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **id** | **String** | An opaque search results identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
@@ -421,7 +421,7 @@ Retrieves videos relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let id = "id_example" // String | An opaque search results identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
@@ -448,7 +448,7 @@ SearchResultsAPI.searchResultsIdRelationshipsVideosGet(id: id, explicitFilter: e
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **id** | **String** | An opaque search results identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 

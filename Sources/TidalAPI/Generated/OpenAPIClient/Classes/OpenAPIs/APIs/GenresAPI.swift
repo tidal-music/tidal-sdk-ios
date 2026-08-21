@@ -52,9 +52,9 @@ internal class GenresAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

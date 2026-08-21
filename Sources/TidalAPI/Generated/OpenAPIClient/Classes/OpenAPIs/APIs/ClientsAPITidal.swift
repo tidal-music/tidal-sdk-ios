@@ -29,9 +29,9 @@ public enum ClientsAPITidal {
 	/**
      Delete single client.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func clientsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func clientsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ClientsAPI.clientsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}

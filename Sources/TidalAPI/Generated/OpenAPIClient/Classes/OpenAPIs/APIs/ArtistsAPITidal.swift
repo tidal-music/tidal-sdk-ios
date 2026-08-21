@@ -41,9 +41,9 @@ public enum ArtistsAPITidal {
 	/**
      Update single artist.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) async throws {
+	public static func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistsAPI.artistsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsUpdateOperationPayload: artistsUpdateOperationPayload)
 		}
@@ -101,9 +101,9 @@ public enum ArtistsAPITidal {
 	/**
      Delete from following relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistsAPI.artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload)
 		}
@@ -125,9 +125,9 @@ public enum ArtistsAPITidal {
 	/**
      Add to following relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws {
+	public static func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistsAPI.artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload)
 		}
@@ -161,9 +161,9 @@ public enum ArtistsAPITidal {
 	/**
      Update profileArt relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) async throws {
+	public static func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistsAPI.artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload)
 		}
@@ -260,9 +260,9 @@ public enum ArtistsAPITidal {
 	/**
      Create single artist.
      
-     - returns: ArtistsCreateSingleResourceDataDocument
+     - returns: MutationResponseDocument
      */
-	public static func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> ArtistsCreateSingleResourceDataDocument {
+	public static func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistsAPI.artistsPostWithRequestBuilder(idempotencyKey: idempotencyKey, artistsCreateOperationPayload: artistsCreateOperationPayload)
 		}

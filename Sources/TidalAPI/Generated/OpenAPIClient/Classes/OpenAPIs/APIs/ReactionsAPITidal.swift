@@ -69,9 +69,9 @@ public enum ReactionsAPITidal {
 	/**
      Delete single reaction.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func reactionsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func reactionsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ReactionsAPI.reactionsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}

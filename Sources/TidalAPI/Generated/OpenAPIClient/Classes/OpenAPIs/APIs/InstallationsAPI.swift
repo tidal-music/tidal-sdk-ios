@@ -132,10 +132,10 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsOfflineInventoryRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -154,9 +154,9 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsOfflineInventoryRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -173,7 +173,7 @@ internal class InstallationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -195,6 +195,7 @@ internal class InstallationsAPI {
     public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
         case pending = "PENDING"
         case stored = "STORED"
+        case failed = "FAILED"
     }
 
     /**
@@ -205,7 +206,7 @@ internal class InstallationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
      - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
-     - parameter filterState: (query) One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
+     - parameter filterState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
@@ -231,7 +232,7 @@ internal class InstallationsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
      - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
-     - parameter filterState: (query) One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
+     - parameter filterState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> 
      */
@@ -245,11 +246,11 @@ internal class InstallationsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[type]": (wrappedValue: filterType.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
             "filter[state]": (wrappedValue: filterState?.encodeToJSON(), isExplode: true),
-            "filter[type]": (wrappedValue: filterType.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -270,10 +271,10 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsOfflineInventoryRelationshipAddOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws {
+    internal class func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -292,9 +293,9 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter installationsOfflineInventoryRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -311,7 +312,7 @@ internal class InstallationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

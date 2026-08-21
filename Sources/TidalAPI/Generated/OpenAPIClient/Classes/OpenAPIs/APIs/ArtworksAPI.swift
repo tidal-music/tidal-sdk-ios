@@ -52,9 +52,9 @@ internal class ArtworksAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

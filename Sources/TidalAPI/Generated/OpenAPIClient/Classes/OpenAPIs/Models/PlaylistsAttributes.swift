@@ -41,8 +41,12 @@ public struct PlaylistsAttributes: Codable, Hashable {
     public var name: String
     /** The amount of followers of the playlist */
     public var numberOfFollowers: Int
-    /** Number of items in the playlist */
+    /** Number of items in the items relationship */
     public var numberOfItems: Int?
+    /** Number of track items in the items relationship */
+    public var numberOfTrackItems: Int?
+    /** Number of video items in the items relationship */
+    public var numberOfVideoItems: Int?
     /** The type of the playlist */
     public var playlistType: PlaylistType
 
@@ -57,6 +61,8 @@ public struct PlaylistsAttributes: Codable, Hashable {
         name: String,
         numberOfFollowers: Int,
         numberOfItems: Int? = nil,
+        numberOfTrackItems: Int? = nil,
+        numberOfVideoItems: Int? = nil,
         playlistType: PlaylistType
     ) {
         self.accessType = accessType
@@ -69,6 +75,8 @@ public struct PlaylistsAttributes: Codable, Hashable {
         self.name = name
         self.numberOfFollowers = numberOfFollowers
         self.numberOfItems = numberOfItems
+        self.numberOfTrackItems = numberOfTrackItems
+        self.numberOfVideoItems = numberOfVideoItems
         self.playlistType = playlistType
     }
 
@@ -83,6 +91,8 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case name
         case numberOfFollowers
         case numberOfItems
+        case numberOfTrackItems
+        case numberOfVideoItems
         case playlistType
     }
 
@@ -100,6 +110,8 @@ public struct PlaylistsAttributes: Codable, Hashable {
         try container.encode(name, forKey: .name)
         try container.encode(numberOfFollowers, forKey: .numberOfFollowers)
         try container.encodeIfPresent(numberOfItems, forKey: .numberOfItems)
+        try container.encodeIfPresent(numberOfTrackItems, forKey: .numberOfTrackItems)
+        try container.encodeIfPresent(numberOfVideoItems, forKey: .numberOfVideoItems)
         try container.encode(playlistType, forKey: .playlistType)
     }
 }

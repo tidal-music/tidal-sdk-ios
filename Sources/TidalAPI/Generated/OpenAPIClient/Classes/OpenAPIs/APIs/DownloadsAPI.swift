@@ -47,8 +47,8 @@ internal class DownloadsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

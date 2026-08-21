@@ -17,11 +17,11 @@ public enum SearchResultsAPITidal {
 	/**
 	 * enum for parameter explicitFilter
 	 */
-	public enum ExplicitFilter_searchResultsIdGet: String, CaseIterable {
+	public enum ExplicitFilter_searchResultsGet: String, CaseIterable {
 		case include = "INCLUDE"
 		case exclude = "EXCLUDE"
 
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdGet {
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsGet {
 			switch self {
 			case .include: return .include
 			case .exclude: return .exclude
@@ -32,7 +32,7 @@ public enum SearchResultsAPITidal {
 	/**
 	 * enum for parameter deviceType
 	 */
-	public enum DeviceType_searchResultsIdGet: String, CaseIterable {
+	public enum DeviceType_searchResultsGet: String, CaseIterable {
 		case browser = "BROWSER"
 		case car = "CAR"
 		case desktop = "DESKTOP"
@@ -40,7 +40,7 @@ public enum SearchResultsAPITidal {
 		case tablet = "TABLET"
 		case tv = "TV"
 
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.DeviceType_searchResultsIdGet {
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.DeviceType_searchResultsGet {
 			switch self {
 			case .browser: return .browser
 			case .car: return .car
@@ -55,14 +55,14 @@ public enum SearchResultsAPITidal {
 	/**
 	 * enum for parameter systemType
 	 */
-	public enum SystemType_searchResultsIdGet: String, CaseIterable {
+	public enum SystemType_searchResultsGet: String, CaseIterable {
 		case android = "ANDROID"
 		case desktop = "DESKTOP"
 		case tesla = "TESLA"
 		case ios = "IOS"
 		case web = "WEB"
 
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.SystemType_searchResultsIdGet {
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.SystemType_searchResultsGet {
 			switch self {
 			case .android: return .android
 			case .desktop: return .desktop
@@ -74,13 +74,13 @@ public enum SearchResultsAPITidal {
 	}
 
 	/**
-     Get single searchResult.
+     Get search results by query.
      
-     - returns: SearchResultsSingleResourceDataDocument
+     - returns: SearchResultsMultiResourceDataDocument
      */
-	public static func searchResultsIdGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdGet? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsSingleResourceDataDocument {
+	public static func searchResultsGet(filterQuery: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchResultsAPI.searchResultsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
+			SearchResultsAPI.searchResultsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

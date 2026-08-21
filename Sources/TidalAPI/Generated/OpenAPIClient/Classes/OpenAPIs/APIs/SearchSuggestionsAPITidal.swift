@@ -17,11 +17,11 @@ public enum SearchSuggestionsAPITidal {
 	/**
 	 * enum for parameter explicitFilter
 	 */
-	public enum ExplicitFilter_searchSuggestionsIdGet: String, CaseIterable {
+	public enum ExplicitFilter_searchSuggestionsGet: String, CaseIterable {
 		case include = "INCLUDE"
 		case exclude = "EXCLUDE"
 
-		func toSearchSuggestionsAPIEnum() -> SearchSuggestionsAPI.ExplicitFilter_searchSuggestionsIdGet {
+		func toSearchSuggestionsAPIEnum() -> SearchSuggestionsAPI.ExplicitFilter_searchSuggestionsGet {
 			switch self {
 			case .include: return .include
 			case .exclude: return .exclude
@@ -30,13 +30,13 @@ public enum SearchSuggestionsAPITidal {
 	}
 
 	/**
-     Get single searchSuggestion.
+     Get search suggestions by query.
      
-     - returns: SearchSuggestionsSingleResourceDataDocument
+     - returns: SearchSuggestionsMultiResourceDataDocument
      */
-	public static func searchSuggestionsIdGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsSingleResourceDataDocument {
+	public static func searchSuggestionsGet(filterQuery: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsIdGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			SearchSuggestionsAPI.searchSuggestionsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

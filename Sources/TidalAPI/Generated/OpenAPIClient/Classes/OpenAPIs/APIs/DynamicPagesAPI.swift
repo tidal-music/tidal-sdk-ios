@@ -89,14 +89,14 @@ internal class DynamicPagesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "deviceType": (wrappedValue: deviceType.encodeToJSON(), isExplode: true),
             "systemType": (wrappedValue: systemType.encodeToJSON(), isExplode: true),
             "clientVersion": (wrappedValue: clientVersion.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[pageType]": (wrappedValue: filterPageType.encodeToJSON(), isExplode: true),
+            "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
+            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
@@ -192,13 +192,13 @@ internal class DynamicPagesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "deviceType": (wrappedValue: deviceType.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType.encodeToJSON(), isExplode: true),
+            "clientVersion": (wrappedValue: clientVersion.encodeToJSON(), isExplode: true),
             "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
-            "deviceType": (wrappedValue: deviceType.encodeToJSON(), isExplode: true),
-            "systemType": (wrappedValue: systemType.encodeToJSON(), isExplode: true),
-            "clientVersion": (wrappedValue: clientVersion.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])

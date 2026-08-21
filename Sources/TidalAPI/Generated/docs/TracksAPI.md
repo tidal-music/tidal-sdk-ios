@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdDelete**
 ```swift
-    open class func tracksIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single track.
@@ -135,7 +135,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -208,7 +208,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdPatch**
 ```swift
-    open class func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single track.
@@ -247,7 +247,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -322,7 +322,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsAlbumsPatch**
 ```swift
-    open class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update albums relationship (\"to-many\").
@@ -361,7 +361,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

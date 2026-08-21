@@ -1,10 +1,11 @@
-# Highlight
+# SearchSuggestionsMultiResourceDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**length** | **Int** |  | [optional] 
-**start** | **Int** |  | [optional] 
+**data** | [SearchSuggestionsResourceObject] |  | 
+**included** | [IncludedInner] |  | [optional] 
+**links** | [**Links**](Links.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

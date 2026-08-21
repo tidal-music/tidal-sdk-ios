@@ -101,10 +101,10 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+    internal class func tracksIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
         do {
             return try await tracksIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -122,9 +122,9 @@ internal class TracksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func tracksIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<Void> {
+    internal class func tracksIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/tracks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -140,7 +140,7 @@ internal class TracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -215,10 +215,10 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter tracksUpdateOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws {
+    internal class func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await tracksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksUpdateOperationPayload: tracksUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -237,9 +237,9 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter tracksUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func tracksIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func tracksIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/tracks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -256,7 +256,7 @@ internal class TracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -334,10 +334,10 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter tracksAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -356,9 +356,9 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter tracksAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/tracks/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -375,7 +375,7 @@ internal class TracksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

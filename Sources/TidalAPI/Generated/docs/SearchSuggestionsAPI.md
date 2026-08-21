@@ -4,33 +4,33 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**searchSuggestionsIdGet**](SearchSuggestionsAPI.md#searchsuggestionsidget) | **GET** /searchSuggestions/{id} | Get single searchSuggestion.
+[**searchSuggestionsGet**](SearchSuggestionsAPI.md#searchsuggestionsget) | **GET** /searchSuggestions | Get search suggestions by query.
 [**searchSuggestionsIdRelationshipsDirectHitsGet**](SearchSuggestionsAPI.md#searchsuggestionsidrelationshipsdirecthitsget) | **GET** /searchSuggestions/{id}/relationships/directHits | Get directHits relationship (\&quot;to-many\&quot;).
 [**searchSuggestionsIdRelationshipsHistoryGet**](SearchSuggestionsAPI.md#searchsuggestionsidrelationshipshistoryget) | **GET** /searchSuggestions/{id}/relationships/history | Get history relationship (\&quot;to-many\&quot;).
 
 
-# **searchSuggestionsIdGet**
+# **searchSuggestionsGet**
 ```swift
-    open class func searchSuggestionsIdGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchSuggestionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get single searchSuggestion.
+Get search suggestions by query.
 
-Retrieves single searchSuggestion by id.
+Searches for a query and returns a collection containing exactly one search suggestions resource.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let filterQuery = "filterQuery_example" // String | Search query (e.g. `hello`)
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: directHits (optional)
 
-// Get single searchSuggestion.
-SearchSuggestionsAPI.searchSuggestionsIdGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
+// Get search suggestions by query.
+SearchSuggestionsAPI.searchSuggestionsGet(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -46,7 +46,7 @@ SearchSuggestionsAPI.searchSuggestionsIdGet(id: id, explicitFilter: explicitFilt
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **filterQuery** | **String** | Search query (e.g. &#x60;hello&#x60;) | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits, history | [optional] 
@@ -54,7 +54,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchSuggestionsSingleResourceDataDocument**](SearchSuggestionsSingleResourceDataDocument.md)
+[**SearchSuggestionsMultiResourceDataDocument**](SearchSuggestionsMultiResourceDataDocument.md)
 
 ### Authorization
 
@@ -81,7 +81,7 @@ Retrieves directHits relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let id = "id_example" // String | An opaque search suggestions identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits (optional)
@@ -105,7 +105,7 @@ SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, expli
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **id** | **String** | An opaque search suggestions identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits | [optional] 
@@ -141,7 +141,7 @@ Retrieves history relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Search query string used as the resource identifier
+let id = "id_example" // String | An opaque search suggestions identifier
 let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: history (optional)
@@ -164,7 +164,7 @@ SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGet(id: id, explicit
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Search query string used as the resource identifier | 
+ **id** | **String** | An opaque search suggestions identifier | 
  **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: history | [optional] 

@@ -17,9 +17,9 @@ public enum SearchHistoryEntriesAPITidal {
 	/**
      Delete single searchHistoryEntrie.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func searchHistoryEntriesIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func searchHistoryEntriesIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			SearchHistoryEntriesAPI.searchHistoryEntriesIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}

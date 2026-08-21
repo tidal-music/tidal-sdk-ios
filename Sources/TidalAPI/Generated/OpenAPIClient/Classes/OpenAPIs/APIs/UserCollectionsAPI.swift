@@ -78,11 +78,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsDelete(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsAlbumsDelete(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsAlbumsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipRemoveOperationPayload: userCollectionsAlbumsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -101,10 +101,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsAlbumsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsAlbumsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsAlbumsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipRemoveOperationPayload: UserCollectionsAlbumsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -121,7 +121,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -212,11 +212,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsAlbumsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsAlbumsPost(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsAlbumsPost(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsAlbumsRelationshipAddOperationPayload: userCollectionsAlbumsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -235,10 +235,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsAlbumsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsAlbumsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsAlbumsRelationshipAddOperationPayload: UserCollectionsAlbumsRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -255,7 +255,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -266,11 +266,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsArtistsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipRemoveOperationPayload: userCollectionsArtistsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -289,10 +289,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsArtistsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsArtistsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsArtistsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipRemoveOperationPayload: UserCollectionsArtistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -309,7 +309,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -396,11 +396,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsArtistsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsArtistsRelationshipAddOperationPayload: userCollectionsArtistsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -419,10 +419,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsArtistsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsArtistsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsArtistsRelationshipAddOperationPayload: UserCollectionsArtistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -439,7 +439,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -507,11 +507,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsPlaylistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsPlaylistsDelete(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsPlaylistsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsPlaylistsRelationshipRemoveOperationPayload: userCollectionsPlaylistsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -530,10 +530,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsPlaylistsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsPlaylistsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsPlaylistsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipRemoveOperationPayload: UserCollectionsPlaylistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -550,7 +550,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -646,11 +646,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsPlaylistsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsPlaylistsPost(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsPlaylistsPost(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsPlaylistsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsPlaylistsRelationshipAddOperationPayload: userCollectionsPlaylistsRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -669,10 +669,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsPlaylistsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsPlaylistsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsPlaylistsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsPlaylistsRelationshipAddOperationPayload: UserCollectionsPlaylistsRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/playlists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -689,7 +689,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -700,11 +700,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsTracksRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsTracksDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipRemoveOperationPayload: userCollectionsTracksRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -723,10 +723,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsTracksRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsTracksDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsTracksDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipRemoveOperationPayload: UserCollectionsTracksRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -743,7 +743,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -836,11 +836,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsTracksRelationshipAddOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsTracksRelationshipAddOperationPayload: userCollectionsTracksRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -859,10 +859,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsTracksRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsTracksPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsTracksRelationshipAddOperationPayload: UserCollectionsTracksRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -879,7 +879,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -890,11 +890,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsVideosRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsVideosDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipRemoveOperationPayload: userCollectionsVideosRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -913,10 +913,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsVideosRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsVideosDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsVideosDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipRemoveOperationPayload: UserCollectionsVideosRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -933,7 +933,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -1024,11 +1024,11 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsVideosRelationshipAddOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionsIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws {
+    internal class func userCollectionsIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionsVideosRelationshipAddOperationPayload: userCollectionsVideosRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -1047,10 +1047,10 @@ internal class UserCollectionsAPI {
      - parameter id: (path) User collection id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userCollectionsVideosRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userCollectionsIdRelationshipsVideosPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userCollectionsVideosRelationshipAddOperationPayload: UserCollectionsVideosRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userCollections/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1067,7 +1067,7 @@ internal class UserCollectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

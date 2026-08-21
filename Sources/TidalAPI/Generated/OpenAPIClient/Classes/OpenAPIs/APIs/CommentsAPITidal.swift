@@ -71,9 +71,9 @@ public enum CommentsAPITidal {
 	/**
      Delete single comment.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func commentsIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func commentsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			CommentsAPI.commentsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}
@@ -95,9 +95,9 @@ public enum CommentsAPITidal {
 	/**
      Update single comment.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func commentsIdPatch(id: String, idempotencyKey: String? = nil, commentsUpdateOperationPayload: CommentsUpdateOperationPayload? = nil) async throws {
+	public static func commentsIdPatch(id: String, idempotencyKey: String? = nil, commentsUpdateOperationPayload: CommentsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			CommentsAPI.commentsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, commentsUpdateOperationPayload: commentsUpdateOperationPayload)
 		}

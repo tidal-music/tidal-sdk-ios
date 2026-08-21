@@ -144,10 +144,10 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsUpdateOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) async throws {
+    internal class func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await artistsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsUpdateOperationPayload: artistsUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -166,9 +166,9 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func artistsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/artists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -185,7 +185,7 @@ internal class ArtistsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -431,10 +431,10 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -453,9 +453,9 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistsIdRelationshipsFollowingDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/artists/{id}/relationships/following"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -472,7 +472,7 @@ internal class ArtistsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -545,10 +545,10 @@ internal class ArtistsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipAddOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws {
+    internal class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -568,9 +568,9 @@ internal class ArtistsAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func artistsIdRelationshipsFollowingPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistsIdRelationshipsFollowingPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/artists/{id}/relationships/following"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -590,7 +590,7 @@ internal class ArtistsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -720,10 +720,10 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsProfileArtRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) async throws {
+    internal class func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -742,9 +742,9 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsProfileArtRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func artistsIdRelationshipsProfileArtPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/artists/{id}/relationships/profileArt"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -761,7 +761,7 @@ internal class ArtistsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -1154,10 +1154,10 @@ internal class ArtistsAPI {
      
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsCreateOperationPayload: (body)  (optional)
-     - returns: ArtistsCreateSingleResourceDataDocument
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> ArtistsCreateSingleResourceDataDocument {
+    internal class func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await artistsPostWithRequestBuilder(idempotencyKey: idempotencyKey, artistsCreateOperationPayload: artistsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -1175,9 +1175,9 @@ internal class ArtistsAPI {
        - name: Authorization_Code_PKCE
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<ArtistsCreateSingleResourceDataDocument> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func artistsPostWithRequestBuilder(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) -> RequestBuilder<ArtistsCreateSingleResourceDataDocument> {
+    internal class func artistsPostWithRequestBuilder(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         let localVariablePath = "/artists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistsCreateOperationPayload)
@@ -1191,7 +1191,7 @@ internal class ArtistsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ArtistsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

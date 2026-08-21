@@ -76,10 +76,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -98,9 +98,9 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userRecommendationBlocksIdRelationshipsArtistsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/artists"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -117,7 +117,7 @@ internal class UserRecommendationBlocksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -293,10 +293,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -315,9 +315,9 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userRecommendationBlocksIdRelationshipsTracksDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/tracks"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -334,7 +334,7 @@ internal class UserRecommendationBlocksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -455,10 +455,10 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) async throws {
+    internal class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -477,9 +477,9 @@ internal class UserRecommendationBlocksAPI {
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func userRecommendationBlocksIdRelationshipsVideosDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/userRecommendationBlocks/{id}/relationships/videos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -496,7 +496,7 @@ internal class UserRecommendationBlocksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

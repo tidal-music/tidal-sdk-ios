@@ -13,19 +13,15 @@ import AnyCodable
 public struct SearchHistoryEntriesAttributes: Codable, Hashable {
 
     public static let queryRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
-    public var highlights: [Highlight]
     public var query: String
 
     public init(
-        highlights: [Highlight],
         query: String
     ) {
-        self.highlights = highlights
         self.query = query
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case highlights
         case query
     }
 
@@ -33,7 +29,6 @@ public struct SearchHistoryEntriesAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(highlights, forKey: .highlights)
         try container.encode(query, forKey: .query)
     }
 }

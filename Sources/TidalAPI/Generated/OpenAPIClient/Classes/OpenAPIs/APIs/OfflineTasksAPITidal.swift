@@ -41,9 +41,9 @@ public enum OfflineTasksAPITidal {
 	/**
      Update single offlineTask.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func offlineTasksIdPatch(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) async throws {
+	public static func offlineTasksIdPatch(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			OfflineTasksAPI.offlineTasksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload)
 		}

@@ -90,7 +90,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdDelete**
 ```swift
-    open class func playlistsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single playlist.
@@ -127,7 +127,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -252,7 +252,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCollaboratorProfilesDelete**
 ```swift
-    open class func playlistsIdRelationshipsCollaboratorProfilesDelete(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCollaboratorProfilesDelete(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from collaboratorProfiles relationship (\"to-many\").
@@ -291,7 +291,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -362,7 +362,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCollaboratorProfilesPost**
 ```swift
-    open class func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Add to collaboratorProfiles relationship (\"to-many\").
@@ -401,7 +401,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -528,7 +528,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCoverArtPatch**
 ```swift
-    open class func playlistsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update coverArt relationship (\"to-many\").
@@ -567,7 +567,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -582,7 +582,7 @@ Void (empty response body)
 
 # **playlistsIdRelationshipsItemsDelete**
 ```swift
-    open class func playlistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -621,7 +621,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -698,7 +698,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsItemsPatch**
 ```swift
-    open class func playlistsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update items relationship (\"to-many\").
@@ -737,7 +737,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 

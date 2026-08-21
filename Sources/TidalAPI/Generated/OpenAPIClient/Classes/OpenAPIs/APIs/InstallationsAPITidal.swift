@@ -41,9 +41,9 @@ public enum InstallationsAPITidal {
 	/**
      Delete from offlineInventory relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws {
+	public static func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			InstallationsAPI.installationsIdRelationshipsOfflineInventoryDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload)
 		}
@@ -77,11 +77,13 @@ public enum InstallationsAPITidal {
 	public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
 		case pending = "PENDING"
 		case stored = "STORED"
+		case failed = "FAILED"
 
 		func toInstallationsAPIEnum() -> InstallationsAPI.FilterState_installationsIdRelationshipsOfflineInventoryGet {
 			switch self {
 			case .pending: return .pending
 			case .stored: return .stored
+			case .failed: return .failed
 			}
 		}
 	}
@@ -101,9 +103,9 @@ public enum InstallationsAPITidal {
 	/**
      Add to offlineInventory relationship (\&quot;to-many\&quot;).
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws {
+	public static func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			InstallationsAPI.installationsIdRelationshipsOfflineInventoryPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload)
 		}

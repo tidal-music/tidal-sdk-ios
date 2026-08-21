@@ -51,9 +51,9 @@ internal class OfflineTasksAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[installation.id]": (wrappedValue: filterInstallationId.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[installation.id]": (wrappedValue: filterInstallationId.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -129,10 +129,10 @@ internal class OfflineTasksAPI {
      - parameter id: (path) Offline task id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter offlineTasksUpdateOperationPayload: (body)  (optional)
-     - returns: Void
+     - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksIdPatch(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) async throws {
+    internal class func offlineTasksIdPatch(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
             return try await offlineTasksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -151,9 +151,9 @@ internal class OfflineTasksAPI {
      - parameter id: (path) Offline task id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter offlineTasksUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func offlineTasksIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) -> RequestBuilder<Void> {
+    internal class func offlineTasksIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/offlineTasks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -170,7 +170,7 @@ internal class OfflineTasksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

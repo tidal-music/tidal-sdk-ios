@@ -29,9 +29,9 @@ public enum CollaborationInvitesAPITidal {
 	/**
      Delete single collaborationInvite.
      
-     - returns: 
+     - returns: MutationResponseDocument
      */
-	public static func collaborationInvitesIdDelete(id: String, idempotencyKey: String? = nil) async throws {
+	public static func collaborationInvitesIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			CollaborationInvitesAPI.collaborationInvitesIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
 		}

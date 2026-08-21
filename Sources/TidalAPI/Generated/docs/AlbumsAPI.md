@@ -94,7 +94,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdDelete**
 ```swift
-    open class func albumsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single album.
@@ -131,7 +131,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -204,7 +204,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdPatch**
 ```swift
-    open class func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single album.
@@ -243,7 +243,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -430,7 +430,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtPatch**
 ```swift
-    open class func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update coverArt relationship (\"to-many\").
@@ -469,7 +469,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -602,7 +602,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsItemsPatch**
 ```swift
-    open class func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update items relationship (\"to-many\").
@@ -641,7 +641,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-Void (empty response body)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
@@ -1129,7 +1129,7 @@ Creates a new album.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let albumsCreateOperationPayload = AlbumsCreateOperation_Payload(data: AlbumsCreateOperation_Payload_Data(attributes: AlbumsCreateOperation_Payload_Data_Attributes(albumType: "albumType_example", barcodeId: "barcodeId_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", upc: "upc_example", version: "version_example"), relationships: AlbumsCreateOperation_Payload_Data_Relationships(artists: AlbumsCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumsCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsCreateOperationPayload |  (optional)
+let albumsCreateOperationPayload = AlbumsCreateOperation_Payload(data: AlbumsCreateOperation_Payload_Data(attributes: AlbumsCreateOperation_Payload_Data_Attributes(albumType: "albumType_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), relationships: AlbumsCreateOperation_Payload_Data_Relationships(artists: AlbumsCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumsCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsCreateOperationPayload |  (optional)
 
 // Create single album.
 AlbumsAPI.albumsPost(idempotencyKey: idempotencyKey, albumsCreateOperationPayload: albumsCreateOperationPayload) { (response, error) in
