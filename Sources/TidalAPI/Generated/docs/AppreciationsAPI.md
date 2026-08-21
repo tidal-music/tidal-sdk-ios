@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **appreciationsPost**
 ```swift
-    open class func appreciationsPost(idempotencyKey: String? = nil, appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil, completion: @escaping (_ data: AppreciationsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func appreciationsPost(idempotencyKey: String? = nil, appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Create single appreciation.
@@ -46,7 +46,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AppreciationsCreateSingleResourceDataDocument**](AppreciationsCreateSingleResourceDataDocument.md)
+[**MutationResponseDocument**](MutationResponseDocument.md)
 
 ### Authorization
 
