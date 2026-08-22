@@ -23,7 +23,8 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case mix = "MIX"
         case artist = "ARTIST"
     }
-    public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let descriptionRule = StringRule(minLength: nil, maxLength: 500, pattern: nil)
+    public static let nameRule = StringRule(minLength: 1, maxLength: 250, pattern: nil)
     /** Access type */
     public var accessType: AccessType
     /** Indicates if the playlist has a duration and set number of tracks */

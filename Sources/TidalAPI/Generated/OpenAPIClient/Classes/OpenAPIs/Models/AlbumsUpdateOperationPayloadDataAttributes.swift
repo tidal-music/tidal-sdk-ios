@@ -22,6 +22,8 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case ep = "EP"
         case single = "SINGLE"
     }
+    public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
+    public static let versionRule = StringRule(minLength: nil, maxLength: 255, pattern: nil)
     /** Access type */
     public var accessType: AccessType?
     public var albumType: AlbumType?

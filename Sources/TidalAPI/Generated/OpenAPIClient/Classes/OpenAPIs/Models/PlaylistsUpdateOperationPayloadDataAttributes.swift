@@ -16,6 +16,8 @@ public struct PlaylistsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
     }
+    public static let descriptionRule = StringRule(minLength: nil, maxLength: 500, pattern: nil)
+    public static let nameRule = StringRule(minLength: 1, maxLength: 250, pattern: nil)
     /** User-selectable playlist visibility. */
     public var accessType: AccessType?
     public var description: String?

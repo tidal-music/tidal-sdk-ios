@@ -34,8 +34,7 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         case nameMismatch = "NAME_MISMATCH"
         case claimedArtistMismatch = "CLAIMED_ARTIST_MISMATCH"
     }
-    public static let providerRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
-    public static let statusRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let artistIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** The artist id which is being claimed */
     public var artistId: String
     /** Artist claim links external to TIDAL API */

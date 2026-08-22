@@ -13,6 +13,7 @@ import AnyCodable
 /** Current user&#39;s reaction */
 public struct CurrentUserReaction: Codable, Hashable {
 
+    public static let emojiRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** When the reaction was created */
     public var createdAt: Date?
     /** User's emoji reaction */

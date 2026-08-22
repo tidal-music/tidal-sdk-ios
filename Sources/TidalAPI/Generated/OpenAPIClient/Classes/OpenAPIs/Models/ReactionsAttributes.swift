@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct ReactionsAttributes: Codable, Hashable {
 
+    public static let emojiRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Datetime of the reaction creation (ISO 8601) */
     public var createdAt: Date
     /** The type of reaction representing an emoji */

@@ -19,6 +19,7 @@ public struct InstallationsOfflineInventoryItemIdentifier: Codable, Hashable {
         case playlists = "playlists"
         case usercollectiontracks = "userCollectionTracks"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** The item id. Use \"me\" when the type is userCollectionTracks to resolve to the authenticated user's collection. */
     public var id: String
     public var type: ModelType

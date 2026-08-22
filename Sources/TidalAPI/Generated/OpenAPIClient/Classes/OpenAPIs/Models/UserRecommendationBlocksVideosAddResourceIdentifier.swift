@@ -15,6 +15,7 @@ public struct UserRecommendationBlocksVideosAddResourceIdentifier: Codable, Hash
     public enum ModelType: String, Codable, CaseIterable {
         case videos = "videos"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
     public var type: ModelType
 

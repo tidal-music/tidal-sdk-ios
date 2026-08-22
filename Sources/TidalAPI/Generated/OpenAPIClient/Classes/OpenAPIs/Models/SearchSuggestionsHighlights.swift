@@ -12,7 +12,11 @@ import AnyCodable
 
 public struct SearchSuggestionsHighlights: Codable, Hashable {
 
+    public static let lengthRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
+    public static let startRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
+    /** Length of the highlight range, measured in UTF-16 code units */
     public var length: Int
+    /** Zero-based start offset in the suggested query, measured in UTF-16 code units */
     public var start: Int
 
     public init(

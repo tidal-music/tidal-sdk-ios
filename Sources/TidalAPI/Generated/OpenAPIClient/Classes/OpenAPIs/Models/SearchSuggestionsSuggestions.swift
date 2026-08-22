@@ -14,11 +14,13 @@ import AnyCodable
 public struct SearchSuggestionsSuggestions: Codable, Hashable {
 
     public static let queryRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
-    public var highlights: [SearchSuggestionsHighlights]?
+    /** Ranges in `query` that clients should highlight as matches for the requested search query */
+    public var highlights: [SearchSuggestionsHighlights]
+    /** The suggested search query */
     public var query: String
 
     public init(
-        highlights: [SearchSuggestionsHighlights]? = nil,
+        highlights: [SearchSuggestionsHighlights],
         query: String
     ) {
         self.highlights = highlights
@@ -34,7 +36,7 @@ public struct SearchSuggestionsSuggestions: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(highlights, forKey: .highlights)
+        try container.encode(highlights, forKey: .highlights)
         try container.encode(query, forKey: .query)
     }
 }

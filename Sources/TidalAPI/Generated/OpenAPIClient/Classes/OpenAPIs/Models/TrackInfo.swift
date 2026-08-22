@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct TrackInfo: Codable, Hashable {
 
+    public static let trackIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var broken: Bool?
     public var brokenCode: Int?
     public var trackId: String

@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct PlaylistsItemsAddResourceIdentifierMeta: Codable, Hashable {
 
+    public static let itemIdRule = StringRule(minLength: 1, maxLength: 36, pattern: nil)
     public var addedAt: Date
     public var itemId: String
 

@@ -15,6 +15,7 @@ public struct CollaborationInviteRedemptionsCreateOperationPayloadDataRelationsh
     public enum ModelType: String, Codable, CaseIterable {
         case collaborationinvites = "collaborationInvites"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
     public var type: ModelType
 

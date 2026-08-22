@@ -13,6 +13,7 @@ import AnyCodable
 /** Artwork files */
 public struct ArtworkFile: Codable, Hashable {
 
+    public static let hrefRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Artwork file href */
     public var href: String
     public var meta: ArtworkFileMeta

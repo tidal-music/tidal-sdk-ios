@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct SearchResultsAttributes: Codable, Hashable {
 
+    public static let queryRule = StringRule(minLength: 1, maxLength: 256, pattern: nil)
     /** 'did you mean' prompt */
     public var didYouMean: String?
     /** The search query represented by this resource */

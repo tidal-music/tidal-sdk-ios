@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct DownloadLink: Codable, Hashable {
 
+    public static let hrefRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** URL to download the content from */
     public var href: String
     public var meta: DownloadLinkMeta

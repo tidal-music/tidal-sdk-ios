@@ -15,6 +15,7 @@ public struct TrackSourceFilesCreateOperationPayloadDataRelationshipsTrack: Coda
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var data: TrackSourceFilesCreateOperationPayloadDataRelationshipsTrackData?
     @available(*, deprecated, message: "This property is deprecated.")
     public var id: String?

@@ -13,6 +13,8 @@ import AnyCodable
 /** Metadata about an artwork file */
 public struct ArtworkFileMeta: Codable, Hashable {
 
+    public static let heightRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
+    public static let widthRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Height (in pixels) */
     public var height: Int
     /** Width (in pixels) */

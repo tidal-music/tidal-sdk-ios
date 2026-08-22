@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct ExternalLink: Codable, Hashable {
 
+    public static let hrefRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var href: String
     public var meta: ExternalLinkMeta
 

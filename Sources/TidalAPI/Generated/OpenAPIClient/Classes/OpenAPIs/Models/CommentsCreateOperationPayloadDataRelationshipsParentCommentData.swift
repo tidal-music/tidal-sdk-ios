@@ -15,6 +15,7 @@ public struct CommentsCreateOperationPayloadDataRelationshipsParentCommentData: 
     public enum ModelType: String, Codable, CaseIterable {
         case comments = "comments"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
     public var type: ModelType
 

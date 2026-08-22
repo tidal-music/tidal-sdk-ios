@@ -15,6 +15,7 @@ public struct UserCollectionVideosItemsAddResourceIdentifier: Codable, Hashable 
     public enum ModelType: String, Codable, CaseIterable {
         case videos = "videos"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
     public var meta: UserCollectionVideosItemsAddResourceIdentifierMeta?
     public var type: ModelType

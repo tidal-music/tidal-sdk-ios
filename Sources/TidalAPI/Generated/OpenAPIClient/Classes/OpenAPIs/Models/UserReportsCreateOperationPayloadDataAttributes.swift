@@ -24,6 +24,7 @@ public struct UserReportsCreateOperationPayloadDataAttributes: Codable, Hashable
         case appeal = "APPEAL"
         case unknown = "UNKNOWN"
     }
+    public static let descriptionRule = StringRule(minLength: 1, maxLength: 500, pattern: nil)
     public var description: String
     public var reason: Reason
 

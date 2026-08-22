@@ -16,6 +16,7 @@ public struct PlaylistsItemsRelationshipAddOperationPayloadData: Codable, Hashab
         case tracks = "tracks"
         case videos = "videos"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
     public var meta: PlaylistsItemsRelationshipAddOperationPayloadDataMeta?
     public var type: ModelType

@@ -30,6 +30,7 @@ public struct UsageRulesCreateOperationPayloadDataAttributes: Codable, Hashable 
         case stem = "STEM"
         case download = "DOWNLOAD"
     }
+    public static let countryCodeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var countryCode: String?
     public var free: [Free]?
     /** Tracks only. Set to true (with empty paid/subscription/free) to clear an explicit track-level override and inherit usage rules from the album. Must be omitted or false when providing explicit usage values. */

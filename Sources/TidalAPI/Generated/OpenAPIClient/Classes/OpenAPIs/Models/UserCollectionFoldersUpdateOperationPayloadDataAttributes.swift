@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct UserCollectionFoldersUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public static let nameRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public var name: String?
 
     public init(

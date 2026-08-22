@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct AlbumsItemsRelationshipUpdateOperationPayloadMeta: Codable, Hashable {
 
+    public static let positionIndexRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** 1-based index */
     public var positionIndex: Int
 

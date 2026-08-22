@@ -16,6 +16,7 @@ public struct PlayQueuesFutureRelationshipUpdateOperationPayloadData: Codable, H
         case tracks = "tracks"
         case videos = "videos"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
     public var meta: PlayQueuesFutureRelationshipUpdateOperationPayloadDataMeta
     public var type: ModelType

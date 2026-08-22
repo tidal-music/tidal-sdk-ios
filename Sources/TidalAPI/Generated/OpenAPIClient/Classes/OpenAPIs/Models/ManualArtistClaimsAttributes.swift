@@ -18,6 +18,7 @@ public struct ManualArtistClaimsAttributes: Codable, Hashable {
         case approved = "APPROVED"
         case rejected = "REJECTED"
     }
+    public static let artistIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let legalFirstNameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let legalLastNameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Accepted terms and conditions */

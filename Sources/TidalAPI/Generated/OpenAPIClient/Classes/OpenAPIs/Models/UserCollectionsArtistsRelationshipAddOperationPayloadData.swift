@@ -15,6 +15,7 @@ public struct UserCollectionsArtistsRelationshipAddOperationPayloadData: Codable
     public enum ModelType: String, Codable, CaseIterable {
         case artists = "artists"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
     public var meta: UserCollectionsArtistsRelationshipAddOperationPayloadDataMeta?
     public var type: ModelType

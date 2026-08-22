@@ -53,6 +53,9 @@ public struct TracksAttributes: Codable, Hashable {
         case melodicMinor = "MELODIC_MINOR"
         case pentatonicMinor = "PENTATONIC_MINOR"
     }
+    public static let isrcRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
+    public static let versionRule = StringRule(minLength: nil, maxLength: 255, pattern: nil)
     /** Access type */
     public var accessType: AccessType?
     /** Whether the track is AI-generated */

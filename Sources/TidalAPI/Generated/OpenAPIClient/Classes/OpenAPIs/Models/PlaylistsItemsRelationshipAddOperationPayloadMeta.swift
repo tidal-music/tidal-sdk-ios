@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct PlaylistsItemsRelationshipAddOperationPayloadMeta: Codable, Hashable {
 
+    public static let positionBeforeRule = StringRule(minLength: 1, maxLength: 36, pattern: nil)
     public var positionBefore: String
 
     public init(

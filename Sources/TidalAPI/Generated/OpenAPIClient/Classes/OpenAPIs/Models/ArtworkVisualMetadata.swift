@@ -18,6 +18,7 @@ public struct ArtworkVisualMetadata: Codable, Hashable {
         case processing = "PROCESSING"
         case ok = "OK"
     }
+    public static let selectedPaletteColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/")
     /** BlurHash representation of the artwork for placeholder display */
     public var blurHash: String?
     /** Selected color from the extracted artwork palette */

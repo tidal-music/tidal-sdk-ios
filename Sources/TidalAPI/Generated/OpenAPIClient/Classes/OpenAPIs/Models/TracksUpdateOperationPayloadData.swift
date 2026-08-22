@@ -15,6 +15,7 @@ public struct TracksUpdateOperationPayloadData: Codable, Hashable {
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var attributes: TracksUpdateOperationPayloadDataAttributes?
     public var id: String
     public var relationships: TracksUpdateOperationPayloadDataRelationships?

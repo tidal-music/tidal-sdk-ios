@@ -24,6 +24,7 @@ public struct UserReportsAttributes: Codable, Hashable {
         case appeal = "APPEAL"
         case unknown = "UNKNOWN"
     }
+    public static let descriptionRule = StringRule(minLength: 1, maxLength: 500, pattern: nil)
     /** Description */
     public var description: String
     /** Reason */

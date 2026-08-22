@@ -19,6 +19,7 @@ public struct UserCollectionAlbumsItemsRelationshipAddOperationResponseMetaSkipp
     public enum ModelType: String, Codable, CaseIterable {
         case albums = "albums"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
     public var reason: Reason
     public var type: ModelType
