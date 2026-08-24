@@ -12,6 +12,8 @@ import AnyCodable
 
 public struct ProviderProductInfosAttributes: Codable, Hashable {
 
+    public static let barcodeIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let gridRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^[A-Z0-9-]{1,32}$/")
     public var barcodeId: String?
     public var broken: Bool?
     public var brokenCode: Int?

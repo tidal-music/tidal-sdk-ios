@@ -13,6 +13,8 @@ import AnyCodable
 /** Artwork source file */
 public struct ArtworkSourceFile: Codable, Hashable {
 
+    public static let md5HashRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let sizeRule = NumericRule<Int64>(minimum: 1, exclusiveMinimum: false, maximum: 20000000, exclusiveMaximum: false, multipleOf: nil)
     /** MD5 hash of file to be uploaded */
     public var md5Hash: String
     /** File size of the artwork in bytes */

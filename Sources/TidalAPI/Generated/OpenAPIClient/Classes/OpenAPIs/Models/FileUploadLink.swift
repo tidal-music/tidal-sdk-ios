@@ -13,6 +13,7 @@ import AnyCodable
 /** Upload link */
 public struct FileUploadLink: Codable, Hashable {
 
+    public static let hrefRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Href to upload actual file to */
     public var href: String
     public var meta: FileUploadLinkMeta

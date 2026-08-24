@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct LyricsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public static let textRule = StringRule(minLength: 0, maxLength: 10000, pattern: nil)
+    public static let textRule = StringRule(minLength: nil, maxLength: 10000, pattern: nil)
     public var text: String?
 
     public init(

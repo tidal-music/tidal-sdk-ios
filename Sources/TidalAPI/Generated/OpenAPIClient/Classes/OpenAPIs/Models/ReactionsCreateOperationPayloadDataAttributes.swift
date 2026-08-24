@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct ReactionsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public static let emojiRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var emoji: String
 
     public init(

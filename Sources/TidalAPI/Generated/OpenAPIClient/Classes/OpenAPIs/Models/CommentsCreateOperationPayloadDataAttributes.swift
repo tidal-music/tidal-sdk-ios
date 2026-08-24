@@ -14,6 +14,7 @@ public struct CommentsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public static let messageRule = StringRule(minLength: 1, maxLength: 2000, pattern: nil)
     public var endTime: String?
+    /** The comment message content */
     public var message: String
     public var startTime: String?
 

@@ -32,6 +32,9 @@ public struct AlbumsAttributes: Codable, Hashable {
         case ep = "EP"
         case single = "SINGLE"
     }
+    public static let barcodeIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
+    public static let versionRule = StringRule(minLength: nil, maxLength: 255, pattern: nil)
     /** Access type */
     public var accessType: AccessType?
     /** Whether the album is AI-generated */

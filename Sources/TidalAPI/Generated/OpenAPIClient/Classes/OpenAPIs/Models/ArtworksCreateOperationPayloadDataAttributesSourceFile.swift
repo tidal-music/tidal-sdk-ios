@@ -12,6 +12,8 @@ import AnyCodable
 
 public struct ArtworksCreateOperationPayloadDataAttributesSourceFile: Codable, Hashable {
 
+    public static let md5HashRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let sizeRule = NumericRule<Int64>(minimum: 1, exclusiveMinimum: false, maximum: 20000000, exclusiveMaximum: false, multipleOf: nil)
     public var md5Hash: String
     public var size: Int64
 

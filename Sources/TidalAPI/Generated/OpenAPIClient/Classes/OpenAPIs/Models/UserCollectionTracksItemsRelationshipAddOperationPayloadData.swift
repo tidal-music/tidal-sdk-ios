@@ -15,6 +15,7 @@ public struct UserCollectionTracksItemsRelationshipAddOperationPayloadData: Coda
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
     }
+    public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
     public var meta: UserCollectionTracksItemsRelationshipAddOperationPayloadDataMeta?
     public var type: ModelType

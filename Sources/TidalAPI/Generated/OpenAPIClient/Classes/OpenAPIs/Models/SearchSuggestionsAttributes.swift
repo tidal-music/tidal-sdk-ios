@@ -12,17 +12,18 @@ import AnyCodable
 
 public struct SearchSuggestionsAttributes: Codable, Hashable {
 
+    public static let queryRule = StringRule(minLength: 1, maxLength: 256, pattern: nil)
     public static let trackingIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** The search query represented by this resource */
     public var query: String
     /** Suggested search queries */
-    public var suggestions: [SearchSuggestionsSuggestions]?
+    public var suggestions: [SearchSuggestionsSuggestions]
     /** Unique tracking id */
     public var trackingId: String
 
     public init(
         query: String,
-        suggestions: [SearchSuggestionsSuggestions]? = nil,
+        suggestions: [SearchSuggestionsSuggestions],
         trackingId: String
     ) {
         self.query = query
@@ -41,7 +42,7 @@ public struct SearchSuggestionsAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(query, forKey: .query)
-        try container.encodeIfPresent(suggestions, forKey: .suggestions)
+        try container.encode(suggestions, forKey: .suggestions)
         try container.encode(trackingId, forKey: .trackingId)
     }
 }

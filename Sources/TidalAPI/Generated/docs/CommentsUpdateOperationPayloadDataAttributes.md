@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **endTime** | **String** |  | [optional] 
-**message** | **String** |  | [optional] 
+**message** | **String** | The comment message content | [optional] 
 **startTime** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

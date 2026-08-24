@@ -19,7 +19,6 @@ public struct StripeConnectionsAttributes: Codable, Hashable {
         case rejected = "REJECTED"
         case suspended = "SUSPENDED"
     }
-    public static let statusRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Timestamp when the connection was created */
     public var createdAt: Date?
     /** External links for Stripe connection */

@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct SharesAttributes: Codable, Hashable {
 
+    public static let codeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Share code */
     public var code: String
     /** Datetime of share creation (ISO 8601) */

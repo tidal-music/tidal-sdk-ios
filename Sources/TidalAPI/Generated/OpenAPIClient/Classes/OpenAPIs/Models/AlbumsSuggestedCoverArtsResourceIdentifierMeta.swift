@@ -12,6 +12,8 @@ import AnyCodable
 
 public struct AlbumsSuggestedCoverArtsResourceIdentifierMeta: Codable, Hashable {
 
+    public static let backgroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/")
+    public static let foregroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/")
     /** Background color for the suggested artwork */
     public var backgroundColor: String
     /** Foreground color for the suggested artwork */

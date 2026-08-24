@@ -17,6 +17,7 @@ public struct TracksCreateOperationPayloadDataAttributes: Codable, Hashable {
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
     }
+    public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     /** Access type */
     public var accessType: AccessType
     /** Explicit content */

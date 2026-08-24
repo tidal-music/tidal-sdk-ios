@@ -17,6 +17,7 @@ public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashabl
         case cdbaby = "CDBABY"
         case tunecore = "TUNECORE"
     }
+    public static let artistIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var artistId: String
     public var provider: Provider
 

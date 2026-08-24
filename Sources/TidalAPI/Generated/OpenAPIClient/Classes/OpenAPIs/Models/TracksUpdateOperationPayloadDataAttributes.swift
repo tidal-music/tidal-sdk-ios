@@ -48,6 +48,8 @@ public struct TracksUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case melodicMinor = "MELODIC_MINOR"
         case pentatonicMinor = "PENTATONIC_MINOR"
     }
+    public static let bpmRule = NumericRule<Float>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
+    public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
     /** Access type */
     public var accessType: AccessType?

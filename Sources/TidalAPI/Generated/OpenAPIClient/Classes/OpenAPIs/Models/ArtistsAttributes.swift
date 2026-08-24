@@ -17,6 +17,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         case user = "USER"
         case mixed = "MIXED"
     }
+    public static let handleRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Is the artist enabled for contributions? */
     public var contributionsEnabled: Bool?
     /** Contributions sales pitch */

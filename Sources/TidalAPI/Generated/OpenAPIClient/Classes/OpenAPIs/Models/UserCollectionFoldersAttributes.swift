@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct UserCollectionFoldersAttributes: Codable, Hashable {
 
+    public static let nameRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public var createdAt: Date
     public var lastModifiedAt: Date
     public var name: String
