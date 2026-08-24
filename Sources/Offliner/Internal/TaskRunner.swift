@@ -21,6 +21,7 @@ actor TaskRunner {
 	private var pendingTasks: [InternalTask] = []
 	private var runningTasks: [InternalTask] = []
 	private var taskIds: Set<String> = []
+	private var collectionObservers: [UUID: (collection: OfflineCollectionReference, continuation: AsyncStream<Void>.Continuation)] = [:]
 
 	private var processTask: Task<Void, Never>?
 	private var rerunRequested = false
@@ -105,10 +106,23 @@ actor TaskRunner {
 		}
 	}
 
-	func hasCurrentDownload(relatedTo collectionType: OfflineCollectionType, resourceId: ResourceId) -> Bool {
+	func collectionEvents(for collection: OfflineCollectionReference) -> AsyncStream<Void> {
+		AsyncStream(bufferingPolicy: .bufferingNewest(1)) { continuation in
+			collectionObservers[UUID()] = (collection, continuation)
+		}
+	}
+
+	func notifyCollectionChanged(collectionType: OfflineCollectionType, resourceId: ResourceId) {
 		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
-		return pendingTasks.contains { $0.isDownloadTask(for: collection) } ||
-			runningTasks.contains { $0.isDownloadTask(for: collection) }
+		notifyCollectionObservers { $0 == collection }
+	}
+
+	private func notifyCollectionObservers(matching: (OfflineCollectionReference) -> Bool) {
+		for (id, observer) in collectionObservers where matching(observer.collection) {
+			if case .terminated = observer.continuation.yield(()) {
+				collectionObservers.removeValue(forKey: id)
+			}
+		}
 	}
 
 	private func refresh() async throws {
@@ -121,6 +135,7 @@ actor TaskRunner {
 				currentDownloads.append(download)
 				downloadsContinuation?.yield(download)
 			}
+			notifyCollectionObservers { pendingTask.isDownloadTask(for: $0) }
 		}
 	}
 
@@ -207,6 +222,7 @@ actor TaskRunner {
 		if let download = task.download {
 			currentDownloads.removeAll { $0 === download }
 		}
+		notifyCollectionObservers { task.isDownloadTask(for: $0) }
 	}
 }
 
