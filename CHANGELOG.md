@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.6] - 2026-08-24
+
+### Changed
+- Resolve collection download state from the backend inventory instead of local polling; the stream emits the local state first and then a backend-corrected state when reachable (Offliner)
+- Generated API code (TidalAPI)
+
 ## [0.12.5] - 2026-08-21
 
 ### Changed
