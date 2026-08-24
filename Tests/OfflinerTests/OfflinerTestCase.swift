@@ -24,8 +24,7 @@ class OfflinerTestCase: XCTestCase {
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
 		trackManifestFetcher: TrackManifestFetcherProtocol = SucceedingTrackManifestFetcher(),
-		videoManifestFetcher: VideoManifestFetcherProtocol = SucceedingVideoManifestFetcher(),
-		collectionDownloadStatePollInterval: UInt64 = 1_000_000_000
+		videoManifestFetcher: VideoManifestFetcherProtocol = SucceedingVideoManifestFetcher()
 	) -> Offliner {
 		let dbPath = tempDir.appendingPathComponent("test-\(UUID().uuidString).sqlite").path
 		// swiftlint:disable:next force_try
@@ -41,8 +40,7 @@ class OfflinerTestCase: XCTestCase {
 			artworkDownloader: artworkDownloader,
 			mediaDownloader: mediaDownloader,
 			trackManifestFetcher: trackManifestFetcher,
-			videoManifestFetcher: videoManifestFetcher,
-			collectionDownloadStatePollInterval: collectionDownloadStatePollInterval
+			videoManifestFetcher: videoManifestFetcher
 		)
 	}
 

@@ -20,6 +20,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] = []
 	var pendingCollection: OfflineCollection?
 	var pendingCollectionResponses: [OfflineCollection?]?
+	var getOfflineCollectionError: Error?
 	private(set) var getOfflineCollectionCallCount = 0
 
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
@@ -158,12 +159,53 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 
 	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
 		getOfflineCollectionCallCount += 1
+		if let getOfflineCollectionError {
+			throw getOfflineCollectionError
+		}
 		if var responses = pendingCollectionResponses, !responses.isEmpty {
 			let response = responses.removeFirst()
 			pendingCollectionResponses = responses
 			return response
 		}
-		return pendingCollection
+		if let pendingCollection {
+			return pendingCollection
+		}
+		return derivedPendingCollection(type: type, id: id)
+	}
+
+	private func derivedPendingCollection(type: OfflineCollectionType, id: String) -> OfflineCollection? {
+		guard hasPendingStoreTasks(type: type, id: id) else { return nil }
+
+		let catalogMetadata: OfflineCollection.Metadata
+		switch type {
+		case .albums:
+			catalogMetadata = .album(.mock(id: id))
+		case .playlists:
+			catalogMetadata = .playlist(.mock(id: id))
+		case .userCollectionTracks:
+			catalogMetadata = .userCollectionTracks(id: id)
+		}
+
+		return .mock(catalogMetadata: catalogMetadata, artworkURL: nil, state: .pending)
+	}
+
+	private func hasPendingStoreTasks(type: OfflineCollectionType, id: String) -> Bool {
+		tasks.contains { offlineTask in
+			switch offlineTask {
+			case .storeTrack(let task):
+				return task.collectionResourceType == type.rawValue && task.collectionResourceId == id
+			case .storeVideo(let task):
+				return task.collectionResourceType == type.rawValue && task.collectionResourceId == id
+			case .storeAlbum(let task):
+				return type == .albums && task.album.id == id
+			case .storePlaylist(let task):
+				return type == .playlists && task.playlist.id == id
+			case .storeUserCollectionTracks:
+				return type == .userCollectionTracks
+			case .removeItem, .removeCollection:
+				return false
+			}
+		}
 	}
 }
 
