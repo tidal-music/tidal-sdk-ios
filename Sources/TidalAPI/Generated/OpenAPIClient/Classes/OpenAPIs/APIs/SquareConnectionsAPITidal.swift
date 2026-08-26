@@ -67,9 +67,9 @@ public enum SquareConnectionsAPITidal {
      
      - returns: SquareConnectionsCreateSingleResourceDataDocument
      */
-	public static func squareConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) async throws -> SquareConnectionsCreateSingleResourceDataDocument {
+	public static func squareConnectionsPost(idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) async throws -> SquareConnectionsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SquareConnectionsAPI.squareConnectionsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload)
+			SquareConnectionsAPI.squareConnectionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload)
 		}
 	}
 }

@@ -542,15 +542,14 @@ internal class ArtistsAPI {
      Add to following relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipAddOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
+    internal class func artistsIdRelationshipsFollowingPost(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
-            return try await artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload).execute().body
+            return try await artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -565,12 +564,11 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func artistsIdRelationshipsFollowingPostWithRequestBuilder(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func artistsIdRelationshipsFollowingPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/artists/{id}/relationships/following"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -578,10 +576,7 @@ internal class ArtistsAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: artistsFollowingRelationshipAddOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",

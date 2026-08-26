@@ -532,7 +532,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingPost**
 ```swift
-    open class func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func artistsIdRelationshipsFollowingPost(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Add to following relationship (\"to-many\").
@@ -545,12 +545,11 @@ Adds item(s) to following relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistsFollowingRelationshipAddOperationPayload = ArtistsFollowingRelationshipAddOperation_Payload(data: [ArtistsFollowingRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsFollowingRelationshipAddOperationPayload |  (optional)
 
 // Add to following relationship (\"to-many\").
-ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload) { (response, error) in
+ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -567,7 +566,6 @@ ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, countryCode: countryCode,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistsFollowingRelationshipAddOperationPayload** | [**ArtistsFollowingRelationshipAddOperationPayload**](ArtistsFollowingRelationshipAddOperationPayload.md) |  | [optional] 
 

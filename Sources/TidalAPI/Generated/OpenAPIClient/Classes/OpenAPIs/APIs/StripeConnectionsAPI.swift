@@ -120,15 +120,14 @@ internal class StripeConnectionsAPI {
     /**
      Create single stripeConnection.
      
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter stripeConnectionsCreateOperationPayload: (body)  (optional)
      - returns: StripeConnectionsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func stripeConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) async throws -> StripeConnectionsCreateSingleResourceDataDocument {
+    internal class func stripeConnectionsPost(idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) async throws -> StripeConnectionsCreateSingleResourceDataDocument {
         do {
-            return try await stripeConnectionsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload).execute().body
+            return try await stripeConnectionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -142,20 +141,16 @@ internal class StripeConnectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter stripeConnectionsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<StripeConnectionsCreateSingleResourceDataDocument> 
      */
-    internal class func stripeConnectionsPostWithRequestBuilder(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) -> RequestBuilder<StripeConnectionsCreateSingleResourceDataDocument> {
+    internal class func stripeConnectionsPostWithRequestBuilder(idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) -> RequestBuilder<StripeConnectionsCreateSingleResourceDataDocument> {
         let localVariablePath = "/stripeConnections"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: stripeConnectionsCreateOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",

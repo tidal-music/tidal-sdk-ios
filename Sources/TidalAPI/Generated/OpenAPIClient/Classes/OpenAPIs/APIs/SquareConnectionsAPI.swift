@@ -226,15 +226,14 @@ internal class SquareConnectionsAPI {
     /**
      Create single squareConnection.
      
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter squareConnectionsCreateOperationPayload: (body)  (optional)
      - returns: SquareConnectionsCreateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) async throws -> SquareConnectionsCreateSingleResourceDataDocument {
+    internal class func squareConnectionsPost(idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) async throws -> SquareConnectionsCreateSingleResourceDataDocument {
         do {
-            return try await squareConnectionsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload).execute().body
+            return try await squareConnectionsPostWithRequestBuilder(idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -248,20 +247,16 @@ internal class SquareConnectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter squareConnectionsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<SquareConnectionsCreateSingleResourceDataDocument> 
      */
-    internal class func squareConnectionsPostWithRequestBuilder(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) -> RequestBuilder<SquareConnectionsCreateSingleResourceDataDocument> {
+    internal class func squareConnectionsPostWithRequestBuilder(idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) -> RequestBuilder<SquareConnectionsCreateSingleResourceDataDocument> {
         let localVariablePath = "/squareConnections"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: squareConnectionsCreateOperationPayload)
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",

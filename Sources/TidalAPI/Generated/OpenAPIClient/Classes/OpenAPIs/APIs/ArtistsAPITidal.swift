@@ -127,9 +127,9 @@ public enum ArtistsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func artistsIdRelationshipsFollowingPost(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func artistsIdRelationshipsFollowingPost(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload)
+			ArtistsAPI.artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload)
 		}
 	}
 

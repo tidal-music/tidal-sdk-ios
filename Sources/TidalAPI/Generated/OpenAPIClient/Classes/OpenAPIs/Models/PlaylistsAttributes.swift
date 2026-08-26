@@ -36,6 +36,8 @@ public struct PlaylistsAttributes: Codable, Hashable {
     /** Duration of playlist (ISO 8601) */
     public var duration: String?
     public var externalLinks: [ExternalLink]
+    /** Whether the playlist has AI generations */
+    public var hasGenerations: Bool?
     /** Datetime of last modification of the playlist (ISO 8601) */
     public var lastModifiedAt: Date
     /** Playlist name */
@@ -58,6 +60,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         description: String? = nil,
         duration: String? = nil,
         externalLinks: [ExternalLink],
+        hasGenerations: Bool? = nil,
         lastModifiedAt: Date,
         name: String,
         numberOfFollowers: Int,
@@ -72,6 +75,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         self.description = description
         self.duration = duration
         self.externalLinks = externalLinks
+        self.hasGenerations = hasGenerations
         self.lastModifiedAt = lastModifiedAt
         self.name = name
         self.numberOfFollowers = numberOfFollowers
@@ -88,6 +92,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         case description
         case duration
         case externalLinks
+        case hasGenerations
         case lastModifiedAt
         case name
         case numberOfFollowers
@@ -107,6 +112,7 @@ public struct PlaylistsAttributes: Codable, Hashable {
         try container.encodeIfPresent(description, forKey: .description)
         try container.encodeIfPresent(duration, forKey: .duration)
         try container.encode(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(hasGenerations, forKey: .hasGenerations)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(name, forKey: .name)
         try container.encode(numberOfFollowers, forKey: .numberOfFollowers)

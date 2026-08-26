@@ -37,6 +37,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case manualArtistClaimsResourceObject(ManualArtistClaimsResourceObject)
     case offlineTasksResourceObject(OfflineTasksResourceObject)
     case playQueuesResourceObject(PlayQueuesResourceObject)
+    case playlistGenerationsResourceObject(PlaylistGenerationsResourceObject)
     case playlistsResourceObject(PlaylistsResourceObject)
     case priceConfigurationsResourceObject(PriceConfigurationsResourceObject)
     case providerOwnersResourceObject(ProviderOwnersResourceObject)
@@ -139,6 +140,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .offlineTasksResourceObject(let value):
             try container.encode(value)
         case .playQueuesResourceObject(let value):
+            try container.encode(value)
+        case .playlistGenerationsResourceObject(let value):
             try container.encode(value)
         case .playlistsResourceObject(let value):
             try container.encode(value)
@@ -324,6 +327,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "playQueues":
             let value = try PlayQueuesResourceObject(from: decoder)
             self = .playQueuesResourceObject(value)
+        case "playlistGenerations":
+            let value = try PlaylistGenerationsResourceObject(from: decoder)
+            self = .playlistGenerationsResourceObject(value)
         case "playlists":
             let value = try PlaylistsResourceObject(from: decoder)
             self = .playlistsResourceObject(value)
@@ -501,6 +507,7 @@ extension IncludedInner: Identifiable {
         case .manualArtistClaimsResourceObject(let value): return value.id
         case .offlineTasksResourceObject(let value): return value.id
         case .playQueuesResourceObject(let value): return value.id
+        case .playlistGenerationsResourceObject(let value): return value.id
         case .playlistsResourceObject(let value): return value.id
         case .priceConfigurationsResourceObject(let value): return value.id
         case .providerOwnersResourceObject(let value): return value.id

@@ -55,9 +55,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func artistClaimsIdPatch(id: String, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload)
+			ArtistClaimsAPI.artistClaimsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload)
 		}
 	}
 
@@ -79,9 +79,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload)
+			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -115,9 +115,9 @@ public enum ArtistClaimsAPITidal {
      
      - returns: ArtistClaimsCreateSingleResourceDataDocument
      */
-	public static func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsCreateSingleResourceDataDocument {
+	public static func artistClaimsPost(idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsCreateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsPostWithRequestBuilder(countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload)
+			ArtistClaimsAPI.artistClaimsPostWithRequestBuilder(idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload)
 		}
 	}
 }
