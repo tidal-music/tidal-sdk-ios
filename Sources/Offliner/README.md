@@ -161,7 +161,7 @@ Retrieve a specific offline media item:
 
 ```swift
 if let track = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: "track-id") {
-    // Access mediaURL, licenseURL, artworkURL, catalogMetadata, and playbackMetadata
+	// Access artworkURL, catalogMetadata, and playbackMetadata without resolving playback files
 }
 ```
 
@@ -322,11 +322,88 @@ Removal requests are registered with the backend and task processing is triggere
 
 ## Offline Playback
 
-Offliner conforms to `OfflineItemProvider` (from the Player module), so it can be used directly as the offline content source for the Player:
+Offliner exposes a Player-independent playback asset lookup. The lookup resolves the stored media and license file bookmarks only when playback is requested:
 
 ```swift
-let item = await offliner.get(productType: .TRACK, productId: "track-id")
-// Returns an OfflinePlaybackItem with mediaURL, licenseURL, format, and normalization data
+let asset = await offliner.getOfflinePlaybackAsset(
+	mediaType: .tracks,
+	resourceId: .identifier("track-id")
+)
+// Returns mediaURL, licenseURL, and playback metadata. A missing stored file returns nil and schedules a redownload.
+```
+
+On watchOS, do not create a plain `AVURLAsset` from `mediaURL` when `licenseURL` is present. Prepare the asset through
+Offliner so protected downloads receive their persisted FairPlay license:
+
+```swift
+import AVFoundation
+import Offliner
+
+final class QueuedOfflinePlayback {
+	// Retain this wrapper for the entire lifetime of playerItem, including while it is queued.
+	let preparedAsset: OfflinePlaybackAVAsset
+	let playerItem: AVPlayerItem
+
+	init(preparedAsset: OfflinePlaybackAVAsset) {
+		self.preparedAsset = preparedAsset
+		playerItem = AVPlayerItem(asset: preparedAsset.urlAsset)
+	}
+}
+
+guard let preparedAsset = await offliner.getOfflinePlaybackAVAsset(
+	mediaType: .tracks,
+	resourceId: .identifier("track-id")
+) else {
+	// The item is unavailable locally.
+	return
+}
+
+let queuedPlayback = QueuedOfflinePlayback(preparedAsset: preparedAsset)
+player.insert(queuedPlayback.playerItem, after: nil)
+// Keep queuedPlayback alive until its playerItem has been removed from the queue.
+```
+
+`getOfflinePlaybackAVAsset` is the supported watchOS lookup. `OfflinePlaybackAVAsset` creates no content-key session for
+unprotected media. For protected media it loads the stored license, creates an
+`AVContentKeySession(.fairPlayStreaming)`, installs the stored-license delegate, and registers its `urlAsset` as the
+content-key recipient. Construction verifies only that the license file exists, is readable, and is non-empty; it does
+not prove that the license is valid or unexpired. AVFoundation reports those runtime failures through
+`AVPlayerItem.status == .failed` and `AVPlayerItem.error`, which the existing Player implementation already observes.
+The Watch consumer must observe the same runtime channel and choose its allowed streaming fallback or request repair via
+`Offliner.download`. Real FairPlay playback and that Watch fallback policy remain TM-1574 device-validation gates.
+
+Offliner has no dependency on the Player module because Player does not support watchOS. Consumers that use Player can declare the `OfflineItemProvider` conformance in a target that links both products:
+
+```swift
+import Offliner
+import Player
+
+extension Offliner: @retroactive OfflineItemProvider {
+	public func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem? {
+		let mediaType: OfflineMediaItemType
+		switch productType {
+		case .TRACK: mediaType = .tracks
+		case .VIDEO: mediaType = .videos
+		case .UC: return nil
+		}
+
+		guard let asset = await getOfflinePlaybackAsset(
+			mediaType: mediaType,
+			resourceId: .identifier(productId)
+		) else {
+			return nil
+		}
+
+		return OfflinePlaybackItem(
+			mediaURL: asset.mediaURL,
+			licenseURL: asset.licenseURL,
+			format: asset.playbackMetadata?.format.rawValue,
+			albumReplayGain: asset.playbackMetadata?.albumNormalizationData?.replayGain,
+			albumPeakAmplitude: asset.playbackMetadata?.albumNormalizationData?.peakAmplitude,
+			productType: productType
+		)
+	}
+}
 ```
 
 ---
