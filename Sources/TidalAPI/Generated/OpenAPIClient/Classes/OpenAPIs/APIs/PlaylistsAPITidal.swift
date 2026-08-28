@@ -1,0 +1,289 @@
+import Foundation
+#if canImport(AnyCodable)
+import AnyCodable
+#endif
+
+/// This is a wrapper around `PlaylistsAPI` that uses the injected credentialsprovider
+/// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
+///
+/// Usage example:
+/// ```swift
+/// OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
+/// let dataDocument = try await PlaylistsAPITidal.getResource()
+/// ```
+public enum PlaylistsAPITidal {
+
+
+	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_playlistsGet: String, CaseIterable {
+		case CreatedAtAsc = "createdAt"
+		case CreatedAtDesc = "-createdAt"
+		case LastModifiedAtAsc = "lastModifiedAt"
+		case LastModifiedAtDesc = "-lastModifiedAt"
+		case NameAsc = "name"
+		case NameDesc = "-name"
+
+		func toPlaylistsAPIEnum() -> PlaylistsAPI.Sort_playlistsGet {
+			switch self {
+			case .CreatedAtAsc: return .CreatedAtAsc
+			case .CreatedAtDesc: return .CreatedAtDesc
+			case .LastModifiedAtAsc: return .LastModifiedAtAsc
+			case .LastModifiedAtDesc: return .LastModifiedAtDesc
+			case .NameAsc: return .NameAsc
+			case .NameDesc: return .NameDesc
+			}
+		}
+	}
+
+	/**
+     Get multiple playlists.
+     
+     - returns: PlaylistsMultiResourceDataDocument
+     */
+	public static func playlistsGet(pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Delete single playlist.
+     
+     - returns: MutationResponseDocument
+     */
+	public static func playlistsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
+		}
+	}
+
+
+	/**
+     Get single playlist.
+     
+     - returns: PlaylistsSingleResourceDataDocument
+     */
+	public static func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Update single playlist.
+     
+     - returns: PlaylistsUpdateSingleResourceDataDocument
+     */
+	public static func playlistsIdPatch(id: String, idempotencyKey: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil) async throws -> PlaylistsUpdateSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsUpdateOperationPayload: playlistsUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Delete from collaboratorProfiles relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func playlistsIdRelationshipsCollaboratorProfilesDelete(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: playlistsCollaboratorProfilesRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+     Get collaboratorProfiles relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Add to collaboratorProfiles relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipAddOperationPayload: playlistsCollaboratorProfilesRelationshipAddOperationPayload)
+		}
+	}
+
+
+	/**
+     Get collaborators relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsCollaboratorsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Get coverArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Update coverArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func playlistsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCoverArtRelationshipUpdateOperationPayload: playlistsCoverArtRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Delete from items relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func playlistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipRemoveOperationPayload: playlistsItemsRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_playlistsIdRelationshipsItemsGet: String, CaseIterable {
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case AlbumsTitleAsc = "albums.title"
+		case AlbumsTitleDesc = "-albums.title"
+		case ArtistsNameAsc = "artists.name"
+		case ArtistsNameDesc = "-artists.name"
+		case DurationAsc = "duration"
+		case DurationDesc = "-duration"
+		case ItemIndexAsc = "itemIndex"
+		case ItemIndexDesc = "-itemIndex"
+		case TitleAsc = "title"
+		case TitleDesc = "-title"
+
+		func toPlaylistsAPIEnum() -> PlaylistsAPI.Sort_playlistsIdRelationshipsItemsGet {
+			switch self {
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .AlbumsTitleAsc: return .AlbumsTitleAsc
+			case .AlbumsTitleDesc: return .AlbumsTitleDesc
+			case .ArtistsNameAsc: return .ArtistsNameAsc
+			case .ArtistsNameDesc: return .ArtistsNameDesc
+			case .DurationAsc: return .DurationAsc
+			case .DurationDesc: return .DurationDesc
+			case .ItemIndexAsc: return .ItemIndexAsc
+			case .ItemIndexDesc: return .ItemIndexDesc
+			case .TitleAsc: return .TitleAsc
+			case .TitleDesc: return .TitleDesc
+			}
+		}
+	}
+
+	/**
+     Get items relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsItemsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Update items relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func playlistsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsItemsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipUpdateOperationPayload: playlistsItemsRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Add to items relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsItemsAddMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> PlaylistsItemsAddMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload)
+		}
+	}
+
+
+	/**
+     Get ownerProfiles relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsOwnerProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Get suggestedCoverArts relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsSuggestedCoverArtsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Create single playlist.
+     
+     - returns: PlaylistsCreateSingleResourceDataDocument
+     */
+	public static func playlistsPost(idempotencyKey: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil) async throws -> PlaylistsCreateSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsPostWithRequestBuilder(idempotencyKey: idempotencyKey, playlistsCreateOperationPayload: playlistsCreateOperationPayload)
+		}
+	}
+}

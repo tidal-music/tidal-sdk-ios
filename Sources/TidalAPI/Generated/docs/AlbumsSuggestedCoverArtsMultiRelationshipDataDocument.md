@@ -1,0 +1,13 @@
+# AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**data** | [AlbumsSuggestedCoverArtsResourceIdentifier] |  | [optional] 
+**included** | [IncludedInner] |  | [optional] 
+**links** | [**Links**](Links.md) |  | 
+**meta** | [**AlbumsSuggestedCoverArtsMultiRelationshipDataDocumentMeta**](AlbumsSuggestedCoverArtsMultiRelationshipDataDocumentMeta.md) |  | [optional] 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

@@ -1,0 +1,187 @@
+# SearchSuggestionsAPI
+
+All URIs are relative to *https://openapi.tidal.com/v2*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**searchSuggestionsGet**](SearchSuggestionsAPI.md#searchsuggestionsget) | **GET** /searchSuggestions | Get search suggestions by query.
+[**searchSuggestionsIdRelationshipsDirectHitsGet**](SearchSuggestionsAPI.md#searchsuggestionsidrelationshipsdirecthitsget) | **GET** /searchSuggestions/{id}/relationships/directHits | Get directHits relationship (\&quot;to-many\&quot;).
+[**searchSuggestionsIdRelationshipsHistoryGet**](SearchSuggestionsAPI.md#searchsuggestionsidrelationshipshistoryget) | **GET** /searchSuggestions/{id}/relationships/history | Get history relationship (\&quot;to-many\&quot;).
+
+
+# **searchSuggestionsGet**
+```swift
+    open class func searchSuggestionsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+```
+
+Get search suggestions by query.
+
+Searches for a query and returns a collection containing exactly one search suggestions resource.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let filterQuery = "filterQuery_example" // String | Search query (e.g. `hello`)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: directHits (optional)
+
+// Get search suggestions by query.
+SearchSuggestionsAPI.searchSuggestionsGet(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **filterQuery** | **String** | Search query (e.g. &#x60;hello&#x60;) | 
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits, history | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits | [optional] 
+
+### Return type
+
+[**SearchSuggestionsMultiResourceDataDocument**](SearchSuggestionsMultiResourceDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **searchSuggestionsIdRelationshipsDirectHitsGet**
+```swift
+    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get directHits relationship (\"to-many\").
+
+Retrieves directHits relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | An opaque search suggestions identifier
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: directHits (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: directHits (optional)
+
+// Get directHits relationship (\"to-many\").
+SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | An opaque search suggestions identifier | 
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: directHits | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits | [optional] 
+
+### Return type
+
+[**SearchSuggestionsMultiRelationshipDataDocument**](SearchSuggestionsMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **searchSuggestionsIdRelationshipsHistoryGet**
+```swift
+    open class func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get history relationship (\"to-many\").
+
+Retrieves history relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | An opaque search suggestions identifier
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: history (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get history relationship (\"to-many\").
+SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | An opaque search suggestions identifier | 
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: history | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**SearchSuggestionsMultiRelationshipDataDocument**](SearchSuggestionsMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

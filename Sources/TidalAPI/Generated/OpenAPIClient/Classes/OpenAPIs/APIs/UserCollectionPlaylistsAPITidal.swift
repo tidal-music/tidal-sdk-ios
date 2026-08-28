@@ -1,0 +1,113 @@
+import Foundation
+#if canImport(AnyCodable)
+import AnyCodable
+#endif
+
+/// This is a wrapper around `UserCollectionPlaylistsAPI` that uses the injected credentialsprovider
+/// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
+///
+/// Usage example:
+/// ```swift
+/// OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
+/// let dataDocument = try await UserCollectionPlaylistsAPITidal.getResource()
+/// ```
+public enum UserCollectionPlaylistsAPITidal {
+
+
+	/**
+     Get single userCollectionPlaylist.
+     
+     - returns: UserCollectionPlaylistsSingleResourceDataDocument
+     */
+	public static func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Delete from items relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func userCollectionPlaylistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: userCollectionPlaylistsItemsRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+	 * enum for parameter collectionView
+	 */
+	public enum CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet: String, CaseIterable {
+		case flat = "FLAT"
+		case folders = "FOLDERS"
+
+		func toUserCollectionPlaylistsAPIEnum() -> UserCollectionPlaylistsAPI.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet {
+			switch self {
+			case .flat: return .flat
+			case .folders: return .folders
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_userCollectionPlaylistsIdRelationshipsItemsGet: String, CaseIterable {
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case LastModifiedAtAsc = "lastModifiedAt"
+		case LastModifiedAtDesc = "-lastModifiedAt"
+		case NameAsc = "name"
+		case NameDesc = "-name"
+
+		func toUserCollectionPlaylistsAPIEnum() -> UserCollectionPlaylistsAPI.Sort_userCollectionPlaylistsIdRelationshipsItemsGet {
+			switch self {
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .LastModifiedAtAsc: return .LastModifiedAtAsc
+			case .LastModifiedAtDesc: return .LastModifiedAtDesc
+			case .NameAsc: return .NameAsc
+			case .NameDesc: return .NameDesc
+			}
+		}
+	}
+
+	/**
+     Get items relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserCollectionPlaylistsItemsMultiRelationshipDataDocument
+     */
+	public static func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: UserCollectionPlaylistsAPITidal.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, pageCursor: String? = nil, sort: [UserCollectionPlaylistsAPITidal.Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: id, collectionView: collectionView?.toUserCollectionPlaylistsAPIEnum(), pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionPlaylistsAPIEnum() }, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Add to items relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument
+     */
+	public static func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload)
+		}
+	}
+
+
+	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserCollectionPlaylistsMultiRelationshipDataDocument
+     */
+	public static func userCollectionPlaylistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionPlaylistsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+}

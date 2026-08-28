@@ -1,0 +1,22 @@
+# AlbumsRelationships
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**albumStatistics** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+**artists** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**coverArt** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**genres** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**items** | [**AlbumsItemsMultiRelationshipDataDocument**](AlbumsItemsMultiRelationshipDataDocument.md) |  | [optional] 
+**owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**priceConfig** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+**providers** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**replacement** | [**AlbumsReplacementSingleRelationshipDataDocument**](AlbumsReplacementSingleRelationshipDataDocument.md) |  | [optional] 
+**shares** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**similarAlbums** | [**AlbumsSimilarAlbumsMultiRelationshipDataDocument**](AlbumsSimilarAlbumsMultiRelationshipDataDocument.md) |  | [optional] 
+**suggestedCoverArts** | [**AlbumsSuggestedCoverArtsMultiRelationshipDataDocument**](AlbumsSuggestedCoverArtsMultiRelationshipDataDocument.md) |  | [optional] 
+**usageRules** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

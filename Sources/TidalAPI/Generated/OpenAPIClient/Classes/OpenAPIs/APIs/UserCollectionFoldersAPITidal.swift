@@ -1,0 +1,158 @@
+import Foundation
+#if canImport(AnyCodable)
+import AnyCodable
+#endif
+
+/// This is a wrapper around `UserCollectionFoldersAPI` that uses the injected credentialsprovider
+/// from `OpenAPIClientAPI.credentialsProvider` to provide a convenience API.
+///
+/// Usage example:
+/// ```swift
+/// OpenAPIClientAPI.credentialsProvider = TidalAuth.shared
+/// let dataDocument = try await UserCollectionFoldersAPITidal.getResource()
+/// ```
+public enum UserCollectionFoldersAPITidal {
+
+
+	/**
+     Get multiple userCollectionFolders.
+     
+     - returns: UserCollectionFoldersMultiResourceDataDocument
+     */
+	public static func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Delete single userCollectionFolder.
+     
+     - returns: MutationResponseDocument
+     */
+	public static func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
+		}
+	}
+
+
+	/**
+     Get single userCollectionFolder.
+     
+     - returns: UserCollectionFoldersSingleResourceDataDocument
+     */
+	public static func userCollectionFoldersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Update single userCollectionFolder.
+     
+     - returns: MutationResponseDocument
+     */
+	public static func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Delete from items relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_userCollectionFoldersIdRelationshipsItemsGet: String, CaseIterable {
+		case AddedAtAsc = "addedAt"
+		case AddedAtDesc = "-addedAt"
+		case LastModifiedAtAsc = "lastModifiedAt"
+		case LastModifiedAtDesc = "-lastModifiedAt"
+		case NameAsc = "name"
+		case NameDesc = "-name"
+
+		func toUserCollectionFoldersAPIEnum() -> UserCollectionFoldersAPI.Sort_userCollectionFoldersIdRelationshipsItemsGet {
+			switch self {
+			case .AddedAtAsc: return .AddedAtAsc
+			case .AddedAtDesc: return .AddedAtDesc
+			case .LastModifiedAtAsc: return .LastModifiedAtAsc
+			case .LastModifiedAtDesc: return .LastModifiedAtDesc
+			case .NameAsc: return .NameAsc
+			case .NameDesc: return .NameDesc
+			}
+		}
+	}
+
+	/**
+     Get items relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserCollectionFoldersItemsMultiRelationshipDataDocument
+     */
+	public static func userCollectionFoldersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionFoldersAPITidal.Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersItemsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionFoldersAPIEnum() }, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Add to items relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload)
+		}
+	}
+
+
+	/**
+     Get owners relationship (\&quot;to-many\&quot;).
+     
+     - returns: UserCollectionFoldersMultiRelationshipDataDocument
+     */
+	public static func userCollectionFoldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionFoldersMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Get userCollection relationship (\&quot;to-one\&quot;).
+     
+     - returns: UserCollectionFoldersSingleRelationshipDataDocument
+     */
+	public static func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Create single userCollectionFolder.
+     
+     - returns: UserCollectionFoldersCreateSingleResourceDataDocument
+     */
+	public static func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersCreateSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			UserCollectionFoldersAPI.userCollectionFoldersPostWithRequestBuilder(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload)
+		}
+	}
+}
