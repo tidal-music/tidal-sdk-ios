@@ -1,4 +1,4 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import class Foundation.ProcessInfo
@@ -15,7 +15,7 @@ let package = Package(
 		.iOS(.v15),
 		.macOS(.v12),
 		.tvOS(.v15),
-		.watchOS("10.0"),
+		.watchOS(.v10),
 	],
 	products: [
 		.library(

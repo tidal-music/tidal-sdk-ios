@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A watchOS Offliner compilation check in CI
 
 ### Changed
+- Raise the package Swift tools version from 5.8 to 5.9
 - Raise the package minimum watchOS version from 7 to 10 to match Offliner's AVFoundation download APIs
 - Remove Offliner's dependency on Player; Player consumers now provide their own `OfflineItemProvider` conformance
 
