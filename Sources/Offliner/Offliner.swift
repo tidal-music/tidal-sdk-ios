@@ -143,7 +143,7 @@ public final class Offliner {
 	/// Retain the returned object for the entire lifetime of every `AVPlayerItem` made from its `urlAsset`, including while
 	/// queued. Construction performs structural preparation only; AVFoundation reports runtime DRM failures through the
 	/// resulting `AVPlayerItem.status` and `AVPlayerItem.error`. If stored playback files or license preparation cannot be
-	/// resolved, this returns `nil`.
+	/// resolved, this returns `nil` and schedules the item to be downloaded again.
 	public func getOfflinePlaybackAVAsset(
 		mediaType: OfflineMediaItemType,
 		resourceId: ResourceId
@@ -151,7 +151,12 @@ public final class Offliner {
 		guard let playbackAsset = await getOfflinePlaybackAsset(mediaType: mediaType, resourceId: resourceId) else {
 			return nil
 		}
-		return try? OfflinePlaybackAVAsset(playbackAsset: playbackAsset)
+		do {
+			return try OfflinePlaybackAVAsset(playbackAsset: playbackAsset)
+		} catch {
+			Task { try? await download(mediaType: mediaType, resourceId: resourceId) }
+			return nil
+		}
 	}
 
 	public func getOfflineCollection(

@@ -69,9 +69,10 @@ final class OfflinePlaybackAVAssetTests: OfflinerTestCase {
 		}
 	}
 
-	func testPreparedLookupReturnsNilForEmptyStoredLicense() async throws {
+	func testPreparedLookupReturnsNilAndSchedulesRedownloadForEmptyStoredLicense() async throws {
+		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
-			offlineApiClient: StubOfflineApiClient(),
+			offlineApiClient: backend,
 			artworkDownloader: SucceedingArtworkDownloader(),
 			mediaDownloader: SuspendingMediaDownloader()
 		)
@@ -99,8 +100,13 @@ final class OfflinePlaybackAVAssetTests: OfflinerTestCase {
 			mediaType: .tracks,
 			resourceId: .identifier("track-id")
 		)
+		let observedRepairRequest = try await backend.waitForAddedItems(count: 1)
 
 		XCTAssertNil(preparedAsset)
+		XCTAssertTrue(observedRepairRequest, "Timed out waiting for playback repair request")
+		XCTAssertEqual(backend.addedItems.count, 1)
+		XCTAssertEqual(backend.addedItems.first?.type, .track)
+		XCTAssertEqual(backend.addedItems.first?.id, "track-id")
 	}
 
 	private func playbackAsset(mediaURL: URL, licenseURL: URL?) -> OfflinePlaybackAsset {

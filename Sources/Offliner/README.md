@@ -4,6 +4,8 @@ Offliner is the TIDAL SDK module for managing offline content. It handles downlo
 
 ## Getting Started
 
+Offliner supports watchOS 10 and newer, matching the availability of AVFoundation's asset-download APIs.
+
 ### Initialization
 
 Offliner requires that `OpenAPIClientAPI.credentialsProvider` is configured before use (typically set to your Auth module's credential provider).
@@ -366,11 +368,12 @@ player.insert(queuedPlayback.playerItem, after: nil)
 `getOfflinePlaybackAVAsset` is the supported watchOS lookup. `OfflinePlaybackAVAsset` creates no content-key session for
 unprotected media. For protected media it loads the stored license, creates an
 `AVContentKeySession(.fairPlayStreaming)`, installs the stored-license delegate, and registers its `urlAsset` as the
-content-key recipient. Construction verifies only that the license file exists, is readable, and is non-empty; it does
-not prove that the license is valid or unexpired. AVFoundation reports those runtime failures through
-`AVPlayerItem.status == .failed` and `AVPlayerItem.error`, which the existing Player implementation already observes.
-The Watch consumer must observe the same runtime channel and choose its allowed streaming fallback or request repair via
-`Offliner.download`. Real FairPlay playback and that Watch fallback policy remain TM-1574 device-validation gates.
+content-key recipient. Construction verifies only that the license file exists, is readable, and is non-empty. A structural failure returns
+`nil` and schedules a replacement download. Construction does not prove that the license is valid or unexpired;
+AVFoundation reports those runtime failures through `AVPlayerItem.status == .failed` and `AVPlayerItem.error`, which the
+existing Player implementation already observes. The Watch consumer must observe the same runtime channel and choose
+its allowed streaming fallback or request repair via `Offliner.download`. Real FairPlay playback and that Watch fallback
+policy remain TM-1574 device-validation gates.
 
 Offliner has no dependency on the Player module because Player does not support watchOS. Consumers that use Player can declare the `OfflineItemProvider` conformance in a target that links both products:
 
