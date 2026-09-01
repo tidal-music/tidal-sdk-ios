@@ -149,6 +149,18 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		}
 	}
 
+	func waitForAddedItems(count: Int, timeout: TimeInterval = 1) async throws -> Bool {
+		let deadline = Date().addingTimeInterval(timeout)
+		while addedItems.count < count {
+			guard Date() < deadline else {
+				return false
+			}
+			try Task.checkCancellation()
+			try await Task.sleep(nanoseconds: 10_000_000)
+		}
+		return true
+	}
+
 	func getPendingCollections(
 		type: OfflineCollectionType,
 		cursor: String?

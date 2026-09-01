@@ -26,6 +26,18 @@ jobs:
       run: |-
         set -o pipefail && swift test --skip PlayerTests | xcbeautify --renderer github-actions
 
+  build-watchos-offliner:
+    name: Build watchOS Offliner
+    runs-on: macos-15
+    steps:
+    - uses: actions/checkout@v4
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '26.2'
+    - name: Build Offliner for watchOS
+      run: |-
+        set -o pipefail && xcodebuild -scheme 'Offliner' -destination 'generic/platform=watchOS' build -skipPackagePluginValidation CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcbeautify --renderer github-actions
+
   run-xcodebuild-tests:
     name: Run xcodebuild Unit Tests
     runs-on: macos-15

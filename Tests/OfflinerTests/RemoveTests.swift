@@ -40,7 +40,10 @@ final class RemoveTests: OfflinerTestCase {
 
 		let storedItemOptional = try await offliner.getOfflineMediaItem(mediaType: .tracks, resourceId: .identifier("track-123"))
 		let storedItem = try XCTUnwrap(storedItemOptional)
-		let playableItem = await offliner.get(productType: .TRACK, productId: "track-123")
+		let playableItem = await offliner.getOfflinePlaybackAsset(
+			mediaType: .tracks,
+			resourceId: .identifier("track-123")
+		)
 		let mediaURL = try XCTUnwrap(playableItem?.mediaURL)
 		let artworkURL = try XCTUnwrap(storedItem.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: mediaURL.path))

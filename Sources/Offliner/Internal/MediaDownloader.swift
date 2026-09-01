@@ -76,15 +76,8 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 
 		return try await withCheckedThrowingContinuation { continuation in
 			queue.async {
-				guard let task = self.session.makeAssetDownloadTask(
-					asset: asset,
-					assetTitle: title,
-					assetArtworkData: nil,
-					options: nil
-				) else {
-					continuation.resume(throwing: MediaDownloaderError.failedToCreateTask)
-					return
-				}
+				let downloadConfiguration = AVAssetDownloadConfiguration(asset: asset, title: title)
+				let task = self.session.makeAssetDownloadTask(downloadConfiguration: downloadConfiguration)
 
 				let activeDownload = ActiveDownload(
 					duration: duration,
@@ -94,6 +87,10 @@ final class MediaDownloader: NSObject, MediaDownloaderProtocol {
 
 				task.taskDescription = taskId
 				task.priority = 1.0
+
+				activeDownload.progressObservation = task.progress.observe(\.fractionCompleted, options: [.initial, .new]) { progress, _ in
+					Task { await onProgress(progress.fractionCompleted) }
+				}
 
 				self.activeDownloads[task.taskIdentifier] = activeDownload
 				task.resume()
@@ -156,22 +153,6 @@ extension MediaDownloader: AVAssetDownloadDelegate {
 		activeDownload.continuation.resume(returning: result)
 	}
 
-	func urlSession(
-		_ session: URLSession,
-		assetDownloadTask: AVAssetDownloadTask,
-		didLoad timeRange: CMTimeRange,
-		totalTimeRangesLoaded loadedTimeRanges: [NSValue],
-		timeRangeExpectedToLoad: CMTimeRange
-	) {
-		let loaded = loadedTimeRanges.reduce(0.0) { $0 + CMTimeGetSeconds($1.timeRangeValue.duration) }
-		let expected = CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
-		let progress = expected > 0 ? loaded / expected : 0
-
-		if let onProgress = activeDownloads[assetDownloadTask.taskIdentifier]?.onProgress {
-			Task { await onProgress(progress) }
-		}
-	}
-
 	func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
 		Self.logger.debug("urlSessionDidFinishEvents forBackgroundURLSession")
 		DispatchQueue.main.async { [weak self] in
@@ -189,6 +170,7 @@ private final class ActiveDownload {
 	let onProgress: @Sendable (Double) async -> Void
 
 	var downloadedLocation: URL?
+	var progressObservation: NSKeyValueObservation?
 
 	init(
 		duration: Int,
@@ -204,7 +186,6 @@ private final class ActiveDownload {
 // MARK: - MediaDownloaderError
 
 enum MediaDownloaderError: Error {
-	case failedToCreateTask
 	case noDownloadedFile
 	case manifestNotFound
 }

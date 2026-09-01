@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Player-independent offline playback assets with retained FairPlay preparation for watchOS (Offliner)
+- A watchOS Offliner compilation check in CI
+
+### Changed
+- Raise the package Swift tools version from 5.8 to 5.9
+- Raise the package minimum watchOS version from 7 to 10 to match Offliner's AVFoundation download APIs
+- Remove Offliner's dependency on Player; Player consumers now provide their own `OfflineItemProvider` conformance
+
+### Fixed
+- Schedule a replacement download when a stored FairPlay license cannot be prepared for playback (Offliner)
+- Report Offliner download progress on watchOS through `URLSessionTask.progress`
+
 ## [0.12.6] - 2026-08-24
 
 ### Changed

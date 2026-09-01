@@ -90,7 +90,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 	// MARK: - Corrupted entries
 
-	func testItemWithDeletedMediaFileRemainsListedButIsNotPlayable() async throws {
+	func testItemWithDeletedMediaFileRemainsListedAndSchedulesRedownload() async throws {
 		let backend = StubOfflineApiClient()
 		let offliner = createOffliner(
 			offlineApiClient: backend,
@@ -124,7 +124,10 @@ final class CollectionItemsTests: OfflinerTestCase {
 		backend.enqueueTasks(tasks)
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
 
-		let storedPlayableItem = await offliner.get(productType: .TRACK, productId: "track-2")
+		let storedPlayableItem = await offliner.getOfflinePlaybackAsset(
+			mediaType: .tracks,
+			resourceId: .identifier("track-2")
+		)
 		let mediaURL = try XCTUnwrap(storedPlayableItem?.mediaURL)
 		try FileManager.default.removeItem(at: mediaURL)
 
@@ -135,8 +138,17 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 
 		XCTAssertEqual(page.items.map(\.item.catalogMetadata.id), ["track-1", "track-2", "track-3"])
-		let playableItem = await offliner.get(productType: .TRACK, productId: "track-2")
+		let playableItem = await offliner.getOfflinePlaybackAsset(
+			mediaType: .tracks,
+			resourceId: .identifier("track-2")
+		)
+		let observedRepairRequest = try await backend.waitForAddedItems(count: 1)
+
 		XCTAssertNil(playableItem)
+		XCTAssertTrue(observedRepairRequest, "Timed out waiting for playback repair request")
+		XCTAssertEqual(backend.addedItems.count, 1)
+		XCTAssertEqual(backend.addedItems.first?.type, .track)
+		XCTAssertEqual(backend.addedItems.first?.id, "track-2")
 	}
 
 	// MARK: - Empty collection
