@@ -417,7 +417,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionsIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -456,7 +456,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionsMultiRelationshipDataDocument**](UserCollectionsMultiRelationshipDataDocument.md)
+[**UserCollectionsOwnersMultiRelationshipDataDocument**](UserCollectionsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

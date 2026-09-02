@@ -115,9 +115,9 @@ public enum InstallationsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: InstallationsMultiRelationshipDataDocument
+     - returns: InstallationsOwnersMultiRelationshipDataDocument
      */
-	public static func installationsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> InstallationsMultiRelationshipDataDocument {
+	public static func installationsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> InstallationsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			InstallationsAPI.installationsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

@@ -115,7 +115,7 @@ Name | Type | Description  | Notes
 
 # **downloadsIdRelationshipsOwnersGet**
 ```swift
-    open class func downloadsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: DownloadsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func downloadsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: DownloadsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -154,7 +154,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DownloadsMultiRelationshipDataDocument**](DownloadsMultiRelationshipDataDocument.md)
+[**DownloadsOwnersMultiRelationshipDataDocument**](DownloadsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

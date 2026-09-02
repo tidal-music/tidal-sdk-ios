@@ -29,9 +29,9 @@ public enum CreditsAPITidal {
 	/**
      Get artist relationship (\&quot;to-one\&quot;).
      
-     - returns: CreditsSingleRelationshipDataDocument
+     - returns: CreditsArtistSingleRelationshipDataDocument
      */
-	public static func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CreditsSingleRelationshipDataDocument {
+	public static func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CreditsArtistSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			CreditsAPI.creditsIdRelationshipsArtistGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
@@ -41,9 +41,9 @@ public enum CreditsAPITidal {
 	/**
      Get category relationship (\&quot;to-one\&quot;).
      
-     - returns: CreditsSingleRelationshipDataDocument
+     - returns: CreditsCategorySingleRelationshipDataDocument
      */
-	public static func creditsIdRelationshipsCategoryGet(id: String, include: [String]? = nil) async throws -> CreditsSingleRelationshipDataDocument {
+	public static func creditsIdRelationshipsCategoryGet(id: String, include: [String]? = nil) async throws -> CreditsCategorySingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			CreditsAPI.creditsIdRelationshipsCategoryGetWithRequestBuilder(id: id, include: include)
 		}

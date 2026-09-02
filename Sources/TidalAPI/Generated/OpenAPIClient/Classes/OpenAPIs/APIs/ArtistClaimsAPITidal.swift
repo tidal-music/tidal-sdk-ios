@@ -65,9 +65,9 @@ public enum ArtistClaimsAPITidal {
 	/**
      Get acceptedArtists relationship (\&quot;to-many\&quot;).
      
-     - returns: ArtistClaimsMultiRelationshipDataDocument
+     - returns: ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument
      */
-	public static func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
+	public static func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
@@ -89,9 +89,9 @@ public enum ArtistClaimsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: ArtistClaimsMultiRelationshipDataDocument
+     - returns: ArtistClaimsOwnersMultiRelationshipDataDocument
      */
-	public static func artistClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
+	public static func artistClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistClaimsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistClaimsAPI.artistClaimsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -101,9 +101,9 @@ public enum ArtistClaimsAPITidal {
 	/**
      Get recommendedArtists relationship (\&quot;to-many\&quot;).
      
-     - returns: ArtistClaimsMultiRelationshipDataDocument
+     - returns: ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument
      */
-	public static func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiRelationshipDataDocument {
+	public static func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistClaimsAPI.artistClaimsIdRelationshipsRecommendedArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}

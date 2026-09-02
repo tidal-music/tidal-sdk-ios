@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **stripeConnectionsIdRelationshipsOwnersGet**
 ```swift
-    open class func stripeConnectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: StripeConnectionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: StripeConnectionsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**StripeConnectionsMultiRelationshipDataDocument**](StripeConnectionsMultiRelationshipDataDocument.md)
+[**StripeConnectionsOwnersMultiRelationshipDataDocument**](StripeConnectionsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

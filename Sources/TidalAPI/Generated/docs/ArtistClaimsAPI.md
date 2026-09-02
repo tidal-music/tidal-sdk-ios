@@ -231,7 +231,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsGet**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get acceptedArtists relationship (\"to-many\").
@@ -272,7 +272,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistClaimsMultiRelationshipDataDocument**](ArtistClaimsMultiRelationshipDataDocument.md)
+[**ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument**](ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -341,7 +341,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsOwnersGet**
 ```swift
-    open class func artistClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistClaimsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -380,7 +380,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistClaimsMultiRelationshipDataDocument**](ArtistClaimsMultiRelationshipDataDocument.md)
+[**ArtistClaimsOwnersMultiRelationshipDataDocument**](ArtistClaimsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -395,7 +395,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsRecommendedArtistsGet**
 ```swift
-    open class func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get recommendedArtists relationship (\"to-many\").
@@ -436,7 +436,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistClaimsMultiRelationshipDataDocument**](ArtistClaimsMultiRelationshipDataDocument.md)
+[**ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument**](ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 

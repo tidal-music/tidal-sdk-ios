@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdRelationshipsPlaylistGet**
 ```swift
-    open class func playlistGenerationsIdRelationshipsPlaylistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsIdRelationshipsPlaylistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsPlaylistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get playlist relationship (\"to-one\").
@@ -104,7 +104,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlaylistGenerationsSingleRelationshipDataDocument**](PlaylistGenerationsSingleRelationshipDataDocument.md)
+[**PlaylistGenerationsPlaylistSingleRelationshipDataDocument**](PlaylistGenerationsPlaylistSingleRelationshipDataDocument.md)
 
 ### Authorization
 

@@ -121,7 +121,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdRelationshipsOwnersGet**
 ```swift
-    open class func sharesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SharesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func sharesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SharesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -160,7 +160,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SharesMultiRelationshipDataDocument**](SharesMultiRelationshipDataDocument.md)
+[**SharesOwnersMultiRelationshipDataDocument**](SharesOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -175,7 +175,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdRelationshipsSharedResourcesGet**
 ```swift
-    open class func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SharesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SharesSharedResourcesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get sharedResources relationship (\"to-many\").
@@ -216,7 +216,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SharesMultiRelationshipDataDocument**](SharesMultiRelationshipDataDocument.md)
+[**SharesSharedResourcesMultiRelationshipDataDocument**](SharesSharedResourcesMultiRelationshipDataDocument.md)
 
 ### Authorization
 

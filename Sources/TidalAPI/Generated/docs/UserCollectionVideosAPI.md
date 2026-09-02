@@ -237,7 +237,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionVideosIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionVideosIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionVideosIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionVideosOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -276,7 +276,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionVideosMultiRelationshipDataDocument**](UserCollectionVideosMultiRelationshipDataDocument.md)
+[**UserCollectionVideosOwnersMultiRelationshipDataDocument**](UserCollectionVideosOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

@@ -14,7 +14,7 @@ public struct UserCollectionsRelationships: Codable, Hashable {
 
     public var albums: UserCollectionsAlbumsMultiRelationshipDataDocument?
     public var artists: UserCollectionsArtistsMultiRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
+    public var owners: UserCollectionsOwnersMultiRelationshipDataDocument?
     public var playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument?
     public var tracks: UserCollectionsTracksMultiRelationshipDataDocument?
     public var videos: UserCollectionsVideosMultiRelationshipDataDocument?
@@ -22,7 +22,7 @@ public struct UserCollectionsRelationships: Codable, Hashable {
     public init(
         albums: UserCollectionsAlbumsMultiRelationshipDataDocument? = nil,
         artists: UserCollectionsArtistsMultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil,
+        owners: UserCollectionsOwnersMultiRelationshipDataDocument? = nil,
         playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument? = nil,
         tracks: UserCollectionsTracksMultiRelationshipDataDocument? = nil,
         videos: UserCollectionsVideosMultiRelationshipDataDocument? = nil

@@ -53,9 +53,9 @@ public enum LyricsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: LyricsMultiRelationshipDataDocument
+     - returns: LyricsOwnersMultiRelationshipDataDocument
      */
-	public static func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsMultiRelationshipDataDocument {
+	public static func lyricsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -65,9 +65,9 @@ public enum LyricsAPITidal {
 	/**
      Get track relationship (\&quot;to-one\&quot;).
      
-     - returns: LyricsSingleRelationshipDataDocument
+     - returns: LyricsTrackSingleRelationshipDataDocument
      */
-	public static func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleRelationshipDataDocument {
+	public static func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsTrackSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			LyricsAPI.lyricsIdRelationshipsTrackGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}

@@ -181,10 +181,10 @@ internal class OfflineTasksAPI {
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
-     - returns: OfflineTasksSingleRelationshipDataDocument
+     - returns: OfflineTasksCollectionSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+    internal class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksCollectionSingleRelationshipDataDocument {
         do {
             return try await offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -203,9 +203,9 @@ internal class OfflineTasksAPI {
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collection (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
-     - returns: RequestBuilder<OfflineTasksSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<OfflineTasksCollectionSingleRelationshipDataDocument> 
      */
-    internal class func offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksSingleRelationshipDataDocument> {
+    internal class func offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksCollectionSingleRelationshipDataDocument> {
         var localVariablePath = "/offlineTasks/{id}/relationships/collection"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -225,7 +225,7 @@ internal class OfflineTasksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<OfflineTasksSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<OfflineTasksCollectionSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -236,10 +236,10 @@ internal class OfflineTasksAPI {
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: item (optional)
-     - returns: OfflineTasksSingleRelationshipDataDocument
+     - returns: OfflineTasksItemSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+    internal class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksItemSingleRelationshipDataDocument {
         do {
             return try await offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -258,9 +258,9 @@ internal class OfflineTasksAPI {
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: item (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: item (optional)
-     - returns: RequestBuilder<OfflineTasksSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<OfflineTasksItemSingleRelationshipDataDocument> 
      */
-    internal class func offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksSingleRelationshipDataDocument> {
+    internal class func offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksItemSingleRelationshipDataDocument> {
         var localVariablePath = "/offlineTasks/{id}/relationships/item"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -280,7 +280,7 @@ internal class OfflineTasksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<OfflineTasksSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<OfflineTasksItemSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -291,10 +291,10 @@ internal class OfflineTasksAPI {
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: OfflineTasksMultiRelationshipDataDocument
+     - returns: OfflineTasksOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> OfflineTasksMultiRelationshipDataDocument {
+    internal class func offlineTasksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> OfflineTasksOwnersMultiRelationshipDataDocument {
         do {
             return try await offlineTasksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -313,9 +313,9 @@ internal class OfflineTasksAPI {
      - parameter id: (path) Offline task id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<OfflineTasksMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<OfflineTasksOwnersMultiRelationshipDataDocument> 
      */
-    internal class func offlineTasksIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<OfflineTasksMultiRelationshipDataDocument> {
+    internal class func offlineTasksIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<OfflineTasksOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/offlineTasks/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -335,7 +335,7 @@ internal class OfflineTasksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<OfflineTasksMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<OfflineTasksOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

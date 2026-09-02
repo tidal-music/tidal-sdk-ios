@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **albumStatisticsIdRelationshipsOwnersGet**
 ```swift
-    open class func albumStatisticsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumStatisticsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumStatisticsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumStatisticsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -105,7 +105,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumStatisticsMultiRelationshipDataDocument**](AlbumStatisticsMultiRelationshipDataDocument.md)
+[**AlbumStatisticsOwnersMultiRelationshipDataDocument**](AlbumStatisticsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

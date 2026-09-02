@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **searchSuggestionsIdRelationshipsDirectHitsGet**
 ```swift
-    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchSuggestionsDirectHitsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get directHits relationship (\"to-many\").
@@ -114,7 +114,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchSuggestionsMultiRelationshipDataDocument**](SearchSuggestionsMultiRelationshipDataDocument.md)
+[**SearchSuggestionsDirectHitsMultiRelationshipDataDocument**](SearchSuggestionsDirectHitsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -129,7 +129,7 @@ Name | Type | Description  | Notes
 
 # **searchSuggestionsIdRelationshipsHistoryGet**
 ```swift
-    open class func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchSuggestionsHistoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get history relationship (\"to-many\").
@@ -172,7 +172,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchSuggestionsMultiRelationshipDataDocument**](SearchSuggestionsMultiRelationshipDataDocument.md)
+[**SearchSuggestionsHistoryMultiRelationshipDataDocument**](SearchSuggestionsHistoryMultiRelationshipDataDocument.md)
 
 ### Authorization
 

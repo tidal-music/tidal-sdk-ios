@@ -29,9 +29,9 @@ public enum SquareConnectionsAPITidal {
 	/**
      Get selectedSite relationship (\&quot;to-one\&quot;).
      
-     - returns: SquareConnectionsSingleRelationshipDataDocument
+     - returns: SquareConnectionsSelectedSiteSingleRelationshipDataDocument
      */
-	public static func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil) async throws -> SquareConnectionsSingleRelationshipDataDocument {
+	public static func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil) async throws -> SquareConnectionsSelectedSiteSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: id, include: include)
 		}
@@ -53,9 +53,9 @@ public enum SquareConnectionsAPITidal {
 	/**
      Get sites relationship (\&quot;to-many\&quot;).
      
-     - returns: SquareConnectionsMultiRelationshipDataDocument
+     - returns: SquareConnectionsSitesMultiRelationshipDataDocument
      */
-	public static func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareConnectionsMultiRelationshipDataDocument {
+	public static func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareConnectionsSitesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareConnectionsAPI.squareConnectionsIdRelationshipsSitesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

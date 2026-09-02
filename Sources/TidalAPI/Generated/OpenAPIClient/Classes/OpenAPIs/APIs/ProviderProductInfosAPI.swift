@@ -79,10 +79,10 @@ internal class ProviderProductInfosAPI {
      
      - parameter id: (path) Provider product info id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider (optional)
-     - returns: ProviderProductInfosSingleRelationshipDataDocument
+     - returns: ProviderProductInfosProviderSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerProductInfosIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
+    internal class func providerProductInfosIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderProductInfosProviderSingleRelationshipDataDocument {
         do {
             return try await providerProductInfosIdRelationshipsProviderGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -100,9 +100,9 @@ internal class ProviderProductInfosAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Provider product info id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider (optional)
-     - returns: RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<ProviderProductInfosProviderSingleRelationshipDataDocument> 
      */
-    internal class func providerProductInfosIdRelationshipsProviderGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> {
+    internal class func providerProductInfosIdRelationshipsProviderGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ProviderProductInfosProviderSingleRelationshipDataDocument> {
         var localVariablePath = "/providerProductInfos/{id}/relationships/provider"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -121,7 +121,7 @@ internal class ProviderProductInfosAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ProviderProductInfosProviderSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -133,10 +133,10 @@ internal class ProviderProductInfosAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
-     - returns: ProviderProductInfosSingleRelationshipDataDocument
+     - returns: ProviderProductInfosSubjectSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
+    internal class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosSubjectSingleRelationshipDataDocument {
         do {
             return try await providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -156,9 +156,9 @@ internal class ProviderProductInfosAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
-     - returns: RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<ProviderProductInfosSubjectSingleRelationshipDataDocument> 
      */
-    internal class func providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument> {
+    internal class func providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ProviderProductInfosSubjectSingleRelationshipDataDocument> {
         var localVariablePath = "/providerProductInfos/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -179,7 +179,7 @@ internal class ProviderProductInfosAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ProviderProductInfosSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ProviderProductInfosSubjectSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

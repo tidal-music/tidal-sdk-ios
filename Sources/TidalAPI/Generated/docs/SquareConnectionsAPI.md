@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSelectedSiteGet**
 ```swift
-    open class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SquareConnectionsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SquareConnectionsSelectedSiteSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get selectedSite relationship (\"to-one\").
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SquareConnectionsSingleRelationshipDataDocument**](SquareConnectionsSingleRelationshipDataDocument.md)
+[**SquareConnectionsSelectedSiteSingleRelationshipDataDocument**](SquareConnectionsSelectedSiteSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -171,7 +171,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSitesGet**
 ```swift
-    open class func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SquareConnectionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SquareConnectionsSitesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get sites relationship (\"to-many\").
@@ -210,7 +210,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SquareConnectionsMultiRelationshipDataDocument**](SquareConnectionsMultiRelationshipDataDocument.md)
+[**SquareConnectionsSitesMultiRelationshipDataDocument**](SquareConnectionsSitesMultiRelationshipDataDocument.md)
 
 ### Authorization
 

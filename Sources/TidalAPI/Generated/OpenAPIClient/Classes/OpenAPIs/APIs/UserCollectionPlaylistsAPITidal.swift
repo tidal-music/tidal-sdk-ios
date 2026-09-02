@@ -103,9 +103,9 @@ public enum UserCollectionPlaylistsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionPlaylistsMultiRelationshipDataDocument
+     - returns: UserCollectionPlaylistsOwnersMultiRelationshipDataDocument
      */
-	public static func userCollectionPlaylistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionPlaylistsMultiRelationshipDataDocument {
+	public static func userCollectionPlaylistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionPlaylistsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

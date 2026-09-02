@@ -73,10 +73,10 @@ internal class PlaylistGenerationsAPI {
      - parameter id: (path) Playlist generation id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
-     - returns: PlaylistGenerationsSingleRelationshipDataDocument
+     - returns: PlaylistGenerationsPlaylistSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistGenerationsIdRelationshipsPlaylistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsSingleRelationshipDataDocument {
+    internal class func playlistGenerationsIdRelationshipsPlaylistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsPlaylistSingleRelationshipDataDocument {
         do {
             return try await playlistGenerationsIdRelationshipsPlaylistGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -95,9 +95,9 @@ internal class PlaylistGenerationsAPI {
      - parameter id: (path) Playlist generation id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
-     - returns: RequestBuilder<PlaylistGenerationsSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<PlaylistGenerationsPlaylistSingleRelationshipDataDocument> 
      */
-    internal class func playlistGenerationsIdRelationshipsPlaylistGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsSingleRelationshipDataDocument> {
+    internal class func playlistGenerationsIdRelationshipsPlaylistGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsPlaylistSingleRelationshipDataDocument> {
         var localVariablePath = "/playlistGenerations/{id}/relationships/playlist"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -117,7 +117,7 @@ internal class PlaylistGenerationsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlaylistGenerationsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlaylistGenerationsPlaylistSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

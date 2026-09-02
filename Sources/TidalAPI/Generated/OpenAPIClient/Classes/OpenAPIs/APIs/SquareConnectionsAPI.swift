@@ -69,10 +69,10 @@ internal class SquareConnectionsAPI {
      
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: selectedSite (optional)
-     - returns: SquareConnectionsSingleRelationshipDataDocument
+     - returns: SquareConnectionsSelectedSiteSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil) async throws -> SquareConnectionsSingleRelationshipDataDocument {
+    internal class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil) async throws -> SquareConnectionsSelectedSiteSingleRelationshipDataDocument {
         do {
             return try await squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -90,9 +90,9 @@ internal class SquareConnectionsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: selectedSite (optional)
-     - returns: RequestBuilder<SquareConnectionsSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<SquareConnectionsSelectedSiteSingleRelationshipDataDocument> 
      */
-    internal class func squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<SquareConnectionsSingleRelationshipDataDocument> {
+    internal class func squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<SquareConnectionsSelectedSiteSingleRelationshipDataDocument> {
         var localVariablePath = "/squareConnections/{id}/relationships/selectedSite"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -111,7 +111,7 @@ internal class SquareConnectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsSelectedSiteSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -174,10 +174,10 @@ internal class SquareConnectionsAPI {
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sites (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: SquareConnectionsMultiRelationshipDataDocument
+     - returns: SquareConnectionsSitesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareConnectionsMultiRelationshipDataDocument {
+    internal class func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareConnectionsSitesMultiRelationshipDataDocument {
         do {
             return try await squareConnectionsIdRelationshipsSitesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -196,9 +196,9 @@ internal class SquareConnectionsAPI {
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sites (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<SquareConnectionsMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<SquareConnectionsSitesMultiRelationshipDataDocument> 
      */
-    internal class func squareConnectionsIdRelationshipsSitesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SquareConnectionsMultiRelationshipDataDocument> {
+    internal class func squareConnectionsIdRelationshipsSitesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SquareConnectionsSitesMultiRelationshipDataDocument> {
         var localVariablePath = "/squareConnections/{id}/relationships/sites"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -218,7 +218,7 @@ internal class SquareConnectionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SquareConnectionsSitesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

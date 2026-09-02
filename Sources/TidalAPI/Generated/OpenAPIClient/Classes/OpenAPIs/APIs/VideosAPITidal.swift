@@ -41,9 +41,9 @@ public enum VideosAPITidal {
 	/**
      Get albums relationship (\&quot;to-many\&quot;).
      
-     - returns: VideosMultiRelationshipDataDocument
+     - returns: VideosAlbumsMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosAlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.videosIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}
@@ -53,9 +53,9 @@ public enum VideosAPITidal {
 	/**
      Get artists relationship (\&quot;to-many\&quot;).
      
-     - returns: VideosMultiRelationshipDataDocument
+     - returns: VideosArtistsMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.videosIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}
@@ -65,9 +65,9 @@ public enum VideosAPITidal {
 	/**
      Get credits relationship (\&quot;to-many\&quot;).
      
-     - returns: VideosMultiRelationshipDataDocument
+     - returns: VideosCreditsMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosCreditsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.videosIdRelationshipsCreditsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
@@ -77,9 +77,9 @@ public enum VideosAPITidal {
 	/**
      Get providers relationship (\&quot;to-many\&quot;).
      
-     - returns: VideosMultiRelationshipDataDocument
+     - returns: VideosProvidersMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsProvidersGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsProvidersGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosProvidersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.videosIdRelationshipsProvidersGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
 		}
@@ -89,9 +89,9 @@ public enum VideosAPITidal {
 	/**
      Get replacement relationship (\&quot;to-one\&quot;).
      
-     - returns: VideosSingleRelationshipDataDocument
+     - returns: VideosReplacementSingleRelationshipDataDocument
      */
-	public static func videosIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosSingleRelationshipDataDocument {
+	public static func videosIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosReplacementSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.videosIdRelationshipsReplacementGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}
@@ -101,9 +101,9 @@ public enum VideosAPITidal {
 	/**
      Get similarVideos relationship (\&quot;to-many\&quot;).
      
-     - returns: VideosMultiRelationshipDataDocument
+     - returns: VideosSimilarVideosMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsSimilarVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsSimilarVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosSimilarVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.videosIdRelationshipsSimilarVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}
@@ -113,9 +113,9 @@ public enum VideosAPITidal {
 	/**
      Get suggestedVideos relationship (\&quot;to-many\&quot;).
      
-     - returns: VideosMultiRelationshipDataDocument
+     - returns: VideosSuggestedVideosMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsSuggestedVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsSuggestedVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosSuggestedVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.videosIdRelationshipsSuggestedVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}
@@ -125,9 +125,9 @@ public enum VideosAPITidal {
 	/**
      Get thumbnailArt relationship (\&quot;to-many\&quot;).
      
-     - returns: VideosMultiRelationshipDataDocument
+     - returns: VideosThumbnailArtMultiRelationshipDataDocument
      */
-	public static func videosIdRelationshipsThumbnailArtGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosMultiRelationshipDataDocument {
+	public static func videosIdRelationshipsThumbnailArtGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosThumbnailArtMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include)
 		}
@@ -137,9 +137,9 @@ public enum VideosAPITidal {
 	/**
      Get usageRules relationship (\&quot;to-one\&quot;).
      
-     - returns: VideosSingleRelationshipDataDocument
+     - returns: VideosUsageRulesSingleRelationshipDataDocument
      */
-	public static func videosIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosSingleRelationshipDataDocument {
+	public static func videosIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosUsageRulesSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			VideosAPI.videosIdRelationshipsUsageRulesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
 		}

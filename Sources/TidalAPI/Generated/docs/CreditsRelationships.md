@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**artist** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
-**category** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+**artist** | [**CreditsArtistSingleRelationshipDataDocument**](CreditsArtistSingleRelationshipDataDocument.md) |  | [optional] 
+**category** | [**CreditsCategorySingleRelationshipDataDocument**](CreditsCategorySingleRelationshipDataDocument.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

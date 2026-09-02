@@ -5,7 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **albums** | [**UserCollectionsAlbumsMultiRelationshipDataDocument**](UserCollectionsAlbumsMultiRelationshipDataDocument.md) |  | [optional] 
 **artists** | [**UserCollectionsArtistsMultiRelationshipDataDocument**](UserCollectionsArtistsMultiRelationshipDataDocument.md) |  | [optional] 
-**owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**owners** | [**UserCollectionsOwnersMultiRelationshipDataDocument**](UserCollectionsOwnersMultiRelationshipDataDocument.md) |  | [optional] 
 **playlists** | [**UserCollectionsPlaylistsMultiRelationshipDataDocument**](UserCollectionsPlaylistsMultiRelationshipDataDocument.md) |  | [optional] 
 **tracks** | [**UserCollectionsTracksMultiRelationshipDataDocument**](UserCollectionsTracksMultiRelationshipDataDocument.md) |  | [optional] 
 **videos** | [**UserCollectionsVideosMultiRelationshipDataDocument**](UserCollectionsVideosMultiRelationshipDataDocument.md) |  | [optional] 

@@ -29,9 +29,9 @@ public enum StripeConnectionsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: StripeConnectionsMultiRelationshipDataDocument
+     - returns: StripeConnectionsOwnersMultiRelationshipDataDocument
      */
-	public static func stripeConnectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> StripeConnectionsMultiRelationshipDataDocument {
+	public static func stripeConnectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> StripeConnectionsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			StripeConnectionsAPI.stripeConnectionsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

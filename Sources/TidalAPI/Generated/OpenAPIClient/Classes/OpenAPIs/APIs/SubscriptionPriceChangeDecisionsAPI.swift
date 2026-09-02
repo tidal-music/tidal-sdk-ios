@@ -119,10 +119,10 @@ internal class SubscriptionPriceChangeDecisionsAPI {
      
      - parameter id: (path) Price change decision id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: priceChange (optional)
-     - returns: SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument
+     - returns: SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: String, include: [String]? = nil) async throws -> SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument {
+    internal class func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: String, include: [String]? = nil) async throws -> SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument {
         do {
             return try await subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -140,9 +140,9 @@ internal class SubscriptionPriceChangeDecisionsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Price change decision id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: priceChange (optional)
-     - returns: RequestBuilder<SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument> 
      */
-    internal class func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument> {
+    internal class func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument> {
         var localVariablePath = "/subscriptionPriceChangeDecisions/{id}/relationships/priceChange"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -161,7 +161,7 @@ internal class SubscriptionPriceChangeDecisionsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

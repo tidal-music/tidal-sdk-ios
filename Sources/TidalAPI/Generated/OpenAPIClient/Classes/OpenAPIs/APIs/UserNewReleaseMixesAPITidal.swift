@@ -29,9 +29,9 @@ public enum UserNewReleaseMixesAPITidal {
 	/**
      Get items relationship (\&quot;to-many\&quot;).
      
-     - returns: UserNewReleaseMixesMultiRelationshipDataDocument
+     - returns: UserNewReleaseMixesItemsMultiRelationshipDataDocument
      */
-	public static func userNewReleaseMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserNewReleaseMixesMultiRelationshipDataDocument {
+	public static func userNewReleaseMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserNewReleaseMixesItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserNewReleaseMixesAPI.userNewReleaseMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia)
 		}

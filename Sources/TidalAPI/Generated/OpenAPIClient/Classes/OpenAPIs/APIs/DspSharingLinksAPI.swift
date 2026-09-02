@@ -86,10 +86,10 @@ internal class DspSharingLinksAPI {
      - parameter id: (path) DspSharingLinks Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
-     - returns: DspSharingLinksSingleRelationshipDataDocument
+     - returns: DspSharingLinksSubjectSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksSingleRelationshipDataDocument {
+    internal class func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksSubjectSingleRelationshipDataDocument {
         do {
             return try await dspSharingLinksIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -111,9 +111,9 @@ internal class DspSharingLinksAPI {
      - parameter id: (path) DspSharingLinks Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
-     - returns: RequestBuilder<DspSharingLinksSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<DspSharingLinksSubjectSingleRelationshipDataDocument> 
      */
-    internal class func dspSharingLinksIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DspSharingLinksSingleRelationshipDataDocument> {
+    internal class func dspSharingLinksIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DspSharingLinksSubjectSingleRelationshipDataDocument> {
         var localVariablePath = "/dspSharingLinks/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -133,7 +133,7 @@ internal class DspSharingLinksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<DspSharingLinksSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<DspSharingLinksSubjectSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
